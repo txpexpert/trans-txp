@@ -10,7 +10,7 @@
 // nc8_concerne/abroge_ou_modifie/modifie_par/date_fin_validite/langue/emetteur).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { supabase, embedText } from './supabase'
+import { supabase, embedText } from './ingestion'
 import { validateCirculaireDocument, type CirculaireDocument } from './circulaireSchemaV2'
 
 export interface ImportOneResult {
