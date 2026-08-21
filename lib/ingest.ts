@@ -10,7 +10,7 @@ import Anthropic                                from '@anthropic-ai/sdk'
 import formidable, { File as FormFile }         from 'formidable'
 import fs                                       from 'fs'
 import path                                     from 'path'
-import { COOKIE_NAME, verifyToken }             from '../../lib/adminAuth'
+import { COOKIE_NAME, verifyToken }             from './adminAuth'
 import {
   supabase, chunkText, embedText,
   ingestCirculairesJSON, ingestFaqJSON, ingestTarifsJSON,
