@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classification des Substances Toxiques — MD Signalisation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;
+  --bg:#F9F8F4;--bg2:#F2F0EA;--surface:#FFFFFF;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --purple:#5A2AA0;--purple-bg:#F3EEFE;--purple-bd:#C8A8F8;
+  --teal:#0F6B6B;--teal-bg:#E8F7F7;--teal-bd:#8DCECE;
+  --gray-bg:#F4F4F2;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 4px 20px rgba(26,26,24,.10);
+  --r:8px;--r-lg:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.hdr{background:rgba(249,248,244,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
+.hdr-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px;height:54px}
+.logo-mark{width:28px;height:28px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{fill:#fff}
+.logo-txt{font-family:"DM Serif Display",serif;font-size:14px;color:var(--ink);line-height:1.1}
+.logo-txt span{display:block;font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:24px;background:var(--border)}
+.hdr-nav{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;flex:1}
+.hdr-nav::-webkit-scrollbar{display:none}
+.hdr-nav a{padding:0 13px;height:54px;display:flex;align-items:center;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.hdr-nav a:hover,.hdr-nav a.active{color:var(--gold);border-bottom-color:var(--gold)}
+.hdr-back{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);border:1px solid var(--gold-bd);background:var(--gold-dim);padding:4px 12px;border-radius:100px;white-space:nowrap;flex-shrink:0}
+.hdr-back:hover{background:var(--gold-pale)}
+
+/* ── HERO (compact) ── */
+.hero{background:linear-gradient(150deg,#EEEAE0 0%,#E8E2D4 60%,#DDD6C4 100%);border-bottom:1px solid var(--border);padding:28px 2rem 24px}
+.hero-inner{max-width:1240px;margin:0 auto}
+.hero-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';width:24px;height:2px;background:var(--gold);border-radius:1px}
+.hero h1{font-family:"DM Serif Display",serif;font-size:clamp(22px,4vw,38px);color:var(--ink);line-height:1.05;letter-spacing:-.5px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p{font-size:13px;color:var(--mid);margin-top:8px;max-width:580px;line-height:1.7}
+.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.htag{font-family:"JetBrains Mono",monospace;font-size:9.5px;padding:3px 10px;border-radius:100px;border:1px solid}
+
+/* ── WRAP ── */
+.wrap{max-width:1240px;margin:0 auto;padding:0 2rem 5rem}
+
+/* ── SEARCH ── */
+.search-zone{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;margin:24px 0 20px;box-shadow:var(--sh-md)}
+.search-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search-input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--border-mid);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:13.5px;padding:9px 14px;border-radius:var(--r);outline:none;transition:border-color .15s}
+.search-input:focus{border-color:var(--gold);background:var(--surface)}
+.search-input::placeholder{color:var(--muted)}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.fchip{padding:6px 14px;border:1.5px solid var(--border-mid);border-radius:100px;background:rgba(255,255,255,0.7);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;transition:all .18s;backdrop-filter:blur(4px)}
+.fchip:hover{background:rgba(184,146,42,0.10);border-color:var(--gold-bd);color:var(--ink)}
+.fchip.active{background:rgba(184,146,42,0.15);border-color:var(--gold);color:var(--ink);box-shadow:0 0 0 1px var(--gold-bd)}
+.result-count{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);white-space:nowrap}
+
+/* ── CLASS SECTIONS ── */
+.class-section{margin-bottom:36px}
+.class-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.class-picto{width:64px;height:64px;flex-shrink:0}
+.class-title-block{}
+.class-num{font-family:"DM Serif Display",serif;font-size:32px;color:var(--gold);line-height:1}
+.class-name{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.class-en{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);letter-spacing:.05em}
+
+/* ── ACCORDION ── */
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+.acc-grid-1{grid-template-columns:1fr}
+.acc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;border-left:3px solid transparent;transition:border-color .2s,box-shadow .2s}
+.acc-card.open{border-left-color:var(--gold);box-shadow:var(--sh-md)}
+.acc-card.hidden{display:none}
+.acc-trigger{padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;user-select:none;-webkit-user-select:none}
+.acc-trigger:hover{background:var(--bg2)}
+.acc-icon{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.acc-title-block{flex:1;min-width:0}
+.acc-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:1px}
+.acc-subtitle{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.acc-chevron{width:16px;height:16px;color:var(--muted);flex-shrink:0;transition:transform .22s}
+.acc-card.open .acc-chevron{transform:rotate(180deg)}
+.acc-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);animation:sd .18s ease}
+.acc-card.open .acc-body{display:block}
+@keyframes sd{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.acc-body p,.acc-body li{font-size:13px;color:var(--mid);line-height:1.65}
+.acc-body ul{padding-left:16px;margin-top:8px;display:flex;flex-direction:column;gap:4px}
+.acc-body strong{color:var(--ink)}
+.acc-footer{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+
+/* ── BADGES ── */
+.tbadge{font-family:"JetBrains Mono",monospace;font-size:8px;padding:2px 7px;border-radius:100px;border:1px solid;white-space:nowrap}
+.b-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.b-red{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)}
+.b-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+.b-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.b-amber{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
+.b-purple{background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)}
+.b-teal{background:var(--teal-bg);border-color:var(--teal-bd);color:var(--teal)}
+.b-gray{background:var(--bg2);border-color:var(--border);color:var(--muted)}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:var(--r);padding:12px 16px;margin:12px 0;border-left:3px solid;font-size:12px;color:var(--mid);line-height:1.65}
+.callout h5{font-size:11.5px;font-weight:700;margin-bottom:4px}
+.c-red{background:var(--red-bg);border-color:var(--red)} .c-red h5{color:var(--red)}
+.c-amber{background:var(--amber-bg);border-color:#D4880A} .c-amber h5{color:var(--amber)}
+.c-blue{background:var(--blue-bg);border-color:var(--blue)} .c-blue h5{color:var(--blue)}
+.c-green{background:var(--green-bg);border-color:var(--green)} .c-green h5{color:var(--green)}
+.c-purple{background:var(--purple-bg);border-color:var(--purple)} .c-purple h5{color:var(--purple)}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r-lg);border:1px solid var(--border);box-shadow:var(--sh);margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface)}
+thead tr{background:var(--bg2)}
+th{padding:9px 13px;text-align:left;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:8px 13px;border-bottom:1px solid var(--border);color:var(--ink);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FAFAF6}
+.mono{font-family:"JetBrains Mono",monospace;font-size:11px}
+
+/* ── NO RESULTS ── */
+.no-results{text-align:center;padding:40px;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:11px}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:16px 2rem;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);letter-spacing:.07em;background:var(--surface)}
+
+hr.div{border:none;border-top:1px solid var(--border);margin:32px 0}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="logo-mark"><svg width="14" height="14" viewBox="0 0 12 12"><path d="M6 0L11 3V9L6 12L1 9V3Z"/></svg></div>
+    <div class="logo-txt">MD Signalisation <span>Matières Dangereuses</span></div>
+    <div class="hdr-sep"></div>
+    <nav class="hdr-nav">
+      <a href="#classe1">Classe 1</a>
+      <a href="#classe2">Classe 2</a>
+      <a href="#classe3">Classe 3</a>
+      <a href="#classe4">Classe 4</a>
+      <a href="#classe5">Classe 5</a>
+      <a href="#classe6">Classe 6</a>
+      <a href="#classe7">Classe 7</a>
+      <a href="#classe8">Classe 8</a>
+      <a href="#classe9">Classe 9</a>
+    </nav>
+    <a href="marquage_MD_v2.html" class="hdr-back">← Retour Marquage</a>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Classification ONU · Substances Dangereuses · 2026</div>
+    <h1>Classification des <em>Substances Toxiques</em></h1>
+    <p>Les 9 classes de danger ONU — sous-classes, critères techniques, pictogrammes officiels et exemples. Sélectionnez une classe, choisissez un sujet pour afficher l'information.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">9 Classes · 21 Sous-classes</span>
+      <span class="htag" style="background:var(--red-bg);border-color:var(--red-bd);color:var(--red)">Référentiel ONU / 49 CFR</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">GHS Rev.11 · 2025</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Anti-scraping · Accordéons</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SEARCH ═══ -->
+<div class="wrap">
+<div class="search-zone">
+  <div class="search-row">
+    <input class="search-input" type="text" id="search-inp" placeholder="Rechercher : classe, sous-classe, substance, critère..." oninput="doSearch()">
+    <span class="result-count" id="result-count"></span>
+  </div>
+  <p style="font-size:13px;font-weight:700;color:#9A2A22;margin-top:14px;margin-bottom:8px;">Choisir une catégorie :</p>
+  <div class="filter-row">
+    <button class="fchip active" onclick="setFilter('all',this)">Toutes les classes</button>
+    <button class="fchip" onclick="setFilter('1',this)" style="background:rgba(224,120,32,0.10);border-color:rgba(224,120,32,0.35)">Cl. 1 — Explosibles</button>
+    <button class="fchip" onclick="setFilter('2',this)" style="background:rgba(220,38,38,0.10);border-color:rgba(220,38,38,0.35)">Cl. 2 — Gaz</button>
+    <button class="fchip" onclick="setFilter('3',this)" style="background:rgba(220,38,38,0.10);border-color:rgba(220,38,38,0.35)">Cl. 3 — Liquides</button>
+    <button class="fchip" onclick="setFilter('4',this)" style="background:rgba(180,83,9,0.10);border-color:rgba(180,83,9,0.35)">Cl. 4 — Solides</button>
+    <button class="fchip" onclick="setFilter('5',this)" style="background:rgba(202,138,4,0.10);border-color:rgba(202,138,4,0.35)">Cl. 5 — Oxydants</button>
+    <button class="fchip" onclick="setFilter('6',this)" style="background:rgba(107,114,128,0.10);border-color:rgba(107,114,128,0.35)">Cl. 6 — Toxiques</button>
+    <button class="fchip" onclick="setFilter('7',this)" style="background:rgba(202,138,4,0.10);border-color:rgba(202,138,4,0.35)">Cl. 7 — Radioactifs</button>
+    <button class="fchip" onclick="setFilter('8',this)" style="background:rgba(55,65,81,0.09);border-color:rgba(55,65,81,0.30)">Cl. 8 — Corrosifs</button>
+    <button class="fchip" onclick="setFilter('9',this)" style="background:rgba(107,114,128,0.09);border-color:rgba(107,114,128,0.30)">Cl. 9 — Divers</button>
+  </div>
+</div>
+
+<!-- ═══ CLASSE 1 ═══ -->
+<section id="classe1" data-class="1" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="3" fill="#FF8000"/>
+      <polygon points="32,10 54,50 10,50" fill="none" stroke="#000" stroke-width="3"/>
+      <circle cx="32" cy="42" r="2.5" fill="#000"/>
+      <line x1="32" y1="22" x2="32" y2="37" stroke="#000" stroke-width="3" stroke-linecap="round"/>
+      <text x="32" y="62" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#000" font-weight="700">1</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">1</div>
+      <div class="class-name">Matières et Objets Explosibles</div>
+      <div class="class-en">Explosives · 6 Subclasses · Compatibility Groups A–S</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-amber">Fond orange</span>
+      <span class="tbadge b-red">GHS01</span>
+      <span class="tbadge b-gray">Groupes A–S</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="1">
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon" style="background:#FFF3E0">💣</div>
+        <div class="acc-title-block"><div class="acc-title">Sous-classe 1.1 — Explosion en Masse</div><div class="acc-subtitle">Mass explosion hazard</div></div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Explosibles qui présentent un risque d'explosion en masse. Une explosion en masse est une explosion qui affecte quasi instantanément presque la totalité de la charge.</p>
+        <p style="margin-top:8px;"><strong>Exemples :</strong> TNT, nitroglycérine en vrac, ANFO, dynamite, détonateurs en grande quantité.</p>
+        <div class="acc-footer"><span class="tbadge b-amber">1.1</span><span class="tbadge b-red">Risque maximal</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon" style="background:#FFF3E0">💥</div>
+        <div class="acc-title-block"><div class="acc-title">Sous-classes 1.2 &amp; 1.3 — Projection</div><div class="acc-subtitle">Projection hazard / Fire hazard</div></div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>1.2</strong> — Matières présentant un risque de <strong>projection</strong> mais pas d'explosion en masse. Fragments projetés à distance lors d'une détonation.</p>
+        <p style="margin-top:6px;"><strong>1.3</strong> — Matières présentant un risque d'<strong>incendie</strong> avec un léger effet de souffle ou de projection (ou les deux), mais sans explosion en masse. Ex : poudres propulsives, compositions pyrotechniques.</p>
+        <div class="acc-footer"><span class="tbadge b-amber">1.2</span><span class="tbadge b-amber">1.3</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon" style="background:#FFF3E0">🧨</div>
+        <div class="acc-title-block"><div class="acc-title">Sous-classe 1.4 — Risque Mineur</div><div class="acc-subtitle">Minor explosion hazard</div></div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Matières présentant un risque d'explosion mineur en cas d'inflammation ou d'amorçage. Les effets sont largement confinés à l'emballage. Aucune projection de fragments de taille appréciable n'est à prévoir. Un feu extérieur ne doit pas provoquer l'explosion quasi instantanée de presque tout le contenu.</p>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> munitions pour armes légères, articles pyrotechniques pour usage commercial (feux d'artifice de 1.4).</p>
+        <div class="acc-footer"><span class="tbadge b-amber">1.4</span><span class="tbadge b-green">Risque limité</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon" style="background:#FFF3E0">🔬</div>
+        <div class="acc-title-block"><div class="acc-title">Sous-classes 1.5 &amp; 1.6 — Très Insensibles</div><div class="acc-subtitle">Very insensitive / Extremely insensitive</div></div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>1.5</strong> — Substances très peu sensibles présentant un risque d'explosion en masse. Si faible probabilité d'amorçage ou de transition de la combustion vers la détonation dans les conditions normales de transport. Ex : agents de sautage de type E (ANFO émulsifié).</p>
+        <p style="margin-top:6px;"><strong>1.6</strong> — Articles extrêmement insensibles ne présentant pas de risque d'explosion en masse. Contiennent uniquement des détonateurs extrêmement insensibles. Probabilité négligeable d'amorçage ou de propagation accidentels.</p>
+        <div class="acc-footer"><span class="tbadge b-amber">1.5</span><span class="tbadge b-amber">1.6</span><span class="tbadge b-green">Très faible sensibilité</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon" style="background:#FFF3E0">🔤</div>
+        <div class="acc-title-block"><div class="acc-title">Groupes de Compatibilité (A–S)</div><div class="acc-subtitle">Compatibility groups — Ségrégation obligatoire</div></div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Les matières et objets de la classe 1 sont affectés à un <strong>groupe de compatibilité</strong> (lettre A à S) déterminant leur compatibilité de stockage et de transport.</p>
+        <div class="tbl-wrap"><table><thead><tr><th>Groupe</th><th>Description</th></tr></thead><tbody>
+          <tr><td class="mono">A</td><td>Matière primaire détonante (ex : azoture de plomb)</td></tr>
+          <tr><td class="mono">B</td><td>Objet contenant une matière primaire détonante (ex : détonateur)</td></tr>
+          <tr><td class="mono">C</td><td>Matière propulsive ou autre matière déflagrante (ex : poudre noire)</td></tr>
+          <tr><td class="mono">D</td><td>Matière secondaire détonante ou poudre noire (ex : TNT)</td></tr>
+          <tr><td class="mono">E</td><td>Objet contenant matière secondaire détonante sans amorce</td></tr>
+          <tr><td class="mono">F</td><td>Objet contenant matière secondaire détonante avec amorce</td></tr>
+          <tr><td class="mono">G</td><td>Composition pyrotechnique ou engin pyrotechnique</td></tr>
+          <tr><td class="mono">H–S</td><td>Groupes spéciaux (articles militaires, matières très insensibles…)</td></tr>
+        </tbody></table></div>
+        <div class="callout c-red"><h5>⚠️ Règle de ségrégation absolue</h5>Le groupe A ne peut jamais être transporté avec le groupe B dans le même véhicule/conteneur.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ CLASSE 2 ═══ -->
+<section id="classe2" data-class="2" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="3" fill="#dc2626"/>
+      <ellipse cx="32" cy="38" rx="12" ry="16" fill="none" stroke="#fff" stroke-width="2.5"/>
+      <rect x="26" y="10" width="12" height="8" rx="2" fill="none" stroke="#fff" stroke-width="2.5"/>
+      <line x1="32" y1="18" x2="32" y2="22" stroke="#fff" stroke-width="2.5"/>
+      <path d="M22 28 Q17 32 20 40" stroke="#fff" stroke-width="2" fill="none"/>
+      <text x="32" y="62" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#fff" font-weight="700">2</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">2</div>
+      <div class="class-name">Gaz</div>
+      <div class="class-en">Gases · Subclasses 2.1 (Flammable) · 2.2 (Non-flammable) · 2.3 (Toxic)</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-red">Rouge / Vert / Blanc</span>
+      <span class="tbadge b-red">GHS02/04/06</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="2">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FFEBEE">🔥</div><div class="acc-title-block"><div class="acc-title">Sous-classe 2.1 — Gaz Inflammables</div><div class="acc-subtitle">Flammable Gas · Fond rouge · GHS02</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Gaz à 20°C et à 101,3 kPa qui est allumable à 101,3 kPa lorsqu'en mélange d'au plus 13 % en volume avec l'air, <strong>OU</strong> qui a une plage d'inflammabilité d'au moins 12 % indépendamment de la limite inférieure.</p>
+        <p style="margin-top:6px;"><strong>Quantité de référence :</strong> 454 kg (1 001 lbs) ou plus.</p>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Propane (UN 1978), Butane (UN 1011), Hydrogène (UN 1049), Acétylène (UN 1001), Gaz naturel comprimé (UN 1971).</p>
+        <div class="acc-footer"><span class="tbadge b-red">Fond rouge</span><span class="tbadge b-red">GHS02</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#E8F5E9">🫙</div><div class="acc-title-block"><div class="acc-title">Sous-classe 2.2 — Gaz Non Inflammables</div><div class="acc-subtitle">Non-flammable, Non-poisonous · Fond vert</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Inclut les gaz comprimés, gaz liquéfiés, gaz cryogéniques pressurisés, gaz comprimés en solution, gaz asphyxiants et gaz oxydants. Toute matière (ou mélange) qui :</p>
+        <ul>
+          <li>Exerce dans l'emballage une pression absolue de 280 kPa (40,6 psia) ou plus à 20°C</li>
+          <li>Ne répond pas à la définition des sous-classes 2.1 ou 2.3</li>
+        </ul>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Azote (UN 1066), Dioxyde de carbone (UN 1013), Hélium comprimé (UN 1046), Argon (UN 1006), Oxygène comprimé (UN 1072).</p>
+        <div class="acc-footer"><span class="tbadge b-green">Fond vert</span><span class="tbadge b-blue">GHS04</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FAFAFA">☠️</div><div class="acc-title-block"><div class="acc-title">Sous-classe 2.3 — Gaz Toxiques</div><div class="acc-subtitle">Poison Gas · Fond blanc · LC50 ≤5 000 ml/m³</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Gaz à 20°C ou moins à une pression de 101,3 kPa (PE ≤ 20°C à 101,3 kPa) et qui :</p>
+        <ul>
+          <li>Est connu pour être toxique pour les humains de manière à présenter un danger pour la santé lors du transport</li>
+          <li>En l'absence de données de toxicité humaine adéquates, est présumé toxique car la <strong>LC50 sur animaux de laboratoire ≤ 5 000 ml/m³</strong></li>
+        </ul>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Chlore (UN 1017), Phosgène (UN 1076), Fluorure d'hydrogène anhydre (UN 1052), Monoxyde de carbone (UN 1016), Acide cyanhydrique (UN 1051), Arsine (UN 2188).</p>
+        <div class="callout c-red" style="margin-top:8px;"><h5>⚠️ Table 1 ADR/DOT — Placard toujours requis</h5>Les matières de la sous-classe 2.3 figurent en Table 1 : placard obligatoire quelle que soit la quantité transportée.</div>
+        <div class="acc-footer"><span class="tbadge b-red">Fond blanc</span><span class="tbadge b-red">☠️ Tête de mort</span><span class="tbadge b-red">Table 1</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ CLASSE 3 ═══ -->
+<section id="classe3" data-class="3" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="3" fill="#dc2626"/>
+      <path d="M32 48 C24 42 20 36 24 28 C26 22 30 20 30 14 C32 18 34 20 36 24 C40 32 40 40 32 48Z" fill="white"/>
+      <text x="32" y="62" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#fff" font-weight="700">3</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">3</div>
+      <div class="class-name">Liquides Inflammables</div>
+      <div class="class-en">Flammable Liquids · Flash Point ≤60.5°C · GHS02</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-red">Fond rouge</span>
+      <span class="tbadge b-red">GHS02</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="3">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FFEBEE">📋</div><div class="acc-title-block"><div class="acc-title">Définition &amp; Critères</div><div class="acc-subtitle">Flash point · 60,5°C · Exemptions</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Liquide ayant un <strong>point d'éclair ≤ 60,5°C (141°F)</strong>, ou toute matière en phase liquide ayant un PE ≥ 37,8°C qui est chauffée intentionnellement et offerte au transport à ou au-dessus de son PE.</p>
+        <p style="margin-top:8px;"><strong>Exemptions (ne sont PAS des liquides inflammables cl. 3) :</strong></p>
+        <ul>
+          <li>Liquide avec PE &gt;35°C ne soutenant pas la combustion (test ASTM 4206 ou Appendix H 49 CFR)</li>
+          <li>Liquide avec PE &gt;35°C et point de feu &gt;100°C (ISO 2592)</li>
+          <li>Solution miscible à l'eau avec teneur en eau &gt;90% en masse</li>
+          <li>Mélanges avec ≥99% de composants à PE ≥60,5°C, non transportés à température élevée</li>
+        </ul>
+        <div class="acc-footer"><span class="tbadge b-red">PE ≤ 60,5°C</span><span class="tbadge b-red">GHS02</span></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FFEBEE">📦</div><div class="acc-title-block"><div class="acc-title">Groupes d'Emballage</div><div class="acc-subtitle">GE I · GE II · GE III — Selon PE et ébullition</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <div class="tbl-wrap"><table><thead><tr><th>GE</th><th>PE</th><th>Point d'ébullition</th><th>Danger</th></tr></thead><tbody>
+          <tr><td class="mono" style="color:#dc2626"><strong>I</strong></td><td>&lt; 23°C</td><td>≤ 35°C</td><td><span class="tbadge b-red">Grand danger</span></td></tr>
+          <tr><td class="mono" style="color:#ea580c"><strong>II</strong></td><td>&lt; 23°C</td><td>&gt; 35°C</td><td><span class="tbadge b-amber">Danger moyen</span></td></tr>
+          <tr><td class="mono" style="color:#ca8a04"><strong>III</strong></td><td>23–60,5°C</td><td>Tout</td><td><span class="tbadge b-gray">Faible danger</span></td></tr>
+        </tbody></table></div>
+        <p style="margin-top:8px;"><strong>Exemples :</strong> Acétone GE II (UN 1090) · Essence GE II (UN 1203) · Gasoil GE III (UN 1202) · Éther GE I (UN 1155)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ CLASSE 4 ═══ -->
+<section id="classe4" data-class="4" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="64" height="32" fill="#ffffff"/>
+      <rect x="0" y="32" width="64" height="32" fill="#ffffff"/>
+      <rect x="0" y="0" width="10" height="64" fill="#dc2626"/>
+      <rect x="20" y="0" width="10" height="64" fill="#dc2626"/>
+      <rect x="34" y="0" width="10" height="64" fill="#dc2626"/>
+      <rect x="48" y="0" width="10" height="64" fill="#dc2626"/>
+      <path d="M32 44 C28 38 26 34 28 28 C29 24 31 22 31 18 C32 21 33 23 35 26 C37 32 36 38 32 44Z" fill="#000" opacity="0.7"/>
+      <text x="32" y="62" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#000" font-weight="700">4</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">4</div>
+      <div class="class-name">Solides Inflammables</div>
+      <div class="class-en">Flammable Solids · Subclasses 4.1 / 4.2 / 4.3</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-amber">Blanc+bandes rouges (4.1)</span>
+      <span class="tbadge b-amber">Blanc/rouge (4.2)</span>
+      <span class="tbadge b-blue">Bleu (4.3)</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="4">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FEF5E4">🔥</div><div class="acc-title-block"><div class="acc-title">4.1 — Solides Inflammables</div><div class="acc-subtitle">Flammable Solids · Blanc + bandes rouges</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Matières facilement inflammables ou susceptibles de provoquer ou d'alimenter un feu par frottement. 454 kg (1 001 lbs) ou plus. Allumable à 101,3 kPa dans un mélange ≤13% ou plage inflammable ≥12%.</p>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Soufre (UN 1350), Allumettes de sécurité (UN 1944), Magnésium en poudre (UN 1418), Naphtalène (UN 1334).</p>
+        <div class="acc-footer"><span class="tbadge b-amber">4.1</span><span class="tbadge b-amber">Fond blanc + bandes rouges</span></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FEF5E4">⚡</div><div class="acc-title-block"><div class="acc-title">4.2 — Matières Pyrophoriques</div><div class="acc-subtitle">Spontaneously Combustible · 5 min au contact de l'air</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Matières qui peuvent s'enflammer spontanément par simple contact avec l'air ou l'humidité :</p>
+        <ul>
+          <li><strong>Matières pyrophoriques</strong> — liquide ou solide pouvant s'enflammer dans les <strong>5 minutes</strong> après contact avec l'air</li>
+          <li><strong>Matières auto-échauffantes</strong> — au contact de l'air sans apport d'énergie, susceptibles de s'auto-chauffer</li>
+        </ul>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Phosphore blanc (UN 1381), Aluminium en poudre (UN 1309), Charbon de bois activé (sous conditions), Silane (UN 2203).</p>
+        <div class="acc-footer"><span class="tbadge b-amber">4.2</span><span class="tbadge b-amber">Fond blanc/rouge moitié</span></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#E3F2FD">💧</div><div class="acc-title-block"><div class="acc-title">4.3 — Matières Hydroréactives</div><div class="acc-subtitle">Dangerous When Wet · Fond bleu · &gt;1 L/kg/h</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Matière qui, au contact de l'eau, est susceptible de s'enflammer spontanément ou d'émettre un gaz inflammable ou toxique à un débit <strong>supérieur à 1 litre par kilogramme et par heure</strong>.</p>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Sodium métallique (UN 1428), Carbure de calcium (UN 1402), Magnésium granulés (UN 2950), Lithium métallique (UN 1415), Hydrure de lithium aluminium (UN 1410).</p>
+        <div class="callout c-blue" style="margin-top:8px;"><h5>⚠️ Interdiction d'eau en cas de feu</h5>Ne jamais utiliser d'eau pour éteindre un feu impliquant des matières de la sous-classe 4.3. Risque d'explosion et de dégagement de gaz toxiques/inflammables.</div>
+        <div class="acc-footer"><span class="tbadge b-blue">4.3</span><span class="tbadge b-blue">Fond bleu</span><span class="tbadge b-red">W sur NFPA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ CLASSE 5 ═══ -->
+<section id="classe5" data-class="5" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="3" fill="#ca8a04"/>
+      <circle cx="32" cy="36" r="10" fill="none" stroke="white" stroke-width="3"/>
+      <path d="M32 26 C28 20 24 18 24 12 C26 15 28 16 30 18 C32 16 34 14 36 12 C36 18 32 22 32 26Z" fill="white"/>
+      <text x="32" y="62" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#000" font-weight="700">5</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">5</div>
+      <div class="class-name">Oxydants &amp; Peroxydes Organiques</div>
+      <div class="class-en">Oxidizing Agents &amp; Organic Peroxides · 5.1 / 5.2</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-amber">Fond jaune</span>
+      <span class="tbadge b-red">GHS03</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="5">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FFFDE7">🔵</div><div class="acc-title-block"><div class="acc-title">5.1 — Matières Comburantes (Oxidizers)</div><div class="acc-subtitle">Oxygène — Accélération de combustion</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Matière qui, généralement en cédant de l'oxygène, peut provoquer ou favoriser la combustion d'autres matières.</p>
+        <ul>
+          <li><strong>Solide 5.1</strong> : temps de combustion moyen ≤ temps du mélange bromate de potassium/cellulose 3:7 (test UN)</li>
+          <li><strong>Liquide 5.1</strong> : s'enflamme spontanément ou durée moyenne d'élévation de pression (690 → 2070 kPa) &lt; mélange acide nitrique 65%/cellulose 1:1</li>
+        </ul>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Permanganate de potassium (UN 1490), Nitrate d'ammonium (UN 1942), Peroxyde d'hydrogène &gt;60% (UN 2015), Nitrate de sodium (UN 1498), Perchlorate de potassium (UN 1489).</p>
+        <div class="acc-footer"><span class="tbadge b-amber">5.1</span><span class="tbadge b-amber">Fond jaune</span><span class="tbadge b-red">OX sur NFPA</span></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FFFDE7">⚗️</div><div class="acc-title-block"><div class="acc-title">5.2 — Peroxydes Organiques</div><div class="acc-subtitle">7 Types A→G · Structure –O–O– · Sensibles choc/friction</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Composé organique contenant de l'oxygène en structure bivalente <strong>–O–O–</strong>, dérivé du peroxyde d'hydrogène où un ou plusieurs atomes d'hydrogène ont été remplacés par des radicaux organiques. La plupart brûlent rapidement et sont sensibles aux chocs et à la friction.</p>
+        <div class="tbl-wrap"><table><thead><tr><th>Type</th><th>Danger</th><th>Emballage</th></tr></thead><tbody>
+          <tr><td class="mono">A</td><td>Peut détonner ou déflagrer rapidement en emballage</td><td>Interdit au transport</td></tr>
+          <tr><td class="mono">B</td><td>Propriété détonnante, ne déflagre pas en emballage</td><td>Exigences spéciales</td></tr>
+          <tr><td class="mono">C</td><td>Propriété détonnante ou déflagrante</td><td>GE II standard</td></tr>
+          <tr><td class="mono">D</td><td>Déflagre modérément, effets modérés</td><td>GE II standard</td></tr>
+          <tr><td class="mono">E</td><td>Ne déflagre pas ou peu</td><td>GE III</td></tr>
+          <tr><td class="mono">F</td><td>Effets nuls ou faibles en cavité</td><td>GE III</td></tr>
+          <tr><td class="mono">G</td><td>Exempts de toute propriété explosive</td><td>Réglementation minimale</td></tr>
+        </tbody></table></div>
+        <p style="margin-top:8px;"><strong>Exemples :</strong> Peroxyde de benzoyle (UN 3102), Peroxyde de méthyléthylcétone (UN 3101), Peroxyde de dilauroyle (UN 3108).</p>
+        <div class="acc-footer"><span class="tbadge b-amber">5.2</span><span class="tbadge b-amber">Fond jaune/rouge</span><span class="tbadge b-red">Types A–G</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ CLASSE 6 ═══ -->
+<section id="classe6" data-class="6" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="3" fill="#f3f4f6"/>
+      <rect width="64" height="64" rx="3" fill="none" stroke="#374151" stroke-width="2"/>
+      <circle cx="32" cy="28" r="10" fill="none" stroke="#374151" stroke-width="3"/>
+      <circle cx="22" cy="38" r="4" fill="none" stroke="#374151" stroke-width="2.5"/>
+      <circle cx="42" cy="38" r="4" fill="none" stroke="#374151" stroke-width="2.5"/>
+      <line x1="25" y1="38" x2="38" y2="38" stroke="#374151" stroke-width="2"/>
+      <line x1="32" y1="18" x2="32" y2="42" stroke="#374151" stroke-width="2"/>
+      <text x="20" y="26" font-family="Arial" font-size="14" fill="#374151" font-weight="900">💀</text>
+      <text x="32" y="62" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#374151" font-weight="700">6</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">6</div>
+      <div class="class-name">Matières Toxiques &amp; Infectieuses</div>
+      <div class="class-en">Toxic &amp; Infectious Substances · 6.1 (Toxic) · 6.2 (Biohazard)</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-gray">Fond blanc</span>
+      <span class="tbadge b-red">GHS06</span>
+      <span class="tbadge b-red">☣️ Biohazard</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="6">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FAFAFA">☠️</div><div class="acc-title-block"><div class="acc-title">6.1 — Matières Toxiques (Poisons)</div><div class="acc-subtitle">Toxic substances · LC50 · GE I / II / III</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Matières connues pour être toxiques pour les humains de manière à présenter un risque pour la santé pendant le transport, ou présumées toxiques car <strong>LC50 sur animaux de laboratoire ≤ 5 000 ml/m³</strong> (gaz) ou relevant d'une catégorie toxique par tests.</p>
+        <p style="margin-top:6px;">Inclut les matières irritantes comme les gaz lacrymogènes pouvant causer une irritation extrême en espace confiné.</p>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Méthanol (UN 1230), Cyanure de sodium (UN 1689), Arsenic trichlorure (UN 1560), Aniline (UN 1547), DDT (UN 2761), Parathion (UN 3018).</p>
+        <div class="acc-footer"><span class="tbadge b-gray">6.1</span><span class="tbadge b-red">GE I / II / III</span><span class="tbadge b-red">GHS06</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FAFAFA">☣️</div><div class="acc-title-block"><div class="acc-title">6.2 — Matières Infectieuses</div><div class="acc-subtitle">Catégories A &amp; B · UN 2814 / 2900 / 3373</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Substances connues ou raisonnablement supposées contenir des <strong>agents pathogènes</strong> (bactéries, virus, rickettsies, parasites, champignons, prions) pouvant causer des maladies chez l'homme ou l'animal.</p>
+        <div class="callout c-red" style="margin-top:8px;"><h5>🔴 Catégorie A (UN 2814 / UN 2900) — Danger maximal</h5>Substance qui, en cas d'exposition, est susceptible de causer une <strong>invalidité permanente, une maladie potentiellement mortelle ou fatale</strong> chez l'être humain ou l'animal en bonne santé.</div>
+        <div class="acc-footer"><span class="tbadge b-gray">6.2</span><span class="tbadge b-red">UN 2814 (humains)</span><span class="tbadge b-red">UN 2900 (animaux)</span><span class="tbadge b-gray">UN 3373 (Cat. B)</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FEF0EE">🦠</div><div class="acc-title-block"><div class="acc-title">Agents Catégorie A — Liste ONU (extrait)</div><div class="acc-subtitle">40+ agents · UN 2814 / UN 2900</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p style="margin-bottom:8px;"><strong>Agents affectant les humains (UN 2814) — Sélection :</strong></p>
+        <div class="tbl-wrap"><table><thead><tr><th>Agent</th><th>Type</th><th>Maladie</th></tr></thead><tbody>
+          <tr><td><em>Bacillus anthracis</em> (cultures)</td><td>Bactérie</td><td>Anthrax (charbon)</td></tr>
+          <tr><td>Ebola virus</td><td>Virus</td><td>Fièvre hémorragique Ebola</td></tr>
+          <tr><td>Marburg virus</td><td>Virus</td><td>Fièvre hémorragique Marburg</td></tr>
+          <tr><td>Lassa virus</td><td>Virus</td><td>Fièvre de Lassa</td></tr>
+          <tr><td>Nipah virus</td><td>Virus</td><td>Encéphalite Nipah</td></tr>
+          <tr><td><em>Yersinia pestis</em> (cultures)</td><td>Bactérie</td><td>Peste</td></tr>
+          <tr><td>Variola virus</td><td>Virus</td><td>Variole (smallpox)</td></tr>
+          <tr><td><em>Clostridium botulinum</em> (cultures)</td><td>Bactérie</td><td>Botulisme</td></tr>
+          <tr><td>Rabies virus</td><td>Virus</td><td>Rage</td></tr>
+          <tr><td>HIV (cultures)</td><td>Virus</td><td>SIDA</td></tr>
+          <tr><td>Hepatitis B virus (cultures)</td><td>Virus</td><td>Hépatite B</td></tr>
+          <tr><td><em>Mycobacterium tuberculosis</em> (cultures)</td><td>Bactérie</td><td>Tuberculose</td></tr>
+          <tr><td>Dengue virus (cultures)</td><td>Virus</td><td>Dengue</td></tr>
+          <tr><td>West Nile virus (cultures)</td><td>Virus</td><td>Fièvre du Nil occidental</td></tr>
+          <tr><td>Monkeypox virus</td><td>Virus</td><td>Variole du singe</td></tr>
+          <tr><td>Crimean-Congo hemorrhagic fever virus</td><td>Virus</td><td>Fièvre hémorragique Crimée-Congo</td></tr>
+          <tr><td><em>Brucella</em> spp. (cultures)</td><td>Bactérie</td><td>Brucellose</td></tr>
+          <tr><td><em>Francisella tularensis</em> (cultures)</td><td>Bactérie</td><td>Tularémie</td></tr>
+          <tr><td><em>Coxiella burnetii</em> (cultures)</td><td>Rickettsia</td><td>Fièvre Q</td></tr>
+          <tr><td>Poliovirus (cultures)</td><td>Virus</td><td>Poliomyélite</td></tr>
+        </tbody></table></div>
+        <p style="margin-top:8px;font-size:12px;color:var(--muted);">Cette liste n'est pas exhaustive. Tout agent nouveau ou émergent répondant aux critères de la Catégorie A doit être classé UN 2814 même s'il n'y figure pas.</p>
+        <div class="acc-footer"><span class="tbadge b-red">UN 2814</span><span class="tbadge b-red">Catégorie A humains</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FEF0EE">🐾</div><div class="acc-title-block"><div class="acc-title">Agents Catégorie A — Animaux (UN 2900)</div><div class="acc-subtitle">Maladies animales hautement pathogènes</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <div class="tbl-wrap"><table><thead><tr><th>Agent</th><th>Maladie</th></tr></thead><tbody>
+          <tr><td>Foot and mouth disease virus</td><td>Fièvre aphteuse</td></tr>
+          <tr><td>African swine fever virus (cultures)</td><td>Peste porcine africaine</td></tr>
+          <tr><td>Classical swine fever virus (cultures)</td><td>Peste porcine classique</td></tr>
+          <tr><td>Avian paramyxovirus Type 1 — Newcastle disease virus</td><td>Maladie de Newcastle vélogène</td></tr>
+          <tr><td>Rinderpest virus (cultures)</td><td>Peste bovine</td></tr>
+          <tr><td>Lumpy skin disease virus (cultures)</td><td>Dermatose nodulaire contagieuse</td></tr>
+          <tr><td>Goatpox / Sheeppox virus (cultures)</td><td>Variole caprine/ovine</td></tr>
+          <tr><td>Highly pathogenic avian influenza virus</td><td>Grippe aviaire hautement pathogène</td></tr>
+          <tr><td><em>Mycoplasma mycoides</em> (cultures)</td><td>Péripneumonie contagieuse bovine</td></tr>
+          <tr><td>Vesicular stomatitis virus (cultures)</td><td>Stomatite vésiculeuse</td></tr>
+        </tbody></table></div>
+        <div class="acc-footer"><span class="tbadge b-red">UN 2900</span><span class="tbadge b-red">Animaux uniquement</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FAFAFA">📋</div><div class="acc-title-block"><div class="acc-title">Catégorie B, Exemptions &amp; Déchets Médicaux</div><div class="acc-subtitle">UN 3373 · UN 3291 · Conditions d'exemption</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p><strong>Catégorie B (UN 3373)</strong> : substance infectieuse ne répondant pas aux critères de la Catégorie A. Anciens noms : « Diagnostic specimens » / « Clinical specimens » (obsolètes depuis 2007).</p>
+        <p style="margin-top:8px;"><strong>Exemptions de l'6.2 :</strong></p>
+        <ul>
+          <li>Substances sans agents infectieux ou peu susceptibles de causer une maladie</li>
+          <li>Organismes non pathogènes pour l'humain ou l'animal</li>
+          <li>Agents neutralisés ou inactivés — ne présentent plus de risque sanitaire</li>
+          <li>Échantillons environnementaux (eau, aliments) sans risque d'infection significatif</li>
+          <li>Sang séché sur matière absorbante (taches de sang)</li>
+          <li>Spécimens patients à faible probabilité d'agents pathogènes — marqués <strong>« Exempt human specimen »</strong></li>
+        </ul>
+        <p style="margin-top:8px;"><strong>Déchets médicaux :</strong> Cat. A → UN 2814/2900 · Cat. B → UN 3291 · Faible risque → UN 3291.</p>
+        <div class="acc-footer"><span class="tbadge b-gray">UN 3373</span><span class="tbadge b-gray">UN 3291</span><span class="tbadge b-green">Exempt specimens</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ CLASSE 7 ═══ -->
+<section id="classe7" data-class="7" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="64" rx="0" fill="#FFFFBB"/>
+      <rect x="32" y="0" width="32" height="64" fill="#FFCC00"/>
+      <circle cx="32" cy="28" r="6" fill="#000"/>
+      <path d="M32 10 L28 22 L36 22 Z" fill="#000"/>
+      <path d="M32 46 L28 34 L36 34 Z" fill="#000" transform="rotate(180 32 40)"/>
+      <path d="M14 28 L26 24 L26 32 Z" fill="#000"/>
+      <path d="M50 28 L38 24 L38 32 Z" fill="#000"/>
+      <text x="32" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#000" font-weight="700">7</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">7</div>
+      <div class="class-name">Matières Radioactives</div>
+      <div class="class-en">Radioactive Substances · Transport Index (TI) · Categories I / II / III</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-amber">Blanc / Jaune</span>
+      <span class="tbadge b-gray">☢️ Trèfle</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="7">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FFFDE7">☢️</div><div class="acc-title-block"><div class="acc-title">Définition &amp; Indice de Transport (IT)</div><div class="acc-subtitle">Radioactive White I · Yellow II · Yellow III</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Matières connues pour être toxiques pour les humains par rayonnement. Classées selon leur <strong>Indice de Transport (IT)</strong> — mesure du débit de dose à 1 mètre de la surface de l'emballage.</p>
+        <div class="tbl-wrap"><table><thead><tr><th>Catégorie</th><th>Indice de Transport</th><th>Étiquette</th><th>Fond</th></tr></thead><tbody>
+          <tr><td class="mono">White I</td><td>IT ≤ 0,5 mSv/h</td><td>Radioactif Blanc I</td><td>Blanc</td></tr>
+          <tr><td class="mono">Yellow II</td><td>0,5 &lt; IT ≤ 1</td><td>Radioactif Jaune II</td><td>Jaune</td></tr>
+          <tr><td class="mono">Yellow III</td><td>IT &gt; 1</td><td>Radioactif Jaune III</td><td>Jaune (oblige placard véhicule)</td></tr>
+          <tr><td class="mono">LSA-III</td><td>—</td><td>Placard RADIOACTIVE obligatoire</td><td>—</td></tr>
+        </tbody></table></div>
+        <div class="acc-footer"><span class="tbadge b-amber">IT = Indice de Transport</span><span class="tbadge b-amber">☢️ Trèfle</span></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#FFFDE7">⚛️</div><div class="acc-title-block"><div class="acc-title">Matière Fissile &amp; Expédition Exclusive</div><div class="acc-subtitle">Pu-238/239/241 · U-233/235 · Sole use</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p><strong>Matière fissile :</strong> Pu-238, Pu-239, Pu-241, U-233, U-235 ou toute combinaison de ces radionucléides. L'uranium naturel non irradié et l'uranium appauvri ne sont PAS fissiles au sens de ce règlement.</p>
+        <p style="margin-top:6px;"><strong>Expédition exclusive (sole use / full load) :</strong> Utilisation exclusive par un seul expéditeur d'un moyen de transport pour lequel toutes les opérations initiales, intermédiaires et finales de chargement/déchargement s'effectuent selon les instructions de l'expéditeur. Exige une formation radiologique spécifique.</p>
+        <div class="callout c-amber" style="margin-top:8px;"><h5>⚠️ Placard obligatoire 4 faces</h5>Toute expédition portant l'étiquette Radioactif Jaune III doit être placardée sur les 4 faces du véhicule de transport.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ CLASSE 8 ═══ -->
+<section id="classe8" data-class="8" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="32" fill="#1f2937"/>
+      <rect y="32" width="64" height="32" fill="#f9fafb"/>
+      <path d="M20 18 C24 26 24 36 20 44" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M26 14 C32 22 32 42 26 50" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M44 18 C40 26 40 36 44 44" stroke="#1f2937" stroke-width="2.5" fill="none"/>
+      <path d="M38 14 C32 22 32 42 38 50" stroke="#1f2937" stroke-width="2.5" fill="none"/>
+      <text x="32" y="62" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#1f2937" font-weight="700">8</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">8</div>
+      <div class="class-name">Matières Corrosives</div>
+      <div class="class-en">Corrosive Substances · Skin / Steel / Aluminum destruction</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-gray">Fond noir/blanc</span>
+      <span class="tbadge b-red">GHS05</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="8">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#F3F4F6">⚗️</div><div class="acc-title-block"><div class="acc-title">Définition &amp; Critères de Classement</div><div class="acc-subtitle">Destruction cutanée · Acier · Aluminium</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Aux fins de la réglementation, une « matière corrosive » (Classe 8) est un liquide ou solide qui cause la <strong>destruction totale de l'épaisseur de la peau humaine</strong> au site de contact dans un temps défini, OU un liquide présentant un taux de corrosion élevé sur l'acier ou l'aluminium.</p>
+        <p style="margin-top:6px;"><strong>Incompatibilités critiques :</strong> acides + bases = réaction très violente. Bien que la classe 8 regroupe acides et bases, une ségrégation est vivement recommandée pour les matières corrosives incompatibles.</p>
+        <p style="margin-top:6px;"><strong>454 kg (1 001 lbs) ou plus</strong> = placard obligatoire (Table 2 DOT).</p>
+        <p style="margin-top:6px;"><strong>Exemples :</strong> Acide sulfurique (UN 1830), Acide chlorhydrique (UN 1789), Acide nitrique (UN 2031), Hydroxyde de sodium (UN 1823), Acide fluorhydrique (UN 1790).</p>
+        <div class="acc-footer"><span class="tbadge b-gray">8</span><span class="tbadge b-red">GHS05</span><span class="tbadge b-gray">GE I / II / III</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ CLASSE 9 ═══ -->
+<section id="classe9" data-class="9" class="class-section">
+  <div class="class-header">
+    <svg class="class-picto" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="3" fill="white"/>
+      <rect width="64" height="64" rx="3" fill="none" stroke="#d1d5db" stroke-width="1.5"/>
+      <line x1="0" y1="8" x2="64" y2="8" stroke="#374151" stroke-width="3"/>
+      <line x1="0" y1="16" x2="64" y2="16" stroke="#374151" stroke-width="3"/>
+      <line x1="0" y1="24" x2="64" y2="24" stroke="#374151" stroke-width="3"/>
+      <line x1="0" y1="32" x2="64" y2="32" stroke="#374151" stroke-width="3"/>
+      <line x1="0" y1="40" x2="64" y2="40" stroke="#374151" stroke-width="3"/>
+      <line x1="0" y1="48" x2="64" y2="48" stroke="#374151" stroke-width="3"/>
+      <line x1="0" y1="56" x2="64" y2="56" stroke="#374151" stroke-width="3"/>
+      <rect x="0" y="32" width="64" height="32" fill="white"/>
+      <text x="32" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#374151" font-weight="700">9</text>
+    </svg>
+    <div class="class-title-block">
+      <div class="class-num">9</div>
+      <div class="class-name">Matières et Objets Divers</div>
+      <div class="class-en">Miscellaneous Dangerous Substances · Incl. Lithium Batteries</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="tbadge b-gray">Blanc + bandes noires</span>
+      <span class="tbadge b-blue">GHS09</span>
+    </div>
+  </div>
+
+  <div class="acc-grid" data-class-cards="9">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#F3F4F6">📋</div><div class="acc-title-block"><div class="acc-title">Définition &amp; Sous-catégories</div><div class="acc-subtitle">Tout danger hors classes 1–8</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p>Matière présentant un risque pendant le transport mais ne répondant à la définition d'aucune autre classe. Comprend :</p>
+        <ul>
+          <li>Substances anesthésiantes, nauséabondes pouvant gêner l'équipage en avion</li>
+          <li>Substances à température élevée (liquides ≥100°C, solides ≥240°C)</li>
+          <li>Polluants marins (marqué GHS09 — arbre + poisson)</li>
+          <li>Matières et articles dangereux pour l'environnement</li>
+          <li>Déchets dangereux (pour les besoins du transport)</li>
+          <li>Véhicules électriques/hybrides (UN 3166)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger"><div class="acc-icon" style="background:#EFF6FF">🔋</div><div class="acc-title-block"><div class="acc-title">Batteries Lithium / Sodium-ion — 2024-2026</div><div class="acc-subtitle">UN 3480 · UN 3481 · « Battery Mark »</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <p><strong>UN 3480</strong> — Batteries au lithium seules · <strong>UN 3481</strong> — Batteries au lithium dans ou avec équipement. Marquage spécifique « battery mark » obligatoire (losange avec flamme).</p>
+        <p style="margin-top:6px;">Depuis l'IMDG Amendment 42-24 (2024), la « Lithium ion battery mark » est renommée <strong>« Battery mark »</strong> et couvre désormais aussi les <strong>batteries sodium-ion</strong>. Changement similaire pour l'étiquette de danger de Classe 9 lithium qui devient « lithium battery and sodium-ion battery hazard label ».</p>
+        <div class="callout c-blue" style="margin-top:8px;"><h5>✈️ Restrictions aériennes sévères</h5>Batteries lithium seules (non installées) : interdites en soute passagers dans nombreuses compagnies · Restrictions de charge (SOC ≤30%) pour certains envois · UN 3480 souvent CAO uniquement.</div>
+        <div class="acc-footer"><span class="tbadge b-blue">UN 3480</span><span class="tbadge b-blue">UN 3481</span><span class="tbadge b-amber">Battery Mark 2024</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="no-results" class="no-results" style="display:none">Aucune classe ne correspond à votre recherche.</div>
+
+</div><!-- end .wrap -->
+
+<footer>MD Signalisation — Classification des Substances Toxiques · Sources : ONU 49 CFR · IMDG 42-24 · GHS Rev.11 · ADR 2025 · IATA DGR 66e · Avril 2026</footer>
+
+<script>
+// ── Accordion
+function toggleAcc(el){
+  const open = el.classList.contains('open');
+  const grid = el.closest('[data-class-cards]') || el.closest('.acc-grid');
+  if(grid) grid.querySelectorAll('.acc-card.open').forEach(c=>{ if(c!==el) c.classList.remove('open'); });
+  el.classList.toggle('open', !open);
+}
+
+// ── Class filter
+let currentFilter = 'all';
+function setFilter(cls, btn){
+  currentFilter = cls;
+  document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  const secs = document.querySelectorAll('.class-section');
+  secs.forEach(s=>{
+    const cls = s.getAttribute('data-class');
+    s.style.display = (currentFilter==='all' || cls===currentFilter) ? '' : 'none';
+  });
+  document.querySelectorAll('hr.div').forEach((hr,i)=>{
+    const nextSec = hr.nextElementSibling;
+    if(nextSec && nextSec.classList.contains('class-section')){
+      hr.style.display = nextSec.style.display==='none' ? 'none' : '';
+    }
+  });
+}
+
+// ── Search
+function doSearch(){
+  const q = document.getElementById('search-inp').value.toLowerCase().trim();
+  if(!q){ 
+    document.querySelectorAll('.acc-card').forEach(c=>c.classList.remove('hidden'));
+    document.querySelectorAll('.class-section').forEach(s=>s.style.display='');
+    document.querySelectorAll('hr.div').forEach(h=>h.style.display='');
+    document.getElementById('no-results').style.display='none';
+    document.getElementById('result-count').textContent='';
+    applyFilter();
+    return;
+  }
+  let count = 0;
+  document.querySelectorAll('.class-section').forEach(sec=>{
+    let secVisible = false;
+    sec.querySelectorAll('.acc-card').forEach(card=>{
+      const txt = card.textContent.toLowerCase();
+      if(txt.includes(q)){
+        card.classList.remove('hidden');
+        card.classList.add('open');
+        secVisible = true;
+        count++;
+      } else {
+        card.classList.add('hidden');
+        card.classList.remove('open');
+      }
+    });
+    sec.style.display = secVisible ? '' : 'none';
+  });
+  document.querySelectorAll('hr.div').forEach(hr=>{
+    const ns = hr.nextElementSibling;
+    hr.style.display = (ns && ns.style.display==='none') ? 'none' : '';
+  });
+  document.getElementById('no-results').style.display = count===0 ? '' : 'none';
+  document.getElementById('result-count').textContent = count ? count + ' résultat(s)' : '';
+}
+
+// ── Nav active
+const navLinks = document.querySelectorAll('.hdr-nav a');
+const secs = document.querySelectorAll('.class-section');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{ if(s.offsetParent !== null && window.scrollY >= s.offsetTop - 100) cur = s.id; });
+  navLinks.forEach(a=>{ a.classList.remove('active'); if(a.getAttribute('href')==='#'+cur) a.classList.add('active'); });
+}, {passive:true});
+
+// ── Anti-scraping
+document.addEventListener('contextmenu',e=>e.preventDefault());
+</script>
+</body>
+</html>

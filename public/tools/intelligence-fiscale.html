@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intelligence Fiscale & Valorisation — Transit-IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+  :root{
+    --bg:#F7F5F0;--surface:#FFFFFF;--card:#FDFCF9;
+    --border:#E5DDD0;--border2:#D4C9B5;
+    --gold:#B8922A;--gold-dark:#8C6B18;--gold-bg:#FBF5E6;--gold-line:rgba(184,146,42,.25);
+    --green:#1D6E40;--green-bg:#EAF5EE;
+    --red:#B83232;--red-bg:#FDF0EF;
+    --blue:#2A5E8C;--blue-bg:#EBF2FA;
+    --orange:#B86E1A;--orange-bg:#FBF2E6;
+    --text:#1C1814;--text2:#3C3630;--muted:#7A7068;--muted2:#A09080;
+    --shadow:0 1px 4px rgba(28,24,20,.06),0 4px 16px rgba(28,24,20,.04);
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;}
+
+  .topbar{background:var(--surface);border-bottom:2px solid var(--gold);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+  .module-badge{background:var(--gold);color:#fff;font-family:var(--mono);font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;}
+  .topbar-title{font-family:'DM Serif Display',serif;font-size:17px;margin-left:12px;}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-bottom:1px solid var(--border);}
+  .kpi{padding:16px 20px;text-align:center;border-right:1px solid var(--border);}
+  .kpi:last-child{border:none;}
+  .kpi-num{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--gold-dark);margin-bottom:3px;}
+  .kpi-lbl{color:var(--muted);font-size:11px;line-height:1.3;}
+
+  .tabs{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{padding:12px 18px;border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+  .tab.active{color:var(--gold-dark);border-bottom-color:var(--gold);font-weight:600;}
+  .panel{display:none;padding:22px;max-width:980px;margin:0 auto;}
+  .panel.active{display:block;}
+
+  .sec-head{font-family:'DM Serif Display',serif;font-size:17px;color:var(--gold-dark);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  .form-label{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .form-input,.form-select{padding:9px 12px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border .15s;}
+  .form-input:focus,.form-select:focus{border-color:var(--gold);}
+  .form-hint{font-size:11px;color:var(--muted);margin-top:2px;}
+
+  .calc-btn{background:var(--gold-dark);color:#fff;border:none;padding:11px 24px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:16px;transition:background .15s;}
+  .calc-btn:hover{background:var(--gold);}
+
+  .result-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:20px;box-shadow:var(--shadow);}
+  .result-header{background:var(--gold-bg);border-bottom:1px solid var(--border);padding:12px 16px;font-family:var(--mono);font-size:11px;color:var(--gold-dark);font-weight:600;letter-spacing:.06em;}
+  .result-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px;}
+  .result-row:last-child{border:none;}
+  .result-row.total{background:var(--gold-bg);font-weight:700;font-size:14px;}
+  .result-row.subtotal{background:#F8F6F2;font-weight:600;}
+  .result-lbl{color:var(--text2);}
+  .result-val{font-family:var(--mono);font-weight:600;color:var(--text);}
+  .result-val.green{color:var(--green);}
+  .result-val.red{color:var(--red);}
+  .result-val.gold{color:var(--gold-dark);}
+
+  .method-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s;}
+  .method-card:hover,.method-card.active{border-color:var(--gold);}
+  .method-card.active{background:var(--gold-bg);}
+  .method-num{font-family:var(--mono);font-size:10px;color:var(--gold-dark);background:var(--gold-bg);border:1px solid var(--gold-line);padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:6px;}
+  .method-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+  .method-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+  .method-use{font-size:11px;color:var(--blue);background:var(--blue-bg);padding:3px 8px;border-radius:4px;margin-top:6px;display:inline-block;}
+
+  .mini-alert{border-radius:8px;padding:11px 14px;font-size:12px;border:1px solid;margin:8px 0;line-height:1.55;}
+  .mini-alert.green{background:var(--green-bg);border-color:rgba(29,110,64,.25);color:var(--green);}
+  .mini-alert.gold{background:var(--gold-bg);border-color:var(--gold-line);color:var(--gold-dark);}
+  .mini-alert.blue{background:var(--blue-bg);border-color:rgba(42,94,140,.25);color:var(--blue);}
+  .mini-alert.red{background:var(--red-bg);border-color:rgba(184,50,50,.25);color:var(--red);}
+
+  .dtable{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);}
+  .dtable th{background:var(--gold-bg);color:var(--gold-dark);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
+  .dtable td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);}
+  .dtable tr:last-child td{border:none;}
+  .dtable tr:hover td{background:var(--gold-bg);}
+
+  .defense-step{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);}
+  .defense-tag{font-family:var(--mono);font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:6px;}
+  .tag-delai{background:var(--blue-bg);color:var(--blue);}
+  .tag-risque{background:var(--red-bg);color:var(--red);}
+  .tag-conseil{background:var(--green-bg);color:var(--green);}
+
+  .footer{text-align:center;padding:14px;color:var(--muted2);font-size:11px;border-top:1px solid var(--border);margin-top:40px;background:var(--surface);}
+  @media(max-width:640px){.form-grid{grid-template-columns:1fr;}.kpi-row{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;">
+    <div class="module-badge">M-IF</div>
+    <div class="topbar-title">Intelligence Fiscale & Valorisation</div>
+  </div>
+  <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">TVA · 6 Méthodes OMD · Défense ADII</span>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">6</div><div class="kpi-lbl">Méthodes de valorisation OMD</div></div>
+  <div class="kpi"><div class="kpi-num">Art.96</div><div class="kpi-lbl">Base CGI — TVA à l'import</div></div>
+  <div class="kpi"><div class="kpi-num">30j</div><div class="kpi-lbl">Délai recours redressement</div></div>
+  <div class="kpi"><div class="kpi-num">110%</div><div class="kpi-lbl">Base valeur — assurance CIF</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('tva')">📊 Calculateur TVA & Droits</button>
+  <button class="tab" onclick="switchTab('valorisation')">⚖️ 6 Méthodes OMD</button>
+  <button class="tab" onclick="switchTab('credit')">♻️ Crédit de TVA récupérable</button>
+  <button class="tab" onclick="switchTab('defense')">🛡️ Guide défense ADII</button>
+</div>
+
+<!-- ── TVA & DROITS ── -->
+<div class="panel active" id="tab-tva">
+  <div class="sec-head">📊 Calculateur fiscal à l'importation — Maroc 2025</div>
+  <div class="mini-alert gold">📌 Base légale : Art. 96 CGI · Tarif douanier marocain 2025 · Circulaire ADII 2024</div>
+
+  <div class="form-grid" style="margin-top:16px;">
+    <div class="form-group">
+      <label class="form-label">Valeur FOB (DH)</label>
+      <input class="form-input" type="number" id="vFOB" placeholder="ex: 500000" min="0" oninput="calcFiscal()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Fret (DH)</label>
+      <input class="form-input" type="number" id="vFret" placeholder="ex: 35000" min="0" oninput="calcFiscal()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Assurance (DH)</label>
+      <input class="form-input" type="number" id="vAssurance" placeholder="ex: 5500" min="0" oninput="calcFiscal()">
+      <div class="form-hint">Si inconnue : 1,1% × (FOB + Fret) est appliqué</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Taux Droit d'Importation (%)</label>
+      <input class="form-input" type="number" id="vDI" placeholder="ex: 25" min="0" max="100" oninput="calcFiscal()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Taux TVA (%)</label>
+      <select class="form-select" id="vTVA" onchange="calcFiscal()">
+        <option value="20">20% — Taux normal</option>
+        <option value="14">14% — Taux intermédiaire</option>
+        <option value="10">10% — Taux réduit</option>
+        <option value="7">7% — Taux super-réduit</option>
+        <option value="0">0% — Exonéré / Hors champ</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">TIC (DH) — si applicable</label>
+      <input class="form-input" type="number" id="vTIC" placeholder="0" min="0" oninput="calcFiscal()">
+      <div class="form-hint">Taxe Intérieure de Consommation (tabac, boissons, carburants)</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">PFI (%) — si applicable</label>
+      <input class="form-input" type="number" id="vPFI" placeholder="0" min="0" max="15" oninput="calcFiscal()">
+      <div class="form-hint">Prélèvement Fiscal à l'Importation (produits agricoles sensibles)</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Droit Antidumping (%) — si applicable</label>
+      <input class="form-input" type="number" id="vAD" placeholder="0" min="0" max="200" oninput="calcFiscal()">
+    </div>
+  </div>
+
+  <div class="result-box" id="result-fiscal" style="display:none;">
+    <div class="result-header">DÉCOMPOSITION DES DROITS ET TAXES À L'IMPORTATION</div>
+    <div class="result-row"><span class="result-lbl">Valeur FOB déclarée</span><span class="result-val" id="r-fob">—</span></div>
+    <div class="result-row"><span class="result-lbl">+ Fret</span><span class="result-val" id="r-fret">—</span></div>
+    <div class="result-row"><span class="result-lbl">+ Assurance</span><span class="result-val" id="r-ass">—</span></div>
+    <div class="result-row subtotal"><span class="result-lbl">= Valeur CIF (base douanière)</span><span class="result-val gold" id="r-cif">—</span></div>
+    <div class="result-row"><span class="result-lbl">Droit d'Importation (DI)</span><span class="result-val" id="r-di">—</span></div>
+    <div class="result-row"><span class="result-lbl">PFI</span><span class="result-val" id="r-pfi">—</span></div>
+    <div class="result-row"><span class="result-lbl">TIC</span><span class="result-val" id="r-tic">—</span></div>
+    <div class="result-row"><span class="result-lbl">Droit Antidumping</span><span class="result-val" id="r-ad">—</span></div>
+    <div class="result-row subtotal"><span class="result-lbl">Base TVA (CIF + DI + PFI + TIC)</span><span class="result-val gold" id="r-base-tva">—</span></div>
+    <div class="result-row"><span class="result-lbl">TVA à l'importation</span><span class="result-val" id="r-tva">—</span></div>
+    <div class="result-row total"><span class="result-lbl">TOTAL DROITS & TAXES</span><span class="result-val gold" id="r-total">—</span></div>
+    <div class="result-row"><span class="result-lbl">Prix de revient import (FOB + tous coûts)</span><span class="result-val green" id="r-revient">—</span></div>
+    <div class="result-row"><span class="result-lbl">Incidence fiscale sur valeur FOB</span><span class="result-val red" id="r-incidence">—</span></div>
+  </div>
+</div>
+
+<!-- ── VALORISATION ── -->
+<div class="panel" id="tab-valorisation">
+  <div class="sec-head">⚖️ Les 6 méthodes de valorisation douanière — Accord OMD</div>
+  <div class="mini-alert blue">ℹ️ L'Accord sur la Valeur en Douane de l'OMD (repris dans le CDII marocain) impose une hiérarchie stricte : la méthode suivante n'est applicable que si la précédente est inapplicable.</div>
+
+  <div style="margin-top:16px;">
+    <div class="method-card active" onclick="selectMethod(this,'m1')">
+      <div class="method-num">Méthode 1 — Principale</div>
+      <div class="method-title">Valeur transactionnelle — Prix effectivement payé ou à payer</div>
+      <div class="method-desc">Méthode de référence — applicable dans 95% des cas. La valeur en douane correspond au prix CIF réellement payé pour les marchandises lors de la vente à l'exportation vers le Maroc. Inclut : prix facturé + ajustements (commissions, royalties, redevances, frais de transport et d'assurance jusqu'au premier point d'entrée au Maroc).</div>
+      <span class="method-use">Applicable si : transaction commerciale réelle entre acheteur et vendeur non liés (ou lien n'influençant pas le prix)</span>
+    </div>
+    <div class="method-card" onclick="selectMethod(this,'m2')">
+      <div class="method-num">Méthode 2</div>
+      <div class="method-title">Valeur transactionnelle de marchandises identiques</div>
+      <div class="method-desc">Utilisation du prix payé pour des marchandises identiques (même origine, même fabricant, même qualité) exportées vers le Maroc à la même période. Des ajustements sont appliqués pour les différences de niveau commercial ou de quantité.</div>
+      <span class="method-use">Applicable si : M1 inapplicable et marchandises identiques disponibles dans les bases ADII</span>
+    </div>
+    <div class="method-card" onclick="selectMethod(this,'m3')">
+      <div class="method-num">Méthode 3</div>
+      <div class="method-title">Valeur transactionnelle de marchandises similaires</div>
+      <div class="method-desc">Même principe que M2 mais avec des marchandises similaires (même fonction, même pays d'origine, qualité commerciale comparable). La notion de "similaire" est plus large qu'identique : des produits de même catégorie peuvent être retenus.</div>
+      <span class="method-use">Applicable si : M1 et M2 inapplicables — marchandises similaires disponibles</span>
+    </div>
+    <div class="method-card" onclick="selectMethod(this,'m4')">
+      <div class="method-num">Méthode 4</div>
+      <div class="method-title">Méthode déductive — Prix de vente sur le marché marocain</div>
+      <div class="method-desc">La valeur est déterminée à partir du prix de vente unitaire le plus élevé en quantité agrégée sur le marché marocain, duquel on déduit : commissions, marges, frais après importation, droits et taxes. Cette méthode remonte de la vente finale à la valeur import.</div>
+      <span class="method-use">Applicable si : M1 à M3 inapplicables — produit revendu au Maroc sans transformation</span>
+    </div>
+    <div class="method-card" onclick="selectMethod(this,'m5')">
+      <div class="method-num">Méthode 5</div>
+      <div class="method-title">Méthode calculée — Coût de production + marges</div>
+      <div class="method-desc">La valeur est reconstituée à partir des éléments de coût de production : matières premières + main d'œuvre + frais généraux + bénéfice normal dans le secteur + frais d'emballage + transport. Nécessite l'accès aux données comptables du fabricant étranger.</div>
+      <span class="method-use">Applicable si : M4 inapplicable et données de production accessibles (groupes)</span>
+    </div>
+    <div class="method-card" onclick="selectMethod(this,'m6')">
+      <div class="method-num">Méthode 6 — Méthode de dernier recours</div>
+      <div class="method-title">Méthode de la valeur de dernier recours (Fall-back)</div>
+      <div class="method-desc">Méthode flexible permettant à l'administration d'utiliser des données raisonnables disponibles, en respectant les principes OMD. Peut s'appuyer sur des données de catalogues, prix de marchés publics, bases de données douanières internationales. Ne peut pas utiliser des prix arbitraires ou minimaux.</div>
+      <span class="method-use">Applicable si : M1 à M5 toutes inapplicables — encadré par les notes interprétatives OMD</span>
+    </div>
+  </div>
+
+  <div class="mini-alert red" style="margin-top:16px;">⚠️ <strong>Redressement ADII :</strong> En cas de doute sur la valeur déclarée, l'ADII peut remettre en cause la M1 et recourir aux méthodes suivantes. L'opérateur a le droit de défendre sa valeur transactionnelle par la production de documents probants (facture, contrat, extrait bancaire, correspondances commerciales).</div>
+</div>
+
+<!-- ── CRÉDIT TVA ── -->
+<div class="panel" id="tab-credit">
+  <div class="sec-head">♻️ Calculateur de crédit de TVA récupérable</div>
+  <div class="mini-alert gold">📌 Base légale : Art. 101 à 105 CGI — Régime du droit à déduction TVA pour entreprises assujetties.</div>
+
+  <div class="form-grid" style="margin-top:16px;">
+    <div class="form-group">
+      <label class="form-label">TVA payée à l'import (DH)</label>
+      <input class="form-input" type="number" id="cTVAimport" placeholder="ex: 120000" min="0" oninput="calcCredit()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">TVA collectée sur ventes (DH)</label>
+      <input class="form-input" type="number" id="cTVAventes" placeholder="ex: 85000" min="0" oninput="calcCredit()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Prorata de déduction (%)</label>
+      <input class="form-input" type="number" id="cProrata" placeholder="100" min="0" max="100" value="100" oninput="calcCredit()">
+      <div class="form-hint">100% si toutes ventes taxables · Calculé si activités mixtes (taxables + exonérées)</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Régime de remboursement</label>
+      <select class="form-select" id="cRegime" onchange="calcCredit()">
+        <option value="mensuel">Remboursement mensuel (Art. 103 CGI)</option>
+        <option value="trimestriel">Remboursement trimestriel</option>
+        <option value="exporter">Exportateur — remboursement 30 jours (Art. 103 bis)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="result-box" id="result-credit" style="display:none;margin-top:20px;">
+    <div class="result-header">SITUATION TVA — CRÉDIT / SOLDE EXIGIBLE</div>
+    <div class="result-row"><span class="result-lbl">TVA import payée (déductible)</span><span class="result-val" id="rc-import">—</span></div>
+    <div class="result-row"><span class="result-lbl">Prorata appliqué</span><span class="result-val" id="rc-prorata">—</span></div>
+    <div class="result-row subtotal"><span class="result-lbl">TVA déductible nette</span><span class="result-val gold" id="rc-deductible">—</span></div>
+    <div class="result-row"><span class="result-lbl">TVA collectée sur ventes</span><span class="result-val" id="rc-collectee">—</span></div>
+    <div class="result-row total" id="rc-situation-row">
+      <span class="result-lbl" id="rc-situation-lbl">CRÉDIT DE TVA récupérable</span>
+      <span class="result-val" id="rc-montant">—</span>
+    </div>
+    <div class="result-row"><span class="result-lbl">Délai de remboursement estimé</span><span class="result-val green" id="rc-delai">—</span></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="sec-head" style="font-size:14px;">Conditions et cas de remboursement accéléré</div>
+    <table class="dtable">
+      <thead><tr><th>Cas</th><th>Base légale</th><th>Délai remboursement</th><th>Pièces requises</th></tr></thead>
+      <tbody>
+        <tr><td>Exportateur régulier</td><td>Art. 103 bis CGI</td><td>30 jours</td><td>DUM export + déclaration CA export</td></tr>
+        <tr><td>Entreprise en régime suspensif TVA</td><td>Art. 92 CGI</td><td>Non applicable (TVA suspendue)</td><td>Attestation achat en suspension TVA</td></tr>
+        <tr><td>Investissement > 5M DH</td><td>Art. 103 CGI</td><td>3 mois (procédure accélérée)</td><td>Bilan + état du crédit de TVA</td></tr>
+        <tr><td>Crédit structurel mensuel</td><td>Art. 103 CGI</td><td>3 mois</td><td>Déclarations TVA 3 derniers mois</td></tr>
+        <tr><td>OEA agréé (facilité accordée)</td><td>Circulaire ADII</td><td>15 jours (délai réduit)</td><td>Certificat OEA + demande motivée</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── DÉFENSE ADII ── -->
+<div class="panel" id="tab-defense">
+  <div class="sec-head">🛡️ Guide de défense face à un redressement ADII</div>
+  <div class="mini-alert red">⚠️ En cas de redressement ADII, chaque délai est impératif. Le dépassement entraîne la forclusion et la perte du droit de recours.</div>
+
+  <div style="margin-top:16px;">
+    <div class="defense-step">
+      <span class="defense-tag tag-delai">ÉTAPE 1 — J+0 à J+30</span>
+      <div class="method-title" style="margin-bottom:6px;">Réception de la notification de redressement</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;">À réception de la lettre de notification, vous disposez de <strong>30 jours calendaires</strong> pour formuler vos observations écrites auprès du bureau ADII compétent. Ce délai est impératif et non prorogeable. La notification précise les motifs du redressement (valeur contestée, classification erronée, origine non prouvée, etc.).</div>
+      <span class="defense-tag tag-conseil" style="margin-top:8px;">Action : Consulter immédiatement un expert douanier ou un avocat fiscaliste spécialisé</span>
+    </div>
+
+    <div class="defense-step">
+      <span class="defense-tag tag-delai">ÉTAPE 2 — J+15 à J+30</span>
+      <div class="method-title" style="margin-bottom:6px;">Constitution du dossier de défense</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;">Le dossier doit contenir : facture commerciale originale + preuve de paiement (SWIFT, relevé bancaire) + contrat de vente + liste de colisage + certificat d'origine (si litige sur l'origine) + tout document prouvant le prix réellement payé. En cas de contestation de valorisation, la preuve de la M1 (valeur transactionnelle réelle) est centrale.</div>
+      <span class="defense-tag tag-conseil" style="margin-top:8px;">Documents clés : Facture + SWIFT + Contrat commercial + Incoterm agreement</span>
+    </div>
+
+    <div class="defense-step">
+      <span class="defense-tag tag-delai">ÉTAPE 3 — Après refus : J+60</span>
+      <div class="method-title" style="margin-bottom:6px;">Recours gracieux auprès du Directeur Régional ADII</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;">Si les observations initiales sont rejetées, le recours gracieux est adressé au Directeur Régional de l'ADII dans les <strong>60 jours</strong> suivant la décision de rejet. Ce recours permet une négociation transactionnelle. La transaction douanière (Art. 278 CDII) permet une réduction des pénalités en échange d'un règlement amiable.</div>
+      <span class="defense-tag tag-conseil" style="margin-top:8px;">Option : Transaction douanière — réduction pénalités jusqu'à 50%</span>
+    </div>
+
+    <div class="defense-step">
+      <span class="defense-tag tag-risque">ÉTAPE 4 — Recours contentieux</span>
+      <div class="method-title" style="margin-bottom:6px;">Tribunal Administratif — Recours juridictionnel</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;">En dernier recours, la contestation est portée devant le <strong>Tribunal Administratif</strong> du ressort dans les <strong>3 mois</strong> suivant la décision définitive de l'ADII. Le recours suspend le paiement sous condition de caution bancaire. La Cour d'Appel Administrative statue en appel, et le pourvoi en cassation est possible devant la Cour de Cassation.</div>
+      <span class="defense-tag tag-risque" style="margin-top:8px;">Risque : Frais de procédure + caution bancaire obligatoire pendant la durée du recours</span>
+    </div>
+  </div>
+
+  <div class="mini-alert gold" style="margin-top:16px;">💡 <strong>Conseil Transit-IA :</strong> Dans 70% des cas, le redressement ADII sur la valeur transactionnelle peut être neutralisé à l'étape 2 avec un dossier probant. La clé est la preuve du paiement effectif via extrait SWIFT correspondant exactement à la valeur facturée déclarée.</div>
+</div>
+
+<div class="footer">Transit-IA — Intelligence Fiscale · Sources : CGI 2025 · CDII · Accord OMD sur la Valeur · Circulaires DGI & ADII</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function selectMethod(el) {
+  document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+const fmt = v => Math.round(v).toLocaleString('fr-MA') + ' DH';
+const pct = (v, t) => t > 0 ? (v / t * 100).toFixed(1) + '%' : '—';
+
+function calcFiscal() {
+  const fob = parseFloat(document.getElementById('vFOB').value) || 0;
+  const fret = parseFloat(document.getElementById('vFret').value) || 0;
+  let ass = parseFloat(document.getElementById('vAssurance').value);
+  if (isNaN(ass) || ass === 0) ass = (fob + fret) * 0.011;
+  const di_rate = parseFloat(document.getElementById('vDI').value) || 0;
+  const tva_rate = parseFloat(document.getElementById('vTVA').value) || 0;
+  const tic = parseFloat(document.getElementById('vTIC').value) || 0;
+  const pfi_rate = parseFloat(document.getElementById('vPFI').value) || 0;
+  const ad_rate = parseFloat(document.getElementById('vAD').value) || 0;
+
+  if (fob === 0) return;
+
+  const cif = fob + fret + ass;
+  const di = cif * di_rate / 100;
+  const pfi = cif * pfi_rate / 100;
+  const ad = cif * ad_rate / 100;
+  const base_tva = cif + di + pfi + tic;
+  const tva = base_tva * tva_rate / 100;
+  const total = di + pfi + tic + ad + tva;
+  const revient = fob + fret + ass + total;
+  const incidence = fob > 0 ? (total / fob * 100).toFixed(1) + '%' : '—';
+
+  document.getElementById('r-fob').textContent = fmt(fob);
+  document.getElementById('r-fret').textContent = fmt(fret);
+  document.getElementById('r-ass').textContent = fmt(ass);
+  document.getElementById('r-cif').textContent = fmt(cif);
+  document.getElementById('r-di').textContent = di_rate > 0 ? fmt(di) + ' (' + di_rate + '%)' : '—';
+  document.getElementById('r-pfi').textContent = pfi_rate > 0 ? fmt(pfi) + ' (' + pfi_rate + '%)' : '—';
+  document.getElementById('r-tic').textContent = tic > 0 ? fmt(tic) : '—';
+  document.getElementById('r-ad').textContent = ad_rate > 0 ? fmt(ad) + ' (' + ad_rate + '%)' : '—';
+  document.getElementById('r-base-tva').textContent = fmt(base_tva);
+  document.getElementById('r-tva').textContent = tva_rate > 0 ? fmt(tva) + ' (' + tva_rate + '%)' : '—';
+  document.getElementById('r-total').textContent = fmt(total);
+  document.getElementById('r-revient').textContent = fmt(revient);
+  document.getElementById('r-incidence').textContent = incidence;
+  document.getElementById('result-fiscal').style.display = 'block';
+}
+
+function calcCredit() {
+  const imp = parseFloat(document.getElementById('cTVAimport').value) || 0;
+  const ventes = parseFloat(document.getElementById('cTVAventes').value) || 0;
+  const prorata = parseFloat(document.getElementById('cProrata').value) || 100;
+  const regime = document.getElementById('cRegime').value;
+
+  if (imp === 0 && ventes === 0) return;
+
+  const deductible = imp * prorata / 100;
+  const solde = deductible - ventes;
+  const lbl = solde >= 0 ? 'CRÉDIT DE TVA récupérable' : 'TVA nette à reverser à l\'État';
+  const delais = { mensuel: '3 mois (procédure standard)', trimestriel: '3 à 6 mois', exporter: '30 jours (Art. 103 bis — exportateur)' };
+
+  document.getElementById('rc-import').textContent = fmt(imp);
+  document.getElementById('rc-prorata').textContent = prorata + '%';
+  document.getElementById('rc-deductible').textContent = fmt(deductible);
+  document.getElementById('rc-collectee').textContent = fmt(ventes);
+  document.getElementById('rc-situation-lbl').textContent = lbl;
+  document.getElementById('rc-montant').textContent = fmt(Math.abs(solde));
+  document.getElementById('rc-montant').className = 'result-val ' + (solde >= 0 ? 'green' : 'red');
+  document.getElementById('rc-delai').textContent = solde >= 0 ? delais[regime] : 'N/A — Solde à reverser';
+  document.getElementById('result-credit').style.display = 'block';
+}
+</script>
+</body>
+</html>
+

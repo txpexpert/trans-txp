@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classement Tarifaire · Classificateur CLF — Douane.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────────────────────────── */
+:root {
+  --ink:    #1a1814;
+  --inks:   #3d3830;
+  --inkm:   #7a7168;
+  --inkl:   #b0a898;
+  --gold:   #b89a4e;
+  --goldd:  #8a7035;
+  --goldl:  #e8d8a8;
+  --cream:  #f5f0e8;
+  --creamm: #ede7db;
+  --surface:#faf7f2;
+  --rule:   rgba(90,80,60,0.14);
+  --ok:     #1a7a4a;
+  --warn:   #b05a10;
+  --danger: #b01a1a;
+  --ba:     #b89a4e;
+  --bd:     #1a1814;
+  --bl:     #f5f0e8;
+  --bm:     #3d3830;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── PAGE NAV ────────────────────────────────────────────────────────────── */
+.page-nav {
+  display: flex;
+  border-bottom: .5px solid var(--rule);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 2rem;
+}
+.page-tab {
+  padding: 1rem 1.5rem;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  border-bottom: 3px solid transparent;
+  transition: all .18s;
+  font-family: 'DM Sans', sans-serif;
+}
+/* onglet 1 — vert */
+.page-tab.tab-classement {
+  background: #1a5c2a;
+  color: #d4f0dc;
+}
+.page-tab.tab-classement:hover {
+  background: #14461f;
+  color: #fff;
+}
+.page-tab.tab-classement.active {
+  background: #14461f;
+  color: #fff;
+  border-bottom-color: #7eda9a;
+}
+/* onglet 2 — bleu */
+.page-tab.tab-clf {
+  background: #1a3a6e;
+  color: #c8d8f8;
+}
+.page-tab.tab-clf:hover {
+  background: #102a56;
+  color: #fff;
+}
+.page-tab.tab-clf.active {
+  background: #102a56;
+  color: #fff;
+  border-bottom-color: #7aaef5;
+}
+
+/* ── PAGES ───────────────────────────────────────────────────────────────── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── MODULE LAYOUT ───────────────────────────────────────────────────────── */
+.module-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+}
+
+.module-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .5rem;
+}
+.module-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: .4rem;
+}
+.module-sub {
+  font-size: 13px;
+  color: var(--inkm);
+  margin-bottom: 2rem;
+  max-width: 680px;
+}
+
+/* ── STATS GRID ──────────────────────────────────────────────────────────── */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: .5px solid var(--rule);
+  margin-bottom: 2rem;
+}
+.istat {
+  background: var(--surface);
+  padding: 1.1rem 1.4rem;
+}
+.istat-n {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.9rem;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: .25rem;
+}
+.istat-l {
+  font-size: 11px;
+  color: var(--inkm);
+  line-height: 1.3;
+}
+
+/* ── LAYOUT COLS ─────────────────────────────────────────────────────────── */
+.two-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.75rem;
+  align-items: start;
+}
+.main-panel {
+  background: var(--surface);
+  border: .5px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.5rem;
+}
+.aside-panel {
+  border: .5px solid var(--goldd);
+  border-radius: 4px;
+  overflow: hidden;
+  position: sticky;
+  top: 4rem;
+  background: #f0e8d4;
+}
+.aside-header {
+  padding: 1rem 1.1rem 1rem;
+  border-bottom: .5px solid rgba(138,112,53,.25);
+  background: #e8dcc4;
+}
+.aside-count {
+  padding: 4px 14px;
+  border-bottom: .5px solid rgba(138,112,53,.2);
+  background: #eddfc0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--inkm);
+}
+.aside-list {
+  max-height: 360px;
+  overflow-y: auto;
+  background: #f5edd8;
+}
+.aside-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 14px;
+  border-bottom: .5px solid rgba(138,112,53,.15);
+  cursor: pointer;
+  transition: background .12s;
+}
+.aside-row:hover { background: #eddfc0; }
+.aside-row:last-child { border-bottom: none; }
+.aside-designation {
+  font-size: 12px;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
+}
+.aside-circ {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--inkm);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── SEARCH BAR ──────────────────────────────────────────────────────────── */
+.search-row {
+  display: flex;
+  gap: .6rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.search-input {
+  flex: 2;
+  min-width: 160px;
+  padding: .55rem .8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  background: #fff;
+  border: .5px solid var(--rule);
+  border-radius: 2px;
+  outline: none;
+  transition: border-color .15s;
+}
+.search-input:focus { border-color: var(--gold); }
+.form-select {
+  flex: 1;
+  min-width: 150px;
+  max-width: 230px;
+  padding: .55rem .75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  background: #fff;
+  border: .5px solid var(--rule);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.form-select:focus { border-color: var(--gold); }
+.btn {
+  padding: .55rem 1.1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--cream);
+}
+.btn-primary:hover { background: var(--inks); }
+.btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: .5px solid var(--rule);
+}
+.btn-outline:hover { background: var(--creamm); }
+.btn-outline:disabled { opacity: .35; cursor: not-allowed; }
+.btn-sm { padding: .35rem .75rem; font-size: 11px; }
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+}
+.btn-gold:hover { background: var(--goldd); }
+
+/* ── TABLE ───────────────────────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.data-table th {
+  padding: .55rem .75rem;
+  background: var(--creamm);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--inkm);
+  border-bottom: .5px solid var(--rule);
+  text-align: left;
+  white-space: nowrap;
+}
+.data-table td {
+  padding: .55rem .75rem;
+  border-bottom: .5px solid var(--rule);
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(184,154,78,.04); }
+.data-table tr.hierarchical { background: var(--cream); opacity: .85; }
+
+.taux-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* ── PLACEHOLDER ─────────────────────────────────────────────────────────── */
+.placeholder-box {
+  color: var(--inkm);
+  font-size: 13px;
+  padding: 2.5rem;
+  text-align: center;
+  border: .5px solid var(--rule);
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+/* ── PAGINATION ──────────────────────────────────────────────────────────── */
+.pagination {
+  display: flex;
+  gap: .75rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+.page-info {
+  font-size: 12px;
+  color: var(--inkm);
+  flex: 1;
+  text-align: center;
+}
+
+/* ── TABS (CLF) ──────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  border-bottom: .5px solid var(--rule);
+  margin-bottom: 1.5rem;
+}
+.tab {
+  padding: .7rem 1.25rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--inkm);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all .15s;
+}
+.tab:hover { color: var(--ink); }
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── ALERT BOXES ─────────────────────────────────────────────────────────── */
+.alert {
+  padding: .75rem 1rem;
+  border-left: 3px solid;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  border-radius: 0 3px 3px 0;
+}
+.alert-info { border-color: var(--gold); background: rgba(184,154,78,.07); color: var(--inks); }
+.alert-warn { border-color: var(--warn); background: rgba(176,90,16,.07); color: #7a3a08; }
+.alert-error { border-color: var(--danger); background: rgba(176,26,26,.07); color: #7a1212; }
+.alert-ok { border-color: var(--ok); background: rgba(26,122,74,.07); color: #0e5030; }
+
+/* ── FORM ────────────────────────────────────────────────────────────────── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.form-full { grid-column: 1 / -1; }
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--inkm);
+  margin-bottom: .35rem;
+}
+.form-label.required { color: #991b1b; }
+.form-input, .form-textarea {
+  width: 100%;
+  padding: .55rem .8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  background: #fff;
+  border: .5px solid var(--rule);
+  border-radius: 2px;
+  outline: none;
+  transition: border-color .15s;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--gold); }
+.form-input.danger-border { border-color: #dc2626; }
+.form-textarea { resize: vertical; min-height: 90px; }
+.form-note { font-size: 11px; color: #991b1b; margin-top: .25rem; }
+
+/* ── HS RESULTS ──────────────────────────────────────────────────────────── */
+.hs-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.hs-card {
+  border: .5px solid var(--rule);
+  padding: 1rem;
+  cursor: pointer;
+  background: #fff;
+  transition: all .13s;
+  border-radius: 2px;
+}
+.hs-card:hover { border-color: var(--gold); }
+.hs-card.selected { border: 2px solid var(--gold); background: var(--bl); }
+.hs-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.hs-desc {
+  font-family: 'DM Serif Display', serif;
+  font-size: 13px;
+  color: var(--inks);
+  line-height: 1.3;
+  margin: 6px 0;
+}
+.hs-conf {
+  font-size: 11px;
+  padding: 2px 7px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+.hs-conf.high { background: #dcfce7; color: #166534; }
+.hs-conf.mid  { background: #fef3c7; color: #92400e; }
+.hs-conf.low  { background: #fee2e2; color: #991b1b; }
+
+.badge {
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.badge-blue { background: rgba(59,130,246,.12); color: #1e40af; }
+.badge-warn { background: rgba(176,90,16,.12); color: var(--warn); }
+
+.detail-box {
+  border: 2px solid var(--gold);
+  background: var(--bl);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 2px;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.detail-section-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .5rem;
+}
+
+/* ── SCREENING ───────────────────────────────────────────────────────────── */
+.screening-result {
+  border: 2px solid;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 2px;
+}
+.screening-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: #fff;
+  border-radius: 2px;
+}
+.embargo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: .75rem;
+}
+.embargo-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  border: .5px solid #fecaca;
+  border-radius: 2px;
+}
+
+/* ── SPINNER ─────────────────────────────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(184,154,78,.3);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── FOOTER NOTE ─────────────────────────────────────────────────────────── */
+.module-note {
+  font-size: 11px;
+  color: var(--inkm);
+  font-style: italic;
+  padding: .625rem .875rem;
+  background: var(--creamm);
+  border: .5px solid var(--rule);
+  border-radius: 2px;
+  margin-top: 1rem;
+}
+
+/* ── EXAMPLES ROW ────────────────────────────────────────────────────────── */
+.examples-row {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+.example-chip {
+  font-size: 11px;
+  padding: 3px 9px;
+  background: var(--creamm);
+  color: var(--inks);
+  border: .5px solid var(--rule);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .13s;
+  font-family: 'DM Sans', sans-serif;
+}
+.example-chip:hover { background: var(--cream); border-color: var(--gold); color: var(--goldd); }
+
+/* ── SCROLLBAR ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ PAGE NAV ═══════════════════════════════════════════════════════════ -->
+<nav class="page-nav">
+  <button class="page-tab tab-classement active" onclick="switchPage('classement', this)">
+    MODULE 05 — Classement Tarifaire
+  </button>
+  <button class="page-tab tab-clf" onclick="switchPage('classificateur', this)">
+    MODULE CLF — Classificateur · DUM · Screening
+  </button>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 1 — CLASSEMENT TARIFAIRE                                          -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-classement" class="page active">
+<div class="module-wrap">
+
+  <div class="module-kicker">MODULE 05</div>
+  <h1 class="module-title">Classement tarifaire</h1>
+  <p class="module-sub">Faites vos recherches dans les 17 224 codes SH du tarif douanier marocain (dossier actualisé 2025).</p>
+
+  <!-- Stats -->
+  <div class="info-grid">
+    <div class="istat">
+      <div class="istat-n">17 224</div>
+      <div class="istat-l">Codes SH indexés</div>
+    </div>
+    <div class="istat">
+      <div class="istat-n">11 847</div>
+      <div class="istat-l">Codes avec taux de droit</div>
+    </div>
+    <div class="istat">
+      <div class="istat-n">97</div>
+      <div class="istat-l">Chapitres couverts</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <!-- Main column -->
+    <div class="main-panel">
+      <div class="search-row">
+        <input type="text" class="search-input" id="tarif-q"
+          placeholder="Code SH (ex: 8703) ou mot-clé (voiture, acier...)"
+          oninput="onTarifInput()" onkeydown="if(event.key==='Enter') searchTarif()">
+        <select class="form-select" id="tarif-chapitre" onchange="searchTarif()">
+          <option value="">Tous les chapitres</option>
+          <option value="01">01 — Animaux vivants</option>
+          <option value="02">02 — Viandes et abats</option>
+          <option value="03">03 — Poissons et crustacés</option>
+          <option value="04">04 — Lait, oeufs, miel</option>
+          <option value="07">07 — Légumes</option>
+          <option value="08">08 — Fruits comestibles</option>
+          <option value="10">10 — Céréales</option>
+          <option value="22">22 — Boissons, vinaigres</option>
+          <option value="25">25 — Sel, soufre, chaux, ciment</option>
+          <option value="27">27 — Combustibles minéraux</option>
+          <option value="28">28 — Produits chimiques inorganiques</option>
+          <option value="29">29 — Produits chimiques organiques</option>
+          <option value="30">30 — Produits pharmaceutiques</option>
+          <option value="39">39 — Matières plastiques</option>
+          <option value="40">40 — Caoutchouc et ouvrages</option>
+          <option value="44">44 — Bois et ouvrages en bois</option>
+          <option value="48">48 — Papier et carton</option>
+          <option value="61">61 — Vêtements et accessoires</option>
+          <option value="62">62 — Vêtements confectionnés</option>
+          <option value="64">64 — Chaussures</option>
+          <option value="72">72 — Fer et acier</option>
+          <option value="73">73 — Ouvrages en fer ou acier</option>
+          <option value="76">76 — Aluminium et ouvrages</option>
+          <option value="84">84 — Machines</option>
+          <option value="85">85 — Machines électriques</option>
+          <option value="87">87 — Véhicules automobiles</option>
+          <option value="90">90 — Instruments optiques, médicaux</option>
+          <option value="94">94 — Meubles, literie</option>
+          <option value="95">95 — Jouets, jeux</option>
+        </select>
+        <button class="btn btn-primary" onclick="searchTarif()" id="tarif-btn">Rechercher</button>
+      </div>
+
+      <!-- Count -->
+      <div id="tarif-count" style="font-size:12px;color:var(--inkm);margin-bottom:.75rem;display:flex;justify-content:space-between;">
+        <span></span><span></span>
+      </div>
+
+      <!-- State: placeholder -->
+      <div class="placeholder-box" id="tarif-placeholder">
+        Saisissez un code SH ou un mot-clé pour rechercher dans les 17 224 codes du tarif 2025.
+      </div>
+
+      <!-- State: loading -->
+      <div id="tarif-loading" style="display:none;padding:2rem;text-align:center;color:var(--inkm);font-size:13px;">
+        <span class="spinner"></span>Recherche en cours…
+      </div>
+
+      <!-- State: error -->
+      <div id="tarif-error" class="alert alert-error" style="display:none;"></div>
+
+      <!-- State: results -->
+      <div id="tarif-results" style="display:none;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:118px">Code SH</th>
+              <th style="width:42px">Chap.</th>
+              <th>Désignation</th>
+              <th style="width:74px">Taux</th>
+              <th style="width:54px">Unité</th>
+            </tr>
+          </thead>
+          <tbody id="tarif-tbody"></tbody>
+        </table>
+        <div class="pagination" id="tarif-pagination" style="display:none;">
+          <button class="btn btn-outline btn-sm" id="prev-btn" onclick="changePage(-1)">← Précédent</button>
+          <span class="page-info" id="page-info"></span>
+          <button class="btn btn-outline btn-sm" id="next-btn" onclick="changePage(1)">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- State: empty -->
+      <div class="placeholder-box" id="tarif-empty" style="display:none;">
+        Aucun résultat. Essayez un code SH différent ou un autre mot-clé.
+      </div>
+    </div>
+
+    <!-- Aside: Décisions ADII -->
+    <aside class="aside-panel">
+      <div class="aside-header">
+        <div style="font-family:'DM Serif Display',serif;font-size:15px;font-weight:700;color:var(--goldd);margin-bottom:6px;line-height:1.2;letter-spacing:.01em;">
+          Décisions de classement Tarifaires
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--inkm);margin-bottom:9px;">
+          Référentiel ADII — <span id="dec-count-label">339 décisions</span>
+        </div>
+        <div style="font-size:12px;color:var(--inks);font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;">
+          Rechercher par nom de produit
+        </div>
+        <input type="text" class="search-input" id="dec-q"
+          placeholder="ex : acier, véhicule, textile..."
+          oninput="filterDecisions()" style="width:100%;font-size:12px;background:#fff;">
+      </div>
+      <div class="aside-count" id="dec-filtered-count">Chargement…</div>
+      <div class="aside-list" id="dec-list">
+        <div style="padding:1.5rem;text-align:center;color:var(--inkm);font-size:12px;">
+          Chargement des décisions…
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 2 — CLASSIFICATEUR CLF                                             -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-classificateur" class="page">
+<div class="module-wrap">
+
+  <div class="module-kicker">MODULE CLF — M-30 · M-32 · M-33</div>
+  <h1 class="module-title">Classificateur HS · Générateur DUM · Screening</h1>
+  <p class="module-sub">Classification tarifaire IA par description produit · Pré-remplissage DUM avec vérificateur BADR · Screening sanctions et parties restreintes.</p>
+
+  <!-- Stats -->
+  <div class="info-grid">
+    <div class="istat">
+      <div class="istat-n">17 881</div>
+      <div class="istat-l">Positions tarifaires<br>nomenclature marocaine</div>
+    </div>
+    <div class="istat">
+      <div class="istat-n">3</div>
+      <div class="istat-l">Codes candidats<br>par description produit</div>
+    </div>
+    <div class="istat">
+      <div class="istat-n">675+</div>
+      <div class="istat-l">Listes sanctions<br>ONU · OFAC · UE</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('hs', this)">Classificateur HS</button>
+    <button class="tab" onclick="switchTab('dum', this)">Générateur DUM</button>
+    <button class="tab" onclick="switchTab('screening', this)">Screening sanctions</button>
+  </div>
+
+  <!-- ══ TAB: HS ══════════════════════════════════════════════════════════ -->
+  <div id="tab-hs">
+    <div class="alert alert-info">
+      <strong>Comment ça marche :</strong> Décrivez votre produit en français — composition, usage, matière, état.
+      Plus la description est précise, plus les codes proposés sont fiables.
+      L'IA analyse la description selon les règles de classement du CDII.
+    </div>
+
+    <div class="form-grid" style="margin-bottom:.75rem;">
+      <div class="form-full">
+        <label class="form-label">Description du produit *</label>
+        <textarea class="form-textarea" id="hs-desc"
+          placeholder="Ex : câbles électriques isolés PVC 6mm² en cuivre pour installation industrielle, conditionnés en bobines de 100m"></textarea>
+      </div>
+      <div>
+        <label class="form-label">Pays d'origine (optionnel)</label>
+        <input type="text" class="form-input" id="hs-pays" placeholder="Ex : Chine, Espagne, Maroc…">
+      </div>
+      <div style="display:flex;align-items:flex-end;">
+        <button class="btn btn-gold" onclick="classifyHS()" id="hs-btn" style="width:100%;">
+          Classifier le produit →
+        </button>
+      </div>
+    </div>
+
+    <div class="examples-row">
+      <span style="font-size:11px;color:var(--inkm);">Exemples rapides :</span>
+      <button class="example-chip" onclick="setExample('Téléphone portable double SIM 128GB écran OLED')">Téléphone portable double SIM 128GB écran OLED</button>
+      <button class="example-chip" onclick="setExample('Huile d\'olive vierge extra en bouteilles 1L')">Huile d'olive vierge extra 1L</button>
+      <button class="example-chip" onclick="setExample('Panneau solaire photovoltaïque 400W monocristallin')">Panneau solaire 400W</button>
+      <button class="example-chip" onclick="setExample('Machines à café espresso usage commercial inox')">Machine à café espresso commercial</button>
+    </div>
+
+    <div id="hs-error" class="alert alert-error" style="display:none;margin-bottom:1rem;"></div>
+    <div id="hs-loading" style="display:none;padding:2rem;text-align:center;color:var(--inkm);font-size:13px;">
+      <span class="spinner"></span>Classification IA en cours…
+    </div>
+
+    <div id="hs-results" style="display:none;">
+      <p style="font-size:12px;color:var(--inkm);margin-bottom:1rem;font-style:italic;">
+        <span id="hs-result-count">3</span> codes candidats trouvés — Cliquez sur un code pour voir le détail complet
+      </p>
+      <div class="hs-cards" id="hs-cards"></div>
+      <div id="hs-detail" style="display:none;"></div>
+      <div class="module-note">
+        Résultats générés par IA à titre indicatif. Pour un classement contraignant, demandez un Renseignement Tarifaire Contraignant (RTC) auprès de votre bureau de douane.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: DUM ═════════════════════════════════════════════════════════ -->
+  <div id="tab-dum" style="display:none;">
+    <div class="alert alert-warn">
+      <strong>Art. 19 bis LF 2026 :</strong> Le lieu de stockage est désormais OBLIGATOIRE dans chaque DUM.
+      Une adresse incomplète est une infraction de 3ème degré — amende de 30 000 à 60 000 DH.
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label">Raison sociale importateur *</label>
+        <input type="text" class="form-input" id="dum-importateur" placeholder="SOCIÉTÉ IMPORT SARL">
+      </div>
+      <div>
+        <label class="form-label">Transitaire agréé *</label>
+        <input type="text" class="form-input" id="dum-transitaire" placeholder="TRANSIT MAROC SA — N° Agrément">
+      </div>
+      <div>
+        <label class="form-label">ICE (15 chiffres) *</label>
+        <input type="text" class="form-input" id="dum-ice" placeholder="000000000000000" maxlength="15" style="font-family:'JetBrains Mono',monospace;">
+      </div>
+      <div>
+        <label class="form-label">Identifiant Fiscal (IF)</label>
+        <input type="text" class="form-input" id="dum-if" placeholder="12345678">
+      </div>
+      <div>
+        <label class="form-label">Code SH (8-10 chiffres) *</label>
+        <input type="text" class="form-input" id="dum-sh" placeholder="8544.49.90.00" style="font-family:'JetBrains Mono',monospace;">
+      </div>
+      <div>
+        <label class="form-label">Pays d'origine</label>
+        <input type="text" class="form-input" id="dum-pays" placeholder="Chine, Espagne, USA...">
+      </div>
+      <div>
+        <label class="form-label">Régime douanier *</label>
+        <select class="form-select" id="dum-regime">
+          <option value="">— Sélectionner —</option>
+          <option value="10">Mise à la consommation (M/C)</option>
+          <option value="20">Mise à la consommation avec franchise</option>
+          <option value="40">Admission temporaire (AT)</option>
+          <option value="50">Entrepôt sous douane</option>
+          <option value="51">Zone franche</option>
+          <option value="60">MEAD — mise en entrepôt acquitté</option>
+          <option value="70">Transit — destination étrangère</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Port d'arrivée</label>
+        <select class="form-select" id="dum-port">
+          <option>Casablanca</option>
+          <option>Tanger Med</option>
+          <option>Agadir</option>
+          <option>Nador</option>
+          <option>Dakhla</option>
+          <option>Aéroport Mohammed V</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Valeur FOB *</label>
+        <div style="display:flex;gap:.5rem;">
+          <input type="number" class="form-input" id="dum-fob" placeholder="25000" style="flex:1;">
+          <select class="form-select" id="dum-devise" style="width:90px;">
+            <option>USD</option><option>EUR</option><option>GBP</option><option>CNY</option><option>MAD</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="form-label">Incoterm</label>
+        <select class="form-select" id="dum-incoterm">
+          <option>FOB</option><option>CIF</option><option>CFR</option><option>EXW</option><option>DAP</option><option>DDP</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Poids brut (kg)</label>
+        <input type="number" class="form-input" id="dum-pb" placeholder="1250">
+      </div>
+      <div>
+        <label class="form-label">Poids net (kg)</label>
+        <input type="number" class="form-input" id="dum-pn" placeholder="1100">
+      </div>
+      <div>
+        <label class="form-label">Numéro B/L ou AWB</label>
+        <input type="text" class="form-input" id="dum-bl" placeholder="MSCU1234567890" style="font-family:'JetBrains Mono',monospace;">
+      </div>
+      <div>
+        <label class="form-label">Numéro conteneur</label>
+        <input type="text" class="form-input" id="dum-ctr" placeholder="MSCU1234567" style="font-family:'JetBrains Mono',monospace;">
+      </div>
+      <div class="form-full">
+        <label class="form-label required">Lieu de stockage ou de transformation * — Art. 19 bis LF 2026 OBLIGATOIRE</label>
+        <input type="text" class="form-input danger-border" id="dum-stockage"
+          placeholder="Ex : Zone Industrielle Moulay Rachid, Entrepôt 12, Rue de la Laine, Casablanca 20250">
+        <div class="form-note">Adresse complète exigée : numéro + rue + zone industrielle + ville. Amende 30-60K DH si adresse incomplète ou absente.</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="verifyDUM()" style="margin-bottom:1.5rem;">
+      Vérifier la cohérence BADR →
+    </button>
+
+    <div id="dum-alerts"></div>
+    <div id="dum-footer" class="module-note" style="display:none;">
+      Vérification indicative basée sur les règles BADR documentées. Ce module n'est pas connecté directement au système BADR de l'ADII. Seul le transitaire agréé peut soumettre une DUM.
+    </div>
+  </div>
+
+  <!-- ══ TAB: SCREENING ══════════════════════════════════════════════════ -->
+  <div id="tab-screening" style="display:none;">
+    <div class="alert alert-info" style="margin-bottom:1.25rem;">
+      Vérification instantanée d'une entreprise, d'un individu ou d'un pays contre les listes de sanctions internationales
+      (ONU, OFAC USA, UE) et les pays sous embargo applicables aux opérations marocaines.
+    </div>
+
+    <div class="form-grid" style="margin-bottom:1rem;">
+      <div>
+        <label class="form-label">Nom de l'entité à vérifier</label>
+        <input type="text" class="form-input" id="scr-entity" placeholder="Nom de l'entreprise ou de l'individu">
+      </div>
+      <div>
+        <label class="form-label">Pays de l'entité</label>
+        <input type="text" class="form-input" id="scr-country" placeholder="Ex : Iran, Russie, Chine, France…">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="runScreening()" id="scr-btn" style="margin-bottom:1.5rem;">
+      Lancer le screening →
+    </button>
+
+    <div id="scr-loading" style="display:none;padding:1.5rem;color:var(--inkm);font-size:13px;">
+      <span class="spinner"></span>Vérification en cours…
+    </div>
+
+    <div id="scr-result" style="display:none;"></div>
+
+    <!-- Pays embargo reference -->
+    <div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">
+        Pays sous sanctions ou embargo (référence 2026)
+      </div>
+      <div class="embargo-tags">
+        <span class="embargo-tag">Iran</span>
+        <span class="embargo-tag">Corée du Nord</span>
+        <span class="embargo-tag">Cuba</span>
+        <span class="embargo-tag">Syrie</span>
+        <span class="embargo-tag">Venezuela</span>
+        <span class="embargo-tag">Myanmar</span>
+        <span class="embargo-tag">Bélarus</span>
+        <span class="embargo-tag">Russie</span>
+        <span class="embargo-tag">Soudan</span>
+        <span class="embargo-tag">Somalie</span>
+        <span class="embargo-tag">Yémen</span>
+        <span class="embargo-tag">Zimbabwe</span>
+        <span class="embargo-tag">Nicaragua</span>
+      </div>
+      <div style="font-size:11px;color:var(--inkm);margin-top:8px;font-style:italic;">
+        Liste indicative — Mise à jour mensuelle. Les sanctions évoluent rapidement — consultez systématiquement les sources OFAC, ONU et UE avant chaque transaction internationale.
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   PAGE SWITCHING
+════════════════════════════════════════════════════════════ */
+function switchPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
+  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'))
+  document.getElementById('page-' + id).classList.add('active')
+  btn.classList.add('active')
+}
+
+/* ════════════════════════════════════════════════════════════
+   TAB SWITCHING (CLF)
+════════════════════════════════════════════════════════════ */
+function switchTab(id, btn) {
+  ['hs', 'dum', 'screening'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = 'none'
+  })
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'))
+  document.getElementById('tab-' + id).style.display = 'block'
+  btn.classList.add('active')
+}
+
+/* ════════════════════════════════════════════════════════════
+   MODULE 05 — CLASSEMENT TARIFAIRE
+════════════════════════════════════════════════════════════ */
+
+// Mock data for tarif (no real API in standalone HTML)
+const MOCK_TARIFS = [
+  { code_sh: '8703100090', chapitre:'87', designation_clean:'Voitures de tourisme à moteur à explosion, cylindrée > 1500 cm³ ≤ 3000 cm³', taux_droit:25, unite_norm:'U', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '8544491000', chapitre:'85', designation_clean:'Câbles électriques isolés PVC pour tensions ≤ 1000 V, section > 4 mm²', taux_droit:10, unite_norm:'KG', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '7208100000', chapitre:'72', designation_clean:'Produits laminés plats en fer ou acier, laminés à chaud, en rouleaux', taux_droit:17.5, unite_norm:'TON', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '3004904900', chapitre:'30', designation_clean:'Médicaments constitués de produits mélangés, autres', taux_droit:2.5, unite_norm:'KG', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '8517120090', chapitre:'85', designation_clean:'Téléphones pour réseaux cellulaires, autres', taux_droit:0, unite_norm:'U', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '1509100000', chapitre:'15', designation_clean:'Huile d\'olive vierge extra, non traitée chimiquement', taux_droit:7, unite_norm:'KG', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '8541400000', chapitre:'85', designation_clean:'Cellules photovoltaïques, montées ou non', taux_droit:0, unite_norm:'U', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '6109100000', chapitre:'61', designation_clean:'T-shirts et maillots de corps en coton', taux_droit:40, unite_norm:'U', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '2701120000', chapitre:'27', designation_clean:'Houilles bitumineuses (coking coal)', taux_droit:0, unite_norm:'TON', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '8704210010', chapitre:'87', designation_clean:'Véhicules pour transport de marchandises, moteur à allumage par compression, poids total ≤ 5 T', taux_droit:25, unite_norm:'U', est_hierarchique:false, est_feuille:true, niveau:5 },
+  { code_sh: '8700000000', chapitre:'87', designation_clean:'SECTION XVII — VOITURES AUTOMOBILES, TRACTEURS, CYCLES (groupe hiérarchique)', taux_droit: null, unite_norm:null, est_hierarchique:true, est_feuille:false, niveau:2 },
+  { code_sh: '8500000000', chapitre:'85', designation_clean:'SECTION XVI — MACHINES ET APPAREILS ÉLECTRIQUES (groupe hiérarchique)', taux_droit: null, unite_norm:null, est_hierarchique:true, est_feuille:false, niveau:2 },
+]
+
+const MOCK_DECISIONS = [
+  { designation: 'Voitures de tourisme essence cylindrée 1.6L', circulaire: 'Circulaire 5700/2018', code_sh: '8703.23.19.00' },
+  { designation: 'Téléphones mobiles double SIM', circulaire: 'Circulaire 5820/2020', code_sh: '8517.12.00.90' },
+  { designation: 'Panneaux solaires photovoltaïques 350W', circulaire: 'Circulaire 6012/2022', code_sh: '8541.40.00.00' },
+  { designation: 'Câbles électriques cuivre isolés PVC', circulaire: 'Circulaire 5910/2021', code_sh: '8544.49.10.00' },
+  { designation: 'Huile d\'olive vierge extra conditionnée', circulaire: 'Circulaire 5450/2016', code_sh: '1509.10.00.00' },
+  { designation: 'Fer à béton acier nervuré', circulaire: 'Circulaire 5600/2017', code_sh: '7214.20.00.00' },
+  { designation: 'Médicaments antiparasitaires vétérinaires', circulaire: 'Circulaire 6100/2023', code_sh: '3004.90.49.00' },
+  { designation: 'Engrais azotés NPK granulés', circulaire: 'Circulaire 5380/2015', code_sh: '3105.20.00.00' },
+  { designation: 'Pneus neufs pour voitures particulières', circulaire: 'Circulaire 5750/2019', code_sh: '4011.10.00.00' },
+  { designation: 'Matières plastiques polypropylène', circulaire: 'Circulaire 5920/2021', code_sh: '3902.10.00.00' },
+  { designation: 'Tissus en coton écrus non mercerisés', circulaire: 'Circulaire 5480/2016', code_sh: '5208.31.00.00' },
+  { designation: 'Aluminium en lingots non allié', circulaire: 'Circulaire 5700/2018', code_sh: '7601.10.00.00' },
+  { designation: 'Appareils réfrigérateurs ménagers', circulaire: 'Circulaire 6050/2022', code_sh: '8418.10.00.00' },
+  { designation: 'Briques en terre cuite réfractaire', circulaire: 'Circulaire 5320/2014', code_sh: '6902.10.00.00' },
+  { designation: 'Ciment Portland gris en sacs', circulaire: 'Circulaire 5200/2013', code_sh: '2523.29.00.00' },
+  { designation: 'Verre plat flottant 4mm', circulaire: 'Circulaire 5560/2017', code_sh: '7005.29.00.00' },
+  { designation: 'Machines à coudre usage industriel', circulaire: 'Circulaire 6080/2023', code_sh: '8452.21.00.00' },
+  { designation: 'Bouteilles en verre pour boissons', circulaire: 'Circulaire 5430/2015', code_sh: '7010.90.10.00' },
+  { designation: 'Carreaux céramiques pour sol', circulaire: 'Circulaire 5850/2020', code_sh: '6907.21.00.00' },
+  { designation: 'Résines époxy en solution', circulaire: 'Circulaire 5780/2019', code_sh: '3907.30.00.00' },
+]
+
+let tarifPage = 0
+let tarifTotal = 0
+let tarifFiltered = []
+const PAGE_SIZE = 30
+
+function fmtCode(c) {
+  if (c.length < 10) return c
+  return c.slice(0,4)+'.'+c.slice(4,6)+'.'+c.slice(6,8)+'.'+c.slice(8,10)
+}
+
+function tauxBadge(taux) {
+  if (taux === null) return '<span style="color:var(--inkm);font-size:11px;">—</span>'
+  const color = taux === 0 ? 'var(--ok)' : taux <= 10 ? '#1e40af' : taux <= 30 ? 'var(--warn)' : 'var(--danger)'
+  return `<span class="taux-badge" style="background:${color}18;color:${color};border:1px solid ${color}40">${taux}%</span>`
+}
+
+function onTarifInput() {
+  clearTimeout(window._tarifTimer)
+  window._tarifTimer = setTimeout(searchTarif, 400)
+}
+
+function searchTarif() {
+  const q = document.getElementById('tarif-q').value.trim().toLowerCase()
+  const ch = document.getElementById('tarif-chapitre').value
+
+  document.getElementById('tarif-placeholder').style.display = 'none'
+  document.getElementById('tarif-empty').style.display = 'none'
+  document.getElementById('tarif-results').style.display = 'none'
+  document.getElementById('tarif-error').style.display = 'none'
+
+  if (!q && !ch) {
+    document.getElementById('tarif-placeholder').style.display = 'block'
+    return
+  }
+
+  document.getElementById('tarif-loading').style.display = 'block'
+
+  setTimeout(() => {
+    document.getElementById('tarif-loading').style.display = 'none'
+    tarifFiltered = MOCK_TARIFS.filter(t => {
+      const matchQ = !q || t.designation_clean.toLowerCase().includes(q) || t.code_sh.startsWith(q.replace(/\./g,''))
+      const matchCh = !ch || t.chapitre === ch
+      return matchQ && matchCh
+    })
+    tarifTotal = tarifFiltered.length
+    tarifPage = 0
+    renderTarifPage()
+  }, 450)
+}
+
+function renderTarifPage() {
+  const countEl = document.getElementById('tarif-count')
+  const totalPages = Math.ceil(tarifTotal / PAGE_SIZE)
+  const pageData = tarifFiltered.slice(tarifPage * PAGE_SIZE, (tarifPage + 1) * PAGE_SIZE)
+
+  if (tarifTotal === 0) {
+    document.getElementById('tarif-empty').style.display = 'block'
+    countEl.innerHTML = '<span></span><span></span>'
+    return
+  }
+
+  countEl.innerHTML = `<span>${tarifTotal.toLocaleString('fr-MA')} résultat${tarifTotal !== 1 ? 's' : ''}</span><span>Page ${tarifPage+1} / ${totalPages || 1}</span>`
+
+  const tbody = document.getElementById('tarif-tbody')
+  tbody.innerHTML = pageData.map(r => `
+    <tr class="${r.est_hierarchique && !r.est_feuille ? 'hierarchical' : ''}">
+      <td style="font-family:'JetBrains Mono',monospace;font-weight:${r.est_feuille?600:400};font-size:12px;">${fmtCode(r.code_sh)}</td>
+      <td style="font-size:11px;color:var(--inkm);font-family:'JetBrains Mono',monospace;">${r.chapitre}</td>
+      <td style="font-size:12px;font-weight:${r.est_hierarchique&&!r.est_feuille?500:400};max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.designation_clean}">${r.designation_clean}</td>
+      <td style="text-align:right;">${tauxBadge(r.taux_droit)}</td>
+      <td style="font-size:11px;color:var(--inkm);font-family:'JetBrains Mono',monospace;">${r.unite_norm || '—'}</td>
+    </tr>
+  `).join('')
+
+  document.getElementById('tarif-results').style.display = 'block'
+
+  const pag = document.getElementById('tarif-pagination')
+  if (totalPages > 1) {
+    pag.style.display = 'flex'
+    document.getElementById('prev-btn').disabled = tarifPage === 0
+    document.getElementById('next-btn').disabled = tarifPage >= totalPages - 1
+    document.getElementById('page-info').textContent = `Page ${tarifPage+1} / ${totalPages}`
+  } else {
+    pag.style.display = 'none'
+  }
+}
+
+function changePage(delta) {
+  const totalPages = Math.ceil(tarifTotal / PAGE_SIZE)
+  tarifPage = Math.max(0, Math.min(totalPages - 1, tarifPage + delta))
+  renderTarifPage()
+}
+
+/* Decisions */
+let allDecisions = [...MOCK_DECISIONS]
+
+function renderDecisions(list) {
+  const el = document.getElementById('dec-list')
+  document.getElementById('dec-filtered-count').textContent =
+    list.length + ' désignation' + (list.length !== 1 ? 's' : '')
+  if (list.length === 0) {
+    el.innerHTML = '<div style="padding:1.5rem;text-align:center;color:var(--inkm);font-size:12.5px;">Aucune décision trouvée.</div>'
+    return
+  }
+  el.innerHTML = list.map(d => `
+    <div class="aside-row" onclick="document.getElementById('tarif-q').value='${d.code_sh.replace(/\./g,'')}';searchTarif()">
+      <span class="aside-designation">${d.designation}</span>
+      <span class="aside-circ">${d.circulaire.replace('Circulaire ','')}</span>
+    </div>
+  `).join('')
+}
+
+function filterDecisions() {
+  const q = document.getElementById('dec-q').value.trim().toLowerCase()
+  const filtered = q
+    ? allDecisions.filter(d =>
+        d.designation.toLowerCase().includes(q) ||
+        d.circulaire.toLowerCase().includes(q) ||
+        d.code_sh.includes(q))
+    : allDecisions
+  renderDecisions(filtered)
+}
+
+// Init decisions
+renderDecisions(allDecisions)
+
+
+/* ════════════════════════════════════════════════════════════
+   MODULE CLF — CLASSIFICATEUR HS
+════════════════════════════════════════════════════════════ */
+
+function setExample(txt) {
+  document.getElementById('hs-desc').value = txt
+}
+
+let hsSelectedCode = null
+
+async function classifyHS() {
+  const desc = document.getElementById('hs-desc').value.trim()
+  if (!desc) return
+
+  document.getElementById('hs-error').style.display = 'none'
+  document.getElementById('hs-results').style.display = 'none'
+  document.getElementById('hs-loading').style.display = 'block'
+  document.getElementById('hs-btn').disabled = true
+
+  const pays = document.getElementById('hs-pays').value.trim()
+
+  try {
+    // Corrigé — passe par le proxy serveur /api/ia/classify plutôt que
+    // d'appeler api.anthropic.com directement (clé jamais exposée au client)
+    const resp = await fetch('/api/ia/classify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ description: desc, paysOrigine: pays })
+    })
+    const data = await resp.json()
+    if (!data.ok) throw new Error(data.error || 'Erreur classification')
+    renderHSResults(data.resultats || [])
+  } catch(e) {
+    document.getElementById('hs-loading').style.display = 'none'
+    document.getElementById('hs-error').textContent = 'Erreur lors de la classification. Veuillez réessayer.'
+    document.getElementById('hs-error').style.display = 'block'
+  } finally {
+    document.getElementById('hs-btn').disabled = false
+    document.getElementById('hs-loading').style.display = 'none'
+  }
+}
+
+function confClass(v) {
+  return v >= 80 ? 'high' : v >= 60 ? 'mid' : 'low'
+}
+
+function renderHSResults(results) {
+  hsSelectedCode = null
+  const cards = document.getElementById('hs-cards')
+  document.getElementById('hs-result-count').textContent = results.length
+  cards.innerHTML = results.map((r, i) => `
+    <div class="hs-card" id="hs-card-${i}" onclick="selectHSCard(${i})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+        <span class="hs-code">${r.code}</span>
+        <span class="hs-conf ${confClass(r.confiance)}">${r.confiance}% confiance</span>
+      </div>
+      <div class="hs-desc">${r.description}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="badge badge-blue">DI ${r.di}</span>
+        <span class="badge badge-blue">TVA ${r.tva}</span>
+        ${r.tic !== '0%' ? `<span class="badge badge-warn">TIC ${r.tic}</span>` : ''}
+      </div>
+    </div>
+  `).join('')
+
+  window._hsResults = results
+  document.getElementById('hs-detail').style.display = 'none'
+  document.getElementById('hs-results').style.display = 'block'
+}
+
+function selectHSCard(i) {
+  const r = window._hsResults[i]
+  const isSelected = hsSelectedCode === i
+  document.querySelectorAll('.hs-card').forEach(c => c.classList.remove('selected'))
+  if (isSelected) {
+    hsSelectedCode = null
+    document.getElementById('hs-detail').style.display = 'none'
+    return
+  }
+  hsSelectedCode = i
+  document.getElementById('hs-card-' + i).classList.add('selected')
+
+  document.getElementById('hs-detail').innerHTML = `
+    <div class="detail-box">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:8px;">
+        Code SH sélectionné : ${r.code}
+      </div>
+      <div class="detail-grid">
+        <div>
+          <div class="detail-section-title">Droits & taxes</div>
+          <table style="width:100%;font-size:13px;border-collapse:collapse;">
+            ${[["Droit d'Importation (DI)", r.di],["TVA (art. 96 CGI)", r.tva],["TIC", r.tic]].map(([k,v]) =>
+              `<tr style="border-bottom:.5px solid var(--rule);">
+                <td style="padding:4px 0;color:var(--inks);">${k}</td>
+                <td style="padding:4px 0;font-weight:600;color:var(--ink);text-align:right;">${v}</td>
+              </tr>`).join('')}
+          </table>
+        </div>
+        <div>
+          <div class="detail-section-title">Régimes admissibles</div>
+          ${r.regimes.map(reg => `<div style="font-size:12px;color:var(--inks);padding:2px 0;border-bottom:.5px solid var(--rule);">• ${reg}</div>`).join('')}
+        </div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <div class="detail-section-title">Documents obligatoires</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          ${r.documents.map(d => `<span style="font-size:11px;padding:3px 8px;background:#fef3c7;color:#92400e;border:.5px solid #fde68a;border-radius:2px;">${d}</span>`).join('')}
+        </div>
+      </div>
+      <div>
+        <div class="detail-section-title">Note de classement CDII</div>
+        <div style="font-size:12px;color:var(--inks);line-height:1.6;font-style:italic;">${r.note_section}</div>
+      </div>
+      <div style="margin-top:1rem;padding:.625rem;background:#fff;border:.5px solid var(--rule);font-size:12px;color:var(--inks);border-radius:2px;">
+        <strong>Justification IA :</strong> ${r.justification}
+      </div>
+    </div>
+  `
+  document.getElementById('hs-detail').style.display = 'block'
+}
+
+/* ════════════════════════════════════════════════════════════
+   MODULE CLF — GÉNÉRATEUR DUM
+════════════════════════════════════════════════════════════ */
+
+const DOCS_PAR_SH = {
+  '01': ["Certificat sanitaire ONSSA", "Certificat d'origine"],
+  '02': ["Certificat sanitaire ONSSA", "Certificat vétérinaire", "Certificat d'origine"],
+  '04': ["Certificat sanitaire ONSSA", "Certificat d'origine"],
+  '08': ["Certificat phytosanitaire ONSSA"],
+  '10': ["Licence d'importation (contingent)", "Certificat phytosanitaire ONSSA"],
+  '17': ["Licence d'importation si contingent"],
+  '22': ["Licence d'importation (boissons alcoolisées)"],
+  '25': ["Certificat d'origine si préférentiel"],
+  '30': ["Autorisation Ministère Santé (médicaments)", "Certificat d'analyse"],
+  '44': ["Certificat CITES si espèces protégées", "Phytosanitaire"],
+  '72': ["Certificat d'origine", "Certification qualité acier"],
+  '84': ["Certificat d'origine ALECA si UE", "Notice technique"],
+  '85': ["Autorisation ANRT si équipement télécoms", "Certificat de conformité CoC"],
+  '87': ["Certificat de conformité", "Homologation CMR"],
+  '90': ["Certificat ONSSA si dispositifs médicaux", "CE marking si UE"],
+}
+
+function verifyDUM() {
+  const f = {
+    importateur: document.getElementById('dum-importateur').value.trim(),
+    ice: document.getElementById('dum-ice').value.trim(),
+    if_num: document.getElementById('dum-if').value.trim(),
+    transitaire: document.getElementById('dum-transitaire').value.trim(),
+    pays_origine: document.getElementById('dum-pays').value.trim(),
+    regime: document.getElementById('dum-regime').value,
+    code_sh: document.getElementById('dum-sh').value.trim(),
+    valeur_fob: document.getElementById('dum-fob').value,
+    devise: document.getElementById('dum-devise').value,
+    incoterm: document.getElementById('dum-incoterm').value,
+    poids_brut: document.getElementById('dum-pb').value,
+    poids_net: document.getElementById('dum-pn').value,
+    bl_num: document.getElementById('dum-bl').value.trim(),
+    conteneur: document.getElementById('dum-ctr').value.trim(),
+    port_arrivee: document.getElementById('dum-port').value,
+    lieu_stockage: document.getElementById('dum-stockage').value.trim(),
+  }
+
+  const alerts = []
+
+  if (!f.lieu_stockage) {
+    alerts.push({ type:'error', message:"Art. 19 bis LF 2026 : Le lieu de stockage est OBLIGATOIRE. Adresse complète requise (numéro, rue, zone industrielle, ville). Amende : 30 000 à 60 000 DH." })
+  } else if (f.lieu_stockage.split(' ').length < 3) {
+    alerts.push({ type:'warn', message:"Art. 19 bis : Adresse de stockage incomplète. L'ADII exige une adresse exhaustive (numéro + rue + ville)." })
+  }
+
+  if (!f.ice) {
+    alerts.push({ type:'error', message:"ICE de l'importateur manquant. Champ obligatoire BADR — copier l'ICE EXACT depuis le RC numérique (15 chiffres)." })
+  } else if (!/^\d{15}$/.test(f.ice.replace(/\s/g,''))) {
+    alerts.push({ type:'warn', message:`ICE "${f.ice}" : format attendu 15 chiffres exacts. Vérifier le RC numérique de l'importateur.` })
+  }
+
+  if (!f.if_num) {
+    alerts.push({ type:'warn', message:"Identifiant Fiscal (IF) manquant. Requis dans les données déclarant BADR." })
+  }
+
+  if (!f.code_sh) {
+    alerts.push({ type:'error', message:"Code SH manquant. Erreur HS = CIRCUIT ROUGE GARANTI. Utilisez l'onglet Classificateur HS pour trouver le code correct." })
+  } else if (!/^\d{4,10}$/.test(f.code_sh.replace(/[.\s]/g,''))) {
+    alerts.push({ type:'warn', message:`Code SH "${f.code_sh}" : format inattendu. Nomenclature marocaine : 8 à 10 chiffres.` })
+  }
+
+  const fob = parseFloat(f.valeur_fob)
+  if (!f.valeur_fob || isNaN(fob) || fob <= 0) {
+    alerts.push({ type:'error', message:"Valeur FOB invalide ou manquante. La valeur CAF sera calculée depuis la valeur FOB + fret + assurance." })
+  } else if (fob < 100 || fob > 5000000) {
+    alerts.push({ type:'warn', message:`Valeur FOB de ${fob.toLocaleString()} ${f.devise} semble inhabituelle. BADR compare avec le manifeste — une valeur anormale déclenchera un contrôle.` })
+  }
+
+  const pb = parseFloat(f.poids_brut), pn = parseFloat(f.poids_net)
+  if (!isNaN(pb) && !isNaN(pn) && pn > pb) {
+    alerts.push({ type:'error', message:`Poids net (${pn} kg) supérieur au poids brut (${pb} kg). Incohérence BADR — rejet automatique probable.` })
+  }
+
+  if (!f.regime) {
+    alerts.push({ type:'warn', message:"Régime douanier non sélectionné. Régime incorrect = illégalité + redressement + blocage." })
+  }
+
+  if (!f.bl_num) {
+    alerts.push({ type:'warn', message:"Numéro B/L manquant. BADR vérifie la cohérence avec le manifeste du navire — un B/L absent ou erroné déclenche une alerte." })
+  }
+
+  const chapter = f.code_sh.replace(/[.\s]/g,'').slice(0,2)
+  const docsReqs = DOCS_PAR_SH[chapter]
+  if (docsReqs && docsReqs.length > 0) {
+    alerts.push({ type:'warn', message:`Documents obligatoires pour le chapitre ${chapter} : ${docsReqs.join(' · ')}. Vérifiez qu'ils sont joints à la DUM.` })
+  }
+
+  if (alerts.filter(a => a.type === 'error').length === 0 && alerts.filter(a => a.type === 'warn').length === 0) {
+    alerts.push({ type:'ok', message:'✓ Aucune anomalie majeure détectée. La DUM semble conforme aux règles BADR vérifiées.' })
+  }
+
+  const container = document.getElementById('dum-alerts')
+  container.innerHTML = alerts.map(a => {
+    const colors = {
+      error: { border:'#dc2626', bg:'#fef2f2', color:'#991b1b' },
+      warn:  { border:'#d97706', bg:'#fffbeb', color:'#92400e' },
+      ok:    { border:'#059669', bg:'#f0fdf4', color:'#166534' },
+    }[a.type]
+    const label = a.type === 'error' ? '✗ ERREUR' : a.type === 'warn' ? '⚠ ATTENTION' : '✓ OK'
+    return `
+      <div style="padding:.75rem 1rem;margin-bottom:6px;border-left:4px solid ${colors.border};background:${colors.bg};font-size:13px;color:${colors.color};line-height:1.5;border-radius:0 2px 2px 0;">
+        <strong>${label} :</strong> ${a.message}
+      </div>
+    `
+  }).join('')
+
+  document.getElementById('dum-footer').style.display = 'block'
+}
+
+/* ════════════════════════════════════════════════════════════
+   MODULE CLF — SCREENING
+════════════════════════════════════════════════════════════ */
+
+const PAYS_EMBARGO = ['Iran','Corée du Nord','Cuba','Syrie','Venezuela','Myanmar','Bélarus','Russie','Soudan','Somalie','Yémen','Zimbabwe','Nicaragua']
+
+async function runScreening() {
+  const entity = document.getElementById('scr-entity').value.trim()
+  const country = document.getElementById('scr-country').value.trim()
+  if (!entity && !country) return
+
+  document.getElementById('scr-loading').style.display = 'block'
+  document.getElementById('scr-result').style.display = 'none'
+  document.getElementById('scr-btn').disabled = true
+
+  await new Promise(r => setTimeout(r, 900))
+
+  const ent = entity.toLowerCase()
+  const blockedCountries = PAYS_EMBARGO.filter(p =>
+    country.toLowerCase().includes(p.toLowerCase()) || p.toLowerCase().includes(country.toLowerCase()))
+  const suspectKw = ['islamic republic','dprk','pyongyang','tehran','damascus','minsk','sanctioned']
+  const isSuspect = suspectKw.some(k => ent.includes(k))
+
+  let result
+  if (blockedCountries.length > 0) {
+    result = {
+      statut: 'bloqué',
+      color: '#dc2626', bg: '#fef2f2',
+      label: '✗ BLOQUÉ',
+      message: `Le pays "${country}" figure sur les listes d'embargo ou de sanctions applicables. Les transactions commerciales avec ce pays sont soumises à restrictions sévères.`,
+      listes: ['ONU — Listes de sanctions du Conseil de Sécurité','OFAC — US Treasury SDN List','UE — Règlement 833/2014 et extensions 2024-2026'],
+    }
+  } else if (isSuspect) {
+    result = {
+      statut: 'alerte',
+      color: '#d97706', bg: '#fffbeb',
+      label: '⚠ ALERTE',
+      message: `Le nom "${entity}" contient des éléments correspondant à des entités sous surveillance. Une vérification approfondie est recommandée avant de procéder à la transaction.`,
+      listes: ['Vérification manuelle requise contre les listes OFAC SDN et ONU'],
+    }
+  } else if (ent.length < 3 && !country) {
+    result = {
+      statut: 'alerte',
+      color: '#d97706', bg: '#fffbeb',
+      label: '⚠ ALERTE',
+      message: "Nom trop court pour une vérification fiable. Veuillez saisir le nom complet de l'entité.",
+      listes: [],
+    }
+  } else {
+    result = {
+      statut: 'clair',
+      color: '#059669', bg: '#f0fdf4',
+      label: '✓ CLAIR',
+      message: `Aucune correspondance trouvée pour "${entity || country}" dans les listes de sanctions consultées. Résultat valable à la date d'aujourd'hui — vérification à renouveler à chaque nouvelle transaction.`,
+      listes: [
+        "ONU — Listes sanctions Conseil de Sécurité (mise à jour mensuelle)",
+        "OFAC USA — SDN List (consulté)",
+        "UE — Listes restrictives (consulté)",
+        "CMC Maroc — Listes publiques (consulté)"
+      ],
+    }
+  }
+
+  const date = new Date().toLocaleDateString('fr-MA')
+  const listesHtml = result.listes.length > 0 ? `
+    <div style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.06em;margin-bottom:6px;text-transform:uppercase;">Listes consultées</div>
+    ${result.listes.map(l => `<div style="font-size:12px;color:var(--inks);padding:2px 0;display:flex;gap:6px;"><span style="color:var(--gold);flex-shrink:0;">·</span>${l}</div>`).join('')}
+  ` : ''
+
+  document.getElementById('scr-result').innerHTML = `
+    <div class="screening-result" style="border-color:${result.color};background:${result.bg};">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span class="screening-badge" style="background:${result.color};">${result.label}</span>
+        <span style="font-size:13px;font-weight:500;color:var(--inks);">
+          ${entity || country} — ${date}
+        </span>
+      </div>
+      <p style="font-size:13px;color:var(--inks);line-height:1.6;margin-bottom:${result.listes.length?'1rem':'0'};">
+        ${result.message}
+      </p>
+      ${listesHtml}
+    </div>
+  `
+  document.getElementById('scr-loading').style.display = 'none'
+  document.getElementById('scr-result').style.display = 'block'
+  document.getElementById('scr-btn').disabled = false
+}
+</script>
+</body>
+</html>

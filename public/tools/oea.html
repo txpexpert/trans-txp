@@ -1,0 +1,590 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OEA — Opérateur Économique Agréé | Transit-IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+  :root {
+    --bg:#F7F5F0; --surface:#FFFFFF; --card:#FDFCF9;
+    --border:#E5DDD0; --border2:#D4C9B5;
+    --gold:#B8922A; --gold-dark:#8C6B18; --gold-bg:#FBF5E6; --gold-line:rgba(184,146,42,.25);
+    --green:#1D6E40; --green-bg:#EAF5EE;
+    --red:#B83232; --red-bg:#FDF0EF;
+    --blue:#2A5E8C; --blue-bg:#EBF2FA;
+    --orange:#B86E1A; --orange-bg:#FBF2E6;
+    --text:#1C1814; --text2:#3C3630; --muted:#7A7068; --muted2:#A09080;
+    --shadow:0 1px 4px rgba(28,24,20,.06),0 4px 16px rgba(28,24,20,.04);
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;}
+
+  .topbar{background:var(--surface);border-bottom:2px solid var(--gold);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+  .module-badge{background:var(--gold);color:#fff;font-family:var(--mono);font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;}
+  .topbar-title{font-family:'DM Serif Display',serif;font-size:17px;margin-left:12px;}
+  .status-tag{background:var(--green-bg);color:var(--green);border:1px solid rgba(29,110,64,.2);font-family:var(--mono);font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-bottom:1px solid var(--border);}
+  .kpi{padding:16px 20px;text-align:center;border-right:1px solid var(--border);}
+  .kpi:last-child{border:none;}
+  .kpi-num{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--gold-dark);margin-bottom:3px;}
+  .kpi-lbl{color:var(--muted);font-size:11px;line-height:1.3;}
+
+  .tabs{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{padding:12px 18px;border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+  .tab.active{color:var(--gold-dark);border-bottom-color:var(--gold);font-weight:600;}
+  .panel{display:none;padding:22px;max-width:980px;margin:0 auto;}
+  .panel.active{display:block;}
+
+  .sec-head{font-family:'DM Serif Display',serif;font-size:17px;color:var(--gold-dark);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+
+  /* CRITÈRES */
+  .critere-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow);}
+  .critere-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;}
+  .critere-num{font-family:var(--mono);font-size:11px;color:var(--gold-dark);background:var(--gold-bg);border:1px solid var(--gold-line);padding:3px 8px;border-radius:4px;flex-shrink:0;}
+  .critere-title{font-size:13px;font-weight:600;color:var(--text);flex:1;}
+  .critere-badge{font-size:10px;padding:3px 8px;border-radius:4px;font-weight:600;flex-shrink:0;}
+  .badge-obligatoire{background:var(--red-bg);color:var(--red);}
+  .badge-important{background:var(--orange-bg);color:var(--orange);}
+  .critere-chevron{font-size:12px;color:var(--muted);transition:transform .2s;}
+  .critere-card.open .critere-chevron{transform:rotate(180deg);}
+  .critere-body{display:none;padding:14px 16px;border-top:1px solid var(--border);background:var(--card);}
+  .critere-card.open .critere-body{display:block;}
+  .critere-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:10px;}
+  .critere-check-list{display:flex;flex-direction:column;gap:6px;}
+  .check-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);}
+  .check-box{width:18px;height:18px;border:2px solid var(--border2);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;}
+  .check-box.checked{background:var(--green);border-color:var(--green);color:#fff;}
+
+  /* SCORE */
+  .score-widget{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:var(--shadow);}
+  .score-bar-wrap{background:var(--border);border-radius:8px;height:12px;margin:12px 0;overflow:hidden;}
+  .score-bar-fill{height:100%;border-radius:8px;transition:width .6s ease;background:linear-gradient(90deg,var(--green),#2EA35A);}
+  .score-text{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--gold-dark);}
+  .score-label{font-size:12px;color:var(--muted);margin-top:4px;}
+
+  /* PROCESS */
+  .process-step{display:flex;gap:16px;margin-bottom:16px;}
+  .step-num{width:36px;height:36px;border-radius:50%;background:var(--gold);color:#fff;font-family:var(--mono);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step-content{flex:1;}
+  .step-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+  .step-desc{font-size:12px;color:var(--text2);line-height:1.65;}
+  .step-duration{font-family:var(--mono);font-size:10px;color:var(--gold-dark);background:var(--gold-bg);padding:2px 7px;border-radius:4px;margin-top:5px;display:inline-block;}
+
+  /* AVANTAGES */
+  .avantage-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .avantage-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow);}
+  .avantage-icon{font-size:22px;margin-bottom:8px;}
+  .avantage-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+  .avantage-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+  .avantage-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-top:8px;display:inline-block;}
+  .tag-ss{background:var(--green-bg);color:var(--green);}
+  .tag-sc{background:var(--blue-bg);color:var(--blue);}
+  .tag-s{background:var(--gold-bg);color:var(--gold-dark);}
+
+  /* MINI ALERT */
+  .mini-alert{border-radius:8px;padding:11px 14px;font-size:12px;border:1px solid;margin:8px 0;line-height:1.55;}
+  .mini-alert.green{background:var(--green-bg);border-color:rgba(29,110,64,.25);color:var(--green);}
+  .mini-alert.gold{background:var(--gold-bg);border-color:var(--gold-line);color:var(--gold-dark);}
+  .mini-alert.blue{background:var(--blue-bg);border-color:rgba(42,94,140,.25);color:var(--blue);}
+
+  .dtable{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);}
+  .dtable th{background:var(--gold-bg);color:var(--gold-dark);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
+  .dtable td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);}
+  .dtable tr:last-child td{border:none;}
+  .dtable tr:hover td{background:var(--gold-bg);}
+
+  .footer{text-align:center;padding:14px;color:var(--muted2);font-size:11px;border-top:1px solid var(--border);margin-top:40px;background:var(--surface);}
+  @media(max-width:640px){.kpi-row{grid-template-columns:1fr 1fr;}.avantage-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;">
+    <div class="module-badge">OEA</div>
+    <div class="topbar-title">Opérateur Économique Agréé — ADII</div>
+    <span class="status-tag" style="margin-left:12px;">Circulaire ADII N°6600</span>
+  </div>
+  <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">Auto-évaluation · Processus · Avantages</span>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">13</div><div class="kpi-lbl">Critères d'éligibilité ADII</div></div>
+  <div class="kpi"><div class="kpi-num">3</div><div class="kpi-lbl">Types de statut OEA</div></div>
+  <div class="kpi"><div class="kpi-num">–40%</div><div class="kpi-lbl">Caution douanière (OEA-SS)</div></div>
+  <div class="kpi"><div class="kpi-num">&lt;2h</div><div class="kpi-lbl">Délai mainlevée OEA agréé</div></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('auto-eval')">📋 Auto-évaluation (13 critères)</button>
+  <button class="tab" onclick="switchTab('processus')">🔄 Processus d'agrément</button>
+  <button class="tab" onclick="switchTab('avantages')">🎯 Avantages & Facilités</button>
+  <button class="tab" onclick="switchTab('types')">📊 Types OEA</button>
+</div>
+
+<!-- ── AUTO-ÉVALUATION ── -->
+<div class="panel active" id="tab-auto-eval">
+
+  <div id="score-widget" class="score-widget">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <div style="font-size:11px;color:var(--muted);letter-spacing:.06em;margin-bottom:4px;">SCORE D'AUTO-ÉVALUATION OEA</div>
+        <div class="score-text" id="score-val">0%</div>
+        <div class="score-label" id="score-label">Cochez les critères remplis pour évaluer votre éligibilité</div>
+      </div>
+      <div style="text-align:right;font-size:11px;color:var(--muted);" id="score-detail">0 / 0 critères<br>remplis</div>
+    </div>
+    <div class="score-bar-wrap"><div class="score-bar-fill" id="score-bar" style="width:0%"></div></div>
+    <div id="score-verdict" style="font-size:12px;color:var(--muted);font-style:italic;"></div>
+  </div>
+
+  <div class="sec-head">📋 Les 13 critères d'éligibilité ADII</div>
+  <div class="mini-alert gold">💡 Cochez les critères que votre entreprise remplit actuellement. Le score s'actualise en temps réel.</div>
+
+  <!-- CRITÈRE 1 -->
+  <div class="critere-card" id="c1">
+    <div class="critere-header" onclick="toggleCritere('c1')">
+      <span class="critere-num">01</span>
+      <span class="critere-title">Activité douanière établie au Maroc</span>
+      <span class="critere-badge badge-obligatoire">Obligatoire</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise doit exercer une activité commerciale liée au commerce extérieur (importateur, exportateur, transitaire, transporteur, agent maritime) et être établie légalement au Maroc depuis au moins 3 ans.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c1')"></div><span>Entreprise enregistrée au registre de commerce marocain</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c1')"></div><span>Activité en commerce extérieur depuis au moins 3 ans</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c1')"></div><span>ICE et identifiant BADR actifs et à jour</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 2 -->
+  <div class="critere-card" id="c2">
+    <div class="critere-header" onclick="toggleCritere('c2')">
+      <span class="critere-num">02</span>
+      <span class="critere-title">Conformité douanière — Absence d'infractions</span>
+      <span class="critere-badge badge-obligatoire">Obligatoire</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise ne doit avoir commis aucune infraction douanière grave au cours des 3 dernières années. Les infractions mineures régularisées peuvent être acceptées selon appréciation ADII.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c2')"></div><span>Aucune condamnation douanière au cours des 3 dernières années</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c2')"></div><span>Aucun redressement fiscal significatif non régularisé</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c2')"></div><span>Pas de litige contentieux en cours avec l'ADII</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 3 -->
+  <div class="critere-card" id="c3">
+    <div class="critere-header" onclick="toggleCritere('c3')">
+      <span class="critere-num">03</span>
+      <span class="critere-title">Solvabilité financière prouvée</span>
+      <span class="critere-badge badge-obligatoire">Obligatoire</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise doit démontrer une santé financière satisfaisante sur les 3 derniers exercices. Les bilans, CPC et états de synthèse certifiés par un expert-comptable sont requis.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c3')"></div><span>Bilans et CPC des 3 dernières années disponibles</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c3')"></div><span>Aucune procédure de redressement ou liquidation judiciaire</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c3')"></div><span>Ratio de solvabilité satisfaisant (capitaux propres positifs)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 4 -->
+  <div class="critere-card" id="c4">
+    <div class="critere-header" onclick="toggleCritere('c4')">
+      <span class="critere-num">04</span>
+      <span class="critere-title">Système de gestion des archives et données douanières</span>
+      <span class="critere-badge badge-obligatoire">Obligatoire</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise doit disposer d'un système permettant l'archivage et la traçabilité de toutes les opérations douanières, accessible pour contrôle à posteriori par l'ADII.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c4')"></div><span>DUM et documents d'accompagnement archivés sur 10 ans</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c4')"></div><span>Accès électronique aux données douanières sur demande ADII</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c4')"></div><span>Procédure documentée de conservation des archives</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 5 -->
+  <div class="critere-card" id="c5">
+    <div class="critere-header" onclick="toggleCritere('c5')">
+      <span class="critere-num">05</span>
+      <span class="critere-title">Sécurité des systèmes informatiques</span>
+      <span class="critere-badge badge-important">Important</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">Les systèmes informatiques traitant les données douanières doivent être protégés contre tout accès non autorisé, avec des mesures de sécurité documentées et auditables.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c5')"></div><span>Politique de sécurité informatique documentée</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c5')"></div><span>Contrôles d'accès aux systèmes douaniers (authentification)</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c5')"></div><span>Sauvegardes régulières et plan de continuité</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 6 -->
+  <div class="critere-card" id="c6">
+    <div class="critere-header" onclick="toggleCritere('c6')">
+      <span class="critere-num">06</span>
+      <span class="critere-title">Sécurité physique des locaux et des marchandises</span>
+      <span class="critere-badge badge-obligatoire">Obligatoire</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">Les entrepôts, zones de stockage et locaux professionnels doivent présenter des garanties de sécurité physique suffisantes pour prévenir les intrusions et les substitutions de marchandises.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c6')"></div><span>Contrôle d'accès aux entrepôts (badges, clés, gardiennage)</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c6')"></div><span>Système de vidéosurveillance opérationnel</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c6')"></div><span>Procédure de vérification des scellés et des conteneurs</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 7 -->
+  <div class="critere-card" id="c7">
+    <div class="critere-header" onclick="toggleCritere('c7')">
+      <span class="critere-num">07</span>
+      <span class="critere-title">Sécurité du personnel</span>
+      <span class="critere-badge badge-important">Important</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise doit s'assurer de la fiabilité des employés impliqués dans les opérations douanières, avec des procédures de recrutement et de vérification adaptées.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c7')"></div><span>Vérification des antécédents pour les postes sensibles</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c7')"></div><span>Formation douanière du personnel dédié (attestations)</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c7')"></div><span>Procédure de gestion des départs et accès résiduels</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 8 -->
+  <div class="critere-card" id="c8">
+    <div class="critere-header" onclick="toggleCritere('c8')">
+      <span class="critere-num">08</span>
+      <span class="critere-title">Sécurité des partenaires commerciaux</span>
+      <span class="critere-badge badge-important">Important</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise doit évaluer la fiabilité de ses fournisseurs, transitaires et transporteurs et s'assurer qu'ils appliquent des standards de sécurité comparables.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c8')"></div><span>Procédure de sélection et d'évaluation des partenaires</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c8')"></div><span>Clauses de sécurité dans les contrats fournisseurs</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c8')"></div><span>Préférence pour les partenaires OEA reconnus</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 9 -->
+  <div class="critere-card" id="c9">
+    <div class="critere-header" onclick="toggleCritere('c9')">
+      <span class="critere-num">09</span>
+      <span class="critere-title">Sécurité du fret et des marchandises en transit</span>
+      <span class="critere-badge badge-obligatoire">Obligatoire</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">Des procédures doivent garantir l'intégrité des marchandises tout au long de la chaîne logistique, depuis le chargement jusqu'à la livraison finale.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c9')"></div><span>Procédure de vérification des scellés douaniers (BADR)</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c9')"></div><span>Traçabilité GPS ou tracking des envois sensibles</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c9')"></div><span>Procédure d'alerte en cas d'anomalie (effraction, substitution)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 10 -->
+  <div class="critere-card" id="c10">
+    <div class="critere-header" onclick="toggleCritere('c10')">
+      <span class="critere-num">10</span>
+      <span class="critere-title">Exactitude et exhaustivité des déclarations</span>
+      <span class="critere-badge badge-obligatoire">Obligatoire</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">Les DUM et déclarations doivent être exactes, complètes et soumises dans les délais. Le taux d'erreur sur les déclarations est évalué par l'ADII sur les 3 dernières années.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c10')"></div><span>Taux d'erreur &lt;2% sur les déclarations des 3 dernières années</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c10')"></div><span>Procédure de vérification interne avant soumission DUM</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c10')"></div><span>Formation continue du personnel déclarant</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 11 -->
+  <div class="critere-card" id="c11">
+    <div class="critere-header" onclick="toggleCritere('c11')">
+      <span class="critere-num">11</span>
+      <span class="critere-title">Conformité fiscale — DGI et CNSS</span>
+      <span class="critere-badge badge-obligatoire">Obligatoire</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise doit être en règle avec ses obligations fiscales (IS, TVA, IR) et sociales (CNSS, CIMR) sans dettes exigibles non contestées.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c11')"></div><span>Attestation de régularité fiscale DGI (moins de 3 mois)</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c11')"></div><span>Attestation de régularité CNSS (moins de 3 mois)</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c11')"></div><span>Déclarations TVA à jour (aucun retard)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 12 -->
+  <div class="critere-card" id="c12">
+    <div class="critere-header" onclick="toggleCritere('c12')">
+      <span class="critere-num">12</span>
+      <span class="critere-title">Procédures internes de contrôle douanier</span>
+      <span class="critere-badge badge-important">Important</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise doit disposer de procédures internes formalisées couvrant l'ensemble du cycle douanier : classification, valorisation, origine, déclaration et archivage.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c12')"></div><span>Manuel de procédures douanières documenté et signé</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c12')"></div><span>Désignation d'un responsable douane interne identifié</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c12')"></div><span>Audit interne douanier annuel réalisé</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITÈRE 13 -->
+  <div class="critere-card" id="c13">
+    <div class="critere-header" onclick="toggleCritere('c13')">
+      <span class="critere-num">13</span>
+      <span class="critere-title">Capacité à signaler les irrégularités à l'ADII</span>
+      <span class="critere-badge badge-important">Important</span>
+      <span class="critere-chevron">▼</span>
+    </div>
+    <div class="critere-body">
+      <div class="critere-desc">L'entreprise doit disposer d'un canal de communication direct avec l'ADII et d'une procédure de signalement des irrégularités détectées dans la chaîne logistique.</div>
+      <div class="critere-check-list">
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c13')"></div><span>Point de contact ADII désigné et connu des équipes</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c13')"></div><span>Procédure de signalement des anomalies (tentatives de fraude)</span></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this,'c13')"></div><span>Registre des incidents douaniers tenu à jour</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROCESSUS ── -->
+<div class="panel" id="tab-processus">
+  <div class="sec-head">🔄 Les étapes du processus d'agrément OEA — ADII</div>
+  <div class="mini-alert blue">ℹ️ Délai total estimé : <strong>6 à 12 mois</strong> selon la complexité de l'entreprise et la complétude du dossier initial.</div>
+
+  <div style="margin-top:20px;">
+    <div class="process-step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Dépôt du dossier de candidature</div>
+        <div class="step-desc">Soumission du formulaire de candidature OEA à la Direction Régionale de l'ADII compétente. Le dossier comprend les statuts, bilans des 3 dernières années, extrait du RC, attestations fiscales et sociales, et le questionnaire d'auto-évaluation complété.</div>
+        <span class="step-duration">Délai : J+0 — Votre action</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Accusé de réception et examen préliminaire</div>
+        <div class="step-desc">L'ADII accuse réception et vérifie la complétude du dossier. En cas de pièces manquantes, un délai de régularisation de 15 jours est accordé. Un inspecteur référent est désigné pour le suivi du dossier.</div>
+        <span class="step-duration">Délai : 15 à 30 jours après dépôt</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Audit de conformité sur site</div>
+        <div class="step-desc">Une équipe d'inspecteurs ADII effectue un audit sur site couvrant les 13 critères. Inspection des locaux, entrepôts, systèmes informatiques, archives et procédures internes. L'entreprise est informée 15 jours à l'avance.</div>
+        <span class="step-duration">Délai : 1 à 3 jours d'audit (2 à 4 mois après dépôt)</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Rapport d'audit et plan d'action</div>
+        <div class="step-desc">L'ADII remet un rapport d'audit détaillant les points conformes, les non-conformités mineures et majeures. Pour les non-conformités, un plan d'action correctif est négocié avec l'entreprise, avec des délais de mise en conformité.</div>
+        <span class="step-duration">Délai : 30 jours après audit</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">Mise en conformité et suivi</div>
+        <div class="step-desc">L'entreprise met en œuvre les actions correctives identifiées et transmet les preuves de conformité à l'inspecteur référent. Des audits de suivi peuvent être diligentés pour les non-conformités majeures.</div>
+        <span class="step-duration">Délai : 1 à 6 mois selon les actions requises</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <div class="step-title">Décision d'agrément et délivrance du certificat</div>
+        <div class="step-desc">Après validation de la conformité, la Direction Générale de l'ADII délivre le certificat OEA (OEA-S, OEA-C ou OEA-SS). Le certificat est publié au BADR et l'entreprise figure sur la liste publique des OEA agréés.</div>
+        <span class="step-duration">Délai : 30 à 60 jours — Certificat valable 3 ans</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <div class="step-title">Suivi annuel et renouvellement</div>
+        <div class="step-desc">L'ADII effectue un contrôle annuel de maintien de conformité. Le renouvellement doit être initié 3 mois avant l'expiration du certificat (tous les 3 ans). Un audit de renouvellement simplifié est réalisé pour les opérateurs conformes.</div>
+        <span class="step-duration">Renouvellement tous les 3 ans</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mini-alert gold" style="margin-top:16px;">📞 Contact ADII : Bureau OEA — Direction Régionale de votre ressort · Email : oea@douane.gov.ma · Site : www.douane.gov.ma</div>
+</div>
+
+<!-- ── AVANTAGES ── -->
+<div class="panel" id="tab-avantages">
+  <div class="sec-head">🎯 Avantages et facilités accordés aux opérateurs OEA</div>
+  <div class="avantage-grid">
+    <div class="avantage-card">
+      <div class="avantage-icon">⚡</div>
+      <div class="avantage-title">Mainlevée accélérée — Circuit vert prioritaire</div>
+      <div class="avantage-desc">Les déclarations OEA bénéficient d'un traitement prioritaire dans BADR avec une mainlevée en moins de 2 heures pour les flux courants, contre 24h à 72h pour les opérateurs standards.</div>
+      <span class="avantage-tag tag-ss">OEA-SS · OEA-S · OEA-C</span>
+    </div>
+    <div class="avantage-card">
+      <div class="avantage-icon">💰</div>
+      <div class="avantage-title">Réduction des cautions douanières jusqu'à 40%</div>
+      <div class="avantage-desc">Les cautions bancaires requises pour les régimes économiques (ATPA, AT, EIF) sont réduites de 40% pour les opérateurs OEA-SS, allégeant significativement la charge financière des régimes suspensifs.</div>
+      <span class="avantage-tag tag-ss">OEA-SS uniquement</span>
+    </div>
+    <div class="avantage-card">
+      <div class="avantage-icon">🔍</div>
+      <div class="avantage-title">Contrôles physiques réduits et ciblés</div>
+      <div class="avantage-desc">Le taux de contrôle physique des conteneurs est considérablement réduit pour les OEA. En cas de contrôle, celui-ci est coordonné et réalisé en priorité pour éviter les immobilisations prolongées.</div>
+      <span class="avantage-tag tag-ss">OEA-SS · OEA-S</span>
+    </div>
+    <div class="avantage-card">
+      <div class="avantage-icon">📋</div>
+      <div class="avantage-title">Déclarations simplifiées et pré-dédouanement</div>
+      <div class="avantage-desc">Possibilité de déposer des déclarations anticipées avant l'arrivée physique des marchandises, permettant une mainlevée dès l'arrivée au port sans attente de traitement.</div>
+      <span class="avantage-tag tag-s">OEA-S · OEA-SS</span>
+    </div>
+    <div class="avantage-card">
+      <div class="avantage-icon">🤝</div>
+      <div class="avantage-title">Reconnaissance mutuelle internationale</div>
+      <div class="avantage-desc">Le statut OEA marocain est reconnu mutuellement par l'UE (Accord AEO-MRA) et par plusieurs pays partenaires, offrant des facilités équivalentes dans les pays de destination des exportations marocaines.</div>
+      <span class="avantage-tag tag-sc">OEA-C · OEA-SS</span>
+    </div>
+    <div class="avantage-card">
+      <div class="avantage-icon">🏷️</div>
+      <div class="avantage-title">Interlocuteur ADII dédié</div>
+      <div class="avantage-desc">Chaque opérateur OEA dispose d'un inspecteur référent dédié à l'ADII, facilitant la résolution rapide des problèmes opérationnels et assurant une communication directe avec l'administration.</div>
+      <span class="avantage-tag tag-ss">Tous types OEA</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── TYPES OEA ── -->
+<div class="panel" id="tab-types">
+  <div class="sec-head">📊 Les 3 types de certificat OEA — ADII</div>
+  <table class="dtable">
+    <thead>
+      <tr>
+        <th>Type</th><th>Intitulé complet</th><th>Cible</th><th>Critères supplémentaires</th><th>Avantages clés</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong style="color:var(--gold-dark);">OEA-S</strong></td>
+        <td>Opérateur Économique Agréé — Simplifié</td>
+        <td>Importateurs, exportateurs, commissionnaires en douane</td>
+        <td>13 critères de base</td>
+        <td>Circuit vert, mainlevée accélérée, pré-dédouanement</td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--blue);">OEA-C</strong></td>
+        <td>Opérateur Économique Agréé — Conformité douanière</td>
+        <td>Opérateurs axés sur la sécurité de la chaîne logistique</td>
+        <td>13 critères + sécurité supply chain renforcée</td>
+        <td>Reconnaissance internationale, contrôles coordonnés</td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--green);">OEA-SS</strong></td>
+        <td>Opérateur Économique Agréé — Simplifié & Sécurité</td>
+        <td>Grands importateurs-exportateurs, multinationales</td>
+        <td>Totalité des critères OEA-S + OEA-C</td>
+        <td>–40% cautions, toutes facilités, MRA international</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="mini-alert green" style="margin-top:16px;">✅ <strong>Recommandation :</strong> Pour les PME commençant la démarche OEA, l'<strong>OEA-S</strong> est le point d'entrée optimal. L'évolution vers OEA-SS se fait progressivement lors du renouvellement à 3 ans.</div>
+  <div class="mini-alert blue" style="margin-top:8px;">🌍 <strong>Accord MRA UE-Maroc :</strong> Le certificat OEA-SS marocain est reconnu équivalent au statut AEO (Authorized Economic Operator) européen dans le cadre de l'Accord de Reconnaissance Mutuelle signé entre l'ADII et la Commission Européenne.</div>
+</div>
+
+<div class="footer">
+  Transit-IA — Module OEA · Sources : Circulaire ADII N°6600 · Code des Douanes et Impôts Indirects · OMD SAFE Framework 2023
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function toggleCritere(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+const checkState = {};
+const critereChecks = {};
+
+document.querySelectorAll('.critere-card').forEach(card => {
+  const id = card.id;
+  critereChecks[id] = { total: card.querySelectorAll('.check-box').length, checked: 0 };
+});
+
+function toggleCheck(el, critereId) {
+  el.classList.toggle('checked');
+  if (el.classList.contains('checked')) {
+    el.innerHTML = '✓';
+    critereChecks[critereId].checked++;
+  } else {
+    el.innerHTML = '';
+    critereChecks[critereId].checked--;
+  }
+  updateScore();
+}
+
+function updateScore() {
+  let totalChecks = 0, checkedTotal = 0;
+  Object.values(critereChecks).forEach(c => {
+    totalChecks += c.total;
+    checkedTotal += c.checked;
+  });
+  const pct = totalChecks > 0 ? Math.round(checkedTotal / totalChecks * 100) : 0;
+  document.getElementById('score-val').textContent = pct + '%';
+  document.getElementById('score-bar').style.width = pct + '%';
+  document.getElementById('score-detail').innerHTML = checkedTotal + ' / ' + totalChecks + ' critères<br>remplis';
+
+  let verdict = '';
+  if (pct >= 90) { verdict = '🟢 Dossier très solide — Candidature OEA recommandée'; document.getElementById('score-bar').style.background = 'linear-gradient(90deg,#1D6E40,#2EA35A)'; }
+  else if (pct >= 70) { verdict = '🟡 Profil prometteur — Quelques axes de renforcement avant candidature'; document.getElementById('score-bar').style.background = 'linear-gradient(90deg,#B8922A,#D4AA45)'; }
+  else if (pct >= 50) { verdict = '🟠 Profil partiel — Plan d\'action de mise en conformité recommandé'; document.getElementById('score-bar').style.background = 'linear-gradient(90deg,#B86E1A,#D48A35)'; }
+  else if (pct > 0)  { verdict = '🔴 Préparation insuffisante — Démarche à initier sur 12-18 mois'; document.getElementById('score-bar').style.background = 'linear-gradient(90deg,#B83232,#D45050)'; }
+  document.getElementById('score-verdict').textContent = verdict;
+}
+</script>
+</body>
+</html>
+

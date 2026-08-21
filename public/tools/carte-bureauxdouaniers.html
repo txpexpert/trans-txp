@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortNet & Tanger Med — Transit-IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{
+  --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;
+  --bg:#F9F8F4;--bg2:#F2F0EA;--surface:#FFFFFF;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
+  --purple:#5A2AA0;--purple-bg:#F3EEFE;--purple-bd:#C8A8F8;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 4px 20px rgba(26,26,24,.1);
+  --r:8px;--r-lg:12px;--r-xl:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.hdr{background:rgba(249,248,244,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
+.hdr-inner{max-width:1300px;margin:0 auto;display:flex;align-items:stretch;gap:0;height:56px}
+.logo-area{display:flex;align-items:center;gap:12px;padding:0 20px 0 0;border-right:1px solid var(--border);margin-right:14px;flex-shrink:0}
+.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{fill:#fff}
+.logo-txt{font-family:"DM Serif Display",serif;font-size:15px;color:var(--ink);line-height:1.1}
+.logo-txt span{display:block;font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-nav{display:flex;align-items:stretch;flex:1}
+.nav-btn{padding:0 16px;border:none;background:transparent;color:var(--muted);font-family:"DM Sans",sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap}
+.nav-btn:hover{color:var(--ink);background:var(--bg2)}
+.nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:var(--gold-pale)}
+.hdr-badges{display:flex;align-items:center;gap:6px;margin-left:auto;padding-left:14px;flex-shrink:0}
+.hb{font-family:"JetBrains Mono",monospace;font-size:9px;padding:3px 10px;letter-spacing:.07em;text-transform:uppercase;border-radius:100px;border:1px solid}
+.hb-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.hb-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+
+/* LAYOUT */
+.wrap{max-width:1300px;margin:0 auto;padding:0 2rem 5rem}
+.section{display:none}.section.active{display:block}
+
+/* HERO */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--border);margin-bottom:26px}
+.hero h1{font-family:"DM Serif Display",serif;font-size:clamp(22px,3.5vw,40px);color:var(--ink);line-height:1.05}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p{color:var(--mid);font-size:13px;margin-top:8px;max-width:640px;line-height:1.75}
+.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.htag{font-family:"JetBrains Mono",monospace;font-size:9.5px;padding:3px 10px;border-radius:100px;border:1px solid}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 22px;box-shadow:var(--sh);margin-bottom:14px}
+.card-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* FLOW */
+.flow{display:flex;flex-direction:column;gap:0}
+.flow-step{display:flex;gap:14px;position:relative;padding-bottom:0}
+.flow-step:not(:last-child){padding-bottom:20px}
+.flow-step:not(:last-child)::before{content:"";position:absolute;left:17px;top:34px;bottom:0;width:1px;background:var(--border-mid)}
+.flow-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;flex-shrink:0;position:relative;z-index:1;border:2px solid}
+.flow-body{flex:1;padding-top:4px}
+.flow-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.flow-desc{font-size:12.5px;color:var(--mid);line-height:1.6}
+.flow-meta{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);margin-top:4px}
+.flow-docs{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.flow-doc-tag{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid var(--border);background:var(--bg2);color:var(--mid)}
+
+/* PORTS GRID */
+.ports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:20px}
+.port-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--sh);cursor:pointer;transition:all .18s;border-top:3px solid transparent}
+.port-card:hover{box-shadow:var(--sh-md);border-top-color:var(--gold)}
+.port-card.active{border-top-color:var(--gold);background:var(--gold-pale);border-color:var(--gold-bd)}
+.port-name{font-family:"DM Serif Display",serif;font-size:16px;color:var(--ink);margin-bottom:4px}
+.port-code{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:.1em;margin-bottom:8px}
+.port-stats{display:flex;gap:12px;flex-wrap:wrap}
+.port-stat{font-size:11px;color:var(--muted)}
+.port-stat strong{color:var(--ink);font-size:13px;font-family:"DM Sans",sans-serif;font-weight:700;display:block}
+
+/* PORT DETAIL */
+.port-detail{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;box-shadow:var(--sh-md);margin-bottom:16px}
+.port-detail-hdr{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.port-flag{width:56px;height:56px;border-radius:var(--r-lg);background:var(--blue-bg);border:1px solid var(--blue-bd);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.port-detail-name{font-family:"DM Serif Display",serif;font-size:24px;color:var(--ink);margin-bottom:4px}
+
+/* INFO PILLS */
+.info-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pill{font-family:"JetBrains Mono",monospace;font-size:10px;padding:4px 12px;border-radius:100px;border:1px solid;display:flex;align-items:center;gap:5px}
+.pill-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+.pill-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.pill-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.pill-amber{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
+
+/* TABLES */
+.info-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.info-table th{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.info-table td{padding:8px 10px;border-bottom:1px solid var(--bg2);vertical-align:middle;color:var(--mid)}
+.info-table td:first-child{font-weight:600;color:var(--ink)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:var(--gold-pale)}
+.td-badge{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid}
+
+/* ALERTS */
+.alert{border-radius:var(--r);padding:10px 14px;font-size:12.5px;display:flex;gap:8px;align-items:flex-start;margin-bottom:10px}
+.alert svg{flex-shrink:0;margin-top:1px}
+.a-info{background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue)}
+.a-warn{background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)}
+.a-ok{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)}
+.a-red{background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:700px){.kpi-row{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;text-align:center;box-shadow:var(--sh)}
+.kpi-val{font-family:"DM Sans",sans-serif;font-size:22px;font-weight:700;color:var(--gold);line-height:1}
+.kpi-lbl{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* LAW REF */
+.law-ref{font-family:"JetBrains Mono",monospace;font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;color:var(--mid);line-height:1.6}
+.law-ref strong{color:var(--ink)}
+
+/* CHECKLIST */
+.chk-list{display:flex;flex-direction:column;gap:5px}
+.chk-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);font-size:12.5px;cursor:pointer;transition:all .15s}
+.chk-item:hover{border-color:var(--gold-bd);background:var(--gold-pale)}
+.chk-item.done{background:var(--green-bg);border-color:var(--green-bd)}
+.chk-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border-mid);background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s}
+.chk-item.done .chk-box{background:var(--green);border-color:var(--green);color:#fff}
+.chk-lbl{flex:1;color:var(--ink)}
+.chk-who{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted)}
+
+footer{border-top:1px solid var(--border);padding:16px 2rem;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);letter-spacing:.07em;background:var(--surface);margin-top:2rem}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="logo-area">
+      <div class="logo-mark"><svg width="15" height="15" viewBox="0 0 12 12"><path d="M6 0L11 3V9L6 12L1 9V3Z"/></svg></div>
+      <div class="logo-txt">Transit-IA <span>Intelligence Douanière</span></div>
+    </div>
+    <nav class="hdr-nav">
+      <button class="nav-btn active" onclick="showSection('bureaux',this)">Bureaux &amp; Postes</button>
+      <button class="nav-btn" onclick="showSection('carte',this)" style="color:var(--gold);font-weight:700">🗺 Carte</button>
+      <button class="nav-btn" onclick="showSection('procedures',this)">Procédures</button>
+      <button class="nav-btn" onclick="showSection('checklist',this)">Checklist import</button>
+      <button class="nav-btn" onclick="showSection('ports',this)">Ports marocains</button>
+      <button class="nav-btn" onclick="showSection('tanger',this)">Tanger Med</button>
+      <button class="nav-btn" onclick="showSection('portnet',this)">PortNet</button>
+    </nav>
+    <div class="hdr-badges">
+      <span class="hb hb-gold">Arr. 459-24 · ADII 2024</span>
+      <span class="hb hb-blue">Tanger Med — 7M EVP/an</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════════════ PORTNET ══════════════════ -->
+<div id="section-portnet" class="section">
+  <div class="hero">
+    <h1>Bureaux — Douaniers <em>Logistique Portuaire</em></h1>
+    <p>PortNet est la plateforme électronique nationale interconnectant la douane, l'ANP, les transitaires, consignataires et armateurs. Toute opération portuaire démarre par PortNet.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">www.portnet.ma</span>
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">24/7 en ligne</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Obligatoire depuis 2014</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">13</div><div class="kpi-lbl">Ports connectés</div></div>
+    <div class="kpi"><div class="kpi-val">4 000+</div><div class="kpi-lbl">Utilisateurs actifs</div></div>
+    <div class="kpi"><div class="kpi-val">100%</div><div class="kpi-lbl">Formalités dématérialisées</div></div>
+    <div class="kpi"><div class="kpi-val">7 jours</div><div class="kpi-lbl">Délai séjour standard</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Processus PortNet — Import maritime
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">1</div>
+          <div class="flow-body">
+            <div class="flow-title">Avis d'arrivée navire (consignataire)</div>
+            <div class="flow-desc">Le consignataire dépose l'avis d'arrivée du navire dans PortNet avant ou à l'arrivée. Crée automatiquement l'escale.</div>
+            <div class="flow-meta">Délai : 24h avant arrivée</div>
+            <div class="flow-docs"><span class="flow-doc-tag">Manifeste navire</span><span class="flow-doc-tag">Plan d'arrimage</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Fiche suiveuse (consignataire/transitaire)</div>
+            <div class="flow-desc">Générée automatiquement à l'arrivée du navire. Le transitaire ou le consignataire la valide dans PortNet. Lie le B/L à la DUM.</div>
+            <div class="flow-meta">Générée automatiquement par PortNet</div>
+            <div class="flow-docs"><span class="flow-doc-tag">B/L ou LTA</span><span class="flow-doc-tag">Facture</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Dépôt DUM dans BADR (transitaire agréé)</div>
+            <div class="flow-desc">Après validation de la fiche suiveuse, le transitaire dépose la DUM dans BADR. La DUM est obligatoirement liée à la fiche suiveuse PortNet.</div>
+            <div class="flow-meta">Uniquement transitaire agréé ADII</div>
+            <div class="flow-docs"><span class="flow-doc-tag">DUM BADR</span><span class="flow-doc-tag">Tous documents</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">4</div>
+          <div class="flow-body">
+            <div class="flow-title">Contrôle douanier & circuit</div>
+            <div class="flow-desc">BADR oriente vers circuit Vert, Jaune ou Rouge. En parallèle, PORTNET déclenche les autorisations ANP pour l'accès au terminal.</div>
+            <div class="flow-meta">Circuit Vert = mainlevée directe</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">5</div>
+          <div class="flow-body">
+            <div class="flow-title">Bon à enlever & sortie marchandises</div>
+            <div class="flow-desc">Le BAE est généré dans BADR après paiement. PortNet synchronise avec ANP pour autoriser la sortie physique du terminal.</div>
+            <div class="flow-meta">Clôture du dossier PortNet</div>
+            <div class="flow-docs"><span class="flow-doc-tag">BAE BADR</span><span class="flow-doc-tag">Quittance droits</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Services PortNet disponibles</div>
+        <table class="info-table">
+          <thead><tr><th>Service</th><th>Utilisateurs</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>Avis d'arrivée navire</td><td>Consignataires</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Actif</span></td></tr>
+            <tr><td>Fiche suiveuse</td><td>Transitaires / Consign.</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Actif</span></td></tr>
+            <tr><td>Manifeste électronique</td><td>Armateurs / Agents</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Actif</span></td></tr>
+            <tr><td>Suivi conteneurs</td><td>Importateurs</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Actif</span></td></tr>
+            <tr><td>Paiement enlèvement</td><td>Transitaires</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Actif</span></td></tr>
+            <tr><td>Escales aériennes</td><td>Agents IATA</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Actif</span></td></tr>
+            <tr><td>API B2B entreprises</td><td>ERP/TMS</td><td><span class="td-badge" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">Sur demande</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Acteurs interconnectés PortNet</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="pill pill-blue">ADII — Douane</span>
+          <span class="pill pill-blue">ANP — Autorité Portuaire</span>
+          <span class="pill pill-gold">Transitaires agréés</span>
+          <span class="pill pill-gold">Consignataires maritimes</span>
+          <span class="pill pill-green">ONSSA</span>
+          <span class="pill pill-green">IMANOR / CoC</span>
+          <span class="pill pill-gold">Armateurs / Compagnies</span>
+          <span class="pill pill-blue">Office des Changes</span>
+          <span class="pill pill-blue">NARSA</span>
+          <span class="pill pill-green">DPMA (Pêche)</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Délais réglementaires PortNet</div>
+        <table class="info-table">
+          <thead><tr><th>Opération</th><th>Délai légal</th><th>Pénalité si dépassement</th></tr></thead>
+          <tbody>
+            <tr><td>Dépôt manifeste navire</td><td>Avant arrivée</td><td>Amende ADII</td></tr>
+            <tr><td>Séjour marchandises (franchise)</td><td>7 jours</td><td>Surestaries ANP</td></tr>
+            <tr><td>Dépôt DUM après fiche suiveuse</td><td>Dans les 30 jours</td><td>Abandonnement possible</td></tr>
+            <tr><td>Dédouanement urgence (périsssables)</td><td>24–48h</td><td>Circuit rouge prioritaire</td></tr>
+            <tr><td>Enlèvement après BAE</td><td>24h recommandé</td><td>Surestaries terminal</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="law-ref">
+    <strong>Base légale :</strong> Loi n°15-02 relative aux ports · Dahir portant Code des Douanes Art. 70 · Circulaire ADII relative à la dématérialisation · Décision ANP sur les délais de séjour
+  </div>
+</div>
+
+<!-- ══════════════════ PORTS ══════════════════ -->
+<div id="section-ports" class="section">
+  <div class="hero">
+    <h1>Ports marocains — <em>Référentiel</em></h1>
+    <p>Caractéristiques, spécialités et bureaux de douane des principaux ports marocains. Le Maroc dispose de 38 ports dont 13 à vocation commerciale.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">38 ports</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">13 ports commerciaux</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">1er port Afrique : Tanger Med</span>
+    </div>
+  </div>
+
+  <div class="ports-grid">
+    <div class="port-card active" onclick="showPort('tanger-med', this)">
+      <div class="port-name">🚢 Tanger Med</div>
+      <div class="port-code">MATNG · TANGER MED I & II</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>9M+</strong>EVP / an</div>
+        <div class="port-stat"><strong>1er</strong>Afrique & Méditerranée</div>
+        <div class="port-stat"><strong>72</strong>Lignes maritimes</div>
+      </div>
+    </div>
+    <div class="port-card" onclick="showPort('casablanca', this)">
+      <div class="port-name">⚓ Casablanca</div>
+      <div class="port-code">MACAS · PORT CASABLANCA</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>1er</strong>Port général du Maroc</div>
+        <div class="port-stat"><strong>33M t</strong>Trafic annuel</div>
+        <div class="port-stat"><strong>MEAD</strong>Entrepôt principal</div>
+      </div>
+    </div>
+    <div class="port-card" onclick="showPort('agadir', this)">
+      <div class="port-name">🐟 Agadir</div>
+      <div class="port-code">MAAGA · PORT AGADIR</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>1er</strong>Port de pêche Maroc</div>
+        <div class="port-stat"><strong>Fruits &amp; légumes</strong>Export agrumes</div>
+        <div class="port-stat"><strong>Ro-Ro</strong>Véhicules</div>
+      </div>
+    </div>
+    <div class="port-card" onclick="showPort('nador', this)">
+      <div class="port-name">🏭 Nador West Med</div>
+      <div class="port-code">MANAD · NADOR WEST MED</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>Nouveau</strong>En développement</div>
+        <div class="port-stat"><strong>Vrac industriel</strong>Minerais, céréales</div>
+        <div class="port-stat"><strong>ZFI Nador</strong>Zone franche</div>
+      </div>
+    </div>
+    <div class="port-card" onclick="showPort('safi', this)">
+      <div class="port-name">🏭 Safi</div>
+      <div class="port-code">MASFI · PORT SAFI</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>Phosphates</strong>OCP export</div>
+        <div class="port-stat"><strong>Centrale thermique</strong>Charbon</div>
+        <div class="port-stat"><strong>Engrais</strong>Export</div>
+      </div>
+    </div>
+    <div class="port-card" onclick="showPort('mohammedia', this)">
+      <div class="port-name">⛽ Mohammedia</div>
+      <div class="port-code">MAMOH · PORT MOHAMMEDIA</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>Hydrocarbures</strong>SAMIR / ONHYM</div>
+        <div class="port-stat"><strong>Vrac liquide</strong>Pétrole brut</div>
+        <div class="port-stat"><strong>Céréales</strong>Import</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="port-detail-zone">
+    <!-- Port detail injected here -->
+  </div>
+</div>
+
+<!-- ══════════════════ TANGER MED ══════════════════ -->
+<div id="section-tanger" class="section">
+  <div class="hero">
+    <h1><em>Tanger Med</em> — Premier Port d'Afrique</h1>
+    <p>Tanger Med est le plus grand port à conteneurs d'Afrique et de Méditerranée. Hub logistique stratégique pour le transit entre l'Europe, l'Afrique et l'Asie.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">9M+ EVP/an</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">72 lignes maritimes</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">ZFI · ZL · TMPA</span>
+      <span class="htag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">14 km de Tarifa</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">9M+</div><div class="kpi-lbl">EVP / an</div></div>
+    <div class="kpi"><div class="kpi-val">72</div><div class="kpi-lbl">Lignes maritimes</div></div>
+    <div class="kpi"><div class="kpi-val">180</div><div class="kpi-lbl">Armateurs desservis</div></div>
+    <div class="kpi"><div class="kpi-val">1 000</div><div class="kpi-lbl">Ha zone logistique</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Terminaux Tanger Med</div>
+      <table class="info-table">
+        <thead><tr><th>Terminal</th><th>Opérateur</th><th>Capacité</th><th>Spécialité</th></tr></thead>
+        <tbody>
+          <tr><td>Tanger Med 1 — T1</td><td>APM Terminals</td><td>1,5M EVP</td><td>Conteneurs</td></tr>
+          <tr><td>Tanger Med 1 — T2</td><td>Eurogate / MSC</td><td>1,5M EVP</td><td>Conteneurs</td></tr>
+          <tr><td>Tanger Med 2 — T3</td><td>APM Terminals</td><td>3,5M EVP</td><td>Conteneurs</td></tr>
+          <tr><td>Tanger Med 2 — T4</td><td>Marsa Maroc</td><td>2,5M EVP</td><td>Conteneurs</td></tr>
+          <tr><td>Terminal Ro-Ro</td><td>TMPA</td><td>700 000 veh/an</td><td>Véhicules neufs</td></tr>
+          <tr><td>Terminal Ferry</td><td>TMPA</td><td>7M pass/an</td><td>Passagers / TIR</td></tr>
+          <tr><td>Terminal Vrac liquide</td><td>Horizon Terminals</td><td>—</td><td>Hydrocarbures</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Zones économiques Tanger Med</div>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-dot" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold);font-size:9px">ZFI</div>
+            <div class="flow-body">
+              <div class="flow-title">Zone Franche Industrielle (ZFI)</div>
+              <div class="flow-desc">Exonération IS 5 ans puis 8,75% pendant 20 ans. Exonération TVA sur achats locaux et imports. Libre rapatriement des bénéfices. Pour industries manufacturières export.</div>
+              <div class="flow-meta">Agrément TICAD / AMDIE requis</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue);font-size:9px">ZL</div>
+            <div class="flow-body">
+              <div class="flow-title">Zone Logistique (ZL)</div>
+              <div class="flow-desc">Entrepôts, plateformes logistiques, cross-docking. Régime douanier entrepôt de stockage. Activités : conditionnement, distribution, e-commerce fulfillment.</div>
+              <div class="flow-meta">Contrat TMSA / Marsa Maroc</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green);font-size:9px">ZAT</div>
+            <div class="flow-body">
+              <div class="flow-title">Zone d'Activité des Trafics (ZAT)</div>
+              <div class="flow-desc">Zone de transit pur : consolidation, déconsolidation, transbordement. Marchandises sous douane sans contact avec le territoire douanier marocain.</div>
+              <div class="flow-meta">Régime transit — aucun droit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Bureau douane Tanger Med</div>
+        <table class="info-table">
+          <tbody>
+            <tr><td>Bureau principal</td><td>ADII Tanger Med Port</td></tr>
+            <tr><td>Code bureau BADR</td><td>TNG_MED</td></tr>
+            <tr><td>Horaires</td><td>24h/24 — 7j/7</td></tr>
+            <tr><td>Circuit vert</td><td>Mainlevée directe (< 2h)</td></tr>
+            <tr><td>Circuit jaune</td><td>Contrôle doc. (2–6h)</td></tr>
+            <tr><td>Circuit rouge</td><td>Visite physique (1–3 jours)</td></tr>
+            <tr><td>MEAD Tanger</td><td>Terminal à conteneurs T1/T2</td></tr>
+            <tr><td>Contact ADII TM</td><td>adii.tangiermed@douane.gov.ma</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Corridors logistiques depuis Tanger Med</div>
+    <table class="info-table">
+      <thead><tr><th>Destination</th><th>Distance</th><th>Mode</th><th>Délai estimé</th><th>Infrastructure</th></tr></thead>
+      <tbody>
+        <tr><td>Casablanca</td><td>340 km</td><td>Autoroute / Train</td><td>3–4h route · 5h30 train</td><td>A1 + LGV Tanger-Casa</td></tr>
+        <tr><td>Rabat</td><td>250 km</td><td>Autoroute</td><td>2h30</td><td>A1</td></tr>
+        <tr><td>Fès</td><td>340 km</td><td>Autoroute</td><td>3h</td><td>A2</td></tr>
+        <tr><td>Marrakech</td><td>590 km</td><td>Autoroute</td><td>5h</td><td>A1 + A7</td></tr>
+        <tr><td>Madrid (Espagne)</td><td>330 km + ferry</td><td>Ferry Ro-Ro + route</td><td>Ferry 35 min · Route 3h</td><td>Tanger Med → Algésiras</td></tr>
+        <tr><td>Port de Rotterdam (Europe)</td><td>Maritime</td><td>Conteneur</td><td>4–5 jours</td><td>Lignes feeder Tanger Med</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert a-info">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span>Tanger Med traite <strong>65% du trafic conteneurisé marocain</strong>. La LGV Tanger-Casablanca (2h10) renforce le positionnement de la région comme hub logistique national et régional.</span>
+  </div>
+</div>
+
+<!-- ══════════════════ PROCÉDURES ══════════════════ -->
+<div id="section-procedures" class="section">
+  <div class="hero">
+    <h1>Procédures <em>Portuaires</em> Marocaines</h1>
+    <p>Guide des procédures spécifiques aux opérations portuaires : dépôt de manifeste, déclaration sommaire, gestion des conteneurs, enlèvement d'urgence.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Déclaration sommaire (Manifeste)</div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">1</div>
+          <div class="flow-body">
+            <div class="flow-title">Dépôt manifeste dans PortNet</div>
+            <div class="flow-desc">Le consignataire maritime dépose le manifeste navire dans PortNet avant ou à l'arrivée. Chaque BL est détaillé avec poids, nature, conteneurs.</div>
+            <div class="flow-meta">Délai : avant arrivée · Pénalité si tardif</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Validation BADR — Déclaration sommaire</div>
+            <div class="flow-desc">BADR enregistre automatiquement la déclaration sommaire à partir du manifeste PortNet. Attribue un numéro de référence unique à chaque article.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Fiche suiveuse pour le transitaire</div>
+            <div class="flow-desc">Le transitaire récupère la fiche suiveuse dans PortNet pour établir la DUM dans BADR. Sans fiche suiveuse valide = impossible de soumettre la DUM.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Enlèvement d'urgence — Marchandises périssables</div>
+      <div class="alert a-warn" style="margin-bottom:12px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+        <span>Pour les marchandises périssables (fruits, légumes, viandes, médicaments), une procédure d'urgence permet le dédouanement accéléré sous 24–48h.</span>
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--red-bg);border-color:var(--red-bd);color:var(--red)">!</div>
+          <div class="flow-body">
+            <div class="flow-title">Demande enlèvement urgent</div>
+            <div class="flow-desc">Le transitaire soumet une demande d'enlèvement urgent dans BADR en mentionnant la nature périssable et les délais de conservation.</div>
+            <div class="flow-meta">À soumettre dès arrivée navire</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Contrôle ONSSA prioritaire</div>
+            <div class="flow-desc">ONSSA effectue le contrôle phytosanitaire ou vétérinaire en priorité. Les délais sont réduits à 24–48h pour les produits frais.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">3</div>
+          <div class="flow-body">
+            <div class="flow-title">BAE urgent &amp; enlèvement</div>
+            <div class="flow-desc">Après contrôle favorable, le BAE est émis en urgence. Les marchandises peuvent être retirées immédiatement.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Gestion des conteneurs — Délais et frais</div>
+      <table class="info-table">
+        <thead><tr><th>Délai</th><th>Situation</th><th>Frais applicables</th></tr></thead>
+        <tbody>
+          <tr><td>J+1 à J+7</td><td>Franchise (délai gratuit)</td><td>Aucun</td></tr>
+          <tr><td>J+8 à J+14</td><td>Surestaries 1ère tranche</td><td>~15 USD/j/conteneur 20'</td></tr>
+          <tr><td>J+15 à J+30</td><td>Surestaries 2ème tranche</td><td>~25 USD/j/conteneur 20'</td></tr>
+          <tr><td>J+30 à J+60</td><td>Surestaries majorées</td><td>~40 USD/j/conteneur 20'</td></tr>
+          <tr><td>Après J+60</td><td>Risque d'abandonnement</td><td>Procédure judiciaire ADII</td></tr>
+        </tbody>
+      </table>
+      <div class="alert a-warn" style="margin-top:10px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+        <span>Les surestaries s'accumulent rapidement. Un conteneur 40' bloqué 30 jours peut générer 1 500 à 3 000 USD de frais de séjour, en plus des droits et taxes douaniers.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Abandonnement &amp; vente aux enchères</div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">1</div>
+          <div class="flow-body">
+            <div class="flow-title">Non-dédouanement dans les délais</div>
+            <div class="flow-desc">Passé le délai réglementaire sans DUM valide, l'ADII met la marchandise en procédure d'abandonnement après mise en demeure.</div>
+            <div class="flow-meta">Délai légal : 3 mois en général</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--red-bg);border-color:var(--red-bd);color:var(--red)">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Mise en vente aux enchères</div>
+            <div class="flow-desc">L'ADII organise une vente publique des marchandises abandonnées. Le produit couvre les droits, taxes et frais de séjour. Le reliquat éventuel est remis au propriétaire.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--muted)">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Destruction si invendable</div>
+            <div class="flow-desc">Les marchandises périmées, dangereuses ou sans valeur marchande sont détruites sous contrôle douanier. Les frais de destruction sont à la charge du dernier propriétaire connu.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="law-ref">
+    <strong>Base légale :</strong> Art. 70 à 113 Code des Douanes (mise en douane) · Art. 214 (abandonnement) · Loi 15-02 ports · Décision ANP sur les délais de séjour · Circulaire ADII sur les enlèvements urgents
+  </div>
+</div>
+
+<!-- ══════════════════ CHECKLIST ══════════════════ -->
+<div id="section-checklist" class="section">
+  <div class="hero">
+    <h1>Checklist <em>Import Maritime</em></h1>
+    <p>Liste de contrôle complète pour une opération d'importation maritime sans accroc. Cochez les étapes au fur et à mesure.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Avant expédition (côté fournisseur)
+      </div>
+      <div class="chk-list" id="chk-avant"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        À l'arrivée du navire (côté importateur)
+      </div>
+      <div class="chk-list" id="chk-arrivee"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        Dédouanement BADR (transitaire)
+      </div>
+      <div class="chk-list" id="chk-badr"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Enlèvement &amp; clôture
+      </div>
+      <div class="chk-list" id="chk-enlevement"></div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 20px;box-shadow:var(--sh);margin-top:4px">
+    <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Progression globale</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div id="global-progress-bar" style="height:100%;background:var(--gold);border-radius:4px;transition:width .3s;width:0%"></div></div>
+      <div id="global-progress-txt" style="font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;color:var(--gold);min-width:60px;text-align:right">0 / 0</div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button onclick="checkAll()" style="padding:6px 16px;background:var(--gold);color:#fff;border:none;border-radius:var(--r);font-family:DM Sans,sans-serif;font-size:12px;cursor:pointer">Tout cocher</button>
+      <button onclick="uncheckAll()" style="padding:6px 16px;background:none;border:1px solid var(--border);border-radius:var(--r);color:var(--mid);font-family:DM Sans,sans-serif;font-size:12px;cursor:pointer">Réinitialiser</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════ BUREAUX & POSTES ══════════════════ -->
+<div id="section-bureaux" class="section active">
+  <div class="hero">
+    <h1>Bureaux &amp; Postes <em>de Douane</em></h1>
+    <p>Référentiel officiel issu de l'Arrêté n°459-24 du 20 février 2024, fixant la liste des bureaux et postes de douane et leurs compétences. Abroge l'arrêté n°2984-20 du 26 novembre 2020.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">Arrêté n°459-24</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Art. 28 Code Douanes</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">En vigueur — Fév. 2024</span>
+      <span class="htag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Signé : FOUZI LEKJAA</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">27</div><div class="kpi-lbl">Bureaux de douane</div></div>
+    <div class="kpi"><div class="kpi-val">72</div><div class="kpi-lbl">Postes de douane</div></div>
+    <div class="kpi"><div class="kpi-val">3</div><div class="kpi-lbl">Niveaux de compétence</div></div>
+    <div class="kpi"><div class="kpi-val">2024</div><div class="kpi-lbl">Mise à jour</div></div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div style="margin-bottom:16px;display:flex;gap:10px;align-items:center">
+    <div style="flex:1;position:relative">
+      <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="bureau-search" type="text" placeholder="Rechercher un bureau ou poste…" oninput="filterBureaux()"
+        style="width:100%;padding:9px 12px 9px 36px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);font-family:DM Sans,sans-serif;font-size:13px;color:var(--ink);outline:none;box-shadow:var(--sh)">
+    </div>
+    <div style="display:flex;gap:6px">
+      <button onclick="filterType('tous')" id="filt-tous" class="filt-btn filt-active" style="padding:7px 14px;border-radius:var(--r);font-family:DM Sans,sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--gold-bd);background:var(--gold-dim);color:var(--gold)">Tous</button>
+      <button onclick="filterType('bureaux')" id="filt-bureaux" class="filt-btn" style="padding:7px 14px;border-radius:var(--r);font-family:DM Sans,sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--mid)">Bureaux</button>
+      <button onclick="filterType('postes')" id="filt-postes" class="filt-btn" style="padding:7px 14px;border-radius:var(--r);font-family:DM Sans,sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--mid)">Postes</button>
+    </div>
+  </div>
+
+  <!-- ANNEXE 1 : BUREAUX DE DOUANE -->
+  <div id="block-bureaux">
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Annexe n°1 — Bureaux de douane (27 bureaux)
+        <span style="margin-left:auto;font-family:JetBrains Mono,monospace;font-size:9px;color:var(--gold)">Art. premier — Arrêté 459-24</span>
+      </div>
+
+      <!-- Compétence I -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:7px 12px;background:var(--green-bg);border:1px solid var(--green-bd);border-radius:var(--r)">
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--green);background:#fff;border:1px solid var(--green-bd);padding:2px 9px;border-radius:100px">I</span>
+          <span style="font-size:12.5px;color:var(--green);font-weight:600">Plein exercice de douane et impôts indirects</span>
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--green);margin-left:auto">(TIC + garantie platine/or/argent)</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px" id="b1-comp1">
+          <span class="b-tag b-tag-green bureau-item" data-type="bureaux" data-comp="I">Agadir</span>
+          <span class="b-tag b-tag-green bureau-item" data-type="bureaux" data-comp="I">Casablanca</span>
+          <span class="b-tag b-tag-green bureau-item" data-type="bureaux" data-comp="I">Essaouira</span>
+          <span class="b-tag b-tag-green bureau-item" data-type="bureaux" data-comp="I">Fès</span>
+          <span class="b-tag b-tag-green bureau-item" data-type="bureaux" data-comp="I">Marrakech</span>
+          <span class="b-tag b-tag-green bureau-item" data-type="bureaux" data-comp="I">Oujda</span>
+          <span class="b-tag b-tag-green bureau-item" data-type="bureaux" data-comp="I">Rabat-Salé</span>
+          <span class="b-tag b-tag-green bureau-item" data-type="bureaux" data-comp="I">Tanger</span>
+        </div>
+      </div>
+
+      <!-- Compétence II -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:7px 12px;background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:var(--r)">
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--amber);background:#fff;border:1px solid var(--amber-bd);padding:2px 9px;border-radius:100px">II</span>
+          <span style="font-size:12.5px;color:var(--amber);font-weight:600">Plein exercice de douane + compétence limitée impôts indirects</span>
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--amber);margin-left:auto">(non ouverts à la garantie)</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Ahfir</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Al Hoceima</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Casablanca-Magasins et aires de dédouanement</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Dakhla</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Kénitra</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Laayoune</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Larache</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Meknès</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Mohammedia</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Nador</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Ouarzazate</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Safi</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Settat</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Tan-Tan</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Taza</span>
+          <span class="b-tag b-tag-amber bureau-item" data-type="bureaux" data-comp="II">Tétouan</span>
+        </div>
+      </div>
+
+      <!-- Compétence III -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:7px 12px;background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:var(--r)">
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--blue);background:#fff;border:1px solid var(--blue-bd);padding:2px 9px;border-radius:100px">III</span>
+          <span style="font-size:12.5px;color:var(--blue);font-weight:600">Plein exercice de douane</span>
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--blue);margin-left:auto">(douane uniquement)</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span class="b-tag b-tag-blue bureau-item" data-type="bureaux" data-comp="III">Casablanca-Port</span>
+          <span class="b-tag b-tag-blue bureau-item" data-type="bureaux" data-comp="III">Nouasser</span>
+          <span class="b-tag b-tag-blue bureau-item" data-type="bureaux" data-comp="III">Tanger-Méditerranée</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANNEXE 2 : POSTES DE DOUANE -->
+  <div id="block-postes">
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Annexe n°2 — Postes de douane (72 postes)
+        <span style="margin-left:auto;font-family:JetBrains Mono,monospace;font-size:9px;color:var(--gold)">Art. 2 — Arrêté 459-24</span>
+      </div>
+
+      <!-- Postes Compétence I -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:7px 12px;background:var(--green-bg);border:1px solid var(--green-bd);border-radius:var(--r)">
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--green);background:#fff;border:1px solid var(--green-bd);padding:2px 9px;border-radius:100px">I</span>
+          <span style="font-size:12.5px;color:var(--green);font-weight:600">Surveillance &amp; contrôle passage en douane</span>
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--green);margin-left:auto">(personnes, bagages, marchandises, moyens de transport)</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Agadir-Al Massira</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Agadir-Port</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Ahfir</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Assilah</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Bab-Melilia</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Bab-Sebta</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Bario-Chino</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Belyounech</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Béni Mellal</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Bir-Guendouz</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Boujdour</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Casablanca-Magasins et Aires de Dédouanement</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Casablanca-Port</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Chmaala</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Dakhla</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Essaouira</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Farkhana</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Fès-Saiss</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Figuig</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Guergarate</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Jebha</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Kénitra-Zones d'Accélération Industrielle</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Laayoune</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Lakhnag</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Mariguari</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Marina d'Agadir</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Marina de Saidia</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Marina d'Atalayoun</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Marrakech-Menara</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Mehdya</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Nador-El Aroui</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Nador-Port</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Nouasser</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Ouarzazate</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Oujda-Angad</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Rabat-Salé</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Ras Kebdana</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Safi</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Tanger-Ibn-Batouta</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Tanger-Magasins et Aires de Dédouanement</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Tanger Méditerranée-Port</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Tanger-Port</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Tanger-Zones d'Accélération Industrielle</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Tarfaya</span>
+          <span class="b-tag b-tag-green poste-item bureau-item" data-type="postes" data-comp="I">Zouj-Beghal</span>
+        </div>
+      </div>
+
+      <!-- Postes Compétence II -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:7px 12px;background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r)">
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--red);background:#fff;border:1px solid var(--red-bd);padding:2px 9px;border-radius:100px">II</span>
+          <span style="font-size:12.5px;color:var(--red);font-weight:600">Lutte contre la fraude et la contrebande</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Agadir</span>
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Berkane</span>
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Midar</span>
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Rabat-Administration Centrale</span>
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Tanger</span>
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Tanger-Motos</span>
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Taourirt</span>
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Taza</span>
+          <span class="b-tag b-tag-red poste-item bureau-item" data-type="postes" data-comp="II">Zaio</span>
+        </div>
+      </div>
+
+      <!-- Postes Compétence III -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:7px 12px;background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:var(--r)">
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--blue);background:#fff;border:1px solid var(--blue-bd);padding:2px 9px;border-radius:100px">III</span>
+          <span style="font-size:12.5px;color:var(--blue);font-weight:600">Surveillance + contrôle passage en douane + lutte contre la fraude</span>
+          <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--blue);margin-left:auto">(compétence mixte)</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Al Hoceima</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Casablanca</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Fès</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Fnideq</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Jorf-Lasfar</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Kénitra</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Larache</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Marrakech</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">M'diq</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Meknès</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Mohammedia</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Nador</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Oujda</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Rabat</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Settat</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Sidi-Ifni</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Tan-Tan</span>
+          <span class="b-tag b-tag-blue poste-item bureau-item" data-type="postes" data-comp="III">Tétouan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="no-result" style="display:none;padding:24px;text-align:center;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--muted)">
+    Aucun résultat pour cette recherche.
+  </div>
+
+  <div class="law-ref" style="margin-top:12px">
+    <strong>Base légale :</strong> Arrêté n°459-24 du 10 chaabane 1445 (20 février 2024) — FOUZI LEKJAA · Art. 28 Code des Douanes (Dahir n°1-77-339) · Abroge l'arrêté n°2984-20 du 26 novembre 2020
+  </div>
+</div>
+
+<style>
+.b-tag{font-family:"DM Sans",sans-serif;font-size:12px;font-weight:500;padding:5px 12px;border-radius:100px;border:1px solid;cursor:default;transition:opacity .15s}
+.b-tag-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.b-tag-amber{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
+.b-tag-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+.b-tag-red{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)}
+.b-tag.hidden{display:none}
+</style>
+
+</div><!-- /wrap -->
+
+<!-- ══════════════════ CARTE ══════════════════ -->
+<div id="section-carte" class="section">
+  <style>
+    #section-carte.active {
+      display:flex !important;
+      flex-direction:column;
+      position:fixed;
+      top:57px; left:0; right:0; bottom:0;
+      z-index:100;
+      background:var(--bg);
+    }
+    .carte-layout { display:flex; flex:1; min-height:0; overflow:hidden; }
+    .carte-sidebar {
+      width:270px; flex-shrink:0; background:var(--surface);
+      border-right:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden;
+    }
+    .carte-sb-head { padding:12px 14px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .carte-sb-head h2 { font-family:"DM Serif Display",serif; font-size:14px; color:var(--ink); margin-bottom:6px; }
+    .carte-search { width:100%; padding:7px 10px 7px 30px; border:1px solid var(--border); border-radius:var(--r);
+      background:var(--bg); font-family:"DM Sans",sans-serif; font-size:12px; color:var(--ink); outline:none; }
+    .carte-search-wrap { position:relative; margin-bottom:8px; }
+    .carte-search-wrap svg { position:absolute; left:9px; top:50%; transform:translateY(-50%); pointer-events:none; }
+    .carte-layer-btns { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+    .carte-lyr { font-family:"JetBrains Mono",monospace; font-size:9px; padding:3px 7px; border-radius:100px;
+      border:1.5px solid; cursor:pointer; transition:opacity .15s; font-weight:700; letter-spacing:.04em; }
+    .carte-lyr.off { opacity:.32; }
+    .carte-sb-list { flex:1; overflow-y:auto; padding:6px 0; }
+    .carte-grp-hdr { padding:5px 14px 4px; font-family:"JetBrains Mono",monospace; font-size:8.5px; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+    .carte-item { padding:6px 14px; cursor:pointer; display:flex; align-items:center; gap:7px;
+      transition:background .12s; border-bottom:1px solid #F5F4F0; }
+    .carte-item:hover { background:var(--gold-pale); }
+    .carte-item.hl { background:var(--gold-pale); border-left:3px solid var(--gold); }
+    .carte-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; border:2px solid; }
+    .carte-nm { font-size:12px; color:var(--ink); font-weight:500; flex:1; }
+    .carte-lbl { font-family:"JetBrains Mono",monospace; font-size:8px; padding:1px 5px; border-radius:100px; border:1px solid; flex-shrink:0; }
+    #carte-map-el { flex:1; min-height:0; height:100%; }
+    .carte-legend {
+      position:absolute; bottom:20px; right:14px; z-index:400;
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg);
+      padding:12px 14px; box-shadow:var(--sh-md); font-size:11px;
+    }
+    .carte-legend h4 { font-family:"DM Serif Display",serif; font-size:12px; color:var(--ink); margin-bottom:7px; }
+    .lg-row { display:flex; align-items:center; gap:7px; margin-bottom:4px; }
+    .lg-dot { width:11px; height:11px; border-radius:50%; flex-shrink:0; border:2px solid; }
+    .lg-txt { font-size:10.5px; color:var(--mid); }
+    .leaflet-popup-content-wrapper { border-radius:var(--r-lg); box-shadow:var(--sh-md); border:1px solid var(--border); }
+    .leaflet-popup-content { margin:12px 14px; min-width:190px; font-family:"DM Sans",sans-serif; }
+    .lf-pname { font-family:"DM Serif Display",serif; font-size:14px; color:var(--ink); margin-bottom:3px; }
+    .lf-pbadge { font-family:"JetBrains Mono",monospace; font-size:9px; padding:2px 7px; border-radius:100px;
+      border:1px solid; display:inline-block; margin-bottom:7px; font-weight:700; }
+    .lf-pitems { font-size:11.5px; color:var(--mid); line-height:1.7; }
+    .lf-pitems li { list-style:none; padding:2px 0; border-bottom:1px solid #F0EEE8; }
+  </style>
+
+  <div class="carte-layout">
+    <!-- sidebar -->
+    <aside class="carte-sidebar">
+      <div class="carte-sb-head">
+        <h2>Localités douanières</h2>
+        <div class="carte-search-wrap">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="carte-search" id="carte-search" type="text" placeholder="Rechercher…" oninput="carteSearch(this.value)">
+        </div>
+        <div class="carte-layer-btns" id="carte-lyr-btns">
+          <button class="carte-lyr" id="clyr-b1" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)" onclick="carteToggle('b1',this)">Bureau I</button>
+          <button class="carte-lyr" id="clyr-b2" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)" onclick="carteToggle('b2',this)">Bureau II</button>
+          <button class="carte-lyr" id="clyr-b3" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)" onclick="carteToggle('b3',this)">Bureau III</button>
+          <button class="carte-lyr" id="clyr-p1" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green);border-style:dashed" onclick="carteToggle('p1',this)">Poste I</button>
+          <button class="carte-lyr" id="clyr-p2" style="background:var(--red-bg);border-color:var(--red-bd);color:var(--red);border-style:dashed" onclick="carteToggle('p2',this)">Poste II</button>
+          <button class="carte-lyr" id="clyr-p3" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue);border-style:dashed" onclick="carteToggle('p3',this)">Poste III</button>
+          <button class="carte-lyr" id="clyr-port" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)" onclick="carteToggle('port',this)">Ports</button>
+        </div>
+      </div>
+      <div class="carte-sb-list" id="carte-sb-list"></div>
+    </aside>
+
+    <!-- map + legend -->
+    <div style="position:relative;flex:1">
+      <div id="carte-map-el"></div>
+      <div class="carte-legend">
+        <h4>Légende</h4>
+        <div class="lg-row"><div class="lg-dot" style="background:var(--green-bg);border-color:var(--green)"></div><span class="lg-txt">Bureau Comp. I — plein + TIC</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:var(--amber-bg);border-color:var(--amber)"></div><span class="lg-txt">Bureau Comp. II — plein exercice</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:var(--blue-bg);border-color:var(--blue)"></div><span class="lg-txt">Bureau Comp. III — douane seule</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:#fff;border-color:var(--green);border-style:dashed"></div><span class="lg-txt">Poste Comp. I — surveillance</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:#fff;border-color:var(--red);border-style:dashed"></div><span class="lg-txt">Poste Comp. II — fraude</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:#fff;border-color:var(--blue);border-style:dashed"></div><span class="lg-txt">Poste Comp. III — mixte</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:var(--purple-bg);border-color:var(--purple)"></div><span class="lg-txt">Port commercial</span></div>
+        <div style="margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted)">Arrêté n°459-24 · ADII 2024</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Transit-IA — PortNet &amp; Ports Marocains · Bureaux &amp; Postes ADII · Arrêté n°459-24 · Edition 2026</footer>
+
+<script>
+// NAVIGATION
+let carteMapInited = false;
+function showSection(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (name === 'ports') initPortDetail();
+  if (name === 'checklist') initChecklist();
+  if (name === 'carte') { setTimeout(initCarte, 80); }
+  if (name !== 'carte') window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// PORTS
+const PORTS = {
+  'tanger-med': {
+    name:'Tanger Med', code:'MATNG', flag:'🚢',
+    desc:'Premier port à conteneurs d\'Afrique et de Méditerranée. Plateforme de transbordement international reliant l\'Europe, l\'Afrique et l\'Asie via le détroit de Gibraltar.',
+    stats:[['Trafic','>9M EVP/an'],['Surface','1 000 Ha ZF'],['Terminaux','4 conteneurs + Ro-Ro + Ferry'],['Bureau douane','ADII Tanger Med (24/7)'],['Accès ferroviaire','Oui — LGV Tanger-Casablanca'],['Accès routier','A1 — 350 km de Casablanca']],
+    pills:['ZFI','Zone logistique','Transit','Ro-Ro','Ferry'],
+    note:'Seul port marocain avec accès direct à l\'Atlantique et à la Méditerranée. Hub de transbordement n°1 Afrique.',
+    regime:'061 ZFE / 031 Transit / 071 Entrepôt'
+  },
+  'casablanca': {
+    name:'Casablanca', code:'MACAS', flag:'⚓',
+    desc:'Principal port général du Maroc. Centre de gravité du commerce extérieur marocain — traite 33 millions de tonnes de marchandises par an.',
+    stats:[['Trafic','33M t/an'],['Marchandises','Vrac, conteneurs, Ro-Ro'],['Bureau douane','ADII Casablanca Port (principal)'],['MEAD','Magasin sous douane principal'],['Accès ferroviaire','Oui — gare Casa-Port'],['Hinterland','Grand Casablanca (55% du PIB)']],
+    pills:['Conteneurs','Vrac sec','Vrac liquide','Ro-Ro','MEAD'],
+    note:'Bureau de douane principal du Maroc. MEAD (Magasin et Aire d\'Embarquement sous douane) disponible pour stockage temporaire.',
+    regime:'010 / 071 Entrepôt / 051 AT / 031 Transit'
+  },
+  'agadir': {
+    name:'Agadir', code:'MAAGA', flag:'🐟',
+    desc:'Premier port de pêche du Maroc et plateforme d\'exportation des produits agricoles du Souss-Massa (agrumes, primeurs, produits de la mer).',
+    stats:[['Spécialité','Pêche + agro-export'],['Agrumes','1er port export agrumes'],['Ro-Ro','Véhicules neufs export'],['Bureau douane','ADII Agadir Port'],['Arrière-pays','Souss-Massa (agriculture)'],['Accès','Autoroute Agadir-Tiznit']],
+    pills:['Pêche','Agrumes','Primeurs','Ro-Ro','Conteneurs'],
+    note:'Port crucial pour l\'exportation des produits agro-alimentaires marocains. ONSSA très présent pour contrôle phytosanitaire.',
+    regime:'040 Export / 010 Import / 071 Entrepôt'
+  },
+  'nador': {
+    name:'Nador West Med', code:'MANAD', flag:'🏭',
+    desc:'Nouveau port en développement au nord-est du Maroc. Complémentaire à Tanger Med pour désengorger le trafic de la zone orientale et desservir l\'hinterland algérien.',
+    stats:[['Statut','En développement (2025+)'],['Vocation','Vrac industriel + conteneurs'],['ZFI Nador','Zone franche disponible'],['Hinterland','Oriental marocain + Algérie'],['Bureau douane','ADII Nador'],['Accès','Voie express Nador-Oujda']],
+    pills:['Vrac','ZFI','Conteneurs','Minerais'],
+    note:'Projet phare du Plan Maroc Portuaire 2030. Permettra de réduire les coûts logistiques pour l\'Oriental et d\'ouvrir vers l\'Afrique subsaharienne.',
+    regime:'010 / 061 ZFE / 031 Transit'
+  },
+  'safi': {
+    name:'Safi', code:'MASFI', flag:'🏭',
+    desc:'Port industriel spécialisé dans l\'export des phosphates et engrais de l\'OCP et l\'import de charbon pour la centrale thermique.',
+    stats:[['Spécialité','Phosphates OCP'],['Charbon','Import centrale thermique'],['Engrais','Export mondial'],['Bureau douane','ADII Safi'],['OCP Safi','Complexe chimique attenant'],['Trafic','~12M t/an']],
+    pills:['Phosphates','Engrais','Charbon','Vrac'],
+    note:'Port industriel lié à l\'OCP. Trafic dominé par les exportations de phosphates et dérivés vers l\'Asie, l\'Afrique et l\'Amérique latine.',
+    regime:'040 Export phosphates / 010 Import charbon'
+  },
+  'mohammedia': {
+    name:'Mohammedia', code:'MAMOH', flag:'⛽',
+    desc:'Port pétrolier principal du Maroc, approvisionné la raffinerie SAMIR et les réserves stratégiques d\'hydrocarbures nationales.',
+    stats:[['Spécialité','Hydrocarbures / pétrole brut'],['SAMIR','Ancienne raffinerie'],['ONHYM','Réserves stratégiques'],['Bureau douane','ADII Mohammedia'],['Accès','A3 — 30 km de Casablanca'],['Trafic','~15M t/an']],
+    pills:['Pétrole brut','Produits raffinés','Gaz','Vrac liquide'],
+    note:'Port soumis à réglementations spécifiques ANRE et ONHYM. Licences d\'importation obligatoires pour tout produit énergétique. TIC applicable.',
+    regime:'010 + Licence ANRE / 071 Entrepôt'
+  },
+};
+
+function showPort(key, btn) {
+  document.querySelectorAll('.port-card').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const p = PORTS[key];
+  if (!p) return;
+  document.getElementById('port-detail-zone').innerHTML = `
+    <div class="port-detail">
+      <div class="port-detail-hdr">
+        <div class="port-flag">${p.flag}</div>
+        <div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Code UN/LOCODE · ${p.code}</div>
+          <div class="port-detail-name">${p.name}</div>
+          <div style="font-size:13px;color:var(--mid);margin-top:4px;max-width:560px;line-height:1.65">${p.desc}</div>
+        </div>
+      </div>
+      <div class="info-pills">${p.pills.map(pill=>`<span class="pill pill-gold">${pill}</span>`).join('')}</div>
+      <div class="grid2">
+        <div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Caractéristiques</div>
+          <table class="info-table" style="margin-bottom:12px">
+            <tbody>${p.stats.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Régimes douaniers admissibles</div>
+          <div style="background:var(--gold-pale);border:1px solid var(--gold-bd);border-radius:var(--r);padding:10px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--gold);margin-bottom:12px">${p.regime}</div>
+          <div class="alert a-info"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/></svg><span>${p.note}</span></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function initPortDetail() {
+  showPort('tanger-med', document.querySelector('.port-card'));
+}
+
+// CHECKLIST
+const CHECKS = {
+  avant: [
+    { lbl:'Facture commerciale conforme (prix, incoterm, description NC10)', who:'Fournisseur' },
+    { lbl:'Packing list détaillée (poids brut/net, colis, dimensions)', who:'Fournisseur' },
+    { lbl:'Certificats requis obtenus (ONSSA, CoC, ANRT, DMPM...)', who:'Fournisseur/Acheteur' },
+    { lbl:'Engagement d\'importation créé — Office des Changes', who:'Importateur' },
+    { lbl:'Réservation fret et assurance auprès compagnie marocaine', who:'Importateur' },
+    { lbl:'Vérification code NC10 et documents requis', who:'Transitaire' },
+  ],
+  arrivee: [
+    { lbl:'Réception avis d\'arrivée navire (ETA confirmé)', who:'Consignataire' },
+    { lbl:'Récupération B/L original ou Sea Waybill', who:'Importateur' },
+    { lbl:'Validation fiche suiveuse PortNet', who:'Transitaire' },
+    { lbl:'Notification ONSSA si produits contrôlés', who:'Transitaire' },
+    { lbl:'Vérification intégrité conteneur (N° scellé)', who:'Transitaire' },
+    { lbl:'Suivi position conteneur dans PortNet', who:'Importateur' },
+  ],
+  badr: [
+    { lbl:'Saisie DUM dans BADR par transitaire agréé ADII', who:'Transitaire' },
+    { lbl:'Cohérence NC10 ↔ description ↔ régime vérifiée', who:'Transitaire' },
+    { lbl:'Documents joints numérisés dans BADR', who:'Transitaire' },
+    { lbl:'Attente circuit BADR (Vert/Jaune/Rouge)', who:'Transitaire' },
+    { lbl:'Contrôle documentaire ou physique si circuit jaune/rouge', who:'ADII' },
+    { lbl:'Liquidation des droits et taxes confirmée', who:'ADII/Transitaire' },
+    { lbl:'Paiement des droits et taxes', who:'Importateur' },
+    { lbl:'Bon à enlever (BAE) obtenu', who:'Transitaire' },
+  ],
+  enlevement: [
+    { lbl:'BAE transmis au terminal', who:'Transitaire' },
+    { lbl:'Paiement surestaries si dépassement franchise', who:'Importateur' },
+    { lbl:'Enlèvement physique du conteneur/marchandises', who:'Importateur' },
+    { lbl:'Vérification de la marchandise à la réception', who:'Importateur' },
+    { lbl:'Réserves au transporteur si dommages constatés', who:'Importateur' },
+    { lbl:'Archivage dossier complet (DUM + documents)', who:'Transitaire' },
+  ],
+};
+
+let checkState = {};
+
+function initChecklist() {
+  checkState = {};
+  Object.entries(CHECKS).forEach(([zone, items]) => {
+    const el = document.getElementById('chk-' + zone);
+    if (!el) return;
+    el.innerHTML = items.map((item, i) => {
+      const id = zone + '_' + i;
+      checkState[id] = false;
+      return `<div class="chk-item" id="chkitem-${id}" onclick="toggleChk('${id}')">
+        <div class="chk-box" id="chkbox-${id}"></div>
+        <div class="chk-lbl">${item.lbl}</div>
+        <div class="chk-who">${item.who}</div>
+      </div>`;
+    }).join('');
+  });
+  updateProgress();
+}
+
+function toggleChk(id) {
+  checkState[id] = !checkState[id];
+  const item = document.getElementById('chkitem-' + id);
+  const box = document.getElementById('chkbox-' + id);
+  item.classList.toggle('done', checkState[id]);
+  box.textContent = checkState[id] ? '✓' : '';
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = Object.keys(checkState).length;
+  const done = Object.values(checkState).filter(Boolean).length;
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('global-progress-bar').style.width = pct + '%';
+  document.getElementById('global-progress-txt').textContent = done + ' / ' + total;
+}
+
+function checkAll() {
+  Object.keys(checkState).forEach(id => {
+    checkState[id] = true;
+    const item = document.getElementById('chkitem-' + id);
+    const box = document.getElementById('chkbox-' + id);
+    if (item) item.classList.add('done');
+    if (box) box.textContent = '✓';
+  });
+  updateProgress();
+}
+
+function uncheckAll() {
+  Object.keys(checkState).forEach(id => {
+    checkState[id] = false;
+    const item = document.getElementById('chkitem-' + id);
+    const box = document.getElementById('chkbox-' + id);
+    if (item) item.classList.remove('done');
+    if (box) box.textContent = '';
+  });
+  updateProgress();
+}
+
+
+// BUREAUX SEARCH & FILTER
+let currentTypeFilter = 'tous';
+
+function filterType(type) {
+  currentTypeFilter = type;
+  document.querySelectorAll('.filt-btn').forEach(b => {
+    b.style.background = 'var(--surface)';
+    b.style.borderColor = 'var(--border)';
+    b.style.color = 'var(--mid)';
+  });
+  const active = document.getElementById('filt-' + type);
+  if (active) {
+    active.style.background = 'var(--gold-dim)';
+    active.style.borderColor = 'var(--gold-bd)';
+    active.style.color = 'var(--gold)';
+  }
+  const bBlock = document.getElementById('block-bureaux');
+  const pBlock = document.getElementById('block-postes');
+  if (bBlock && pBlock) {
+    if (type === 'bureaux') { bBlock.style.display=''; pBlock.style.display='none'; }
+    else if (type === 'postes') { bBlock.style.display='none'; pBlock.style.display=''; }
+    else { bBlock.style.display=''; pBlock.style.display=''; }
+  }
+  filterBureaux();
+}
+
+function filterBureaux() {
+  const q = (document.getElementById('bureau-search') || {value:''}).value.toLowerCase().trim();
+  const items = document.querySelectorAll('.bureau-item');
+  let visible = 0;
+  items.forEach(el => {
+    const txt = el.textContent.toLowerCase();
+    const typeOk = currentTypeFilter === 'tous' || el.dataset.type === currentTypeFilter;
+    const txtOk = !q || txt.includes(q);
+    const show = typeOk && txtOk;
+    el.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  const noRes = document.getElementById('no-result');
+  if (noRes) noRes.style.display = visible === 0 ? '' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initPortDetail();
+  initChecklist();
+});
+
+// ── CARTE MAP ─────────────────────────────────────────────────────────────
+const CARTE_LOCS = [
+  // Bureaux I
+  {id:'agadir',     name:'Agadir',              lat:30.427, lng:-9.598,  type:'b1', items:['Bureau de plein exercice','TIC + garantie platine/or/argent']},
+  {id:'casablanca', name:'Casablanca',           lat:33.573, lng:-7.589,  type:'b1', items:['Bureau de plein exercice','TIC + garantie platine/or/argent']},
+  {id:'essaouira',  name:'Essaouira',            lat:31.508, lng:-9.770,  type:'b1', items:['Bureau de plein exercice','TIC + garantie platine/or/argent']},
+  {id:'fes',        name:'Fès',                  lat:34.033, lng:-5.000,  type:'b1', items:['Bureau de plein exercice','TIC + garantie platine/or/argent']},
+  {id:'marrakech',  name:'Marrakech',            lat:31.630, lng:-8.008,  type:'b1', items:['Bureau de plein exercice','TIC + garantie platine/or/argent']},
+  {id:'oujda',      name:'Oujda',                lat:34.680, lng:-1.910,  type:'b1', items:['Bureau de plein exercice','TIC + garantie platine/or/argent']},
+  {id:'rabat',      name:'Rabat-Salé',           lat:34.013, lng:-6.834,  type:'b1', items:['Bureau de plein exercice','TIC + garantie platine/or/argent']},
+  {id:'tanger',     name:'Tanger',               lat:35.767, lng:-5.800,  type:'b1', items:['Bureau de plein exercice','TIC + garantie platine/or/argent']},
+  // Bureaux II
+  {id:'ahfir',      name:'Ahfir',                lat:34.950, lng:-2.097,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'alhoceima',  name:'Al Hoceima',           lat:35.252, lng:-3.930,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'dakhla',     name:'Dakhla',               lat:23.688, lng:-15.942, type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'kenitra',    name:'Kénitra',              lat:34.261, lng:-6.578,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'laayoune',   name:'Laâyoune',             lat:27.152, lng:-13.200, type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'larache',    name:'Larache',              lat:35.193, lng:-6.154,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'meknes',     name:'Meknès',               lat:33.894, lng:-5.547,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'mohammedia', name:'Mohammedia',           lat:33.688, lng:-7.383,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'nador',      name:'Nador',                lat:35.168, lng:-2.928,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'ouarzazate', name:'Ouarzazate',           lat:30.930, lng:-6.893,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'safi',       name:'Safi',                 lat:32.299, lng:-9.237,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'settat',     name:'Settat',               lat:33.002, lng:-7.618,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'tantan',     name:'Tan-Tan',              lat:28.438, lng:-11.100, type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'taza',       name:'Taza',                 lat:34.218, lng:-4.017,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  {id:'tetouan',    name:'Tétouan',              lat:35.572, lng:-5.368,  type:'b2', items:['Plein exercice douane','Compétence limitée impôts indirects']},
+  // Bureaux III
+  {id:'casaport',   name:'Casablanca-Port',      lat:33.606, lng:-7.628,  type:'b3', items:['Douane seule (sans impôts indirects)']},
+  {id:'nouasser',   name:'Nouasser — Aéroport',  lat:33.370, lng:-7.581,  type:'b3', items:['Douane seule — Aéroport Mohammed V']},
+  {id:'tangermed',  name:'Tanger-Méditerranée',  lat:35.875, lng:-5.503,  type:'b3', items:['Douane seule','1er port Afrique — 9M+ EVP/an']},
+  // Postes I
+  {id:'agadir-massira',  name:'Agadir-Al Massira', lat:30.381, lng:-9.413, type:'p1', items:['Aéroport Agadir Al Massira']},
+  {id:'agadir-port',     name:'Agadir-Port',        lat:30.434, lng:-9.638, type:'p1', items:['Port commercial Agadir']},
+  {id:'assilah',         name:'Asilah',             lat:35.465, lng:-6.037, type:'p1', items:['Poste portuaire']},
+  {id:'bab-melilia',     name:'Bab-Melilia',        lat:35.310, lng:-2.968, type:'p1', items:['Frontière — enclave Melilla']},
+  {id:'bab-sebta',       name:'Bab-Sebta / Fnideq', lat:35.886, lng:-5.313, type:'p1', items:['Frontière terrestre Ceuta']},
+  {id:'benimellal',      name:'Béni Mellal',        lat:32.337, lng:-6.360, type:'p1', items:['Poste intérieur']},
+  {id:'boujdour',        name:'Boujdour',           lat:26.120, lng:-14.500,type:'p1', items:['Poste saharien']},
+  {id:'bir-guendouz',    name:'Bir Guendouz',       lat:23.224, lng:-15.882,type:'p1', items:['Poste frontalier sud']},
+  {id:'fes-saiss',       name:'Fès-Saïss',          lat:33.928, lng:-4.977, type:'p1', items:['Aéroport Fès-Saïss']},
+  {id:'figuig',          name:'Figuig',             lat:32.109, lng:-1.229, type:'p1', items:['Frontière Algérie — Est']},
+  {id:'guergarate',      name:'Guergarate',         lat:20.765, lng:-17.048,type:'p1', items:['Frontière Mauritanie — extrême-sud']},
+  {id:'jorf-lasfar',     name:'Jorf-Lasfar',        lat:33.104, lng:-8.619, type:'p1', items:['Zone industrialo-portuaire OCP']},
+  {id:'marrakech-menara',name:'Marrakech-Menara',   lat:31.606, lng:-8.039, type:'p1', items:['Aéroport Marrakech-Menara']},
+  {id:'nador-elaroui',   name:'Nador-El Aroui',     lat:35.167, lng:-2.937, type:'p1', items:['Aéroport Nador']},
+  {id:'nador-port',      name:'Nador-Port',         lat:35.185, lng:-2.945, type:'p1', items:['Port de Nador']},
+  {id:'oujda-angad',     name:'Oujda-Angad',        lat:34.787, lng:-1.924, type:'p1', items:['Aéroport Oujda Angad']},
+  {id:'raskebdana',      name:'Ras Kebdana',        lat:35.151, lng:-2.445, type:'p1', items:['Poste côtier nord-est']},
+  {id:'tanger-ibn',      name:'Tanger-Ibn Batouta', lat:35.726, lng:-5.916, type:'p1', items:['Aéroport international Tanger']},
+  {id:'tanger-port',     name:'Tanger-Port',        lat:35.790, lng:-5.800, type:'p1', items:['Port de Tanger ville']},
+  {id:'tangermed-port',  name:'Tanger Med — Port',  lat:35.880, lng:-5.492, type:'p1', items:['Terminal conteneurs — 1er port Afrique']},
+  {id:'tarfaya',         name:'Tarfaya',            lat:27.933, lng:-12.916,type:'p1', items:['Poste sud atlantique']},
+  {id:'laayoune-p',      name:'Laâyoune — Poste',   lat:27.180, lng:-13.180,type:'p1', items:['Poste de Laâyoune']},
+  {id:'zoujbeghal',      name:'Zouj-Beghal',        lat:35.020, lng:-2.189, type:'p1', items:['Poste frontalier proche Saidia']},
+  {id:'farkhana',        name:'Farkhana',           lat:35.068, lng:-2.834, type:'p1', items:['Poste frontalier région Nador']},
+  {id:'safi-p',          name:'Safi — Poste',       lat:32.280, lng:-9.258, type:'p1', items:['Poste portuaire']},
+  // Postes II
+  {id:'berkane',    name:'Berkane',             lat:34.920, lng:-2.316, type:'p2', items:['Lutte contre fraude et contrebande']},
+  {id:'midar',      name:'Midar',              lat:34.953, lng:-3.533, type:'p2', items:['Lutte contre fraude et contrebande']},
+  {id:'rabat-ac',   name:'Rabat — Admin. Centrale', lat:33.998,lng:-6.855, type:'p2', items:['ADII — Administration Centrale']},
+  {id:'taourirt',   name:'Taourirt',           lat:34.414, lng:-2.900, type:'p2', items:['Lutte fraude — axe Oujda-Fès']},
+  {id:'taza-p2',    name:'Taza — Fraude',      lat:34.230, lng:-3.990, type:'p2', items:['Lutte contre fraude et contrebande']},
+  {id:'zaio',       name:'Zaio',               lat:35.028, lng:-2.738, type:'p2', items:['Lutte fraude — nord-est']},
+  {id:'tanger-p2',  name:'Tanger — Fraude',    lat:35.755, lng:-5.825, type:'p2', items:['Lutte contre fraude et contrebande']},
+  {id:'agadir-p2',  name:'Agadir — Fraude',    lat:30.442, lng:-9.570, type:'p2', items:['Lutte contre fraude et contrebande']},
+  // Postes III
+  {id:'fnideq',     name:'Fnideq / M\'diq',    lat:35.851, lng:-5.358, type:'p3', items:['Surveillance mixte — Ceuta']},
+  {id:'jebha',      name:'Jebha',              lat:35.183, lng:-4.670, type:'p3', items:['Poste côtier méditerranéen']},
+  {id:'larache-p3', name:'Larache — Poste',    lat:35.185, lng:-6.148, type:'p3', items:['Poste portuaire mixte']},
+  {id:'sidi-ifni',  name:'Sidi Ifni',          lat:29.380, lng:-10.173,type:'p3', items:['Poste côtier atlantique sud']},
+  {id:'belyounech', name:'Belyounech',         lat:35.925, lng:-5.362, type:'p3', items:['Frontière Ceuta — côté mer']},
+  {id:'chmaala',    name:'Chmaala',            lat:35.718, lng:-5.567, type:'p3', items:['Poste frontalier Tanger']},
+  {id:'mehdya',     name:'Mehdya',             lat:34.260, lng:-6.654, type:'p3', items:['Poste côtier Atlantique']},
+  {id:'alhoceima-p3',name:'Al Hoceima — Poste',lat:35.235, lng:-3.958, type:'p3', items:['Surveillance mixte']},
+  // Ports
+  {id:'port-tangermed',  name:'Tanger Med',     lat:35.878, lng:-5.496, type:'port', items:['1er port Afrique · 9M+ EVP/an','72 lignes maritimes · 180 armateurs','T1–T4 + Ro-Ro + Ferry']},
+  {id:'port-casa',       name:'Casablanca Port', lat:33.600, lng:-7.622, type:'port', items:['1er port général du Maroc','33M tonnes / an','Entrepôt MEAD']},
+  {id:'port-agadir',     name:'Agadir Port',     lat:30.425, lng:-9.640, type:'port', items:['1er port de pêche Maroc','Agrumes export · Ro-Ro']},
+  {id:'port-nador',      name:'Nador West Med',  lat:35.210, lng:-2.970, type:'port', items:['En développement','Vrac industriel · ZFI Nador']},
+  {id:'port-safi',       name:'Safi Port',       lat:32.288, lng:-9.245, type:'port', items:['Phosphates OCP export','Engrais · Centrale thermique']},
+  {id:'port-mohammedia', name:'Mohammedia Port', lat:33.730, lng:-7.390, type:'port', items:['Hydrocarbures · SAMIR','Vrac liquide · Céréales']},
+];
+
+const CARTE_STYLES = {
+  b1:  {fill:'#EBF7EE',stroke:'#1E7A4A',r:9, dash:null},
+  b2:  {fill:'#FEF5E4',stroke:'#8A5A10',r:9, dash:null},
+  b3:  {fill:'#EEF4FE',stroke:'#1A3A9A',r:9, dash:null},
+  p1:  {fill:'#fff',   stroke:'#1E7A4A',r:6, dash:'4 2'},
+  p2:  {fill:'#fff',   stroke:'#9A2A22',r:6, dash:'4 2'},
+  p3:  {fill:'#fff',   stroke:'#1A3A9A',r:6, dash:'4 2'},
+  port:{fill:'#F3EEFE',stroke:'#5A2AA0',r:11,dash:null},
+};
+const CARTE_BADGE = {
+  b1:  {bg:'#EBF7EE',bd:'#B0DDB8',col:'#1E7A4A',txt:'Bureau Compétence I'},
+  b2:  {bg:'#FEF5E4',bd:'#F0D080', col:'#8A5A10',txt:'Bureau Compétence II'},
+  b3:  {bg:'#EEF4FE',bd:'#B0C8F8', col:'#1A3A9A',txt:'Bureau Compétence III'},
+  p1:  {bg:'#EBF7EE',bd:'#B0DDB8',col:'#1E7A4A',txt:'Poste Compétence I'},
+  p2:  {bg:'#FEF0EE',bd:'#F0B0A8',col:'#9A2A22',txt:'Poste Compétence II'},
+  p3:  {bg:'#EEF4FE',bd:'#B0C8F8',col:'#1A3A9A',txt:'Poste Compétence III'},
+  port:{bg:'#F3EEFE',bd:'#C8A8F8',col:'#5A2AA0',txt:'Port commercial'},
+};
+const CARTE_SB_GROUPS = [
+  {key:'b1',   label:'Bureaux Compétence I',   dot:'#1E7A4A', bg:'#EBF7EE'},
+  {key:'b2',   label:'Bureaux Compétence II',  dot:'#8A5A10', bg:'#FEF5E4'},
+  {key:'b3',   label:'Bureaux Compétence III', dot:'#1A3A9A', bg:'#EEF4FE'},
+  {key:'p1',   label:'Postes Compétence I',    dot:'#1E7A4A', bg:'#EBF7EE'},
+  {key:'p2',   label:'Postes Compétence II',   dot:'#9A2A22', bg:'#FEF0EE'},
+  {key:'p3',   label:'Postes Compétence III',  dot:'#1A3A9A', bg:'#EEF4FE'},
+  {key:'port', label:'Ports commerciaux',      dot:'#5A2AA0', bg:'#F3EEFE'},
+];
+
+let carteMap = null;
+const carteLayers = {};
+const carteLayerGroups = {};
+const carteVisible = {b1:true,b2:true,b3:true,p1:true,p2:true,p3:true,port:true};
+const carteMarkers = {};
+
+function initCarte() {
+  if (carteMapInited) {
+    if (carteMap) setTimeout(() => carteMap.invalidateSize(), 100);
+    return;
+  }
+  carteMapInited = true;
+
+  carteMap = L.map('carte-map-el', { center:[31.0,-7.5], zoom:6, zoomControl:true });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
+  }).addTo(carteMap);
+
+  Object.keys(CARTE_STYLES).forEach(k => carteLayers[k] = []);
+
+  CARTE_LOCS.forEach(loc => {
+    const s = CARTE_STYLES[loc.type];
+    const b = CARTE_BADGE[loc.type];
+    const m = L.circleMarker([loc.lat, loc.lng], {
+      radius:s.r, fillColor:s.fill, color:s.stroke,
+      weight: s.r > 8 ? 2.5 : 2, opacity:1, fillOpacity:.9, dashArray:s.dash
+    });
+    m.bindPopup(`<div class="lf-pname">${loc.name}</div>
+      <span class="lf-pbadge" style="background:${b.bg};border-color:${b.bd};color:${b.col}">${b.txt}</span>
+      <ul class="lf-pitems">${loc.items.map(i=>`<li>→ ${i}</li>`).join('')}</ul>`,{maxWidth:280});
+    m.on('click', () => carteHl(loc.id));
+    carteLayers[loc.type].push(m);
+    carteMarkers[loc.id] = m;
+  });
+
+  Object.keys(carteLayers).forEach(k => {
+    carteLayerGroups[k] = L.layerGroup(carteLayers[k]).addTo(carteMap);
+  });
+
+  carteBuildSb('');
+  setTimeout(() => carteMap && carteMap.invalidateSize(), 200);
+}
+
+function carteBuildSb(q) {
+  const container = document.getElementById('carte-sb-list');
+  if (!container) return;
+  container.innerHTML = '';
+  const term = q.toLowerCase();
+  CARTE_SB_GROUPS.forEach(g => {
+    const items = CARTE_LOCS.filter(l => l.type===g.key && (!term || l.name.toLowerCase().includes(term)));
+    if (!items.length) return;
+    const grp = document.createElement('div');
+    grp.innerHTML = `<div class="carte-grp-hdr" style="background:${g.bg}">${g.label} <span style="font-size:8px;color:var(--muted);margin-left:4px">${items.length}</span></div>`;
+    items.forEach(loc => {
+      const row = document.createElement('div');
+      row.className = 'carte-item';
+      row.id = 'ci-' + loc.id;
+      const dash = loc.type.startsWith('p') ? ';border-style:dashed' : '';
+      row.innerHTML = `<div class="carte-dot" style="background:${g.bg};border-color:${g.dot}${dash}"></div>
+        <div class="carte-nm">${loc.name}</div>
+        <span class="carte-lbl" style="background:${g.bg};border-color:${g.dot};color:${g.dot}">${loc.type.startsWith('b')?'Bureau':'Poste'}</span>`;
+      row.onclick = () => carteFlyTo(loc.id);
+      grp.appendChild(row);
+    });
+    container.appendChild(grp);
+  });
+}
+
+function carteSearch(v) { carteBuildSb(v); }
+
+function carteFlyTo(id) {
+  const loc = CARTE_LOCS.find(l => l.id === id);
+  if (!loc || !carteMap) return;
+  carteMap.flyTo([loc.lat, loc.lng], 11, {duration:1});
+  setTimeout(() => { const m = carteMarkers[id]; if(m) m.openPopup(); }, 1100);
+  carteHl(id);
+}
+
+function carteHl(id) {
+  document.querySelectorAll('.carte-item').forEach(el => el.classList.remove('hl'));
+  const el = document.getElementById('ci-' + id);
+  if (el) { el.classList.add('hl'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+}
+
+function carteToggle(key, btn) {
+  carteVisible[key] = !carteVisible[key];
+  btn.classList.toggle('off', !carteVisible[key]);
+  if (!carteMap) return;
+  if (carteVisible[key]) carteMap.addLayer(carteLayerGroups[key]);
+  else carteMap.removeLayer(carteLayerGroups[key]);
+}
+</script>
+</body>
+</html>
+

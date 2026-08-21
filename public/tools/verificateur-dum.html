@@ -1,0 +1,940 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vérificateur DUM — Transit-IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;
+  --bg:#F9F8F4;--bg2:#F2F0EA;--surface:#FFFFFF;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 4px 20px rgba(26,26,24,.1);
+  --r:8px;--r-lg:12px;--r-xl:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.hdr{background:rgba(249,248,244,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
+.hdr-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:14px;height:56px}
+.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{fill:#fff}
+.logo-txt{font-family:"DM Serif Display",serif;font-size:15px;color:var(--ink);line-height:1.1}
+.logo-txt span{display:block;font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:26px;background:var(--border)}
+.hdr-lbl{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--mid)}
+.hdr-badges{margin-left:auto;display:flex;gap:6px}
+.hb{font-family:"JetBrains Mono",monospace;font-size:9px;padding:3px 10px;letter-spacing:.07em;text-transform:uppercase;border-radius:100px;border:1px solid}
+.hb-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.hb-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.hb-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+
+/* LAYOUT */
+.wrap{max-width:1100px;margin:0 auto;padding:0 2rem 5rem}
+
+/* HERO */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.hero h1{font-family:"DM Serif Display",serif;font-size:clamp(22px,3vw,38px);color:var(--ink);line-height:1.05}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p{color:var(--mid);font-size:13px;line-height:1.75;margin-top:8px;max-width:600px}
+.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.htag{font-family:"JetBrains Mono",monospace;font-size:9.5px;padding:3px 10px;border-radius:100px;border:1px solid}
+
+/* WIZARD CONTAINER */
+.wizard-wrap{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start}
+@media(max-width:800px){.wizard-wrap{grid-template-columns:1fr}}
+
+/* STEPS NAV */
+.steps-nav{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh);position:sticky;top:68px}
+.steps-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.step-nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--bg2);cursor:pointer;transition:all .15s}
+.step-nav-item:last-child{border-bottom:none}
+.step-nav-item:hover{background:var(--bg2)}
+.step-nav-item.active{background:var(--gold-pale)}
+.step-nav-item.done{background:var(--green-bg)}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;flex-shrink:0;border:1.5px solid}
+.step-num-pending{background:var(--bg2);border-color:var(--border-mid);color:var(--muted)}
+.step-num-active{background:var(--gold);border-color:var(--gold);color:#fff}
+.step-num-done{background:var(--green);border-color:var(--green);color:#fff}
+.step-nav-lbl{font-size:11.5px;font-weight:500;color:var(--mid);line-height:1.3}
+.step-nav-item.active .step-nav-lbl{color:var(--gold);font-weight:600}
+.step-nav-item.done .step-nav-lbl{color:var(--green)}
+
+/* STEP CARD */
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px 28px;box-shadow:var(--sh-md);display:none}
+.step-card.active{display:block}
+.step-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.step-icon{width:42px;height:42px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.step-meta{}
+.step-number{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.step-name{font-family:"DM Serif Display",serif;font-size:18px;color:var(--ink)}
+
+/* FORM */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.form-label span{font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0}
+.form-input,.form-select{width:100%;background:var(--bg);border:1px solid var(--border-mid);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:13.5px;padding:9px 12px;border-radius:var(--r);outline:none;transition:border-color .15s;-webkit-appearance:none}
+.form-input:focus,.form-select:focus{border-color:var(--gold);background:var(--surface)}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.input-hint{font-size:11px;color:var(--muted);margin-top:4px;font-family:"JetBrains Mono",monospace}
+
+/* CHECKLIST */
+.checklist-grid{display:flex;flex-direction:column;gap:6px}
+.check-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;background:var(--bg2)}
+.check-item:hover{border-color:var(--gold-bd);background:var(--gold-pale)}
+.check-item.checked{border-color:var(--green-bd);background:var(--green-bg)}
+.check-item.checked .check-box{background:var(--green);border-color:var(--green)}
+.check-item.checked .check-box::after{opacity:1}
+.check-item.required-missing{border-color:var(--red-bd);background:var(--red-bg)}
+.check-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border-mid);background:var(--surface);flex-shrink:0;position:relative;transition:all .15s}
+.check-box::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;opacity:0;transition:opacity .15s}
+.check-lbl{font-size:12.5px;color:var(--ink);flex:1;line-height:1.4}
+.check-org{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);flex-shrink:0}
+.check-req{font-family:"JetBrains Mono",monospace;font-size:8.5px;padding:1px 6px;border-radius:100px;border:1px solid}
+.req-oblig{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)}
+.req-cond{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
+
+/* NAV BUTTONS */
+.step-nav-btns{display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.btn-prev{padding:9px 20px;background:none;border:1px solid var(--border);border-radius:var(--r);color:var(--mid);font-family:"DM Sans",sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-prev:hover{border-color:var(--gold-bd);color:var(--ink)}
+.btn-next{padding:9px 24px;background:var(--gold);border:none;border-radius:var(--r);color:#fff;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;margin-left:auto}
+.btn-next:hover{background:var(--gold-h)}
+.btn-analyze{padding:10px 28px;background:var(--green);border:none;border-radius:var(--r);color:#fff;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;margin-left:auto}
+.btn-analyze:hover{background:#17603a}
+
+/* ALERTS */
+.alert{border-radius:var(--r);padding:10px 14px;font-size:12.5px;display:flex;gap:8px;align-items:flex-start;margin-bottom:10px}
+.alert svg{flex-shrink:0;margin-top:1px}
+.a-warn{background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)}
+.a-info{background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue)}
+.a-ok{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)}
+.a-red{background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)}
+
+/* RESULT PANEL */
+.result-wrap{display:none}
+.result-wrap.show{display:block}
+.score-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px 28px;margin-bottom:16px;box-shadow:var(--sh-md);display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.score-circle{width:90px;height:90px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:3px solid}
+.score-num{font-family:"DM Sans",sans-serif;font-size:28px;font-weight:700;line-height:1}
+.score-max{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted)}
+.score-info{}
+.score-verdict{font-family:"DM Serif Display",serif;font-size:22px;color:var(--ink);margin-bottom:4px}
+.score-sub{font-size:12.5px;color:var(--mid);line-height:1.6;max-width:500px}
+.score-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.stag{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid}
+
+/* Result sections */
+.res-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:12px;overflow:hidden;box-shadow:var(--sh)}
+.res-card-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.res-item{display:flex;align-items:flex-start;gap:12px;padding:10px 16px;border-bottom:1px solid var(--bg2)}
+.res-item:last-child{border-bottom:none}
+.res-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.res-text{font-size:12.5px;color:var(--mid);flex:1;line-height:1.55}
+.res-text strong{color:var(--ink)}
+.res-badge{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid;flex-shrink:0}
+
+/* Progress bar */
+.prog-bar-wrap{margin-bottom:20px}
+.prog-bar-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.prog-bar-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .4s}
+
+.reset-btn{padding:9px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--mid);font-family:"DM Sans",sans-serif;font-size:13px;cursor:pointer;transition:all .15s;margin-top:16px}
+.reset-btn:hover{border-color:var(--gold-bd);color:var(--ink)}
+
+footer{border-top:1px solid var(--border);padding:16px 2rem;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);letter-spacing:.07em;background:var(--surface);margin-top:2rem}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="logo-mark"><svg width="15" height="15" viewBox="0 0 12 12"><path d="M6 0L11 3V9L6 12L1 9V3Z"/></svg></div>
+    <div class="logo-txt">Transit-IA <span>Intelligence Douanière</span></div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-lbl">Vérificateur DUM</div>
+    <div class="hdr-badges">
+      <span class="hb hb-gold">5 étapes</span>
+      <span class="hb hb-green">Score de risque BADR</span>
+      <span class="hb hb-blue">Code Douanes 1977</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Vérificateur de <em>DUM</em> — Pré-validation BADR</h1>
+    <p>Simulez la cohérence de votre Déclaration Unique des Marchandises avant soumission dans BADR. Identifiez les erreurs, documents manquants et risques de circuit rouge.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">Pré-validation non officielle</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Circulaires ADII</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Code Douanes Art. 114</span>
+      <span class="htag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Usage informatif</span>
+    </div>
+  </div>
+
+  <!-- WIZARD -->
+  <div class="wizard-wrap" id="wizard-section">
+
+    <!-- STEPS NAV -->
+    <aside>
+      <div class="steps-nav">
+        <div class="steps-title">Étapes de vérification</div>
+        <div class="step-nav-item active" id="snav-1">
+          <div class="step-num step-num-active" id="snum-1">1</div>
+          <div class="step-nav-lbl">Marchandise & NC10</div>
+        </div>
+        <div class="step-nav-item" id="snav-2">
+          <div class="step-num step-num-pending" id="snum-2">2</div>
+          <div class="step-nav-lbl">Régime douanier</div>
+        </div>
+        <div class="step-nav-item" id="snav-3">
+          <div class="step-num step-num-pending" id="snum-3">3</div>
+          <div class="step-nav-lbl">Documents joints</div>
+        </div>
+        <div class="step-nav-item" id="snav-4">
+          <div class="step-num step-num-pending" id="snum-4">4</div>
+          <div class="step-nav-lbl">Valeur en douane</div>
+        </div>
+        <div class="step-nav-item" id="snav-5">
+          <div class="step-num step-num-pending" id="snum-5">5</div>
+          <div class="step-nav-lbl">Transport & origine</div>
+        </div>
+      </div>
+
+      <div class="prog-bar-wrap" style="margin-top:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 16px;box-shadow:var(--sh)">
+        <div class="prog-bar-row"><span>Progression</span><span id="prog-pct">20%</span></div>
+        <div class="prog-bar"><div class="prog-bar-fill" id="prog-fill" style="width:20%"></div></div>
+      </div>
+    </aside>
+
+    <!-- STEP PANELS -->
+    <div>
+
+      <!-- ÉTAPE 1 — MARCHANDISE -->
+      <div class="step-card active" id="step-1">
+        <div class="step-header">
+          <div class="step-icon" style="background:var(--gold-pale);border:1px solid var(--gold-bd)">📦</div>
+          <div class="step-meta">
+            <div class="step-number">Étape 1 / 5</div>
+            <div class="step-name">Identification de la marchandise</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Code NC10 <span>— 10 chiffres obligatoires dans BADR</span></label>
+          <input class="form-input" type="text" id="f-nc10" placeholder="Ex: 8471.30.00.00 ou 8471300000" maxlength="15" oninput="onNcInput(this.value)">
+          <div class="input-hint" id="nc-hint">Saisir le code à 10 chiffres du Tarif Intégré Marocain</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description technique de la marchandise <span>— obligatoire dans BADR</span></label>
+          <input class="form-input" type="text" id="f-desc" placeholder="Ex: Ordinateur portable, processeur Intel i7, 16 Go RAM, 512 Go SSD">
+          <div class="input-hint">Doit correspondre exactement au code NC10 saisi ci-dessus</div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Quantité</label>
+            <input class="form-input" type="number" id="f-qty" placeholder="Ex: 100" min="1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Unité statistique</label>
+            <select class="form-select" id="f-unit">
+              <option value="">Sélectionner...</option>
+              <option value="kg">kg — Kilogrammes</option>
+              <option value="pce">pce — Pièces / Unités</option>
+              <option value="l">l — Litres</option>
+              <option value="m2">m² — Mètres carrés</option>
+              <option value="m3">m³ — Mètres cubes</option>
+              <option value="t">t — Tonnes métriques</option>
+              <option value="m">m — Mètres linéaires</option>
+              <option value="paire">paire — Paires</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Poids brut (kg)</label>
+            <input class="form-input" type="number" id="f-poids-brut" placeholder="Ex: 520">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Poids net (kg)</label>
+            <input class="form-input" type="number" id="f-poids-net" placeholder="Ex: 480">
+          </div>
+        </div>
+
+        <div id="nc-alert"></div>
+
+        <div class="step-nav-btns">
+          <button class="btn-next" onclick="goStep(2)">Étape suivante →</button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 2 — RÉGIME -->
+      <div class="step-card" id="step-2">
+        <div class="step-header">
+          <div class="step-icon" style="background:var(--blue-bg);border:1px solid var(--blue-bd)">📋</div>
+          <div class="step-meta">
+            <div class="step-number">Étape 2 / 5</div>
+            <div class="step-name">Régime douanier</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Régime déclaré <span>— code à 3 chiffres dans BADR</span></label>
+          <select class="form-select" id="f-regime" onchange="onRegimeChange()">
+            <option value="">Sélectionner le régime...</option>
+            <option value="010">010 — Mise à la consommation (standard)</option>
+            <option value="011">011 — Mise à la consommation + ristourne</option>
+            <option value="051">051 — Admission temporaire (AT)</option>
+            <option value="071">071 — Entrepôt de douane</option>
+            <option value="091">091 — Importation temporaire</option>
+            <option value="031">031 — Transit</option>
+            <option value="061">061 — Zone franche d'exportation</option>
+          </select>
+        </div>
+
+        <div id="regime-info"></div>
+
+        <div class="form-group">
+          <label class="form-label">Bureau de dédouanement <span>— obligatoire dans BADR</span></label>
+          <select class="form-select" id="f-bureau">
+            <option value="">Sélectionner...</option>
+            <option value="CAS_PORT">Casablanca Port (Bureau Principal)</option>
+            <option value="CAS_VILLE">Casablanca Ville</option>
+            <option value="TNG_MED">Tanger Med Port</option>
+            <option value="TNG_VILLE">Tanger Ville</option>
+            <option value="AGADIR">Agadir Port</option>
+            <option value="NADOR">Nador Port</option>
+            <option value="AERO_CMN">Aéroport Mohammed V — Casablanca</option>
+            <option value="AERO_TNG">Aéroport Ibn Batouta — Tanger</option>
+            <option value="RABAT">Rabat</option>
+            <option value="FES">Fès</option>
+            <option value="MARRAKECH">Marrakech</option>
+            <option value="OUJDA">Oujda</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mode de transport <span>— obligatoire</span></label>
+          <select class="form-select" id="f-transport">
+            <option value="">Sélectionner...</option>
+            <option value="maritime">Maritime</option>
+            <option value="aerien">Aérien</option>
+            <option value="routier">Routier (CMR)</option>
+            <option value="ferroviaire">Ferroviaire (CIM)</option>
+            <option value="postal">Envoi postal</option>
+          </select>
+        </div>
+
+        <div id="regime-compat-alert"></div>
+
+        <div class="step-nav-btns">
+          <button class="btn-prev" onclick="goStep(1)">← Retour</button>
+          <button class="btn-next" onclick="goStep(3)">Étape suivante →</button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 3 — DOCUMENTS -->
+      <div class="step-card" id="step-3">
+        <div class="step-header">
+          <div class="step-icon" style="background:var(--green-bg);border:1px solid var(--green-bd)">📄</div>
+          <div class="step-meta">
+            <div class="step-number">Étape 3 / 5</div>
+            <div class="step-name">Documents disponibles</div>
+          </div>
+        </div>
+
+        <div class="alert a-info">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>Cochez les documents dont vous disposez. Les documents <strong>obligatoires</strong> non cochés généreront une alerte.</span>
+        </div>
+
+        <div id="docs-checklist" class="checklist-grid"></div>
+
+        <div class="step-nav-btns">
+          <button class="btn-prev" onclick="goStep(2)">← Retour</button>
+          <button class="btn-next" onclick="goStep(4)">Étape suivante →</button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 4 — VALEUR -->
+      <div class="step-card" id="step-4">
+        <div class="step-header">
+          <div class="step-icon" style="background:var(--amber-bg);border:1px solid var(--amber-bd)">💰</div>
+          <div class="step-meta">
+            <div class="step-number">Étape 4 / 5</div>
+            <div class="step-name">Valeur en douane</div>
+          </div>
+        </div>
+
+        <div class="alert a-info">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/></svg>
+          <span>La valeur en douane est la <strong>valeur CAF</strong> : Prix FOB + Fret + Assurance. C'est la base de calcul des droits et taxes (Art. 1 Accord OMC).</span>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Valeur facture (FOB) <span>— en EUR ou USD</span></label>
+            <input class="form-input" type="number" id="f-val-fob" placeholder="Ex: 15000" oninput="calcCAF()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Devise facture</label>
+            <select class="form-select" id="f-devise" onchange="calcCAF()">
+              <option value="EUR">EUR — Euro</option>
+              <option value="USD">USD — Dollar US</option>
+              <option value="GBP">GBP — Livre sterling</option>
+              <option value="CNY">CNY — Yuan chinois</option>
+              <option value="MAD">MAD — Dirham (valeur déjà en MAD)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label">Fret (EUR)</label>
+            <input class="form-input" type="number" id="f-val-fret" placeholder="Ex: 800" oninput="calcCAF()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assurance (EUR)</label>
+            <input class="form-input" type="number" id="f-val-assur" placeholder="Ex: 150" oninput="calcCAF()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Taux de change (MAD/devise)</label>
+            <input class="form-input" type="number" id="f-taux" placeholder="Ex: 10.9" step="0.01" oninput="calcCAF()">
+          </div>
+        </div>
+
+        <div id="caf-result" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:12px">
+          <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Calcul de la valeur CAF</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px" id="caf-boxes"></div>
+        </div>
+
+        <div id="valeur-alert"></div>
+
+        <div class="form-group">
+          <label class="form-label">Incoterm déclaré</label>
+          <select class="form-select" id="f-incoterm">
+            <option value="">Sélectionner...</option>
+            <option value="FOB">FOB — Free On Board</option>
+            <option value="CIF">CIF — Cost, Insurance, Freight</option>
+            <option value="EXW">EXW — Ex Works</option>
+            <option value="DAP">DAP — Delivered At Place</option>
+            <option value="DDP">DDP — Delivered Duty Paid</option>
+            <option value="CPT">CPT — Carriage Paid To</option>
+            <option value="CFR">CFR — Cost and Freight</option>
+          </select>
+        </div>
+
+        <div class="step-nav-btns">
+          <button class="btn-prev" onclick="goStep(3)">← Retour</button>
+          <button class="btn-next" onclick="goStep(5)">Étape suivante →</button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 5 — TRANSPORT & ORIGINE -->
+      <div class="step-card" id="step-5">
+        <div class="step-header">
+          <div class="step-icon" style="background:var(--purple-bg,#F3EEFE);border:1px solid var(--purple-bd,#C8A8F8)">🌍</div>
+          <div class="step-meta">
+            <div class="step-number">Étape 5 / 5</div>
+            <div class="step-name">Transport &amp; Origine</div>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Pays d'origine des marchandises</label>
+            <select class="form-select" id="f-origine">
+              <option value="">Sélectionner...</option>
+              <option value="FR">France</option>
+              <option value="ES">Espagne</option>
+              <option value="DE">Allemagne</option>
+              <option value="IT">Italie</option>
+              <option value="NL">Pays-Bas</option>
+              <option value="BE">Belgique</option>
+              <option value="TR">Turquie</option>
+              <option value="CN">Chine</option>
+              <option value="US">États-Unis</option>
+              <option value="GB">Royaume-Uni</option>
+              <option value="JP">Japon</option>
+              <option value="TN">Tunisie</option>
+              <option value="EG">Égypte</option>
+              <option value="IN">Inde</option>
+              <option value="KR">Corée du Sud</option>
+              <option value="OTHER">Autre pays</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pays de provenance / Expédition</label>
+            <select class="form-select" id="f-provenance">
+              <option value="">Sélectionner...</option>
+              <option value="FR">France</option>
+              <option value="ES">Espagne</option>
+              <option value="DE">Allemagne</option>
+              <option value="NL">Pays-Bas (Rotterdam)</option>
+              <option value="BE">Belgique (Anvers)</option>
+              <option value="TR">Turquie</option>
+              <option value="CN">Chine</option>
+              <option value="US">États-Unis</option>
+              <option value="GB">Royaume-Uni</option>
+              <option value="OTHER">Autre pays</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Numéro B/L ou LTA</label>
+            <input class="form-input" type="text" id="f-bl" placeholder="Ex: MAEU123456789">
+            <div class="input-hint">Numéro du connaissement maritime ou lettre de transport aérien</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Numéro de conteneur</label>
+            <input class="form-input" type="text" id="f-conteneur" placeholder="Ex: MSCU1234567">
+            <div class="input-hint">Format ISO: 4 lettres + 7 chiffres (si maritime)</div>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Importateur — ICE</label>
+            <input class="form-input" type="text" id="f-ice" placeholder="Ex: 001234567000059" maxlength="15">
+            <div class="input-hint">Identifiant Commun d'Entreprise — 15 chiffres obligatoires</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Accord préférentiel applicable</label>
+            <select class="form-select" id="f-accord">
+              <option value="none">Aucun — Tarif général</option>
+              <option value="ALECA">ALECA — Accord UE-Maroc</option>
+              <option value="TUR">ALE Turquie</option>
+              <option value="AGADIR">Accord Agadir (Égypte, Jordanie, Tunisie)</option>
+              <option value="USA">ALE USA-Maroc</option>
+              <option value="GAFTA">GAFTA (Zone arabe)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="origine-alert"></div>
+
+        <div class="step-nav-btns">
+          <button class="btn-prev" onclick="goStep(4)">← Retour</button>
+          <button class="btn-analyze" onclick="analyzeAll()">Analyser la DUM →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div class="result-wrap" id="result-section">
+    <div id="score-header-wrap"></div>
+    <div id="result-blocks"></div>
+    <button class="reset-btn" onclick="resetAll()">← Nouvelle vérification</button>
+  </div>
+
+</div>
+
+<footer>Transit-IA — Vérificateur DUM · Pré-validation non officielle · Résultats indicatifs uniquement — consulter un transitaire agréé ADII avant toute soumission dans BADR</footer>
+
+<script>
+let currentStep = 1;
+const totalSteps = 5;
+let docChecks = {};
+
+// Données de référence
+const REGIME_INFO = {
+  '010': { label:'Mise à la consommation', desc:'Régime standard d\'importation définitive. Paiement immédiat de DI + TVA + TIC.', compatible:['maritime','aerien','routier','ferroviaire','postal'], docs_extra:[] },
+  '011': { label:'MàC + ristourne', desc:'Importation définitive avec possibilité de remboursement partiel des droits. Délai 12 mois pour demande de ristourne.', compatible:['maritime','aerien','routier'], docs_extra:[] },
+  '051': { label:'Admission temporaire', desc:'Suspension de droits. Transformation obligatoire + réexport 100% dans délai de 6 mois. Caution bancaire obligatoire.', compatible:['maritime','aerien','routier'], docs_extra:['Caution bancaire AT','Descriptif processus transformation','Fiche technique produits compensateurs'] },
+  '071': { label:'Entrepôt de douane', desc:'Stockage sous contrôle douanier sans paiement droits. Durée max 3 ans. Agrément entrepôt requis.', compatible:['maritime','aerien','routier','ferroviaire'], docs_extra:['Agrément entrepôt douane','Registre de stock'] },
+  '091': { label:'Importation temporaire', desc:'Usage temporaire sans transformation. Réexport en l\'état obligatoire. Délai 6 mois. Carnet ATA possible.', compatible:['maritime','aerien','routier'], docs_extra:['Caution ou carnet ATA','Justificatif usage temporaire'] },
+  '031': { label:'Transit', desc:'Passage du territoire marocain vers un pays tiers. Délai 30 jours. Carnet TIR ou caution.', compatible:['maritime','routier','ferroviaire'], docs_extra:['Carnet TIR ou caution transit','Déclaration bureau départ'] },
+  '061': { label:'Zone franche', desc:'Régime applicable uniquement aux entreprises agréées ZFE. Exonération totale de droits.', compatible:['maritime','aerien','routier'], docs_extra:['Agrément ZFE','Attestation statut ZFE'] },
+};
+
+const DOCS_BASE = [
+  { id:'facture', nom:'Facture commerciale', org:'Vendeur', req:'obligatoire' },
+  { id:'packing', nom:'Packing list (liste de colisage)', org:'Vendeur', req:'obligatoire' },
+  { id:'bl', nom:'Connaissement B/L ou LTA', org:'Transporteur', req:'obligatoire' },
+  { id:'engage', nom:'Engagement d\'importation', org:'Office des Changes', req:'obligatoire' },
+  { id:'portnet', nom:'Fiche suiveuse PortNet', org:'PortNet', req:'obligatoire' },
+  { id:'assurance', nom:'Police d\'assurance marchandises', org:'Assureur marocain', req:'obligatoire' },
+  { id:'origine', nom:'Certificat d\'origine (si préférence tarifaire)', org:'Chambre commerce origine', req:'conditionnel' },
+  { id:'onssa', nom:'Certificat ONSSA / Phytosanitaire', org:'ONSSA', req:'conditionnel' },
+  { id:'coc', nom:'Certificat de conformité IMANOR (CoC)', org:'IMANOR', req:'conditionnel' },
+  { id:'anrt', nom:'Homologation ANRT', org:'ANRT', req:'conditionnel' },
+];
+
+const CHAPITRES_ONSSA = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','30','31','38'];
+const CHAPITRES_COC = ['64','72','73','84','85','87','90','94','95','39','40','61','62'];
+const CHAPITRES_ANRT = ['84','85','90'];
+
+// Navigation
+function goStep(n) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  document.getElementById('snav-' + currentStep).classList.remove('active');
+  const numEl = document.getElementById('snum-' + currentStep);
+  numEl.classList.remove('step-num-active');
+  numEl.classList.add('step-num-done');
+  numEl.textContent = '✓';
+  document.getElementById('snav-' + currentStep).classList.add('done');
+
+  currentStep = n;
+  document.getElementById('step-' + n).classList.add('active');
+  document.getElementById('snav-' + n).classList.add('active');
+  document.getElementById('snav-' + n).classList.remove('done');
+  const newNum = document.getElementById('snum-' + n);
+  newNum.className = 'step-num step-num-active';
+  newNum.textContent = n;
+
+  const pct = Math.round((n / totalSteps) * 100);
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  if (n === 3) buildDocChecklist();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function onNcInput(val) {
+  const clean = val.replace(/[.\s-]/g,'');
+  const hint = document.getElementById('nc-hint');
+  const alertEl = document.getElementById('nc-alert');
+  if (!clean) { hint.textContent = 'Saisir le code à 10 chiffres du Tarif Intégré Marocain'; alertEl.innerHTML=''; return; }
+  const ch = parseInt(clean.substring(0,2));
+  if (ch < 1 || ch > 97) { hint.style.color='var(--red)'; hint.textContent='⚠ Chapitre invalide'; return; }
+  hint.style.color='';
+  if (clean.length < 10) { hint.textContent = clean.length + '/10 chiffres — continuer'; alertEl.innerHTML=''; return; }
+  if (clean.length === 10) {
+    hint.textContent = '✓ Code NC10 complet';
+    hint.style.color='var(--green)';
+    const chStr = clean.substring(0,2).padStart(2,'0');
+    let msg = '';
+    if (CHAPITRES_ONSSA.includes(chStr)) msg += '<div class="alert a-warn" style="margin-top:8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg><span>Chapitre ' + chStr + ' — Contrôle <strong>ONSSA</strong> probable. Préparez le certificat sanitaire/phytosanitaire.</span></div>';
+    if (CHAPITRES_COC.includes(chStr)) msg += '<div class="alert a-warn" style="margin-top:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg><span>Chapitre ' + chStr + ' — Certificat <strong>IMANOR (CoC)</strong> peut être requis selon le produit.</span></div>';
+    if (CHAPITRES_ANRT.includes(chStr)) msg += '<div class="alert a-info" style="margin-top:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg><span>Chapitre ' + chStr + ' — Vérifier si homologation <strong>ANRT</strong> requise (équipements radio/télécoms).</span></div>';
+    alertEl.innerHTML = msg;
+  }
+}
+
+function onRegimeChange() {
+  const regime = document.getElementById('f-regime').value;
+  const infoEl = document.getElementById('regime-info');
+  if (!regime) { infoEl.innerHTML = ''; return; }
+  const r = REGIME_INFO[regime];
+  infoEl.innerHTML = `
+    <div class="alert a-info" style="margin-bottom:12px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/></svg>
+      <div><strong>${r.label}</strong><br>${r.desc}${r.docs_extra.length>0?'<br><span style="font-size:11px">Documents supplémentaires requis : <strong>' + r.docs_extra.join(', ') + '</strong></span>':''}</div>
+    </div>`;
+}
+
+function buildDocChecklist() {
+  const regime = document.getElementById('f-regime').value;
+  const nc = document.getElementById('f-nc10').value.replace(/[.\s-]/g,'');
+  const chStr = nc.substring(0,2).padStart(2,'0');
+
+  let docs = [...DOCS_BASE];
+  if (regime && REGIME_INFO[regime]) {
+    REGIME_INFO[regime].docs_extra.forEach(d => {
+      docs.push({ id:'extra_'+d.replace(/\s/g,'_'), nom:d, org:'ADII / Organisme', req:'obligatoire' });
+    });
+  }
+  // Marquer ONSSA/CoC/ANRT comme obligatoires selon chapitre
+  docs = docs.map(d => {
+    if (d.id==='onssa' && CHAPITRES_ONSSA.includes(chStr)) return {...d, req:'obligatoire'};
+    if (d.id==='coc' && CHAPITRES_COC.includes(chStr)) return {...d, req:'obligatoire'};
+    if (d.id==='anrt' && CHAPITRES_ANRT.includes(chStr)) return {...d, req:'conditionnel'};
+    return d;
+  });
+
+  docChecks = {};
+  docs.forEach(d => { docChecks[d.id] = { ...d, checked: false }; });
+
+  document.getElementById('docs-checklist').innerHTML = docs.map(d => `
+    <div class="check-item" id="chk-${d.id}" onclick="toggleDoc('${d.id}')">
+      <div class="check-box" id="chkbox-${d.id}"></div>
+      <div class="check-lbl">${d.nom}</div>
+      <span class="check-org">${d.org}</span>
+      <span class="check-req ${d.req==='obligatoire'?'req-oblig':'req-cond'}">${d.req}</span>
+    </div>`).join('');
+}
+
+function toggleDoc(id) {
+  docChecks[id].checked = !docChecks[id].checked;
+  const item = document.getElementById('chk-' + id);
+  item.classList.toggle('checked', docChecks[id].checked);
+  if (!docChecks[id].checked && docChecks[id].req==='obligatoire') {
+    item.classList.add('required-missing');
+  } else {
+    item.classList.remove('required-missing');
+  }
+}
+
+function calcCAF() {
+  const fob = parseFloat(document.getElementById('f-val-fob').value) || 0;
+  const fret = parseFloat(document.getElementById('f-val-fret').value) || 0;
+  const assur = parseFloat(document.getElementById('f-val-assur').value) || 0;
+  const taux = parseFloat(document.getElementById('f-taux').value) || 1;
+  if (!fob) { document.getElementById('caf-result').style.display='none'; return; }
+  const caf = (fob + fret + assur) * taux;
+  document.getElementById('caf-result').style.display='block';
+  document.getElementById('caf-boxes').innerHTML = `
+    <div style="text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px"><div style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase">FOB + Fret + Assur.</div><div style="font-family:DM Sans,sans-serif;font-size:16px;font-weight:700;color:var(--mid);margin-top:4px">${(fob+fret+assur).toLocaleString('fr-FR')} €</div></div>
+    <div style="text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px"><div style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase">Taux conversion</div><div style="font-family:DM Sans,sans-serif;font-size:16px;font-weight:700;color:var(--mid);margin-top:4px">× ${taux}</div></div>
+    <div style="text-align:center;background:var(--gold-pale);border:1px solid var(--gold-bd);border-radius:var(--r);padding:10px"><div style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase">Valeur CAF (MAD)</div><div style="font-family:DM Sans,sans-serif;font-size:18px;font-weight:700;color:var(--gold);margin-top:4px">${caf.toLocaleString('fr-FR')} MAD</div></div>`;
+}
+
+// ANALYSE FINALE
+function analyzeAll() {
+  const nc = document.getElementById('f-nc10').value.replace(/[.\s-]/g,'');
+  const desc = document.getElementById('f-desc').value;
+  const regime = document.getElementById('f-regime').value;
+  const transport = document.getElementById('f-transport').value;
+  const incoterm = document.getElementById('f-incoterm').value;
+  const origine = document.getElementById('f-origine').value;
+  const accord = document.getElementById('f-accord').value;
+  const fob = parseFloat(document.getElementById('f-val-fob').value) || 0;
+  const ice = document.getElementById('f-ice').value;
+  const bl = document.getElementById('f-bl').value;
+
+  let issues = [], warnings = [], ok = [], score = 100;
+
+  // Vérifications NC10
+  if (!nc || nc.length < 10) { issues.push({ text:'Code NC10 incomplet ou manquant — obligatoire dans BADR', badge:'BLOQUANT' }); score -= 25; }
+  else { ok.push({ text:'Code NC10 saisi (' + nc + ') — 10 chiffres', badge:'OK' }); }
+
+  // Description
+  if (!desc) { warnings.push({ text:'Description marchandise manquante — peut déclencher circuit jaune', badge:'ALERTE' }); score -= 10; }
+  else if (desc.length < 20) { warnings.push({ text:'Description trop courte (' + desc.length + ' car.) — BADR exige description technique détaillée', badge:'ALERTE' }); score -= 5; }
+  else { ok.push({ text:'Description marchandise fournie', badge:'OK' }); }
+
+  // Régime
+  if (!regime) { issues.push({ text:'Régime douanier non sélectionné — obligatoire', badge:'BLOQUANT' }); score -= 20; }
+  else {
+    const r = REGIME_INFO[regime];
+    if (transport && !r.compatible.includes(transport)) {
+      issues.push({ text:'Régime ' + regime + ' incompatible avec mode de transport ' + transport, badge:'ERREUR' }); score -= 15;
+    } else {
+      ok.push({ text:'Régime ' + regime + ' (' + (r?.label||'') + ') compatible avec le transport sélectionné', badge:'OK' });
+    }
+  }
+
+  // Transport
+  if (!transport) { warnings.push({ text:'Mode de transport non renseigné', badge:'ALERTE' }); score -= 5; }
+
+  // Documents
+  const docsOblig = Object.values(docChecks).filter(d => d.req === 'obligatoire');
+  const docsManquants = docsOblig.filter(d => !d.checked);
+  if (docsManquants.length > 0) {
+    docsManquants.forEach(d => {
+      issues.push({ text:'Document obligatoire manquant : <strong>' + d.nom + '</strong> (' + d.org + ')', badge:'BLOQUANT' });
+      score -= 8;
+    });
+  } else {
+    ok.push({ text:'Tous les documents obligatoires sont disponibles', badge:'OK' });
+  }
+  const docsCochés = Object.values(docChecks).filter(d => d.checked).length;
+  if (docsCochés === 0) { warnings.push({ text:'Aucun document coché — vérifiez l\'étape 3', badge:'ALERTE' }); score -= 10; }
+
+  // Valeur
+  if (!fob) { warnings.push({ text:'Valeur FOB non renseignée — nécessaire pour calcul des droits', badge:'ALERTE' }); score -= 8; }
+  else {
+    ok.push({ text:'Valeur FOB renseignée : ' + fob.toLocaleString('fr-FR') + ' (devise déclarée)', badge:'OK' });
+    if (fob < 100) { warnings.push({ text:'Valeur très faible — risque de sous-évaluation signalé par BADR', badge:'VIGILANCE' }); score -= 5; }
+  }
+
+  // Incoterm
+  if (!incoterm) { warnings.push({ text:'Incoterm non renseigné — important pour calcul valeur CAF', badge:'ALERTE' }); score -= 5; }
+  else { ok.push({ text:'Incoterm déclaré : ' + incoterm, badge:'OK' }); }
+
+  // ICE
+  if (!ice) { issues.push({ text:'ICE importateur manquant — obligatoire dans BADR (15 chiffres)', badge:'BLOQUANT' }); score -= 15; }
+  else if (ice.length !== 15) { issues.push({ text:'ICE invalide — doit comporter exactement 15 chiffres (actuel: ' + ice.length + ')', badge:'ERREUR' }); score -= 10; }
+  else { ok.push({ text:'ICE importateur présent et format valide', badge:'OK' }); }
+
+  // B/L
+  if (!bl) { warnings.push({ text:'Numéro B/L / LTA manquant — référence transport obligatoire', badge:'ALERTE' }); score -= 5; }
+  else { ok.push({ text:'Référence transport renseignée : ' + bl, badge:'OK' }); }
+
+  // Origine / Accord
+  if (!origine) { warnings.push({ text:'Pays d\'origine non renseigné — impacte le taux DI et les accords préférentiels', badge:'ALERTE' }); score -= 5; }
+  else {
+    ok.push({ text:'Pays d\'origine déclaré : ' + origine, badge:'OK' });
+    if (accord !== 'none' && accord) {
+      const origineUE = ['FR','ES','DE','IT','NL','BE','GB'].includes(origine);
+      if (accord === 'ALECA' && !origineUE) {
+        warnings.push({ text:'ALECA invoqué mais origine ' + origine + ' n\'est pas UE — vérifiez le certificat EUR.1', badge:'VIGILANCE' }); score -= 8;
+      } else {
+        ok.push({ text:'Accord préférentiel ' + accord + ' cohérent avec l\'origine déclarée', badge:'OK' });
+      }
+    }
+  }
+
+  score = Math.max(0, Math.min(100, score));
+
+  // Détermination circuit probable
+  let circuit, circuitColor, circuitBg, circuitBd, verdict;
+  if (issues.length === 0 && score >= 80) {
+    circuit = 'VERT'; circuitColor='var(--green)'; circuitBg='var(--green-bg)'; circuitBd='var(--green-bd)';
+    verdict = 'Déclaration cohérente — Circuit vert probable';
+  } else if (issues.filter(i=>i.badge==='BLOQUANT').length === 0 && score >= 55) {
+    circuit = 'JAUNE'; circuitColor='var(--amber)'; circuitBg='var(--amber-bg)'; circuitBd='var(--amber-bd)';
+    verdict = 'Points à corriger — Circuit jaune probable';
+  } else {
+    circuit = 'ROUGE'; circuitColor='var(--red)'; circuitBg='var(--red-bg)'; circuitBd='var(--red-bd)';
+    verdict = 'Anomalies détectées — Circuit rouge probable';
+  }
+
+  // Affichage
+  document.getElementById('wizard-section').style.display = 'none';
+  document.getElementById('result-section').classList.add('show');
+
+  document.getElementById('score-header-wrap').innerHTML = `
+    <div class="score-header" style="border-color:${circuitBd}">
+      <div class="score-circle" style="border-color:${circuitColor};background:${circuitBg}">
+        <div class="score-num" style="color:${circuitColor}">${score}</div>
+        <div class="score-max">/100</div>
+      </div>
+      <div class="score-info">
+        <div class="score-verdict">${verdict}</div>
+        <div class="score-sub">Score de cohérence DUM basé sur ${issues.length + warnings.length + ok.length} vérifications. ${issues.filter(i=>i.badge==='BLOQUANT').length} blocages, ${warnings.length} alertes, ${ok.length} points conformes.</div>
+        <div class="score-tags">
+          <span class="stag" style="background:${circuitBg};border-color:${circuitBd};color:${circuitColor}">Circuit probable : ${circuit}</span>
+          <span class="stag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">NC10 : ${nc||'Non saisi'}</span>
+          <span class="stag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Régime : ${regime||'Non sélectionné'}</span>
+        </div>
+      </div>
+    </div>`;
+
+  let blocks = '';
+
+  if (issues.length > 0) {
+    blocks += resBlock('Anomalies bloquantes', issues, 'var(--red-bg)', 'var(--red-bd)', 'var(--red)', 'var(--red)');
+  }
+  if (warnings.length > 0) {
+    blocks += resBlock('Points de vigilance', warnings, 'var(--amber-bg)', 'var(--amber-bd)', 'var(--amber)', 'var(--amber)');
+  }
+  if (ok.length > 0) {
+    blocks += resBlock('Vérifications conformes', ok, 'var(--green-bg)', 'var(--green-bd)', 'var(--green)', 'var(--green)');
+  }
+
+  // Recommandations
+  blocks += `<div class="res-card">
+    <div class="res-card-hdr" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/></svg>
+      Recommandations avant soumission BADR
+    </div>
+    <div class="res-item"><div class="res-dot" style="background:var(--blue)"></div><div class="res-text">Vérifiez la <strong>cohérence NC10 ↔ description</strong> — BADR rejette les descriptions incohérentes avec le code déclaré.</div></div>
+    <div class="res-item"><div class="res-dot" style="background:var(--blue)"></div><div class="res-text">Assurez-vous que la <strong>valeur CAF est conforme au marché</strong> — une sous-évaluation de plus de 15% déclenche automatiquement une expertise valeur.</div></div>
+    <div class="res-item"><div class="res-dot" style="background:var(--blue)"></div><div class="res-text">Pour les documents conditionnels, <strong>joignez-les même s'ils semblent optionnels</strong> — BADR peut les exiger selon le profil de risque de l'importateur.</div></div>
+    <div class="res-item"><div class="res-dot" style="background:var(--blue)"></div><div class="res-text">Cette vérification est <strong>indicative et non officielle</strong> — seul BADR fait foi. Consultez un transitaire agréé ADII pour toute soumission réelle.</div></div>
+  </div>`;
+
+  document.getElementById('result-blocks').innerHTML = blocks;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resBlock(title, items, bg, bd, color, dotColor) {
+  return `<div class="res-card">
+    <div class="res-card-hdr" style="background:${bg};color:${color};border-color:${bd}">
+      ${title} (${items.length})
+    </div>
+    ${items.map(i=>`<div class="res-item">
+      <div class="res-dot" style="background:${dotColor}"></div>
+      <div class="res-text">${i.text}</div>
+      <span class="res-badge" style="background:${bg};border-color:${bd};color:${color}">${i.badge}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+function resetAll() {
+  currentStep = 1;
+  document.getElementById('wizard-section').style.display = '';
+  document.getElementById('result-section').classList.remove('show');
+  document.getElementById('score-header-wrap').innerHTML = '';
+  document.getElementById('result-blocks').innerHTML = '';
+  document.querySelectorAll('.step-card').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-1').classList.add('active');
+  document.querySelectorAll('.step-nav-item').forEach(s => { s.classList.remove('active','done'); });
+  document.querySelectorAll('.step-num').forEach((n,i) => {
+    n.className = 'step-num ' + (i===0?'step-num-active':'step-num-pending');
+    n.textContent = i+1;
+  });
+  document.getElementById('snav-1').classList.add('active');
+  document.getElementById('prog-pct').textContent = '20%';
+  document.getElementById('prog-fill').style.width = '20%';
+  docChecks = {};
+  document.getElementById('nc-hint').textContent = 'Saisir le code à 10 chiffres du Tarif Intégré Marocain';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
+
+<script>
+// ── PROTECTION: Override calcCAF() + analyzeAll() → API ──
+(function() {
+  window.calcCAF = async function() {
+    const taux  = parseFloat(document.getElementById('f-taux')?.value) || 1;
+    const fob   = parseFloat(document.getElementById('f-fob')?.value)  || 0;
+    const fret  = parseFloat(document.getElementById('f-fret')?.value) || 0;
+    const assur = parseFloat(document.getElementById('f-assur')?.value)|| 0;
+    if (!fob) return;
+    try {
+      const r = await fetch('/api/calculs/verificateur-dum', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ action:'calc_caf', params:{ fob, fret, assurance:assur, tauxChange:taux, devise:'devise' }})
+      });
+      const d = await r.json();
+      if (!d.ok) return;
+      const fr = n => Math.round(n).toLocaleString('fr-FR');
+      if (document.getElementById('r-caf'))   document.getElementById('r-caf').textContent   = fr(d.cafMAD) + ' MAD';
+      if (document.getElementById('r-fob'))   document.getElementById('r-fob').textContent   = fr(d.fob)    + ' MAD';
+      if (document.getElementById('r-fret'))  document.getElementById('r-fret').textContent  = fr(d.fret)   + ' MAD';
+      if (document.getElementById('r-assur')) document.getElementById('r-assur').textContent = fr(d.assurance) + ' MAD';
+    } catch(e) { console.error('API verificateur-dum calcCAF:', e); }
+  };
+
+  window.analyzeAll = async function() {
+    try {
+      const r = await fetch('/api/calculs/verificateur-dum', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ action:'analyser', params:{
+          fob:       parseFloat(document.getElementById('f-fob')?.value)    || 0,
+          fret:      parseFloat(document.getElementById('f-fret')?.value)   || 0,
+          assurance: parseFloat(document.getElementById('f-assur')?.value)  || 0,
+          tauxChange:parseFloat(document.getElementById('f-taux')?.value)   || 1,
+          incoterm:  document.getElementById('f-incoterm')?.value  || '',
+          origine:   document.getElementById('f-origine')?.value   || '',
+          ncCode:    document.getElementById('f-nc')?.value         || '',
+          regime:    document.getElementById('f-regime')?.value     || '',
+          transportMode: document.getElementById('f-transport')?.value || '',
+          nbDocuments:   parseInt(document.getElementById('f-nb-docs')?.value) || 0,
+          expediteur:    document.getElementById('f-expediteur')?.value  || '',
+          destinataire:  document.getElementById('f-destinataire')?.value || '',
+        }})
+      });
+      const d = await r.json();
+      if (!d.ok) return;
+      if (document.getElementById('r-score'))  document.getElementById('r-score').textContent  = d.score + '/100';
+      if (document.getElementById('r-qualite'))document.getElementById('r-qualite').textContent = d.qualite;
+    } catch(e) { console.error('API verificateur-dum analyzeAll:', e); }
+  };
+})();
+</script>
+

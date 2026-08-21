@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulateur Fiscal Douanier — Transit-IA</title>
+  <style>
+    /* Styles identiques à l'original — aucune formule ici */
+    :root{--ink:#1a1a2e;--blue:#2563eb;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--bg:#f8fafc;--card:#fff;--border:#e2e8f0}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+    .header{background:var(--ink);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:12px}
+    .header h1{font-size:18px;font-weight:700}
+    .container{max-width:900px;margin:24px auto;padding:0 16px;display:grid;gap:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+    .card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .form-label{font-size:12px;font-weight:600;color:#64748b;margin-bottom:4px;display:block}
+    .form-input,.form-select{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;outline:none;transition:.2s}
+    .form-input:focus,.form-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .btn-calc{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;margin-top:8px}
+    .btn-calc:hover{background:#1d4ed8}
+    .btn-calc:disabled{background:#94a3b8;cursor:not-allowed}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+    .toggle-row:last-child{border-bottom:none}
+    .toggle{cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+    .toggle input{display:none}
+    .toggle-sl{width:38px;height:20px;background:#cbd5e1;border-radius:20px;position:relative;transition:.3s}
+    .toggle-sl::after{content:'';width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:.3s}
+    .toggle input:checked~.toggle-sl{background:var(--blue)}
+    .toggle input:checked~.toggle-sl::after{left:20px}
+    .sub-options{margin-top:10px;padding:12px;background:#f1f5f9;border-radius:8px;display:none}
+    .sub-options.visible{display:block}
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+    .kpi{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px}
+    .kpi-label{font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+    .kpi-val{font-size:22px;font-weight:800;color:var(--ink);margin:4px 0}
+    .kpi-sub{font-size:11px;color:#94a3b8}
+    .kpi.primary{background:var(--blue);color:#fff;border-color:transparent}
+    .kpi.primary .kpi-label,.kpi.primary .kpi-sub{color:rgba(255,255,255,.75)}
+    .kpi.primary .kpi-val{color:#fff}
+    .methodo{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:16px;font-size:12.5px}
+    .methodo strong{color:var(--amber)}
+    .loader{display:none;text-align:center;padding:20px;color:var(--blue);font-weight:600}
+    .error-msg{display:none;background:#fef2f2;border:1px solid #fecaca;color:var(--red);border-radius:8px;padding:12px;font-size:13px;margin-top:8px}
+    .empty-state{text-align:center;padding:32px;color:#94a3b8;font-size:14px}
+    @media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div style="font-size:11px;opacity:.7;font-weight:600">Transit-IA</div>
+    <h1>🧮 Simulateur Fiscal Douanier</h1>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Saisie valeur CAF -->
+  <div class="card">
+    <div class="card-title">📦 Valeur CAF à l'importation</div>
+    <div class="grid3">
+      <div>
+        <label class="form-label">Devise</label>
+        <select class="form-select" id="f-devise" onchange="updateDevise()">
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
+          <option value="GBP">GBP</option>
+          <option value="AED">AED</option>
+          <option value="CNY">CNY</option>
+          <option value="MAD" selected>MAD (direct)</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Taux de change (MAD/<span id="devise-lbl">MAD</span>)</label>
+        <input class="form-input" type="number" id="f-taux" value="1" step="0.01" min="0" oninput="autoCalcCAF()">
+      </div>
+      <div>
+        <label class="form-label">Valeur CAF calculée (MAD)</label>
+        <input class="form-input" type="number" id="f-caf-mad" placeholder="Ex: 150000" min="0" oninput="calculer()">
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:12px">
+      <div>
+        <label class="form-label">FOB (devise)</label>
+        <input class="form-input" type="number" id="f-fob" value="0" min="0" oninput="autoCalcCAF()">
+      </div>
+      <div>
+        <label class="form-label">Fret (devise)</label>
+        <input class="form-input" type="number" id="f-fret" value="0" min="0" oninput="autoCalcCAF()">
+      </div>
+      <div>
+        <label class="form-label">Assurance (devise)</label>
+        <input class="form-input" type="number" id="f-assur" value="0" min="0" oninput="autoCalcCAF()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Droits et taxes -->
+  <div class="card">
+    <div class="card-title">📋 Droits & Taxes</div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div>
+        <label class="form-label">Taux DI (%)</label>
+        <input class="form-input" type="number" id="f-di" placeholder="Ex: 2.5" min="0" max="100" step="0.5" oninput="calculer()">
+      </div>
+      <div>
+        <label class="form-label">Taux TVA (%)</label>
+        <select class="form-select" id="f-tva" onchange="calculer()">
+          <option value="20">20% — Taux normal</option>
+          <option value="14">14% — Taux réduit</option>
+          <option value="10">10% — Taux réduit</option>
+          <option value="7">7% — Taux super-réduit</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Accord commercial -->
+    <div style="margin-bottom:12px">
+      <label class="form-label">Accord commercial</label>
+      <select class="form-select" id="f-accord" onchange="calculer()">
+        <option value="aucun">Aucun accord — Taux plein</option>
+        <option value="aleca">ALECA (UE) — DI = 0%</option>
+        <option value="agadir">Accord d'Agadir — DI ×50%</option>
+      </select>
+    </div>
+
+    <!-- Toggles options -->
+    <div class="toggle-row">
+      <span style="font-size:13px;font-weight:600">TIC — Taxe Intérieure de Consommation</span>
+      <label class="toggle"><input type="checkbox" id="t-tic" onchange="toggleOption('tic')"><span class="toggle-sl"></span></label>
+    </div>
+    <div class="sub-options" id="opts-tic">
+      <div class="grid2">
+        <div>
+          <label class="form-label">Mode TIC</label>
+          <select class="form-select" id="f-tic-mode" onchange="calculer()">
+            <option value="ad_valorem">Ad valorem (%)</option>
+            <option value="specifique">Spécifique (MAD fixe)</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Taux / Montant TIC</label>
+          <input class="form-input" type="number" id="f-tic-taux" placeholder="Ex: 50" min="0" oninput="calculer()">
+        </div>
+      </div>
+    </div>
+
+    <div class="toggle-row">
+      <span style="font-size:13px;font-weight:600">PFI — Prélèvement Fiscal à l'Importation (0.25%)</span>
+      <label class="toggle"><input type="checkbox" id="t-pfi" onchange="calculer()"><span class="toggle-sl"></span></label>
+    </div>
+
+    <div class="toggle-row">
+      <span style="font-size:13px;font-weight:600">Droit Antidumping</span>
+      <label class="toggle"><input type="checkbox" id="t-anti" onchange="toggleOption('anti')"><span class="toggle-sl"></span></label>
+    </div>
+    <div class="sub-options" id="opts-anti">
+      <label class="form-label">Taux antidumping (%)</label>
+      <input class="form-input" type="number" id="f-anti-taux" placeholder="Ex: 15" min="0" oninput="calculer()">
+    </div>
+
+    <button class="btn-calc" id="btn-calc" onclick="calculer()">Calculer les droits et taxes</button>
+    <div class="error-msg" id="err-msg"></div>
+  </div>
+
+  <!-- Résultats -->
+  <div class="card" id="card-resultats" style="display:none">
+    <div class="card-title">✅ Résultats de la simulation</div>
+    <div class="loader" id="loader">⏳ Calcul en cours...</div>
+    <div id="kpi-zone" class="kpi-grid"></div>
+    <div style="margin-top:12px;font-size:11px;color:#94a3b8" id="ref-legale"></div>
+  </div>
+
+  <!-- Méthodologie -->
+  <div class="methodo">
+    <div style="font-weight:700;margin-bottom:6px">⚖️ Méthodologie — Art. 96 CGI Maroc</div>
+    <div style="font-family:monospace;font-size:11.5px;line-height:1.7;color:#92400e">
+      DI = Valeur CAF × Taux DI<br>
+      TIC = Base TIC × Taux TIC<br>
+      Base TVA = Valeur CAF + DI + TIC + PFI + Antidumping<br>
+      TVA = Base TVA × Taux TVA
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:#78716c">
+      <strong>Base légale :</strong> Art. 96 CGI · Dahir 1977 Code des Douanes · LF 2025 · Note circulaire ADII n°6241
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// PAGE LÉGÈRE — Aucune formule de calcul ici
+// Toute la logique est protégée côté serveur (pages/api/calculs/)
+// Ce que vous voyez ici : saisie des données + affichage des résultats
+// ════════════════════════════════════════════════════════
+
+const TAUX_CHANGE = { EUR: 10.90, USD: 10.10, GBP: 12.80, AED: 2.75, CNY: 1.40, MAD: 1 };
+
+function updateDevise() {
+  const dev = document.getElementById('f-devise').value;
+  document.getElementById('devise-lbl').textContent = dev;
+  document.getElementById('f-taux').value = TAUX_CHANGE[dev] || 1;
+  autoCalcCAF();
+}
+
+function autoCalcCAF() {
+  const taux  = parseFloat(document.getElementById('f-taux').value) || 1;
+  const fob   = parseFloat(document.getElementById('f-fob').value)   || 0;
+  const fret  = parseFloat(document.getElementById('f-fret').value)  || 0;
+  const assur = parseFloat(document.getElementById('f-assur').value) || 0;
+  const cafMAD = (fob + fret + assur) * taux;
+  document.getElementById('f-caf-mad').value = cafMAD > 0 ? cafMAD.toFixed(2) : '';
+  if (cafMAD > 0) calculer();
+}
+
+function toggleOption(id) {
+  const opts = document.getElementById(`opts-${id}`);
+  if (opts) opts.classList.toggle('visible', document.getElementById(`t-${id}`).checked);
+  calculer();
+}
+
+// ── Appel API — aucune formule dans cette fonction ──────────
+async function calculer() {
+  const cafMAD = parseFloat(document.getElementById('f-caf-mad').value) || 0;
+  if (!cafMAD) return;
+
+  const payload = {
+    cafMAD,
+    tauxDI:   parseFloat(document.getElementById('f-di').value)       || 0,
+    tauxTVA:  parseFloat(document.getElementById('f-tva').value)      || 20,
+    ticActif: document.getElementById('t-tic').checked,
+    ticMode:  document.getElementById('f-tic-mode').value,
+    ticTaux:  parseFloat(document.getElementById('f-tic-taux').value)  || 0,
+    pfiActif: document.getElementById('t-pfi').checked,
+    antiActif:document.getElementById('t-anti').checked,
+    tauxAnti: parseFloat(document.getElementById('f-anti-taux').value) || 0,
+    accord:   document.getElementById('f-accord').value,
+  };
+
+  document.getElementById('card-resultats').style.display = 'block';
+  document.getElementById('loader').style.display = 'block';
+  document.getElementById('kpi-zone').innerHTML = '';
+  document.getElementById('err-msg').style.display = 'none';
+  document.getElementById('btn-calc').disabled = true;
+
+  try {
+    const resp = await fetch('/api/calculs/simulateur-fiscal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await resp.json();
+
+    if (!data.ok) throw new Error(data.error);
+
+    afficherResultats(data.resultats, data.reference);
+  } catch (e) {
+    document.getElementById('err-msg').style.display = 'block';
+    document.getElementById('err-msg').textContent = '⚠️ Erreur : ' + e.message;
+  } finally {
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('btn-calc').disabled = false;
+  }
+}
+
+function fr(n) { return Math.round(n).toLocaleString('fr-FR'); }
+function pct(n) { return n.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) + '%'; }
+
+function afficherResultats(r, ref) {
+  const kpis = [
+    { label: 'Valeur CAF', val: fr(r.cafMAD) + ' MAD', sub: 'Base de calcul', cls: '' },
+    { label: 'DI', val: fr(r.DI) + ' MAD', sub: pct(r.tauxDIEffectif) + (r.accordApplique !== 'aucun' ? ' · Accord appliqué' : ''), cls: '' },
+    { label: 'TVA (Art.96)', val: fr(r.TVA) + ' MAD', sub: 'Base TVA : ' + fr(r.baseTVA) + ' MAD', cls: '' },
+    r.TIC  > 0 ? { label: 'TIC', val: fr(r.TIC)  + ' MAD', sub: 'Taxe intérieure', cls: '' } : null,
+    r.PFI  > 0 ? { label: 'PFI', val: fr(r.PFI)  + ' MAD', sub: '0.25% CAF', cls: '' }       : null,
+    r.ANTI > 0 ? { label: 'Antidumping', val: fr(r.ANTI) + ' MAD', sub: 'Droit spécial', cls: '' } : null,
+    { label: 'TOTAL TAXES', val: fr(r.TOTAL) + ' MAD', sub: 'Taux effectif : ' + pct(r.tauxEffectif), cls: 'primary' },
+    { label: 'Coût total', val: fr(r.cafMAD + r.TOTAL) + ' MAD', sub: 'CAF + toutes taxes', cls: '' },
+  ].filter(Boolean);
+
+  document.getElementById('kpi-zone').innerHTML = kpis.map(k =>
+    `<div class="kpi ${k.cls}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-val">${k.val}</div>
+      <div class="kpi-sub">${k.sub}</div>
+    </div>`
+  ).join('');
+
+  document.getElementById('ref-legale').textContent = '📋 ' + ref;
+}
+</script>
+</body>
+</html>
+<script>
+// ── PROTECTION: Override calculate() → API call ──────────
+(function() {
+  const _orig = window.calculate;
+  window.calculate = async function() {
+    const cafMAD = window.cafMAD || 0;
+    if (!cafMAD) return;
+    const payload = {
+      cafMAD,
+      tauxDI:    parseFloat(document.getElementById('f-di')?.value)       || 0,
+      tauxTVA:   parseFloat(document.getElementById('f-tva')?.value)      || 20,
+      ticActif:  document.getElementById('t-tic')?.checked  || false,
+      ticMode:   document.getElementById('f-tic-mode')?.value || 'ad_valorem',
+      ticTaux:   parseFloat(document.getElementById('f-tic-taux')?.value)  || 0,
+      pfiActif:  document.getElementById('t-pfi')?.checked  || false,
+      antiActif: document.getElementById('t-anti')?.checked || false,
+      tauxAnti:  parseFloat(document.getElementById('f-anti-taux')?.value) || 0,
+      accord:    document.getElementById('f-accord')?.value || 'aucun',
+    };
+    try {
+      const r = await fetch('/api/calculs/simulateur-fiscal', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const d = await r.json();
+      if (!d.ok) return;
+      const rs = d.resultats;
+      const fr = n => Math.round(n).toLocaleString('fr-FR');
+      const fd = (n,dec=2) => n.toLocaleString('fr-FR',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+      if (document.getElementById('r-di'))       document.getElementById('r-di').textContent        = fr(rs.DI) + ' MAD';
+      if (document.getElementById('r-tva'))      document.getElementById('r-tva').textContent       = fr(rs.TVA) + ' MAD';
+      if (document.getElementById('r-tic'))      document.getElementById('r-tic').textContent       = fr(rs.TIC) + ' MAD';
+      if (document.getElementById('r-pfi'))      document.getElementById('r-pfi').textContent       = fr(rs.PFI) + ' MAD';
+      if (document.getElementById('r-anti'))     document.getElementById('r-anti').textContent      = fr(rs.ANTI) + ' MAD';
+      if (document.getElementById('r-total'))    document.getElementById('r-total').textContent     = fr(rs.TOTAL) + ' MAD';
+      if (document.getElementById('r-effectif')) document.getElementById('r-effectif').textContent  = fd(rs.tauxEffectif) + '%';
+      if (document.getElementById('r-base-tva')) document.getElementById('r-base-tva').textContent  = fr(rs.baseTVA) + ' MAD';
+    } catch(e) { console.error('API simulateur-fiscal:', e); }
+  };
+})();
+</script>
+

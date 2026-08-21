@@ -1,0 +1,474 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M-36 — Intelligence Compétitive Flux Import | Transit-IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg:        #F7F5F0;
+    --surface:   #FFFFFF;
+    --card:      #FDFCF9;
+    --border:    #E5DDD0;
+    --border2:   #D4C9B5;
+    --gold:      #B8922A;
+    --gold-dark: #8C6B18;
+    --gold-bg:   #FBF5E6;
+    --gold-line: rgba(184,146,42,0.25);
+    --green:     #1D6E40;
+    --green-bg:  #EAF5EE;
+    --red:       #B83232;
+    --red-bg:    #FDF0EF;
+    --orange:    #B86E1A;
+    --orange-bg: #FBF2E6;
+    --blue:      #2A5E8C;
+    --blue-bg:   #EBF2FA;
+    --text:      #1C1814;
+    --text2:     #3C3630;
+    --muted:     #7A7068;
+    --muted2:    #A09080;
+    --shadow:    0 1px 4px rgba(28,24,20,.06), 0 4px 16px rgba(28,24,20,.04);
+    --mono:      'JetBrains Mono', monospace;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; min-height:100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    background:var(--surface); border-bottom:2px solid var(--gold);
+    padding:0 24px; display:flex; align-items:center; justify-content:space-between;
+    box-shadow:var(--shadow); height:56px; position:sticky; top:0; z-index:100;
+  }
+  .module-badge { background:var(--gold); color:#fff; font-family:var(--mono); font-size:11px; font-weight:600; padding:3px 9px; border-radius:4px; }
+  .topbar-title { font-family:'DM Serif Display',serif; font-size:17px; color:var(--text); margin-left:12px; }
+  .src-tag { background:var(--green-bg); color:var(--green); border:1px solid rgba(29,110,64,.2); font-family:var(--mono); font-size:10px; font-weight:600; padding:3px 8px; border-radius:4px; margin-left:6px; }
+
+  /* KPI ROW */
+  .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); background:var(--surface); border-bottom:1px solid var(--border); }
+  @media(max-width:640px) { .kpi-row { grid-template-columns:repeat(2,1fr); } }
+  .kpi { padding:16px 20px; text-align:center; border-right:1px solid var(--border); }
+  .kpi:last-child { border:none; }
+  .kpi-num { font-family:var(--mono); font-size:18px; font-weight:600; color:var(--gold-dark); margin-bottom:3px; }
+  .kpi-lbl { color:var(--muted); font-size:11px; line-height:1.3; }
+  .kpi-chg { font-family:var(--mono); font-size:10px; margin-top:2px; }
+  .up { color:var(--red); }
+  .down { color:var(--green); }
+  .flat { color:var(--muted); }
+
+  /* TABS */
+  .tabs { display:flex; overflow-x:auto; background:var(--surface); border-bottom:1px solid var(--border); padding:0 20px; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { padding:12px 18px; border:none; background:transparent; color:var(--muted); font-size:13px; font-weight:500; cursor:pointer; border-bottom:2px solid transparent; transition:all .18s; white-space:nowrap; font-family:'DM Sans',sans-serif; }
+  .tab.active { color:var(--gold-dark); border-bottom-color:var(--gold); font-weight:600; }
+  .tab:hover:not(.active) { color:var(--text); }
+
+  .panel { display:none; padding:22px; max-width:980px; margin:0 auto; }
+  .panel.active { display:block; }
+
+  /* SECTION */
+  .sec-head { font-family:'DM Serif Display',serif; font-size:17px; color:var(--gold-dark); margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+
+  /* BAR CHART */
+  .bar-list { display:flex; flex-direction:column; gap:7px; }
+  .bar-row { display:flex; align-items:center; gap:10px; }
+  .bar-lbl { width:170px; min-width:170px; font-size:12px; color:var(--text2); text-align:right; }
+  .bar-track { flex:1; height:18px; background:var(--border); border-radius:4px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:4px; transition:width 1s ease; }
+  .bar-val { width:80px; min-width:80px; font-family:var(--mono); font-size:11px; color:var(--muted); }
+  .bar-delta { width:50px; min-width:50px; font-family:var(--mono); font-size:11px; text-align:right; }
+  .delta-up { color:var(--red); }
+  .delta-down { color:var(--green); }
+  .delta-pos { color:var(--green); }
+
+  /* DONUT */
+  .donut-wrap { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  .legend { display:flex; flex-direction:column; gap:7px; min-width:180px; }
+  .legend-item { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text2); }
+  .legend-dot { width:10px; height:10px; border-radius:2px; min-width:10px; }
+  .legend-pct { font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto; }
+
+  /* CARDS */
+  .card-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  @media(max-width:560px) { .card-grid { grid-template-columns:1fr; } }
+  .data-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; box-shadow:var(--shadow); }
+  .data-card-label { font-size:11px; color:var(--muted); margin-bottom:6px; font-weight:500; }
+  .data-card-value { font-family:var(--mono); font-size:20px; font-weight:700; color:var(--gold-dark); margin-bottom:3px; }
+  .data-card-sub { font-size:11px; color:var(--muted); }
+
+  /* HEAT GRID */
+  .heat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:12px 0; }
+  @media(max-width:640px) { .heat-grid { grid-template-columns:repeat(2,1fr); } }
+  .heat-cell { border-radius:8px; padding:12px; text-align:center; border:1px solid var(--border); background:var(--surface); }
+  .heat-country { font-size:11px; font-weight:600; color:var(--text2); margin-bottom:3px; }
+  .heat-pct { font-family:var(--mono); font-size:15px; font-weight:700; }
+  .heat-sub { font-size:10px; color:var(--muted); margin-top:2px; }
+
+  /* TABLE */
+  .dtable { width:100%; border-collapse:collapse; background:var(--surface); border-radius:10px; overflow:hidden; box-shadow:var(--shadow); }
+  .dtable th { background:var(--gold-bg); color:var(--gold-dark); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; padding:9px 12px; text-align:left; border-bottom:1px solid var(--border); }
+  .dtable td { padding:10px 12px; border-bottom:1px solid var(--border); font-size:12px; color:var(--text2); }
+  .dtable tr:hover td { background:var(--gold-bg); }
+  .dtable tr:last-child td { border:none; }
+
+  /* SPARKLINE */
+  .spark-wrap { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; box-shadow:var(--shadow); }
+  .spark-header { display:flex; justify-content:space-between; margin-bottom:10px; }
+  .spark-title { font-weight:600; font-size:13px; color:var(--text); }
+  .spark-meta { font-family:var(--mono); font-size:11px; color:var(--muted); }
+
+  /* INTEL CARDS */
+  .intel-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:10px; border-left:4px solid; box-shadow:var(--shadow); }
+  .intel-card.alert-c { border-left-color:var(--red); }
+  .intel-card.opp-c { border-left-color:var(--green); }
+  .intel-card.watch-c { border-left-color:var(--orange); }
+  .intel-card.info-c { border-left-color:var(--blue); }
+  .intel-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; margin-bottom:5px; }
+  .intel-card.alert-c .intel-type { color:var(--red); }
+  .intel-card.opp-c .intel-type { color:var(--green); }
+  .intel-card.watch-c .intel-type { color:var(--orange); }
+  .intel-card.info-c .intel-type { color:var(--blue); }
+  .intel-title { font-weight:600; font-size:13px; margin-bottom:5px; }
+  .intel-body { font-size:12px; color:var(--muted); line-height:1.65; }
+
+  /* FILTER */
+  .filter-row { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .filter-btn { padding:6px 14px; border-radius:20px; font-size:12px; cursor:pointer; border:1px solid var(--border2); background:var(--card); color:var(--muted); transition:all .18s; font-family:'DM Sans',sans-serif; }
+  .filter-btn.active { background:var(--gold-bg); border-color:var(--gold); color:var(--gold-dark); }
+
+  /* ALERT BOXES */
+  .mini-alert { border-radius:8px; padding:11px 14px; font-size:12px; border:1px solid; margin:8px 0; line-height:1.55; }
+  .mini-alert.red { background:var(--red-bg); border-color:rgba(184,50,50,.25); color:var(--red); }
+  .mini-alert.green { background:var(--green-bg); border-color:rgba(29,110,64,.25); color:var(--green); }
+  .mini-alert.gold { background:var(--gold-bg); border-color:var(--gold-line); color:var(--gold-dark); }
+  .mini-alert.blue { background:var(--blue-bg); border-color:rgba(42,94,140,.25); color:var(--blue); }
+
+  /* FOOTER */
+  .footer { text-align:center; padding:14px; color:var(--muted2); font-size:11px; border-top:1px solid var(--border); margin-top:40px; background:var(--surface); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex; align-items:center;">
+    <div class="module-badge">M-36</div>
+    <div class="topbar-title">Intelligence Compétitive — Flux Import</div>
+    <span class="src-tag">Office des Changes 2024</span>
+    <span class="src-tag">HCP ICE T4-2025</span>
+  </div>
+  <span style="font-family:var(--mono); font-size:11px; color:var(--muted);">Données : Office des Changes · HCP · Trésor</span>
+</div>
+
+<!-- KPI ROW -->
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-num">28,7 Md€</div>
+    <div class="kpi-lbl">Déficit commercial 2024</div>
+    <div class="kpi-chg up">▲ +6,8% vs 2023</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-num">225,5 MMDH</div>
+    <div class="kpi-lbl">Imports sous ALE 2024</div>
+    <div class="kpi-chg up">▲ +8,5% (+17,6 MMDH)</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-num">-4,6%</div>
+    <div class="kpi-lbl">Valeurs unitaires import T4-2025</div>
+    <div class="kpi-chg down">▼ Baisse des prix mondiaux</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-num">20,1%</div>
+    <div class="kpi-lbl">Part Asie dans les échanges</div>
+    <div class="kpi-chg up">▲ +1,2 pts vs 2023</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('partenaires')">🌍 Partenaires</button>
+  <button class="tab" onclick="switchTab('secteurs')">🏭 Secteurs</button>
+  <button class="tab" onclick="switchTab('tendances')">📈 Tendances T4-2025</button>
+  <button class="tab" onclick="switchTab('ale')">🤝 Accords ALE</button>
+  <button class="tab" onclick="switchTab('intelligence')">🎯 Alertes & Opps</button>
+</div>
+
+<!-- ── PARTENAIRES ── -->
+<div class="panel active" id="tab-partenaires">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+    <div>
+      <div class="sec-head">📊 Fournisseurs — Part dans échanges 2024</div>
+      <div class="bar-list">
+        <div class="bar-row"><div class="bar-lbl">🇪🇸 Espagne</div><div class="bar-track"><div class="bar-fill" style="width:100%; background:linear-gradient(90deg,#B8922A,#D4AA45);"></div></div><div class="bar-val">29,1%</div><div class="bar-delta flat">1er</div></div>
+        <div class="bar-row"><div class="bar-lbl">🇫🇷 France</div><div class="bar-track"><div class="bar-fill" style="width:72%; background:linear-gradient(90deg,#B8922A,#D4AA45);"></div></div><div class="bar-val">21%</div><div class="bar-delta delta-pos">+2,2 Md</div></div>
+        <div class="bar-row"><div class="bar-lbl">🇨🇳 Chine</div><div class="bar-track"><div class="bar-fill" style="width:52%; background:linear-gradient(90deg,#B83232,#D45050);"></div></div><div class="bar-val">~15%</div><div class="bar-delta delta-up">+18,4%</div></div>
+        <div class="bar-row"><div class="bar-lbl">🇩🇪 Allemagne</div><div class="bar-track"><div class="bar-fill" style="width:28%; background:linear-gradient(90deg,#2A5E8C,#4A7EAC);"></div></div><div class="bar-val">17,9 MMDH</div><div class="bar-delta delta-pos">Record</div></div>
+        <div class="bar-row"><div class="bar-lbl">🇺🇸 États-Unis</div><div class="bar-track"><div class="bar-fill" style="width:28%; background:linear-gradient(90deg,#2A5E8C,#4A7EAC);"></div></div><div class="bar-val">~8%</div><div class="bar-delta delta-up">+14,7%</div></div>
+        <div class="bar-row"><div class="bar-lbl">🇹🇷 Turquie</div><div class="bar-track"><div class="bar-fill" style="width:17%; background:linear-gradient(90deg,#B86E1A,#D48A35);"></div></div><div class="bar-val">~5%</div><div class="bar-delta delta-up">+8,2%</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-head">🗺️ Répartition géographique</div>
+      <div class="donut-wrap">
+        <svg width="130" height="130" viewBox="0 0 130 130" style="min-width:130px;">
+          <circle cx="65" cy="65" r="50" fill="none" stroke="#E5DDD0" stroke-width="22"/>
+          <circle cx="65" cy="65" r="50" fill="none" stroke="#B8922A" stroke-width="22" stroke-dasharray="198 116" stroke-dashoffset="0" transform="rotate(-90 65 65)"/>
+          <circle cx="65" cy="65" r="50" fill="none" stroke="#B83232" stroke-width="22" stroke-dasharray="63 251" stroke-dashoffset="-198" transform="rotate(-90 65 65)"/>
+          <circle cx="65" cy="65" r="50" fill="none" stroke="#2A5E8C" stroke-width="22" stroke-dasharray="38 276" stroke-dashoffset="-261" transform="rotate(-90 65 65)"/>
+          <circle cx="65" cy="65" r="50" fill="none" stroke="#1D6E40" stroke-width="22" stroke-dasharray="15 299" stroke-dashoffset="-299" transform="rotate(-90 65 65)"/>
+          <text x="65" y="62" text-anchor="middle" font-family="'DM Serif Display'" font-size="11" fill="#8C6B18">2024</text>
+          <text x="65" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" fill="#7A7068">Office</text>
+        </svg>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#B8922A;"></div> Europe (UE) <span class="legend-pct">~62%</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#B83232;"></div> Asie (Chine+) <span class="legend-pct">20,1%</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2A5E8C;"></div> Amériques <span class="legend-pct">12%</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1D6E40;"></div> Afrique <span class="legend-pct">~5%</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#E5DDD0;"></div> Autres <span class="legend-pct">~1%</span></div>
+        </div>
+      </div>
+      <div class="mini-alert red" style="margin-top:12px;">🚨 <strong>Déficit record Chine :</strong> +1,3 Md€ en 2024 (+18,4%). Principal moteur du déficit commercial global.</div>
+      <div class="mini-alert green">✅ <strong>Excédent France :</strong> La France affiche un solde bilatéral favorable au Maroc — cas unique parmi les grands partenaires européens.</div>
+    </div>
+  </div>
+
+  <div class="sec-head" style="margin-top:20px;">🌡️ Intensité des échanges par zone</div>
+  <div class="heat-grid">
+    <div class="heat-cell" style="background:var(--gold-bg);">
+      <div class="heat-country">🇪🇸 Espagne</div>
+      <div class="heat-pct" style="color:var(--gold-dark);">29,1%</div>
+      <div class="heat-sub">1er partenaire</div>
+    </div>
+    <div class="heat-cell" style="background:var(--gold-bg);">
+      <div class="heat-country">🇫🇷 France</div>
+      <div class="heat-pct" style="color:var(--gold-dark);">21%</div>
+      <div class="heat-sub">Excédent Maroc</div>
+    </div>
+    <div class="heat-cell" style="background:var(--red-bg);">
+      <div class="heat-country">🇨🇳 Chine</div>
+      <div class="heat-pct" style="color:var(--red);">+18,4%</div>
+      <div class="heat-sub">Déficit record</div>
+    </div>
+    <div class="heat-cell" style="background:var(--blue-bg);">
+      <div class="heat-country">🇺🇸 USA</div>
+      <div class="heat-pct" style="color:var(--blue);">+14,7%</div>
+      <div class="heat-sub">Aéronefs ↑</div>
+    </div>
+    <div class="heat-cell" style="background:var(--blue-bg);">
+      <div class="heat-country">🇩🇪 Allemagne</div>
+      <div class="heat-pct" style="color:var(--blue);">17,9 Md</div>
+      <div class="heat-sub">Record historique</div>
+    </div>
+    <div class="heat-cell" style="background:var(--orange-bg);">
+      <div class="heat-country">🇹🇷 Turquie</div>
+      <div class="heat-pct" style="color:var(--orange);">+8,2%</div>
+      <div class="heat-sub">ALE 68,6%</div>
+    </div>
+    <div class="heat-cell" style="background:var(--green-bg);">
+      <div class="heat-country">🌍 Afrique</div>
+      <div class="heat-pct" style="color:var(--green);">Excédent</div>
+      <div class="heat-sub">En réduction 2024</div>
+    </div>
+    <div class="heat-cell">
+      <div class="heat-country">🌊 Océanie</div>
+      <div class="heat-pct" style="color:var(--muted);">Excédent</div>
+      <div class="heat-sub">Dynamique stable</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTEURS ── -->
+<div class="panel" id="tab-secteurs">
+  <div class="sec-head">🏆 Secteurs exportateurs du Maroc 2024</div>
+  <div class="bar-list" style="margin-bottom:20px;">
+    <div class="bar-row"><div class="bar-lbl">🚗 Automobile</div><div class="bar-track"><div class="bar-fill" style="width:100%; background:linear-gradient(90deg,#1D6E40,#2EA35A);"></div></div><div class="bar-val">14,85 Md€</div><div class="bar-delta delta-pos">+6,3%</div></div>
+    <div class="bar-row"><div class="bar-lbl">⚗️ Phosphates & dérivés</div><div class="bar-track"><div class="bar-fill" style="width:55%; background:linear-gradient(90deg,#B8922A,#D4AA45);"></div></div><div class="bar-val">8,21 Md€</div><div class="bar-delta delta-pos">+13,5%</div></div>
+    <div class="bar-row"><div class="bar-lbl">🥦 Agroalimentaire</div><div class="bar-track"><div class="bar-fill" style="width:55%; background:linear-gradient(90deg,#1D6E40,#2EA35A);"></div></div><div class="bar-val">8,2 Md€</div><div class="bar-delta flat">Stable</div></div>
+    <div class="bar-row"><div class="bar-lbl">✈️ Aéronautique</div><div class="bar-track"><div class="bar-fill" style="width:35%; background:linear-gradient(90deg,#2A5E8C,#4A7EAC);"></div></div><div class="bar-val">~5 Md€</div><div class="bar-delta delta-pos">↑ fort</div></div>
+    <div class="bar-row"><div class="bar-lbl">👕 Textile & cuir</div><div class="bar-track"><div class="bar-fill" style="width:27%; background:linear-gradient(90deg,#B83232,#D45050);"></div></div><div class="bar-val">~4 Md€</div><div class="bar-delta delta-up">↓ recul</div></div>
+  </div>
+
+  <div class="sec-head">📦 Catégories d'importation stratégiques — T4 2025</div>
+  <table class="dtable">
+    <thead><tr><th>Catégorie</th><th>Fournisseurs</th><th>Tendance T4-2025</th><th>Variation</th></tr></thead>
+    <tbody>
+      <tr><td>⚡ Énergie & lubrifiants</td><td>Russie, Arabie Saoudite, USA</td><td style="color:var(--green);">Prix en baisse</td><td style="color:var(--green); font-family:var(--mono);">-10,6%</td></tr>
+      <tr><td>🏭 Équipements industriels</td><td>Allemagne, France, Chine</td><td style="color:var(--green);">Décompression prix</td><td style="color:var(--green); font-family:var(--mono);">-8,7%</td></tr>
+      <tr><td>🔩 Demi-produits industriels</td><td>Chine, Turquie, Espagne</td><td style="color:var(--green);">Baisse légère</td><td style="color:var(--green); font-family:var(--mono);">-4,7%</td></tr>
+      <tr><td>🌽 Produits alimentaires</td><td>France, Brésil, USA</td><td style="color:var(--green);">Normalisation</td><td style="color:var(--green); font-family:var(--mono);">-4,6%</td></tr>
+      <tr><td>🛍️ Biens de consommation</td><td>Chine, Turquie, UE</td><td style="color:var(--orange);">Légère baisse</td><td style="color:var(--orange); font-family:var(--mono);">~-2%</td></tr>
+      <tr><td>🪨 Minéraux bruts (origine minérale)</td><td>Afrique subsaharienne</td><td style="color:var(--red);">Forte hausse prix</td><td style="color:var(--red); font-family:var(--mono);">+60%+</td></tr>
+      <tr><td>✈️ Aéronefs & véhicules spatiaux</td><td>USA, France</td><td style="color:var(--red);">Hausse significative</td><td style="color:var(--red); font-family:var(--mono);">+3,1 MMDH</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── TENDANCES ── -->
+<div class="panel" id="tab-tendances">
+  <div class="sec-head">📈 Indices Commerce Extérieur — HCP</div>
+  <div class="card-grid" style="margin-bottom:16px;">
+    <div class="data-card"><div class="data-card-label">Valeurs unitaires IMPORT T3-2025</div><div class="data-card-value" style="color:var(--green);">-5,8%</div><div class="data-card-sub">vs T3-2024 — Baisse structurelle des prix mondiaux</div></div>
+    <div class="data-card"><div class="data-card-label">Valeurs unitaires EXPORT T3-2025</div><div class="data-card-value" style="color:var(--green);">+0,4%</div><div class="data-card-sub">Phosphates et agro soutiennent les prix d'export</div></div>
+    <div class="data-card"><div class="data-card-label">Valeurs unitaires IMPORT T4-2025</div><div class="data-card-value" style="color:var(--green);">-4,6%</div><div class="data-card-sub">Recul énergie, équipements, demi-produits, alimentaire</div></div>
+    <div class="data-card"><div class="data-card-label">Valeurs unitaires EXPORT T4-2025</div><div class="data-card-value" style="color:var(--green);">+1,4%</div><div class="data-card-sub">Légère appréciation des exportations marocaines</div></div>
+  </div>
+
+  <div class="spark-wrap">
+    <div class="spark-header">
+      <div class="spark-title">Indice valeurs unitaires Import — Évolution 2024–2025</div>
+      <div class="spark-meta">Source : HCP ICE · Base : T1-2024</div>
+    </div>
+    <svg width="100%" height="110" viewBox="0 0 500 110" preserveAspectRatio="none" style="display:block;">
+      <line x1="0" y1="30" x2="500" y2="30" stroke="#E5DDD0" stroke-width="1"/>
+      <line x1="0" y1="60" x2="500" y2="60" stroke="#E5DDD0" stroke-width="1"/>
+      <line x1="0" y1="85" x2="500" y2="85" stroke="#E5DDD0" stroke-width="1"/>
+      <text x="0" y="100" font-family="'JetBrains Mono'" font-size="8" fill="#A09080">T1-2024</text>
+      <text x="95" y="100" font-family="'JetBrains Mono'" font-size="8" fill="#A09080">T2-2024</text>
+      <text x="185" y="100" font-family="'JetBrains Mono'" font-size="8" fill="#A09080">T3-2024</text>
+      <text x="280" y="100" font-family="'JetBrains Mono'" font-size="8" fill="#A09080">T1-2025</text>
+      <text x="370" y="100" font-family="'JetBrains Mono'" font-size="8" fill="#A09080">T3-2025</text>
+      <text x="455" y="100" font-family="'JetBrains Mono'" font-size="8" fill="#A09080">T4-2025</text>
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#1D6E40;stop-opacity:0.15"/>
+          <stop offset="100%" style="stop-color:#1D6E40;stop-opacity:0"/>
+        </linearGradient>
+      </defs>
+      <polygon points="10,45 125,52 220,58 310,68 405,72 490,78 490,92 10,92" fill="url(#g1)"/>
+      <polyline points="10,45 125,52 220,58 310,68 405,72 490,78" fill="none" stroke="#1D6E40" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="10" cy="45" r="4" fill="#1D6E40"/>
+      <circle cx="125" cy="52" r="4" fill="#1D6E40"/>
+      <circle cx="220" cy="58" r="4" fill="#1D6E40"/>
+      <circle cx="310" cy="68" r="4" fill="#1D6E40"/>
+      <circle cx="405" cy="72" r="4" fill="#1D6E40"/>
+      <circle cx="490" cy="78" r="4" fill="#1D6E40"/>
+      <text x="10" y="40" font-family="'JetBrains Mono'" font-size="8" fill="#1D6E40">-3,5%</text>
+      <text x="108" y="47" font-family="'JetBrains Mono'" font-size="8" fill="#1D6E40">-5,7%</text>
+      <text x="200" y="53" font-family="'JetBrains Mono'" font-size="8" fill="#1D6E40">-1,6%</text>
+      <text x="290" y="63" font-family="'JetBrains Mono'" font-size="8" fill="#1D6E40">-5,7%</text>
+      <text x="382" y="67" font-family="'JetBrains Mono'" font-size="8" fill="#1D6E40">-5,8%</text>
+      <text x="462" y="73" font-family="'JetBrains Mono'" font-size="8" fill="#1D6E40">-4,6%</text>
+    </svg>
+    <div style="font-size:11px; color:var(--muted); margin-top:4px;">↓ Baisse des valeurs unitaires = amélioration du pouvoir d'achat à l'importation pour les opérateurs marocains</div>
+  </div>
+
+  <div class="spark-wrap">
+    <div class="spark-header"><div class="spark-title">Variations extrêmes par catégorie — T4 2025</div><div class="spark-meta">HCP</div></div>
+    <div class="bar-list">
+      <div class="bar-row"><div class="bar-lbl" style="text-align:left; width:210px;">🪨 Minéraux bruts</div><div class="bar-track"><div class="bar-fill" style="width:100%; background:linear-gradient(90deg,#B83232,#D45050);"></div></div><div class="bar-val" style="color:var(--red); font-family:var(--mono);">+60%+</div></div>
+      <div class="bar-row"><div class="bar-lbl" style="text-align:left; width:210px;">✈️ Aéronefs (ALE USA)</div><div class="bar-track"><div class="bar-fill" style="width:60%; background:linear-gradient(90deg,#B86E1A,#D48A35);"></div></div><div class="bar-val" style="color:var(--orange); font-family:var(--mono);">+3,1 Md</div></div>
+      <div class="bar-row"><div class="bar-lbl" style="text-align:left; width:210px;">🔧 Équipements agricoles</div><div class="bar-track"><div class="bar-fill" style="width:30%; background:linear-gradient(90deg,#B86E1A,#D48A35);"></div></div><div class="bar-val" style="color:var(--orange); font-family:var(--mono);">Hausse</div></div>
+      <div class="bar-row"><div class="bar-lbl" style="text-align:left; width:210px;">⚡ Énergie & lubrifiants</div><div class="bar-track"><div class="bar-fill" style="width:100%; background:linear-gradient(90deg,#1D6E40,#2EA35A);"></div></div><div class="bar-val" style="color:var(--green); font-family:var(--mono);">-10,6%</div></div>
+      <div class="bar-row"><div class="bar-lbl" style="text-align:left; width:210px;">🏭 Équipements industriels</div><div class="bar-track"><div class="bar-fill" style="width:80%; background:linear-gradient(90deg,#1D6E40,#2EA35A);"></div></div><div class="bar-val" style="color:var(--green); font-family:var(--mono);">-8,7%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ALE ── -->
+<div class="panel" id="tab-ale">
+  <div class="sec-head">🤝 Accords de Libre-Échange — Performance 2024</div>
+
+  <div style="background:var(--gold-bg); border:1px solid var(--gold-line); border-radius:10px; padding:18px; margin-bottom:16px; box-shadow:var(--shadow);">
+    <div style="font-family:var(--mono); font-size:12px; color:var(--muted); margin-bottom:3px;">Total imports sous ALE 2024</div>
+    <div style="font-family:'DM Serif Display',serif; font-size:28px; color:var(--gold-dark);">225,5 MMDH</div>
+    <div style="font-size:12px; color:var(--muted); margin-top:3px;">+8,5% vs 2023 · +17,6 MMDH d'augmentation absolue</div>
+  </div>
+
+  <table class="dtable">
+    <thead><tr><th>Accord ALE</th><th>Partenaire</th><th>Part imports ALE</th><th>Variation 2024</th><th>Point saillant</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:600;">🇪🇺 Maroc–UE</td><td>Union Européenne</td><td style="font-family:var(--mono); color:var(--gold-dark);">66%</td><td style="color:var(--red); font-family:var(--mono);">-1,1 pt (part)</td><td>Autos 3 MMDH · Allem. record 17,9 MMDH</td></tr>
+      <tr><td style="font-weight:600;">🇺🇸 Maroc–USA</td><td>États-Unis</td><td style="font-family:var(--mono); color:var(--blue);">~10%</td><td style="color:var(--red); font-family:var(--mono);">+14,7%</td><td>Aéronefs +3,1 MMDH</td></tr>
+      <tr><td style="font-weight:600;">🇹🇷 Maroc–Turquie</td><td>Turquie</td><td style="font-family:var(--mono); color:var(--orange);">~6%</td><td style="color:var(--red); font-family:var(--mono);">+8,2%</td><td>Couverture ALE 68,6% des flux</td></tr>
+      <tr><td style="font-weight:600;">🌍 ZLECAf</td><td>Afrique (en cours)</td><td style="font-family:var(--mono); color:var(--green);">Émergent</td><td style="color:var(--muted);">—</td><td>Excédent Maroc en réduction 2024</td></tr>
+      <tr><td style="font-weight:600;">🇨🇳 Hors ALE</td><td>Chine</td><td style="font-family:var(--mono); color:var(--red);">~15%</td><td style="color:var(--red); font-family:var(--mono);">+18,4%</td><td>⚠️ Déficit record — pression majeure sur le solde</td></tr>
+    </tbody>
+  </table>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;">
+    <div class="mini-alert red">⚠️ <strong>Risque USA :</strong> Droit de 10% appliqué mais encore limité. Risque d'escalade tarifaire à surveiller en 2026-2027.</div>
+    <div class="mini-alert green">🎯 <strong>Objectif export 2027 :</strong> +80 MMDH · 400 nouvelles entreprises exportatrices · 76 000 emplois directs.</div>
+  </div>
+</div>
+
+<!-- ── INTELLIGENCE ── -->
+<div class="panel" id="tab-intelligence">
+  <div class="sec-head">🎯 Alertes & Opportunités — Avril 2026</div>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterIntel('all',this)">Tout afficher</button>
+    <button class="filter-btn" onclick="filterIntel('alert-c',this)">🚨 Alertes</button>
+    <button class="filter-btn" onclick="filterIntel('opp-c',this)">💚 Opportunités</button>
+    <button class="filter-btn" onclick="filterIntel('watch-c',this)">👁️ Surveillance</button>
+    <button class="filter-btn" onclick="filterIntel('info-c',this)">ℹ️ Info</button>
+  </div>
+  <div id="intel-list">
+    <div class="intel-card alert-c" data-type="alert-c">
+      <div class="intel-type">🚨 Alerte — Risque contrôle valeur</div>
+      <div class="intel-title">Chine — Sous-évaluation systématique à surveiller</div>
+      <div class="intel-body">La montée en puissance des imports chinois (+18,4% en 2024, déficit record) s'accompagne d'un risque accru de sous-évaluation. L'ADII intensifie les contrôles via BADR sur les DUM chinoises. Renforcer la documentation valeur transactionnelle (M1) sur tous les achats chinois.</div>
+    </div>
+    <div class="intel-card alert-c" data-type="alert-c">
+      <div class="intel-type">🚨 Alerte — Conformité LF 2026</div>
+      <div class="intel-title">Art. 19 bis — En vigueur depuis janvier 2026</div>
+      <div class="intel-body">Obligation de déclarer les lieux exacts de stockage/transformation. Les DUM sans adresses complètes exposent à des amendes de 30 000 à 60 000 MAD. Audit immédiat des processus DUM recommandé.</div>
+    </div>
+    <div class="intel-card opp-c" data-type="opp-c">
+      <div class="intel-type">💚 Opportunité — Fenêtre d'achat</div>
+      <div class="intel-title">Énergie & équipements industriels — Prix en recul</div>
+      <div class="intel-body">Valeurs unitaires : énergie -10,6%, équipements industriels -8,7%, demi-produits -4,7% en T4 2025. Fenêtre favorable pour les importateurs souhaitant reconstituer des stocks ou accélérer des projets d'investissement industriel.</div>
+    </div>
+    <div class="intel-card opp-c" data-type="opp-c">
+      <div class="intel-type">💚 Opportunité — Régime tarifaire</div>
+      <div class="intel-title">Bois & ouvrages (Ch. 44 & 94) — TBI simplifié à 6%</div>
+      <div class="intel-body">La TBI au taux unique de 6% remplace les taux multiples antérieurs. Les importateurs de bois, mobilier et matériaux de construction peuvent désormais budgétiser précisément la charge fiscale à l'importation.</div>
+    </div>
+    <div class="intel-card watch-c" data-type="watch-c">
+      <div class="intel-type">👁️ Surveillance — Géopolitique</div>
+      <div class="intel-title">Tarifs douaniers USA — Impact potentiel à surveiller</div>
+      <div class="intel-body">Droit de 10% appliqué par les USA aux exportations marocaines. Encore non significatif vu le poids limité du marché américain. Mais en cas d'escalade, l'impact sur les écosystèmes auto et aéro pourrait devenir matériel. Diversifier les marchés de destination.</div>
+    </div>
+    <div class="intel-card watch-c" data-type="watch-c">
+      <div class="intel-type">👁️ Surveillance — Tendance prix</div>
+      <div class="intel-title">Minéraux bruts — Flambée des prix mondiaux +60%</div>
+      <div class="intel-body">Les produits bruts d'origine minérale affichent une hausse brutale en T4 2025. Les secteurs dépendants (métallurgie, BTP, chimie) doivent anticiper une pression sur leurs marges. Sécuriser des contrats à terme si possible.</div>
+    </div>
+    <div class="intel-card info-c" data-type="info-c">
+      <div class="intel-type">ℹ️ Info — Stratégie nationale</div>
+      <div class="intel-title">Feuille de route export 2025-2027 — +80 MMDH visés</div>
+      <div class="intel-body">Le Maroc vise 80 milliards DH d'exports supplémentaires avec 400 nouvelles entreprises exportatrices d'ici 2027. Les transitaires et PME importatrices peuvent anticiper une densification des flux logistiques sur les corridors automobiles, phosphatiers et agroalimentaires.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Transit-IA — M-36 Intelligence Compétitive · Sources : Office des Changes 2024 · HCP ICE T4-2025 · Trésor.fr (oct. 2025) · OMC Trade Data
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function filterIntel(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.intel-card').forEach(card => {
+    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.bar-fill').forEach(f => {
+    const w = f.style.width; f.style.width = '0%';
+    setTimeout(() => { f.style.width = w; }, 300);
+  });
+});
+</script>
+</body>
+</html>
+

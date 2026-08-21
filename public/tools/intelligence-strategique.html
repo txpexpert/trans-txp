@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intelligence Commerciale & Jurisprudence — Transit-IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+  :root{
+    --bg:#F7F5F0;--surface:#FFFFFF;--card:#FDFCF9;
+    --border:#E5DDD0;--border2:#D4C9B5;
+    --gold:#B8922A;--gold-dark:#8C6B18;--gold-bg:#FBF5E6;--gold-line:rgba(184,146,42,.25);
+    --green:#1D6E40;--green-bg:#EAF5EE;
+    --red:#B83232;--red-bg:#FDF0EF;
+    --blue:#2A5E8C;--blue-bg:#EBF2FA;
+    --purple:#6B3AAA;--purple-bg:#F3EEFF;
+    --text:#1C1814;--text2:#3C3630;--muted:#7A7068;--muted2:#A09080;
+    --shadow:0 1px 4px rgba(28,24,20,.06),0 4px 16px rgba(28,24,20,.04);
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;}
+
+  .topbar{background:var(--surface);border-bottom:2px solid var(--gold);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+  .module-badge{background:var(--gold);color:#fff;font-family:var(--mono);font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;}
+  .topbar-title{font-family:'DM Serif Display',serif;font-size:17px;margin-left:12px;}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-bottom:1px solid var(--border);}
+  .kpi{padding:16px 20px;text-align:center;border-right:1px solid var(--border);}
+  .kpi:last-child{border:none;}
+  .kpi-num{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--gold-dark);margin-bottom:3px;}
+  .kpi-lbl{color:var(--muted);font-size:11px;line-height:1.3;}
+
+  .tabs{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{padding:12px 18px;border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+  .tab.active{color:var(--gold-dark);border-bottom-color:var(--gold);font-weight:600;}
+  .panel{display:none;padding:22px;max-width:980px;margin:0 auto;}
+  .panel.active{display:block;}
+
+  .sec-head{font-family:'DM Serif Display',serif;font-size:17px;color:var(--gold-dark);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+
+  .mini-alert{border-radius:8px;padding:11px 14px;font-size:12px;border:1px solid;margin:8px 0;line-height:1.55;}
+  .mini-alert.green{background:var(--green-bg);border-color:rgba(29,110,64,.25);color:var(--green);}
+  .mini-alert.gold{background:var(--gold-bg);border-color:var(--gold-line);color:var(--gold-dark);}
+  .mini-alert.blue{background:var(--blue-bg);border-color:rgba(42,94,140,.25);color:var(--blue);}
+
+  /* FLUX */
+  .flux-search{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .flux-input{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;}
+  .flux-input:focus{border-color:var(--gold);}
+  .flux-select{padding:9px 12px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color:var(--text);}
+  .search-btn{background:var(--gold-dark);color:#fff;border:none;padding:9px 20px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+
+  .flux-table{width:100%;border-collapse:collapse;background:var(--surface);box-shadow:var(--shadow);border-radius:10px;overflow:hidden;}
+  .flux-table th{background:var(--gold-bg);color:var(--gold-dark);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
+  .flux-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);}
+  .flux-table tr:last-child td{border:none;}
+  .flux-table tr:hover td{background:var(--gold-bg);}
+  .import-tag{background:var(--blue-bg);color:var(--blue);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;}
+  .export-tag{background:var(--green-bg);color:var(--green);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;}
+
+  /* JURISPRUDENCE */
+  .juris-search{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .juris-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s;}
+  .juris-card:hover{border-color:var(--gold);}
+  .juris-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;align-items:center;}
+  .juris-ref{font-family:var(--mono);font-size:11px;color:var(--gold-dark);background:var(--gold-bg);border:1px solid var(--gold-line);padding:2px 8px;border-radius:4px;}
+  .juris-date{font-size:11px;color:var(--muted);}
+  .juris-theme{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;}
+  .theme-valorisation{background:var(--blue-bg);color:var(--blue);}
+  .theme-classification{background:var(--purple-bg);color:var(--purple);}
+  .theme-origine{background:var(--green-bg);color:var(--green);}
+  .theme-penalite{background:var(--red-bg);color:var(--red);}
+  .theme-regime{background:var(--gold-bg);color:var(--gold-dark);}
+  .juris-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+  .juris-summary{font-size:12px;color:var(--text2);line-height:1.65;}
+  .juris-decision{font-size:11px;font-weight:600;margin-top:8px;padding:4px 10px;border-radius:4px;display:inline-block;}
+  .decision-favorable{background:var(--green-bg);color:var(--green);}
+  .decision-mitige{background:var(--gold-bg);color:var(--gold-dark);}
+  .decision-defavorable{background:var(--red-bg);color:var(--red);}
+
+  /* ALE */
+  .ale-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .ale-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow);}
+  .ale-flag{font-size:28px;margin-bottom:6px;}
+  .ale-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+  .ale-date{font-size:11px;color:var(--muted);margin-bottom:8px;}
+  .ale-stat{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+  .ale-stat:last-child{border:none;}
+  .ale-stat-val{font-family:var(--mono);font-weight:600;color:var(--gold-dark);}
+
+  /* STATS CHART */
+  .chart-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .chart-label{font-size:11px;color:var(--text2);width:140px;flex-shrink:0;}
+  .chart-bar-wrap{flex:1;background:var(--border);border-radius:4px;height:18px;overflow:hidden;}
+  .chart-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:600;color:#fff;transition:width .5s ease;}
+  .chart-val{font-family:var(--mono);font-size:11px;color:var(--muted);width:80px;text-align:right;flex-shrink:0;}
+
+  .footer{text-align:center;padding:14px;color:var(--muted2);font-size:11px;border-top:1px solid var(--border);margin-top:40px;background:var(--surface);}
+  @media(max-width:640px){.ale-grid{grid-template-columns:1fr;}.kpi-row{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;">
+    <div class="module-badge">M-IS</div>
+    <div class="topbar-title">Intelligence Commerciale & Jurisprudence</div>
+  </div>
+  <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">Flux · Jurisprudence ADII · ALE Maroc</span>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">+8</div><div class="kpi-lbl">Accords de libre-échange actifs</div></div>
+  <div class="kpi"><div class="kpi-num">95%</div><div class="kpi-lbl">Lignes tarifaires ALE Maroc–USA à 0%</div></div>
+  <div class="kpi"><div class="kpi-num">TA</div><div class="kpi-lbl">Tribunal Administratif — juridiction douanière</div></div>
+  <div class="kpi"><div class="kpi-num">2025</div><div class="kpi-lbl">Données tarif douanier en vigueur</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('flux')">📦 Flux Import/Export Maroc</button>
+  <button class="tab" onclick="switchTab('juris')">⚖️ Jurisprudence douanière</button>
+  <button class="tab" onclick="switchTab('ale')">🌍 Accords de Libre-Échange</button>
+  <button class="tab" onclick="switchTab('stats')">📊 Statistiques commerciales</button>
+</div>
+
+<!-- ── FLUX ── -->
+<div class="panel active" id="tab-flux">
+  <div class="sec-head">📦 Flux commerciaux Maroc — Principaux partenaires et produits</div>
+  <div class="flux-search">
+    <input class="flux-input" id="fluxSearch" type="text" placeholder="Rechercher : produit, pays, code SH…" oninput="filterFlux()">
+    <select class="flux-select" id="fluxType" onchange="filterFlux()">
+      <option value="">Tout (Import + Export)</option>
+      <option value="import">Importations uniquement</option>
+      <option value="export">Exportations uniquement</option>
+    </select>
+  </div>
+
+  <table class="flux-table" id="flux-table">
+    <thead>
+      <tr><th>Flux</th><th>Produit / Secteur</th><th>Pays partenaire</th><th>Valeur estimée 2024</th><th>Régime courant</th><th>Tendance</th></tr>
+    </thead>
+    <tbody id="flux-tbody">
+    </tbody>
+  </table>
+  <div class="mini-alert gold" style="margin-top:16px;">📌 Sources : Office des Changes · HCP RGPH 2024 · Bank Al-Maghrib · Données estimatives 2024 — Mise à jour trimestrielle.</div>
+</div>
+
+<!-- ── JURISPRUDENCE ── -->
+<div class="panel" id="tab-juris">
+  <div class="sec-head">⚖️ Base jurisprudentielle douanière — Décisions ADII & Juridictions</div>
+  <div class="juris-search">
+    <input class="flux-input" id="jurisSearch" type="text" placeholder="Rechercher : valorisation, classification, origine, pénalités…" oninput="filterJuris()" style="flex:2;">
+    <select class="flux-select" id="jurisTheme" onchange="filterJuris()">
+      <option value="">Tous les thèmes</option>
+      <option value="valorisation">Valorisation</option>
+      <option value="classification">Classification</option>
+      <option value="origine">Origine</option>
+      <option value="penalite">Pénalités</option>
+      <option value="regime">Régimes économiques</option>
+    </select>
+    <select class="flux-select" id="jurisDecision" onchange="filterJuris()">
+      <option value="">Toutes décisions</option>
+      <option value="favorable">Favorable opérateur</option>
+      <option value="mitige">Mitigé</option>
+      <option value="defavorable">Défavorable opérateur</option>
+    </select>
+  </div>
+  <div id="juris-list"></div>
+  <div class="mini-alert blue" style="margin-top:12px;">ℹ️ Base de données indicative — Les décisions citées sont des cas types représentatifs de la jurisprudence douanière marocaine. Pour tout litige, consultez un expert douanier ou un avocat spécialisé.</div>
+</div>
+
+<!-- ── ALE ── -->
+<div class="panel" id="tab-ale">
+  <div class="sec-head">🌍 Accords de Libre-Échange du Maroc en vigueur</div>
+  <div class="mini-alert green">✅ Le Maroc dispose de l'un des réseaux ALE les plus étendus d'Afrique. Ces accords couvrent plus de 55 pays et permettent des exonérations tarifaires totales ou partielles sur la majorité des produits industriels.</div>
+
+  <div class="ale-grid" style="margin-top:16px;">
+    <div class="ale-card">
+      <div class="ale-flag">🇪🇺</div>
+      <div class="ale-title">ALE Maroc — Union Européenne</div>
+      <div class="ale-date">En vigueur depuis 2000 · Accord d'Association</div>
+      <div class="ale-stat"><span>Produits industriels (taux DI)</span><span class="ale-stat-val">0%</span></div>
+      <div class="ale-stat"><span>Produits agricoles transformés</span><span class="ale-stat-val">0% à 55%</span></div>
+      <div class="ale-stat"><span>Règle d'origine principale</span><span class="ale-stat-val">Cumul diagonal Pan-Euro-Med</span></div>
+      <div class="ale-stat"><span>Document d'origine requis</span><span class="ale-stat-val">EUR.1 ou Décl. fournisseur</span></div>
+    </div>
+    <div class="ale-card">
+      <div class="ale-flag">🇺🇸</div>
+      <div class="ale-title">ALE Maroc — États-Unis (MAFTA)</div>
+      <div class="ale-date">En vigueur depuis 2006</div>
+      <div class="ale-stat"><span>Lignes tarifaires à 0%</span><span class="ale-stat-val">95%</span></div>
+      <div class="ale-stat"><span>Produits industriels</span><span class="ale-stat-val">0% immédiat</span></div>
+      <div class="ale-stat"><span>Produits agricoles sensibles</span><span class="ale-stat-val">Dégressif sur 10-15 ans</span></div>
+      <div class="ale-stat"><span>Document d'origine requis</span><span class="ale-stat-val">Certificat d'origine CO</span></div>
+    </div>
+    <div class="ale-card">
+      <div class="ale-flag">🇹🇷</div>
+      <div class="ale-title">ALE Maroc — Turquie</div>
+      <div class="ale-date">En vigueur depuis 2006</div>
+      <div class="ale-stat"><span>Produits industriels</span><span class="ale-stat-val">0%</span></div>
+      <div class="ale-stat"><span>Produits agricoles</span><span class="ale-stat-val">Taux préférentiels</span></div>
+      <div class="ale-stat"><span>Textile & habillement</span><span class="ale-stat-val">0% (règle de fabrication)</span></div>
+      <div class="ale-stat"><span>Document d'origine requis</span><span class="ale-stat-val">EUR.1 (cumul bilatéral)</span></div>
+    </div>
+    <div class="ale-card">
+      <div class="ale-flag">🌍</div>
+      <div class="ale-title">GAFTA — Grande Zone Arabe</div>
+      <div class="ale-date">En vigueur depuis 2005 (Maroc)</div>
+      <div class="ale-stat"><span>Pays membres couverts</span><span class="ale-stat-val">18 pays arabes</span></div>
+      <div class="ale-stat"><span>Taux DI entre membres</span><span class="ale-stat-val">0%</span></div>
+      <div class="ale-stat"><span>Règle d'origine</span><span class="ale-stat-val">40% VA dans la zone</span></div>
+      <div class="ale-stat"><span>Document requis</span><span class="ale-stat-val">Certificat d'origine CAOA</span></div>
+    </div>
+    <div class="ale-card">
+      <div class="ale-flag">🇸🇦</div>
+      <div class="ale-title">CCG — Conseil de Coopération du Golfe</div>
+      <div class="ale-date">Accord préférentiel en vigueur</div>
+      <div class="ale-stat"><span>Pays couverts</span><span class="ale-stat-val">Arabie S., EAU, Qatar, Koweït, Bahreïn, Oman</span></div>
+      <div class="ale-stat"><span>Produits marocains exportés</span><span class="ale-stat-val">Taux préférentiels</span></div>
+      <div class="ale-stat"><span>Phosphates & dérivés</span><span class="ale-stat-val">Accès prioritaire</span></div>
+      <div class="ale-stat"><span>Document requis</span><span class="ale-stat-val">Certificat d'origine CCIS</span></div>
+    </div>
+    <div class="ale-card">
+      <div class="ale-flag">🌐</div>
+      <div class="ale-title">ZLE Continentale Africaine (ZLECAF)</div>
+      <div class="ale-date">Phase de mise en œuvre progressive — Ratifié par le Maroc</div>
+      <div class="ale-stat"><span>Pays membres</span><span class="ale-stat-val">54 pays africains</span></div>
+      <div class="ale-stat"><span>Objectif taux à terme</span><span class="ale-stat-val">90% lignes à 0% en 5 ans</span></div>
+      <div class="ale-stat"><span>Statut actuel</span><span class="ale-stat-val">Déploiement progressif 2024-2030</span></div>
+      <div class="ale-stat"><span>Secteurs prioritaires Maroc</span><span class="ale-stat-val">Textile, agro-alimentaire, industrie</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATS ── -->
+<div class="panel" id="tab-stats">
+  <div class="sec-head">📊 Statistiques commerciales — Maroc 2024</div>
+  <div class="mini-alert gold">📌 Données Office des Changes & Bank Al-Maghrib — Estimations 2024.</div>
+
+  <div style="margin-top:20px;">
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;">Principaux pays fournisseurs (importations)</div>
+    <div id="chart-import"></div>
+  </div>
+  <div style="margin-top:24px;">
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;">Principaux pays clients (exportations)</div>
+    <div id="chart-export"></div>
+  </div>
+  <div style="margin-top:24px;">
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;">Secteurs d'exportation — Part du total</div>
+    <div id="chart-secteurs"></div>
+  </div>
+</div>
+
+<div class="footer">Transit-IA — Intelligence Commerciale & Jurisprudence · Sources : Office des Changes · Bank Al-Maghrib · HCP · ADII · Juridictions administratives marocaines</div>
+
+<script>
+const FLUX_DATA = [
+  { type:'import', produit:'Huiles brutes de pétrole', pays:'Russie / Arabie Saoudite', valeur:'~85 Mrd DH', regime:'Mise à la consommation directe', tendance:'↑ +12%' },
+  { type:'import', produit:'Blé et céréales', pays:'France / Ukraine / Russie', valeur:'~28 Mrd DH', regime:'Mise à la conso. — DI 0% (quota OMC)', tendance:'→ Stable' },
+  { type:'import', produit:'Véhicules automobiles (Ch.87)', pays:'France / Espagne / Chine', valeur:'~22 Mrd DH', regime:'Mise à la consommation (DI 25%→0% ALE)', tendance:'↑ +8%' },
+  { type:'import', produit:'Machines et équipements industriels', pays:'Chine / Allemagne / Italie', valeur:'~45 Mrd DH', regime:'Admission Temporaire / Mise à la conso.', tendance:'↑ +15%' },
+  { type:'import', produit:'Produits pharmaceutiques (Ch.30)', pays:'France / Inde / Belgique', valeur:'~16 Mrd DH', regime:'Mise à la conso. — TVA 7%', tendance:'↑ +5%' },
+  { type:'import', produit:'Acier & fer (Ch.72-73)', pays:'Espagne / Chine / Turquie', valeur:'~18 Mrd DH', regime:'Mise à la conso. — Antidumping possible', tendance:'→ -3%' },
+  { type:'import', produit:'Plastiques et ouvrages (Ch.39)', pays:'Chine / Allemagne / Italie', valeur:'~14 Mrd DH', regime:'Mise à la conso. / ATPA', tendance:'↑ +6%' },
+  { type:'export', produit:'Acide phosphorique & engrais (Ch.31)', pays:'Inde / Brésil / USA', valeur:'~120 Mrd DH', regime:'Exportation définitive', tendance:'↑ +22%' },
+  { type:'export', produit:'Automobiles & pièces (Kénitra / Tanger)', pays:'France / Espagne / Allemagne', valeur:'~85 Mrd DH', regime:'Exportation ZF — TVA 0%', tendance:'↑ +18%' },
+  { type:'export', produit:'Textiles & habillement confectionné', pays:'France / Espagne / Italie', valeur:'~42 Mrd DH', regime:'Exportation — Perfectionnement actif', tendance:'↑ +5%' },
+  { type:'export', produit:'Produits de la mer (poissons, conserves)', pays:'UE / Japon / USA', valeur:'~26 Mrd DH', regime:'Exportation définitive', tendance:'→ +2%' },
+  { type:'export', produit:'Câblage automobile & composants élec.', pays:'Espagne / Allemagne / France', valeur:'~38 Mrd DH', regime:'Exportation ZF Tanger / Kénitra', tendance:'↑ +14%' },
+  { type:'export', produit:'Agrumes, légumes & primeurs', pays:'France / Espagne / Pays-Bas', valeur:'~18 Mrd DH', regime:'Exportation — Certificat phytosanitaire', tendance:'↑ +7%' },
+];
+
+const JURIS_DATA = [
+  { ref:'TA-Cass-2022-04', date:'Mars 2022', theme:'valorisation', title:'Contestation valeur transactionnelle — Importation de textile chinois', summary:'L\'ADII avait rejeté la M1 invoquant un écart de 40% avec les valeurs de référence internes. Le TA a donné raison à l\'importateur qui avait produit les relevés SWIFT prouvant le paiement exact du montant facturé. Principe : la valeur transactionnelle prime tant que le paiement effectif est prouvé.', decision:'favorable' },
+  { ref:'CAA-Casa-2021-12', date:'Nov. 2021', theme:'classification', title:'Classement SH d\'équipements solaires — Ch.85 vs Ch.90', summary:'Litige sur le classement d\'onduleurs solaires entre le Ch.85 (appareils électriques) et Ch.90 (instruments). La Cour d\'Appel a confirmé le classement en Ch.85 sur la base des Règles Générales d\'Interprétation (RGI) et des Notes explicatives du SH. Incidence : taux DI différents de 15 points.', decision:'mitige' },
+  { ref:'TA-Rabat-2023-08', date:'Juil. 2023', theme:'origine', title:'Certificat EUR.1 refusé — produit textile transformé au Maroc', summary:'L\'ADII a refusé de valider un EUR.1 pour des vêtements finis estimant que la règle de fabrication suffisante (double transformation) n\'était pas respectée. Le TA a maintenu le refus après examen des procédés industriels. L\'exportateur a dû rembourser les avantages ALE perçus.', decision:'defavorable' },
+  { ref:'TA-Casa-2022-11', date:'Oct. 2022', theme:'penalite', title:'Réduction de pénalité — Infraction de fausse déclaration involontaire', summary:'L\'importateur avait déclaré un taux DI erroné par suite d\'une erreur de codification de son transitaire. La jurisprudence confirme que l\'absence d\'intention frauduleuse et la régularisation spontanée permettent de bénéficier de l\'article 278 CDII (transaction) avec réduction de pénalité jusqu\'à 75%.', decision:'favorable' },
+  { ref:'TA-Tanger-2023-03', date:'Fév. 2023', theme:'regime', title:'Non-respect des délais d\'apurement — Régime d\'Admission Temporaire', summary:'Une entreprise n\'avait pas apuré son AT dans le délai réglementaire (18 mois), sans demander de prorogation. L\'ADII a émis un AMR incluant droits + pénalités de retard (5% par mois). Le TA a validé la position ADII mais accordé un délai de paiement de 12 mois vu la bonne foi de l\'entreprise.', decision:'mitige' },
+  { ref:'CAA-Fes-2023-06', date:'Mai 2023', theme:'valorisation', title:'Méthode déductive appliquée — Import de véhicules d\'occasion', summary:'L\'ADII a appliqué la M4 (méthode déductive) pour valoriser des véhicules d\'occasion dont les prix facturés semblaient sous-évalués. La Cour a confirmé la légitimité du recours à la M4, mais a ordonné le recalcul en excluant les marges de distribution qui avaient été sur-évaluées par l\'ADII.', decision:'mitige' },
+  { ref:'TA-Agadir-2022-09', date:'Août 2022', theme:'origine', title:'Fraude à l\'origine — Produits asiatiques re-étiquetés comme marocains', summary:'Cas grave de fraude à l\'origine : des marchandises d\'origine tiers-monde étaient réexportées avec de faux EUR.1 marocains vers l\'UE. Condamnation pénale (Art. 281 CDII) avec confiscation et interdiction d\'exercice. Décision définitive confirmée en Cour de Cassation.', decision:'defavorable' },
+  { ref:'TA-Rabat-2024-02', date:'Jan. 2024', theme:'classification', title:'Classification de préparations alimentaires — Ch.21 vs Ch.19', summary:'Litige sur la classification d\'un produit contenant 68% de céréales entre le Ch.19 (préparations à base de céréales) et Ch.21 (autres préparations alimentaires). Le TA a retenu le Ch.19 en appliquant la RGI 3(b) : caractère essentiel déterminé par la matière constitutive principale.', decision:'favorable' },
+];
+
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function renderFlux(data) {
+  const tbody = document.getElementById('flux-tbody');
+  tbody.innerHTML = data.map(f => `
+    <tr>
+      <td><span class="${f.type === 'import' ? 'import-tag' : 'export-tag'}">${f.type.toUpperCase()}</span></td>
+      <td style="font-weight:500;">${f.produit}</td>
+      <td>${f.pays}</td>
+      <td style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--gold-dark);">${f.valeur}</td>
+      <td style="font-size:11px;color:var(--muted);">${f.regime}</td>
+      <td style="font-family:var(--mono);font-size:12px;">${f.tendance}</td>
+    </tr>`).join('');
+}
+
+function filterFlux() {
+  const q = document.getElementById('fluxSearch').value.toLowerCase();
+  const type = document.getElementById('fluxType').value;
+  const filtered = FLUX_DATA.filter(f =>
+    (type === '' || f.type === type) &&
+    (q === '' || f.produit.toLowerCase().includes(q) || f.pays.toLowerCase().includes(q))
+  );
+  renderFlux(filtered);
+}
+
+function renderJuris(data) {
+  const list = document.getElementById('juris-list');
+  if (data.length === 0) { list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);">Aucune décision ne correspond à votre recherche.</div>'; return; }
+  list.innerHTML = data.map(j => `
+    <div class="juris-card">
+      <div class="juris-meta">
+        <span class="juris-ref">${j.ref}</span>
+        <span class="juris-date">${j.date}</span>
+        <span class="juris-theme theme-${j.theme}">${j.theme.charAt(0).toUpperCase()+j.theme.slice(1)}</span>
+      </div>
+      <div class="juris-title">${j.title}</div>
+      <div class="juris-summary">${j.summary}</div>
+      <span class="juris-decision decision-${j.decision}">
+        ${j.decision === 'favorable' ? '✅ Favorable à l\'opérateur' : j.decision === 'mitige' ? '🟡 Décision mitigée' : '❌ Défavorable à l\'opérateur'}
+      </span>
+    </div>`).join('');
+}
+
+function filterJuris() {
+  const q = document.getElementById('jurisSearch').value.toLowerCase();
+  const theme = document.getElementById('jurisTheme').value;
+  const dec = document.getElementById('jurisDecision').value;
+  const filtered = JURIS_DATA.filter(j =>
+    (theme === '' || j.theme === theme) &&
+    (dec === '' || j.decision === dec) &&
+    (q === '' || j.title.toLowerCase().includes(q) || j.summary.toLowerCase().includes(q))
+  );
+  renderJuris(filtered);
+}
+
+function renderBarChart(containerId, items, color) {
+  const max = Math.max(...items.map(i => i.val));
+  document.getElementById(containerId).innerHTML = items.map(item => `
+    <div class="chart-bar-row">
+      <div class="chart-label">${item.label}</div>
+      <div class="chart-bar-wrap">
+        <div class="chart-bar-fill" style="width:${Math.round(item.val/max*100)}%;background:${color};">
+          ${Math.round(item.val/max*100) > 20 ? item.pct : ''}
+        </div>
+      </div>
+      <div class="chart-val">${item.pct}</div>
+    </div>`).join('');
+}
+
+// Init
+renderFlux(FLUX_DATA);
+renderJuris(JURIS_DATA);
+renderBarChart('chart-import', [
+  {label:'Espagne', val:62, pct:'~16%'}, {label:'France', val:55, pct:'~14%'},
+  {label:'Chine', val:50, pct:'~13%'}, {label:'USA', val:32, pct:'~8%'},
+  {label:'Allemagne', val:28, pct:'~7%'}, {label:'Italie', val:20, pct:'~5%'},
+  {label:'Russie', val:18, pct:'~5%'}, {label:'Turquie', val:15, pct:'~4%'},
+], '#2A5E8C');
+renderBarChart('chart-export', [
+  {label:'Espagne', val:75, pct:'~24%'}, {label:'France', val:65, pct:'~21%'},
+  {label:'Inde', val:40, pct:'~13%'}, {label:'Italie', val:25, pct:'~8%'},
+  {label:'USA', val:22, pct:'~7%'}, {label:'Brésil', val:18, pct:'~6%'},
+  {label:'Pays-Bas', val:14, pct:'~4%'}, {label:'Turquie', val:10, pct:'~3%'},
+], '#1D6E40');
+renderBarChart('chart-secteurs', [
+  {label:'Phosphates & dérivés', val:95, pct:'~26%'}, {label:'Automobile', val:85, pct:'~23%'},
+  {label:'Textile & habillement', val:42, pct:'~11%'}, {label:'Câblage élec.', val:38, pct:'~10%'},
+  {label:'Produits de la mer', val:26, pct:'~7%'}, {label:'Agrumes & légumes', val:18, pct:'~5%'},
+  {label:'Chimie & parachimie', val:15, pct:'~4%'}, {label:'Aéronautique', val:12, pct:'~3%'},
+], '#B8922A');
+</script>
+</body>
+</html>
+

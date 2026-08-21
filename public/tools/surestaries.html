@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surestaries — Référentiel Opérationnel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0D1B2A; --navy-mid:#1A2E44; --navy-light:#243A55;
+  --steel:#2E86AB; --ice:#A8DADC;
+  --amber:#E29C2F; --amber-light:#F5D67A;
+  --coral:#C0392B; --coral-light:#E8897F;
+  --green:#1A7A4A; --green-light:#6FCF97;
+  --white:#FFFFFF; --text-muted:#8899AA;
+  --border:rgba(255,255,255,0.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;overflow-x:hidden;}
+h1,h2,h3,h4,h5{font-family:'Syne',sans-serif;}
+
+/* ── NAV ── */
+nav{background:rgba(13,27,42,0.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:1rem;height:56px;}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--ice);letter-spacing:0.05em;white-space:nowrap;}
+
+/* ── STICKY HEADER BLOCK (nav + tabs always visible) ── */
+.sticky-header{position:sticky;top:0;z-index:200;}
+
+/* ── MAIN TABS (6 groupes) ── */
+.main-tabs-bar{background:rgba(13,22,35,0.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 1rem;display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none;align-items:center;height:52px;flex-shrink:0;}
+.main-tabs-bar::-webkit-scrollbar{display:none;}
+.main-tab-btn{font-family:'Syne',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.02em;color:rgba(255,255,255,0.45);padding:0.35rem 0.75rem;height:34px;border:none;border-radius:7px;background:rgba(255,255,255,0.04);cursor:pointer;white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:0.35rem;flex-shrink:0;}
+.main-tab-btn:hover{color:#fff;background:rgba(255,255,255,0.09);}
+.main-tab-btn .mtab-num{font-size:0.56rem;opacity:0.4;margin-left:0.1rem;}
+/* 6 couleurs distinctes */
+.main-tab-btn:nth-child(1){border-bottom:2px solid transparent;}
+.main-tab-btn:nth-child(1).active{background:rgba(96,165,250,0.16);color:#93c5fd;border-bottom:2px solid #93c5fd;}
+/* SIMULATEUR — marron/bronze distinct */
+.main-tab-btn:nth-child(2){border-bottom:2px solid #8B4513;background:rgba(139,69,19,0.3);color:#E8955A;font-weight:800;}
+.main-tab-btn:nth-child(2).active{background:rgba(160,82,45,0.45);color:#F4A460;border-bottom:2px solid #CD853F;box-shadow:0 0 10px rgba(205,133,63,0.25);}
+.main-tab-btn:nth-child(2):hover{background:rgba(160,82,45,0.38);color:#F4A460;}
+.main-tab-btn:nth-child(3){border-bottom:2px solid transparent;}
+.main-tab-btn:nth-child(3).active{background:rgba(251,191,36,0.16);color:#fde68a;border-bottom:2px solid #f59e0b;}
+.main-tab-btn:nth-child(4){border-bottom:2px solid transparent;}
+.main-tab-btn:nth-child(4).active{background:rgba(248,113,113,0.16);color:#fca5a5;border-bottom:2px solid #ef4444;}
+.main-tab-btn:nth-child(5){border-bottom:2px solid transparent;}
+.main-tab-btn:nth-child(5).active{background:rgba(52,211,153,0.16);color:#6ee7b7;border-bottom:2px solid #10b981;}
+.main-tab-btn:nth-child(6){border-bottom:2px solid transparent;}
+.main-tab-btn:nth-child(6).active{background:rgba(167,139,250,0.16);color:#c4b5fd;border-bottom:2px solid #8b5cf6;}
+
+/* ── MAIN TAB PANELS ── */
+.main-panel{display:none;}
+.main-panel.active{display:block;}
+
+/* ── HERO ── */
+.hero{min-height:80vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:6rem 4rem;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 50%,rgba(30,80,120,0.4) 0%,transparent 70%),linear-gradient(135deg,#0D1B2A 0%,#162535 50%,#0a1520 100%);}
+.hero-grid{position:absolute;inset:0;opacity:0.04;background-image:linear-gradient(rgba(168,218,220,1) 1px,transparent 1px),linear-gradient(90deg,rgba(168,218,220,1) 1px,transparent 1px);background-size:60px 60px;}
+.hero-content{position:relative;max-width:96%;}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(168,218,220,0.1);border:1px solid rgba(168,218,220,0.25);border-radius:100px;padding:0.35rem 1rem;font-size:0.75rem;color:var(--ice);letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin-bottom:2rem;}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ice);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.hero h1{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem;}
+.hero h1 em{font-style:normal;color:var(--ice);}
+.hero p{font-size:1rem;color:rgba(255,255,255,0.65);max-width:none;line-height:2.15;margin-bottom:2.5rem;white-space:nowrap;}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;}
+.stat{border-left:2px solid var(--steel);padding-left:1rem;}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:700;color:var(--ice);}
+.stat-label{font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;}
+
+/* ── SECTIONS ── */
+section{padding:4rem 4rem;border-bottom:1px solid var(--border);}
+section:last-child{border-bottom:none;}
+.section-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--steel);font-weight:600;margin-bottom:0.75rem;}
+.section-title{font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;margin-bottom:1rem;}
+.section-subtitle{color:rgba(255,255,255,0.55);font-size:0.95rem;max-width:620px;line-height:1.7;margin-bottom:2.5rem;}
+
+/* ── INNER TABS (mécanisme: import/export/causes) ── */
+.inner-tabs{display:flex;gap:0.5rem;margin-bottom:2rem;flex-wrap:wrap;}
+.inner-tab-btn{font-size:0.83rem;font-weight:600;padding:0.55rem 1.2rem;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text-muted);cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.inner-tab-btn:nth-child(1).active{background:rgba(52,211,153,0.15);border-color:rgba(52,211,153,0.45);color:#6ee7b7;}
+.inner-tab-btn:nth-child(2).active{background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.45);color:#fde68a;}
+.inner-tab-btn:nth-child(3).active{background:rgba(248,113,113,0.15);border-color:rgba(248,113,113,0.45);color:#fca5a5;}
+.inner-tab-content{display:none;}
+.inner-tab-content.active{display:block;}
+
+/* ── CARDS ── */
+.def-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;}
+.def-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:16px;padding:1.75rem;transition:transform .2s,border-color .2s;position:relative;overflow:hidden;}
+.def-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--steel));}
+.def-card:hover{transform:translateY(-3px);border-color:rgba(168,218,220,0.2);}
+.def-card-icon{font-size:1.75rem;margin-bottom:0.75rem;}
+.def-card h3{font-size:1rem;font-weight:700;margin-bottom:0.5rem;color:var(--ice);}
+.def-card p{font-size:0.84rem;color:rgba(255,255,255,0.6);line-height:1.65;}
+
+/* ── BADGES ── */
+.badge{display:inline-block;font-size:0.74rem;font-weight:600;padding:0.28rem 0.75rem;border-radius:100px;}
+.badge-dem{background:rgba(194,57,43,0.15);color:#E8897F;}
+.badge-det{background:rgba(226,156,47,0.15);color:#F5D67A;}
+.badge-sto{background:rgba(26,122,74,0.15);color:#6FCF97;}
+
+/* ── TABLES ── */
+.compare-table,.tariff-table,.raci-table{width:100%;border-collapse:collapse;}
+.compare-table th,.raci-table th{font-family:'Syne',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);padding:0.9rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);}
+.compare-table td,.raci-table td{padding:0.9rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.875rem;color:rgba(255,255,255,0.8);}
+.compare-table tr:hover td,.raci-table tr:hover td{background:rgba(255,255,255,0.02);}
+.tariff-table th{background:var(--navy-light);font-family:'Syne',sans-serif;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--ice);padding:0.9rem 1.1rem;text-align:center;}
+.tariff-table th:first-child{text-align:left;}
+.tariff-table td{padding:0.9rem 1.1rem;text-align:center;border-bottom:1px solid var(--border);font-size:0.875rem;}
+.tariff-table td:first-child{text-align:left;font-weight:500;}
+.tariff-table .zone-safe td{color:var(--green-light);}
+.tariff-table .zone-warn td{color:var(--amber-light);}
+.tariff-table .zone-danger td{color:var(--coral-light);}
+.tariff-table .zone-critical td{color:#fff;font-weight:600;background:rgba(192,57,43,0.12);}
+.zone-indicator{display:inline-flex;align-items:center;gap:0.5rem;}
+.zone-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.raci-table th:first-child{text-align:left;}
+.raci-table td:first-child{text-align:left;}
+.raci-R{color:var(--ice);font-weight:700;font-size:1rem;}
+.raci-A{color:var(--amber-light);font-weight:600;font-size:1rem;}
+.raci-C{color:rgba(255,255,255,0.45);font-size:0.95rem;}
+.raci-I{color:rgba(255,255,255,0.25);font-size:0.95rem;}
+
+/* ── FLOW DIAGRAM ── */
+.flow{display:flex;flex-direction:column;align-items:center;gap:0;}
+.flow-node{background:var(--navy-light);border:1px solid rgba(168,218,220,0.2);border-radius:12px;padding:0.9rem 2rem;font-size:0.875rem;font-weight:500;text-align:center;width:fit-content;min-width:280px;max-width:520px;}
+.flow-node.alert{background:rgba(226,156,47,0.15);border-color:rgba(226,156,47,0.4);color:var(--amber-light);}
+.flow-node.action{background:rgba(26,122,74,0.15);border-color:rgba(26,122,74,0.4);color:var(--green-light);}
+.flow-node.danger{background:rgba(192,57,43,0.15);border-color:rgba(192,57,43,0.4);color:var(--coral-light);}
+.flow-arrow{width:2px;height:28px;background:rgba(168,218,220,0.2);position:relative;}
+.flow-arrow::after{content:'▼';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);color:rgba(168,218,220,0.3);font-size:0.75rem;}
+.flow-branch{display:grid;grid-template-columns:1fr 1fr;gap:2rem;width:100%;max-width:700px;margin-top:0.5rem;}
+.flow-label{font-size:0.73rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);text-align:center;margin-bottom:0.5rem;}
+
+/* ── FLAGS ── */
+.flags-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.1rem;}
+.flag-card{background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.2);border-radius:12px;padding:1.4rem;display:flex;gap:1rem;}
+.flag-icon{font-size:1.4rem;flex-shrink:0;}
+.flag-content h4{font-size:0.92rem;font-weight:600;color:var(--coral-light);margin-bottom:0.35rem;}
+.flag-content p{font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.6;}
+
+/* ── PRACTICES ── */
+.practices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;}
+.practice-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:14px;padding:1.6rem;}
+.practice-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:rgba(168,218,220,0.12);line-height:1;margin-bottom:0.5rem;}
+.practice-card h4{font-size:0.92rem;font-weight:600;margin-bottom:0.4rem;color:var(--ice);}
+.practice-card p{font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.6;}
+.practice-phase{font-size:0.67rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--steel);font-weight:600;margin-bottom:0.4rem;}
+
+/* ── MOROCCO ALERTS ── */
+.morocco-alert{background:rgba(226,156,47,0.1);border:1px solid rgba(226,156,47,0.3);border-radius:12px;padding:1.4rem 1.75rem;margin-bottom:1.5rem;display:flex;gap:1rem;}
+.morocco-alert .icon{font-size:1.4rem;flex-shrink:0;}
+.morocco-alert p{font-size:0.875rem;color:rgba(255,255,255,0.75);line-height:1.7;}
+.morocco-alert strong{color:var(--amber-light);}
+
+/* ── LEGAL CARDS ── */
+.legal-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;}
+.legal-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:14px;padding:1.6rem;position:relative;overflow:hidden;}
+.legal-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel),transparent);}
+.legal-card .ref{font-size:0.7rem;color:var(--steel);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:0.4rem;}
+.legal-card h4{font-size:0.95rem;font-weight:600;margin-bottom:0.4rem;}
+.legal-card p{font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.6;}
+.legal-card .application{margin-top:0.9rem;padding:0.7rem;background:rgba(255,255,255,0.04);border-radius:8px;font-size:0.79rem;color:rgba(255,255,255,0.7);}
+
+/* ── TECH CARDS ── */
+.tech-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;}
+.tech-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:14px;padding:1.4rem;}
+.tech-card .category{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--steel);font-weight:600;margin-bottom:0.4rem;}
+.tech-card h4{font-size:0.92rem;font-weight:600;margin-bottom:0.4rem;}
+.tech-card p{font-size:0.81rem;color:rgba(255,255,255,0.55);line-height:1.6;}
+.tech-tag{display:inline-block;margin-top:0.6rem;margin-right:0.3rem;font-size:0.67rem;padding:0.22rem 0.55rem;border-radius:100px;background:rgba(168,218,220,0.1);color:var(--ice);}
+
+/* ── PROCESS STEPS ── */
+.process-steps{display:flex;flex-direction:column;}
+.step{display:flex;gap:2rem;padding:1.75rem 0;border-bottom:1px solid var(--border);}
+.step:last-child{border-bottom:none;}
+.step-number{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;color:rgba(168,218,220,0.12);line-height:1;flex-shrink:0;width:56px;}
+.step-content h4{font-size:0.95rem;font-weight:600;color:var(--ice);margin-bottom:0.4rem;}
+.step-content .timing{font-size:0.72rem;color:var(--steel);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.4rem;font-weight:600;}
+.step-content p{font-size:0.86rem;color:rgba(255,255,255,0.6);line-height:1.65;}
+.step-content .highlight{background:rgba(168,218,220,0.08);border:1px solid rgba(168,218,220,0.15);border-radius:8px;padding:0.7rem 1rem;margin-top:0.7rem;font-size:0.82rem;color:rgba(255,255,255,0.75);font-style:italic;}
+
+/* ── CHECKER ── */
+.checker{background:var(--navy-mid);border:1px solid var(--border);border-radius:16px;padding:2.25rem;}
+.checker h3{font-size:1.15rem;font-weight:700;margin-bottom:1.4rem;color:var(--ice);}
+.check-list{list-style:none;display:flex;flex-direction:column;gap:0.65rem;}
+.check-item{display:flex;align-items:center;gap:1rem;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;user-select:none;}
+.check-item:hover{background:rgba(255,255,255,0.06);}
+.check-item .checkmark{width:20px;height:20px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+.check-item.checked .checkmark{background:var(--green);border-color:var(--green);}
+.check-item.checked .checkmark::after{content:'✓';font-size:0.75rem;color:#fff;font-weight:700;}
+.check-item .check-text{font-size:0.86rem;color:rgba(255,255,255,0.7);line-height:1.4;}
+.check-item.checked .check-text{color:rgba(255,255,255,0.35);text-decoration:line-through;}
+.checker-progress{margin-top:1.4rem;}
+.progress-bar{background:rgba(255,255,255,0.08);border-radius:100px;height:5px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--steel),var(--ice));border-radius:100px;transition:width .3s ease;}
+.progress-label{font-size:0.79rem;color:var(--text-muted);margin-top:0.5rem;}
+
+/* ── KPI ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.1rem;margin-bottom:2.5rem;}
+.kpi-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:14px;padding:1.6rem;}
+.kpi-label{font-size:0.73rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:0.4rem;}
+.kpi-value{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:700;color:var(--ice);margin-bottom:0.2rem;}
+.kpi-target{font-size:0.79rem;color:rgba(255,255,255,0.4);}
+
+/* ── LETTER ── */
+.letter-template{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.75rem;}
+.letter-template .letter-field{display:inline;background:rgba(226,156,47,0.2);border:1px dashed rgba(226,156,47,0.4);border-radius:4px;padding:0 0.4rem;color:var(--amber-light);}
+.letter-template p{font-size:0.875rem;color:rgba(255,255,255,0.7);margin-bottom:0.9rem;line-height:1.7;}
+.letter-template .letter-subject{font-weight:600;color:var(--ice);margin-bottom:1.25rem;font-size:0.9rem;}
+
+/* ── GOLDEN RULE ── */
+.golden-rule{background:linear-gradient(135deg,rgba(46,134,171,0.2),rgba(168,218,220,0.1));border:1px solid rgba(168,218,220,0.3);border-radius:16px;padding:2.25rem;text-align:center;margin-top:2.5rem;}
+.golden-rule .rule-text{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:600;color:var(--white);line-height:1.5;max-width:680px;margin:0 auto;}
+.golden-rule .rule-text em{color:var(--ice);font-style:normal;}
+
+/* ── RACI SIMULATOR ── */
+.raci-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+@media(max-width:900px){.raci-layout{grid-template-columns:1fr;}}
+.raci-sim{background:var(--navy-mid);border:1px solid rgba(168,218,220,0.2);border-radius:16px;padding:1.75rem;}
+.raci-sim h3{font-size:1rem;font-weight:700;color:var(--ice);margin-bottom:0.4rem;}
+.raci-sim .sim-desc{font-size:0.8rem;color:var(--text-muted);margin-bottom:1.4rem;line-height:1.5;}
+.sim-form{display:flex;flex-direction:column;gap:0.75rem;}
+.sim-field label{display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:0.3rem;font-weight:600;}
+.sim-field select,.sim-field input[type=text]{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;padding:0.65rem 0.9rem;color:var(--white);font-size:0.875rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;appearance:none;}
+.sim-field select:focus,.sim-field input[type=text]:focus{border-color:rgba(168,218,220,0.4);}
+.sim-field select option{background:var(--navy-mid);color:var(--white);}
+.sim-btn{background:rgba(168,218,220,0.15);border:1px solid rgba(168,218,220,0.35);border-radius:10px;padding:0.75rem 1.5rem;color:var(--ice);font-size:0.875rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;margin-top:0.5rem;}
+.sim-btn:hover{background:rgba(168,218,220,0.25);}
+.sim-result{margin-top:1.25rem;display:none;}
+.sim-result.visible{display:block;}
+.sim-result-title{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--steel);font-weight:600;margin-bottom:0.75rem;}
+.sim-actors{display:flex;flex-direction:column;gap:0.5rem;}
+.sim-actor-row{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0.9rem;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border);}
+.sim-actor-name{font-size:0.84rem;flex:1;color:rgba(255,255,255,0.75);}
+.sim-actor-role{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;min-width:28px;text-align:center;}
+.sim-actor-desc{font-size:0.76rem;color:var(--text-muted);}
+.role-R{color:var(--ice);}
+.role-A{color:var(--amber-light);}
+.role-C{color:rgba(255,255,255,0.45);}
+.role-I{color:rgba(255,255,255,0.25);}
+.sim-action-badge{font-size:0.78rem;font-weight:600;padding:0.3rem 0.8rem;border-radius:100px;background:rgba(168,218,220,0.1);color:var(--ice);margin-bottom:1rem;display:inline-block;}
+
+/* ── FOOTER ── */
+footer{padding:3rem 4rem;text-align:center;border-top:1px solid var(--border);}
+footer p{font-size:0.8rem;color:var(--text-muted);}
+footer strong{color:var(--ice);}
+
+/* ── SIMULATORS ── */
+.sim-section{background:var(--navy-mid);border:1px solid rgba(168,218,220,0.15);border-radius:18px;padding:2rem;margin-bottom:2rem;}
+.sim-section h3{font-size:1.05rem;font-weight:700;color:var(--ice);margin-bottom:0.4rem;display:flex;align-items:center;gap:0.6rem;}
+.sim-section.red-title h3{color:#ff6b6b;}
+.sim-section .sim-intro{font-size:0.82rem;color:var(--text-muted);margin-bottom:1.5rem;line-height:1.55;}
+.sim-grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:1rem;}
+.sim-input-group{display:flex;flex-direction:column;gap:0.3rem;}
+.sim-input-group label{font-size:0.71rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);font-weight:600;}
+.sim-input-group input,.sim-input-group select{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.85rem;color:var(--white);font-size:0.875rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;width:100%;}
+.sim-input-group input:focus,.sim-input-group select:focus{border-color:rgba(168,218,220,0.4);}
+.sim-input-group select option{background:var(--navy-mid);}
+.sim-run-btn{background:rgba(168,218,220,0.18);border:1px solid rgba(168,218,220,0.35);border-radius:10px;padding:0.65rem 1.4rem;color:var(--ice);font-size:0.875rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;margin-top:0.75rem;}
+.sim-run-btn:hover{background:rgba(168,218,220,0.3);}
+.sim-output{margin-top:1.25rem;padding:1.25rem;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;display:none;}
+.sim-output.show{display:block;}
+.sim-output-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.45rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.sim-output-row:last-child{border-bottom:none;}
+.sim-output-label{font-size:0.82rem;color:var(--text-muted);}
+.sim-output-value{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;}
+.sim-output-value.safe{color:var(--green-light);}
+.sim-output-value.warn{color:var(--amber-light);}
+.sim-output-value.danger{color:var(--coral-light);}
+.sim-output-value.critical{color:#ff6b6b;}
+.sim-alert-box{margin-top:1rem;padding:0.85rem 1.1rem;border-radius:10px;font-size:0.82rem;line-height:1.6;}
+.sim-alert-box.green{background:rgba(26,122,74,0.15);border:1px solid rgba(26,122,74,0.3);color:var(--green-light);}
+.sim-alert-box.amber{background:rgba(226,156,47,0.12);border:1px solid rgba(226,156,47,0.3);color:var(--amber-light);}
+.sim-alert-box.red{background:rgba(192,57,43,0.12);border:1px solid rgba(192,57,43,0.3);color:var(--coral-light);}
+.sim-alert-box.crisis{background:rgba(192,57,43,0.22);border:1px solid rgba(192,57,43,0.5);color:#ff9e9e;}
+.benchmark-table{width:100%;border-collapse:collapse;font-size:0.81rem;}
+.benchmark-table th{font-size:0.69rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);padding:0.6rem 0.9rem;text-align:left;border-bottom:1px solid var(--border);}
+.benchmark-table td{padding:0.6rem 0.9rem;border-bottom:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.8);}
+.benchmark-table tr:hover td{background:rgba(255,255,255,0.02);}
+.carrier-badge{display:inline-block;font-size:0.67rem;font-weight:700;padding:0.18rem 0.5rem;border-radius:5px;text-transform:uppercase;letter-spacing:0.05em;}
+.cb-maersk{background:rgba(0,115,207,0.25);color:#60b4ff;}
+.cb-cma{background:rgba(100,80,200,0.3);color:#a5b4fc;}
+.cb-msc{background:rgba(0,90,60,0.3);color:#6ee7b7;}
+.cb-hapag{background:rgba(220,120,0,0.25);color:#fcd34d;}
+.cb-one{background:rgba(230,50,50,0.2);color:#fca5a5;}
+.slider-group{margin-bottom:1rem;}
+.slider-group label{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.35rem;}
+.slider-group label span{color:var(--ice);font-weight:600;}
+.slider-group input[type=range]{width:100%;accent-color:var(--steel);}
+.dwell-progress{margin-top:0.75rem;}
+.dwell-bar-wrap{background:rgba(255,255,255,0.07);border-radius:100px;height:10px;overflow:hidden;}
+.dwell-bar{height:100%;border-radius:100px;transition:width .5s ease,background .3s;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{padding:0 1rem;}
+  .hero{padding:4rem 1.5rem;}
+  section{padding:3rem 1.5rem;}
+  .main-tabs-bar{padding:0 1rem;}
+  footer{padding:2rem 1.5rem;}
+}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--navy);}
+::-webkit-scrollbar-thumb{background:var(--navy-light);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<div class="sticky-header">
+<nav>
+  <div class="nav-logo">⚓ SURESTARIES — Référentiel Opérationnel</div>
+</nav>
+
+<!-- ══ 6 ONGLETS PRINCIPAUX ══ -->
+<div class="main-tabs-bar">
+  <button class="main-tab-btn active" onclick="showMain('t1',this)">
+    📘 Définition &amp; Mécanisme <span class="mtab-num">1/6</span>
+  </button>
+  <button class="main-tab-btn" onclick="showMain('tsim',this)">
+    🧮 Simulateur de Calcul <span class="mtab-num">2/6</span>
+  </button>
+  <button class="main-tab-btn" onclick="showMain('t3',this)">
+    💰 Tarifs &amp; Diagnostic <span class="mtab-num">3/6</span>
+  </button>
+  <button class="main-tab-btn" onclick="showMain('t4',this)">
+    🚨 Red Flags &amp; Pratiques <span class="mtab-num">4/6</span>
+  </button>
+  <button class="main-tab-btn" onclick="showMain('t5',this)">
+    ⚖️ Aspects Juridiques <span class="mtab-num">5/6</span>
+  </button>
+  <button class="main-tab-btn" onclick="showMain('t6',this)">
+    ⚙️ Contestation · Tech · Org. <span class="mtab-num">6/6</span>
+  </button>
+</div>
+</div><!-- /sticky-header -->
+
+<!-- ══════════════ HERO ══════════════ -->
+<div class="main-panel active" id="t1">
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <h1>Maîtrisez les <em>Surestaries</em> Maritimes</h1>
+    <p style="white-space:nowrap;"><span style="display:block;">Guide d'aide à la décision pour importateurs, exportateurs et transitaires.</span><span style="display:block;">Mécanismes, pénalités, résolution de problèmes.</span><span style="display:block;">Les bonnes pratiques internationales adaptées au contexte marocain.</span></p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">+20%</div><div class="stat-label">hausse des tarifs / an</div></div>
+      <div class="stat"><div class="stat-num">48h</div><div class="stat-label">fenêtre critique d'action</div></div>
+      <div class="stat"><div class="stat-num">90%</div><div class="stat-label">réduction possible du risque</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DÉFINITION -->
+<section id="definition">
+  <div class="section-label">Fondamentaux</div>
+  <div class="section-title">Définition &amp; Distinction</div>
+  <div class="section-subtitle">Trois types de frais souvent confondus, appliqués à des moments et des lieux très différents. Maîtriser cette distinction est la première étape pour contester et prévenir efficacement.</div>
+  <div class="def-grid">
+    <div class="def-card" style="--accent:#C0392B">
+      <div class="def-card-icon">🚢</div>
+      <h3>Surestaries (Demurrage)</h3>
+      <p>Frais de pénalité facturés par <strong>la compagnie maritime</strong> lorsqu'un conteneur plein reste immobilisé <strong>à l'intérieur du terminal</strong> au-delà du temps libre accordé.</p>
+      <span class="badge badge-dem" style="margin-top:1rem;display:inline-block;">À l'intérieur du port</span>
+    </div>
+    <div class="def-card" style="--accent:#E29C2F">
+      <div class="def-card-icon">🏭</div>
+      <h3>Détention (Detention)</h3>
+      <p>Frais facturés par <strong>la compagnie maritime</strong> lorsque le client garde le conteneur <strong>hors du port</strong> — chez lui ou sur son site — trop longtemps.</p>
+      <span class="badge badge-det" style="margin-top:1rem;display:inline-block;">À l'extérieur du port</span>
+    </div>
+    <div class="def-card" style="--accent:#1A7A4A">
+      <div class="def-card-icon">⚓</div>
+      <h3>Stationnement (Storage)</h3>
+      <p>Frais perçus par <strong>l'autorité portuaire / terminal</strong> (Marsa Maroc, Somaport) pour l'occupation physique du sol — distinct des surestaries armateur.</p>
+      <span class="badge badge-sto" style="margin-top:1rem;display:inline-block;">Frais de sol portuaire</span>
+    </div>
+  </div>
+  <div style="margin-top:2rem;overflow-x:auto;border-radius:14px;border:1px solid var(--border);">
+    <table class="compare-table">
+      <thead><tr><th>Type de frais</th><th>Facturé par</th><th>Lieu</th><th>Déclencheur</th><th>Jours inclus</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-dem">Surestaries</span></td><td>Armateur (MSC, CMA-CGM, Maersk…)</td><td>Dans le port</td><td>Conteneur plein non retiré après free time</td><td>Jours calendaires (week-ends inclus)</td></tr>
+        <tr><td><span class="badge badge-det">Détention</span></td><td>Armateur</td><td>Hors du port</td><td>Conteneur non rendu après utilisation</td><td>Jours calendaires</td></tr>
+        <tr><td><span class="badge badge-sto">Stationnement</span></td><td>Marsa Maroc / Somaport / ANP</td><td>Dans le port</td><td>Dépassement franchise sol (5j au Maroc)</td><td>Jours ouvrables ou calendaires selon port</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MÉCANISME -->
+<section id="mecanisme">
+  <div class="section-label">Fonctionnement</div>
+  <div class="section-title">Mécanisme de Déclenchement</div>
+  <div class="section-subtitle">Le temps libre (free time) est le point de départ de tout calcul. Son dépassement déclenche une mécanique de pénalités progressives difficile à stopper.</div>
+  <div class="inner-tabs">
+    <button class="inner-tab-btn active" onclick="showInner('import',this,'mec')">📥 Import</button>
+    <button class="inner-tab-btn" onclick="showInner('export',this,'mec')">📤 Export</button>
+    <button class="inner-tab-btn" onclick="showInner('causes',this,'mec')">⚠️ Causes fréquentes</button>
+  </div>
+  <div class="inner-tab-content active" id="mec-import">
+    <div class="flow">
+      <div class="flow-node">🚢 Navire accoste au port</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-node alert">⏱ DÉBUT DU COMPTEUR — Conteneur débarqué sur le quai</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-node">Free Time accordé : 3 à 7 jours (selon contrat armateur)</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-branch">
+        <div><div class="flow-label">✅ Dans les temps</div><div class="flow-node action">Sortie du port par camion / train → Aucun frais</div></div>
+        <div><div class="flow-label">❌ Dépassement</div><div class="flow-node danger">Surestaries déclenchées — paliers progressifs par jour</div></div>
+      </div>
+      <div class="flow-arrow" style="margin-top:1.5rem;"></div>
+      <div class="flow-node">FIN DU COMPTEUR — Sortie du conteneur des portes du terminal</div>
+    </div>
+  </div>
+  <div class="inner-tab-content" id="mec-export">
+    <div class="flow">
+      <div class="flow-node">🏗 Retrait du conteneur vide par l'exportateur</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-node">Chargement de la marchandise chez l'exportateur</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-node alert">⏱ DÉBUT DU COMPTEUR — Entrée du conteneur plein dans le terminal</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-branch">
+        <div><div class="flow-label">✅ Embarqué à temps</div><div class="flow-node action">Chargement à bord → Compteur stoppé</div></div>
+        <div><div class="flow-label">❌ Roll-over / Cut-off raté</div><div class="flow-node danger">Conteneur bloqué au terminal — frais s'accumulent</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="inner-tab-content" id="mec-causes">
+    <div class="def-grid">
+      <div class="def-card" style="--accent:var(--coral)"><div class="def-card-icon">📄</div><h3>Blocage documentaire</h3><p>OBL non reçu, fret non payé, absence de telex release. Le BAD ne peut pas être émis.</p></div>
+      <div class="def-card" style="--accent:var(--amber)"><div class="def-card-icon">🏛</div><h3>Blocage douanier</h3><p>Contrôle scanner, visite physique, blocage conformité ONSSA/MICEVN, circuit rouge PortNet — délais 10 à 15 jours.</p></div>
+      <div class="def-card" style="--accent:var(--steel)"><div class="def-card-icon">💰</div><h3>Litige commercial</h3><p>Fournisseur refusant de libérer les documents en attente du dernier paiement. Bloque depuis l'étranger.</p></div>
+      <div class="def-card" style="--accent:var(--green)"><div class="def-card-icon">🚛</div><h3>Rupture logistique</h3><p>Pénurie de camions, saturation des créneaux TAS, congestion portuaire généralisée.</p></div>
+    </div>
+  </div>
+</section>
+</div><!-- /t1 -->
+
+
+<!-- ══════════════ ONGLET 2 : SIMULATEUR DE CALCUL ══════════════ -->
+<div class="main-panel" id="tsim">
+<section id="simulateurs" style="background:var(--navy);">
+  <div class="section-label">Outils Interactifs</div>
+  <div class="section-title">Simulateurs &amp; Alertes Opérationnels</div>
+  <div class="section-subtitle">Quatre outils basés sur les benchmarks internationaux 2025 (Maersk, CMA-CGM, MSC, ONE) et les pratiques de la FMC. Calculez, anticipez et pilotez votre risque en temps réel.</div>
+
+  <!-- ─── 1. CALCULATEUR DE COÛT SURESTARIES ─── -->
+  <div class="sim-section red-title">
+    <h3>💶 Calculateur de Coût — Surestaries &amp; Détention</h3>
+    <p class="sim-intro">Entrez vos paramètres de conteneur et calculez le coût exact selon les barèmes internationaux 2025. Benchmark : Maersk, CMA-CGM, MSC, ONE.</p>
+    <div class="sim-grid-2">
+      <div class="sim-input-group">
+        <label>Type de conteneur</label>
+        <select id="c_type">
+          <option value="dry20">20' Dry Standard</option>
+          <option value="dry40">40' High Cube Dry</option>
+          <option value="reefer20">20' Reefer</option>
+          <option value="reefer40">40' Reefer High Cube</option>
+          <option value="hazmat">HAZMAT / IMO</option>
+        </select>
+      </div>
+      <div class="sim-input-group">
+        <label>Armateur / Compagnie</label>
+        <select id="c_carrier">
+          <option value="maersk">Maersk</option>
+          <option value="cma">CMA-CGM</option>
+          <option value="msc">MSC</option>
+          <option value="one">ONE Line</option>
+          <option value="maroc">Maroc (standard port)</option>
+        </select>
+      </div>
+      <div class="sim-input-group">
+        <label>Free Time négocié (jours)</label>
+        <input type="number" id="c_freetime" value="7" min="1" max="30">
+      </div>
+      <div class="sim-input-group">
+        <label>Jours de retard (après free time)</label>
+        <input type="number" id="c_delay" value="5" min="1" max="60">
+      </div>
+      <div class="sim-input-group">
+        <label>Nombre de conteneurs</label>
+        <input type="number" id="c_qty" value="1" min="1" max="100">
+      </div>
+      <div class="sim-input-group">
+        <label>Valeur de la marchandise (MAD)</label>
+        <input type="number" id="c_value" value="200000" min="0">
+      </div>
+    </div>
+    <button class="sim-run-btn" onclick="calcDemurrage()">Calculer le coût →</button>
+    <div class="sim-output" id="dem-output">
+      <div class="sim-output-row"><span class="sim-output-label">Jours en Zone Verte (free time)</span><span class="sim-output-value safe" id="o_free">—</span></div>
+      <div class="sim-output-row"><span class="sim-output-label">Jours au Palier 1 (~J+1 à J+5)</span><span class="sim-output-value warn" id="o_p1">—</span></div>
+      <div class="sim-output-row"><span class="sim-output-label">Jours au Palier 2 (J+6 à J+11)</span><span class="sim-output-value danger" id="o_p2">—</span></div>
+      <div class="sim-output-row"><span class="sim-output-label">Jours au Palier 3 (J+12+)</span><span class="sim-output-value critical" id="o_p3">—</span></div>
+      <div class="sim-output-row" style="border-top:1px solid rgba(255,255,255,0.1);margin-top:0.5rem;padding-top:0.75rem;"><span class="sim-output-label">Coût total surestaries (USD)</span><span class="sim-output-value" id="o_total" style="color:var(--ice);font-size:1.25rem;">—</span></div>
+      <div class="sim-output-row"><span class="sim-output-label">Coût total surestaries (MAD)</span><span class="sim-output-value" id="o_total_mad" style="color:var(--ice);">—</span></div>
+      <div class="sim-output-row"><span class="sim-output-label">% de la valeur marchandise</span><span class="sim-output-value" id="o_pct">—</span></div>
+      <div id="dem-alert" class="sim-alert-box" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- ─── 2. DWELL TIME MONITOR ─── -->
+  <div class="sim-section red-title">
+    <h3>⏱ Moniteur Dwell Time — Alerte en Temps Réel</h3>
+    <p class="sim-intro">Simulez l'âge d'un conteneur dans le port et recevez une alerte de niveau automatique basée sur les seuils ANP (Maroc) et armateur.</p>
+    <div class="sim-grid-2">
+      <div class="sim-input-group">
+        <label>Port de déchargement</label>
+        <select id="dw_port">
+          <option value="casa">Casablanca (ANP — Marsa Maroc)</option>
+          <option value="tanger">Tanger Med (TMPA)</option>
+          <option value="agadir">Agadir (ANP)</option>
+          <option value="rotterdam">Rotterdam</option>
+          <option value="hamburg">Hambourg</option>
+          <option value="losangeles">Los Angeles / Long Beach</option>
+        </select>
+      </div>
+      <div class="sim-input-group">
+        <label>Free Time contractuel (jours)</label>
+        <input type="number" id="dw_free" value="7" min="1" max="21">
+      </div>
+    </div>
+    <div class="slider-group">
+      <label>Jours depuis le déchargement <span id="dw_days_label">5</span></label>
+      <input type="range" id="dw_slider" min="1" max="30" value="5" oninput="updateDwell()">
+    </div>
+    <div class="dwell-progress">
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text-muted);margin-bottom:0.4rem;">
+        <span>Jour 1</span><span id="dw_free_label" style="color:var(--green-light);">Free time</span><span id="dw_end_label" style="color:var(--coral-light);">J+30</span>
+      </div>
+      <div class="dwell-bar-wrap"><div class="dwell-bar" id="dwell-bar" style="width:17%;background:var(--green-light);"></div></div>
+      <div id="dwell-status" class="sim-alert-box green" style="margin-top:0.75rem;">🟢 Dans le free time — aucun frais engagé.</div>
+    </div>
+  </div>
+
+  <!-- ─── 3. CALCULATEUR BREAK-EVEN — MEAD vs SURESTARIES ─── -->
+  <div class="sim-section red-title">
+    <h3>⚖️ Calculateur Break-Even — MEAD vs Surestaries</h3>
+    <p class="sim-intro">Calculez le point de bascule : à partir de quel jour le transfert en MEAD devient moins coûteux que de laisser le conteneur au terminal armateur.</p>
+    <div class="sim-grid-2">
+      <div class="sim-input-group">
+        <label>Tarif surestaries armateur ($/j)</label>
+        <input type="number" id="be_dem" value="150" min="0">
+      </div>
+      <div class="sim-input-group">
+        <label>Tarif stockage MEAD (MAD/j)</label>
+        <input type="number" id="be_mead" value="80" min="0">
+      </div>
+      <div class="sim-input-group">
+        <label>Coût du transfert MEAD (MAD forfait)</label>
+        <input type="number" id="be_transfer" value="4500" min="0">
+      </div>
+      <div class="sim-input-group">
+        <label>Taux USD/MAD</label>
+        <input type="number" id="be_rate" value="10.1" min="1" step="0.1">
+      </div>
+    </div>
+    <button class="sim-run-btn" onclick="calcBreakEven()">Calculer le seuil →</button>
+    <div class="sim-output" id="be-output">
+      <div class="sim-output-row"><span class="sim-output-label">Coût surestaries armateur / jour (MAD)</span><span class="sim-output-value warn" id="be_cost_day">—</span></div>
+      <div class="sim-output-row"><span class="sim-output-label">Coût MEAD / jour (MAD)</span><span class="sim-output-value safe" id="be_mead_day">—</span></div>
+      <div class="sim-output-row"><span class="sim-output-label">Économie journalière MEAD (MAD)</span><span class="sim-output-value safe" id="be_saving">—</span></div>
+      <div class="sim-output-row"><span class="sim-output-label" style="font-weight:600;color:var(--ice);">Break-even — Transfert optimal à partir de J+</span><span class="sim-output-value" id="be_day" style="font-size:1.5rem;color:var(--ice);">—</span></div>
+      <div id="be-alert" class="sim-alert-box" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- ─── 4. BENCHMARK INTERNATIONAL DES TARIFS ─── -->
+  <div class="sim-section">
+    <h3>🌍 Benchmark International des Tarifs</h3>
+    <p class="sim-intro">Tarifs de référence publiés par les armateurs (sources : Maersk Tariff Notice 2025, CMA-CGM D&amp;D Schedule, ONE Rate Schedule Jan 2025, FMC data). En USD par conteneur par jour.</p>
+    <div class="sim-input-group" style="max-width:300px;margin-bottom:1.5rem;">
+      <label>Filtrer par type de conteneur</label>
+      <select id="bm_filter" onchange="filterBenchmark()">
+        <option value="all">Tous les conteneurs</option>
+        <option value="dry20">20' Dry Standard</option>
+        <option value="dry40">40' High Cube</option>
+        <option value="reefer">Reefer</option>
+      </select>
+    </div>
+    <div style="overflow-x:auto;border-radius:12px;border:1px solid var(--border);">
+      <table class="benchmark-table" id="bm-table">
+        <thead>
+          <tr>
+            <th>Armateur</th><th>Type</th><th>Free Time std</th><th>Palier 1 (J1-5)</th><th>Palier 2 (J6-11)</th><th>Palier 3 (J12+)</th><th>Source / Zone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-type="dry20"><td><span class="carrier-badge cb-maersk">Maersk</span></td><td>20' Dry</td><td>7 jours</td><td>$75 / j</td><td>$150 / j</td><td>$250 / j</td><td>USA Import 2025</td></tr>
+          <tr data-type="dry40"><td><span class="carrier-badge cb-maersk">Maersk</span></td><td>40' HC</td><td>7 jours</td><td>$100 / j</td><td>$200 / j</td><td>$350 / j</td><td>USA Import 2025</td></tr>
+          <tr data-type="reefer"><td><span class="carrier-badge cb-maersk">Maersk</span></td><td>Reefer</td><td>3-5 jours</td><td>$150 / j</td><td>$300 / j</td><td>$500 / j</td><td>+ élec. branchement</td></tr>
+          <tr data-type="dry20"><td><span class="carrier-badge cb-cma">CMA-CGM</span></td><td>20' Dry</td><td>7 jours</td><td>$65 / j</td><td>$130 / j</td><td>$220 / j</td><td>Europe — Afrique 2025</td></tr>
+          <tr data-type="dry40"><td><span class="carrier-badge cb-cma">CMA-CGM</span></td><td>40' HC</td><td>7 jours</td><td>$90 / j</td><td>$175 / j</td><td>$310 / j</td><td>Europe — Afrique 2025</td></tr>
+          <tr data-type="reefer"><td><span class="carrier-badge cb-cma">CMA-CGM</span></td><td>Reefer</td><td>5j (dry) / 3j (RF)</td><td>$140 / j</td><td>$280 / j</td><td>$450 / j</td><td>Export: entrée terminal</td></tr>
+          <tr data-type="dry20"><td><span class="carrier-badge cb-msc">MSC</span></td><td>20' Dry</td><td>5-7 jours</td><td>$70 / j</td><td>$140 / j</td><td>$240 / j</td><td>Global 2025</td></tr>
+          <tr data-type="dry40"><td><span class="carrier-badge cb-msc">MSC</span></td><td>40' HC</td><td>5-7 jours</td><td>$95 / j</td><td>$185 / j</td><td>$320 / j</td><td>Global 2025</td></tr>
+          <tr data-type="dry20"><td><span class="carrier-badge cb-one">ONE Line</span></td><td>20' Dry</td><td>7 jours</td><td>$60 / j</td><td>$120 / j</td><td>$200 / j</td><td>USA Import Jan 2025</td></tr>
+          <tr data-type="dry40"><td><span class="carrier-badge cb-one">ONE Line</span></td><td>40' HC</td><td>7 jours</td><td>$85 / j</td><td>$165 / j</td><td>$280 / j</td><td>USA Import Jan 2025</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:0.75rem;font-size:0.75rem;color:var(--text-muted);">📊 <strong style="color:rgba(255,255,255,0.5);">Moyenne globale 2025 :</strong> $75–$300/j pour un 20', doublement sur 40', x2-3 sur Reefer. Source : FMC, container-xchange benchmark, FreightAmigo 2025-2026.</p>
+  </div>
+</section>
+</div><!-- /tsim -->
+
+
+<!-- ══════════════ ONGLET 2 : TARIFS & DIAGNOSTIC ══════════════ -->
+<div class="main-panel" id="t3">
+<section id="tarifs">
+  <div class="section-label">Structure des Coûts</div>
+  <div class="section-title">Barème des Pénalités — L'Effet Boule de Neige</div>
+  <div class="section-subtitle">Calculés par jour calendaire (week-ends et jours fériés inclus dès le dépassement) et par type de conteneur. Structure progressive conçue pour être dissuasive — non pour être un service de stockage.</div>
+  <div style="overflow-x:auto;border-radius:14px;border:1px solid var(--border);">
+    <table class="tariff-table">
+      <thead><tr><th>Période</th><th>Tarif 20' Standard</th><th>Tarif 40' High Cube</th><th>Reefer (x2-3)</th><th>Niveau de risque</th></tr></thead>
+      <tbody>
+        <tr class="zone-safe"><td><span class="zone-indicator"><span class="zone-dot" style="background:var(--green-light)"></span>Jours 1–7 (Free Time)</span></td><td>0 $ / jour</td><td>0 $ / jour</td><td>0 $ + élec.</td><td>🟢 Zone sécurisée</td></tr>
+        <tr class="zone-warn"><td><span class="zone-indicator"><span class="zone-dot" style="background:var(--amber-light)"></span>Jours 8–12 (Palier 1)</span></td><td>~50 $ / jour</td><td>~80 $ / jour</td><td>~150 $ / jour</td><td>🟡 Alerte mineure</td></tr>
+        <tr class="zone-danger"><td><span class="zone-indicator"><span class="zone-dot" style="background:var(--coral-light)"></span>Jours 13–18 (Palier 2)</span></td><td>~100 $ / jour</td><td>~160 $ / jour</td><td>~300 $ / jour</td><td>🟠 Zone de danger</td></tr>
+        <tr class="zone-critical"><td><span class="zone-indicator"><span class="zone-dot" style="background:#E24B4A"></span>Jours 19+ (Palier 3)</span></td><td>~180 $ / jour</td><td>~300 $ / jour</td><td>~600 $ / jour</td><td>🔴 Hémorragie financière</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:1.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;">
+    <div class="morocco-alert"><div class="icon">⚠️</div><p><strong>Spécificité Maroc :</strong> Marsa Maroc accorde <strong>5 jours de franchise sol</strong> à l'import — souvent inférieur au free time armateur (7-10j). Deux compteurs à surveiller simultanément.</p></div>
+    <div class="morocco-alert" style="background:rgba(192,57,43,0.1);border-color:rgba(192,57,43,0.3);"><div class="icon">🧊</div><p><strong>Reefer &amp; HAZMAT :</strong> Free time réduit à <strong>2–3 jours maximum</strong>. Pénalités intégrant les coûts d'électricité. Lignes rouges atteintes <strong>3× plus vite</strong>. Suivi heure par heure requis.</p></div>
+  </div>
+</section>
+
+<section id="diagnostic">
+  <div class="section-label">Aide à la Décision</div>
+  <div class="section-title">Checklist Opérationnelle Pré-Crise</div>
+  <div class="section-subtitle">Utilisez cette liste dès que le free time expire dans moins de 48h. Chaque point non validé est un risque de surestaries.</div>
+  <div class="checker">
+    <h3>🔍 Checklist J-2 avant expiration du Free Time</h3>
+    <ul class="check-list" id="checklist">
+      <li class="check-item" onclick="toggleCheck(this)"><div class="checkmark"></div><span class="check-text">Les documents originaux (OBL) ont été transmis à l'armateur ou le Telex Release / Sea Waybill est confirmé par écrit.</span></li>
+      <li class="check-item" onclick="toggleCheck(this)"><div class="checkmark"></div><span class="check-text">Le fret maritime et tous les frais locaux sont intégralement réglés. Le BAD électronique est disponible sur PortNet.</span></li>
+      <li class="check-item" onclick="toggleCheck(this)"><div class="checkmark"></div><span class="check-text">La DUM est enregistrée sur PortNet. Le circuit douanier est connu (Vert / Orange / Rouge).</span></li>
+      <li class="check-item" onclick="toggleCheck(this)"><div class="checkmark"></div><span class="check-text">Le certificat de conformité (CoC) est produit et rattaché au dossier. Aucun blocage ONSSA ou MICEVN anticipé.</span></li>
+      <li class="check-item" onclick="toggleCheck(this)"><div class="checkmark"></div><span class="check-text">Un créneau de rendez-vous (slot) est réservé au terminal. Le transporteur routier est confirmé.</span></li>
+      <li class="check-item" onclick="toggleCheck(this)"><div class="checkmark"></div><span class="check-text">La capacité d'absorption de l'entrepôt de destination est vérifiée pour le jour de livraison prévu.</span></li>
+      <li class="check-item" onclick="toggleCheck(this)"><div class="checkmark"></div><span class="check-text">Le responsable logistique est alerté et le transitaire est en attente de la sortie (aucun silence radio).</span></li>
+      <li class="check-item" onclick="toggleCheck(this)"><div class="checkmark"></div><span class="check-text">[Reefer/HAZMAT] Un opérateur dédié au suivi heure par heure est affecté, week-end inclus.</span></li>
+    </ul>
+    <div class="checker-progress">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="progress-label" id="progress-label">0 / 8 points validés</div>
+    </div>
+  </div>
+  <div style="margin-top:2.5rem;">
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.25rem;color:var(--ice);">🚨 Mesures de Sauvetage d'Urgence</h3>
+    <div class="def-grid">
+      <div class="def-card" style="--accent:var(--amber)"><div class="def-card-icon">🏗</div><h3>Dépotage d'urgence (Stripping)</h3><p>Si le litige s'annonce long (5+ jours), videz le conteneur et transférez la marchandise vers un entrepôt. Le conteneur vide restitué à l'armateur stoppe net les surestaries et la détention.</p></div>
+      <div class="def-card" style="--accent:var(--steel)"><div class="def-card-icon">📦</div><h3>Transfert en MEAD</h3><p>Demandez le transfert dans un Magasin et Aire de Dédouanement agréé ADII (Tit Mellil, Aïn Sebaâ). Stockage journalier fixe — infiniment inférieur aux grilles progressives des armateurs.</p></div>
+      <div class="def-card" style="--accent:var(--coral)"><div class="def-card-icon">🏦</div><h3>Letter of Indemnity (LOI)</h3><p>Libère la marchandise sans l'OBL original sous conditions strictes. Solution de dernier recours — requiert l'accord de l'armateur et une garantie bancaire solide.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ ONGLET 3 : TARIFS & DIAGNOSTIC ══════════════ -->
+<div class="main-panel" id="t4">
+<section id="flags">
+  <div class="section-label">Signaux d'Alarme</div>
+  <div class="section-title">Red Flags — Déclenchez une Cellule de Crise</div>
+  <div class="section-subtitle">Si l'un de ces signaux apparaît, agissez immédiatement. Chaque heure perdue coûte de l'argent.</div>
+  <div class="flags-grid">
+    <div class="flag-card"><div class="flag-icon">🚩</div><div class="flag-content"><h4>Documents envoyés le jour de l'arrivée</h4><p>Sur des trajets courts (Espagne–Maroc, Turquie–Maroc), le navire arrive avant les OBL papier. C'est l'assurance de payer 3 à 4 jours de surestaries dès le départ.</p></div></div>
+    <div class="flag-card"><div class="flag-icon">🚩</div><div class="flag-content"><h4>Blank Sailing annoncé par l'armateur</h4><p>Si votre conteneur est déjà entré sur le terminal export, l'armateur peut tenter de vous facturer des frais causés par son propre changement de programme. Inspectez immédiatement les clauses d'exonération.</p></div></div>
+    <div class="flag-card"><div class="flag-icon">🚩</div><div class="flag-content"><h4>Blocage PortNet (Guichet Unique)</h4><p>Un compte PortNet bloqué paralyse l'édition du BAD et génère des surestaries en cascade. Vérifiez votre statut PortNet en amont de chaque arrivée navire.</p></div></div>
+    <div class="flag-card"><div class="flag-icon">🚩</div><div class="flag-content"><h4>Conteneur Reefer / HAZMAT sans pré-dédouanement</h4><p>Un reefer passant en douane le vendredi sans libération génère un coût astronomique le lundi : surestaries + frais d'électricité du week-end entier.</p></div></div>
+    <div class="flag-card"><div class="flag-icon">🚩</div><div class="flag-content"><h4>Silence d'un transitaire ou agent local</h4><p>Un transitaire qui ne répond pas aux relances cache souvent un litige financier interne ou une erreur opérationnelle pendant que votre compteur tourne.</p></div></div>
+    <div class="flag-card"><div class="flag-icon">🚩</div><div class="flag-content"><h4>Blocage certificat de conformité (MICEVN/ONSSA)</h4><p>Sans contrôle réalisé à l'origine (SGS, Bureau Veritas), la contre-expertise au Maroc peut prendre 10 à 15 jours — propulsant les surestaries au palier maximal.</p></div></div>
+  </div>
+</section>
+
+<section id="pratiques">
+  <div class="section-label">Excellence Opérationnelle</div>
+  <div class="section-title">12 Bonnes Pratiques Internationales</div>
+  <div class="section-subtitle">Classées par phase opérationnelle, ces pratiques éprouvées réduisent l'exposition aux surestaries de près de 90% selon les leaders mondiaux de la supply chain.</div>
+  <div class="practices-grid">
+    <div class="practice-card"><div class="practice-phase">Phase Contractuelle</div><div class="practice-num">01</div><h4>Ne négociez pas le fret sans négocier le Free Time</h4><p>Un taux bas est une fausse bonne affaire avec 3 jours de franchise. Une journée au palier max peut effacer tout le gain tarifaire.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase Contractuelle</div><div class="practice-num">02</div><h4>Exigez des jours Combinés (D&amp;D Combined)</h4><p>Fusionner surestaries + détention = flexibilité totale. 14 jours combinés = 10 jours dédouanement + 4 jours de vidage sans pénalité.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase Contractuelle</div><div class="practice-num">03</div><h4>Clause Force Majeure spécifique aux ports</h4><p>Stipulez que le free time est suspendu en cas de grève, cyberattaque du terminal ou congestion reconnue par l'autorité portuaire.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase Documentaire</div><div class="practice-num">04</div><h4>Bannir l'OBL sur les trajets courts</h4><p>Privilégiez Express Release, Sea Waybill ou Telex Release. Si le navire arrive avant le courrier, vous êtes bloqué d'office.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase Documentaire</div><div class="practice-num">05</div><h4>Conditionner le paiement au Telex Release</h4><p>Dans votre LC ou virement, le solde n'est déclenché que contre preuve du Telex Release émis par le fournisseur.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase Documentaire</div><div class="practice-num">06</div><h4>Pre-Clearing (DUM anticipée)</h4><p>Transmettez la facture, packing list et certificats au déclarant dès le départ du navire. La DUM doit être prête avant l'accostage.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase Opérationnelle</div><div class="practice-num">07</div><h4>Règle du tampon J-2</h4><p>Ne planifiez jamais une sortie de port le Last Free Day. Visez J-2 minimum. Le moindre aléa déclenche les pénalités plein tarif.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase Opérationnelle</div><div class="practice-num">08</div><h4>Auditer la capacité d'absorption entrepôt</h4><p>Avant de déplacer 10 conteneurs, vérifiez que vos quais peuvent les absorber dans la journée. Un conteneur en attente = détention.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase Opérationnelle</div><div class="practice-num">09</div><h4>Mode Commando pour Reefer / HAZMAT</h4><p>Temps libre ultra-réduit, pénalités doublées ou triplées. Suivi heure par heure par un opérateur dédié, week-end compris.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase de Crise</div><div class="practice-num">10</div><h4>Activer le dépotage d'urgence</h4><p>Dès que 5+ jours de blocage sont prévisibles, videz le conteneur pour stopper l'hémorragie des frais armateur.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase de Crise</div><div class="practice-num">11</div><h4>Transfert vers un Port Sec ou MEAD</h4><p>Le coût journalier y est fixe et dérisoire face aux grilles progressives. Demandez le transfert avant le 5ème jour.</p></div>
+    <div class="practice-card"><div class="practice-phase">Phase de Crise</div><div class="practice-num">12</div><h4>Preuves visuelles et informatiques quotidiennes</h4><p>Captures d'écran TAS, relevés GPS du transporteur bloqué devant les grilles. Votre seule arme pour annuler la facture.</p></div>
+  </div>
+</section>
+</div><!-- /t3 -->
+
+<!-- ══════════════ ONGLET 4 : MAROC & JURIDIQUE ══════════════ -->
+<div class="main-panel" id="t5">
+<section id="maroc">
+  <div class="section-label">Spécificités Locales</div>
+  <div class="section-title">Contexte &amp; Réglementation Marocaine</div>
+  <div class="section-subtitle">Les concepts internationaux sont valables, mais le marché marocain exige des ajustements cruciaux — notamment via la gouvernance ANP, Tanger Med, PortNet et l'ADII.</div>
+  <div class="morocco-alert"><div class="icon">🇲🇦</div><p><strong>Règle d'or marocaine :</strong> Le Free Time armateur (conteneur) ne correspond presque jamais au Free Time terminal pour le sol. Marsa Maroc accorde généralement <strong>5 jours de franchise</strong> — alors que l'armateur peut vous accorder 7 à 10 jours. Vous risquez de payer des frais de sol <em>avant</em> même que les surestaries armateur ne commencent.</p></div>
+  <div class="def-grid" style="margin-bottom:2.5rem;">
+    <div class="def-card" style="--accent:var(--steel)"><div class="def-card-icon">🏢</div><h3>Ports ANP (Casablanca, Agadir, Jorf Lasfar)</h3><p>Régis par la Loi 15-02. Concessionnaires Marsa Maroc / Somaport. Franchise sol standard : 5 jours calendaires à l'import. En cas de défaillance du terminal, l'ANP peut exiger l'annulation des frais de sol.</p></div>
+    <div class="def-card" style="--accent:var(--ice)"><div class="def-card-icon">⚓</div><h3>Tanger Med (TMPA)</h3><p>Statut réglementaire dérogatoire. La TMPA cumule pouvoirs d'autorité portuaire et de régulateur. Fluidité et centralisation supérieures. Capacité de médiation en cas de blocage abusif du BAD.</p></div>
+    <div class="def-card" style="--accent:var(--amber)"><div class="def-card-icon">💻</div><h3>PortNet — Guichet Unique</h3><p>Centralise l'ensemble des flux (titres d'importation, engagements de change, BAD électronique). Un blocage du compte PortNet paralyse instantanément la chaîne.</p></div>
+    <div class="def-card" style="--accent:var(--green)"><div class="def-card-icon">🏗</div><h3>MEAD — L'arme anti-surestaries</h3><p>Magasins et Aires de Dédouanement agréés ADII. Transfert du conteneur non dédouané pour dépotage et restitution à l'armateur. Zones : Tit Mellil, Aïn Sebaâ. À demander impérativement avant le 5ème jour.</p></div>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;margin-bottom:1.25rem;color:var(--ice);">📋 Matrice de Risques Marocains — Actions Préventives</h3>
+  <div style="overflow-x:auto;border-radius:14px;border:1px solid var(--border);">
+    <table class="compare-table">
+      <thead><tr><th>Risque spécifique au Maroc</th><th>Acteur concerné</th><th>Action préventive</th></tr></thead>
+      <tbody>
+        <tr><td>Dépassement franchise sol avant armateur</td><td>Marsa Maroc / Somaport</td><td>Sortir le conteneur à J-1 du délai ANP (5 jours), indépendamment du free time armateur</td></tr>
+        <tr><td>Blocage certificat de conformité</td><td>Ministère de l'Industrie / Organismes agréés</td><td>Valider le contrôle de conformité au port d'embarquement (à l'origine) avant le départ</td></tr>
+        <tr><td>Litige documentaire prolongé</td><td>Douane ADII / Fournisseur</td><td>Introduire une demande de transfert en MEAD pour arrêter les frais armateur et port</td></tr>
+        <tr><td>Blocage paiement du fret / chèque garantie</td><td>Agent maritime / Banque</td><td>Négocier des Lettres de Garantie Bancaire Annuelles (Attijariwafa, BCP, BMCE)</td></tr>
+        <tr><td>Blocage ONSSA produits alimentaires</td><td>ONSSA (Loi 28-07)</td><td>Transfert du conteneur sous scellé ONSSA vers entrepôt agréé pour libérer l'équipement armateur</td></tr>
+        <tr><td>Week-end bloquant la sortie du BAD</td><td>Agent maritime / Port</td><td>Ne jamais laisser un conteneur arriver un vendredi sans BAD confirmé. Anticiper de 48h.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="juridique">
+  <div class="section-label">Base Légale</div>
+  <div class="section-title">Cadre Juridique Marocain</div>
+  <div class="section-subtitle">Les conditions générales des armateurs ne prévalent pas sur la loi marocaine. Connaître ces textes est votre meilleure défense en cas de litige.</div>
+  <div class="legal-cards">
+    <div class="legal-card"><div class="ref">Code de Commerce — Loi 15-95, Livre II</div><h4>Nature juridique des surestaries</h4><p>En droit marocain, les surestaries sont qualifiées d'indemnités de retard — l'armateur doit prouver l'immobilisation réelle du conteneur.</p><div class="application"><strong>Art. 389 :</strong> Prescription par 1 an à compter de la livraison. Action devant le Tribunal de Commerce de Casablanca.</div></div>
+    <div class="legal-card"><div class="ref">DOC — Dahir des Obligations et Contrats</div><h4>Force Majeure (Art. 268)</h4><p>Le débiteur n'est tenu à aucun dommage-intérêt lorsque le retard provient d'une cause étrangère non imputable : force majeure ou cas fortuit.</p><div class="application"><strong>Application :</strong> Panne nationale PortNet, grève ANP, blocage informatique terminal → suspension légale du décompte.</div></div>
+    <div class="legal-card"><div class="ref">Code Douanier ADII</div><h4>DUM Anticipée &amp; MEAD</h4><p>Autorisation légale de déposer la DUM avant l'arrivée physique. Droit de transfert en MEAD avec dépotage d'office pour restitution du conteneur vide.</p><div class="application"><strong>Pratique :</strong> DUM enregistrée dans les 24-48h avant accostage → circuit douanier connu avant mise à quai.</div></div>
+    <div class="legal-card"><div class="ref">CGI — Art. 92-I-21°</div><h4>TVA sur Surestaries</h4><p>Les surestaries sont assimilées à un supplément de prix du transport international. Exonérées de TVA avec droit à déduction.</p><div class="application"><strong>Alerte audit :</strong> Aucune TVA à 20% ne doit apparaître sur la ligne stricte Demurrage. Vérifiez chaque facture.</div></div>
+    <div class="legal-card"><div class="ref">Code Douanier — Valeur en Douane</div><h4>Intégration dans la valeur CAF</h4><p>Si les surestaries sont générées AVANT l'enregistrement de la DUM, l'ADII peut les inclure dans la base de calcul des droits de douane.</p><div class="application"><strong>Protection :</strong> Les frais POST-enregistrement DUM sont exclus de la valeur en douane.</div></div>
+    <div class="legal-card"><div class="ref">Loi 24-09 &amp; ONSSA (Loi 28-07)</div><h4>Conformité &amp; Contrôles</h4><p>Contrôles de conformité à l'origine obligatoires (SGS, Bureau Veritas, TUV). Sans certificat CoC à l'arrivée, blocage de 10 à 15 jours.</p><div class="application"><strong>Règle impérative :</strong> Certificat CoC rattaché au dossier PortNet AVANT l'arrivée du navire — sans exception.</div></div>
+  </div>
+</section>
+</div><!-- /t4 -->
+
+<!-- ══════════════ ONGLET 5 : CONTESTATION · TECH · ORGANISATION ══════════════ -->
+<div class="main-panel" id="t6">
+<section id="contestation">
+  <div class="section-label">Procédure de Recours</div>
+  <div class="section-title">Contester une Facture de Surestaries</div>
+  <div class="section-subtitle">Contester efficacement exige un dossier irréfutable basé sur des faits horodatés. Les réclamations vagues sont systématiquement rejetées par les armateurs.</div>
+  <div class="process-steps">
+    <div class="step"><div class="step-number">01</div><div class="step-content"><div class="timing">Dès le constat du blocage</div><h4>Émettre une réserve immédiate</h4><p>N'attendez pas de recevoir la facture. Envoyez immédiatement un email officiel à l'agent local de la compagnie maritime.</p><div class="highlight">« Nous émettons de strictes réserves quant aux éventuels frais de surestaries qui pourraient découler de cette situation indépendante de notre responsabilité. »</div></div></div>
+    <div class="step"><div class="step-number">02</div><div class="step-content"><div class="timing">Si urgence de récupération</div><h4>Payer sous réserve (Paid Under Protest)</h4><p>L'armateur ne libérera pas la marchandise sans paiement. Payez mais indiquez impérativement :</p><div class="highlight">"PAIEMENT SOUS RÉSERVE ET SOUS PROTESTATION — PAID UNDER PROTEST" — Préserve votre droit d'agir en justice par la suite.</div></div></div>
+    <div class="step"><div class="step-number">03</div><div class="step-content"><div class="timing">Dans les 15 à 30 jours maximum</div><h4>Soumettre le dossier formel (Dispute)</h4><p>Envoyez au service Dispute/Demurrage de l'armateur : numéro de conteneur, numéro de BL, calcul du free time contractuel, et l'ensemble des pièces justificatives. Demandez une note de crédit.</p></div></div>
+    <div class="step"><div class="step-number">04</div><div class="step-content"><div class="timing">En cas de refus de l'armateur</div><h4>Escalade juridique / Arbitrage</h4><p>USA : dépôt d'une plainte FMC (Charge Complaint). Europe / Asie / Maroc : conseiller juridique du syndicat de transitaires ou procédure d'arbitrage maritime.</p></div></div>
+  </div>
+  <div style="margin-top:2.5rem;">
+    <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:1.25rem;color:var(--ice);">✉️ Modèle de Courrier de Contestation</h3>
+    <div class="letter-template">
+      <p class="letter-subject">Objet : CONTESTATION FORMELLE – Facture Surestaries N°<span class="letter-field">[Numéro]</span> – BL N°<span class="letter-field">[Numéro]</span> – Conteneur N°<span class="letter-field">[Numéro]</span></p>
+      <p>Madame, Monsieur,</p>
+      <p>Par la présente, nous contestons formellement la facturation des surestaries appliquées au conteneur mentionné en objet pour un montant de <span class="letter-field">[Montant en USD/MAD]</span> couvrant la période du <span class="letter-field">[Date début]</span> au <span class="letter-field">[Date fin]</span>.</p>
+      <p>Le Free Time convenu est de <span class="letter-field">[Nombre]</span> jours. Conteneur déchargé le <span class="letter-field">[Date]</span>, fixant le Last Free Day au <span class="letter-field">[Date]</span>.</p>
+      <p>Les frais appliqués à partir du <span class="letter-field">[Date]</span> sont injustifiés pour le motif suivant : <span class="letter-field">[Non-disponibilité / Retard BAD / Panne terminal / Force majeure]</span>.</p>
+      <p>Pièces jointes :<br>— Pièce 1 : <span class="letter-field">[Captures d'écran TAS / Notifications port / Attestation GPS transporteur]</span><br>— Pièce 2 : <span class="letter-field">[Preuve de paiement fret et remise OBL en date du (Date)]</span></p>
+      <p>Nous vous demandons d'annuler ces frais et de transmettre une note de crédit sous <strong>8 jours ouvrés</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="tech">
+  <div class="section-label">Écosystème Digital</div>
+  <div class="section-title">Tech Stack &amp; Outils de Gestion des Risques</div>
+  <div class="section-subtitle">En 2026, la prévention des surestaries repose sur des plateformes de visibilité en temps réel et des moteurs de décision IA. Un outil de visibilité digitale est amorti dès le premier conteneur sauvé d'un palier critique.</div>
+  <div class="tech-cards">
+    <div class="tech-card"><div class="category">Calcul automatisé Free Time</div><h4>Moteurs de gestion Demurrage</h4><p>Intègrent les calendriers de chaque port mondial, jours fériés locaux et structures contractuelles. Calculent le Last Free Day dès le départ de la marchandise.</p><span class="tech-tag">Windward</span><span class="tech-tag">Gnosis Freight</span><span class="tech-tag">Project44</span></div>
+    <div class="tech-card"><div class="category">Visibilité prédictive</div><h4>Plateformes RTTVP</h4><p>En croisant les données AIS, congestions portuaires et flux historiques, l'IA anticipe les retards à quai 48h avant l'accostage.</p><span class="tech-tag">Decklar</span><span class="tech-tag">Shippeo</span><span class="tech-tag">GoComet</span></div>
+    <div class="tech-card"><div class="category">Guichet Unique Marocain</div><h4>PortNet — BAD électronique</h4><p>Centralise manifestes, DUM, titres d'importation et BAD. Surveiller le statut "Libéré" avant d'envoyer le camion — délai de désynchronisation possible.</p><span class="tech-tag">PortNet.ma</span><span class="tech-tag">ADII</span><span class="tech-tag">ANP</span></div>
+    <div class="tech-card"><div class="category">Tableau de bord Dwell Time</div><h4>Suivi quotidien du temps de séjour</h4><p>Alertes à 3 paliers : J-3 (relance auto transitaire), J-1 (escalade managériale), J+1 (calculateur coût quotidien + ordre dépotage).</p><span class="tech-tag">ERP/TMS intégré</span><span class="tech-tag">EDI/API terminaux</span></div>
+    <div class="tech-card"><div class="category">Droit &amp; Transparence</div><h4>Audit des factures de surestaries</h4><p>Toute facture globale sans détail jour par jour est systématiquement contestée. La FMC impose 13 points obligatoires — une omission invalide la facture.</p><span class="tech-tag">FMC (USA)</span><span class="tech-tag">APRAM (Maroc)</span></div>
+    <div class="tech-card"><div class="category">Stratégie Transloading</div><h4>Off-dock yards &amp; 3PL portuaires</h4><p>Stripping en 48h vers un entrepôt tiers, conteneur vide restitué dans le free time. Livraison finale sans pression maritime.</p><span class="tech-tag">3PL proximity port</span><span class="tech-tag">MEAD agréés ADII</span></div>
+  </div>
+</section>
+
+<section id="raci">
+  <div class="section-label">Gouvernance Interne</div>
+  <div class="section-title">Cellule Anti-Surestaries — Organisation &amp; KPI</div>
+  <div class="section-subtitle">Structurez les responsabilités avec la matrice RACI, mesurez la performance via ces 3 KPI, et utilisez le simulateur pour diagnostiquer instantanément votre situation.</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">Dwell Time moyen</div><div class="kpi-value">&lt; 4j</div><div class="kpi-target">Cible : rester dans la franchise ANP</div></div>
+    <div class="kpi-card"><div class="kpi-label">Taux conteneurs en surestaries</div><div class="kpi-value">&lt; 2%</div><div class="kpi-target">Si &gt; 5% → audit processus documentaire urgent</div></div>
+    <div class="kpi-card"><div class="kpi-label">Coût moyen / EVP</div><div class="kpi-value">0 $</div><div class="kpi-target">Objectif : zéro surestaries structurelles</div></div>
+  </div>
+
+  <!-- RACI LAYOUT : tableau + simulateur côte à côte -->
+  <div class="raci-layout">
+
+    <!-- TABLEAU RACI -->
+    <div>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--ice);margin-bottom:1rem;">📊 Matrice RACI de Référence</h3>
+      <div style="overflow-x:auto;border-radius:14px;border:1px solid var(--border);">
+        <table class="raci-table">
+          <thead>
+            <tr>
+              <th>Tâche Opérationnelle</th>
+              <th style="text-align:center;">Acheteur</th>
+              <th style="text-align:center;">Transitaire</th>
+              <th style="text-align:center;">Resp. Log.</th>
+              <th style="text-align:center;">Dir. Fin.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Négociation Free Time &gt; 14j</td><td class="raci-R" style="text-align:center;">R</td><td class="raci-C" style="text-align:center;">C</td><td class="raci-I" style="text-align:center;">I</td><td class="raci-I" style="text-align:center;">I</td></tr>
+            <tr><td>Dépôt DUM anticipée sur PortNet</td><td class="raci-I" style="text-align:center;">I</td><td class="raci-R" style="text-align:center;">R</td><td class="raci-A" style="text-align:center;">A</td><td class="raci-I" style="text-align:center;">I</td></tr>
+            <tr><td>Suivi alertes J-3 avant fin de franchise</td><td class="raci-I" style="text-align:center;">I</td><td class="raci-C" style="text-align:center;">C</td><td class="raci-R" style="text-align:center;">R</td><td class="raci-I" style="text-align:center;">I</td></tr>
+            <tr><td>Arbitrage d'urgence (MEAD)</td><td class="raci-C" style="text-align:center;">C</td><td class="raci-C" style="text-align:center;">C</td><td class="raci-R" style="text-align:center;">R</td><td class="raci-A" style="text-align:center;">A</td></tr>
+            <tr><td>Audit et validation facture de fret</td><td class="raci-I" style="text-align:center;">I</td><td class="raci-I" style="text-align:center;">I</td><td class="raci-R" style="text-align:center;">R</td><td class="raci-A" style="text-align:center;">A</td></tr>
+            <tr><td>Contestation formelle armateur</td><td class="raci-C" style="text-align:center;">C</td><td class="raci-C" style="text-align:center;">C</td><td class="raci-R" style="text-align:center;">R</td><td class="raci-A" style="text-align:center;">A</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:0.75rem;font-size:0.76rem;color:var(--text-muted);display:flex;gap:1.25rem;flex-wrap:wrap;">
+        <span><span class="raci-R">R</span> = Responsable</span>
+        <span><span class="raci-A">A</span> = Approbateur</span>
+        <span><span class="raci-C">C</span> = Consulté</span>
+        <span><span class="raci-I">I</span> = Informé</span>
+      </div>
+    </div>
+
+    <!-- SIMULATEUR RACI -->
+    <div class="raci-sim">
+      <h3>🎯 Simulateur RACI</h3>
+      <p class="sim-desc">Sélectionnez une situation opérationnelle pour identifier instantanément qui doit faire quoi dans votre organisation.</p>
+      <div class="sim-form">
+        <div class="sim-field">
+          <label>Situation rencontrée</label>
+          <select id="sim-situation">
+            <option value="">— Choisir une situation —</option>
+            <option value="freeTime">Négociation du contrat de fret (Free Time)</option>
+            <option value="dum">Dépôt de la déclaration douanière (DUM)</option>
+            <option value="alerte">Alerte J-3 — free time bientôt expiré</option>
+            <option value="mead">Blocage prolongé — décision MEAD / dépotage</option>
+            <option value="facture">Réception d'une facture de surestaries</option>
+            <option value="dispute">Contestation formelle auprès de l'armateur</option>
+          </select>
+        </div>
+        <div class="sim-field">
+          <label>Votre rôle dans l'organisation</label>
+          <select id="sim-role">
+            <option value="">— Votre poste —</option>
+            <option value="acheteur">Acheteur / Importateur</option>
+            <option value="transitaire">Transitaire / Agent en douane</option>
+            <option value="logistique">Responsable Logistique / Supply Chain</option>
+            <option value="finance">Direction Financière</option>
+          </select>
+        </div>
+        <button class="sim-btn" onclick="runSimulator()">Analyser ma responsabilité →</button>
+      </div>
+      <div class="sim-result" id="sim-result">
+        <div class="sim-result-title">Résultat RACI pour cette situation</div>
+        <div class="sim-action-badge" id="sim-action-label"></div>
+        <div class="sim-actors" id="sim-actors"></div>
+        <div id="sim-advice" style="margin-top:1rem;padding:1rem;background:rgba(168,218,220,0.07);border:1px solid rgba(168,218,220,0.15);border-radius:10px;font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.6;"></div>
+      </div>
+    </div>
+
+  </div><!-- /raci-layout -->
+
+  <div class="golden-rule">
+    <div class="rule-text">Dès le <em>J+1 du dépassement</em> du temps libre, le coût cumulé Surestaries + Détention + Stockage doit être calculé <em>quotidiennement</em>. Si la projection à 10 jours dépasse <em>50% de la marge nette</em>, l'ordre de dépotage ou de transfert sous douane doit être signé <em>immédiatement</em>.</div>
+  </div>
+</section>
+</div><!-- /t5 -->
+
+<footer>
+  <p>Référentiel basé sur le droit maritime marocain · ADII · ANP · PortNet · CGI Art. 92-I-21° · Code de Commerce Loi 15-95 · DOC Art. 268.<br>
+  <span style="opacity:0.5;">Outil d'aide à la décision à caractère informatif.</span></p>
+</footer>
+
+<script>
+/* ── SIMULATEUR 1 : CALCULATEUR SURESTARIES ── */
+const rates = {
+  maersk:  {dry20:[75,150,250],  dry40:[100,200,350], reefer20:[150,300,500], reefer40:[200,400,650], hazmat:[130,260,420]},
+  cma:     {dry20:[65,130,220],  dry40:[90,175,310],  reefer20:[140,280,450], reefer40:[185,370,580], hazmat:[120,240,380]},
+  msc:     {dry20:[70,140,240],  dry40:[95,185,320],  reefer20:[145,290,470], reefer40:[195,385,620], hazmat:[125,250,400]},
+  one:     {dry20:[60,120,200],  dry40:[85,165,280],  reefer20:[130,260,420], reefer40:[175,350,560], hazmat:[110,225,360]},
+  maroc:   {dry20:[50,100,180],  dry40:[80,160,300],  reefer20:[120,240,400], reefer40:[160,320,520], hazmat:[100,200,320]}
+};
+
+function calcDemurrage() {
+  const type    = document.getElementById('c_type').value;
+  const carrier = document.getElementById('c_carrier').value;
+  const ft      = parseInt(document.getElementById('c_freetime').value) || 7;
+  const delay   = parseInt(document.getElementById('c_delay').value) || 0;
+  const qty     = parseInt(document.getElementById('c_qty').value) || 1;
+  const value   = parseFloat(document.getElementById('c_value').value) || 0;
+
+  const r = rates[carrier][type];
+  const p1 = r[0], p2 = r[1], p3 = r[2];
+
+  const d1 = Math.min(delay, 5);
+  const d2 = Math.min(Math.max(delay - 5, 0), 6);
+  const d3 = Math.max(delay - 11, 0);
+
+  const total = (d1*p1 + d2*p2 + d3*p3) * qty;
+  const totalMAD = total * 10.1;
+  const pct = value > 0 ? ((totalMAD / value) * 100).toFixed(1) : '—';
+
+  const o = document.getElementById('dem-output');
+  o.classList.add('show');
+  document.getElementById('o_free').textContent = ft + ' jours (0 $)';
+  document.getElementById('o_p1').textContent = d1 + ' j × $' + p1 + ' = $' + (d1*p1*qty).toLocaleString();
+  document.getElementById('o_p2').textContent = d2 + ' j × $' + p2 + ' = $' + (d2*p2*qty).toLocaleString();
+  document.getElementById('o_p3').textContent = d3 + ' j × $' + p3 + ' = $' + (d3*p3*qty).toLocaleString();
+  document.getElementById('o_total').textContent = '$' + total.toLocaleString();
+  document.getElementById('o_total_mad').textContent = Math.round(totalMAD).toLocaleString() + ' MAD';
+  document.getElementById('o_pct').textContent = pct !== '—' ? pct + '% de la valeur marchandise' : '—';
+
+  const alert = document.getElementById('dem-alert');
+  alert.style.display = 'block';
+  if (total === 0) {
+    alert.className = 'sim-alert-box green'; alert.textContent = '✅ Aucun frais — vous êtes dans le free time.';
+  } else if (pct !== '—' && parseFloat(pct) > 50) {
+    alert.className = 'sim-alert-box crisis'; alert.textContent = '🚨 SEUIL CRITIQUE : les surestaries représentent ' + pct + '% de la valeur marchandise. Déclenchez immédiatement le dépotage d\'urgence ou le transfert en MEAD.';
+  } else if (pct !== '—' && parseFloat(pct) > 20) {
+    alert.className = 'sim-alert-box red'; alert.textContent = '⚠️ ALERTE : ' + pct + '% de la valeur marchandise englouti. Analysez le transfert MEAD ou le dépotage dans les 24h.';
+  } else if (d3 > 0) {
+    alert.className = 'sim-alert-box red'; alert.textContent = '🔴 Palier 3 atteint — hémorragie financière. Chaque jour supplémentaire coûte $' + (p3*qty).toLocaleString() + '.';
+  } else if (d2 > 0) {
+    alert.className = 'sim-alert-box amber'; alert.textContent = '🟡 Palier 2 actif. Agissez maintenant pour éviter le basculement en Palier 3 à J+' + (ft+11) + '.';
+  } else {
+    alert.className = 'sim-alert-box amber'; alert.textContent = '🟠 Palier 1 actif. Priorisez la sortie du conteneur avant J+' + (ft+5) + ' pour rester dans ce palier.';
+  }
+}
+
+/* ── SIMULATEUR 2 : DWELL TIME ── */
+const portThresholds = {
+  casa:       {sol:5,  name:'Casablanca — Marsa Maroc'},
+  tanger:     {sol:6,  name:'Tanger Med (TMPA)'},
+  agadir:     {sol:5,  name:'Agadir ANP'},
+  rotterdam:  {sol:7,  name:'Rotterdam'},
+  hamburg:    {sol:7,  name:'Hambourg'},
+  losangeles: {sol:5,  name:'Los Angeles / Long Beach'}
+};
+
+function updateDwell() {
+  const days = parseInt(document.getElementById('dw_slider').value);
+  const ft   = parseInt(document.getElementById('dw_free').value) || 7;
+  const port = document.getElementById('dw_port').value;
+  const sol  = portThresholds[port].sol;
+  document.getElementById('dw_days_label').textContent = days;
+
+  const pct = Math.min((days / 30) * 100, 100);
+  const bar = document.getElementById('dwell-bar');
+  bar.style.width = pct + '%';
+
+  const status = document.getElementById('dwell-status');
+  let color = '#6ee7b7';
+  if (days <= sol && days <= ft) {
+    bar.style.background = '#6ee7b7';
+    status.className = 'sim-alert-box green';
+    status.textContent = '🟢 Jour ' + days + ' — Dans le free time armateur ET franchise sol. Aucun frais. (' + (ft - days) + ' jours restants avant surestaries.)';
+  } else if (days > sol && days <= ft) {
+    bar.style.background = '#fde68a';
+    status.className = 'sim-alert-box amber';
+    status.textContent = '🟡 Jour ' + days + ' — Franchise sol ' + portThresholds[port].name + ' dépassée (' + sol + 'j). Frais de stationnement terminal en cours. Surestaries armateur dans ' + (ft - days) + ' jours.';
+  } else if (days <= ft + 5) {
+    bar.style.background = '#fcd34d';
+    status.className = 'sim-alert-box amber';
+    status.textContent = '🟠 Jour ' + days + ' — Surestaries armateur en cours (Palier 1). Agissez dans les 24-48h pour éviter le Palier 2.';
+  } else if (days <= ft + 11) {
+    bar.style.background = '#f97316';
+    status.className = 'sim-alert-box red';
+    status.textContent = '🔴 Jour ' + days + ' — Palier 2 actif. Les frais doublent. Ordonnez immédiatement le transfert MEAD ou le dépotage.';
+  } else {
+    bar.style.background = '#ef4444';
+    status.className = 'sim-alert-box crisis';
+    status.textContent = '🚨 CRISE — Jour ' + days + ' — Palier 3 (tarif maximal). Chaque jour supplémentaire représente une perte critique. MEAD ou dépotage : ordre immédiat.';
+  }
+}
+
+/* ── BENCHMARK FILTER ── */
+function filterBenchmark() {
+  const f = document.getElementById('bm_filter').value;
+  document.querySelectorAll('#bm-table tbody tr').forEach(row => {
+    row.style.display = (f === 'all' || row.dataset.type === f) ? '' : 'none';
+  });
+}
+
+/* ── SIMULATEUR 4 : BREAK-EVEN MEAD ── */
+function calcBreakEven() {
+  const dem      = parseFloat(document.getElementById('be_dem').value) || 150;
+  const meadDay  = parseFloat(document.getElementById('be_mead').value) || 80;
+  const transfer = parseFloat(document.getElementById('be_transfer').value) || 4500;
+  const rate     = parseFloat(document.getElementById('be_rate').value) || 10.1;
+
+  const demMAD   = dem * rate;
+  const saving   = demMAD - meadDay;
+  const breakDay = saving > 0 ? Math.ceil(transfer / saving) : null;
+
+  const o = document.getElementById('be-output');
+  o.classList.add('show');
+  document.getElementById('be_cost_day').textContent = Math.round(demMAD).toLocaleString() + ' MAD/j';
+  document.getElementById('be_mead_day').textContent = meadDay.toLocaleString() + ' MAD/j';
+  document.getElementById('be_saving').textContent   = saving > 0 ? Math.round(saving).toLocaleString() + ' MAD/j' : 'Négatif — MEAD plus cher';
+  document.getElementById('be_day').textContent      = breakDay !== null ? 'J+' + breakDay : '∞';
+
+  const alert = document.getElementById('be-alert');
+  alert.style.display = 'block';
+  if (breakDay === null) {
+    alert.className = 'sim-alert-box red';
+    alert.textContent = '⚠️ Dans ce scénario, le MEAD est plus coûteux que les surestaries. Réévaluez les conditions ou cherchez un MEAD moins cher.';
+  } else if (breakDay <= 2) {
+    alert.className = 'sim-alert-box crisis';
+    alert.textContent = '🚨 Break-even J+' + breakDay + ' — Le transfert MEAD devient rentable dès le ' + breakDay + 'ème jour de blocage. Décision à prendre immédiatement.';
+  } else if (breakDay <= 5) {
+    alert.className = 'sim-alert-box red';
+    alert.textContent = '🔴 Break-even J+' + breakDay + ' — Si le blocage dure plus de ' + breakDay + ' jours, le MEAD est la meilleure décision financière.';
+  } else {
+    alert.className = 'sim-alert-box amber';
+    alert.textContent = '🟡 Break-even J+' + breakDay + ' — Vous disposez de ' + breakDay + ' jours pour résoudre le blocage avant que le MEAD devienne plus rentable.';
+  }
+}
+
+/* ── ONGLETS PRINCIPAUX ── */
+function showMain(id, btn) {
+  document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  // Scroll to just below the sticky header
+  const headerH = document.querySelector('.sticky-header').offsetHeight;
+  window.scrollTo({top: headerH, behavior: 'smooth'});
+}
+
+/* ── ONGLETS INTERNES (mécanisme) ── */
+function showInner(id, btn, group) {
+  document.querySelectorAll('#' + group + '-' + id).forEach(el => el.classList.add('active'));
+  const parent = btn.closest('section');
+  parent.querySelectorAll('.inner-tab-content').forEach(c => c.classList.remove('active'));
+  parent.querySelectorAll('.inner-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(group + '-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ── CHECKLIST ── */
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  const items = document.querySelectorAll('.check-item');
+  const checked = document.querySelectorAll('.check-item.checked').length;
+  const pct = Math.round((checked / items.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = checked + ' / ' + items.length + ' points validés — ' + pct + '%';
+}
+
+/* ── SIMULATEUR RACI ── */
+const raciData = {
+  freeTime: {
+    label: 'Négociation du Free Time',
+    actors: [
+      {name:'Acheteur / Importateur', role:'R', desc:'Porte la responsabilité d\'exiger le free time >14j lors du booking'},
+      {name:'Transitaire', role:'C', desc:'Consulté sur les pratiques du marché et les niveaux habituels'},
+      {name:'Responsable Logistique', role:'I', desc:'Informé des conditions obtenues pour la planification opérationnelle'},
+      {name:'Direction Financière', role:'I', desc:'Informée de l\'impact sur le budget logistique'}
+    ],
+    advice: '💡 Action prioritaire : lors de la prochaine demande de fret, exigez contractuellement un Combined D&D (surestaries + détention fusionnées) de 14 à 21 jours. C\'est le levier le plus puissant.'
+  },
+  dum: {
+    label: 'Dépôt DUM anticipée sur PortNet',
+    actors: [
+      {name:'Transitaire', role:'R', desc:'Responsable du dépôt et de la validation de la DUM dans les 24-48h'},
+      {name:'Responsable Logistique', role:'A', desc:'Approbateur — vérifie que la DUM a bien été enregistrée avant l\'accostage'},
+      {name:'Acheteur / Importateur', role:'I', desc:'Informé du circuit douanier obtenu (Vert / Orange / Rouge)'},
+      {name:'Direction Financière', role:'I', desc:'Informée si un circuit rouge implique des frais supplémentaires'}
+    ],
+    advice: '💡 Règle d\'or : la DUM doit être enregistrée dès que le manifeste est disponible sur PortNet (J-2 avant accostage). Un circuit Vert signifie sortie possible le jour même du déchargement.'
+  },
+  alerte: {
+    label: 'Alerte J-3 — Free Time bientôt expiré',
+    actors: [
+      {name:'Responsable Logistique', role:'R', desc:'Déclenche et gère la cellule d\'alerte, coordonne tous les intervenants'},
+      {name:'Transitaire', role:'C', desc:'Consulté sur le statut documentaire et douanier en cours'},
+      {name:'Acheteur / Importateur', role:'I', desc:'Informé — doit lever immédiatement tout blocage de son côté (paiement fournisseur)'},
+      {name:'Direction Financière', role:'I', desc:'Informée du risque de pénalités imminentes'}
+    ],
+    advice: '🚨 Protocole d\'urgence J-3 : relance immédiate du transitaire par téléphone (pas seulement email), vérification du slot transporteur, confirmation BAD disponible sur PortNet. Si blocage identifié → étude MEAD dans les 24h.'
+  },
+  mead: {
+    label: 'Décision MEAD / Dépotage d\'urgence',
+    actors: [
+      {name:'Responsable Logistique', role:'R', desc:'Initie et coordonne la demande de transfert MEAD ou de dépotage'},
+      {name:'Direction Financière', role:'A', desc:'Approbateur final — signe l\'ordre après analyse coût/bénéfice'},
+      {name:'Acheteur / Importateur', role:'C', desc:'Consulté sur la valeur marchande de la marchandise et les délais acceptables'},
+      {name:'Transitaire', role:'C', desc:'Consulté sur la faisabilité technique et les délais de transfert ADII'}
+    ],
+    advice: '📌 Règle décisionnelle : si le coût projeté des surestaries à J+10 dépasse 50% de la marge nette du produit, l\'ordre de dépotage ou de transfert en MEAD doit être signé immédiatement. Chaque heure de délai aggrave la perte.'
+  },
+  facture: {
+    label: 'Réception d\'une facture de surestaries',
+    actors: [
+      {name:'Responsable Logistique', role:'R', desc:'Analyse la facture, vérifie les horodatages, collecte les preuves contradictoires'},
+      {name:'Direction Financière', role:'A', desc:'Approbateur — décide de payer, de contester, ou de payer sous réserve'},
+      {name:'Transitaire', role:'I', desc:'Informé — fournit les justificatifs documentaires en sa possession'},
+      {name:'Acheteur / Importateur', role:'I', desc:'Informé de l\'impact sur le coût de revient de la commande'}
+    ],
+    advice: '🔍 Audit systématique à effectuer avant tout paiement : vérifier que les jours de free time contractuels sont correctement déduits, que les tarifs correspondent au contrat, et qu\'aucun jour de non-disponibilité du terminal n\'est facturé.'
+  },
+  dispute: {
+    label: 'Contestation formelle auprès de l\'armateur',
+    actors: [
+      {name:'Responsable Logistique', role:'R', desc:'Constitue le dossier de preuves et rédige le courrier de contestation formelle'},
+      {name:'Direction Financière', role:'A', desc:'Approbateur — valide la stratégie (annulation totale / partielle / arbitrage)'},
+      {name:'Acheteur / Importateur', role:'C', desc:'Consulté pour fournir preuves de paiement fournisseur et correspondances commerciales'},
+      {name:'Transitaire', role:'C', desc:'Consulté pour fournir les preuves de disponibilité du BAD et les tentatives de retrait'}
+    ],
+    advice: '⚖️ Motifs reconnus : non-disponibilité du conteneur au terminal, panne TOS du port, grève des dockers, retard d\'émission BAD de l\'armateur. Rassemblez les captures d\'écran horodatées AVANT d\'envoyer le dossier.'
+  }
+};
+
+const roleLabels = {
+  acheteur: 'Acheteur / Importateur',
+  transitaire: 'Transitaire',
+  logistique: 'Responsable Logistique',
+  finance: 'Direction Financière'
+};
+
+const roleMatchMap = {
+  acheteur: 'Acheteur / Importateur',
+  transitaire: 'Transitaire',
+  logistique: 'Responsable Logistique',
+  finance: 'Direction Financière'
+};
+
+const roleDescMap = {R:'Responsable de l\'exécution',A:'Approbateur — décision finale',C:'Consulté',I:'Informé seulement'};
+const roleColorMap = {R:'role-R',A:'role-A',C:'role-C',I:'role-I'};
+
+function runSimulator() {
+  const sit = document.getElementById('sim-situation').value;
+  const myRole = document.getElementById('sim-role').value;
+  if (!sit || !myRole) {
+    alert('Veuillez sélectionner une situation et votre rôle.');
+    return;
+  }
+  const data = raciData[sit];
+  const myActorName = roleMatchMap[myRole];
+  document.getElementById('sim-action-label').textContent = '📋 ' + data.label;
+
+  let html = '';
+  data.actors.forEach(a => {
+    const isMe = a.name === myActorName;
+    const highlight = isMe ? 'border-color:rgba(168,218,220,0.4);background:rgba(168,218,220,0.07);' : '';
+    html += `<div class="sim-actor-row" style="${highlight}">
+      <span class="sim-actor-role ${roleColorMap[a.role]}">${a.role}</span>
+      <div style="flex:1">
+        <div class="sim-actor-name" style="${isMe?'color:var(--ice);font-weight:600;':''}">${a.name}${isMe?' 👤 (vous)':''}</div>
+        <div class="sim-actor-desc">${roleDescMap[a.role]} — ${a.desc}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('sim-actors').innerHTML = html;
+  document.getElementById('sim-advice').textContent = data.advice;
+  const result = document.getElementById('sim-result');
+  result.classList.add('visible');
+}
+</script>
+</body>
+</html>

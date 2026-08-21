@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIC — Taxes Intérieures de Consommation | Transit-IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --or:       #B8862A;
+  --or-light: #D4A84B;
+  --or-pale:  #F5EDD8;
+  --vert:     #1A5C2A;
+  --vert-mid: #2D7A42;
+  --vert-pale:#E8F3EB;
+  --parch:    #F4F2EB;
+  --ink:      #1C1C1C;
+  --ink-soft: #3A3A3A;
+  --gris:     #6B7280;
+  --gris-pale:#F0EFE9;
+  --rouge:    #C0392B;
+  --border:   #DDD8CC;
+  --white:    #FFFFFF;
+  --shadow:   0 2px 12px rgba(0,0,0,.08);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.12);
+  --r:        6px;
+  --r-lg:     10px;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--parch);
+  color: var(--ink);
+  font-size: 13.5px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+.page-header {
+  background: var(--vert);
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,.2);
+}
+.header-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--or-light);
+  letter-spacing: .04em;
+}
+.header-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: .02em;
+}
+.header-badge {
+  background: var(--or);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: .06em;
+}
+
+/* ── Hero strip ─────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--vert) 0%, #2D7A42 60%, var(--or) 100%);
+  padding: 32px 32px 28px;
+  color: #fff;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  margin-bottom: 4px;
+}
+.hero-tagline {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--or-light);
+  letter-spacing: .08em;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.hero-sub {
+  font-size: 12.5px;
+  opacity: .82;
+  max-width: 680px;
+  line-height: 1.55;
+}
+.hero-refs {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ref-chip {
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  font-size: 10.5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* ── Tabs ───────────────────────────────────────────────────────── */
+.tabs-nav {
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  padding: 0 24px;
+  position: sticky;
+  top: 54px;
+  z-index: 90;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.tab-btn {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: .04em;
+  padding: 14px 22px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all .2s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Onglet 1 — Quotités : vert */
+.tab-btn:nth-child(1) { color: var(--vert-mid); }
+.tab-btn:nth-child(1):hover { color: var(--vert); background: var(--vert-pale); }
+.tab-btn:nth-child(1).active {
+  color: var(--white);
+  background: var(--vert);
+  border-bottom-color: var(--vert-mid);
+}
+/* Onglet 2 — Juridique : or */
+.tab-btn:nth-child(2) { color: var(--or); }
+.tab-btn:nth-child(2):hover { color: #8A6000; background: var(--or-pale); }
+.tab-btn:nth-child(2).active {
+  color: var(--white);
+  background: var(--or);
+  border-bottom-color: #8A6000;
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── Layout container ───────────────────────────────────────────── */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px 24px; }
+
+/* ── Stats bar ──────────────────────────────────────────────────── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px 16px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--vert);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 10.5px;
+  color: var(--gris);
+  margin-top: 4px;
+  font-weight: 500;
+  letter-spacing: .03em;
+}
+
+/* ── Filter bar ─────────────────────────────────────────────────── */
+.filter-bar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+.filter-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--vert);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+.filter-btn {
+  font-size: 11px;
+  font-weight: 500;
+  font-family: 'Space Grotesk', sans-serif;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--parch);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all .18s;
+}
+.filter-btn:hover { border-color: var(--vert); color: var(--vert); }
+.filter-btn.active { background: var(--vert); color: #fff; border-color: var(--vert); }
+.filter-search {
+  margin-left: auto;
+  padding: 6px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--parch);
+  outline: none;
+  width: 200px;
+  transition: border-color .2s;
+}
+.filter-search:focus { border-color: var(--vert); }
+
+/* ── TIC Table block ────────────────────────────────────────────── */
+.tic-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow .2s;
+}
+.tic-block:hover { box-shadow: var(--shadow-lg); }
+
+.block-header {
+  background: var(--vert);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.block-letter {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--or-light);
+  width: 28px;
+  flex-shrink: 0;
+}
+.block-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #fff;
+  letter-spacing: .02em;
+}
+.block-count {
+  margin-left: auto;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  font-size: 10.5px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.block-chevron {
+  color: rgba(255,255,255,.6);
+  font-size: 12px;
+  transition: transform .2s;
+}
+.block-chevron.open { transform: rotate(180deg); }
+
+.block-body { overflow: hidden; }
+
+/* Section sub-header */
+.tbl-section {
+  background: var(--or-pale);
+  padding: 8px 18px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--or);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--border);
+}
+
+/* Data rows */
+.tic-table { width: 100%; border-collapse: collapse; }
+.tic-table th {
+  background: var(--gris-pale);
+  padding: 7px 14px;
+  font-family: 'Syne', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.tic-table th:last-child, .tic-table td:last-child { text-align: right; }
+.tic-table th:nth-child(2) { text-align: center; }
+.tic-table td {
+  padding: 7px 14px;
+  font-size: 12.5px;
+  border-bottom: 1px solid #EEEBE3;
+  vertical-align: middle;
+}
+.tic-table tr:last-child td { border-bottom: none; }
+.tic-table tr:nth-child(even) td { background: var(--parch); }
+.tic-table tr:hover td { background: var(--vert-pale); }
+
+.td-unite { color: var(--gris); font-size: 11.5px; text-align: center; }
+.td-quotite {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--vert);
+}
+.td-quotite.zero { color: var(--gris); font-weight: 500; font-size: 12px; }
+.td-quotite.high { color: var(--rouge); }
+.td-quotite.exo {
+  color: var(--or);
+  font-size: 11px;
+  font-weight: 600;
+  font-style: italic;
+}
+.td-abr {
+  color: var(--gris);
+  font-style: italic;
+  font-size: 11.5px;
+}
+
+/* Mixed rate table (G - Tabacs) */
+.tic-table td.td-multi {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+
+/* Seuil badge */
+.seuil-badge {
+  display: inline-block;
+  background: #FFF3CD;
+  border: 1px solid #E6C96A;
+  color: #8A6914;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+/* ══ TAB 2 — JURIDIQUE ══════════════════════════════════════════ */
+.juridique-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Sidebar */
+.juri-sidebar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: sticky;
+  top: 105px;
+  box-shadow: var(--shadow);
+}
+.juri-sidebar-head {
+  background: var(--vert);
+  padding: 12px 14px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  color: #fff;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.juri-nav-item {
+  display: block;
+  padding: 9px 14px;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  border-bottom: 1px solid #F0EDE6;
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+}
+.juri-nav-item:hover { background: var(--vert-pale); color: var(--vert); }
+.juri-nav-item.active { background: var(--vert-pale); color: var(--vert); font-weight: 600; border-left: 3px solid var(--vert); }
+.juri-nav-grp {
+  background: var(--or-pale);
+  padding: 6px 14px;
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--or);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  border-bottom: 1px solid #F0EDE6;
+}
+
+/* Content area */
+.juri-content { }
+.juri-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.juri-section-head {
+  background: var(--vert);
+  padding: 13px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.juri-section-head .icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,.15);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.juri-section-head h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .02em;
+}
+.juri-section-head .ref {
+  margin-left: auto;
+  font-size: 10.5px;
+  color: rgba(255,255,255,.65);
+  font-weight: 500;
+}
+.juri-section-body { padding: 20px; }
+
+/* Accordion items */
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.acc-head {
+  padding: 10px 14px;
+  background: var(--gris-pale);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  transition: background .15s;
+}
+.acc-head:hover { background: var(--vert-pale); }
+.acc-art {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--or);
+  background: var(--or-pale);
+  padding: 2px 7px;
+  border-radius: 4px;
+  min-width: 48px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.acc-title {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  flex: 1;
+}
+.acc-chev { color: var(--gris); font-size: 10px; transition: transform .2s; }
+.acc-chev.open { transform: rotate(180deg); }
+.acc-body {
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  background: #FAFAF7;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+.acc-body.open { display: block; }
+.acc-body ul { padding-left: 18px; margin: 6px 0; }
+.acc-body li { margin-bottom: 4px; }
+.acc-body strong { color: var(--ink); }
+.acc-body .delai {
+  display: inline-block;
+  background: #DBEAFE;
+  border: 1px solid #93C5FD;
+  color: #1D4ED8;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+.acc-body .obligatoire {
+  display: inline-block;
+  background: #FEE2E2;
+  border: 1px solid #FECACA;
+  color: var(--rouge);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+.acc-body .exoneration {
+  display: inline-block;
+  background: var(--vert-pale);
+  border: 1px solid #86EFAC;
+  color: var(--vert);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+
+/* Info boxes */
+.info-box {
+  border-radius: var(--r);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.info-box.gold { background: var(--or-pale); border-left: 3px solid var(--or); color: #6B4E1A; }
+.info-box.vert { background: var(--vert-pale); border-left: 3px solid var(--vert); color: #174A24; }
+.info-box.bleu { background: #EFF6FF; border-left: 3px solid #3B82F6; color: #1E3A5F; }
+.info-box.rouge { background: #FEF2F2; border-left: 3px solid var(--rouge); color: #7F1D1D; }
+.info-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+/* Source tag */
+.source-tag {
+  display: inline-block;
+  background: var(--parch);
+  border: 1px solid var(--border);
+  color: var(--gris);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .juridique-layout { grid-template-columns: 1fr; }
+  .juri-sidebar { position: static; }
+  .container { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────────── -->
+<header class="page-header">
+  <span class="header-brand">Transit-IA</span>
+  <span class="header-title">Module Fiscal — Impôts Indirects</span>
+  <span class="header-badge">TIC 2026</span>
+</header>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<div class="hero">
+  <h1>Taxes Intérieures de Consommation (TIC)</h1>
+  <p class="hero-tagline">Quotités &amp; procédures</p>
+  <p class="hero-sub">Référentiel complet des quotités applicables aux marchandises et ouvrages soumis à taxes intérieures de consommation, perçues par l'Administration des Douanes et Impôts Indirects (ADII). Tableaux A, C, F, G, H, I, J, K et L.</p>
+  <div class="hero-refs">
+    <span class="ref-chip">Dahir portant loi n° 1-77-340 du 9 oct. 1977</span>
+    <span class="ref-chip">Arrêté MF n° 1309-77 du 9 oct. 1977</span>
+    <span class="ref-chip">Code des Douanes et II — Édition 2026</span>
+    <span class="ref-chip">Art. 9 — Tableaux des quotités</span>
+  </div>
+</div>
+
+<!-- ── TABS NAV ───────────────────────────────────────────────── -->
+<nav class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('quotites', this)">📊 Quotités TIC</button>
+  <button class="tab-btn" onclick="switchTab('juridique', this)">⚖️ Cadre Juridique &amp; Procédures</button>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- TAB 1 — QUOTITÉS ─────────────────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="tab-quotites" class="tab-content active">
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-num">9</div><div class="stat-label">Tableaux actifs</div></div>
+    <div class="stat-card"><div class="stat-num">14</div><div class="stat-label">Catégories assujetties</div></div>
+    <div class="stat-card"><div class="stat-num">25 500</div><div class="stat-label">DH/hl max (spiritueux)</div></div>
+    <div class="stat-card"><div class="stat-num">56,5%</div><div class="stat-label">Ad valorem max (cigarettes)</div></div>
+    <div class="stat-card"><div class="stat-num">376,40</div><div class="stat-label">DH/hl (supercarburant)</div></div>
+    <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Tableaux abrogés (B, E)</div></div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-bar">
+    <span class="filter-label">Filtrer :</span>
+    <button class="filter-btn active" onclick="filterBlock('all', this)">Tous</button>
+    <button class="filter-btn" onclick="filterBlock('A', this)">Boissons / Alcools</button>
+    <button class="filter-btn" onclick="filterBlock('C', this)">Énergie</button>
+    <button class="filter-btn" onclick="filterBlock('F', this)">Métaux précieux</button>
+    <button class="filter-btn" onclick="filterBlock('G', this)">Tabacs</button>
+    <button class="filter-btn" onclick="filterBlock('H', this)">E-Cigarettes</button>
+    <button class="filter-btn" onclick="filterBlock('IJK', this)">Industrie / Électro</button>
+    <button class="filter-btn" onclick="filterBlock('L', this)">Sucre</button>
+    <input class="filter-search" type="text" placeholder="🔍  Rechercher un produit…" oninput="searchRows(this.value)">
+  </div>
+
+  <!-- ── TABLEAU A ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="A">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">A</span>
+      <span class="block-title">Boissons, alcools et produits à base d'alcool</span>
+      <span class="block-count">27 lignes</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="tbl-section">I — Eaux, limonades, boissons sans alcool · Unité : Hectolitre volume</div>
+      <table class="tic-table">
+        <thead><tr><th>Désignation</th><th>Unité</th><th>Quotité (DH)</th></tr></thead>
+        <tbody>
+          <tr><td>Eaux aromatisées / limonades — sucre ajouté ≤ 5 g/100ml</td><td class="td-unite">hl</td><td class="td-quotite">30,00</td></tr>
+          <tr><td>Eaux aromatisées / limonades — sucre ajouté > 5 et &lt; 10 g/100ml</td><td class="td-unite">hl</td><td class="td-quotite">40,00</td></tr>
+          <tr><td>Eaux aromatisées / limonades — sucre ajouté ≥ 10 g/100ml</td><td class="td-unite">hl</td><td class="td-quotite">45,00</td></tr>
+          <tr><td>Eaux aromatisées — sans sucre (autres)</td><td class="td-unite">hl</td><td class="td-quotite">20,00</td></tr>
+          <tr><td>Eaux gazeuses / minérales / de table — non aromatisées</td><td class="td-unite">hl</td><td class="td-quotite">8,00</td></tr>
+          <tr><td>Boisson aux extraits de malt (non fermentée)</td><td class="td-unite">hl</td><td class="td-quotite">124,50</td></tr>
+          <tr><td>Boissons énergisantes (caféine > 14,5 et &lt; 32 mg/100ml)</td><td class="td-unite">hl</td><td class="td-quotite high">600,00</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">II — Bières · Hectolitre volume</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Bières sans alcool</td><td class="td-unite">hl</td><td class="td-quotite high">600,00</td></tr>
+          <tr><td>Autres bières</td><td class="td-unite">hl</td><td class="td-quotite high">1 550,00</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">III — Vins · Hectolitre volume</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Vins (toutes catégories)</td><td class="td-unite">hl</td><td class="td-quotite high">1 150,00</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">IV — Alcool éthylique · Hectolitre d'alcool pur (dixièmes de degré taxables)</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Destiné aux médicaments, parfumerie, antiseptiques, arômes naturels (a-1°)</td><td class="td-unite">hl a.p.</td><td class="td-quotite">200,00</td></tr>
+          <tr><td>Contenu dans tout produit importé autre (a-2°)</td><td class="td-unite">hl a.p.</td><td class="td-quotite">200,00</td></tr>
+          <tr><td>Dénaturé — fabrication industrielle de vinaigres (b-1)</td><td class="td-unite">hl a.p.</td><td class="td-quotite exo">Exonéré</td></tr>
+          <tr><td>Dénaturé — fabrication industrielle (autres produits) (b-2)</td><td class="td-unite">hl a.p.</td><td class="td-quotite exo">Exonéré</td></tr>
+          <tr><td>Dénaturé — usages domestiques (b-3)</td><td class="td-unite">hl a.p.</td><td class="td-quotite exo">Exonéré</td></tr>
+          <tr><td>Alcool à l'état libre (c)</td><td class="td-unite">hl a.p.</td><td class="td-quotite high">7 000,00</td></tr>
+          <tr><td>Destiné aux eaux-de-vie, liqueurs, apéritifs, spiritueux, mistelles… (d)</td><td class="td-unite">hl a.p.</td><td class="td-quotite high">25 500,00</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Tableau B — Abrogé</div>
+      <div style="padding:8px 18px;font-size:11.5px;color:var(--gris);font-style:italic">Tableau B supprimé par modification législative ultérieure.</div>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU C ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="C">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">C</span>
+      <span class="block-title">Produits énergétiques et bitumes</span>
+      <span class="block-count">44 lignes</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="tbl-section">Huiles brutes · 100 kg nets</div>
+      <table class="tic-table">
+        <thead><tr><th>Désignation</th><th>Unité</th><th>Quotité (DH)</th></tr></thead>
+        <tbody>
+          <tr><td>Huiles brutes de pétrole — à l'entrée des raffineries</td><td class="td-unite">100 kg</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Huiles brutes — autres</td><td class="td-unite">100 kg</td><td class="td-quotite zero">0,00</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Huiles légères · Hectolitre</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Essences spéciales — White spirit</td><td class="td-unite">hl</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Essences spéciales — autres</td><td class="td-unite">hl</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Essences d'aviation</td><td class="td-unite">hl</td><td class="td-quotite">33,50</td></tr>
+          <tr><td>Supercarburants, même sans plomb</td><td class="td-unite">hl</td><td class="td-quotite high">376,40</td></tr>
+          <tr><td>Autres essences non dénommées</td><td class="td-unite">hl</td><td class="td-quotite high">357,20</td></tr>
+          <tr><td>Supercarburant 27-07 NGP</td><td class="td-unite">100 kg</td><td class="td-quotite high">341,40</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Huiles moyennes · Hectolitre</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Pétrole lampant (Kérosène)</td><td class="td-unite">hl</td><td class="td-quotite">44,00</td></tr>
+          <tr><td>Carburéacteur</td><td class="td-unite">hl</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Huiles moyennes non dénommées</td><td class="td-unite">hl</td><td class="td-quotite">59,81</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Huiles lourdes · Hectolitre / 100 kg</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Gasoil</td><td class="td-unite">hl</td><td class="td-quotite high">242,20</td></tr>
+          <tr><td>Fuel oil lourd FO n°2 — fabrication paraffines, bitumes, lubrifiants</td><td class="td-unite">100 kg</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Fuel oil léger FO n°7</td><td class="td-unite">100 kg</td><td class="td-quotite">101,78</td></tr>
+          <tr><td>Fuel oil lourd FO n°2 — autres</td><td class="td-unite">100 kg</td><td class="td-quotite">24,24</td></tr>
+          <tr><td>Fuel oil récupéré</td><td class="td-unite">100 kg</td><td class="td-quotite">24,24</td></tr>
+          <tr><td>Fuel oils — autres</td><td class="td-unite">100 kg</td><td class="td-quotite">81,58</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Huiles lubrifiantes · 100 kg</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Huiles lubrifiantes — à mélanger (huiles de base)</td><td class="td-unite">100 kg</td><td class="td-quotite">234,00</td></tr>
+          <tr><td>Huiles lubrifiantes Spindle</td><td class="td-unite">100 kg</td><td class="td-quotite">234,00</td></tr>
+          <tr><td>Combustible haute viscosité (résidu sous vide)</td><td class="td-unite">100 kg</td><td class="td-quotite">35,00</td></tr>
+          <tr><td>Autres huiles lubrifiantes</td><td class="td-unite">100 kg</td><td class="td-quotite">228,00</td></tr>
+          <tr><td>Huiles de graissage usagées — avitaillement navires</td><td class="td-unite">100 kg</td><td class="td-quotite zero">1,66</td></tr>
+          <tr><td>Préparations lubrifiantes &lt; 70% huiles pétrole</td><td class="td-unite">100 kg</td><td class="td-quotite">234,00</td></tr>
+          <tr><td>Extraits traitement huiles de graissage (solvants sélectifs)</td><td class="td-unite">100 kg</td><td class="td-quotite">16,60</td></tr>
+          <tr><td>Alkylidène (tripropylène, tétrapropylène…)</td><td class="td-unite">100 kg</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Préparations non dénommées > 70% huiles pétrole (élément de base)</td><td class="td-unite">100 kg</td><td class="td-quotite">228,00</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Bitumes · 100 kg</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Bitumes, asphaltes et mélanges bitumineux</td><td class="td-unite">100 kg</td><td class="td-quotite">51,00</td></tr>
+          <tr><td>Carburants par mélange essence / combustibles liquides</td><td class="td-unite">—</td><td class="td-quotite exo">Voir Art. 42-1</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Combustibles solides · 100 kg nets</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Houilles, briquettes et combustibles solides similaires (27-01 NGP)</td><td class="td-unite">100 kg</td><td class="td-quotite">12,48</td></tr>
+          <tr><td>Lignites agglomérés, hors jais (27-02 NGP)</td><td class="td-unite">100 kg</td><td class="td-quotite">6,48</td></tr>
+          <tr><td>Tourbe (hors litière) (Ex 27-03 NGP)</td><td class="td-unite">100 kg</td><td class="td-quotite">6,48</td></tr>
+          <tr><td>Cokes et semi-cokes houille/lignite/tourbe (Ex 27-04 NGP)</td><td class="td-unite">100 kg</td><td class="td-quotite">6,48</td></tr>
+          <tr><td>Coke de pétrole — organismes service public électricité (Ex 27-13 NGP)</td><td class="td-unite">100 kg</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Coke de pétrole — autres (Ex 27-13 NGP)</td><td class="td-unite">100 kg</td><td class="td-quotite">8,35</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Gaz de pétrole et hydrocarbures gazeux</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>GPL — gaz liquéfiés</td><td class="td-unite">100 kg</td><td class="td-quotite">4,60</td></tr>
+          <tr><td>Gaz naturel (état liquéfié)</td><td class="td-unite">100 kg</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Gaz naturel (état gazeux)</td><td class="td-unite">1 000 m³</td><td class="td-quotite zero">0,00</td></tr>
+          <tr><td>Autres gaz (état gazeux)</td><td class="td-unite">1 000 m³</td><td class="td-quotite">2,00</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Tableaux D et E — Abrogés</div>
+      <div style="padding:8px 18px;font-size:11.5px;color:var(--gris);font-style:italic">Tableaux D et E supprimés par modification législative ultérieure.</div>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU F ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="F">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">F</span>
+      <span class="block-title">Droits d'essai — Ouvrages de platine, d'or ou d'argent</span>
+      <span class="block-count">3 lignes</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="tbl-section">Essais effectués par le service de la garantie · Hectogramme</div>
+      <table class="tic-table">
+        <thead><tr><th>Désignation</th><th>Unité</th><th>Quotité (DH)</th></tr></thead>
+        <tbody>
+          <tr><td>Ouvrage en platine</td><td class="td-unite">Hectogramme</td><td class="td-quotite high">600,00</td></tr>
+          <tr><td>Ouvrage en or</td><td class="td-unite">Hectogramme</td><td class="td-quotite high">600,00</td></tr>
+          <tr><td>Ouvrage en argent</td><td class="td-unite">Hectogramme</td><td class="td-quotite">25,00</td></tr>
+          <tr><td>Ouvrages de poids ≤ 1 gramme</td><td class="td-unite">—</td><td class="td-quotite exo">Exonéré</td></tr>
+          <tr><td>Tableau F-II</td><td class="td-unite">—</td><td class="td-abr">Abrogé</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU G ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="G">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">G</span>
+      <span class="block-title">Tabacs manufacturés — Tarification mixte</span>
+      <span class="block-count">6 produits</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <div style="padding:10px 18px 4px;font-size:11.5px;color:var(--gris)">TIC = MAX (quotité spécifique + ad valorem × PVP<sub>HT</sub>, minimum de perception)</div>
+      <table class="tic-table">
+        <thead><tr>
+          <th>Désignation</th>
+          <th>Quotité spécifique</th>
+          <th>Ad valorem (% PVP HT)</th>
+          <th>Minimum de perception</th>
+          <th>Base</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>Cigarettes</td>
+            <td class="td-multi" style="text-align:center">550,00 DH</td>
+            <td class="td-quotite high" style="font-size:14px;text-align:center">56,5%</td>
+            <td class="td-multi" style="text-align:center">953,00 DH</td>
+            <td class="td-unite">1 000 cig.</td>
+          </tr>
+          <tr>
+            <td>Cigares et cigarillos</td>
+            <td class="td-multi" style="text-align:center">750,00 DH</td>
+            <td class="td-quotite" style="font-size:14px;text-align:center">35%</td>
+            <td class="td-multi" style="text-align:center">1 500,00 DH</td>
+            <td class="td-unite">1 000 un.</td>
+          </tr>
+          <tr>
+            <td>Tabac fine coupe (à rouler)</td>
+            <td class="td-multi" style="text-align:center">750,00 DH</td>
+            <td class="td-quotite" style="font-size:14px;text-align:center">25%</td>
+            <td class="td-multi" style="text-align:center">950,00 DH</td>
+            <td class="td-unite">1 000 g</td>
+          </tr>
+          <tr>
+            <td>Tabac pour pipe à eau (Muassel)</td>
+            <td class="td-multi" style="text-align:center">420,00 DH</td>
+            <td class="td-quotite" style="font-size:14px;text-align:center">25%</td>
+            <td class="td-multi" style="text-align:center">675,00 DH</td>
+            <td class="td-unite">1 000 g</td>
+          </tr>
+          <tr>
+            <td>Autres tabacs (à fumer, priser, mâcher)</td>
+            <td class="td-multi" style="text-align:center">158,00 DH</td>
+            <td class="td-quotite" style="font-size:14px;text-align:center">25%</td>
+            <td class="td-multi" style="text-align:center">220,00 DH</td>
+            <td class="td-unite">1 000 g</td>
+          </tr>
+          <tr>
+            <td>Tabac chauffé (destiné à être chauffé sans brûler)</td>
+            <td class="td-multi" style="text-align:center">1 500,00 DH</td>
+            <td class="td-multi" style="text-align:center">—</td>
+            <td class="td-multi" style="text-align:center">—</td>
+            <td class="td-unite">1 000 g</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU H ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="H" data-cat="IJK">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">H</span>
+      <span class="block-title">Cigarettes électroniques, muassel sans tabac, substituts nicotiniques</span>
+      <span class="block-count">5 lignes</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <table class="tic-table">
+        <thead><tr><th>Désignation</th><th>Unité</th><th>Quotité (DH)</th></tr></thead>
+        <tbody>
+          <tr><td>Liquides e-cigarettes — sans nicotine</td><td class="td-unite">10 ml</td><td class="td-quotite">5,00</td></tr>
+          <tr><td>Liquides e-cigarettes — contenant de la nicotine</td><td class="td-unite">10 ml</td><td class="td-quotite">10,00</td></tr>
+          <tr><td>Produits connexes tabac pipe à eau — Muassel sans tabac</td><td class="td-unite">1 kg</td><td class="td-quotite high">675,00</td></tr>
+          <tr><td>Substituts nicotiniques sans tabac</td><td class="td-unite">1 kg</td><td class="td-quotite">220,00</td></tr>
+          <tr><td>Cigarettes électroniques jetables</td><td class="td-unite">Unité</td><td class="td-quotite">50,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU I ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="I" data-cat="IJK">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">I</span>
+      <span class="block-title">Pneumatiques même montés sur jantes</span>
+      <span class="block-count">1 ligne</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <table class="tic-table">
+        <thead><tr><th>Désignation</th><th>Unité</th><th>Quotité (DH)</th></tr></thead>
+        <tbody>
+          <tr><td>Pneumatiques même montés sur jantes</td><td class="td-unite">Kilogramme</td><td class="td-quotite">4,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU J ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="J" data-cat="IJK">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">J</span>
+      <span class="block-title">Articles, appareils et équipements fonctionnant à l'électricité</span>
+      <span class="block-count">5 lignes</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="tbl-section">Gros électroménager — par classe énergétique</div>
+      <div style="padding:8px 18px 4px;font-size:11.5px;color:var(--gris)">Réfrigérateurs, congélateurs, climatiseurs, lave-linges, sèche-linges, lave-vaisselles</div>
+      <table class="tic-table">
+        <thead><tr><th>Classe énergétique</th><th>—</th><th>Quotité (DH/unité)</th></tr></thead>
+        <tbody>
+          <tr><td>Classes A et B</td><td></td><td class="td-quotite exo">0</td></tr>
+          <tr><td>Classes C et D</td><td></td><td class="td-quotite">100</td></tr>
+          <tr><td>Classes E et F</td><td></td><td class="td-quotite">200</td></tr>
+          <tr><td>Classe G</td><td></td><td class="td-quotite high">500</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-section">Éclairage</div>
+      <table class="tic-table">
+        <tbody>
+          <tr><td>Lampes et tubes à incandescence pour tension > 28 V</td><td class="td-unite">Unité</td><td class="td-quotite zero">1,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU K ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="K" data-cat="IJK">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">K</span>
+      <span class="block-title">Appareils électroniques et batteries pour véhicules</span>
+      <span class="block-count">10 lignes</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <table class="tic-table">
+        <thead><tr><th>Désignation</th><th>Unité</th><th>Quotité (DH)</th></tr></thead>
+        <tbody>
+          <tr><td>Téléviseurs — écran ≤ 32 pouces</td><td class="td-unite">Unité</td><td class="td-quotite zero">0</td></tr>
+          <tr><td>Téléviseurs — écran > 32 pouces</td><td class="td-unite">Unité</td><td class="td-quotite">100</td></tr>
+          <tr><td>Ordinateurs portables</td><td class="td-unite">Unité</td><td class="td-quotite">50</td></tr>
+          <tr><td>Ordinateurs de bureau avec écran</td><td class="td-unite">Unité</td><td class="td-quotite">50</td></tr>
+          <tr><td>Ordinateurs de bureau sans écran</td><td class="td-unite">Unité</td><td class="td-quotite">30</td></tr>
+          <tr><td>Écrans pour ordinateurs</td><td class="td-unite">Unité</td><td class="td-quotite">20</td></tr>
+          <tr><td>Tablettes</td><td class="td-unite">Unité</td><td class="td-quotite">30</td></tr>
+          <tr><td>Smartphones (téléphones intelligents)</td><td class="td-unite">Unité</td><td class="td-quotite">50</td></tr>
+          <tr><td>Autres téléphones portables</td><td class="td-unite">Unité</td><td class="td-quotite zero">0</td></tr>
+          <tr><td>Batteries pour véhicules (hors fauteuils roulants, cyclomoteurs, motos, tricycles électriques)</td><td class="td-unite">Unité</td><td class="td-quotite">50</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU L ────────────────────────────────────────────── -->
+  <div class="tic-block" data-tab="L">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <span class="block-letter">L</span>
+      <span class="block-title">Produits contenant du sucre — TIC sur sucre ajouté</span>
+      <span class="block-count">22 lignes</span>
+      <span class="block-chevron open">▼</span>
+    </div>
+    <div class="block-body">
+      <div style="padding:10px 18px 4px;font-size:11.5px;color:var(--gris)">La TIC s'applique uniquement si la teneur en sucre ajouté dépasse le seuil. Unité de base : 100 kg.</div>
+      <table class="tic-table">
+        <thead><tr><th>Désignation</th><th>Seuil sucre ajouté</th><th>Quotité (DH/100kg)</th></tr></thead>
+        <tbody>
+          <tr><td colspan="3" style="background:var(--or-pale);font-weight:700;font-size:11px;color:var(--or);padding:6px 14px;letter-spacing:.05em">1. BISCUITERIE ET PÂTISSERIE INDUSTRIELLES</td></tr>
+          <tr><td>Produits de la pâtisserie industrielle et de la biscuiterie</td><td class="td-unite"><span class="seuil-badge">> 39 g</span></td><td class="td-quotite">210</td></tr>
+          <tr><td>Pâtisserie/biscuits/gaufrettes + chocolat/cacao</td><td class="td-unite"><span class="seuil-badge">> 50 g</span></td><td class="td-quotite">260</td></tr>
+          <tr><td colspan="3" style="background:var(--or-pale);font-weight:700;font-size:11px;color:var(--or);padding:6px 14px;letter-spacing:.05em">2. SUCRERIE SANS CACAO</td></tr>
+          <tr><td>Confiserie dure</td><td class="td-unite"><span class="seuil-badge">> 61 g</span></td><td class="td-quotite high">900</td></tr>
+          <tr><td>Confiserie tendre</td><td class="td-unite"><span class="seuil-badge">> 56 g</span></td><td class="td-quotite high">900</td></tr>
+          <tr><td>Chewing-gum</td><td class="td-unite"><span class="seuil-badge">> 62 g</span></td><td class="td-quotite high">900</td></tr>
+          <tr><td colspan="3" style="background:var(--or-pale);font-weight:700;font-size:11px;color:var(--or);padding:6px 14px;letter-spacing:.05em">3. CHOCOLATERIE</td></tr>
+          <tr><td>Chocolat</td><td class="td-unite"><span class="seuil-badge">> 46 g</span></td><td class="td-quotite">450</td></tr>
+          <tr><td>Pâte à tartiner</td><td class="td-unite"><span class="seuil-badge">> 56 g</span></td><td class="td-quotite">600</td></tr>
+          <tr><td>Sucre chocolaté</td><td class="td-unite"><span class="seuil-badge">> 63 g</span></td><td class="td-quotite">750</td></tr>
+          <tr><td>Cacao sucré / cacao sucré en poudre</td><td class="td-unite"><span class="seuil-badge">> 75 g</span></td><td class="td-quotite">750</td></tr>
+          <tr><td colspan="3" style="background:var(--or-pale);font-weight:700;font-size:11px;color:var(--or);padding:6px 14px;letter-spacing:.05em">4. PRODUITS DE LA LAITERIE</td></tr>
+          <tr><td>Lait fermenté (yaourt ferme, brassé ou à boire)</td><td class="td-unite"><span class="seuil-badge">> 8,8 g</span></td><td class="td-quotite">120</td></tr>
+          <tr><td>Desserts lactés</td><td class="td-unite"><span class="seuil-badge">> 12 g</span></td><td class="td-quotite">150</td></tr>
+          <tr><td>Lait concentré sucré</td><td class="td-unite"><span class="seuil-badge">> 48 g</span></td><td class="td-quotite">120</td></tr>
+          <tr><td>Lait aromatisé</td><td class="td-unite"><span class="seuil-badge">> 8,5 g</span></td><td class="td-quotite">120</td></tr>
+          <tr><td>Fromage blanc ou frais</td><td class="td-unite"><span class="seuil-badge">> 8 g</span></td><td class="td-quotite">120</td></tr>
+          <tr><td>Crème glacée au lait (poids ≥ 500 g)</td><td class="td-unite"><span class="seuil-badge">> 12 g</span></td><td class="td-quotite">150</td></tr>
+          <tr><td>Boissons au lait</td><td class="td-unite"><span class="seuil-badge">> 8 g</span></td><td class="td-quotite">120</td></tr>
+          <tr><td colspan="3" style="background:var(--or-pale);font-weight:700;font-size:11px;color:var(--or);padding:6px 14px;letter-spacing:.05em">5–11. AUTRES CATÉGORIES</td></tr>
+          <tr><td>Confiture et marmelade</td><td class="td-unite"><span class="seuil-badge">> 55 g</span></td><td class="td-quotite">150</td></tr>
+          <tr><td>Boissons à base d'eau + jus ≥ 10%</td><td class="td-unite"><span class="seuil-badge">> 7 g</span></td><td class="td-quotite">37,50</td></tr>
+          <tr><td>Préparations en poudre contenant du café</td><td class="td-unite"><span class="seuil-badge">> 63 g</span></td><td class="td-quotite high">750</td></tr>
+          <tr><td>Céréales soufflées/grillées (petit déjeuner, barres céréales)</td><td class="td-unite"><span class="seuil-badge">> 27 g</span></td><td class="td-quotite">180</td></tr>
+          <tr><td>Biscottes, pain grillé et produits similaires</td><td class="td-unite"><span class="seuil-badge">> 10 g</span></td><td class="td-quotite">150</td></tr>
+          <tr><td>Préparations en poudre pour sauces, soupes, bouillons</td><td class="td-unite"><span class="seuil-badge">> 15 g</span></td><td class="td-quotite">150</td></tr>
+          <tr><td>Sirops</td><td class="td-unite"><span class="seuil-badge">> 49 g</span></td><td class="td-quotite high">450</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /container -->
+</div><!-- /tab-quotites -->
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- TAB 2 — JURIDIQUE ────────────────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="tab-juridique" class="tab-content">
+<div class="container">
+<div class="juridique-layout">
+
+  <!-- Sidebar navigation -->
+  <aside class="juri-sidebar">
+    <div class="juri-sidebar-head">Navigation</div>
+    <div class="juri-nav-grp">Dahir n° 1-77-340</div>
+    <a class="juri-nav-item active" onclick="scrollTo('j-champ')">Champ d'application</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-def')">Définitions</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-exo')">Exonérations</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-admin')">Obligations Admin.</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-marques')">Marques fiscales</a>
+    <div class="juri-nav-grp">Arrêté n° 1309-77</div>
+    <a class="juri-nav-item" onclick="scrollTo('j-vins')">Vins — Déclarations</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-alcools')">Alcools — Production</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-distil')">Distilleries</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-petrole')">Produits pétroliers</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-metaux')">Métaux précieux</a>
+    <div class="juri-nav-grp">Transversal</div>
+    <a class="juri-nav-item" onclick="scrollTo('j-sanctions')">Infractions & Pénalités</a>
+    <a class="juri-nav-item" onclick="scrollTo('j-delais')">Tableau des délais</a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="juri-content">
+
+    <div class="info-box gold">
+      <span class="info-icon">📜</span>
+      <div>Ces deux textes fondateurs constituent le cadre normatif principal des TIC au Maroc depuis le 31 décembre 1977. Ils ont fait l'objet de nombreuses modifications, dont la dernière consolidation est reflétée dans l'édition 2026 du Code des Douanes et Impôts Indirects.</div>
+    </div>
+
+    <!-- Section 1 — Champ d'application -->
+    <div class="juri-section" id="j-champ">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">🏛️</div>
+        <h3>Champ d'application — Art. 1 du Dahir n° 1-77-340</h3>
+        <span class="ref">Art. 1</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="info-box vert"><span class="info-icon">ℹ️</span><div>L'ADII est compétente pour la liquidation et le recouvrement des TIC applicables aux marchandises et ouvrages <strong>importés ou produits sur le territoire assujetti</strong>.</div></div>
+        <p style="margin-bottom:12px;font-size:12.5px">Les 14 catégories assujetties (Art. 1er) :</p>
+        <table class="tic-table" style="border:1px solid var(--border)">
+          <thead><tr><th>#</th><th style="text-align:left">Catégorie</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Limonades, eaux gazeuses/non gazeuses, eaux minérales, aromatisées ou non</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau A</td></tr>
+            <tr><td>2</td><td>Bières</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau A</td></tr>
+            <tr><td>3</td><td>Vins et alcools</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau A</td></tr>
+            <tr><td>4</td><td>(Abrogé)</td><td class="td-abr" style="text-align:center">Abrogé</td></tr>
+            <tr><td>5</td><td>Produits énergétiques et bitumes</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau C</td></tr>
+            <tr><td>6</td><td>(Abrogé)</td><td class="td-abr" style="text-align:center">Abrogé</td></tr>
+            <tr><td>7</td><td>Ouvrages de platine, d'or et d'argent</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau F</td></tr>
+            <tr><td>8</td><td>Tabacs manufacturés</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau G</td></tr>
+            <tr><td>9</td><td>Liquides e-cigarettes, muassel sans tabac, substituts nicotiniques, cigarettes jetables</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau H</td></tr>
+            <tr><td>10</td><td>Pneumatiques même montés sur jantes</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau I</td></tr>
+            <tr><td>11</td><td>Articles, appareils et équipements fonctionnant à l'électricité</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau J</td></tr>
+            <tr><td>12</td><td>Appareils électroniques</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau K</td></tr>
+            <tr><td>13</td><td>Batteries pour véhicules</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau K</td></tr>
+            <tr><td>14</td><td>Produits contenant du sucre</td><td class="td-quotite exo" style="font-size:11px;text-align:center">Actif — Tableau L</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 2 — Définitions -->
+    <div class="juri-section" id="j-def">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">📖</div>
+        <h3>Définitions légales — Art. 2 du Dahir n° 1-77-340</h3>
+        <span class="ref">Art. 2</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Bières</span><span class="acc-title">Définition légale des bières et bières sans alcool</span><span class="acc-chev">▼</span></div><div class="acc-body"><p><strong>Bières :</strong> boissons obtenues par fermentation alcoolique d'un moût fabriqué avec du houblon et du malt d'orge (pur ou associé à du malt d'autres céréales, matières amylacées, sucre interverti ou glucose).</p><p style="margin-top:8px"><strong>Bières sans alcool :</strong> boissons obtenues par interruption de la fermentation alcoolique ou par distillation, dont le volume final d'alcool reste égal à zéro degré.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Vins</span><span class="acc-title">Définition légale des vins</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Boisson provenant <strong>exclusivement</strong> de la fermentation alcoolique (complète ou incomplète) du raisin frais, du jus de raisin frais ou du moût de raisin. <em>Exclusion :</em> vins de liqueurs et mistelles (soumis au régime des alcools).</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Distilleries</span><span class="acc-title">Typologies des distilleries</span><span class="acc-chev">▼</span></div><div class="acc-body"><ul><li><strong>Distilleries industrielles :</strong> distillent vins, cidres, lies, marcs et fruits, ou d'autres matières pour produire alcools/flegmes/esprits.</li><li><strong>Ateliers de distillation :</strong> distilleries utilisant exclusivement des alambics.</li><li><strong>Distilleries ambulantes :</strong> dispositifs de production d'alcool mobiles.</li></ul></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Tabacs</span><span class="acc-title">Définition légale des tabacs manufacturés</span><span class="acc-chev">▼</span></div><div class="acc-body"><ul><li>Cigares et cigarillos</li><li>Cigarettes</li><li>Tabac fine coupe destiné à rouler les cigarettes</li><li>Autres tabacs à fumer</li><li>Tabac à priser</li><li>Tabac à mâcher</li><li><strong>Tabac chauffé :</strong> produit de tabac chauffé sans brûler qui libère un aérosol contenant de la nicotine</li></ul><p style="margin-top:6px;font-style:italic;font-size:11.5px">Sont assimilés aux tabacs manufacturés les produits destinés à être fumés, prisés ou mâchés, même partiellement constitués de tabac (à l'exclusion des produits à usage médicamenteux).</p></div></div>
+      </div>
+    </div>
+
+    <!-- Section 3 — Exonérations -->
+    <div class="juri-section" id="j-exo">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">✅</div>
+        <h3>Exonérations de droit — Art. 3 du Dahir n° 1-77-340</h3>
+        <span class="ref">Art. 3</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="info-box vert"><span class="info-icon">✅</span><div>Sont exonérés des TIC, dans les conditions et limites fixées par arrêté du ministre chargé des finances, les éléments ci-après :</div></div>
+        <table class="tic-table" style="border:1px solid var(--border)">
+          <thead><tr><th>Lettre</th><th style="text-align:left">Cas d'exonération</th><th>Conditions</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">a</td><td>Marchandises exportées (Art. 1er)</td><td class="td-unite">Hors ouvrages poinçonnés or/argent/platine</td></tr>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">b</td><td>Freintes (déchet/perte pendant fabrication, transport, manipulation)</td><td class="td-unite">Dans les limites fixées par AMF</td></tr>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">c</td><td>Déficits provenant de causes naturelles</td><td class="td-unite">Constatés et justifiés</td></tr>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">d</td><td>Vins enlevés pour distillation, vinaigreries, destruction</td><td class="td-unite">Impropres à la consommation</td></tr>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">e</td><td>Alcool contenu dans le vin et dans la bière</td><td class="td-unite">Tel que défini à l'Art. 2</td></tr>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">f</td><td>Produits pétroliers consommés par les raffineries dans leurs propres opérations</td><td class="td-unite">Art. 43 — dans l'enceinte des raffineries</td></tr>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">g</td><td>Ouvrages de platine, d'or ou d'argent de poids ≤ 1 gramme</td><td class="td-unite">—</td></tr>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">h</td><td>Carburants, combustibles, lubrifiants pour madragues et fermes aquacoles</td><td class="td-unite">Navires et embarcations exploités</td></tr>
+            <tr><td style="text-align:center;font-weight:700;color:var(--vert)">i</td><td>Carburants, combustibles, lubrifiants pour navigations maritimes/aériennes à destination de l'étranger</td><td class="td-unite">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 4 — Obligations administratives -->
+    <div class="juri-section" id="j-admin">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">📋</div>
+        <h3>Obligations générales des redevables — Art. 4 à 8 du Dahir</h3>
+        <span class="ref">Art. 4–8</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 4</span><span class="acc-title">Déclaration préalable d'activité<span class="obligatoire">OBLIGATOIRE</span><span class="delai">1 mois avant</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Toute <strong>mise en exploitation, arrêt de production ou cession</strong> d'usines, ateliers ou établissements produisant la matière fiscale doit faire l'objet d'une <strong>déclaration préalable à l'administration au moins un mois avant</strong> l'opération envisagée.</p><p style="margin-top:8px">Les déclarations sont immédiatement enregistrées par les agents de l'administration.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 5</span><span class="acc-title">Droit de surveillance de l'ADII<span class="obligatoire">Permanent</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les usines, ateliers et établissements sont soumis à la <strong>surveillance permanente de l'administration</strong>. Les agents ADII peuvent pénétrer à tout moment pour effectuer des <strong>contrôles de production</strong>.</p><p style="margin-top:8px"><strong>Frais de surveillance :</strong> à la charge des producteurs de matières fiscales, dans les conditions fixées par AMF.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 6</span><span class="acc-title">Titres de mouvement<span class="obligatoire">Obligatoires à la circulation</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><ul><li><strong>Laissez-passer :</strong> pour produits en libre pratique sur le territoire assujetti.</li><li><strong>Acquit à caution :</strong> pour produits dont la TIC n'a pas été acquittée ou consignée.</li><li>Tout autre titre agréé par arrêté AMF.</li></ul><p style="margin-top:8px">Le transporteur doit présenter le titre à <strong>première réquisition</strong> des agents de l'administration.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 7</span><span class="acc-title">Registres cotés et paraphés</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>L'administration peut imposer la tenue de <strong>registres cotés et paraphés</strong> par ses soins. Ces registres peuvent être tenus par procédé électronique. Un AMF détermine les catégories de redevables soumis à cette obligation.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 8</span><span class="acc-title">Arrêtés du ministre des finances</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Des arrêtés AMF déterminent :</p><ul><li>Les conditions d'installation, d'agencement, de fonctionnement, de contrôle et de surveillance des unités.</li><li>Les modalités de perception des TIC.</li><li>Les règles fiscales relatives à la production, détention, circulation et commercialisation des marchandises taxées.</li></ul></div></div>
+      </div>
+    </div>
+
+    <!-- Section 5 — Marques fiscales -->
+    <div class="juri-section" id="j-marques">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">🏷️</div>
+        <h3>Marques fiscales — Art. 10 à 15 du Dahir n° 1-77-340</h3>
+        <span class="ref">Art. 10–15</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="info-box rouge"><span class="info-icon">⚠️</span><div><strong>Obligation de marques fiscales :</strong> la mise à la consommation des boissons alcoolisées, tabacs manufacturés, produits connexes de tabac, liquides e-cigarettes, substituts nicotiniques, cigarettes jetables et produits contenant du sucre (tableaux A, G, H, L) doit se faire dans des contenants munis de <strong>marques fiscales ou dispositifs équivalents</strong>.</div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 11</span><span class="acc-title">Agrément des fabricants de marques fiscales</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Seuls les <strong>industriels et prestataires agréés par l'ADII</strong> peuvent fabriquer ou concevoir des marques fiscales. Ils sont soumis à la surveillance de l'administration.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 12</span><span class="acc-title">Normes et méthodes de fabrication</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les méthodes, types et maquettes des marques fiscales doivent être <strong>préalablement agréés</strong> par l'ADII et répondre aux normes fixées par l'administration.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 15</span><span class="acc-title">Arrêté AMF sur les conditions de délivrance</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Le ministre chargé des finances détermine par arrêté les conditions de fabrication, délivrance et utilisation des marques fiscales et procédés équivalents.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Section 6 — Vins (Arrêté 1309-77) -->
+    <div class="juri-section" id="j-vins">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">🍷</div>
+        <h3>Vins — Déclarations et circulation (Arrêté n° 1309-77, Chap. I)</h3>
+        <span class="ref">Art. 1–13</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 1</span><span class="acc-title">Déclaration de mise en exploitation<span class="delai">15 jours avant</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>La déclaration doit indiquer :</p><ul><li>Noms, prénoms, domicile du producteur</li><li>Situation et description des locaux de production</li><li>Nombre et type des machines et appareils</li><li>Catégories de vins à produire</li><li>Régime de travail (jours et heures)</li></ul><p style="margin-top:8px">Elle est accompagnée du plan détaillé des lieux et, si société/coopérative, des statuts.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 4</span><span class="acc-title">Déclarations annuelles obligatoires</span><span class="acc-chev">▼</span></div><div class="acc-body"><ul><li><strong>Avant le 10 octobre</strong> de chaque année : déclaration de mise en œuvre (volumes prévisionnels).</li><li><strong>Avant le 10 novembre</strong> de chaque année : déclaration de production dès achèvement de la vinification.</li></ul></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 6</span><span class="acc-title">Déclaration d'enlèvement<span class="delai">3 jours avant</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>La déclaration d'enlèvement doit être déposée <strong>au moins 3 jours avant le début de l'enlèvement</strong> des vins.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 9</span><span class="acc-title">Marques fiscales sur contenants<span class="obligatoire">Obligatoire</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les marques fiscales doivent être apposées <strong>sur les contenants</strong> conformément aux prescriptions de l'Art. 10 du Dahir.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 10</span><span class="acc-title">Transport de vins — Titre de mouvement obligatoire</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Aucun transport de vins (hors bouteilles scellées/étiquetées) ne peut être effectué sans l'un des deux titres de mouvement :<ul><li><strong>Laissez-passer :</strong> pour vins en libre pratique dont la TIC a été acquittée.</li><li><strong>Acquit à caution :</strong> pour vins dont la TIC est suspendue.</li></ul></p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 12</span><span class="acc-title">Registre de débit — Producteurs et dépositaires</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les producteurs de vins, dépositaires et toute personne détenant des vins pour la vente au détail doivent tenir un <strong>registre de débit côté et paraphé</strong> par l'ADII, enregistrant tous les mouvements (entrées et sorties).</p></div></div>
+      </div>
+    </div>
+
+    <!-- Section 7 — Alcools production -->
+    <div class="juri-section" id="j-alcools">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">🧪</div>
+        <h3>Alcools — Production, dépôt, commercialisation (Art. 16–64)</h3>
+        <span class="ref">Chap. II — Arrêté</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 16</span><span class="acc-title">Mise à disposition pour contrôle ADII</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les producteurs ou utilisateurs d'alcool sont tenus de mettre leurs <strong>récipients à la disposition des agents</strong> de l'ADII pour vérification à toute époque.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 18</span><span class="acc-title">Calcul de l'alcool pur</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>L'alcool pur est déterminé en <strong>multipliant le volume réel mesuré à la température de référence</strong> par le degré alcoolique (les dixièmes de degré étant taxables, conformément à l'Art. 9 du Dahir).</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 49</span><span class="acc-title">Autorisation de dépôt d'alcool<span class="obligatoire">Autorisation préalable</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>L'ouverture d'un dépôt d'alcool ou de spiritueux (Art. 17 du Dahir — toute détention > 10 litres) est subordonnée à une <strong>autorisation préalable de l'ADII</strong> déterminant les conditions d'agencement et de fermeture des locaux.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 52</span><span class="acc-title">Conditions de commercialisation des alcools</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>La vente au détail d'alcool ne peut se faire que par des <strong>débitants agréés</strong>. Les conditions de délivrance des licences et de surveillance des points de vente sont fixées par AMF.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 54</span><span class="acc-title">Transport d'alcool — Titre de mouvement<span class="obligatoire">Obligatoire</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Aucun transport d'alcool ou de spiritueux ne peut être effectué sans un titre de mouvement délivré par l'ADII, sauf dérogations prévues à l'Art. 56 (livraisons directes producteur → dépositaire).</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 58</span><span class="acc-title">Industriels agréés — Taux réduit (médicaments, parfumerie)</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les industriels producteurs de médicaments, produits de la parfumerie et de la toilette bénéficient du <strong>taux réduit de 200 DH/hl a.p.</strong> (Art. 9-IV-a du Dahir) sous réserve d'agrément ADII et de justification des quantités utilisées.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 61</span><span class="acc-title">Procédures de dénaturation des alcools</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les dénaturations d'alcools sont réalisées sous la surveillance de l'ADII. Les procédés de dénaturation sont fixés par AMF. <strong>L'alcool dénaturé exonéré</strong> (b-1, b-2, b-3 de l'Art. 9) ne peut être utilisé qu'aux fins déclarées sous peine de redressement.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Section 8 — Distilleries -->
+    <div class="juri-section" id="j-distil">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">🏭</div>
+        <h3>Distilleries — Obligations techniques et déclaratives (Art. 14–47)</h3>
+        <span class="ref">§ 2–6 — Arrêté</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 20</span><span class="acc-title">Autorisation alambics<span class="delai">15 jours avant</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>L'importation, fabrication, modification, détention et cession des alambics nécessitent une <strong>autorisation personnelle et incessible de l'ADII</strong>. La demande doit être déposée <strong>15 jours avant</strong> l'opération envisagée. Le droit fixe est fixé par Art. 21 de l'arrêté.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 35</span><span class="acc-title">Déclaration préalable de campagne<span class="delai">15 jours avant</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Quinze jours au moins avant le commencement de chaque campagne, l'exploitant d'une distillerie industrielle doit déposer une déclaration indiquant les <strong>matières à mettre en œuvre, volumes prévisionnels et calendrier de production</strong>.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 37</span><span class="acc-title">Registres de fabrication obligatoires</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Tout exploitant de distillerie doit tenir deux registres côtés et paraphés par l'ADII :<ul><li>Registre de mise en œuvre (matières premières)</li><li>Registre des bacs jaugeurs (volumes d'alcool obtenus)</li></ul>Les agents ADII peuvent arrêter la situation des registres à toute époque (Art. 42).</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 45</span><span class="acc-title">Inventaire général annuel<span class="obligatoire">Annuel</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Un <strong>inventaire général</strong> des produits de distillation, repassage et rectification est dressé annuellement en présence des agents de l'ADII. Il sert de base au calcul de la TIC due.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Section 9 — Produits pétroliers -->
+    <div class="juri-section" id="j-petrole">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">⛽</div>
+        <h3>Produits pétroliers — Entrepôts et raffineries (Art. 70–84)</h3>
+        <span class="ref">Chap. IV — Arrêté</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 70</span><span class="acc-title">Agencement des entrepôts de stockage</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les entrepôts de stockage de produits pétroliers doivent être <strong>déclarés à l'ADII</strong> et répondre aux conditions d'agencement fixées par arrêté. Toute nouvelle capacité de stockage doit faire l'objet d'une déclaration préalable.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 75</span><span class="acc-title">Jaugeage des contenants</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Le volume des produits pétroliers est déterminé par jaugeage certifié. Les tables de jaugeage sont établies et validées en présence de l'ADII. Les résultats servent de base à la liquidation de la TIC.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 82</span><span class="acc-title">Registre de fabrication des raffineries</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Dans chaque raffinerie, il est tenu par les soins du raffineur un <strong>registre de fabrication côté et paraphé</strong> par l'ADII, enregistrant par nature de produit les quantités produites, les sorties soumises à TIC et les sorties bénéficiant de l'exonération (Art. 3-f).</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 84</span><span class="acc-title">Communication à première réquisition<span class="obligatoire">Immédiat</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>À <strong>première réquisition de l'ADII</strong>, le raffineur est tenu de communiquer tout document comptable, registre ou justificatif relatif aux quantités de produits fabriqués, stockés ou mis à la consommation.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Section 10 — Métaux précieux -->
+    <div class="juri-section" id="j-metaux">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">💍</div>
+        <h3>Métaux précieux — Essais et poinçonnage (Art. 85–110)</h3>
+        <span class="ref">Chap. V — Arrêté</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 85–86</span><span class="acc-title">Titres légaux des alliages</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les ouvrages dont le titre (teneur en métal pur) est compris entre deux titres légaux sont taxés au titre légal inférieur. Les ouvrages doublés ou plaqués par procédé quelconque sont taxés selon leur teneur réelle.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 88</span><span class="acc-title">Apposition des poinçons après essai<span class="obligatoire">Avant commercialisation</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Le poinçon de garantie est apposé sur les ouvrages <strong>après vérification de leur titre par essai</strong> au service de la garantie (ADII). Aucun ouvrage ne peut être mis sur le marché sans poinçon valide.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 91</span><span class="acc-title">Déclaration préalable des fabricants<span class="delai">Avant activité</span></span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Tout fabricant, marchand ou affineur d'ouvrages de métaux précieux doit déposer une <strong>déclaration d'activité</strong> à l'ADII avant d'entreprendre son activité, indiquant son identité, son établissement et la nature de ses activités.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 97</span><span class="acc-title">Ouvrages importés</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>Les ouvrages de platine, d'or ou d'argent <strong>importés</strong> sont soumis aux essais du service de la garantie avant leur mise en vente. Ils reçoivent les poinçons marocains ou sont refoulés si non conformes.</p></div></div>
+        <div class="accordion"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-art">Art. 100–101</span><span class="acc-title">Exportation d'ouvrages</span><span class="acc-chev">▼</span></div><div class="acc-body"><p>L'exportation d'ouvrages de métaux précieux se fait en <strong>boîtes scellées aux plombs de l'ADII</strong>. La TIC n'est pas due sur les ouvrages exportés (Art. 3-a du Dahir), mais la procédure de scellement est obligatoire.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Section 11 — Infractions -->
+    <div class="juri-section" id="j-sanctions">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">⚖️</div>
+        <h3>Infractions, pénalités et prescription</h3>
+        <span class="ref">Code Douanes — Titre VIII</span>
+      </div>
+      <div class="juri-section-body">
+        <div class="info-box rouge"><span class="info-icon">⚠️</span><div>Les infractions aux dispositions TIC relèvent du <strong>Titre VIII du Code des Douanes (Dahir n° 1-77-339)</strong> — Contrebande et infractions douanières — auquel renvoie explicitement le Dahir n° 1-77-340.</div></div>
+        <table class="tic-table" style="border:1px solid var(--border)">
+          <thead><tr><th>Type d'infraction</th><th>Sanction principale</th></tr></thead>
+          <tbody>
+            <tr><td>Défaut de déclaration préalable d'activité (Art. 4)</td><td class="td-unite">Amendes + suspension d'activité</td></tr>
+            <tr><td>Transport sans titre de mouvement (Art. 6)</td><td class="td-unite">Confiscation + amendes proportionnelles</td></tr>
+            <tr><td>Défaut de registres ou faux registres (Art. 7)</td><td class="td-unite">Amendes + redressement d'office</td></tr>
+            <tr><td>Refus d'accès à la surveillance ADII (Art. 5)</td><td class="td-unite">Infraction douanière — art. Code Douanes</td></tr>
+            <tr><td>Commercialisation sans marques fiscales (Art. 10)</td><td class="td-unite">Confiscation des produits + amendes</td></tr>
+            <tr><td>Utilisation d'alcool dénaturé hors finalité déclarée</td><td class="td-unite">TIC due + pénalités de 100% min.</td></tr>
+            <tr><td>Alcool à l'état libre non déclaré</td><td class="td-unite">TIC 7 000 DH/hl + pénalités + confiscation</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 12 — Tableau des délais -->
+    <div class="juri-section" id="j-delais">
+      <div class="juri-section-head" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none'?'block':'none'">
+        <div class="icon">📅</div>
+        <h3>Tableau synthétique des délais réglementaires</h3>
+        <span class="ref">Dahir + Arrêté</span>
+      </div>
+      <div class="juri-section-body">
+        <table class="tic-table" style="border:1px solid var(--border)">
+          <thead><tr><th>Obligation</th><th style="text-align:center">Délai</th><th>Référence</th></tr></thead>
+          <tbody>
+            <tr><td>Déclaration préalable de mise en exploitation / arrêt / cession (général)</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">1 mois avant</span></td><td class="td-unite">Art. 4 Dahir</td></tr>
+            <tr><td>Déclaration de mise en exploitation d'entreprises vinicoles</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">15 jours avant</span></td><td class="td-unite">Art. 1 Arrêté</td></tr>
+            <tr><td>Modification d'éléments déclarés (caves, chais, dépôts)</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">3 jours avant</span></td><td class="td-unite">Art. 2 Arrêté</td></tr>
+            <tr><td>Déclaration de mise en œuvre (vins — volumes prévisionnels)</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">Avant 10 oct.</span></td><td class="td-unite">Art. 4 Arrêté</td></tr>
+            <tr><td>Déclaration de production vinicole</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">Avant 10 nov.</span></td><td class="td-unite">Art. 4 Arrêté</td></tr>
+            <tr><td>Déclaration d'enlèvement des vins</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">3 jours avant</span></td><td class="td-unite">Art. 6 Arrêté</td></tr>
+            <tr><td>Demande d'autorisation d'alambics</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">15 jours avant</span></td><td class="td-unite">Art. 20 Arrêté</td></tr>
+            <tr><td>Déclaration préalable de campagne de distillation</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">15 jours avant</span></td><td class="td-unite">Art. 35 Arrêté</td></tr>
+            <tr><td>Reprise d'activité après arrêt provisoire (vins)</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">10 jours avant</span></td><td class="td-unite">Art. 1-2° Arrêté</td></tr>
+            <tr><td>Retrait d'ouvrages poinçonnés non retirés</td><td style="text-align:center"><span class="seuil-badge" style="background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8">3 mois max.</span></td><td class="td-unite">Art. 110 Arrêté</td></tr>
+            <tr><td>Présentation titre de mouvement au contrôle ADII</td><td style="text-align:center"><span class="seuil-badge" style="background:#FEE2E2;border-color:#FECACA;color:#991B1B">1ère réquisition</span></td><td class="td-unite">Art. 6-3° Dahir</td></tr>
+            <tr><td>Communication documents raffineur à l'ADII</td><td style="text-align:center"><span class="seuil-badge" style="background:#FEE2E2;border-color:#FECACA;color:#991B1B">Immédiat</span></td><td class="td-unite">Art. 84 Arrêté</td></tr>
+          </tbody>
+        </table>
+        <div class="info-box bleu" style="margin-top:14px"><span class="info-icon">📌</span><div><strong>Source :</strong> Dahir portant loi n° 1-77-340 et Arrêté du MF n° 1309-77, tous deux du 25 chaoual 1397 (9 octobre 1977), consolidés — Code des Douanes et Impôts Indirects, Édition 2026, ADII.</div></div>
+      </div>
+    </div>
+
+  </div><!-- /juri-content -->
+</div><!-- /juridique-layout -->
+</div><!-- /container -->
+</div><!-- /tab-juridique -->
+
+
+<script>
+/* ── Tab switching ───────────────────────────────────────── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ── Block toggle ────────────────────────────────────────── */
+function toggleBlock(hdr) {
+  const body = hdr.nextElementSibling;
+  const chev = hdr.querySelector('.block-chevron');
+  const open = body.style.display !== 'none' && body.style.display !== '';
+  body.style.display = open ? 'none' : 'block';
+  chev.classList.toggle('open', !open);
+}
+
+/* ── Accordion toggle ────────────────────────────────────── */
+function toggleAcc(hdr) {
+  const body = hdr.nextElementSibling;
+  const chev = hdr.querySelector('.acc-chev');
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  chev.classList.toggle('open', !open);
+}
+
+/* ── Filter blocks ───────────────────────────────────────── */
+function filterBlock(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tic-block').forEach(block => {
+    const t = block.dataset.tab;
+    if (cat === 'all') {
+      block.style.display = '';
+    } else if (cat === 'IJK') {
+      const show = ['H','I','J','K'].includes(t);
+      block.style.display = show ? '' : 'none';
+    } else {
+      block.style.display = t === cat ? '' : 'none';
+    }
+  });
+}
+
+/* ── Search rows ─────────────────────────────────────────── */
+function searchRows(q) {
+  const term = q.toLowerCase().trim();
+  document.querySelectorAll('.tic-block').forEach(block => {
+    if (!term) { block.style.display = ''; return; }
+    const rows = block.querySelectorAll('tbody tr');
+    let any = false;
+    rows.forEach(row => {
+      const txt = row.textContent.toLowerCase();
+      const match = txt.includes(term);
+      row.style.display = match ? '' : 'none';
+      if (match) any = true;
+    });
+    block.style.display = any ? '' : 'none';
+    if (any) {
+      const body = block.querySelector('.block-body');
+      const chev = block.querySelector('.block-chevron');
+      if (body) body.style.display = 'block';
+      if (chev) { chev.classList.add('open'); }
+    }
+  });
+}
+
+/* ── Scroll to section ───────────────────────────────────── */
+function scrollTo(id) {
+  document.querySelectorAll('.juri-nav-item').forEach(i => i.classList.remove('active'));
+  event.target.classList.add('active');
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Open section body
+    const body = el.querySelector('.juri-section-body');
+    if (body && body.style.display === 'none') {
+      body.style.display = 'block';
+    }
+  }
+}
+
+/* ── Init: all blocks open ───────────────────────────────── */
+document.querySelectorAll('.block-body').forEach(b => b.style.display = 'block');
+document.querySelectorAll('.juri-section-body').forEach(b => b.style.display = 'block');
+</script>
+</body>
+</html>

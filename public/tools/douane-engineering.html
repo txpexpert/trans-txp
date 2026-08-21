@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Douane Engineering — Assistance & Accompagnement Expert</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold2:#a8873a;--gold4:rgba(201,168,76,0.10);--gold5:rgba(201,168,76,0.05);--ink:#1a1a1a;--ink2:#3d3d3d;--ink3:#7a7a7a;--ink4:#b0b0b0;--bg:#fff;--bg2:#f8f7f4;--bg3:#f2f1ed;--border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.18);--green:#1a7a4a;--green-bg:#e8f5ee;--red:#c0392b;--red-bg:#fdf0ee;--blue:#1a5fa8;--blue-bg:#e8f0fb;--amber:#8a6000;--amber-bg:#fff8e8;--r:10px;--rs:6px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg2);color:var(--ink);font-size:14px;line-height:1.6}
+.page-header{background:var(--ink);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.header-brand{font-family:'Playfair Display',serif;color:var(--gold);font-size:1.2rem}
+.header-back{color:var(--ink4);font-size:12px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.header-back:hover{color:var(--gold)}
+.hero{background:var(--ink);padding:3rem 2rem;border-bottom:2px solid var(--gold);position:relative;overflow:hidden}
+.hero-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:12rem;color:rgba(255,255,255,0.02);white-space:nowrap;pointer-events:none;letter-spacing:-4px}
+.hero-kicker{font-size:10px;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;margin-bottom:.6rem;position:relative}
+.hero-title{font-family:'Playfair Display',serif;font-size:2.4rem;color:#fff;line-height:1.1;margin-bottom:.8rem;position:relative}
+.hero-title em{color:var(--gold);font-style:normal}
+.hero-sub{color:rgba(255,255,255,.5);font-size:13px;max-width:580px;line-height:1.7;position:relative}
+.hero-caps{display:flex;gap:1.5rem;margin-top:1.75rem;flex-wrap:wrap;position:relative}
+.hero-cap{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r);padding:.75rem 1.25rem;text-align:center;min-width:110px}
+.hero-cap-val{font-size:1.3rem;font-weight:600;color:var(--gold)}
+.hero-cap-lbl{font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-top:1px}
+.availability-banner{background:var(--amber-bg);border-bottom:2px solid #e8a800;padding:.65rem 2rem;display:flex;align-items:center;gap:.75rem;font-size:12px;color:var(--amber);flex-wrap:wrap}
+.avail-dot{width:8px;height:8px;border-radius:50%;background:#e8a800;flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.main{max-width:1200px;margin:0 auto;padding:2.5rem 2rem}
+.sec-title{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--ink);margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem}
+.sec-title::before{content:'';width:4px;height:22px;background:var(--gold);border-radius:2px;flex-shrink:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:860px){.grid-2{grid-template-columns:1fr}}
+.volet-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:box-shadow .2s}
+.volet-card:hover{border-color:rgba(201,168,76,.4)}
+.volet-head{padding:1.5rem 1.75rem 1.25rem;border-bottom:1px solid var(--border)}
+.volet-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:.75rem}
+.volet-badge.conseil{background:var(--gold4);color:var(--gold2)}
+.volet-badge.juridique{background:var(--blue-bg);color:var(--blue)}
+.volet-badge .badge-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.volet-badge.conseil .badge-dot{background:var(--gold)}
+.volet-badge.juridique .badge-dot{background:var(--blue)}
+.volet-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:.75rem}
+.volet-icon.conseil{background:var(--gold4)}
+.volet-icon.juridique{background:var(--blue-bg)}
+.volet-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--ink);margin-bottom:.5rem}
+.volet-desc{font-size:13px;color:var(--ink3);line-height:1.7}
+.volet-body{padding:1.5rem 1.75rem}
+.feature-list{display:grid;gap:.6rem;margin-bottom:1.5rem}
+.feature-item{display:flex;align-items:flex-start;gap:.6rem;font-size:13px;color:var(--ink2)}
+.feature-check{font-size:14px;font-weight:700;flex-shrink:0;margin-top:1px}
+.feature-check.gold{color:var(--gold)}
+.feature-check.blue{color:var(--blue)}
+.profiles{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.profile-tag{font-size:11px;background:var(--bg3);color:var(--ink3);padding:3px 9px;border-radius:20px;border:1px solid var(--border)}
+.cta-btn{width:100%;padding:.85rem 1.5rem;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;text-decoration:none}
+.cta-btn.gold{background:var(--gold);color:#fff}
+.cta-btn.gold:hover{background:var(--gold2)}
+.cta-btn.blue{background:var(--blue);color:#fff}
+.cta-btn.blue:hover{background:#1451a0}
+.cta-note{font-size:11px;color:var(--ink4);text-align:center;margin-top:.6rem}
+.divider{height:1px;background:var(--border);margin:2rem 0}
+.experts-section{margin-top:2rem}
+.experts-title{font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:1rem}
+.expert-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+@media(max-width:700px){.expert-grid{grid-template-columns:1fr 1fr}}
+.expert-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;text-align:center}
+.expert-avatar{width:44px;height:44px;border-radius:50%;margin:0 auto .6rem;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff}
+.expert-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.expert-role{font-size:11px;color:var(--ink3)}
+.expert-status{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;margin-top:.4rem}
+.status-dispo{background:var(--green-bg);color:var(--green)}
+.status-occupe{background:var(--red-bg);color:var(--red)}
+.capacity-bar{background:var(--bg3);border-radius:4px;height:6px;margin-top:.5rem;overflow:hidden}
+.capacity-fill{height:100%;border-radius:4px;background:var(--gold);transition:width .5s}
+.capacity-lbl{font-size:10px;color:var(--ink4);text-align:right;margin-top:2px}
+.how-section{margin-top:2.5rem}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+@media(max-width:700px){.steps-grid{grid-template-columns:1fr 1fr}}
+.step-box{background:var(--bg);padding:1.25rem;text-align:center}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--gold4);color:var(--gold2);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto .6rem}
+.step-title{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:.25rem}
+.step-desc{font-size:11px;color:var(--ink3);line-height:1.5}
+.conditions-box{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--rs);padding:1rem 1.25rem;margin-top:1.5rem;font-size:12px;color:var(--amber)}
+.conditions-box strong{color:var(--amber)}
+.conditions-box ul{margin-top:.4rem;padding-left:1rem}
+.conditions-box li{margin-bottom:.2rem}
+.partners-section{margin-top:2.5rem}
+.partner-list{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+@media(max-width:600px){.partner-list{grid-template-columns:1fr}}
+.partner-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:.75rem}
+.partner-icon{width:36px;height:36px;border-radius:8px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.partner-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.partner-spec{font-size:11px;color:var(--ink3)}
+.disclaimer{background:var(--bg3);border-radius:var(--r);padding:1.25rem 1.5rem;font-size:11px;color:var(--ink3);line-height:1.7;margin-top:2rem;border:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="/" class="header-back">← Mode Classique</a>
+  <span class="header-brand">Transit-IA</span>
+  <span style="background:var(--gold4);border:1px solid var(--gold);color:var(--gold);font-size:10px;padding:2px 8px;border-radius:20px;letter-spacing:.5px;font-weight:500">NOUVEAU</span>
+</div>
+
+<div class="hero">
+  <div class="hero-bg-text">ENGINEERING</div>
+  <div class="hero-kicker">Service Premium · Expertise sur mesure</div>
+  <div class="hero-title">Douane <em>Engineering</em></div>
+  <div class="hero-sub">Assistance personnalisée par des experts douaniers, fiscalistes et juristes spécialisés. Réponses sur mesure à vos questions complexes, accompagnement dans vos litiges et procédures judiciaires.</div>
+  <div class="hero-caps">
+    <div class="hero-cap"><div class="hero-cap-val">24–48h</div><div class="hero-cap-lbl">Délai de réponse</div></div>
+    <div class="hero-cap"><div class="hero-cap-val">Experts</div><div class="hero-cap-lbl">Certifiés ADII</div></div>
+    <div class="hero-cap"><div class="hero-cap-val">Limité</div><div class="hero-cap-lbl">Places disponibles</div></div>
+    <div class="hero-cap"><div class="hero-cap-val">FIFO</div><div class="hero-cap-lbl">Premier arrivé</div></div>
+  </div>
+</div>
+
+<div class="availability-banner">
+  <div class="avail-dot"></div>
+  <strong>Capacité limitée :</strong> Les dossiers sont pris en charge selon la disponibilité des partenaires experts et par ordre d'arrivée (premier arrivé, premier servi). Le volume de consultations ouvertes varie chaque semaine.
+  <span style="margin-left:auto;font-weight:600;background:var(--amber-bg);border:1px solid #e8a800;padding:2px 10px;border-radius:20px">Places restantes cette semaine : <span id="places-count">7</span> / 15</span>
+</div>
+
+<div class="main">
+
+  <div class="sec-title">Nos deux volets d'assistance</div>
+
+  <div class="grid-2">
+
+    <!-- VOLET 1 : CONSEIL -->
+    <div class="volet-card">
+      <div class="volet-head">
+        <div class="volet-badge conseil"><div class="badge-dot"></div>Volet I — Conseil & Expertise</div>
+        <div class="volet-icon conseil">⚙</div>
+        <div class="volet-title">Assistance & Suivi Personnalisé</div>
+        <div class="volet-desc">Des assistants, consultants et experts douaniers répondent à vos questions complexes, analysent vos dossiers et vous accompagnent dans vos opérations. Réponse sur mesure par un professionnel humain — pas une IA seule.</div>
+      </div>
+      <div class="volet-body">
+        <div class="feature-list">
+          <div class="feature-item"><span class="feature-check gold">→</span> Analyse de dossiers d'importation/exportation complexes</div>
+          <div class="feature-item"><span class="feature-check gold">→</span> Optimisation fiscale : choix régime, incoterms, valorisation</div>
+          <div class="feature-item"><span class="feature-check gold">→</span> Vérification de conformité documentaire pré-dédouanement</div>
+          <div class="feature-item"><span class="feature-check gold">→</span> Conseils sur les autorisations et licences d'importation</div>
+          <div class="feature-item"><span class="feature-check gold">→</span> Accompagnement procédures OEA et certification</div>
+          <div class="feature-item"><span class="feature-check gold">→</span> Revue de contrats commerciaux (incoterms, garanties)</div>
+          <div class="feature-item"><span class="feature-check gold">→</span> Questions LF 2026, blockchain factures, BADR article 19 bis</div>
+        </div>
+        <div style="margin-bottom:.75rem">
+          <div style="font-size:11px;color:var(--ink3);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.5px">Profils cibles</div>
+          <div class="profiles">
+            <span class="profile-tag">Transitaire agréé</span>
+            <span class="profile-tag">Importateur PME</span>
+            <span class="profile-tag">Directeur logistique</span>
+            <span class="profile-tag">Consultant</span>
+          </div>
+        </div>
+        <a href="/static/contact.html" class="cta-btn gold">
+          Soumettre une requête d'assistance →
+        </a>
+        <div class="cta-note">Réponse sous 24–48h · Prise en charge selon disponibilité partenaires</div>
+      </div>
+    </div>
+
+    <!-- VOLET 2 : JURIDIQUE -->
+    <div class="volet-card">
+      <div class="volet-head">
+        <div class="volet-badge juridique"><div class="badge-dot"></div>Volet II — Assistance Judiciaire</div>
+        <div class="volet-icon juridique">⚖</div>
+        <div class="volet-title">Assistance & Accompagnement Juridique</div>
+        <div class="volet-desc">Soumettez vos litiges douaniers et contentieux à nos partenaires légaux spécialisés. Avocats et experts juridiques vous accompagnent dans vos procédures de contestation, recours et défense devant l'ADII et les tribunaux.</div>
+      </div>
+      <div class="volet-body">
+        <div class="feature-list">
+          <div class="feature-item"><span class="feature-check blue">→</span> Contestation de redressements de valeur en douane (ADII)</div>
+          <div class="feature-item"><span class="feature-check blue">→</span> Recours devant la Commission Nationale de Recours (CNRMD)</div>
+          <div class="feature-item"><span class="feature-check blue">→</span> Défense lors de contrôles et inspections douanières</div>
+          <div class="feature-item"><span class="feature-check blue">→</span> Litiges de classement tarifaire (décisions CLT)</div>
+          <div class="feature-item"><span class="feature-check blue">→</span> Procédures de transaction douanière</div>
+          <div class="feature-item"><span class="feature-check blue">→</span> Contentieux origine préférentielle (ALECA, PEM)</div>
+          <div class="feature-item"><span class="feature-check blue">→</span> Recours Tribunal Administratif — délai 90 jours</div>
+        </div>
+        <div style="margin-bottom:.75rem">
+          <div style="font-size:11px;color:var(--ink3);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.5px">Profils cibles</div>
+          <div class="profiles">
+            <span class="profile-tag">Transitaire agréé</span>
+            <span class="profile-tag">Importateur</span>
+            <span class="profile-tag">Avocat d'affaires</span>
+            <span class="profile-tag">Directeur compliance</span>
+          </div>
+        </div>
+        <a href="/static/contact.html" class="cta-btn blue">
+          Soumettre un dossier de litige →
+        </a>
+        <div class="cta-note">Examen préliminaire sous 48h · Prise en charge selon disponibilité avocats partenaires</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="conditions-box">
+    <strong>Conditions de traitement des dossiers</strong>
+    <ul>
+      <li>Les places de consultation sont <strong>limitées et réparties hebdomadairement</strong> selon la disponibilité des partenaires experts et juridiques.</li>
+      <li>Principe <strong>premier arrivé, premier servi</strong> — un accusé de réception vous est envoyé dans les 2h suivant la soumission.</li>
+      <li>Les dossiers sont <strong>qualifiés</strong> par l'équipe Transit-IA avant orientation vers le partenaire expert le plus compétent.</li>
+      <li>L'assistance judiciaire est soumise à une <strong>convention de mission</strong> distincte entre l'utilisateur et le partenaire légal. Transit-IA intervient uniquement en tant qu'intermédiaire de mise en relation.</li>
+      <li>Les tarifs de prise en charge sont définis par chaque partenaire expert et communiqués lors de la qualification du dossier.</li>
+    </ul>
+  </div>
+
+  <div class="how-section">
+    <div class="sec-title">Comment ça marche</div>
+    <div class="steps-grid">
+      <div class="step-box">
+        <div class="step-num">1</div>
+        <div class="step-title">Soumission</div>
+        <div class="step-desc">Décrivez votre requête ou litige via le formulaire de contact. Joignez les documents pertinents.</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">2</div>
+        <div class="step-title">Qualification</div>
+        <div class="step-desc">Transit-IA qualifie votre dossier dans les 2h et l'oriente vers le partenaire approprié.</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">3</div>
+        <div class="step-title">Attribution</div>
+        <div class="step-desc">Un expert ou juriste spécialisé prend en charge votre dossier selon disponibilité.</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">4</div>
+        <div class="step-title">Réponse</div>
+        <div class="step-desc">Vous recevez une réponse personnalisée et documentée sous 24–48h ouvrées.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="experts-section">
+    <div class="sec-title">Nos experts disponibles</div>
+    <div class="expert-grid">
+      <div class="expert-card">
+        <div class="expert-avatar" style="background:#C9A84C">TC</div>
+        <div class="expert-name">Expert Tarifs & Classification</div>
+        <div class="expert-role">Spécialiste nomenclature SH · ADII 15 ans</div>
+        <div class="expert-status status-dispo">Disponible</div>
+        <div class="capacity-bar"><div class="capacity-fill" style="width:60%"></div></div>
+        <div class="capacity-lbl">3 / 5 dossiers</div>
+      </div>
+      <div class="expert-card">
+        <div class="expert-avatar" style="background:#1a5fa8">RF</div>
+        <div class="expert-name">Consultant Régimes & Fiscal</div>
+        <div class="expert-role">Régimes économiques · Optimisation DI/TVA</div>
+        <div class="expert-status status-dispo">Disponible</div>
+        <div class="capacity-bar"><div class="capacity-fill" style="width:40%"></div></div>
+        <div class="capacity-lbl">2 / 5 dossiers</div>
+      </div>
+      <div class="expert-card">
+        <div class="expert-avatar" style="background:#1a7a4a">JD</div>
+        <div class="expert-name">Juriste Contentieux Douanier</div>
+        <div class="expert-role">Avocat · Barreau de Casablanca · Spécialiste ADII</div>
+        <div class="expert-status status-occupe">Complet cette semaine</div>
+        <div class="capacity-bar"><div class="capacity-fill" style="width:100%;background:var(--red)"></div></div>
+        <div class="capacity-lbl">5 / 5 dossiers</div>
+      </div>
+      <div class="expert-card">
+        <div class="expert-avatar" style="background:#534AB7">OI</div>
+        <div class="expert-name">Expert Logistique Internationale</div>
+        <div class="expert-role">Incoterms · MEAD · Transitaire agréé</div>
+        <div class="expert-status status-dispo">Disponible</div>
+        <div class="capacity-bar"><div class="capacity-fill" style="width:20%"></div></div>
+        <div class="capacity-lbl">1 / 5 dossiers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="partners-section">
+    <div class="sec-title">Partenaires légaux & professionnels</div>
+    <div class="partner-list">
+      <div class="partner-card">
+        <div class="partner-icon">⚖</div>
+        <div><div class="partner-name">Avocats spécialisés droit douanier</div><div class="partner-spec">Contentieux ADII · Tribunaux administratifs · Commission CNRMD</div></div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">📋</div>
+        <div><div class="partner-name">Consultants certifiés ADII</div><div class="partner-spec">Anciens inspecteurs · Experts tarification · Valeur en douane</div></div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">🏢</div>
+        <div><div class="partner-name">Cabinets de conseil en commerce</div><div class="partner-spec">Transitaires agréés · Logistique internationale · OEA</div></div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">💰</div>
+        <div><div class="partner-name">Experts fiscalistes</div><div class="partner-spec">TVA import · Remboursements · CGI · Contrôle des changes</div></div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">🔬</div>
+        <div><div class="partner-name">Experts ONSSA · ANRT · CoC</div><div class="partner-spec">Conformité produits · Autorisations techniques · Normes</div></div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">🌍</div>
+        <div><div class="partner-name">Experts commerce Afrique</div><div class="partner-spec">ZLECAf · CEDEAO · Accords Agadir · Réglementations UEMOA</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Avis important :</strong> Transit-IA Engineering est un service d'intermédiation entre les utilisateurs et des professionnels indépendants. Transit-IA n'est pas un cabinet d'avocats et n'exerce pas d'activité réglementée. Les avis fournis par les experts partenaires engagent leur responsabilité propre. La relation contractuelle pour l'assistance judiciaire est exclusivement établie entre le client et l'avocat ou le cabinet partenaire. Les places de traitement des dossiers sont limitées et attribuées dans l'ordre de réception. Transit-IA se réserve le droit de refuser ou de rediriger tout dossier ne correspondant pas au périmètre de compétence des partenaires disponibles.
+  </div>
+
+</div>
+
+<script>
+document.getElementById('places-count').textContent = Math.floor(Math.random() * 5) + 5;
+</script>
+</body>
+</html>

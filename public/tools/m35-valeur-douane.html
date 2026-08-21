@@ -1,0 +1,624 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M-35 — Valeur en Douane | Transit-IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg:        #F7F5F0;
+    --surface:   #FFFFFF;
+    --card:      #FDFCF9;
+    --border:    #E5DDD0;
+    --border2:   #D4C9B5;
+    --gold:      #B8922A;
+    --gold-dark: #8C6B18;
+    --gold-bg:   #FBF5E6;
+    --gold-line: rgba(184,146,42,0.25);
+    --green:     #1D6E40;
+    --green-bg:  #EAF5EE;
+    --red:       #B83232;
+    --red-bg:    #FDF0EF;
+    --orange:    #B86E1A;
+    --orange-bg: #FBF2E6;
+    --blue:      #2A5E8C;
+    --blue-bg:   #EBF2FA;
+    --purple:    #6B3EA6;
+    --purple-bg: #F3EEF9;
+    --text:      #1C1814;
+    --text2:     #3C3630;
+    --muted:     #7A7068;
+    --muted2:    #A09080;
+    --shadow:    0 1px 4px rgba(28,24,20,.06), 0 4px 16px rgba(28,24,20,.04);
+    --mono:      'JetBrains Mono', monospace;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; min-height:100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    background:var(--surface); border-bottom:2px solid var(--gold);
+    padding:0 24px; display:flex; align-items:center; justify-content:space-between;
+    box-shadow:var(--shadow); height:56px; position:sticky; top:0; z-index:100;
+  }
+  .module-badge { background:var(--gold); color:#fff; font-family:var(--mono); font-size:11px; font-weight:600; padding:3px 9px; border-radius:4px; }
+  .topbar-title { font-family:'DM Serif Display',serif; font-size:17px; color:var(--text); margin-left:12px; }
+  .src-tag { font-size:11px; color:var(--muted); font-family:var(--mono); }
+
+  /* METHOD SELECTOR STRIP */
+  .method-strip {
+    background:var(--surface); border-bottom:1px solid var(--border);
+    padding:12px 20px; display:flex; gap:8px; overflow-x:auto; scrollbar-width:none;
+  }
+  .method-strip::-webkit-scrollbar { display:none; }
+  .method-chip {
+    display:flex; align-items:center; gap:7px; min-width:150px;
+    background:var(--card); border:1px solid var(--border); border-radius:8px;
+    padding:9px 12px; cursor:pointer; font-size:12px; transition:all .18s;
+    white-space:nowrap; flex-shrink:0;
+  }
+  .method-chip.active { background:var(--gold-bg); border-color:var(--gold); color:var(--gold-dark); }
+  .method-chip:hover:not(.active) { border-color:var(--border2); }
+  .method-num {
+    width:22px; height:22px; min-width:22px; border-radius:50%;
+    background:var(--gold); color:#fff; display:flex; align-items:center;
+    justify-content:center; font-family:var(--mono); font-size:10px; font-weight:700;
+  }
+  .method-chip:not(.active) .method-num { background:var(--border2); color:var(--muted); }
+
+  /* MAIN GRID */
+  .main-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; min-height:calc(100vh - 120px); }
+  @media(max-width:768px) { .main-grid { grid-template-columns:1fr; } }
+
+  /* LEFT PANEL */
+  .left-panel { border-right:1px solid var(--border); padding:24px 20px; background:var(--surface); }
+  .method-card { display:none; }
+  .method-card.active { display:block; }
+
+  .method-header { display:flex; gap:14px; margin-bottom:18px; }
+  .method-icon {
+    width:48px; height:48px; min-width:48px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; background:var(--gold-bg); border:1px solid var(--gold-line);
+  }
+  .m-title { font-family:'DM Serif Display',serif; font-size:17px; color:var(--gold-dark); margin-bottom:3px; }
+  .m-ref { font-family:var(--mono); font-size:11px; color:var(--muted); margin-bottom:4px; }
+  .m-priority {
+    display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px;
+    font-family:var(--mono); border:1px solid;
+  }
+  .m-priority.primary { background:var(--green-bg); color:var(--green); border-color:rgba(29,110,64,.2); }
+  .m-priority.secondary { background:var(--blue-bg); color:var(--blue); border-color:rgba(42,94,140,.2); }
+  .m-priority.last { background:var(--purple-bg); color:var(--purple); border-color:rgba(107,62,166,.2); }
+
+  .section-lbl { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin:14px 0 7px; }
+  .m-desc { color:var(--text2); font-size:13px; line-height:1.75; }
+
+  .formula-box {
+    background:var(--gold-bg); border:1px solid var(--gold-line); border-left:3px solid var(--gold);
+    border-radius:6px; padding:14px; font-family:var(--mono); font-size:12px;
+    color:var(--text); margin:10px 0; line-height:1.85;
+  }
+  .formula-box .add { color:var(--green); }
+  .formula-box .sub { color:var(--red); }
+
+  .cond-list { list-style:none; margin:6px 0; }
+  .cond-list li {
+    display:flex; gap:8px; padding:6px 0; border-bottom:1px solid var(--border);
+    font-size:13px; color:var(--text2); line-height:1.5;
+  }
+  .cond-list li:last-child { border:none; }
+  .cond-list li::before { content:'→'; color:var(--gold); min-width:16px; }
+
+  .m-alert { border-radius:7px; padding:10px 12px; font-size:12px; margin:10px 0; border:1px solid; line-height:1.55; }
+  .m-alert.gold { background:var(--gold-bg); border-color:var(--gold-line); color:var(--gold-dark); }
+  .m-alert.red { background:var(--red-bg); border-color:rgba(184,50,50,.2); color:var(--red); }
+
+  /* SEQ BAR */
+  .seq-bar { display:flex; align-items:center; gap:4px; flex-wrap:wrap; margin:16px 0 0; }
+  .seq-tag {
+    font-family:var(--mono); font-size:10px; font-weight:700;
+    padding:2px 7px; border-radius:4px; border:1px solid;
+  }
+  .t1 { background:var(--green-bg); color:var(--green); border-color:rgba(29,110,64,.3); }
+  .t2 { background:var(--blue-bg); color:var(--blue); border-color:rgba(42,94,140,.3); }
+  .t3 { background:#EBF5FB; color:#1A6B8A; border-color:rgba(26,107,138,.3); }
+  .t4 { background:var(--gold-bg); color:var(--gold-dark); border-color:var(--gold-line); }
+  .t5 { background:var(--purple-bg); color:var(--purple); border-color:rgba(107,62,166,.3); }
+  .t6 { background:var(--red-bg); color:var(--red); border-color:rgba(184,50,50,.3); }
+  .seq-sep { color:var(--muted2); font-size:11px; }
+
+  .nav-btns { display:flex; gap:8px; margin-top:18px; }
+  .btn-nav {
+    background:var(--card); border:1px solid var(--border2); color:var(--text2);
+    padding:8px 16px; border-radius:6px; cursor:pointer; font-size:13px;
+    transition:all .18s; font-family:'DM Sans',sans-serif;
+  }
+  .btn-nav:hover { border-color:var(--gold); color:var(--gold-dark); }
+  .btn-nav:disabled { opacity:.4; cursor:not-allowed; }
+
+  /* RIGHT PANEL */
+  .right-panel { padding:20px; background:var(--bg); }
+  .rtabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+  .rtab {
+    padding:7px 14px; border:1px solid var(--border2); border-radius:6px;
+    background:var(--surface); color:var(--muted); font-size:12px; cursor:pointer;
+    transition:all .18s; font-family:'DM Sans',sans-serif; font-weight:500;
+  }
+  .rtab.active { background:var(--gold-bg); border-color:var(--gold); color:var(--gold-dark); }
+  .rpanel { display:none; }
+  .rpanel.active { display:block; }
+
+  /* CALC CARD */
+  .calc-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px; box-shadow:var(--shadow); }
+  .calc-title { font-family:'DM Serif Display',serif; font-size:15px; color:var(--gold-dark); margin-bottom:14px; }
+  .inp-row { display:flex; flex-direction:column; gap:5px; margin-bottom:11px; }
+  .inp-row label { font-size:12px; color:var(--muted); font-weight:500; }
+  .inp-row input, .inp-row select {
+    background:var(--bg); border:1px solid var(--border2); border-radius:6px;
+    padding:9px 12px; color:var(--text); font-size:13px; font-family:var(--mono);
+    outline:none; transition:border-color .18s;
+  }
+  .inp-row input:focus, .inp-row select:focus { border-color:var(--gold); }
+  .inp-row select option { background:var(--surface); }
+  .btn-go {
+    background:var(--gold); color:#fff; border:none; border-radius:8px;
+    padding:10px 20px; font-weight:600; font-size:13px; cursor:pointer; width:100%;
+    font-family:'DM Sans',sans-serif; transition:all .18s; margin-top:2px;
+    box-shadow:0 2px 8px rgba(184,146,42,.25);
+  }
+  .btn-go:hover { background:var(--gold-dark); }
+
+  .calc-result { display:none; margin-top:12px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  .calc-result.show { display:block; }
+  .res-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:9px 14px; border-bottom:1px solid var(--border); font-size:13px;
+  }
+  .res-row:nth-child(even) { background:var(--card); }
+  .res-row:last-child { border:none; background:var(--gold-bg); }
+  .res-lbl { color:var(--muted); }
+  .res-val { font-family:var(--mono); font-weight:600; }
+  .res-val.red { color:var(--red); }
+  .res-val.green { color:var(--green); }
+  .res-val.gold { color:var(--gold-dark); }
+
+  /* DEFENSE STEPS */
+  .defense-phase { margin-bottom:16px; }
+  .phase-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:8px; }
+  .d-step { display:flex; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:11px 13px; margin-bottom:6px; box-shadow:var(--shadow); }
+  .d-num { min-width:24px; height:24px; background:var(--gold); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:10px; font-weight:700; }
+  .d-title { font-weight:600; font-size:13px; margin-bottom:2px; }
+  .d-desc { color:var(--muted); font-size:12px; line-height:1.5; }
+
+  .mini-alert { border-radius:7px; padding:10px 12px; font-size:12px; border:1px solid; margin-top:8px; line-height:1.5; }
+  .mini-alert.gold { background:var(--gold-bg); border-color:var(--gold-line); color:var(--gold-dark); }
+  .mini-alert.red { background:var(--red-bg); border-color:rgba(184,50,50,.2); color:var(--red); }
+  .mini-alert.green { background:var(--green-bg); border-color:rgba(29,110,64,.2); color:var(--green); }
+
+  /* FOOTER */
+  .footer { text-align:center; padding:14px; color:var(--muted2); font-size:11px; border-top:1px solid var(--border); margin-top:0; background:var(--surface); grid-column:1/-1; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex; align-items:center;">
+    <div class="module-badge">M-35</div>
+    <div class="topbar-title">Valeur en Douane — 6 Méthodes OMD</div>
+  </div>
+  <div class="src-tag">Accord OMC Art. VII GATT 1994 · CDII Art. 20–20 duodecies</div>
+</div>
+
+<!-- METHOD STRIP -->
+<div class="method-strip" id="method-strip">
+  <div class="method-chip active" onclick="setMethod(0,this)"><div class="method-num">1</div> Valeur transactionnelle</div>
+  <div class="method-chip" onclick="setMethod(1,this)"><div class="method-num">2</div> Marchandises identiques</div>
+  <div class="method-chip" onclick="setMethod(2,this)"><div class="method-num">3</div> Marchandises similaires</div>
+  <div class="method-chip" onclick="setMethod(3,this)"><div class="method-num">4</div> Méthode déductive</div>
+  <div class="method-chip" onclick="setMethod(4,this)"><div class="method-num">5</div> Valeur calculée</div>
+  <div class="method-chip" onclick="setMethod(5,this)"><div class="method-num">6</div> Dernier recours</div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+
+<!-- ── LEFT : METHOD DETAIL ── -->
+<div class="left-panel">
+
+  <!-- M1 -->
+  <div class="method-card active" id="mc-0">
+    <div class="method-header">
+      <div class="method-icon">💰</div>
+      <div>
+        <div class="m-title">Méthode 1 — Valeur Transactionnelle</div>
+        <div class="m-ref">Art. 1 Accord OMC · Art. 20 CDII Maroc</div>
+        <span class="m-priority primary">MÉTHODE PRIMAIRE — appliquée en premier</span>
+      </div>
+    </div>
+    <div class="m-desc">La base de tout le système international d'évaluation. La valeur en douane est le <strong>prix effectivement payé ou à payer</strong> pour les marchandises lors de leur vente pour exportation au Maroc, ajusté selon l'Art. 8.</div>
+    <div class="section-lbl">Formule de calcul</div>
+    <div class="formula-box">
+VD = Prix facture + Ajustements Art. 8<br><br>
+<span class="add">INCLUS (+) :</span> Fret · Assurance · Commissions (hors achat)<br>
+Emballages · Redevances/licences liées à la vente<br>
+Valeur biens/services fournis gratuitement<br><br>
+<span class="sub">EXCLUS (-) :</span> Commissions d'achat · Droits et taxes Maroc<br>
+Frais transport après dédouanement
+    </div>
+    <div class="section-lbl">Conditions d'acceptation</div>
+    <ul class="cond-list">
+      <li>Absence de restriction à la cession ou à l'utilisation par l'acheteur</li>
+      <li>La vente ou le prix n'est pas conditionné à des éléments non valorisables</li>
+      <li>Acheteur et vendeur non liés — ou valeur proche des valeurs de référence</li>
+      <li>Aucun retour de produit de revente au vendeur (ou montant ajustable)</li>
+    </ul>
+    <div class="m-alert gold">💡 <strong>Pratique ADII :</strong> La valeur déclarée est comparée à la Banque de Données de Valeur (BDV) ADII. Un écart significatif déclenche automatiquement une demande de justification et peut conduire à une expertise.</div>
+  </div>
+
+  <!-- M2 -->
+  <div class="method-card" id="mc-1">
+    <div class="method-header">
+      <div class="method-icon">🔗</div>
+      <div>
+        <div class="m-title">Méthode 2 — Marchandises Identiques</div>
+        <div class="m-ref">Art. 2 Accord OMC · Art. 20 bis CDII</div>
+        <span class="m-priority secondary">si M1 inapplicable</span>
+      </div>
+    </div>
+    <div class="m-desc">Valeur transactionnelle de <strong>marchandises identiques</strong> vendues pour exportation au Maroc à la même époque commerciale et au même niveau de la chaîne commerciale.</div>
+    <div class="section-lbl">Définition stricte « identiques »</div>
+    <div class="formula-box">
+Identiques = Même pays d'origine<br>
+           + Mêmes caractéristiques physiques<br>
+           + Même qualité & réputation<br>
+           + Mêmes caractéristiques commerciales<br><br>
+<span class="sub">EXCLUS</span> : marchandises incorporant des travaux<br>de conception, études, plans réalisés au Maroc<br><br>
+Ajustements : niveau commercial + quantité + fret<br>
+Si plusieurs valeurs disponibles → retenir la plus basse
+    </div>
+    <div class="m-alert red">⚠️ La notion "identique" est stricte. Toute différence mineure d'apparence ou de composition exclut cette méthode → passer directement en M3.</div>
+  </div>
+
+  <!-- M3 -->
+  <div class="method-card" id="mc-2">
+    <div class="method-header">
+      <div class="method-icon">🔀</div>
+      <div>
+        <div class="m-title">Méthode 3 — Marchandises Similaires</div>
+        <div class="m-ref">Art. 3 Accord OMC · Art. 20 ter CDII</div>
+        <span class="m-priority secondary">si M2 inapplicable</span>
+      </div>
+    </div>
+    <div class="m-desc">Valeur transactionnelle de <strong>marchandises similaires</strong> : même pays d'origine, fonctions analogues, caractéristiques proches permettant la substitution commerciale.</div>
+    <div class="section-lbl">Critères de similarité</div>
+    <div class="formula-box">
+Similaires = Même pays d'origine<br>
+           + Fonctions commerciales analogues<br>
+           + Substituabilité sur le marché<br><br>
+Différences mineures admises : apparence,<br>
+composition si elles n'affectent pas la valeur<br><br>
+Mêmes ajustements que M2 :<br>
+niveau commercial + quantité + frais de transport
+    </div>
+    <div class="m-alert gold">💡 <strong>Pratique ADII :</strong> Peut utiliser des valeurs de marchandises similaires en provenance d'autres pays de même niveau de développement industriel, avec ajustements documentés et justifiés.</div>
+  </div>
+
+  <!-- M4 -->
+  <div class="method-card" id="mc-3">
+    <div class="method-header">
+      <div class="method-icon">📉</div>
+      <div>
+        <div class="m-title">Méthode 4 — Méthode Déductive</div>
+        <div class="m-ref">Art. 5 Accord OMC · Art. 20 quater/quinquies CDII</div>
+        <span class="m-priority secondary">basée sur prix de vente intérieur</span>
+      </div>
+    </div>
+    <div class="m-desc">Valeur déduite du <strong>prix de vente sur le marché intérieur marocain</strong> des marchandises importées (ou identiques/similaires), après déduction des coûts postérieurs à l'importation.</div>
+    <div class="section-lbl">Formule de déduction</div>
+    <div class="formula-box">
+VD = Prix vente intérieur (unitaire)<br>
+<span class="sub">   − Commissions et marges habituelles</span><br>
+<span class="sub">   − Frais généraux et bénéfice dans le pays</span><br>
+<span class="sub">   − Transport & assurance intérieure</span><br>
+<span class="sub">   − Droits et taxes d'importation payés</span><br><br>
+Conditions : vente à l'état importé, à des<br>
+personnes non liées, plus grande quantité
+    </div>
+    <div class="m-alert gold">💡 <strong>Option d'inversion :</strong> L'importateur peut demander l'application de la M5 avant la M4 si cela lui est plus favorable. Cette demande doit être expresse et adressée à l'ADII avant le dédouanement.</div>
+  </div>
+
+  <!-- M5 -->
+  <div class="method-card" id="mc-4">
+    <div class="method-header">
+      <div class="method-icon">🏭</div>
+      <div>
+        <div class="m-title">Méthode 5 — Valeur Calculée</div>
+        <div class="m-ref">Art. 6 Accord OMC · Art. 20 septies CDII</div>
+        <span class="m-priority secondary">basée sur coûts de production</span>
+      </div>
+    </div>
+    <div class="m-desc">Valeur construite sur la base des <strong>coûts de production</strong> dans le pays d'origine, fournis par le producteur ou vérifiables par les autorités.</div>
+    <div class="section-lbl">Composition de la valeur calculée</div>
+    <div class="formula-box">
+VD Calculée = Coût des matières premières<br>
+<span class="add">            + Coût de fabrication et traitements</span><br>
+<span class="add">            + Montant du bénéfice + frais généraux</span><br>
+<span class="add">            + Frais transport / assurance (FOB/CAF)</span><br><br>
+Source : comptabilité du producteur dans le<br>
+pays d'exportation — vérifiable via coopération<br>
+douanière OMD / ADII
+    </div>
+    <div class="m-alert red">⚠️ Méthode difficile en pratique : requiert la collaboration du producteur étranger. Souvent inaccessible pour les PME importatrices. Basculer en M6 si échec.</div>
+  </div>
+
+  <!-- M6 -->
+  <div class="method-card" id="mc-5">
+    <div class="method-header">
+      <div class="method-icon">🔄</div>
+      <div>
+        <div class="m-title">Méthode 6 — Dernier Recours</div>
+        <div class="m-ref">Art. 7 Accord OMC · Art. 20 octies CDII</div>
+        <span class="m-priority last">ULTIME RECOURS — si toutes les méthodes échouent</span>
+      </div>
+    </div>
+    <div class="m-desc">Si aucune méthode précédente n'est applicable, l'ADII détermine la valeur par des <strong>moyens raisonnables</strong> compatibles avec l'Accord OMC Art. VII GATT, sur la base des données disponibles au Maroc.</div>
+    <div class="section-lbl">Sources admissibles</div>
+    <ul class="cond-list">
+      <li>Valeurs transactionnelles de marchandises acceptées antérieurement</li>
+      <li>Bases de données douanières de pays à développement comparable</li>
+      <li>Prix catalogue ou prix de liste publiés sur le marché</li>
+      <li>Études de marché ou bases de données commerciales reconnues</li>
+    </ul>
+    <div class="section-lbl">Interdictions absolues (Art. 7.2 OMC)</div>
+    <div class="formula-box">
+<span class="sub">INTERDIT d'utiliser :</span><br>
+✗ Prix de ventes vers d'autres pays (hors Maroc)<br>
+✗ Valeurs minimales arbitraires ou fictives<br>
+✗ Système de deux valeurs alternantes<br>
+✗ Valeurs basées sur l'origine nationale<br>
+✗ Prix catalogue du marché intérieur exportateur
+    </div>
+    <div class="m-alert gold">💡 <strong>Droit de l'importateur :</strong> En cas d'application de la M6, l'importateur doit être informé par écrit de la méthode utilisée et peut exercer un recours sans pénalité (Art. 11 Accord OMC).</div>
+  </div>
+
+  <!-- NAV BUTTONS -->
+  <div class="nav-btns">
+    <button class="btn-nav" id="btn-prev" onclick="navigateMethod(-1)" disabled>← Précédente</button>
+    <button class="btn-nav" id="btn-next" onclick="navigateMethod(1)">Suivante →</button>
+  </div>
+
+  <!-- SEQUENCE BAR -->
+  <div style="margin-top:16px;">
+    <div class="section-lbl">Séquence obligatoire d'application</div>
+    <div class="seq-bar">
+      <span class="seq-tag t1">M1</span><span class="seq-sep">→</span>
+      <span class="seq-tag t2">M2</span><span class="seq-sep">→</span>
+      <span class="seq-tag t3">M3</span><span class="seq-sep">→</span>
+      <span class="seq-tag t4">M4</span><span class="seq-sep">⇌</span>
+      <span class="seq-tag t5">M5</span><span class="seq-sep">→</span>
+      <span class="seq-tag t6">M6</span>
+    </div>
+    <div style="color:var(--muted); font-size:11px; margin-top:5px;">⇌ = inversion M4/M5 possible sur demande expresse de l'importateur</div>
+  </div>
+</div>
+
+<!-- ── RIGHT : TOOLS ── -->
+<div class="right-panel">
+  <div class="rtabs">
+    <button class="rtab active" onclick="switchRTab('calc',this)">🔢 Calculateur VD</button>
+    <button class="rtab" onclick="switchRTab('defense',this)">⚖️ Guide Défense</button>
+    <button class="rtab" onclick="switchRTab('redressement',this)">📋 Redressement</button>
+  </div>
+
+  <!-- CALCULATEUR -->
+  <div class="rpanel active" id="rp-calc">
+    <div class="calc-card">
+      <div class="calc-title">📐 Calculateur Valeur Transactionnelle (M1)</div>
+      <div class="inp-row"><label>Prix facture hors taxes (MAD)</label><input type="number" id="p-facture" placeholder="ex: 250000" min="0"></div>
+      <div class="inp-row"><label>Fret maritime / aérien</label><input type="number" id="p-fret" placeholder="ex: 12000" min="0"></div>
+      <div class="inp-row"><label>Assurance (prime réelle ou 1,5% CAF)</label><input type="number" id="p-assurance" placeholder="ex: 3000" min="0"></div>
+      <div class="inp-row"><label>Commissions (hors commissions d'achat)</label><input type="number" id="p-comm" placeholder="ex: 5000" min="0"></div>
+      <div class="inp-row"><label>Emballages + contenants spéciaux</label><input type="number" id="p-emb" placeholder="ex: 2000" min="0"></div>
+      <div class="inp-row"><label>Redevances / licences incluses à la vente</label><input type="number" id="p-red" placeholder="ex: 0" min="0"></div>
+      <div class="inp-row"><label>Taux DI applicable (%)</label><input type="number" id="p-di" placeholder="ex: 17.5" min="0" max="100"></div>
+      <div class="inp-row"><label>Taux TVA à l'importation</label>
+        <select id="p-tva"><option value="20">20%</option><option value="14">14%</option><option value="10">10%</option><option value="7">7%</option><option value="0">0% (exonéré)</option></select>
+      </div>
+      <button class="btn-go" onclick="calcVD()">📐 Calculer valeur en douane et droits</button>
+      <div class="calc-result" id="cr-vd">
+        <div class="res-row"><span class="res-lbl">Prix facture</span><span class="res-val" id="rv-fac">—</span></div>
+        <div class="res-row"><span class="res-lbl">Total frais d'approche</span><span class="res-val gold" id="rv-frais">—</span></div>
+        <div class="res-row" style="background:var(--gold-bg)!important;"><span class="res-lbl" style="font-weight:600;color:var(--text);">✅ Valeur en douane (CAF)</span><span class="res-val gold" style="font-size:15px;" id="rv-vd">—</span></div>
+        <div class="res-row"><span class="res-lbl">Droits d'importation (DI)</span><span class="res-val" id="rv-di">—</span></div>
+        <div class="res-row"><span class="res-lbl">Base TVA (VD + DI)</span><span class="res-val" id="rv-btva">—</span></div>
+        <div class="res-row"><span class="res-lbl">TVA à l'importation</span><span class="res-val" id="rv-tva">—</span></div>
+        <div class="res-row"><span class="res-lbl" style="font-weight:600;color:var(--text);">⚠️ Total droits et taxes</span><span class="res-val red" style="font-size:15px;" id="rv-total">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEFENSE -->
+  <div class="rpanel" id="rp-defense">
+    <div class="calc-card">
+      <div class="calc-title">⚖️ Guide de Défense — Redressement ADII</div>
+      <p style="color:var(--muted); font-size:12px; margin-bottom:16px;">Séquence de défense lorsque l'ADII remet en cause la valeur transactionnelle déclarée.</p>
+
+      <div class="defense-phase">
+        <div class="phase-title">Phase 1 — Réponse immédiate (J0 → J+15)</div>
+        <div class="d-step"><div class="d-num">1</div><div><div class="d-title">Demander les motifs écrits</div><div class="d-desc">L'ADII est tenue de communiquer par écrit les raisons du doute avant tout redressement définitif (Décision OMC sur doutes — Art. 17).</div></div></div>
+        <div class="d-step"><div class="d-num">2</div><div><div class="d-title">Fournir la documentation complète</div><div class="d-desc">Contrats commerciaux signés, historique transactions avec le fournisseur, correspondances commerciales, relevés bancaires du paiement réel, fiche technique produit.</div></div></div>
+        <div class="d-step"><div class="d-num">3</div><div><div class="d-title">Soumettre la Déclaration Écrite de Valeur (DEV)</div><div class="d-desc">Si demandée par l'ADII, préciser la nature des relations avec le vendeur (lié ou non lié) et justifier le prix facturé.</div></div></div>
+      </div>
+
+      <div class="defense-phase">
+        <div class="phase-title">Phase 2 — Contestation administrative</div>
+        <div class="d-step"><div class="d-num">4</div><div><div class="d-title">Recours auprès du Directeur Régional</div><div class="d-desc">Dépôt du recours écrit dans les délais légaux (60 jours en général) avec pièces justificatives complètes.</div></div></div>
+        <div class="d-step"><div class="d-num">5</div><div><div class="d-title">Étayer le dossier de valeur comparative</div><div class="d-desc">Comparatifs de prix sectoriels : publications UNCTAD, COMTRADE, London Metal Exchange, devis alternatifs, études de marché OCDE.</div></div></div>
+        <div class="d-step"><div class="d-num">6</div><div><div class="d-title">Demander la mainlevée sous caution</div><div class="d-desc">Art. 234 CDII — libère les marchandises pendant la contestation, évite l'immobilisation coûteuse en zone portuaire.</div></div></div>
+      </div>
+
+      <div class="defense-phase">
+        <div class="phase-title">Phase 3 — Recours judiciaire</div>
+        <div class="d-step"><div class="d-num">7</div><div><div class="d-title">Saisine du Tribunal Administratif</div><div class="d-desc">En cas de rejet administratif — droit garanti sans pénalité par l'Art. 11 de l'Accord OMC. Se faire assister d'un conseil spécialisé (avocat fiscaliste/douaniste).</div></div></div>
+      </div>
+      <div class="mini-alert gold">💡 <strong>Prévention :</strong> Constituer dès l'achat un dossier de valeur complet : contrat + facture + preuve de paiement + correspondances + fiche technique. Un transitaire rigoureux anticipe les demandes ADII.</div>
+    </div>
+  </div>
+
+  <!-- REDRESSEMENT -->
+  <div class="rpanel" id="rp-redressement">
+    <div class="calc-card">
+      <div class="calc-title">📋 Simulateur d'Impact Redressement</div>
+      <div class="inp-row"><label>Valeur déclarée initialement (MAD)</label><input type="number" id="rd-vd" placeholder="ex: 200000"></div>
+      <div class="inp-row"><label>Valeur redressée par l'ADII (MAD)</label><input type="number" id="rd-vr" placeholder="ex: 280000"></div>
+      <div class="inp-row"><label>Taux DI (%)</label><input type="number" id="rd-di" placeholder="ex: 17.5" min="0"></div>
+      <div class="inp-row"><label>Taux TVA</label>
+        <select id="rd-tva"><option value="20">20%</option><option value="14">14%</option><option value="10">10%</option><option value="7">7%</option><option value="0">0%</option></select>
+      </div>
+      <div class="inp-row"><label>Nature du redressement</label>
+        <select id="rd-nat">
+          <option value="erreur">Erreur matérielle / oubli involontaire</option>
+          <option value="delibere">Fausse déclaration délibérée</option>
+        </select>
+      </div>
+      <button class="btn-go" onclick="calcRedressement()">📊 Simuler l'impact du redressement</button>
+      <div class="calc-result" id="cr-rd">
+        <div class="res-row"><span class="res-lbl">Droits initialement payés</span><span class="res-val" id="rd-r1">—</span></div>
+        <div class="res-row"><span class="res-lbl">Droits sur valeur redressée</span><span class="res-val" id="rd-r2">—</span></div>
+        <div class="res-row"><span class="res-lbl">Rappel de droits (DI + TVA)</span><span class="res-val red" id="rd-r3">—</span></div>
+        <div class="res-row"><span class="res-lbl">Majoration pour insuffisance</span><span class="res-val red" id="rd-r4">—</span></div>
+        <div class="res-row"><span class="res-lbl" style="font-weight:600;color:var(--text);">Total à régulariser</span><span class="res-val red" style="font-size:15px;" id="rd-r5">—</span></div>
+        <div id="rd-alert-wrap" style="padding:10px 14px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Transit-IA — M-35 Valeur en Douane · Accord OMC Art. VII GATT 1994 · CDII Art. 20 à 20 duodecies · OMD Guide de base VTF
+</div>
+</div><!-- end main-grid -->
+
+<script>
+let curMethod = 0;
+const totalMethods = 6;
+
+function setMethod(idx, chip) {
+  document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.method-chip').forEach(c => c.classList.remove('active'));
+  document.getElementById('mc-' + idx).classList.add('active');
+  chip.classList.add('active');
+  curMethod = idx;
+  document.getElementById('btn-prev').disabled = idx === 0;
+  document.getElementById('btn-next').disabled = idx === totalMethods - 1;
+}
+
+function navigateMethod(dir) {
+  const n = curMethod + dir;
+  if (n < 0 || n >= totalMethods) return;
+  setMethod(n, document.querySelectorAll('.method-chip')[n]);
+}
+
+function switchRTab(id, btn) {
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.rpanel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('rp-' + id).classList.add('active');
+}
+
+const fmt = n => n.toLocaleString('fr-MA', {maximumFractionDigits:0}) + ' MAD';
+
+function calcVD() {
+  const fac = +document.getElementById('p-facture').value||0;
+  const fret = +document.getElementById('p-fret').value||0;
+  const ass = +document.getElementById('p-assurance').value||0;
+  const com = +document.getElementById('p-comm').value||0;
+  const emb = +document.getElementById('p-emb').value||0;
+  const red = +document.getElementById('p-red').value||0;
+  const di = +document.getElementById('p-di').value||0;
+  const tva = +document.getElementById('p-tva').value||0;
+
+  const frais = fret + ass + com + emb + red;
+  const vd = fac + frais;
+  const diVal = vd * (di/100);
+  const btva = vd + diVal;
+  const tvaVal = btva * (tva/100);
+
+  document.getElementById('rv-fac').textContent = fmt(fac);
+  document.getElementById('rv-frais').textContent = fmt(frais);
+  document.getElementById('rv-vd').textContent = fmt(vd);
+  document.getElementById('rv-di').textContent = fmt(diVal) + ' (' + di + '%)';
+  document.getElementById('rv-btva').textContent = fmt(btva);
+  document.getElementById('rv-tva').textContent = fmt(tvaVal) + ' (' + tva + '%)';
+  document.getElementById('rv-total').textContent = fmt(diVal + tvaVal);
+  document.getElementById('cr-vd').classList.add('show');
+}
+
+function calcRedressement() {
+  const vd = +document.getElementById('rd-vd').value||0;
+  const vr = +document.getElementById('rd-vr').value||0;
+  const di = +document.getElementById('rd-di').value||0;
+  const tva = +document.getElementById('rd-tva').value||0;
+  const nat = document.getElementById('rd-nat').value;
+
+  const calcD = v => { const d = v*(di/100); return d + (v+d)*(tva/100); };
+  const d1 = calcD(vd), d2 = calcD(vr);
+  const rappel = d2 - d1;
+  const majPct = nat === 'delibere' ? 0.5 : 0.1;
+  const maj = rappel * majPct;
+  const total = rappel + maj;
+
+  document.getElementById('rd-r1').textContent = fmt(d1);
+  document.getElementById('rd-r2').textContent = fmt(d2);
+  document.getElementById('rd-r3').textContent = fmt(rappel);
+  document.getElementById('rd-r4').textContent = fmt(maj) + ' (' + (majPct*100) + '%)';
+  document.getElementById('rd-r5').textContent = fmt(total);
+
+  const alertHtml = nat === 'delibere'
+    ? '<div class="mini-alert red">🚨 Fausse déclaration : risque de poursuites pénales, saisie des marchandises et inscription au registre des infractions ADII.</div>'
+    : '<div class="mini-alert green">⚖️ Erreur matérielle : régularisation possible avec majoration réduite (10%). Solliciter un arrangement amiable via le receveur régional.</div>';
+  document.getElementById('rd-alert-wrap').innerHTML = alertHtml;
+  document.getElementById('cr-rd').classList.add('show');
+}
+</script>
+</body>
+</html>
+
+<script>
+// ── PROTECTION: Override calculate() → API call ──────────
+(function() {
+  window.calculate = window.calculerVD = async function() {
+    const methode  = parseInt(document.getElementById('f-methode')?.value || document.querySelector('.method-chip.active [data-m]')?.dataset?.m) || 1;
+    const taux     = parseFloat(document.getElementById('f-taux')?.value) || 10.9;
+    const params   = methode === 1 ? {
+      prixFacture:         parseFloat(document.getElementById('f-fob')?.value)      || 0,
+      fraisTransport:      parseFloat(document.getElementById('f-fret')?.value)     || 0,
+      fraisAssurance:      parseFloat(document.getElementById('f-assur')?.value)    || 0,
+      commissions:         parseFloat(document.getElementById('f-comm')?.value)     || 0,
+      redevances:          parseFloat(document.getElementById('f-redev')?.value)    || 0,
+      fraisEmballage:      parseFloat(document.getElementById('f-embal')?.value)    || 0,
+      autresAjustements:   parseFloat(document.getElementById('f-autres')?.value)   || 0,
+      tauxChange: taux, devise: document.getElementById('f-devise')?.value || 'EUR'
+    } : { valeurMarchandisesIdentiques: parseFloat(document.getElementById('f-val-id')?.value) || 0,
+          ajustementQuantite: 0, ajustementNiveau: 0 };
+    try {
+      const r = await fetch('/api/calculs/valeur-douane', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ methode, params })
+      });
+      const d = await r.json();
+      if (!d.ok) return;
+      const fr = n => Math.round(n).toLocaleString('fr-FR');
+      if (document.getElementById('r-vd'))    document.getElementById('r-vd').textContent    = fr(d.valeurCAF) + ' MAD';
+      if (document.getElementById('r-methode'))document.getElementById('r-methode').textContent = d.libelle;
+      if (document.getElementById('r-ref'))   document.getElementById('r-ref').textContent   = d.reference;
+    } catch(e) { console.error('API valeur-douane:', e); }
+  };
+})();
+</script>
+
