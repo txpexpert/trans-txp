@@ -15,16 +15,16 @@ import {
   supabase, chunkText, embedText,
   ingestCirculairesJSON, ingestFaqJSON, ingestTarifsJSON,
   ingestDecisionsJSON, ingestProceduresJSON, ingestGlossaireJSON,
-} from '../../lib/ingestion'
+} from './ingestion'
 // AJOUT — reconnaît le JSON structuré produit par le projet Claude dédié
 // (1 fichier = 1 circulaire, forme { circulaire, chunks }, pas de wrapper
 // type/entries). Préserve statut/domaine/article/abroge_ou_modifie au lieu
 // du chunking mécanique par tranches de mots utilisé par ingestCirculairesJSON.
-import { ingestCirculaireSchemaV2 }             from '../../lib/ingestCirculaireSchemaV2'
+import { ingestCirculaireSchemaV2 }             from './ingestCirculaireSchemaV2'
 // AJOUT — notes ADII : même structure interne que les circulaires, mais clé
 // racine "note" au lieu de "circulaire" (signal de routage explicite vers
 // notes_adii / notes_adii_chunks, tables séparées des circulaires officielles).
-import { ingestNoteSchemaV2 }                   from '../../lib/ingestNoteSchemaV2'
+import { ingestNoteSchemaV2 }                   from './ingestNoteSchemaV2'
 
 export const config = { api: { bodyParser: false } }
 
