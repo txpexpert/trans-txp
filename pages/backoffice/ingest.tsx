@@ -102,7 +102,7 @@ export default function BackofficeIngest() {
       const res  = await fetch('/api/ingest', { method: 'POST', body: form })
       const data: IngestResponse = await res.json()
       setResponse(data)
-      if (data.summary.errors === 0) setFiles([])
+      if ((data.summary?.errors ?? 0) === 0 && !data.error) setFiles([])
     } catch (err) {
       // Ne devrait plus arriver — l'API renvoie toujours un JSON, même en cas
       // d'erreur serveur. Garde-fou si jamais le réseau lui-même est coupé.
