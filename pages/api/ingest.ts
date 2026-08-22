@@ -1,361 +1,242 @@
-// lib/ingestion.ts
+// pages/api/ingest.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Ingestion UNIVERSELLE vers la table knowledge_chunks.
-// Un seul mécanisme d'entrée pour tous les documents à racine
-// "circulaire" | "note" | "document" (circulaires, notes ADII, dépliants,
-// brochures, dahirs, codes, instructions communes, etc.) — aucune logique
-// spécifique par type de document. Les champs non reconnus comme colonnes
-// de knowledge_chunks sont automatiquement rangés dans metadata_extra, au
-// niveau document comme au niveau chunk.
+// Ingestion modulaire : PDF (extraction Anthropic) + JSON (insertion directe)
+// JSON schéma universel (circulaire | note | document + chunks) → knowledge_chunks
+// JSON "à entrées" (faq | tarifs | procedures | glossaire | decisions) → tables dédiées
+// Auth : cookie httpOnly das_admin (rôle admin requis)
 //
-// Les JSON "à entrées" (faq / tarifs / procedures / glossaire / decisions)
-// restent traités séparément vers leurs tables dédiées, hors RAG.
+// ✅ Gestion d'erreur globale — toute erreur, où qu'elle survienne (parsing
+// du formulaire, lecture de fichier, appel API externe...), est systématiquement
+// renvoyée en JSON avec un message clair, jamais un crash silencieux qui casse
+// le fetch() côté interface (=> "Erreur réseau" générique et inexploitable).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import OpenAI from 'openai'
-import { supabase } from './supabase'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import Anthropic                                from '@anthropic-ai/sdk'
+import formidable, { File as FormFile }         from 'formidable'
+import fs                                       from 'fs'
+import path                                     from 'path'
+import { COOKIE_NAME, verifyToken }             from '../../lib/adminAuth'
+import {
+  supabase, chunkText, embedText,
+  ingestFaqJSON, ingestTarifsJSON,
+  ingestDecisionsJSON, ingestProceduresJSON, ingestGlossaireJSON,
+  ingestUniversalDocument, isUniversalDocument,
+} from '../../lib/ingestion'
 
-export { supabase }
+export const config = { api: { bodyParser: false } }
 
-// Client OpenAI initialisé UNIQUEMENT au premier appel réel (jamais au
-// chargement du module) — évite tout crash silencieux au niveau du serveur
-// si la clé est absente ou mal enregistrée : l'erreur remonte alors proprement
-// dans le try/catch de la route API, en JSON, au lieu de faire planter toute
-// la fonction avant même son exécution (page d'erreur HTML générique).
-let openai: OpenAI | null = null
-function getOpenAI(): OpenAI {
-  if (!openai) {
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY manquante — vérifier les variables d\'environnement Vercel')
-    }
-    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+let anthropic: Anthropic | null = null
+function getAnthropic(): Anthropic {
+  if (!anthropic) {
+    if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY manquante — vérifier les variables d\'environnement Vercel')
+    anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
   }
-  return openai
+  return anthropic
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CHUNKING (texte brut, hors schéma v2) + EMBEDDINGS
+// SCHEMAS JSON SUPPORTÉS
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// SCHÉMA UNIVERSEL (RAG — knowledge_chunks) : un fichier = un document.
+// Clé racine "circulaire" | "note" | "document" + tableau "chunks".
+// Tout champ non standard (co_emetteur, reference, signataire, vise,
+// textes_modificatifs, articles_abroges, date_hijri...) est automatiquement
+// conservé dans metadata_extra, sans code spécifique par type.
+//
+// TYPE: "faq" | "tarifs" | "procedures" | "glossaire" | "decisions"
+// { "type": "...", "entries": [...] } → tables dédiées, hors RAG.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function chunkText(text: string, maxWords = 300, overlap = 50): string[] {
-  const words = text.split(/\s+/).filter(Boolean)
-  if (words.length === 0) return []
+type JsonType = 'faq' | 'tarifs' | 'procedures' | 'glossaire' | 'decisions'
 
-  const chunks: string[] = []
-  let start = 0
-  while (start < words.length) {
-    const end = Math.min(start + maxWords, words.length)
-    chunks.push(words.slice(start, end).join(' '))
-    if (end === words.length) break
-    start = end - overlap
-  }
-  return chunks
+interface JsonPayload {
+  type:    JsonType
+  source?: string
+  entries: Record<string, unknown>[]
 }
 
-export async function embedText(text: string): Promise<number[]> {
-  const res = await getOpenAI().embeddings.create({
-    model: 'text-embedding-3-small',
-    input: text.slice(0, 30000),
-    encoding_format: 'float',
-  })
-  return res.data[0].embedding
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// INGESTION UNIVERSELLE — knowledge_chunks
-// ─────────────────────────────────────────────────────────────────────────────
-
-export interface UniversalIngestResult {
-  numero: string | null
-  titre: string | null
-  status: 'inserted' | 'skipped_doublon' | 'rejected_invalide' | 'error'
+interface IngestResult {
+  fichier:         string
+  type:           'pdf' | 'universel' | JsonType
+  status:         'success' | 'error' | 'skipped'
+  numero?:         string | null
+  titre?:          string | null
   chunksInserted?: number
-  errors?: string[]
-}
-
-// Colonnes reconnues au niveau document (racine circulaire/note/document).
-// Tout champ du document parent qui n'apparaît PAS dans cette liste part
-// automatiquement dans metadata_extra — pas besoin de le lister à l'avance.
-const DOC_KNOWN_FIELDS = new Set([
-  'numero', 'titre', 'objet', 'date', 'date_gregorienne', 'emetteur',
-  'statut', 'langue', 'type_document', 'abroge_ou_modifie', 'modifie_par',
-  'date_fin_validite',
-])
-
-// Colonnes reconnues au niveau de chaque chunk.metadata.
-const CHUNK_KNOWN_FIELDS = new Set([
-  'source_type', 'domaine', 'sous_domaine', 'article', 'articles_couverts',
-  'regime_douanier', 'nc8_concerne', 'mots_cles', 'chunk_index', 'total_chunks',
-  // champs dupliqués parfois présents au niveau chunk mais déjà gérés au
-  // niveau document — on les ignore ici pour ne pas les remettre dans
-  // metadata_extra en double :
-  'numero', 'date', 'emetteur', 'titre', 'statut',
-])
-
-function extractRootKey(raw: Record<string, unknown>): 'circulaire' | 'note' | 'document' | null {
-  if ('circulaire' in raw) return 'circulaire'
-  if ('note' in raw) return 'note'
-  if ('document' in raw) return 'document'
-  return null
-}
-
-export function isUniversalDocument(raw: unknown): boolean {
-  if (typeof raw !== 'object' || raw === null) return false
-  const asRaw = raw as Record<string, unknown>
-  return extractRootKey(asRaw) !== null && Array.isArray(asRaw.chunks)
-}
-
-export async function ingestUniversalDocument(
-  raw: unknown,
-  source: string
-): Promise<UniversalIngestResult> {
-  const asRaw = raw as Record<string, unknown>
-  const rootKey = extractRootKey(asRaw)
-
-  if (!rootKey || !Array.isArray(asRaw.chunks)) {
-    return { numero: null, titre: null, status: 'rejected_invalide', errors: ['Structure invalide — clé racine circulaire/note/document ou chunks manquants'] }
-  }
-
-  const docRaw = asRaw[rootKey] as Record<string, unknown>
-  const chunksRaw = asRaw.chunks as Record<string, unknown>[]
-
-  if (!docRaw || chunksRaw.length === 0) {
-    return { numero: null, titre: null, status: 'rejected_invalide', errors: ['Document ou chunks vides'] }
-  }
-
-  // ── Extraction générique du document parent ──────────────────────────────
-  const numero = (docRaw.numero as string) ?? null
-  const titre  = (docRaw.titre as string) ?? (docRaw.objet as string) ?? null
-  const dateDocument = (docRaw.date_gregorienne as string) ?? (docRaw.date as string) ?? null
-  const emetteur = (docRaw.emetteur as string) ?? null
-  const statut = (docRaw.statut as string) ?? 'en_vigueur'
-  const langue = (docRaw.langue as string) ?? 'fr'
-  const typeDocument = (docRaw.type_document as string) ?? rootKey
-  const abrogeOuModifie = docRaw.abroge_ou_modifie ?? null
-  const modifiePar = docRaw.modifie_par ?? null
-  const dateFinValidite = (docRaw.date_fin_validite as string) ?? null
-
-  // Tout ce qui n'est pas une colonne connue part dans metadata_extra.doc
-  const docExtra: Record<string, unknown> = {}
-  for (const key of Object.keys(docRaw)) {
-    if (!DOC_KNOWN_FIELDS.has(key)) docExtra[key] = docRaw[key]
-  }
-
-  if (!titre) {
-    return { numero, titre: null, status: 'rejected_invalide', errors: ['Aucun titre/objet trouvé pour ce document'] }
-  }
-
-  // ── Déduplication ──────────────────────────────────────────────────────
-  // Priorité au numéro quand il existe (circulaires, notes, dahirs numérotés).
-  // À défaut (brochures, dépliants, formulaires sans numéro), on déduplique
-  // sur le couple titre + type_document.
-  let existingQuery = supabase.from('knowledge_chunks').select('id').limit(1)
-  existingQuery = numero
-    ? existingQuery.eq('numero', numero)
-    : existingQuery.eq('titre', titre).eq('type_document', typeDocument)
-
-  const { data: existing } = await existingQuery.maybeSingle()
-  if (existing) {
-    return { numero, titre, status: 'skipped_doublon' }
-  }
-
-  // ── Insertion d'un row par chunk ──────────────────────────────────────
-  const chunkErrors: string[] = []
-  let inserted = 0
-
-  for (const chunk of chunksRaw) {
-    const content = (chunk.content as string) ?? ''
-    const meta = (chunk.metadata as Record<string, unknown>) ?? {}
-
-    if (!content) { chunkErrors.push('chunk sans contenu ignoré'); continue }
-
-    const chunkExtra: Record<string, unknown> = {}
-    for (const key of Object.keys(meta)) {
-      if (!CHUNK_KNOWN_FIELDS.has(key)) chunkExtra[key] = meta[key]
-    }
-
-    let embedding: number[]
-    try {
-      embedding = await embedText(content)
-    } catch (err) {
-      chunkErrors.push(`embedding échoué (chunk ${meta.chunk_index ?? '?'}): ${err instanceof Error ? err.message : 'erreur inconnue'}`)
-      continue
-    }
-
-    const { error } = await supabase.from('knowledge_chunks').insert({
-      source_type: (meta.source_type as string) ?? (rootKey === 'document' ? 'document_informatif' : rootKey),
-      type_document: typeDocument,
-      numero,
-      titre,
-      date_document: dateDocument,
-      emetteur,
-      statut,
-      langue,
-      domaine: meta.domaine ?? null,
-      sous_domaine: meta.sous_domaine ?? null,
-      article: meta.article ?? null,
-      articles_couverts: meta.articles_couverts ?? null,
-      regime_douanier: meta.regime_douanier ?? null,
-      nc8_concerne: meta.nc8_concerne ?? null,
-      mots_cles: meta.mots_cles ?? [],
-      chunk_index: meta.chunk_index ?? null,
-      total_chunks: meta.total_chunks ?? chunksRaw.length,
-      contenu: content,
-      embedding,
-      abroge_ou_modifie: abrogeOuModifie,
-      modifie_par: modifiePar,
-      date_fin_validite: dateFinValidite,
-      metadata_extra: { ...docExtra, ...(Object.keys(chunkExtra).length > 0 ? { chunk: chunkExtra } : {}), source },
-    })
-
-    if (error) {
-      chunkErrors.push(`chunk ${meta.chunk_index ?? '?'}: ${error.message}`)
-      continue
-    }
-    inserted++
-  }
-
-  if (inserted === 0) {
-    return { numero, titre, status: 'error', errors: chunkErrors.length > 0 ? chunkErrors : ['Aucun chunk inséré'] }
-  }
-
-  return {
-    numero, titre,
-    status: 'inserted',
-    chunksInserted: inserted,
-    ...(chunkErrors.length > 0 ? { errors: chunkErrors } : {}),
-  }
-}
-
-export async function ingestUniversalBatch(
-  rawEntries: unknown[],
-  source: string
-): Promise<UniversalIngestResult[]> {
-  const results: UniversalIngestResult[] = []
-  for (const raw of rawEntries) {
-    results.push(await ingestUniversalDocument(raw, source))
-  }
-  return results
+  entriesInserted?: number
+  error?:          string
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TABLES SÉPARÉES HORS RAG — faq / tarifs / procedures / glossaire / decisions
-// (architecture existante conservée telle quelle, non concernée par
-// knowledge_chunks)
+// HANDLER PDF
 // ─────────────────────────────────────────────────────────────────────────────
 
-interface JsonIngestResult {
-  inserted: number
-  skipped: number
+async function extractTextFromPDF(filePath: string): Promise<string> {
+  const base64 = fs.readFileSync(filePath).toString('base64')
+  const response = await getAnthropic().messages.create({
+    model:      'claude-sonnet-4-20250514',
+    max_tokens: 4000,
+    messages: [{
+      role: 'user',
+      content: [
+        { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } },
+        { type: 'text',     text: 'Extrais le texte complet. Conserve la structure, les numéros de circulaire, les articles. Retourne uniquement le texte, sans commentaire.' },
+      ],
+    }],
+  })
+  return response.content.filter(b => b.type === 'text').map(b => (b as { type:'text'; text:string }).text).join('\n')
 }
 
-async function insertSimpleEntries(
-  table: string,
-  dedupeColumn: string,
-  entries: Record<string, unknown>[],
-  mapRow: (entry: Record<string, unknown>) => Record<string, unknown> | null
-): Promise<JsonIngestResult> {
-  let inserted = 0
-  let skipped = 0
-
-  for (const entry of entries) {
-    const row = mapRow(entry)
-    if (!row) { skipped++; continue }
-
-    const dedupeValue = row[dedupeColumn]
-    if (dedupeValue !== undefined && dedupeValue !== null) {
-      const { data: existing } = await supabase
-        .from(table)
-        .select('id')
-        .eq(dedupeColumn, dedupeValue as string)
-        .maybeSingle()
-      if (existing) { skipped++; continue }
-    }
-
-    const { error } = await supabase.from(table).insert(row)
-    if (error) {
-      console.error(`[ingestion] insert error (${table}):`, error.message)
-      skipped++
-      continue
-    }
-    inserted++
-  }
-
-  return { inserted, skipped }
+function extractNumero(filename: string, text: string): string {
+  const fnMatch  = filename.match(/(\d{3,6})/)?.[1]
+  if (fnMatch) return fnMatch
+  const txtMatch = text.match(/circulaire\s+n[°o]?\s*(\d{3,6})/i)?.[1]
+  if (txtMatch) return txtMatch
+  return Date.now().toString().slice(-6)
 }
 
-export async function ingestCirculairesJSON(
-  entries: Record<string, unknown>[],
-  source: string
-): Promise<JsonIngestResult> {
-  // Compatibilité ascendante — redirige les anciens JSON "à entrées" vers
-  // l'ingestion universelle knowledge_chunks (source_type: circulaire),
-  // en reconstituant la forme { circulaire, chunks } attendue.
-  let inserted = 0
-  let skipped = 0
-  for (const entry of entries) {
-    const numero = String(entry.numero ?? '').trim()
-    const titre  = String(entry.titre  ?? '').trim()
-    const texte  = String(entry.texte  ?? '').trim()
-    if (!numero || !titre || !texte) { skipped++; continue }
+async function ingestPDF(file: FormFile): Promise<IngestResult> {
+  const fichier = file.originalFilename ?? file.newFilename ?? 'inconnu.pdf'
+  try {
+    const text   = await extractTextFromPDF(file.filepath)
+    const numero = extractNumero(fichier, text)
 
     const reshaped = {
-      circulaire: { numero, date: entry.date ?? null, objet: entry.objet ?? titre, emetteur: 'ADII' },
-      chunks: chunkText(texte).map((content, i) => ({
+      circulaire: { numero, date: new Date().toISOString().split('T')[0], objet: path.basename(fichier, '.pdf'), emetteur: 'ADII' },
+      chunks: chunkText(text).map((content, i) => ({
         content,
         metadata: { source_type: 'circulaire', chunk_index: i },
       })),
     }
-    const result = await ingestUniversalDocument(reshaped, source)
-    if (result.status === 'inserted') inserted++
-    else skipped++
+    const result = await ingestUniversalDocument(reshaped, 'pdf-upload')
+    return {
+      fichier,
+      type: 'universel',
+      status: result.status === 'inserted' ? 'success' : result.status === 'skipped_doublon' ? 'skipped' : 'error',
+      numero: result.numero,
+      titre: result.titre,
+      chunksInserted: result.chunksInserted,
+      error: result.errors?.join('; '),
+    }
+  } catch (err) {
+    return { fichier, type: 'pdf', status: 'error', error: err instanceof Error ? err.message : 'Erreur PDF inconnue' }
+  } finally {
+    try { fs.unlinkSync(file.filepath) } catch {}
   }
-  return { inserted, skipped }
 }
 
-export async function ingestFaqJSON(entries: Record<string, unknown>[]): Promise<JsonIngestResult> {
-  return insertSimpleEntries('faq', 'question', entries, (e) => {
-    const question = String(e.question ?? '').trim()
-    const reponse  = String(e.reponse  ?? '').trim()
-    if (!question || !reponse) return null
-    return { question, reponse, categorie: e.categorie ?? null, tags: e.tags ?? [] }
-  })
+// ─────────────────────────────────────────────────────────────────────────────
+// HANDLER JSON — DISPATCH
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function ingestJSON(file: FormFile): Promise<IngestResult> {
+  const fichier = file.originalFilename ?? file.newFilename ?? 'data.json'
+  try {
+    const raw = JSON.parse(fs.readFileSync(file.filepath, 'utf-8'))
+
+    if (isUniversalDocument(raw)) {
+      const result = await ingestUniversalDocument(raw, 'projet-claude-json')
+      return {
+        fichier,
+        type: 'universel',
+        status: result.status === 'inserted' ? 'success' : result.status === 'skipped_doublon' ? 'skipped' : 'error',
+        numero: result.numero,
+        titre: result.titre,
+        chunksInserted: result.chunksInserted,
+        error: result.errors?.join('; '),
+      }
+    }
+
+    const payload: JsonPayload = raw
+    const type     = payload.type
+    const entries  = payload.entries ?? []
+
+    if (!type || !Array.isArray(entries) || entries.length === 0)
+      throw new Error('Format invalide — champs "type"/"entries" requis, ou schéma universel { circulaire|note|document, chunks }')
+
+    let result: { inserted: number; skipped: number }
+
+    switch (type) {
+      case 'faq':         result = await ingestFaqJSON(entries);          break
+      case 'tarifs':      result = await ingestTarifsJSON(entries);       break
+      case 'procedures':  result = await ingestProceduresJSON(entries);   break
+      case 'glossaire':   result = await ingestGlossaireJSON(entries);    break
+      case 'decisions':   result = await ingestDecisionsJSON(entries);    break
+      default: throw new Error(`Type inconnu : "${type}". Types supportés : faq | tarifs | procedures | glossaire | decisions (ou schéma universel)`)
+    }
+
+    return {
+      fichier,
+      type,
+      status:          result.inserted > 0 ? 'success' : 'skipped',
+      entriesInserted: result.inserted,
+    }
+  } catch (err) {
+    return { fichier, type: 'universel', status: 'error', error: err instanceof Error ? err.message : 'Erreur JSON inconnue' }
+  } finally {
+    try { fs.unlinkSync(file.filepath) } catch {}
+  }
 }
 
-export async function ingestTarifsJSON(entries: Record<string, unknown>[]): Promise<JsonIngestResult> {
-  return insertSimpleEntries('tarifs', 'code_sh', entries, (e) => {
-    const code_sh     = String(e.code_sh     ?? '').trim()
-    const designation = String(e.designation ?? '').trim()
-    if (!code_sh || !designation) return null
-    return { code_sh, designation, taux_di: e.taux_di ?? null, tva: e.tva ?? null, tic: e.tic ?? null, notes: e.notes ?? null }
-  })
-}
+// ─────────────────────────────────────────────────────────────────────────────
+// HANDLER PRINCIPAL — try/catch global : toute exception renvoie un JSON
+// exploitable par l'interface, jamais un crash brut.
+// ─────────────────────────────────────────────────────────────────────────────
 
-export async function ingestProceduresJSON(entries: Record<string, unknown>[]): Promise<JsonIngestResult> {
-  return insertSimpleEntries('procedures', 'code', entries, (e) => {
-    const code  = String(e.code  ?? '').trim()
-    const titre = String(e.titre ?? '').trim()
-    const texte = String(e.texte ?? '').trim()
-    if (!code || !titre || !texte) return null
-    return { code, titre, texte, etapes: e.etapes ?? [] }
-  })
-}
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' })
 
-export async function ingestGlossaireJSON(entries: Record<string, unknown>[]): Promise<JsonIngestResult> {
-  return insertSimpleEntries('glossaire', 'terme', entries, (e) => {
-    const terme      = String(e.terme      ?? '').trim()
-    const definition = String(e.definition ?? '').trim()
-    if (!terme || !definition) return null
-    return { terme, definition, domaine: e.domaine ?? null, synonymes: e.synonymes ?? [] }
-  })
-}
+    const isAdmin = verifyToken(req.cookies[COOKIE_NAME])
+    if (!isAdmin) return res.status(403).json({ error: 'Accès refusé — droits admin requis' })
 
-export async function ingestDecisionsJSON(entries: Record<string, unknown>[]): Promise<JsonIngestResult> {
-  return insertSimpleEntries('decisions', 'reference', entries, (e) => {
-    const reference = String(e.reference ?? e.numero ?? '').trim()
-    const titre     = String(e.titre      ?? '').trim()
-    const texte     = String(e.texte      ?? '').trim()
-    if (!reference || !titre || !texte) return null
-    return { reference, titre, texte, date: e.date ?? null }
-  })
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({ error: 'OPENAI_API_KEY manquante — vérifier les variables d\'environnement Vercel' })
+    }
+    if (!process.env.SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      return res.status(500).json({ error: 'SUPABASE_URL manquante — vérifier les variables d\'environnement Vercel' })
+    }
+
+    const form = formidable({ multiples: true, maxFiles: 20, maxFileSize: 50 * 1024 * 1024 })
+    const [, files] = await form.parse(req)
+    const uploaded  = (files['files'] ?? []) as FormFile[]
+
+    if (!uploaded.length) return res.status(400).json({ error: 'Aucun fichier reçu' })
+
+    const results:    IngestResult[] = []
+    let   totalOk     = 0
+    let   totalSkip   = 0
+    let   totalErrors = 0
+
+    for (const file of uploaded) {
+      const name = (file.originalFilename ?? '').toLowerCase()
+      let result: IngestResult
+
+      if (name.endsWith('.json')) {
+        result = await ingestJSON(file)
+      } else if (name.endsWith('.pdf')) {
+        result = await ingestPDF(file)
+      } else {
+        result = { fichier: file.originalFilename ?? 'inconnu', type: 'pdf', status: 'error', error: 'Format non supporté — PDF ou JSON uniquement' }
+      }
+
+      results.push(result)
+      if (result.status === 'success') totalOk++
+      else if (result.status === 'skipped') totalSkip++
+      else totalErrors++
+    }
+
+    return res.status(200).json({
+      summary: { total: uploaded.length, success: totalOk, skipped: totalSkip, errors: totalErrors },
+      results,
+    })
+  } catch (err) {
+    console.error('[api/ingest] erreur globale:', err)
+    return res.status(500).json({
+      error: err instanceof Error ? err.message : 'Erreur serveur inconnue',
+      summary: { total: 0, success: 0, skipped: 0, errors: 1 },
+      results: [],
+    })
+  }
 }
