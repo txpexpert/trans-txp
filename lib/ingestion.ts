@@ -17,7 +17,21 @@ import { supabase } from './supabase'
 
 export { supabase }
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! })
+// Client OpenAI initialisé UNIQUEMENT au premier appel réel (jamais au
+// chargement du module) — évite tout crash silencieux au niveau du serveur
+// si la clé est absente ou mal enregistrée : l'erreur remonte alors proprement
+// dans le try/catch de la route API, en JSON, au lieu de faire planter toute
+// la fonction avant même son exécution (page d'erreur HTML générique).
+let openai: OpenAI | null = null
+function getOpenAI(): OpenAI {
+  if (!openai) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY manquante — vérifier les variables d\'environnement Vercel')
+    }
+    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  }
+  return openai
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CHUNKING (texte brut, hors schéma v2) + EMBEDDINGS
@@ -39,7 +53,7 @@ export function chunkText(text: string, maxWords = 300, overlap = 50): string[] 
 }
 
 export async function embedText(text: string): Promise<number[]> {
-  const res = await openai.embeddings.create({
+  const res = await getOpenAI().embeddings.create({
     model: 'text-embedding-3-small',
     input: text.slice(0, 30000),
     encoding_format: 'float',
