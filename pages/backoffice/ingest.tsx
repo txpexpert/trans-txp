@@ -7,32 +7,61 @@ import BackofficeLayout     from '../../components/BackofficeLayout'
 
 interface IngestResult {
   fichier:          string
-  type:            'pdf' | 'circulaires' | 'notes' | 'faq' | 'tarifs' | 'procedures' | 'glossaire'
+  type:            'pdf' | 'universel' | 'faq' | 'tarifs' | 'procedures' | 'glossaire' | 'decisions'
   status:          'success' | 'error' | 'skipped'
-  numero?:          string
-  chunksInserted?:  number   // PDF : nb chunks / JSON : nb doublons ignorés
-  entriesInserted?: number   // JSON : nb entrées insérées
+  numero?:          string | null
+  titre?:           string | null
+  chunksInserted?:  number   // schéma universel : nb de chunks insérés
+  entriesInserted?: number   // formats "à entrées" : nb d'entrées insérées
   error?:           string
 }
 
 interface IngestResponse {
   summary: { total: number; success: number; skipped: number; errors: number }
   results: IngestResult[]
+  error?: string
 }
 
 const MAX_FILES = 20
 
-// ── Labels et couleurs des types JSON ─────────────────────────────────────────
+// ── Labels et couleurs par type de résultat ───────────────────────────────────
 const TYPE_META: Record<string, { label: string; color: string; bg: string }> = {
-  pdf:          { label: 'PDF',          color: '#C9A84C', bg: '#FBF5E6' },
-  circulaires:  { label: 'Circulaires',  color: '#2563eb', bg: '#eff6ff' },
-  notes:        { label: 'Notes',        color: '#4f46e5', bg: '#eef2ff' },
-  faq:          { label: 'FAQ',          color: '#7c3aed', bg: '#f5f3ff' },
-  tarifs:       { label: 'Tarifs',       color: '#059669', bg: '#ecfdf5' },
-  procedures:   { label: 'Procédures',   color: '#d97706', bg: '#fffbeb' },
-  glossaire:    { label: 'Glossaire',    color: '#db2777', bg: '#fdf2f8' },
-  decisions:    { label: 'Décisions',    color: '#0891b2', bg: '#ecfeff' },
+  pdf:         { label: 'PDF',        color: '#C9A84C', bg: '#FBF5E6' },
+  universel:   { label: 'RAG',        color: '#2563eb', bg: '#eff6ff' },
+  faq:         { label: 'FAQ',        color: '#7c3aed', bg: '#f5f3ff' },
+  tarifs:      { label: 'Tarifs',     color: '#059669', bg: '#ecfdf5' },
+  procedures:  { label: 'Procédures', color: '#d97706', bg: '#fffbeb' },
+  glossaire:   { label: 'Glossaire',  color: '#db2777', bg: '#fdf2f8' },
+  decisions:   { label: 'Décisions',  color: '#0891b2', bg: '#ecfeff' },
 }
+
+// ── Schéma universel — un seul mécanisme d'ingestion pour tout le RAG ─────────
+const UNIVERSAL_SCHEMAS = [
+  {
+    key: 'circulaire',
+    desc: 'Circulaires ADII',
+    fields: '{ circulaire: { numero, date, objet, emetteur }, chunks: [...] }',
+  },
+  {
+    key: 'note',
+    desc: 'Notes ADII (statut, abrogation, validité)',
+    fields: '{ note: { numero, date, objet, emetteur, statut, abroge_ou_modifie, modifie_par }, chunks: [...] }',
+  },
+  {
+    key: 'document',
+    desc: 'Documents informatifs, dahirs, codes, instructions communes...',
+    fields: '{ document: { titre, type_document, numero?, date?, ... }, chunks: [...] }',
+  },
+]
+
+// ── Formats "à entrées" — hors RAG, tables dédiées ────────────────────────────
+const ENTRY_SCHEMAS = [
+  { type: 'faq',        fields: 'question*, reponse*, categorie, tags[]' },
+  { type: 'tarifs',     fields: 'code_sh*, designation*, taux_di, tva, tic' },
+  { type: 'procedures', fields: 'code*, titre*, texte*, etapes[]' },
+  { type: 'glossaire',  fields: 'terme*, definition*, domaine, synonymes[]' },
+  { type: 'decisions',  fields: 'reference*, titre*, texte*, date' },
+]
 
 function getFileType(filename: string): 'pdf' | 'json' {
   return filename.toLowerCase().endsWith('.json') ? 'json' : 'pdf'
@@ -74,8 +103,10 @@ export default function BackofficeIngest() {
       const data: IngestResponse = await res.json()
       setResponse(data)
       if (data.summary.errors === 0) setFiles([])
-    } catch {
-      alert('Erreur réseau — vérifiez le terminal.')
+    } catch (err) {
+      // Ne devrait plus arriver — l'API renvoie toujours un JSON, même en cas
+      // d'erreur serveur. Garde-fou si jamais le réseau lui-même est coupé.
+      alert(`Erreur réseau : ${err instanceof Error ? err.message : 'inconnue'} — vérifiez votre connexion.`)
     } finally {
       setLoading(false)
     }
@@ -103,8 +134,8 @@ export default function BackofficeIngest() {
           {/* ── Formats supportés ── */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8, marginBottom: '1.5rem' }}>
             {[
-              { icon: '📄', label: 'PDF Circulaires', sub: 'Extraction Anthropic + chunking', color: '#C9A84C' },
-              { icon: '🗂️', label: 'JSON Structuré',  sub: 'Insertion directe + embedding',  color: '#2563eb' },
+              { icon: '📄', label: 'PDF Circulaires', sub: 'Extraction Anthropic + chunking → RAG', color: '#C9A84C' },
+              { icon: '🗂️', label: 'JSON Universel',  sub: 'circulaire | note | document → knowledge_chunks', color: '#2563eb' },
               { icon: '🔄', label: 'Mix PDF + JSON',  sub: 'Traitement automatique par type', color: '#059669' },
             ].map((f, i) => (
               <div key={i} style={{ padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fafafa' }}>
@@ -115,20 +146,33 @@ export default function BackofficeIngest() {
             ))}
           </div>
 
-          {/* ── Schémas JSON ── */}
+          {/* ── Schéma universel RAG ── */}
+          <details open style={{ marginBottom: '1rem', border: '1px solid #dbeafe', borderRadius: 6 }}>
+            <summary style={{ padding: '10px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#2563eb', listStyle: 'none' }}>
+              🗂️ Schéma universel (RAG — knowledge_chunks) — un seul mécanisme, tous types de documents
+            </summary>
+            <div style={{ padding: '0 14px 14px', display: 'flex', flexDirection: 'column', gap: 8, marginTop: 6 }}>
+              {UNIVERSAL_SCHEMAS.map(s => (
+                <div key={s.key} style={{ padding: '8px 10px', background: '#eff6ff', border: '1px solid #dbeafe', borderRadius: 4 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#2563eb', marginBottom: 2 }}>
+                    {`"${s.key}"`} <span style={{ fontWeight: 400, color: '#6b7280' }}>— {s.desc}</span>
+                  </div>
+                  <div style={{ fontSize: 10, color: '#6b7280', fontFamily: 'monospace' }}>{s.fields}</div>
+                </div>
+              ))}
+              <div style={{ fontSize: 10, color: '#9ca3af', marginTop: 2 }}>
+                Tout champ non standard (co_emetteur, signataire, vise, textes_modificatifs, date_hijri...) est automatiquement conservé — aucune configuration requise par type de document.
+              </div>
+            </div>
+          </details>
+
+          {/* ── Formats à entrées, hors RAG ── */}
           <details style={{ marginBottom: '1.5rem', border: '1px solid #e5e7eb', borderRadius: 6 }}>
             <summary style={{ padding: '10px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#374151', listStyle: 'none' }}>
-              📋 Schémas JSON acceptés — cliquer pour voir
+              📋 Formats à entrées (hors RAG) — cliquer pour voir
             </summary>
             <div style={{ padding: '0 14px 14px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 10 }}>
-              {[
-                { type: 'circulaires', fields: 'numero*, titre*, objet, date, texte*' },
-                { type: 'faq',         fields: 'question*, reponse*, categorie, tags[]' },
-                { type: 'tarifs',      fields: 'code_sh*, designation*, taux_di, tva, tic' },
-                { type: 'procedures',  fields: 'code*, titre*, texte*, etapes[]' },
-                { type: 'glossaire',   fields: 'terme*, definition*, domaine, synonymes[]' },
-                { type: 'decisions',   fields: 'designation*, code_sh*, circulaire' },
-              ].map(s => {
+              {ENTRY_SCHEMAS.map(s => {
                 const m = TYPE_META[s.type]
                 return (
                   <div key={s.type} style={{ padding: '8px 10px', background: m.bg, border: `1px solid ${m.color}30`, borderRadius: 4 }}>
@@ -163,7 +207,7 @@ export default function BackofficeIngest() {
               Déposez vos fichiers ici
             </div>
             <div style={{ fontSize: 12, color: '#9ca3af' }}>
-              PDF (circulaires) · JSON (circulaires, faq, tarifs, procédures, glossaire) · max {MAX_FILES} fichiers
+              PDF (circulaires) · JSON (schéma universel RAG ou formats à entrées) · max {MAX_FILES} fichiers
             </div>
           </div>
 
@@ -217,6 +261,13 @@ export default function BackofficeIngest() {
               : `🚀 Lancer l'ingestion — ${files.length} fichier${files.length > 1 ? 's' : ''} (${pdfCount} PDF · ${jsonCount} JSON)`}
           </button>
 
+          {/* ── Erreur globale (ex : clé API manquante) ── */}
+          {response?.error && (
+            <div style={{ padding: '10px 14px', background: '#fff1f2', border: '1px solid #fecaca', borderRadius: 6, marginBottom: '1rem', fontSize: 12, color: '#dc2626' }}>
+              ⚠️ {response.error}
+            </div>
+          )}
+
           {/* ── Résultats ── */}
           {response && (
             <div>
@@ -251,8 +302,12 @@ export default function BackofficeIngest() {
                           <span style={{ fontSize: 9, padding: '1px 6px', background: m.bg, color: m.color, borderRadius: 10, fontWeight: 700 }}>{m.label}</span>
                           <span style={{ fontSize: 12, color: '#374151', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.fichier}</span>
                         </div>
-                        {r.numero && <div style={{ fontSize: 11, color: '#6b7280' }}>N° {r.numero}</div>}
-                        {r.error  && <div style={{ fontSize: 11, color: '#dc2626' }}>{r.error}</div>}
+                        {(r.numero || r.titre) && (
+                          <div style={{ fontSize: 11, color: '#6b7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {r.numero ? `N° ${r.numero}` : ''}{r.numero && r.titre ? ' — ' : ''}{r.titre ?? ''}
+                          </div>
+                        )}
+                        {r.error && <div style={{ fontSize: 11, color: '#dc2626' }}>{r.error}</div>}
                       </div>
                       <div style={{ textAlign: 'right', flexShrink: 0, minWidth: 60 }}>
                         {r.entriesInserted != null && (
@@ -261,7 +316,7 @@ export default function BackofficeIngest() {
                             <div style={{ fontSize: 10, color: '#9ca3af' }}>insérées</div>
                           </>
                         )}
-                        {r.chunksInserted != null && r.type === 'pdf' && (
+                        {r.chunksInserted != null && (
                           <>
                             <div style={{ fontSize: 14, fontWeight: 600, color: '#059669' }}>{r.chunksInserted}</div>
                             <div style={{ fontSize: 10, color: '#9ca3af' }}>chunks</div>
