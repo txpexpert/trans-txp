@@ -1,8 +1,9 @@
 // pages/api/ingest.ts
 // ─────────────────────────────────────────────────────────────────────────────
 // Ingestion modulaire : PDF (extraction Anthropic) + JSON (insertion directe)
-// Types JSON supportés : circulaires | faq | tarifs | procedures | glossaire
-// Auth : cookie httpOnly dia_session (rôle admin requis)
+// JSON schéma universel (circulaire | note | document + chunks) → knowledge_chunks
+// JSON "à entrées" (faq | tarifs | procedures | glossaire | decisions) → tables dédiées
+// Auth : cookie httpOnly das_admin (rôle admin requis)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -13,9 +14,14 @@ import path                                     from 'path'
 import { COOKIE_NAME, verifyToken }             from '../../lib/adminAuth'
 import {
   supabase, chunkText, embedText,
-  ingestCirculairesJSON, ingestFaqJSON, ingestTarifsJSON,
+  ingestFaqJSON, ingestTarifsJSON,
   ingestDecisionsJSON, ingestProceduresJSON, ingestGlossaireJSON,
 } from '../../lib/ingestion'
+// Ingestion universelle — couvre circulaires, notes ADII, documents
+// informatifs, textes réglementaires fondateurs, etc. Un seul mécanisme,
+// aucune fonction spécifique par type de document : tout part dans
+// knowledge_chunks, avec les champs non standard rangés en metadata_extra.
+import { ingestUniversalDocument, isUniversalDocument } from '../../lib/ingestion'
 
 export const config = { api: { bodyParser: false } }
 
@@ -25,77 +31,36 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 // SCHEMAS JSON SUPPORTÉS
 // ─────────────────────────────────────────────────────────────────────────────
 //
-// TYPE: "circulaires"
+// SCHÉMA UNIVERSEL (RAG — knowledge_chunks) : un fichier = un document.
+// Clé racine "circulaire" | "note" | "document" + tableau "chunks".
 // {
-//   "type": "circulaires",
-//   "source": "ADII",                    // optionnel
-//   "entries": [
+//   "circulaire": { "numero": "...", "date": "...", "objet": "...", "emetteur": "..." },
+//   // ou "note": { ... , "statut", "abroge_ou_modifie", "modifie_par", "date_fin_validite", "langue" }
+//   // ou "document": { "titre", "type_document", "numero"?, "date"?, "objet"?, "statut"?, "langue"?, ...tout champ additionnel propre au type }
+//   "chunks": [
 //     {
-//       "numero":  "6234",               // obligatoire — clé de déduplication
-//       "titre":   "Circulaire ...",      // obligatoire
-//       "objet":   "Résumé court",        // optionnel
-//       "date":    "2026-01-15",          // optionnel — format ISO
-//       "texte":   "Texte complet..."     // obligatoire — sera chunké et embedé
+//       "content": "texte du chunk",
+//       "metadata": {
+//         "source_type": "circulaire" | "note" | "document_informatif" | "circulaire_note" | "texte_reglementaire_fondateur" | "...",
+//         "domaine": "...", "sous_domaine": "...", "article": "...",
+//         "articles_couverts": ["..."], "regime_douanier": "...", "nc8_concerne": "...",
+//         "mots_cles": ["..."], "chunk_index": 0, "total_chunks": 1
+//       }
 //     }
 //   ]
 // }
+// Tout champ présent mais non listé ci-dessus (co_emetteur, reference,
+// signataire, vise, textes_modificatifs, articles_abroges, date_hijri...)
+// est automatiquement conservé dans metadata_extra, sans code spécifique.
 //
-// TYPE: "faq"
-// {
-//   "type": "faq",
-//   "entries": [
-//     {
-//       "question":  "Quel est le taux DI sur ...",  // obligatoire
-//       "reponse":   "Le taux est de ...",            // obligatoire
-//       "categorie": "TVA",                           // optionnel
-//       "tags":      ["import", "exo"]                // optionnel
-//     }
-//   ]
-// }
-//
-// TYPE: "tarifs"
-// {
-//   "type": "tarifs",
-//   "entries": [
-//     {
-//       "code_sh":      "8703.23.10",    // obligatoire — clé de déduplication
-//       "designation":  "...",           // obligatoire
-//       "taux_di":      17.5,            // optionnel
-//       "tva":          20,              // optionnel
-//       "tic":          0,               // optionnel
-//       "notes":        "..."            // optionnel
-//     }
-//   ]
-// }
-//
-// TYPE: "procedures"
-// {
-//   "type": "procedures",
-//   "entries": [
-//     {
-//       "code":   "DED-001",             // obligatoire
-//       "titre":  "Dédouanement normal", // obligatoire
-//       "texte":  "Étapes détaillées...", // obligatoire
-//       "etapes": ["Étape 1", "..."]     // optionnel
-//     }
-//   ]
-// }
-//
-// TYPE: "glossaire"
-// {
-//   "type": "glossaire",
-//   "entries": [
-//     {
-//       "terme":       "Déclaration en détail", // obligatoire
-//       "definition":  "...",                   // obligatoire
-//       "domaine":     "Procédures",            // optionnel
-//       "synonymes":   ["DUM", "déclaration"]   // optionnel
-//     }
-//   ]
-// }
+// TYPE: "faq" — { "type": "faq", "entries": [{ "question", "reponse", "categorie"?, "tags"? }] }
+// TYPE: "tarifs" — { "type": "tarifs", "entries": [{ "code_sh", "designation", "taux_di"?, "tva"?, "tic"?, "notes"? }] }
+// TYPE: "procedures" — { "type": "procedures", "entries": [{ "code", "titre", "texte", "etapes"? }] }
+// TYPE: "glossaire" — { "type": "glossaire", "entries": [{ "terme", "definition", "domaine"?, "synonymes"? }] }
+// TYPE: "decisions" — { "type": "decisions", "entries": [{ "reference", "titre", "texte", "date"? }] }
 // ─────────────────────────────────────────────────────────────────────────────
 
-type JsonType = 'circulaires' | 'faq' | 'tarifs' | 'procedures' | 'glossaire' | 'decisions'
+type JsonType = 'faq' | 'tarifs' | 'procedures' | 'glossaire' | 'decisions'
 
 interface JsonPayload {
   type:    JsonType
@@ -105,20 +70,17 @@ interface JsonPayload {
 
 interface IngestResult {
   fichier:         string
-  type:           'pdf' | JsonType
+  type:           'pdf' | 'universel' | JsonType
   status:         'success' | 'error' | 'skipped'
-  numero?:         string
+  numero?:         string | null
+  titre?:          string | null
   chunksInserted?: number
   entriesInserted?: number
   error?:          string
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// HELPERS COMMUNS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HANDLER PDF
+// HANDLER PDF — extraction brute, reste sur l'ancien circuit texte simple
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function extractTextFromPDF(filePath: string): Promise<string> {
@@ -151,58 +113,73 @@ async function ingestPDF(file: FormFile): Promise<IngestResult> {
     const text   = await extractTextFromPDF(file.filepath)
     const numero = extractNumero(fichier, text)
 
-    const { data: existing } = await supabase.from('circulaires').select('id').eq('numero', numero).single()
-    if (existing) return { fichier, type: 'pdf', status: 'skipped', numero }
-
-    const { data: circ, error: circErr } = await supabase
-      .from('circulaires')
-      .insert({ numero, titre: path.basename(fichier, '.pdf'), objet: text.slice(0, 200), date: new Date().toISOString().split('T')[0], texte: text })
-      .select('id').single()
-
-    if (circErr || !circ) throw new Error(circErr?.message ?? 'Erreur insertion')
-
-    const chunks = chunkText(text)
-    let inserted = 0
-    for (let i = 0; i < chunks.length; i++) {
-      const embedding = await embedText(chunks[i])
-      const { error } = await supabase.from('circulaires_chunks').insert({ circulaire_id: circ.id, numero, chunk_index: i, contenu: chunks[i], embedding })
-      if (!error) inserted++
+    // Route directement vers l'ingestion universelle (knowledge_chunks),
+    // même circuit que les JSON schéma v2.
+    const reshaped = {
+      circulaire: { numero, date: new Date().toISOString().split('T')[0], objet: path.basename(fichier, '.pdf'), emetteur: 'ADII' },
+      chunks: chunkText(text).map((content, i) => ({
+        content,
+        metadata: { source_type: 'circulaire', chunk_index: i },
+      })),
     }
-    return { fichier, type: 'pdf', status: 'success', numero, chunksInserted: inserted }
+    const result = await ingestUniversalDocument(reshaped, 'pdf-upload')
+    return {
+      fichier,
+      type: 'universel',
+      status: result.status === 'inserted' ? 'success' : result.status === 'skipped_doublon' ? 'skipped' : 'error',
+      numero: result.numero,
+      titre: result.titre,
+      chunksInserted: result.chunksInserted,
+      error: result.errors?.join('; '),
+    }
   } finally {
     try { fs.unlinkSync(file.filepath) } catch {}
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// HANDLERS JSON PAR TYPE
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HANDLER JSON — DISPATCH PAR TYPE
+// HANDLER JSON — DISPATCH
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function ingestJSON(file: FormFile): Promise<IngestResult> {
   const fichier = file.originalFilename ?? file.newFilename ?? 'data.json'
   try {
-    const raw:     JsonPayload = JSON.parse(fs.readFileSync(file.filepath, 'utf-8'))
-    const type     = raw.type
-    const entries  = raw.entries ?? []
-    const source   = raw.source  ?? 'manual'
+    const raw = JSON.parse(fs.readFileSync(file.filepath, 'utf-8'))
+
+    // ── Schéma universel : circulaire | note | document + chunks ───────────
+    // Un seul chemin de code pour tous les types de documents du RAG —
+    // aucune distinction requise ici, ingestUniversalDocument route en
+    // interne selon la clé racine et les métadonnées de chaque chunk.
+    if (isUniversalDocument(raw)) {
+      const result = await ingestUniversalDocument(raw, 'projet-claude-json')
+      return {
+        fichier,
+        type: 'universel',
+        status: result.status === 'inserted' ? 'success' : result.status === 'skipped_doublon' ? 'skipped' : 'error',
+        numero: result.numero,
+        titre: result.titre,
+        chunksInserted: result.chunksInserted,
+        error: result.errors?.join('; '),
+      }
+    }
+
+    // ── Formats "à entrées" — hors RAG, tables dédiées ─────────────────────
+    const payload: JsonPayload = raw
+    const type     = payload.type
+    const entries  = payload.entries ?? []
 
     if (!type || !Array.isArray(entries) || entries.length === 0)
-      throw new Error('Format invalide — champs "type" et "entries" requis')
+      throw new Error('Format invalide — champs "type"/"entries" requis, ou schéma universel { circulaire|note|document, chunks }')
 
     let result: { inserted: number; skipped: number }
 
     switch (type) {
-      case 'circulaires': result = await ingestCirculairesJSON(entries, source); break
-      case 'faq':         result = await ingestFaqJSON(entries);                 break
-      case 'tarifs':      result = await ingestTarifsJSON(entries);              break
-      case 'procedures':  result = await ingestProceduresJSON(entries);          break
-      case 'glossaire':   result = await ingestGlossaireJSON(entries);           break
-      case 'decisions':   result = await ingestDecisionsJSON(entries);           break
-      default: throw new Error(`Type inconnu : "${type}". Types supportés : circulaires | faq | tarifs | procedures | glossaire | decisions`)
+      case 'faq':         result = await ingestFaqJSON(entries);          break
+      case 'tarifs':      result = await ingestTarifsJSON(entries);       break
+      case 'procedures':  result = await ingestProceduresJSON(entries);   break
+      case 'glossaire':   result = await ingestGlossaireJSON(entries);    break
+      case 'decisions':   result = await ingestDecisionsJSON(entries);    break
+      default: throw new Error(`Type inconnu : "${type}". Types supportés : faq | tarifs | procedures | glossaire | decisions (ou schéma universel)`)
     }
 
     return {
@@ -210,10 +187,9 @@ async function ingestJSON(file: FormFile): Promise<IngestResult> {
       type,
       status:          result.inserted > 0 ? 'success' : 'skipped',
       entriesInserted: result.inserted,
-      chunksInserted:  result.skipped, // réutilisé pour afficher les doublons côté UI
     }
   } catch (err) {
-    return { fichier, type: 'circulaires', status: 'error', error: err instanceof Error ? err.message : 'Erreur JSON' }
+    return { fichier, type: 'universel', status: 'error', error: err instanceof Error ? err.message : 'Erreur JSON' }
   } finally {
     try { fs.unlinkSync(file.filepath) } catch {}
   }
@@ -226,9 +202,6 @@ async function ingestJSON(file: FormFile): Promise<IngestResult> {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end()
 
-  // ✅ Corrigé — vérifiait auparavant le cookie dia_session (utilisateur
-  // régulier + email admin), incompatible avec das_admin, le cookie
-  // réellement posé par /api/admin/login et vérifié par le reste du backoffice.
   const isAdmin = verifyToken(req.cookies[COOKIE_NAME])
   if (!isAdmin) return res.status(403).json({ error: 'Accès refusé — droits admin requis' })
 
