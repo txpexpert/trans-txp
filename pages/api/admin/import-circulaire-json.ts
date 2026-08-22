@@ -1,16 +1,16 @@
 // pages/api/admin/import-circulaire-json.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Reçoit un ou plusieurs documents JSON (schéma v2, produits par le projet
-// Claude de génération), les valide, les ingère dans Supabase avec toutes les
-// métadonnées (statut, domaine, article, abroge_ou_modifie...).
+// Reçoit un ou plusieurs documents JSON (schéma universel — circulaire | note
+// | document + chunks), les ingère dans knowledge_chunks avec toutes leurs
+// métadonnées (statut, domaine, article, abroge_ou_modifie, metadata_extra...).
+// Un seul mécanisme d'ingestion, quel que soit le type de document.
 // ─────────────────────────────────────────────────────────────────────────────
-
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { COOKIE_NAME, verifyToken } from '../../../lib/adminAuth'
-import { ingestCirculairesSchemaV2Batch } from '../../../lib/ingestCirculaireSchemaV2'
+import { ingestUniversalBatch } from '../../../lib/ingestion'
 
 export const config = {
-  api: { bodyParser: { sizeLimit: '10mb' } }, // lot de plusieurs circulaires = payload potentiellement gros
+  api: { bodyParser: { sizeLimit: '10mb' } }, // lot de plusieurs documents = payload potentiellement gros
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const results = await ingestCirculairesSchemaV2Batch(entries, 'projet-claude-json')
+    const results = await ingestUniversalBatch(entries, 'projet-claude-json')
     const summary = {
       total: results.length,
       inserted: results.filter(r => r.status === 'inserted').length,
