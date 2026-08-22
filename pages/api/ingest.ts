@@ -186,23 +186,31 @@ async function ingestJSON(file: FormFile): Promise<IngestResult> {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' })
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée', summary: { total: 0, success: 0, skipped: 0, errors: 1 }, results: [] })
 
     const isAdmin = verifyToken(req.cookies[COOKIE_NAME])
-    if (!isAdmin) return res.status(403).json({ error: 'Accès refusé — droits admin requis' })
+    if (!isAdmin) return res.status(403).json({ error: 'Accès refusé — droits admin requis', summary: { total: 0, success: 0, skipped: 0, errors: 1 }, results: [] })
 
     if (!process.env.OPENAI_API_KEY) {
-      return res.status(500).json({ error: 'OPENAI_API_KEY manquante — vérifier les variables d\'environnement Vercel' })
+      return res.status(500).json({
+        error: 'OPENAI_API_KEY manquante — vérifier les variables d\'environnement Vercel',
+        summary: { total: 0, success: 0, skipped: 0, errors: 1 },
+        results: [],
+      })
     }
     if (!process.env.SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      return res.status(500).json({ error: 'SUPABASE_URL manquante — vérifier les variables d\'environnement Vercel' })
+      return res.status(500).json({
+        error: 'SUPABASE_URL manquante — vérifier les variables d\'environnement Vercel',
+        summary: { total: 0, success: 0, skipped: 0, errors: 1 },
+        results: [],
+      })
     }
 
     const form = formidable({ multiples: true, maxFiles: 20, maxFileSize: 50 * 1024 * 1024 })
     const [, files] = await form.parse(req)
     const uploaded  = (files['files'] ?? []) as FormFile[]
 
-    if (!uploaded.length) return res.status(400).json({ error: 'Aucun fichier reçu' })
+    if (!uploaded.length) return res.status(400).json({ error: 'Aucun fichier reçu', summary: { total: 0, success: 0, skipped: 0, errors: 1 }, results: [] })
 
     const results:    IngestResult[] = []
     let   totalOk     = 0
