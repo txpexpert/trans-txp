@@ -40,7 +40,7 @@ export default async function handler(
       'match_knowledge_chunks',
       {
         query_embedding: queryEmbedding,
-        match_threshold: 0.72,
+        match_threshold: 0.35,
         match_count: 6,
       }
     )
