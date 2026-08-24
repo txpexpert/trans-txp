@@ -38,7 +38,7 @@ header{background:var(--white);border-bottom:1px solid var(--border);position:st
 .chat-inline-input{flex:1;padding:12px 16px;border:1px solid var(--border2);background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .15s}
 .chat-inline-input:focus{border-color:var(--gold)}
 .chat-inline-submit{white-space:nowrap;padding:12px 20px}
-.chat-inline-response{max-width:640px;margin:1rem auto 0;padding:1rem 1.25rem;background:var(--gold4);border:1px solid var(--gold3);font-size:13px;color:var(--ink2);line-height:1.6;text-align:left}
+.chat-inline-response{max-width:640px;margin:1rem auto 0;padding:1rem 1.25rem;background:var(--gold4);border:1px solid var(--gold3);font-size:13px;color:var(--ink2);line-height:1.6;text-align:left;white-space:pre-wrap}
 .chat-inline-response.loading{color:var(--ink3);font-style:italic}
 .lang-b{padding:4px 10px;font-size:10px;letter-spacing:.1em;color:var(--ink3);border:1px solid transparent;transition:all .12s}
 .lang-b.on,.lang-b:hover{color:var(--gold);border-color:var(--gold3);background:var(--gold4)}
