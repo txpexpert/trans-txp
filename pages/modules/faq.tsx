@@ -1,12 +1,17 @@
 // pages/modules/faq.tsx
-// FAQ en Douane — Page restructurée
-// Vue : Grands thèmes → Questions par thème → Recherche intelligente
+// Espace Expert Opérateurs — Page restructurée
+// Vue : Catégories métier → Questions par catégorie → Recherche intelligente
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import ModuleLayout from '../../components/ModuleLayout'
 import { supabase } from '../../lib/supabase'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
+
+interface LienUtile {
+  label: string
+  url: string
+}
 
 interface FaqEntry {
   id: string
@@ -20,21 +25,26 @@ interface FaqEntry {
   profils: string[]
   answer_words: number
   sort_order: number
+  liens_utiles?: LienUtile[]
+  views?: number
+  updated_at?: string
 }
 
 // ── Constantes ────────────────────────────────────────────────────────────────
 
 const THEMES = [
-  { titre: 0,  label: 'Tous les thèmes',            icon: '◈', count: 173 },
-  { titre: 1,  label: 'Procédures de dédouanement', icon: '⊞', count: 43 },
-  { titre: 2,  label: 'Droit douanier',             icon: '≡', count: 11 },
-  { titre: 3,  label: 'Tarification douanière',     icon: '◇', count: 7  },
-  { titre: 4,  label: 'Contrôles & Fraudes',        icon: '⊕', count: 5  },
-  { titre: 5,  label: 'Régimes économiques',        icon: '⬡', count: 55 },
-  { titre: 6,  label: 'Classement tarifaire',       icon: '◉', count: 6  },
-  { titre: 7,  label: "Règles d'origine",           icon: '△', count: 14 },
-  { titre: 8,  label: 'Valeur en douane',           icon: '◎', count: 22 },
-  { titre: 9,  label: 'Contentieux douanier',       icon: '✦', count: 10 },
+  { titre: 0,  label: 'Toutes les catégories',        icon: '◈', count: 269 },
+  { titre: 1,  label: 'Dédouanement & DUM',           icon: '⊞', count: 51 },
+  { titre: 2,  label: 'Cadre juridique douanier',     icon: '≡', count: 20 },
+  { titre: 3,  label: 'Tarification & droits de douane', icon: '◇', count: 22 },
+  { titre: 4,  label: 'Contrôles & conformité',       icon: '⊕', count: 15 },
+  { titre: 5,  label: 'Régimes économiques',          icon: '⬡', count: 59 },
+  { titre: 6,  label: 'Classement tarifaire (SH)',    icon: '◉', count: 12 },
+  { titre: 7,  label: "Origine des marchandises",     icon: '△', count: 14 },
+  { titre: 8,  label: 'Valeur en douane',             icon: '◎', count: 22 },
+  { titre: 9,  label: 'Contentieux & litiges',        icon: '✦', count: 11 },
+  { titre: 10, label: 'Fiscalité douanière',          icon: '◆', count: 10 },
+  { titre: 11, label: 'Guide Investisseurs',          icon: '★', count: 33 },
 ]
 
 const THEME_COLORS: Record<number, { bg: string; accent: string; light: string }> = {
@@ -48,6 +58,8 @@ const THEME_COLORS: Record<number, { bg: string; accent: string; light: string }
   7: { bg: '#14532D', accent: '#16A34A', light: '#DCFCE7' },
   8: { bg: '#1E3A8A', accent: '#2563EB', light: '#DBEAFE' },
   9: { bg: '#831843', accent: '#BE185D', light: '#FCE7F3' },
+  10: { bg: '#134E4A', accent: '#0D9488', light: '#CCFBF1' },
+  11: { bg: '#312E81', accent: '#4F46E5', light: '#E0E7FF' },
 }
 
 const DIFF_STYLE: Record<string, React.CSSProperties> = {
@@ -206,6 +218,7 @@ function FaqItem({ entry, isOpen, onToggle, searchQuery }: {
 }) {
   const colors = THEME_COLORS[entry.titre]
   const diffStyle = DIFF_STYLE[entry.difficulte] || {}
+  const categoryLabel = THEMES.find(t => t.titre === entry.titre)?.label || entry.titre_label
 
   // Highlight search terms in question
   function highlightText(text: string, query: string) {
@@ -306,17 +319,41 @@ function FaqItem({ entry, isOpen, onToggle, searchQuery }: {
           {/* Réponse protégée */}
           <ProtectedAnswer text={entry.answer} />
 
+          {entry.liens_utiles && entry.liens_utiles.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, margin: '.25rem 0 1rem' }}>
+              {entry.liens_utiles.map(lien => (
+                <a key={lien.url} href={lien.url} target="_blank" rel="noopener noreferrer"
+                  style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', color: colors.accent, background: colors.light, border: `.5px solid ${colors.accent}40`, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                  → {lien.label}
+                </a>
+              ))}
+            </div>
+          )}
+
+          <div style={{
+            fontSize: 10.5, color: '#166534', background: '#F0FDF4', border: '.5px solid #BBF7D0',
+            padding: '4px 10px', marginBottom: '.875rem', display: 'inline-flex', alignItems: 'center', gap: 6
+          }}>
+            ✓ Réponse vérifiée par nos experts en droit douanier
+            {entry.updated_at ? ` · mise à jour le ${new Date(entry.updated_at).toLocaleDateString('fr-FR')}` : ''}
+          </div>
+
           {/* Footer */}
           <div style={{
             marginTop: '.875rem', paddingTop: '.5rem',
             borderTop: `.5px solid var(--rule)`,
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8
           }}>
             <span style={{ fontSize: 10, color: 'var(--inkm)' }}>
-              {entry.titre_label} · {entry.answer_words} mots
+              {categoryLabel} · {entry.answer_words} mots
             </span>
+            <a href="/contact-experts" style={{ fontSize: 10.5, fontWeight: 600, color: colors.accent, textDecoration: 'none', letterSpacing: '.02em' }}>
+              Cette réponse ne suffit pas ? Contactez un conseiller →
+            </a>
+          </div>
+          <div style={{ marginTop: 6 }}>
             <span style={{ fontSize: 9, color: 'var(--rule)', letterSpacing: '.05em', userSelect: 'none' }}>
-              FAQ EN DOUANE · DOCUMENT SOUS DROIT D'AUTEUR
+              ESPACE EXPERT OPÉRATEURS · DOCUMENT SOUS DROIT D'AUTEUR
             </span>
           </div>
         </div>
@@ -339,6 +376,7 @@ export default function FaqPage() {
   const [activeTheme, setActiveTheme] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
   const [diffFilter, setDiffFilter]   = useState('')
+  const [profileFilter, setProfileFilter] = useState('')
   const [page, setPage]               = useState(0)
 
   const searchRef = useRef<HTMLInputElement>(null)
@@ -348,14 +386,14 @@ export default function FaqPage() {
   useEffect(() => {
     async function loadAll() {
       setLoading(true)
-      // Load in batches to get all 173
+      // Load in batches to get all 269
       let all: FaqEntry[] = []
       let from = 0
       const batchSize = 100
 
       while (true) {
         const { data, error } = await supabase
-          .from('faq')
+          .from('conseil_operateurs')
           .select('*')
           .order('sort_order', { ascending: true })
           .range(from, from + batchSize - 1)
@@ -395,6 +433,11 @@ export default function FaqPage() {
       filtered = filtered.filter(e => e.difficulte === diffFilter)
     }
 
+    // Profile filter
+    if (profileFilter) {
+      filtered = filtered.filter(e => e.profils.includes(profileFilter))
+    }
+
     // Search
     const q = searchQuery.trim().toLowerCase()
     if (q.length >= 2) {
@@ -409,7 +452,7 @@ export default function FaqPage() {
     setDisplayed(filtered)
     setPage(0)
     setOpenId(null)
-  }, [allEntries, activeTheme, searchQuery, diffFilter])
+  }, [allEntries, activeTheme, searchQuery, diffFilter, profileFilter])
 
   // Scroll to list when theme changes
   const selectTheme = (t: number) => {
@@ -434,16 +477,20 @@ export default function FaqPage() {
     return acc
   }, {})
 
+  const profiles = Array.from(
+    new Set(allEntries.flatMap(e => e.profils).filter(p => p && p !== 'général'))
+  ).sort()
+
   return (
     <ModuleLayout
-      kicker="MODULE FAQ"
-      title="FAQ en Douane"
-      sub="Base de connaissances douanières marocaines · 173 questions & réponses · Droit douanier 2025">
+      kicker="Base de connaissances douanières"
+      title="Espace Expert Opérateurs"
+      sub="Vos opérations, nos réponses sur mesure. · 269 questions & réponses · Droit douanier 2025">
 
       {/* ── STATS ── */}
       <div className="info-grid" style={{ marginBottom: '1.5rem' }}>
-        <div className="istat"><div className="istat-n">173</div><div className="istat-l">Questions indexées</div></div>
-        <div className="istat"><div className="istat-n">9</div><div className="istat-l">Thèmes couverts</div></div>
+        <div className="istat"><div className="istat-n">269</div><div className="istat-l">Questions indexées</div></div>
+        <div className="istat"><div className="istat-n">11</div><div className="istat-l">Catégories couvertes</div></div>
         <div className="istat"><div className="istat-n">2025</div><div className="istat-l">Droit douanier marocain</div></div>
       </div>
 
@@ -509,6 +556,29 @@ export default function FaqPage() {
               </button>
             ))}
           </div>
+
+          {profiles.length > 0 && (
+            <div style={{ marginTop: '1.25rem' }}>
+              <div style={{ fontSize: 10, letterSpacing: '.1em', color: 'var(--inkm)', marginBottom: '.5rem' }}>
+                VOTRE PROFIL
+              </div>
+              {[{ val: '', label: 'Tous profils' }, ...profiles.map(p => ({ val: p, label: p }))].map(p => (
+                <button
+                  key={p.val}
+                  onClick={() => setProfileFilter(p.val)}
+                  style={{
+                    width: '100%', textAlign: 'left', padding: '.4rem .75rem',
+                    fontSize: 12, cursor: 'pointer', display: 'block', textTransform: 'capitalize',
+                    background: profileFilter === p.val ? 'var(--bd)' : 'transparent',
+                    color: profileFilter === p.val ? 'white' : 'var(--inks)',
+                    border: profileFilter === p.val ? 'none' : '.5px solid transparent',
+                    marginBottom: 2, transition: 'all .12s',
+                  }}>
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ── CONTENU PRINCIPAL ── */}
@@ -527,7 +597,7 @@ export default function FaqPage() {
               ref={searchRef}
               className="search-input"
               style={{ paddingLeft: '2.25rem', width: '100%' }}
-              placeholder={`Rechercher${activeTheme > 0 ? ` dans « ${activeThemeObj?.label} »` : ' dans toute la FAQ'}…`}
+              placeholder={`Rechercher${activeTheme > 0 ? ` dans « ${activeThemeObj?.label} »` : ' dans tout l’Espace Expert'}…`}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
@@ -666,7 +736,7 @@ export default function FaqPage() {
         display: 'flex', justifyContent: 'space-between',
         fontSize: 11, color: 'var(--inkm)'
       }}>
-        <span>FAQ en Douane · Document sous droit d'auteur · Usage réservé aux abonnés DAS</span>
+        <span>Espace Expert Opérateurs · Document sous droit d'auteur · Usage réservé aux abonnés DAS</span>
         <span>Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 
