@@ -1,0 +1,115 @@
+// pages/api/chat-homepage.ts
+// ─────────────────────────────────────────────────────────────────────────────
+// Pipeline RAG pour le bouton "Soumettre" de la homepage.
+// 1) Embedding de la question (OpenAI text-embedding-3-small)
+// 2) Recherche des chunks pertinents dans knowledge_chunks (Supabase pgvector,
+//    via la fonction SQL match_knowledge_chunks)
+// 3) Génération de la réponse (Anthropic claude-sonnet-4-6), à partir
+//    UNIQUEMENT du contexte retrouvé
+// ─────────────────────────────────────────────────────────────────────────────
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { supabase } from '../../lib/supabase'
+import { embedText } from '../../lib/ingestion'
+
+type ChatResponse = {
+  answer?: string
+  sources?: { titre: string; numero: string | null; type_document: string | null }[]
+  error?: string
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ChatResponse>
+) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Méthode non autorisée' })
+  }
+
+  const { message } = req.body as { message?: string; history?: unknown[] }
+  if (!message || typeof message !== 'string' || !message.trim()) {
+    return res.status(400).json({ error: 'Message requis' })
+  }
+
+  try {
+    // 1) Embedding de la question
+    const queryEmbedding = await embedText(message)
+
+    // 2) Recherche vectorielle dans knowledge_chunks
+    const { data: chunks, error: searchError } = await supabase.rpc(
+      'match_knowledge_chunks',
+      {
+        query_embedding: queryEmbedding,
+        match_threshold: 0.72,
+        match_count: 6,
+      }
+    )
+
+    if (searchError) {
+      console.error('Erreur recherche vectorielle:', searchError)
+      return res.status(500).json({ error: 'Erreur lors de la recherche documentaire' })
+    }
+
+    if (!chunks || chunks.length === 0) {
+      return res.status(200).json({
+        answer:
+          "Je n'ai pas trouvé d'élément suffisamment pertinent dans la base documentaire pour répondre avec certitude à cette question. Pourriez-vous la reformuler ou préciser le régime douanier concerné ?",
+        sources: [],
+      })
+    }
+
+    // 3) Construction du contexte et génération de la réponse
+    const context = chunks
+      .map(
+        (c: { titre: string; numero: string | null; contenu: string }, i: number) =>
+          `[Source ${i + 1}] ${c.titre}${c.numero ? ' (n° ' + c.numero + ')' : ''}\n${c.contenu}`
+      )
+      .join('\n\n---\n\n')
+
+    const systemPrompt = `Tu es l'assistant documentaire de Douane.ia / TXP, spécialisé en réglementation douanière marocaine (ADII, CDII, CGI, circulaires).
+Réponds UNIQUEMENT à partir du contexte fourni ci-dessous. Si le contexte ne permet pas de répondre avec certitude, dis-le clairement plutôt que d'inventer.
+Cite la source (numéro de circulaire ou titre) quand c'est pertinent. Réponds en français, de façon claire et professionnelle, en 3 à 6 phrases maximum sauf si la question exige plus de détail.
+
+CONTEXTE DOCUMENTAIRE :
+${context}`
+
+    const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY!,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 800,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: message }],
+      }),
+    })
+
+    if (!anthropicRes.ok) {
+      const errText = await anthropicRes.text()
+      console.error('Erreur Anthropic:', errText)
+      return res.status(502).json({ error: 'Erreur lors de la génération de la réponse' })
+    }
+
+    const anthropicData = await anthropicRes.json()
+    const answer =
+      anthropicData?.content?.find((b: { type: string }) => b.type === 'text')?.text ??
+      "Aucune réponse générée."
+
+    const sources = chunks.map(
+      (c: { titre: string; numero: string | null; type_document: string | null }) => ({
+        titre: c.titre,
+        numero: c.numero,
+        type_document: c.type_document,
+      })
+    )
+
+    return res.status(200).json({ answer, sources })
+  } catch (err) {
+    console.error('Erreur chat-homepage:', err)
+    return res.status(500).json({ error: 'Erreur serveur lors du traitement de la question' })
+  }
+}
