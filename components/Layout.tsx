@@ -44,7 +44,7 @@ const MODULES_TOOLS = [
   { num: 'CLF', label: 'Classificateur HS · DUM · Screening', href: '/modules/classificateur', badge: 'NEW' },
   { num: 'M35', label: 'Valeur en Douane (WCO)',     href: '/modules/valeur-douane',           badge: 'NEW' },
   { num: 'M36', label: 'Intelligence Import',        href: '/modules/intelligence-import',      badge: 'NEW' },
-  { num: 'VLW', label: 'Veille Légale & LF 2026',   href: '/modules/vlw',                      badge: 'NEW' },
+  { num: 'VLW', label: 'Veille Légale & LF 2026',   href: '/modules/simulateur#majoration-tbi', badge: 'NEW' },
   { num: 'CNT', label: 'Calculateur Conteneurs',     href: '/modules/calc-conteneurs',          badge: 'NEW' },
   { num: 'AUT', label: 'Autorisations & Licences',   href: '/modules/autorisations-licences',   badge: 'NEW' },
   { num: 'MRQ', label: 'Marquage & Warnings',        href: '/modules/marquage-warnings',        badge: 'NEW' },
@@ -58,10 +58,6 @@ const MODULES_TOOLS = [
   { num: 'RDC', label: 'Régime de Change',              href: '/modules/regime-change',    badge: 'NEW' },
   { num: 'SUR', label: 'Surestaries & Pénalités',       href: '/modules/surestaries',      badge: 'NEW' },
   { num: 'TIC', label: 'Référence TIC',                 href: '/modules/tic-reference',    badge: 'NEW' },
-]
-
-const MODULES_COMM = [
-  { num: 'COM', label: 'Espace Communautaire', href: '/community', badge: '↗' },
 ]
 
 // --- Composant Layout ---------------------------------------------------------
@@ -102,7 +98,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
       if (!res.ok) { showToast(data.error || 'Identifiants incorrects'); return }
       setLoginOpen(false)
       setUser(email.split('@')[0])
-      router.push('/mon-compte')
+      router.push('/')
     } catch {
       showToast('Erreur réseau — réessayez')
     }
@@ -150,9 +146,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
               <Link href="/modules/simulateur"  className="mast-nav-item">SIMULATEUR</Link>
               <Link href="/modules/comparateur" className="mast-nav-item">COMPARATEUR</Link>
               <Link href="/modules/analyses"    className="mast-nav-item">ANALYSES</Link>
-              <Link href="/community"           className="mast-nav-item">COMMUNAUTÉ</Link>
               <Link href="/abonnements"         className="mast-nav-item">ABONNEMENTS</Link>
-              <Link href="/lexique/"            className="mast-nav-item">📖 LEXIQUE</Link>
               <button className="mast-nav-cta" onClick={() => setLoginOpen(true)}>ESSAYER GRATUITEMENT</button>
             </div>
           </div>
@@ -168,9 +162,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
             <Link href="/modules/simulateur"  className={`topnav-link ${router.pathname.includes('simulateur')          ? 'active' : ''}`}>SIMULATEUR</Link>
             <Link href="/modules/comparateur" className={`topnav-link ${router.pathname.includes('comparateur')         ? 'active' : ''}`}>COMPARATEUR</Link>
             <Link href="/modules/analyses"    className={`topnav-link ${router.pathname.includes('analyses')            ? 'active' : ''}`}>ANALYSES</Link>
-            <Link href="/community"           className={`topnav-link ${router.pathname.startsWith('/community')        ? 'active' : ''}`}>COMMUNAUTÉ</Link>
             <Link href="/abonnements"         className={`topnav-link ${router.pathname === '/abonnements'              ? 'active' : ''}`}>ABONNEMENTS</Link>
-            <Link href="/lexique/"            className={`topnav-link ${router.pathname === '/lexique'                  ? 'active' : ''}`}>📖 LEXIQUE</Link>
           </div>
           <div className="topnav-right">
             <span className="topnav-user">{user || 'Non connecté'}</span>
@@ -207,13 +199,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
 
             <div className="sidebar-section">
               <div className="sidebar-label">COMMUNAUTÉ & COMPTE</div>
-              {MODULES_COMM.map(m => (
-                <SideItem key={m.href} {...m} />
-              ))}
-              <Link href="/dashboard"   className={`sidebar-item ${router.pathname === '/dashboard'          ? 'active' : ''}`}><span className="sidebar-num">→</span>Mon Dashboard</Link>
-              <Link href="/mon-compte"  className={`sidebar-item ${router.pathname.startsWith('/mon-compte') ? 'active' : ''}`}><span className="sidebar-num">→</span>Mon Compte</Link>
               <Link href="/abonnements" className={`sidebar-item ${router.pathname === '/abonnements'        ? 'active' : ''}`}><span className="sidebar-num">→</span>Abonnements</Link>
-              <Link href="/lexique/"    className={`sidebar-item ${router.pathname === '/lexique'            ? 'active' : ''}`}><span className="sidebar-num">→</span>📖 Lexique</Link>
             </div>
 
           </aside>
@@ -256,12 +242,11 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
                 onKeyDown={e => e.key === 'Enter' && doLogin()}
               />
             </div>
-            <div style={{ display:'flex', justifyContent:'space-between', fontSize:'12px', marginTop:'.5rem' }}>
+            <div style={{ display:'flex', justifyContent:'flex-end', fontSize:'12px', marginTop:'.5rem' }}>
               <span style={{ color:'var(--inkm)' }}>
                 Pas de compte ?{' '}
                 <Link href="/auth/register" style={{ color:'var(--ba)' }}>S'inscrire</Link>
               </span>
-              <Link href="/auth/forgot-password" style={{ color:'var(--ba)' }}>Mot de passe oubli?</Link>
             </div>
           </div>
           <div className="modal-footer">

@@ -46,7 +46,7 @@ export default function Register() {
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error || 'Erreur lors de l\'inscription'); setLoading(false); return }
-      router.push('/mon-compte?welcome=1')
+      router.push('/?welcome=1')
     } catch {
       setError('Erreur réseau — réessayez')
       setLoading(false)
@@ -87,7 +87,7 @@ export default function Register() {
           {/* Badge essai */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem', background: 'var(--gold4)', border: '1px solid var(--gold3)', padding: '.6rem 1rem', marginBottom: '1.5rem', fontSize: 13 }}>
             <span style={{ color: 'var(--gold)', fontSize: 16 }}>✦</span>
-            <span><strong style={{ color: 'var(--gold)' }}>7 jours d'accès complet offerts</strong> — sans carte bancaire</span>
+            <span><strong style={{ color: 'var(--gold)' }}>14 jours d'accès complet offerts</strong> — sans carte bancaire</span>
           </div>
 
           <div style={{ border: '1px solid var(--border)', background: 'var(--white)' }}>
@@ -178,7 +178,7 @@ export default function Register() {
 
           {/* Ce qui est inclus */}
           <div style={{ marginTop: '1.5rem', padding: '1rem 1.25rem', border: '1px solid var(--border)', background: 'var(--gold4)', fontSize: 12, color: 'var(--ink2)' }}>
-            <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: '.5rem', fontSize: 13 }}>Inclus dans l'essai gratuit 7 jours :</div>
+            <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: '.5rem', fontSize: 13 }}>Inclus dans l'essai gratuit 14 jours :</div>
             {['Accès complet à tous les modules (30+)', 'Simulateur droits & taxes MAD', 'Comparateur 9 régimes douaniers', 'Chat IA sur circulaires ADII', 'Intelligence à l\'Export — DDP 12 pays', 'Screening sanctions & OEA'].map(item => (
               <div key={item} style={{ display: 'flex', gap: '.5rem', marginBottom: '.3rem' }}>
                 <span style={{ color: 'var(--gold)' }}>✓</span>

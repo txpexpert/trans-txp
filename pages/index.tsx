@@ -1,4 +1,4 @@
-import Head from 'next/head';
+﻿import Head from 'next/head';
 
 // pages/index.tsx — Transit-IA / TXP, hero page
 
@@ -258,7 +258,7 @@ const bodyHTML = `
       <h1 id="h1-txt">L'intelligence douanière<br><strong>à portée de question</strong></h1>
       <p id="sub-txt">Posez vos questions sur la réglementation douanière marocaine — circulaires ADII, tarifs, procédures, régimes économiques. Réponses précises et sourcées.</p>
     </div>
-    <div id="douane-chat-root">
+    <div id="TXP-chat-root">
       <div class="chat-inline">
         <input type="text" id="chat-input" class="chat-inline-input" placeholder="Ex : Quels documents pour une admission temporaire ?" onkeydown="if(event.key==='Enter')submitChatQuestion()" />
         <button class="btn-sub chat-inline-submit" onclick="submitChatQuestion()">Soumettre</button>
@@ -736,7 +736,7 @@ const bodyHTML = `
           <a class="mod-chip hub-chip" href="#hub-vrg">Veille Réglementaire &amp; LF 2026</a>
           <a class="mod-chip" href="/modules/alertes-fiscales">Alertes Fiscales</a>
           <a class="mod-chip" href="/modules/oea">Opérateur Économique Agréé (fiche détaillée)</a>
-          <a class="mod-chip" href="/modules/vlw">Veille Légale &amp; LF 2026</a>
+          <a class="mod-chip" href="/modules/simulateur#majoration-tbi">Veille Légale &amp; LF 2026</a>
           <a class="mod-chip" href="/modules/intelligence-fiscale">Intelligence Fiscale</a>
           <a class="mod-chip" href="/modules/intelligence-strategique">Intelligence Stratégique</a>
           <a class="mod-chip" href="/modules/intelligence-import">Intelligence Import</a>
@@ -778,7 +778,7 @@ const bodyHTML = `
   <div class="modal">
     <span class="m-close" onclick="closeModal('register')">✕</span>
     <h2>Rejoindre <em>Transit-IA</em></h2>
-    <div class="trial-badge">✦ <strong>7 jours d'accès complet offerts</strong> — sans carte bancaire</div>
+    <div class="trial-badge">✦ <strong>14 jours d'accès complet offerts</strong> — sans carte bancaire</div>
     <div class="m-field"><label>PRÉNOM & NOM</label><input id="reg-nom" type="text" placeholder="Mohamed Alami"/></div>
     <div class="m-field"><label>EMAIL PROFESSIONNEL</label><input id="reg-email" type="email" placeholder="m.alami@entreprise.ma"/></div>
     <div class="m-field"><label>PROFIL</label>
@@ -797,7 +797,7 @@ const bodyHTML = `
     <div class="m-field"><label>EMAIL</label><input id="login-email" type="email" placeholder="votre@email.ma" onkeydown="if(event.key==='Enter')submitLogin()"/></div>
     <div class="m-field"><label>MOT DE PASSE</label><input id="login-pwd" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitLogin()"/></div>
     <button class="m-submit" onclick="submitLogin()">SE CONNECTER →</button>
-    <p style="text-align:center;font-size:11px;color:var(--ink3);margin-top:1rem">Pas encore de compte ? <span style="color:var(--gold);cursor:pointer" onclick="closeModal('login');openModal('register')">Essai gratuit 7 jours</span></p>
+    <p style="text-align:center;font-size:11px;color:var(--ink3);margin-top:1rem">Pas encore de compte ? <span style="color:var(--gold);cursor:pointer" onclick="closeModal('login');openModal('register')">Essai gratuit 14 jours</span></p>
   </div>
 </div>
 <div class="preview-bar">⚡ PRÉVISUALISATION STATIQUE — Transit-IA · sitedemo1 · 39 modules référencés</div>
@@ -908,7 +908,7 @@ async function submitLogin(){
     var data=await res.json();
     if(!res.ok){alert(data.error||'Identifiants incorrects');if(btn)btn.textContent='SE CONNECTER \u2192';return;}
     closeModal('login');
-    window.location.href='/mon-compte';
+    window.location.href='/';
   }catch(e){alert('Erreur r\u00e9seau');if(btn)btn.textContent='SE CONNECTER \u2192';}
 }
 
@@ -926,7 +926,7 @@ async function submitRegister(){
     var data=await res.json();
     if(!res.ok){alert(data.error||'Erreur inscription');if(btn)btn.textContent='D\u00c9MARRER MON ESSAI GRATUIT \u2192';return;}
     closeModal('register');
-    window.location.href='/mon-compte?welcome=1';
+    window.location.href='/?welcome=1';
   }catch(e){alert('Erreur r\u00e9seau');if(btn)btn.textContent='D\u00c9MARRER MON ESSAI GRATUIT \u2192';}
 }
 

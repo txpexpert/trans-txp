@@ -30,6 +30,7 @@ const SIM_CSS = `
   .sim-input { width:100%;padding:9px 12px;border:1px solid var(--border2);background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;transition:border-color .15s; }
   .sim-input:focus { border-color:var(--gold); }
   .sim-select { width:100%;padding:9px 12px;border:1px solid var(--border2);background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;cursor:pointer; }
+
   .sim-btn { padding:10px 24px;font-size:12px;letter-spacing:.08em;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s; }
   .sim-btn-gold { background:var(--ink);color:var(--gold2); }
   .sim-btn-gold:hover { background:var(--gold);color:var(--ink); }
@@ -62,6 +63,7 @@ export default function Simulateur() {
         if (!data?.rates) return;
         setDevises(prev => prev.map(d => {
           const live = data.rates.find((r: any) => r.pair === d.code);
+
           return live ? { ...d, rate: live.rate } : d;
         }));
       })
@@ -84,6 +86,19 @@ export default function Simulateur() {
   const [tvaAssujetti, setTvaAssujetti] = useState(true);
   const [tvaRate, setTvaRate] = useState(20); // Art.99 CGI 2026 — 20% ou 10% uniquement
   const [computed, setComputed] = useState(null);
+
+  // ── Majoration Art. 76 ter (paiement non électronique) ──────────────────
+  const [majDroits, setMajDroits] = useState("");
+  const [majOperations, setMajOperations] = useState("1");
+  const [majResult, setMajResult] = useState<any>(null);
+  const [majLoading, setMajLoading] = useState(false);
+
+  // ── TBI Bois (Ch. 44 / Ch. 94) ───────────────────────────────────────────
+  const [tbiCaf, setTbiCaf] = useState("");
+  const [tbiAnnee, setTbiAnnee] = useState<"2025" | "2026">("2026");
+
+  const [tbiResult, setTbiResult] = useState<any>(null);
+  const [tbiLoading, setTbiLoading] = useState(false);
 
   const deviseObj = devises.find(d => d.code === devise) || devises[0];
 
@@ -114,6 +129,7 @@ export default function Simulateur() {
     } catch {
       setShError("Erreur de connexion. Vérifiez que le serveur est démarré.");
     } finally {
+
       setShLoading(false);
     }
   }, [shCode]);
@@ -146,6 +162,7 @@ export default function Simulateur() {
 
     const total_frais = Object.values(frais).reduce((a, b) => a + (Number(b) || 0), 0);
     // Coût de revient total à l'importation (frais locaux inclus) — distinct du PFI fiscal ci-dessus,
+
     // qui portait par erreur le même acronyme dans la version précédente de ce fichier.
     const prixRevientBrut = valeur_dedouanee + total_frais;
     const prixRevientNet = tvaAssujetti ? (caf + di + tic + pfi + total_frais) : prixRevientBrut;
@@ -157,6 +174,46 @@ export default function Simulateur() {
     setShCode(""); setShInfo(null); setShError(""); setShValidated(false);
     setFob(""); setAssurance(""); setFret("");
     setDiTaux(""); setTicTaux("0"); setComputed(null);
+  };
+
+  const calculerMajoration = async () => {
+    const droitsParOperation = parseFloat(majDroits) || 0;
+    const nombreOperations = parseInt(majOperations, 10) || 1;
+    if (droitsParOperation <= 0) return;
+    setMajLoading(true);
+    try {
+      const res = await fetch("/api/calculs/vlw", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "penalites", params: { droitsParOperation, nombreOperations, periode: "" } }),
+      });
+      const data = await res.json();
+      if (data.ok) setMajResult(data);
+    } catch {
+      /* silencieux — champ de résultat reste vide */
+    } finally {
+      setMajLoading(false);
+    }
+  };
+
+
+  const calculerTBI = async () => {
+    const valeurCAF = parseFloat(tbiCaf) || 0;
+    if (valeurCAF <= 0) return;
+    setTbiLoading(true);
+    try {
+      const res = await fetch("/api/calculs/vlw", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "tbi_bois", params: { valeurCAF, annee: tbiAnnee, chapitreNC: "44" } }),
+      });
+      const data = await res.json();
+      if (data.ok) setTbiResult(data);
+    } catch {
+      /* silencieux — champ de résultat reste vide */
+    } finally {
+      setTbiLoading(false);
+    }
   };
 
   return (
@@ -171,6 +228,7 @@ export default function Simulateur() {
           </div>
           <div style={{ fontSize: 11, letterSpacing: ".12em", color: "#8A8078", marginTop: 2 }}>SIMULATEUR DE DROITS & TAXES</div>
         </div>
+
         <div style={{ display: "flex", gap: 8 }}>
   <a href="/" style={{ padding: "6px 14px", fontSize: 11, letterSpacing: ".08em", color: "#8A8078", border: "1px solid #D4C8A8", display: "flex", alignItems: "center", textDecoration: "none", fontFamily: "'DM Sans', sans-serif", transition: "all .15s" }}
     onMouseOver={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor="#C9A84C"; (e.currentTarget as HTMLAnchorElement).style.color="#C9A84C" }}
@@ -203,6 +261,7 @@ export default function Simulateur() {
               <input
                 className="sim-input"
                 placeholder="Ex : 8703.10 — Saisir le code de nomenclature tarifaire"
+
                 value={shCode}
                 onChange={e => { setShCode(e.target.value); setShValidated(false); setShInfo(null); setShError(""); }}
                 onKeyDown={e => e.key === "Enter" && lookupSH()}
@@ -235,6 +294,7 @@ export default function Simulateur() {
                     ✓ CONFIRMER CES TAUX ET CONTINUER LE CALCUL
                   </button>
                 )}
+
                 {shValidated && (
                   <div style={{ marginTop: 8, padding: "6px 10px", background: "#f0fdf4", border: "1px solid #86efac", fontSize: 11, color: "#16a34a", fontWeight: 500 }}>
                     ✓ Taux confirmés — DI : {diTaux}% · TIC : {ticTaux}% · TVA : {tvaRate}%
@@ -267,6 +327,7 @@ export default function Simulateur() {
                   Saisissez manuellement les taux applicables, puis confirmez pour continuer.
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+
                   <div>
                     <div style={{ fontSize: 10, color: "var(--ink3)", marginBottom: 4 }}>TAUX DI (%)</div>
                     <input className="sim-input" type="number" placeholder="Ex: 25" value={diTaux} onChange={e => { setDiTaux(e.target.value); setShValidated(false); }} />
@@ -299,6 +360,7 @@ export default function Simulateur() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 160px", gap: 8 }}>
               <input className="sim-input" type="number" placeholder="Montant FOB" value={fob} onChange={e => setFob(e.target.value)} />
               <select className="sim-select" value={devise} onChange={e => setDevise(e.target.value)}>
+
                 {devises.map(d => <option key={d.code} value={d.code}>{d.code} — {d.label}</option>)}
               </select>
             </div>
@@ -330,6 +392,7 @@ export default function Simulateur() {
               </div>
             )}
           </div>
+
 
           {/* Bloc 4 — Taux fiscaux */}
           <div style={{ border: "1px solid var(--border)", background: "var(--white)", padding: "1.25rem" }}>
@@ -363,6 +426,7 @@ export default function Simulateur() {
                   <input className="sim-input" type="number" value={frais[f.key]} onChange={e => setFrais(p => ({ ...p, [f.key]: e.target.value }))} />
                 </div>
               ))}
+
             </div>
             <div style={{ marginTop: 10 }}>
               <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, cursor: "pointer", color: "var(--ink2)" }}>
@@ -395,6 +459,7 @@ export default function Simulateur() {
               <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: "var(--gold)", fontWeight: 300, marginBottom: 8 }}>Droits & Taxes</div>
               <div style={{ fontSize: 12, color: "var(--ink3)", lineHeight: 1.6 }}>Remplissez les champs et cliquez sur Calculer pour obtenir la simulation complète.</div>
             </div>
+
           )}
 
           {computed && (
@@ -427,6 +492,7 @@ export default function Simulateur() {
                 <div className="result-row"><span className="result-label">PFI (Prélèvement Fiscal à l'Importation)</span><span className="result-val">{fmt(computed.pfi)} MAD</span></div>
                 <div className="result-row"><span className="result-label">TVA à l'importation</span><span className="result-val">{fmt(computed.tva)} MAD</span></div>
                 <div className="result-row" style={{paddingTop:10}}>
+
                   <span className="result-label" style={{fontWeight:500, color:"var(--ink2)"}}>Total droits & taxes</span>
                   <span className="result-val gold">{fmt(computed.total_droits)} MAD</span>
                 </div>
@@ -459,6 +525,7 @@ export default function Simulateur() {
               </div>
 
               {/* Ratio charges */}
+
               <div style={{ border: "1px solid var(--gold3)", background: "var(--gold4)", padding: "1rem 1.25rem" }}>
                 <div style={{ fontSize: 10, letterSpacing: ".12em", color: "var(--ink3)", marginBottom: 8 }}>RATIOS DE CHARGE</div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -476,6 +543,95 @@ export default function Simulateur() {
           )}
         </div>
       </div>
+
+    {/* ── Majoration Art. 76 ter & TBI Bois — LF 2026 ─────────────────────── */}
+    <div id="majoration-tbi" style={{ maxWidth: 1100, margin: "0 auto", padding: "0 1.5rem 2rem", scrollMarginTop: "1.5rem" }}>
+      <div style={{ margin: "1rem 0 1.5rem", fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--ink)" }}>
+        Majoration Art. 76 ter &amp; TBI Bois — LF 2026
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+
+        {/* Majoration Art. 76 ter */}
+        <div style={{ border: "1px solid var(--border)", background: "var(--white)", padding: "1.25rem" }}>
+          <div className="section-title">05 — MAJORATION ART. 76 TER (paiement non électronique)</div>
+          <div style={{ fontSize: 11, color: "var(--ink3)", marginBottom: 12, fontStyle: "italic" }}>
+            1% des droits dus, minimum 1 000 MAD par infraction, non déductible fiscalement.
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 120px", gap: 8, marginBottom: 10 }}>
+
+            <div>
+              <div style={{ fontSize: 10, color: "var(--ink3)", marginBottom: 4 }}>DROITS DUS PAR OPÉRATION (MAD)</div>
+              <input className="sim-input" type="number" placeholder="Ex : 45000" value={majDroits} onChange={e => setMajDroits(e.target.value)} />
+            </div>
+            <div>
+              <div style={{ fontSize: 10, color: "var(--ink3)", marginBottom: 4 }}>NB OPÉRATIONS</div>
+              <input className="sim-input" type="number" min={1} value={majOperations} onChange={e => setMajOperations(e.target.value)} />
+            </div>
+          </div>
+          <button className="sim-btn sim-btn-gold" style={{ width: "100%" }} onClick={calculerMajoration} disabled={majLoading || !majDroits}>
+            {majLoading ? "..." : "CALCULER LA MAJORATION →"}
+          </button>
+
+          {majResult && (
+            <div style={{ marginTop: 14 }}>
+              <div className="result-row"><span className="result-label">Droits totaux</span><span className="result-val">{fmt(majResult.droitsTotaux)} MAD</span></div>
+              <div className="result-row"><span className="result-label">Majoration (1% ou minimum)</span><span className="result-val gold">{fmt(majResult.majorationAppliquee)} MAD</span></div>
+              <div className="result-row"><span className="result-label">Coût par opération</span><span className="result-val">{fmt(majResult.coutParOperation)} MAD</span></div>
+              <div className="result-row">
+                <span className="result-label">Niveau de risque</span>
+                <span className="result-val" style={{ color: majResult.couleurRisque === "red" ? "var(--dn)" : majResult.couleurRisque === "orange" ? "#c2410c" : "var(--up)", fontWeight: 600 }}>
+                  {majResult.niveauRisque}
+                </span>
+              </div>
+              <div style={{ fontSize: 10, color: "var(--ink3)", marginTop: 8, fontStyle: "italic" }}>{majResult.reference}</div>
+            </div>
+          )}
+        </div>
+
+        {/* TBI Bois */}
+        <div style={{ border: "1px solid var(--border)", background: "var(--white)", padding: "1.25rem" }}>
+          <div className="section-title">06 — TBI BOIS (Ch. 44 / Ch. 94)</div>
+
+          <div style={{ fontSize: 11, color: "var(--ink3)", marginBottom: 12, fontStyle: "italic" }}>
+            Taxe sur le Bois Importé — taux unique 6% en 2026 (réforme), contre 12% en 2025.
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 110px", gap: 8, marginBottom: 10 }}>
+            <div>
+              <div style={{ fontSize: 10, color: "var(--ink3)", marginBottom: 4 }}>VALEUR CAF (MAD)</div>
+              <input className="sim-input" type="number" placeholder="Ex : 200000" value={tbiCaf} onChange={e => setTbiCaf(e.target.value)} />
+            </div>
+            <div>
+              <div style={{ fontSize: 10, color: "var(--ink3)", marginBottom: 4 }}>ANNÉE</div>
+              <select className="sim-select" value={tbiAnnee} onChange={e => setTbiAnnee(e.target.value as "2025" | "2026")}>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+              </select>
+            </div>
+          </div>
+          <button className="sim-btn sim-btn-gold" style={{ width: "100%" }} onClick={calculerTBI} disabled={tbiLoading || !tbiCaf}>
+            {tbiLoading ? "..." : "CALCULER LE TBI →"}
+          </button>
+
+          {tbiResult && (
+            <div style={{ marginTop: 14 }}>
+              <div className="result-row"><span className="result-label">Valeur CAF</span><span className="result-val">{fmt(tbiResult.valeurCAF)} MAD</span></div>
+              <div className="result-row"><span className="result-label">Taux applicable ({tbiResult.annee})</span><span className="result-val">{tbiResult.taux}%</span></div>
+              <div className="result-row" style={{ paddingTop: 10 }}>
+                <span className="result-label" style={{ fontWeight: 500, color: "var(--ink2)" }}>TBI dû</span>
+                <span className="result-val gold">{fmt(tbiResult.tbi)} MAD</span>
+              </div>
+              <div style={{ fontSize: 10, color: "var(--ink3)", marginTop: 8, fontStyle: "italic" }}>{tbiResult.note} — {tbiResult.reference}</div>
+            </div>
+          )}
+        </div>
+
+      </div>
+
+      <div style={{ marginTop: 14, fontSize: 11, color: "var(--ink3)" }}>
+        Pour le détail des exonérations LF 2026 (bovins, camélidés, pâtes alimentaires, dérivés du sang...), voir le module{" "}
+        <a href="/modules/veille-reglementaire" style={{ color: "var(--gold)" }}>Veille Réglementaire</a>.
+      </div>
+    </div>
 
     {/* Note légale */}
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 1.5rem 2rem" }}>

@@ -15,8 +15,8 @@ export default function AbonnementRequis() {
       </h1>
       <p style={{ color: '#555', maxWidth: 480, marginBottom: '24px' }}>
         {from
-          ? `L'accès à "${from}" nécessite un compte actif ou un abonnement Douane.ia.`
-          : `L'accès à cette page nécessite un compte actif ou un abonnement Douane.ia.`}
+          ? `L'accès à "${from}" nécessite un compte actif ou un abonnement Transit.ia.`
+          : `L'accès à cette page nécessite un compte actif ou un abonnement Transit.ia.`}
       </p>
       <div style={{ display: 'flex', gap: 12 }}>
         <Link href="/abonnements" style={{
@@ -25,12 +25,11 @@ export default function AbonnementRequis() {
         }}>
           Voir les abonnements
         </Link>
-        <Link href="/auth/login" style={{
+                <Link href={from ? `/auth/login?redirect=${encodeURIComponent(from)}` : "/auth/login"} style={{
           border: '1px solid #ccc', padding: '10px 20px',
           borderRadius: 6, textDecoration: 'none', color: '#333',
         }}>
           Se connecter
-
         </Link>
       </div>
     </div>
