@@ -11,6 +11,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '../../lib/supabase'
 import { embedText } from '../../lib/ingestion'
+import { verifyUserToken, canAccessModule, USER_COOKIE } from '../../lib/userAuth'
 
 type ChatResponse = {
   answer?: string
@@ -30,7 +31,13 @@ export default async function handler(
   if (!message || typeof message !== 'string' || !message.trim()) {
     return res.status(400).json({ error: 'Message requis' })
   }
-
+  // Module chat réservé aux comptes abonnés (essai ou payant) — pas d'accès anonyme
+  const session = verifyUserToken(req.cookies[USER_COOKIE])
+  if (!session || !canAccessModule(session.plan, session.statut, 'chat-homepage', session.trialEnds)) {
+    return res.status(403).json({
+      error: 'Cette fonctionnalité est réservée aux abonnés. Connectez-vous ou souscrivez un abonnement.',
+    })
+  }
   try {
     // 1) Embedding de la question
     const queryEmbedding = await embedText(message)
