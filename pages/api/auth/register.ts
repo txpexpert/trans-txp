@@ -1,8 +1,7 @@
-
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
-import { createUserToken, userCookieOptions } from '../../../lib/userAuth'
+import { createUserToken, userCookieOptions, TRIAL_TTL_MS } from '../../../lib/userAuth'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -31,6 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Créer l'utilisateur
   const { data: user, error } = await supabase
+
     .from('users')
     .insert({
       email: email.toLowerCase(),
@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       profil: profil || 'autre',
       plan: 'trial',
       statut: 'trial',
-      trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      trial_ends_at: new Date(Date.now() + TRIAL_TTL_MS).toISOString(),
     })
     .select('id, email, plan, statut, trial_ends_at')
     .single()
