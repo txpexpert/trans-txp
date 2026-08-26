@@ -67,11 +67,25 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
   const [email,        setEmail]        = useState('')
   const [password,     setPassword]     = useState('')
   const [user,         setUser]         = useState('')
+  const [userPlan,     setUserPlan]     = useState('')
   const [toast,        setToast]        = useState('')
   const [toastVisible, setToastVisible] = useState(false)
   const [mastDate,     setMastDate]     = useState('')
 
   const isLanding = variant === 'landing'
+
+  // -- Session existante : récupérée au chargement via le cookie -------------
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.email) {
+          setUser(data.email.split('@')[0])
+          setUserPlan(data.plan)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     const days   = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi']
@@ -86,7 +100,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
     setTimeout(() => setToastVisible(false), 3200)
   }
 
-    const doLogin = async () => {
+  const doLogin = async () => {
     if (!email || !password) { showToast('Email et mot de passe requis'); return }
     try {
       const res  = await fetch('/api/auth/login', {
@@ -98,10 +112,20 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
       if (!res.ok) { showToast(data.error || 'Identifiants incorrects'); return }
       setLoginOpen(false)
       setUser(email.split('@')[0])
+      setUserPlan(data.user?.plan || '')
       router.push('/')
     } catch {
       showToast('Erreur réseau — réessayez')
     }
+  }
+
+  const doLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } catch {}
+    setUser('')
+    setUserPlan('')
+    router.push('/')
   }
 
   // -- Item sidebar générique -------------------------------------------------
@@ -165,9 +189,22 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
             <Link href="/abonnements"         className={`topnav-link ${router.pathname === '/abonnements'              ? 'active' : ''}`}>ABONNEMENTS</Link>
           </div>
           <div className="topnav-right">
-            <span className="topnav-user">{user || 'Non connecté'}</span>
-            <button className="topnav-btn outline" onClick={() => setLoginOpen(true)}>Connexion</button>
-            <Link href="/abonnements"><button className="topnav-btn">Essayer</button></Link>
+            {user ? (
+              <span className="topnav-user" title={`Plan : ${userPlan}`}>
+                {user} <span className="topnav-plan">· {userPlan}</span>
+              </span>
+            ) : (
+              <span className="topnav-user">Non connecté</span>
+            )}
+
+            {user ? (
+              <button className="topnav-btn outline" onClick={doLogout}>Déconnexion</button>
+            ) : (
+              <>
+                <button className="topnav-btn outline" onClick={() => setLoginOpen(true)}>Connexion</button>
+                <Link href="/abonnements"><button className="topnav-btn">Essayer</button></Link>
+              </>
+            )}
           </div>
         </nav>
       )}

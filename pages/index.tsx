@@ -42,7 +42,8 @@ header{background:var(--white);border-bottom:1px solid var(--border);position:st
 .chat-inline-response.loading{color:var(--ink3);font-style:italic}
 .lang-b{padding:4px 10px;font-size:10px;letter-spacing:.1em;color:var(--ink3);border:1px solid transparent;transition:all .12s}
 .lang-b.on,.lang-b:hover{color:var(--gold);border-color:var(--gold3);background:var(--gold4)}
-.hdr-actions{display:flex;gap:8px;margin-left:auto}
+.hdr-actions{display:flex;gap:8px;margin-left:auto;align-items:center}
+.hdr-user{font-size:12px;color:var(--ink2);margin-right:.5rem;white-space:nowrap}
 .btn-in{padding:7px 16px;font-size:11px;letter-spacing:.07em;color:var(--ink2);border:1px solid var(--border2);transition:all .15s}
 .btn-in:hover{border-color:var(--gold);color:var(--gold)}
 .btn-sub{padding:7px 18px;font-size:11px;letter-spacing:.07em;background:var(--ink);color:var(--gold2);transition:all .15s}
@@ -244,7 +245,7 @@ const bodyHTML = `
 <header><div class="hdr">
   <div class="logo">Transit<em>-</em>IA<sup>MAROC</sup></div>
   <button class="btn-sub" style="margin-left:1rem" onclick="setMode('classic')">INITIER VOS DOSSIERS</button>
-  <div class="hdr-actions">
+  <div class="hdr-actions" id="hdr-actions">
     <button class="btn-in" onclick="openModal('login')">CONNEXION</button>
     <button class="btn-sub" onclick="openModal('register')">ESSAI GRATUIT</button>
   </div>
@@ -348,8 +349,8 @@ const bodyHTML = `
             <option value="037">037 — ENTREPOT PRIVE PARTICULIER (EPP)</option>
             <option value="038">038 — ENTREPOT INDUSTRIEL (IMPORT)</option>
             <option value="040">040 — MAC EN SUITE D'ATPA</option>
-            <option value="041">041 — MAC EN SUITE D'AT/AGRICUL.</option>
-            <option value="042">042 — MAC EN SUITE D'AT/AUTRES SECT.</option>
+            <option value="041">041 — MAC EN SUITE D'AGRICUL.</option>
+            <option value="042">042 — MAC EN SUITE D'AUTRES SECT.</option>
             <option value="043">043 — MAC EN SUITE D'AUTRES AT</option>
             <option value="044">044 — MAC EN SUITE D'AT</option>
             <option value="045">045 — MAC EN SUITE D'AUTRES IT</option>
@@ -930,6 +931,28 @@ async function submitRegister(){
   }catch(e){alert('Erreur r\u00e9seau');if(btn)btn.textContent='D\u00c9MARRER MON ESSAI GRATUIT \u2192';}
 }
 
+async function checkSession(){
+  try{
+    var res = await fetch('/api/auth/me');
+    if(!res.ok) return;
+    var data = await res.json();
+    if(!data || !data.email) return;
+    var box = document.getElementById('hdr-actions');
+    if(!box) return;
+    var name = data.email.split('@')[0];
+    box.innerHTML =
+      '<span class="hdr-user" title="Plan : '+data.plan+'">'+escHtml(name)+' · '+escHtml(data.plan)+'</span>' +
+      '<button class="btn-in" onclick="doLogout()">DÉCONNEXION</button>';
+  }catch(e){}
+}
+
+async function doLogout(){
+  try{
+    await fetch('/api/auth/logout', { method:'POST' });
+  }catch(e){}
+  window.location.href='/';
+}
+
 async function loadLatestCirculaires(){
   var el=document.getElementById('circulaires-list');
   if(!el)return;
@@ -960,6 +983,7 @@ async function loadLatestCirculaires(){
 
 loadLatestCirculaires();
 initDate();
+checkSession();
 
 // ---- Navigation portée depuis Index v2 : ancrage vers les hubs (mode classique) ----
 document.querySelectorAll('#classic-view .hub-card, #classic-view .mod-chip').forEach(function(el){
