@@ -657,7 +657,6 @@ const bodyHTML = `
     <div class="cv-title" style="margin-bottom:.4rem">Votre dossier commence ici</div>
     <div class="cv-sub" style="margin-bottom:1.25rem">Huit outils prioritaires</div>
     <div class="hub-list">
-      <a class="hub-card" id="hub-clf" href="/modules/classificateur"><span class="hub-num n-pain">CLF</span><div><div class="hub-name">Classificateur HS · DUM · Screening</div><div class="hub-desc">Le point de départ de presque tout dossier — le code SH classé ici alimente ensuite documents, taxes, autorisations et marquage.</div></div></a>
       <a class="hub-card" id="hub-dum" href="/modules/verificateur-dum"><span class="hub-num n-pain">DUM</span><div><div class="hub-name">Vérificateur DUM</div><div class="hub-desc">Détecte une erreur de déclaration avant rejet ou pénalité. Renvoie vers Contrôle des Risques si un écart est identifié.</div></div></a>
       <a class="hub-card" id="hub-sur" href="/modules/surestaries"><span class="hub-num n-pain">SUR</span><div><div class="hub-name">Surestaries &amp; Pénalités</div><div class="hub-desc">Calcule et anticipe les frais de détention de conteneurs et de magasinage à Tanger Med et Casa Port avant que la facture ne s'alourdisse chaque jour.</div></div></a>
       <a class="hub-card" id="hub-aud" href="/modules/audit"><span class="hub-num n-pain">AUD</span><div><div class="hub-name">Audit Douanier &amp; OEA</div><div class="hub-desc">Diagnostic de conformité, utilisé en préparation d'un contrôle ou d'une certification OEA (13 critères).</div></div></a>
@@ -678,7 +677,6 @@ const bodyHTML = `
       <div class="stage">
         <div class="stage-hdr"><span class="stage-num">01</span><div><div class="stage-title">Qualification technique</div><div class="stage-sub">Classification, origine, contexte contractuel</div></div></div>
         <div class="stage-body-inner">
-          <a class="mod-chip hub-chip" href="#hub-clf">Classificateur HS · DUM · Screening</a>
           <a class="mod-chip" href="/modules/classement">Classement tarifaire et SH — 17 224 codes</a>
           <a class="mod-chip" href="/modules/decisions-classement">Décisions de Classement — 247 décisions ADII</a>
           <a class="mod-chip" href="/modules/origine-aleca">Origine ALECA / UE</a>

@@ -42,7 +42,6 @@ const MODULES_TOOLS = [
   { num: 'IST', label: 'Intelligence Stratégique',     href: '/modules/intelligence-strategique' },
   { num: 'OEA', label: 'Opérateur Économique Agréé',   href: '/modules/oea' },
   { num: 'VRG', label: 'Veille Réglementaire & LF 2026', href: '/modules/veille-reglementaire', badge: 'NEW' },
-  { num: 'CLF', label: 'Classificateur HS · DUM · Screening', href: '/modules/classificateur', badge: 'NEW' },
   { num: 'M35', label: 'Valeur en Douane (WCO)',     href: '/modules/valeur-douane',           badge: 'NEW' },
   { num: 'M36', label: 'Intelligence Import',        href: '/modules/intelligence-import',      badge: 'NEW' },
   { num: 'VLW', label: 'Veille Légale & LF 2026',   href: '/modules/simulateur#majoration-tbi', badge: 'NEW' },
