@@ -24,7 +24,6 @@ const MODULES_TOOLS = [
   { num: 'CAL', label: 'Simulateur Droits & Taxes',    href: '/modules/simulateur',           badge: '↗'   },
   { num: 'CMP', label: 'Comparateur Régimes',          href: '/modules/comparateur',          badge: '↗'   },
   { num: 'ORI', label: 'Origine ALECA / UE',           href: '/modules/origine-aleca',        badge: 'NEW' },
-  { num: 'REF', label: 'Référence Logistique',         href: '/modules/logistique2',          badge: 'NEW' },
   { num: '15',  label: 'Incoterms × Shipping Terms',   href: '/modules/incoterms-shipping',   badge: 'NEW' },
   { num: 'REC', label: 'Régimes Économiques',          href: '/modules/regimes-economiques',  badge: 'NEW' },
   { num: 'DOC', label: 'Documents par Code SH',        href: '/modules/documents-sh',         badge: 'NEW' },
