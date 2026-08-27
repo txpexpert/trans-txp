@@ -1,6 +1,12 @@
 node_modules
-
+ 
 .env.local
 .env*.local
-
+ 
 .next/
+ 
+# Script local non vérifié — peut contenir des identifiants en dur.
+# Si le fichier s'avère inoffensif après relecture, retirez cette ligne
+# et committez-le volontairement.
+generate-qa-token.js
+ 
