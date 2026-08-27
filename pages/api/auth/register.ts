@@ -1,3 +1,4 @@
+// pages/api/auth/register.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
@@ -16,7 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!email || !password) return res.status(400).json({ error: 'Email et mot de passe requis' })
   if (password.length < 8) return res.status(400).json({ error: 'Mot de passe trop court (8 caractères minimum)' })
 
-  // Vérifier si l'email existe déjà
   const { data: existing } = await supabase
     .from('users')
     .select('id')
@@ -25,12 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (existing) return res.status(409).json({ error: 'Cet email est déjà utilisé' })
 
-  // Hasher le mot de passe
   const password_hash = await bcrypt.hash(password, 12)
 
-  // Créer l'utilisateur
   const { data: user, error } = await supabase
-
     .from('users')
     .insert({
       email: email.toLowerCase(),
@@ -49,12 +46,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Erreur lors de la création du compte' })
   }
 
-  // Créer la session immédiatement
   const token = createUserToken({
     userId:    user.id,
     email:     user.email,
     plan:      user.plan,
     statut:    user.statut,
+    // ✅ FIX — même logique que login.ts : trialEnds transmis dès la création
+    // du compte, disponible immédiatement dans le dashboard.
+    trialEnds: user.trial_ends_at ? new Date(user.trial_ends_at).getTime() : undefined,
   })
 
   res.setHeader('Set-Cookie', userCookieOptions(token))

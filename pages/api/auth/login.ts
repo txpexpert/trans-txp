@@ -17,7 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { email, password } = req.body
 
-  // ✅ Logs conditionnels — uniquement en développement local
   if (process.env.NODE_ENV === 'development') {
     console.log('[login] email:', email, '| password length:', password?.length)
   }
@@ -26,7 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { data: user, error: dbError } = await supabase
     .from('users')
-    // ✅ FIX — 'role' ajouté au SELECT
     .select('id, email, password_hash, plan, statut, trial_ends_at, login_attempts, locked_until, role')
     .eq('email', email.toLowerCase())
     .single()
@@ -41,7 +39,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (process.env.NODE_ENV === 'development') {
-    // ✅ Hash prefix supprimé des logs (info sensible)
     console.log('[login] statut:', user.statut, '| attempts:', user.login_attempts)
   }
 
@@ -83,19 +80,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     last_login_at:   new Date().toISOString(),
   }).eq('id', user.id)
 
-  // ✅ FIX — Dérivation du rôle :
-  // Priorité 1 : colonne 'role' en base (si elle existe)
-  // Priorité 2 : email admin défini dans .env
-  // Défaut      : 'user'
   const role: string = user.role ?? (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? 'admin' : 'user')
 
-  const token = createUserToken({ userId: user.id, email: user.email, plan: user.plan, statut })
+  const token = createUserToken({
+    userId: user.id,
+    email:  user.email,
+    plan:   user.plan,
+    statut,
+    // ✅ FIX — trialEnds renseigné depuis la base : permet au dashboard client
+    // d'afficher la date de fin d'essai / renouvellement sans requête supplémentaire.
+    trialEnds: user.trial_ends_at ? new Date(user.trial_ends_at).getTime() : undefined,
+  })
   res.setHeader('Set-Cookie', userCookieOptions(token))
 
   if (process.env.NODE_ENV === 'development') {
     console.log('[login] SUCCESS — role:', role)
   }
 
-  // ✅ FIX — 'role' retourné dans la réponse pour le check backoffice
   return res.status(200).json({ success: true, role })
 }

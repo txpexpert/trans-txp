@@ -1,7 +1,8 @@
-﻿// components/Layout.tsx
+// components/Layout.tsx
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { useAuth } from '../context/AuthContext'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -63,29 +64,23 @@ const MODULES_TOOLS = [
 // --- Composant Layout ---------------------------------------------------------
 export default function Layout({ children, variant = 'inner' }: LayoutProps) {
   const router = useRouter()
+
+  // ✅ FIX — état de session unique, plus de fetch('/api/auth/me') local ni de
+  // doLogin/doLogout dupliqués. Tout vient d'AuthContext (voir context/AuthContext.tsx),
+  // partagé avec la page dashboard et les autres formulaires de connexion.
+  const { user, login, logout } = useAuth()
+
   const [loginOpen,    setLoginOpen]    = useState(false)
   const [email,        setEmail]        = useState('')
   const [password,     setPassword]     = useState('')
-  const [user,         setUser]         = useState('')
-  const [userPlan,     setUserPlan]     = useState('')
   const [toast,        setToast]        = useState('')
   const [toastVisible, setToastVisible] = useState(false)
   const [mastDate,     setMastDate]     = useState('')
 
   const isLanding = variant === 'landing'
 
-  // -- Session existante : récupérée au chargement via le cookie -------------
-  useEffect(() => {
-    fetch('/api/auth/me')
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data?.email) {
-          setUser(data.email.split('@')[0])
-          setUserPlan(data.plan)
-        }
-      })
-      .catch(() => {})
-  }, [])
+  // Nom d'affichage dérivé de l'email (partie avant @), comme avant
+  const displayName = user?.email ? user.email.split('@')[0] : ''
 
   useEffect(() => {
     const days   = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi']
@@ -102,29 +97,15 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
 
   const doLogin = async () => {
     if (!email || !password) { showToast('Email et mot de passe requis'); return }
-    try {
-      const res  = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
-      const data = await res.json()
-      if (!res.ok) { showToast(data.error || 'Identifiants incorrects'); return }
-      setLoginOpen(false)
-      setUser(email.split('@')[0])
-      setUserPlan(data.user?.plan || '')
-      router.push('/')
-    } catch {
-      showToast('Erreur réseau — réessayez')
-    }
+    const result = await login(email, password)
+    if (!result.ok) { showToast(result.error || 'Identifiants incorrects'); return }
+    setLoginOpen(false)
+    setEmail(''); setPassword('')
+    router.push('/')
   }
 
   const doLogout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' })
-    } catch {}
-    setUser('')
-    setUserPlan('')
+    await logout()
     router.push('/')
   }
 
@@ -171,7 +152,11 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
               <Link href="/modules/comparateur" className="mast-nav-item">COMPARATEUR</Link>
               <Link href="/modules/analyses"    className="mast-nav-item">ANALYSES</Link>
               <Link href="/abonnements"         className="mast-nav-item">ABONNEMENTS</Link>
-              <button className="mast-nav-cta" onClick={() => setLoginOpen(true)}>ESSAYER GRATUITEMENT</button>
+              {user ? (
+                <Link href="/dashboard" className="mast-nav-cta">MON COMPTE</Link>
+              ) : (
+                <button className="mast-nav-cta" onClick={() => setLoginOpen(true)}>ESSAYER GRATUITEMENT</button>
+              )}
             </div>
           </div>
         </header>
@@ -190,9 +175,17 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
           </div>
           <div className="topnav-right">
             {user ? (
-              <span className="topnav-user" title={`Plan : ${userPlan}`}>
-                {user} <span className="topnav-plan">· {userPlan}</span>
-              </span>
+              // ✅ FIX — lien "Mon compte" ajouté à côté du nom + plan
+              <Link
+                href="/dashboard"
+                className="topnav-user"
+                title={`Plan : ${user.plan} — Accéder à mon compte`}
+                style={{ textDecoration: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+                onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+                onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+              >
+                {displayName} <span className="topnav-plan">· {user.plan}</span>
+              </Link>
             ) : (
               <span className="topnav-user">Non connecté</span>
             )}
@@ -236,6 +229,12 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
 
             <div className="sidebar-section">
               <div className="sidebar-label">COMMUNAUTÉ & COMPTE</div>
+              {/* ✅ FIX — lien Mon compte visible uniquement si connecté */}
+              {user && (
+                <Link href="/dashboard" className={`sidebar-item ${router.pathname === '/dashboard' ? 'active' : ''}`}>
+                  <span className="sidebar-num">→</span>Mon compte
+                </Link>
+              )}
               <Link href="/abonnements" className={`sidebar-item ${router.pathname === '/abonnements'        ? 'active' : ''}`}><span className="sidebar-num">→</span>Abonnements</Link>
             </div>
 
@@ -298,3 +297,4 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
     </>
   )
 }
+
