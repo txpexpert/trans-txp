@@ -687,8 +687,8 @@ const bodyHTML = `
       <div class="stage">
         <div class="stage-hdr"><span class="stage-num">02</span><div><div class="stage-title">Chiffrage et décision</div><div class="stage-sub">Droits, taxes, choix du régime économique</div></div></div>
         <div class="stage-body-inner">
-          <a class="mod-chip hub-chip" href="#hub-cal">Simulateur Droits &amp; Taxes</a>
-          <a class="mod-chip hub-chip" href="#hub-cmp">Comparateur Régimes</a>
+          <a class="mod-chip hub-chip" href="/modules/simulateur">Simulateur Droits &amp; Taxes</a>
+          <a class="mod-chip hub-chip" href="/modules/comparateur">Comparateur Régimes</a>
           <a class="mod-chip" href="/modules/simulateur-fiscal">Simulateur Fiscal Import</a>
           <a class="mod-chip" href="/modules/valeur-douane">Valeur en Douane (WCO)</a>
           <a class="mod-chip" href="/modules/cgi-fiscal">Index du Code des Impôts — 296 art. CGI 2026</a>
@@ -719,10 +719,10 @@ const bodyHTML = `
       <div class="stage">
         <div class="stage-hdr"><span class="stage-num">04</span><div><div class="stage-title">Sécurisation et suivi</div><div class="stage-sub">Vérification, pénalités, contentieux, tracking</div></div></div>
         <div class="stage-body-inner">
-          <a class="mod-chip hub-chip" href="#hub-dum">Vérificateur DUM</a>
-          <a class="mod-chip hub-chip" href="#hub-sur">Surestaries &amp; Pénalités</a>
-          <a class="mod-chip hub-chip" href="#hub-aud">Audit Douanier &amp; OEA</a>
-          <a class="mod-chip hub-chip" href="#hub-ctx">Contentieux &amp; Litiges</a>
+          <a class="mod-chip hub-chip" href="/modules/verificateur-dum">Vérificateur DUM</a>
+          <a class="mod-chip hub-chip" href="/modules/surestaries">Surestaries &amp; Pénalités</a>
+          <a class="mod-chip hub-chip" href="/modules/audit">Audit Douanier &amp; OEA</a>
+          <a class="mod-chip hub-chip" href="/modules/contentieux">Contentieux &amp; Litiges</a>
           <a class="mod-chip" href="/modules/risques">Contrôle des Risques — 38 situations</a>
           <a class="mod-chip" href="/modules/tracking">Tracking &amp; Intelligence</a>
           <a class="mod-chip" href="/modules/decisions-classement">Décisions de Classement (re-consultée en cas d'écart)</a>
@@ -733,7 +733,7 @@ const bodyHTML = `
       <div class="stage">
         <div class="stage-hdr"><span class="stage-num">05</span><div><div class="stage-title">Intelligence continue</div><div class="stage-sub">Veille, stratégie, marché — accessible à tout moment</div></div></div>
         <div class="stage-body-inner">
-          <a class="mod-chip hub-chip" href="#hub-vrg">Veille Réglementaire &amp; LF 2026</a>
+          <a class="mod-chip hub-chip" href="/modules/veille-reglementaire">Veille Réglementaire &amp; LF 2026</a>
           <a class="mod-chip" href="/modules/alertes-fiscales">Alertes Fiscales</a>
           <a class="mod-chip" href="/modules/oea">Opérateur Économique Agréé (fiche détaillée)</a>
           <a class="mod-chip" href="/modules/simulateur#majoration-tbi">Veille Légale &amp; LF 2026</a>
