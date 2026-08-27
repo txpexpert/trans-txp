@@ -43,7 +43,8 @@ header{background:var(--white);border-bottom:1px solid var(--border);position:st
 .lang-b{padding:4px 10px;font-size:10px;letter-spacing:.1em;color:var(--ink3);border:1px solid transparent;transition:all .12s}
 .lang-b.on,.lang-b:hover{color:var(--gold);border-color:var(--gold3);background:var(--gold4)}
 .hdr-actions{display:flex;gap:8px;margin-left:auto;align-items:center}
-.hdr-user{font-size:12px;color:var(--ink2);margin-right:.5rem;white-space:nowrap}
+.hdr-user{font-size:12px;color:var(--ink2);margin-right:.5rem;white-space:nowrap;text-decoration:none;cursor:pointer}
+.hdr-user:hover{text-decoration:underline;color:var(--gold)}
 .btn-in{padding:7px 16px;font-size:11px;letter-spacing:.07em;color:var(--ink2);border:1px solid var(--border2);transition:all .15s}
 .btn-in:hover{border-color:var(--gold);color:var(--gold)}
 .btn-sub{padding:7px 18px;font-size:11px;letter-spacing:.07em;background:var(--ink);color:var(--gold2);transition:all .15s}
@@ -941,8 +942,8 @@ async function checkSession(){
     if(!box) return;
     var name = data.email.split('@')[0];
     box.innerHTML =
-      '<span class="hdr-user" title="Plan : '+data.plan+'">'+escHtml(name)+' · '+escHtml(data.plan)+'</span>' +
-      '<button class="btn-in" onclick="doLogout()">DÉCONNEXION</button>';
+  '<a href="/dashboard" class="hdr-user" title="Plan : '+data.plan+' — Accéder à mon compte">'+escHtml(name)+' · '+escHtml(data.plan)+'</a>' +
+  '<button class="btn-in" onclick="doLogout()">DÉCONNEXION</button>';
   }catch(e){}
 }
 
