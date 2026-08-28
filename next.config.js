@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+})
+
 const nextConfig = {
   async redirects() {
     return [
@@ -20,11 +25,10 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withPWA(nextConfig)
 
 // Note : la règle de réécriture /modules/reference-logistique -> /api/ref-log
 // présente dans l'ancien next.config.js a été retirée — aucune page gardée
 // n'y renvoie (probablement supersédée par /modules/logistique2, conservé).
 // pages/api/ref-log.ts existe toujours dans le dépôt source si besoin de
 // la restaurer, mais n'a pas été copié dans ce build.
-

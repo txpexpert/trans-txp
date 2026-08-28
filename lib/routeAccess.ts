@@ -16,6 +16,7 @@ export const FREE_PATHS = [
   '/auth/register',
   '/contact',
   '/a-propos',
+  '/mobile',
 
   // Vitrines/démos marketing — choix assumé : aperçu de fonctionnalités
   // Pro/Cabinet en accès libre pour convaincre. Changement futur possible

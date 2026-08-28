@@ -5,6 +5,13 @@ export default function Document() {
   return (
     <Html lang="fr">
       <Head>
+        {/* ── PWA — Transit-IA mobile ── */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#153E82" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
         {/* ── Google Fonts — DM Serif Display + DM Sans + JetBrains Mono ── */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
