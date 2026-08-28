@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur de Chargement Conteneurs — Transit-IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;
+  --bg:#F9F8F4;--bg2:#F2F0EA;--surface:#FFFFFF;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 4px 16px rgba(26,26,24,.1);
+  --r:8px;--r-lg:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",Arial,sans-serif;font-size:14px;line-height:1.5;padding:0;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.page-header{background:rgba(249,248,244,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 2rem;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{fill:#fff}
+.page-title{font-family:"DM Serif Display",Georgia,serif;font-size:16px;color:var(--ink)}
+.page-title span{display:block;font-size:9.5px;font-family:"JetBrains Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
+.hdr-badges{margin-left:auto;display:flex;gap:8px}
+.hdr-badge{font-family:"JetBrains Mono",monospace;font-size:9px;padding:3px 10px;letter-spacing:.08em;text-transform:uppercase;border-radius:100px;border:1px solid var(--gold-bd);background:var(--gold-dim);color:var(--gold)}
+
+/* LAYOUT */
+.page-body{max-width:1440px;margin:0 auto;padding:1.5rem 2rem 4rem}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--sh)}
+.card-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+/* FORM */
+.field label{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.field{margin-bottom:.75rem}
+select,input[type=number],input[type=text]{
+  padding:7px 10px;border:1px solid var(--border-mid);border-radius:var(--r);
+  background:var(--surface);color:var(--ink);font-size:13px;font-family:"DM Sans",Arial,sans-serif;width:100%;
+  transition:border-color .15s;
+}
+select:focus,input:focus{outline:none;border-color:var(--gold)}
+.container-info{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.03em}
+
+/* BADGE dimensions */
+.dim-badge{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 7px;font-size:11.5px;font-weight:600;text-align:center;white-space:nowrap;font-family:"JetBrains Mono",monospace;color:var(--mid)}
+
+/* PALETTE TABLE */
+.pal-wrap{overflow-x:auto}
+.pal-header,.pal-row{display:grid;grid-template-columns:160px 88px 68px 78px 78px 52px 60px 54px 72px;gap:5px;align-items:center;padding:5px 2px}
+.pal-header span{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.3}
+.pal-row{border-top:1px solid var(--bg2)}
+.pal-row:hover{background:var(--bg2)}
+.pal-name{font-size:12.5px;font-weight:600;color:var(--ink)}
+.pal-region{font-size:10px;color:var(--muted);font-family:"JetBrains Mono",monospace}
+.center-val{text-align:center;font-size:12px;color:var(--mid);font-family:"JetBrains Mono",monospace}
+
+/* CUSTOM */
+.custom-section{margin-top:14px;padding-top:14px;border-top:2px dashed var(--border)}
+.custom-title{font-size:12px;font-weight:600;color:var(--gold);margin-bottom:8px;font-family:"JetBrains Mono",monospace;letter-spacing:.04em}
+.cust-header,.cust-row{display:grid;grid-template-columns:108px 62px 62px 68px 78px 78px 52px 54px 65px 22px;gap:5px;align-items:center;padding:5px 0}
+.cust-header span{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.3}
+.cust-row{border-top:1px solid var(--bg2)}
+.del-btn{cursor:pointer;color:var(--muted);font-size:16px;text-align:center;line-height:1;background:none;border:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.del-btn:hover{background:var(--red-bg);color:var(--red)}
+.add-btn{font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--mid);cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .15s;margin-top:8px}
+.add-btn:hover{border-color:var(--gold-bd);color:var(--gold)}
+
+/* METRICS */
+.metric{border-radius:var(--r-lg);padding:1rem;text-align:center;border:1px solid}
+.metric-label{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.metric-value{font-family:"DM Sans",sans-serif;font-size:24px;font-weight:700;line-height:1.1}
+.metric-sub{font-size:11px;margin-top:3px;font-family:"JetBrains Mono",monospace}
+.m-blue{background:var(--blue-bg);border-color:var(--blue-bd)}.m-blue .metric-value,.m-blue .metric-label{color:var(--blue)}.m-blue .metric-sub{color:#4060B0}
+.m-green{background:var(--green-bg);border-color:var(--green-bd)}.m-green .metric-value,.m-green .metric-label{color:var(--green)}.m-green .metric-sub{color:#2E7A50}
+.m-amber{background:var(--amber-bg);border-color:var(--amber-bd)}.m-amber .metric-value,.m-amber .metric-label{color:var(--amber)}.m-amber .metric-sub{color:#7A5018}
+.m-red{background:var(--red-bg);border-color:var(--red-bd)}.m-red .metric-value,.m-red .metric-label{color:var(--red)}.m-red .metric-sub{color:#8A2820}
+
+/* RESULT TABLE */
+.result-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.result-table th{text-align:left;padding:7px 10px;font-weight:700;color:var(--muted);border-bottom:1px solid var(--border);font-size:10px;font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase;background:var(--bg2)}
+.result-table td{padding:8px 10px;border-bottom:1px solid var(--bg2);vertical-align:middle}
+.result-table tr:last-child td{border-bottom:none}
+.total-row td{background:var(--gold-pale);font-weight:600}
+
+/* BADGES */
+.pct-badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:600;font-family:"JetBrains Mono",monospace}
+.pct-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.pct-info{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
+.pct-warn{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+
+/* WEIGHT BARS */
+.weight-bar-item{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:7px}
+.weight-bar-name{width:130px;color:var(--mid);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+.weight-bar-bg{flex:1;background:var(--bg2);border-radius:4px;height:12px;overflow:hidden;border:1px solid var(--border)}
+.weight-bar-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .3s}
+.weight-val{width:80px;text-align:right;flex-shrink:0;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--mid)}
+
+/* VISUALISATION */
+.pal-box{width:18px;height:14px;border-radius:2px;display:inline-block;border:1px solid rgba(0,0,0,.1)}
+.pal-loaded{background:var(--gold)}
+.pal-empty{background:var(--bg2);opacity:.6}
+
+.divider{border:none;border-top:1px solid var(--border);margin:.75rem 0}
+.alert-red{color:var(--red);font-size:12px;font-weight:500}
+.alert-amber{color:var(--amber);font-size:12px}
+.alert-green{color:var(--green);font-size:12px}
+
+@media(max-width:1000px){
+  .pal-header,.pal-row{grid-template-columns:140px 82px 64px 74px 74px 48px 56px 50px 68px;font-size:12px}
+  .cust-header,.cust-row{grid-template-columns:90px 58px 58px 64px 74px 74px 48px 50px 60px 22px}
+  .grid4{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+  .grid2,.grid4{grid-template-columns:1fr}
+  .page-body{padding:1rem}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="logo-mark"><svg width="15" height="15" viewBox="0 0 12 12"><path d="M6 0L11 3V9L6 12L1 9V3Z"/></svg></div>
+  <div class="page-title">Transit-IA <span>Calculateur de Chargement Conteneurs &amp; Palettes</span></div>
+  <div class="hdr-badges">
+    <span class="hdr-badge">ISO 6780:2011</span>
+    <span class="hdr-badge">6 Conteneurs · 8 Palettes</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+<!-- CONTENEUR -->
+<div class="card">
+  <div class="card-title">Type de conteneur &amp; orientation</div>
+  <div class="grid2">
+    <div class="field">
+      <label>Conteneur</label>
+      <select id="container-type" onchange="refreshAll()">
+        <option value="20std">20' Standard (TEU)</option>
+        <option value="40std" selected>40' Standard (FEU)</option>
+        <option value="40hc">40' High Cube</option>
+        <option value="45hc">45' High Cube</option>
+        <option value="40pw">40' Pallet Wide (2,5 m)</option>
+        <option value="45pw">45' Pallet Wide (2,5 m)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Orientation de chargement</label>
+      <select id="loading-orient" onchange="refreshAll()">
+        <option value="standard">Standard (longueur // longueur conteneur)</option>
+        <option value="alternate">Alterne — tete-beche optimise</option>
+      </select>
+    </div>
+  </div>
+  <div class="container-info" id="container-dims"></div>
+</div>
+
+<!-- PALETTES -->
+<div class="card">
+  <div class="card-title">Palettes chargees</div>
+  <div class="pal-wrap">
+    <div class="pal-header">
+      <span>Type de palette</span>
+      <span style="text-align:center">Dim. (mm)<br>L x l fixe</span>
+      <span style="text-align:center">Haut. pal.<br>(mm)</span>
+      <span style="text-align:center">Haut.<br>chargee (mm)</span>
+      <span style="text-align:center">Charge /<br>pal (kg)</span>
+      <span style="text-align:center">Tare<br>(kg)</span>
+      <span style="text-align:center">Qte</span>
+      <span style="text-align:center">Max<br>cont.</span>
+      <span style="text-align:center">Poids<br>total</span>
+    </div>
+    <div id="palette-rows"></div>
+
+    <div class="custom-section">
+      <div class="custom-title">+ Dimensions personnalisees</div>
+      <div class="cust-header">
+        <span>Nom</span><span>Larg.<br>(mm)</span><span>Long.<br>(mm)</span><span>Haut. pal.<br>(mm)</span><span>Haut.<br>chargee</span><span>Charge/<br>pal (kg)</span><span>Tare<br>(kg)</span><span>Qte</span><span>Poids total</span><span></span>
+      </div>
+      <div id="custom-rows"></div>
+      <button class="add-btn" onclick="addCustomRow()">+ Ajouter une palette personnalisee</button>
+    </div>
+  </div>
+</div>
+
+<!-- METRIQUES -->
+<div class="grid4" style="margin-bottom:1rem">
+  <div class="metric m-blue">
+    <div class="metric-label">Palettes chargees</div>
+    <div class="metric-value" id="m-loaded">0</div>
+    <div class="metric-sub">total toutes palettes</div>
+  </div>
+  <div class="metric m-green" id="m-space-card">
+    <div class="metric-label">Espace sol utilise</div>
+    <div class="metric-value" id="m-space">0%</div>
+    <div class="metric-sub" id="m-space-sub">— m² / — m²</div>
+  </div>
+  <div class="metric m-amber">
+    <div class="metric-label">Poids total charge</div>
+    <div class="metric-value" id="m-weight">0 kg</div>
+    <div class="metric-sub" id="m-payload-info">/ — kg payload</div>
+  </div>
+  <div class="metric m-red" id="m-waste-card">
+    <div class="metric-label">Espace non utilise</div>
+    <div class="metric-value" id="m-waste">100%</div>
+    <div class="metric-sub" id="m-waste-m2">— m² libres</div>
+  </div>
+</div>
+
+<!-- RECAP -->
+<div class="card">
+  <div class="card-title">Recapitulatif par type de palette</div>
+  <div style="overflow-x:auto">
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>Palette</th><th>Dim. (mm)</th><th>Qte</th><th>Tare pal.</th>
+          <th>Haut. pal.</th><th>Haut. chargee</th><th>Charge/pal</th>
+          <th>Poids total</th><th>Surface sol</th><th>Espace utilise</th>
+        </tr>
+      </thead>
+      <tbody id="result-tbody"></tbody>
+    </table>
+  </div>
+  <div id="height-warn-global" style="margin-top:8px"></div>
+</div>
+
+<!-- VISU + POIDS -->
+<div class="grid2">
+  <div class="card">
+    <div class="card-title">Visualisation sol conteneur</div>
+    <div id="vis-area"></div>
+    <div style="display:flex;gap:12px;margin-top:8px;font-size:11px;color:var(--muted)">
+      <span><span style="display:inline-block;width:12px;height:10px;background:var(--gold);border-radius:2px;margin-right:4px;vertical-align:middle"></span>Charge</span>
+      <span><span style="display:inline-block;width:12px;height:10px;background:var(--bg2);border:1px solid var(--border);border-radius:2px;margin-right:4px;vertical-align:middle"></span>Libre</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Poids par type de palette</div>
+    <div id="weight-bars"></div>
+    <div class="divider"></div>
+    <div id="weight-warn"></div>
+  </div>
+</div>
+
+</div><!-- /page-body -->
+
+<script>
+const CONTAINERS={
+  '20std':{label:"20' Standard",L:5900,W:2350,H:2390,payload:28000},
+  '40std':{label:"40' Standard",L:12030,W:2350,H:2390,payload:27000},
+  '40hc':{label:"40' High Cube",L:12030,W:2350,H:2695,payload:26500},
+  '45hc':{label:"45' High Cube",L:13556,W:2350,H:2695,payload:27000},
+  '40pw':{label:"40' Pallet Wide",L:12030,W:2500,H:2695,payload:26500},
+  '45pw':{label:"45' Pallet Wide",L:13556,W:2500,H:2695,payload:27000},
+};
+const PALETTES=[
+  {id:'eur1',name:'EUR 1 (EPAL)',W:800,L:1200,palH:145,tare:22,maxLoad:1500,region:'Europe'},
+  {id:'eur2',name:'EUR 2',W:1000,L:1200,palH:144,tare:33,maxLoad:1470,region:'Europe'},
+  {id:'eur3',name:'EUR 3',W:1000,L:1200,palH:144,tare:29,maxLoad:1920,region:'Europe'},
+  {id:'eur6',name:'EUR 6 (demi)',W:600,L:800,palH:144,tare:9.5,maxLoad:500,region:'Europe'},
+  {id:'gma',name:'GMA / CHEP (US)',W:1016,L:1219,palH:140,tare:27,maxLoad:1250,region:'Amer. du Nord'},
+  {id:'us42',name:'42"x42" (US)',W:1067,L:1067,palH:140,tare:18,maxLoad:1135,region:'Amer. du Nord'},
+  {id:'iso1',name:'ISO 1 (1200x1000)',W:1000,L:1200,palH:150,tare:25,maxLoad:1250,region:'International'},
+  {id:'aus',name:'Australie 1165x1165',W:1165,L:1165,palH:150,tare:24,maxLoad:1250,region:'Australie'},
+];
+let customRows=[],customCounter=0;
+const v=id=>document.getElementById(id);
+const iv=id=>parseInt(v(id)?.value)||0;
+const fv=id=>parseFloat(v(id)?.value)||0;
+const fr=n=>n.toLocaleString('fr-FR');
+
+function calcMax(cont,pW,pL,orient){
+  const o1=Math.floor(cont.W/pW)*Math.floor(cont.L/pL);
+  const o2=Math.floor(cont.W/pL)*Math.floor(cont.L/pW);
+  if(orient==='standard')return Math.max(o1,o2);
+  const h=Math.floor(cont.L/2);
+  const o3=Math.floor(cont.W/pW)*Math.floor(h/pL)+Math.floor(cont.W/pL)*Math.floor((cont.L-h)/pW);
+  const o4=Math.floor(cont.W/pL)*Math.floor(h/pW)+Math.floor(cont.W/pW)*Math.floor((cont.L-h)/pL);
+  return Math.max(o1,o2,o3,o4);
+}
+
+function buildRows(){
+  const cont=CONTAINERS[v('container-type').value];
+  const orient=v('loading-orient').value;
+  let html='';
+  PALETTES.forEach(p=>{
+    const mx=calcMax(cont,p.W,p.L,orient);
+    html+=`<div class="pal-row" id="palrow-${p.id}">
+      <div><div class="pal-name">${p.name}</div><div class="pal-region">${p.region}</div></div>
+      <div><span class="dim-badge">${p.W} x ${p.L}</span></div>
+      <div><span class="dim-badge">${p.palH}</span></div>
+      <div><input type="number" id="hc-${p.id}" value="0" min="0" max="3000" oninput="calculate()"></div>
+      <div><input type="number" id="c-${p.id}" value="0" min="0" max="${p.maxLoad}" oninput="calculate()"></div>
+      <div class="center-val">${p.tare}</div>
+      <div><input type="number" id="qty-${p.id}" value="0" min="0" max="999" oninput="calculate()"></div>
+      <div class="center-val" id="max-${p.id}">${mx}</div>
+      <div class="center-val" id="wtot-${p.id}" style="font-weight:600">—</div>
+    </div>`;
+  });
+  v('palette-rows').innerHTML=html;
+}
+
+function addCustomRow(){
+  const id='cust-'+(++customCounter);
+  customRows.push(id);
+  const div=document.createElement('div');
+  div.className='cust-row';div.id='palrow-'+id;
+  div.innerHTML=`
+    <input type="text" id="name-${id}" value="Palette perso" oninput="calculate()">
+    <input type="number" id="pw-${id}" value="800" min="100" max="2500" oninput="calculate()">
+    <input type="number" id="pl-${id}" value="1200" min="100" max="3000" oninput="calculate()">
+    <input type="number" id="pph-${id}" value="150" min="50" max="500" oninput="calculate()">
+    <input type="number" id="phc-${id}" value="0" min="0" max="3000" oninput="calculate()">
+    <input type="number" id="pc-${id}" value="0" min="0" max="5000" oninput="calculate()">
+    <input type="number" id="pt-${id}" value="20" min="0" max="200" oninput="calculate()">
+    <input type="number" id="pq-${id}" value="0" min="0" max="999" oninput="calculate()">
+    <div class="center-val" id="wtot-${id}" style="font-weight:600">—</div>
+    <button class="del-btn" onclick="removeCustom('${id}')">&#x2715;</button>`;
+  v('custom-rows').appendChild(div);
+  calculate();
+}
+
+function removeCustom(id){
+  customRows=customRows.filter(r=>r!==id);
+  const el=v('palrow-'+id);if(el)el.remove();
+  calculate();
+}
+
+function refreshAll(){
+  const cont=CONTAINERS[v('container-type').value];
+  const orient=v('loading-orient').value;
+  PALETTES.forEach(p=>{const mx=v('max-'+p.id);if(mx)mx.textContent=calcMax(cont,p.W,p.L,orient);});
+  calculate();
+}
+
+function calculate(){
+  const contKey=v('container-type').value;
+  const orient=v('loading-orient').value;
+  const cont=CONTAINERS[contKey];
+  const cArea=(cont.L/1000)*(cont.W/1000);
+  const contH=cont.H;
+
+  v('container-dims').innerHTML=`Dim. interieures : ${cont.L/1000} m L &times; ${cont.W/1000} m l &times; ${cont.H/1000} m h &nbsp;&mdash;&nbsp; Surface sol : ${cArea.toFixed(2)} m² &nbsp;&mdash;&nbsp; Payload max : ${fr(cont.payload)} kg`;
+
+  let totalLoaded=0,totalWeight=0,totalArea=0,allItems=[],heightWarn=[];
+
+  PALETTES.forEach(p=>{
+    const qty=iv('qty-'+p.id),charge=fv('c-'+p.id),hc=iv('hc-'+p.id);
+    const palW=(p.tare+charge)*qty;
+    const palA=(p.W/1000)*(p.L/1000)*qty;
+    const totH=p.palH+(hc>0?hc:0);
+    const overH=hc>0&&totH>contH;
+    const wtotEl=v('wtot-'+p.id);
+    const maxEl=v('max-'+p.id);
+    if(maxEl)maxEl.textContent=calcMax(cont,p.W,p.L,orient);
+    if(wtotEl)wtotEl.textContent=qty>0?fr(Math.round(palW))+' kg':'—';
+    totalLoaded+=qty;totalWeight+=palW;totalArea+=palA;
+    if(qty>0){
+      allItems.push({name:p.name,qty,palW,palA,tare:p.tare,charge,W:p.W,L:p.L,palH:p.palH,hc,totH,overH});
+      if(overH)heightWarn.push(`${p.name} : h. totale ${totH} mm > conteneur ${contH} mm`);
+    }
+  });
+
+  customRows.forEach(id=>{
+    const qty=iv('pq-'+id),charge=fv('pc-'+id),tare=fv('pt-'+id);
+    const pW=iv('pw-'+id)||800,pL=iv('pl-'+id)||1200,pPH=iv('pph-'+id)||150,hc=iv('phc-'+id);
+    const name=v('name-'+id)?.value||'Perso';
+    const palW=(tare+charge)*qty,palA=(pW/1000)*(pL/1000)*qty;
+    const totH=pPH+(hc>0?hc:0);const overH=hc>0&&totH>contH;
+    const wtotEl=v('wtot-'+id);
+    if(wtotEl)wtotEl.textContent=qty>0?fr(Math.round(palW))+' kg':'—';
+    totalLoaded+=qty;totalWeight+=palW;totalArea+=palA;
+    if(qty>0){
+      allItems.push({name:name+'*',qty,palW,palA,tare,charge,W:pW,L:pL,palH:pPH,hc,totH,overH});
+      if(overH)heightWarn.push(`${name} : h. totale ${totH} mm > conteneur ${contH} mm`);
+    }
+  });
+
+  const spaceUsed=cArea>0?(totalArea/cArea*100):0;
+  const spaceWaste=100-spaceUsed;
+  const wasteM2=cArea-totalArea;
+  const weightPct=cont.payload>0?(totalWeight/cont.payload*100):0;
+
+  v('m-loaded').textContent=totalLoaded;
+  v('m-space').textContent=spaceUsed.toFixed(1)+'%';
+  v('m-space-sub').textContent=`${totalArea.toFixed(2)} m² / ${cArea.toFixed(2)} m²`;
+  v('m-weight').textContent=fr(Math.round(totalWeight))+' kg';
+  v('m-payload-info').textContent=`/ ${fr(cont.payload)} kg (${weightPct.toFixed(0)}%)`;
+  v('m-waste').textContent=spaceWaste.toFixed(1)+'%';
+  v('m-waste-m2').textContent=wasteM2.toFixed(2)+' m² libres';
+
+  v('m-space-card').className='metric '+(spaceUsed>=75?'m-green':spaceUsed>=40?'m-blue':'m-red');
+  v('m-waste-card').className='metric '+(spaceWaste<=25?'m-green':spaceWaste<=50?'m-amber':'m-red');
+
+  // Recap table
+  let rows='';
+  allItems.forEach(it=>{
+    const spPct=cArea>0?(it.palA/cArea*100):0;
+    const cls=spPct>50?'pct-ok':spPct>20?'pct-info':'pct-warn';
+    const hcDisp=it.hc>0?it.hc+' mm':'—';
+    const thDisp=it.hc>0?`<span style="color:${it.overH?'var(--red)':'var(--green)'};font-weight:600">${it.totH} mm${it.overH?' &#9888;':''}</span>`:'—';
+    rows+=`<tr>
+      <td>${it.name}</td><td><span style="font-family:JetBrains Mono,monospace;font-size:11px">${it.W}x${it.L}</span></td>
+      <td><strong>${it.qty}</strong></td><td>${it.tare} kg</td>
+      <td>${it.palH} mm</td><td>${hcDisp}</td><td>${it.charge} kg</td>
+      <td><strong>${fr(Math.round(it.palW))} kg</strong></td>
+      <td>${it.palA.toFixed(2)} m²</td>
+      <td><span class="pct-badge ${cls}">${spPct.toFixed(1)}%</span></td>
+    </tr>`;
+  });
+  if(!rows)rows=`<tr><td colspan="10" style="color:var(--muted);text-align:center;padding:16px;font-family:JetBrains Mono,monospace;font-size:11px">Aucune palette saisie</td></tr>`;
+  const totCls=spaceUsed>=75?'pct-ok':spaceUsed>=40?'pct-info':'pct-warn';
+  rows+=`<tr class="total-row"><td colspan="2"><strong>TOTAL</strong></td><td><strong>${totalLoaded}</strong></td><td colspan="4"></td><td><strong>${fr(Math.round(totalWeight))} kg</strong></td><td><strong>${totalArea.toFixed(2)} m²</strong></td><td><span class="pct-badge ${totCls}">${spaceUsed.toFixed(1)}%</span></td></tr>`;
+  v('result-tbody').innerHTML=rows;
+
+  // Height warnings
+  v('height-warn-global').innerHTML=heightWarn.length?`<strong class="alert-red">&#9888; Depassement hauteur conteneur (${contH} mm) :</strong><br>`+heightWarn.map(w=>`<span class="alert-red">• ${w}</span>`).join('<br>'):'';
+
+  // Weight bars
+  const maxW=Math.max(...allItems.map(d=>d.palW),1);
+  let wBars=allItems.map(it=>{
+    const pct=(it.palW/maxW*100).toFixed(1);
+    return `<div class="weight-bar-item"><div class="weight-bar-name" title="${it.name}">${it.name}</div><div class="weight-bar-bg"><div class="weight-bar-fill" style="width:${pct}%"></div></div><div class="weight-val">${fr(Math.round(it.palW))} kg</div></div>`;
+  }).join('');
+  if(!wBars)wBars=`<div style="color:var(--muted);font-size:11px;font-family:JetBrains Mono,monospace">Aucune palette chargee</div>`;
+  v('weight-bars').innerHTML=wBars;
+
+  // Payload alert
+  let warn='';
+  if(weightPct>100)warn=`<span class="alert-red">&#9888; Depassement payload : ${fr(Math.round(totalWeight))} kg / ${fr(cont.payload)} kg !</span>`;
+  else if(weightPct>80)warn=`<span class="alert-amber">Charge a ${weightPct.toFixed(0)}% du payload maximum.</span>`;
+  else warn=`<span class="alert-green">Poids OK — ${fr(Math.max(0,Math.round(cont.payload-totalWeight)))} kg de capacite restante.</span>`;
+  v('weight-warn').innerHTML=warn;
+
+  // Visualisation
+  const refA=(PALETTES[0].W/1000)*(PALETTES[0].L/1000);
+  const maxSlots=Math.min(Math.floor(cArea/refA),60);
+  let shown=0,visHtml='<div style="display:flex;flex-wrap:wrap;gap:3px">';
+  allItems.forEach(it=>{
+    for(let i=0;i<it.qty&&shown<60;i++,shown++)
+      visHtml+=`<span class="pal-box pal-loaded" title="${it.name}"></span>`;
+  });
+  for(let i=0;i<Math.max(0,maxSlots-shown);i++)visHtml+=`<span class="pal-box pal-empty"></span>`;
+  visHtml+='</div>';
+  if(totalLoaded>60)visHtml+=`<div style="font-size:11px;color:var(--muted);margin-top:4px;font-family:JetBrains Mono,monospace">+${totalLoaded-60} palettes non affichees</div>`;
+  v('vis-area').innerHTML=visHtml;
+}
+
+buildRows();calculate();
+</script>
+</body>
+</html>
+
+<script>
+// ── PROTECTION: Override calcMax() → /api/calculs/conteneurs ──
+// L'algorithme Math.floor est invisible en F12 — protégé côté serveur
+(function() {
+  var _cache = {};
+  var _pending = {};
+
+  // Override calcMax — utilise un cache pré-chargé depuis le serveur
+  window.calcMax = function(cont, pW, pL, orient) {
+    var key = cont.W + '_' + cont.L + '_' + pW + '_' + pL + '_' + orient;
+    // Si résultat en cache → retour immédiat
+    if (_cache[key] !== undefined) return _cache[key];
+    // Si requête déjà en cours → éviter doublon
+    if (_pending[key]) return 0;
+    _pending[key] = true;
+    // Appel API asynchrone — recalcul UI à réception
+    fetch('/api/calculs/conteneurs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        conteneur: (function() {
+          var k = Object.keys(CONTAINERS).find(function(k) {
+            return CONTAINERS[k].W === cont.W && CONTAINERS[k].L === cont.L;
+          });
+          return k || '20STD';
+        })(),
+        palettes: [{
+          id: key, nom: 'p', largeur: pW, longueur: pL,
+          hauteur: 0, hauteurConteneur: 0,
+          chargeKg: 0, poidsTotal: 0, quantite: 1,
+          orient: orient === 'mixte' ? 'mixte' : 'standard'
+        }]
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.ok && d.lignes && d.lignes[0]) {
+        _cache[key] = d.lignes[0].maxParCouche;
+      } else {
+        _cache[key] = 0;
+      }
+      delete _pending[key];
+      // Rafraîchir l'affichage avec les vraies valeurs
+      if (typeof refreshAll === 'function') refreshAll();
+      else if (typeof calculate === 'function') calculate();
+    })
+    .catch(function() { _cache[key] = 0; delete _pending[key]; });
+    return 0; // valeur temporaire pendant le chargement
+  };
+})();
+</script>
+

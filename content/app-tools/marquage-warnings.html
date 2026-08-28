@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marquage & Signalisation — MD Signalisation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;
+  --bg:#F9F8F4;--bg2:#F2F0EA;--surface:#FFFFFF;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --purple:#5A2AA0;--purple-bg:#F3EEFE;--purple-bd:#C8A8F8;
+  --teal:#0F6B6B;--teal-bg:#E8F7F7;--teal-bd:#8DCECE;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 4px 20px rgba(26,26,24,.10);
+  --r:8px;--r-lg:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+user-select:none{-webkit-user-select:none;user-select:none}
+
+/* ── HEADER ── */
+.hdr{background:rgba(249,248,244,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
+.hdr-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px;height:54px}
+.logo-mark{width:28px;height:28px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{fill:#fff}
+.logo-txt{font-family:"DM Serif Display",serif;font-size:14px;color:var(--ink);line-height:1.1}
+.logo-txt span{display:block;font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:24px;background:var(--border)}
+.hdr-nav{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;flex:1}
+.hdr-nav::-webkit-scrollbar{display:none}
+.hdr-nav a{padding:0 14px;height:54px;display:flex;align-items:center;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.hdr-nav a:hover,.hdr-nav a.active{color:var(--gold);border-bottom-color:var(--gold)}
+.hdr-badges{margin-left:auto;display:flex;gap:6px;flex-shrink:0}
+.hb{font-family:"JetBrains Mono",monospace;font-size:9px;padding:3px 9px;letter-spacing:.07em;text-transform:uppercase;border-radius:100px;border:1px solid}
+.hb-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.hb-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+
+/* ── HERO (compact, lighter) ── */
+.hero{
+  background:linear-gradient(150deg,#EEEAE0 0%,#E8E2D4 60%,#DDD6C4 100%);
+  border-bottom:1px solid var(--border);
+  padding:32px 0 28px;
+}
+.hero-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.hero-left{}
+.hero-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';width:24px;height:2px;background:var(--gold);border-radius:1px}
+.hero h1{font-family:"DM Serif Display",serif;font-size:clamp(24px,3.5vw,40px);color:var(--ink);line-height:1.05;letter-spacing:-.5px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.htag{font-family:"JetBrains Mono",monospace;font-size:9.5px;padding:3px 10px;border-radius:100px;border:1px solid}
+.hero-right{display:flex;gap:20px;flex-wrap:wrap}
+.hero-stat{background:rgba(255,255,255,.6);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 20px;text-align:center;backdrop-filter:blur(4px)}
+.hero-stat .num{font-family:"DM Serif Display",serif;font-size:28px;color:var(--gold)}
+.hero-stat .lbl{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+/* ── WRAP ── */
+.wrap{max-width:1240px;margin:0 auto;padding:0 2rem 5rem}
+
+/* ── SECTION HEADER ── */
+.sec-head{padding:40px 0 22px;border-bottom:1px solid var(--border);margin-bottom:26px}
+.sec-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sec-label::before{content:'';width:18px;height:2px;background:var(--gold);border-radius:1px}
+.sec-title{font-family:"DM Serif Display",serif;font-size:clamp(20px,3vw,30px);color:var(--ink);line-height:1.1}
+.sec-desc{font-size:13px;color:var(--mid);margin-top:6px;max-width:620px;line-height:1.65}
+
+/* ── ACCORDION CARDS (anti-scraping) ── */
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px;margin-top:4px}
+.acc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;border-left:3px solid transparent;transition:border-color .2s,box-shadow .2s}
+.acc-card.open{border-left-color:var(--gold);box-shadow:var(--sh-md)}
+.acc-trigger{padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;user-select:none;-webkit-user-select:none}
+.acc-trigger:hover{background:var(--bg2)}
+.acc-icon-wrap{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.acc-title-block{flex:1;min-width:0}
+.acc-title{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-subtitle{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.acc-chevron{width:16px;height:16px;color:var(--muted);flex-shrink:0;transition:transform .25s}
+.acc-card.open .acc-chevron{transform:rotate(180deg)}
+.acc-body{display:none;padding:0 18px 18px;border-top:1px solid var(--border);animation:slideDown .2s ease}
+.acc-card.open .acc-body{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.acc-body p,.acc-body li{font-size:13px;color:var(--mid);line-height:1.65}
+.acc-body ul{padding-left:16px;margin-top:8px;display:flex;flex-direction:column;gap:4px}
+.acc-body strong{color:var(--ink)}
+.acc-footer{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed var(--border)}
+
+/* ── BADGES / TAGS ── */
+.tbadge{font-family:"JetBrains Mono",monospace;font-size:8.5px;padding:2px 8px;border-radius:100px;border:1px solid;white-space:nowrap}
+.b-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.b-red{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)}
+.b-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+.b-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.b-amber{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
+.b-purple{background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)}
+.b-teal{background:var(--teal-bg);border-color:var(--teal-bd);color:var(--teal)}
+.b-gray{background:var(--bg2);border-color:var(--border);color:var(--muted)}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:var(--r);padding:14px 18px;margin:14px 0;border-left:3px solid;font-size:12.5px;color:var(--mid);line-height:1.65}
+.callout h5{font-size:12px;font-weight:700;margin-bottom:5px}
+.c-red{background:var(--red-bg);border-color:var(--red);} .c-red h5{color:var(--red)}
+.c-amber{background:var(--amber-bg);border-color:#D4880A;} .c-amber h5{color:var(--amber)}
+.c-blue{background:var(--blue-bg);border-color:var(--blue);} .c-blue h5{color:var(--blue)}
+.c-green{background:var(--green-bg);border-color:var(--green);} .c-green h5{color:var(--green)}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r-lg);border:1px solid var(--border);box-shadow:var(--sh);margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface)}
+thead tr{background:var(--bg2)}
+th{padding:10px 14px;text-align:left;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--ink);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FAFAF6}
+.mono{font-family:"JetBrains Mono",monospace;font-size:11.5px}
+
+/* ── NFPA ── */
+.nfpa-layout{display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start}
+.nfpa-guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.nfpa-leg{display:flex;gap:10px;align-items:flex-start}
+.nfpa-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;margin-top:3px}
+.nfpa-leg strong{display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.nfpa-leg p{font-size:12px;color:var(--mid);line-height:1.5}
+
+/* ── TABS ── */
+.tab-nav{display:flex;gap:0;border-bottom:2px solid var(--border);overflow-x:auto;scrollbar-width:none;margin-bottom:24px}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:11px 18px;border:none;background:none;cursor:pointer;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .2s}
+.tab-btn.active,.tab-btn:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ── KEMLER DEMO ── */
+.kemler-demo{display:inline-flex;flex-direction:column;align-items:center;border:3px solid #000;background:#FF8C00;font-family:"JetBrains Mono",monospace;font-weight:700;color:#000;min-width:100px}
+.kemler-demo .k-top{font-size:26px;padding:6px 14px;border-bottom:2px solid #000;width:100%;text-align:center}
+.kemler-demo .k-bot{font-size:26px;padding:6px 14px;text-align:center}
+
+/* ── ISO SYMBOLS ── */
+.iso-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+.iso-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:var(--sh);transition:all .2s}
+.iso-item:hover{box-shadow:var(--sh-md);border-color:var(--border-mid)}
+.iso-sym{font-size:32px;margin-bottom:8px}
+.iso-code{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--gold);font-weight:600;margin-bottom:3px}
+.iso-name{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.iso-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ── PG CARDS ── */
+.pg-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:20px}
+.pg-card{flex:1;min-width:150px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;text-align:center;box-shadow:var(--sh)}
+.pg-rom{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.pg-num{font-family:"DM Serif Display",serif;font-size:38px;margin-bottom:4px}
+.pg-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.pg-desc{font-size:11.5px;color:var(--muted)}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:'';position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:var(--border);border-radius:1px}
+.tl-item{position:relative;margin-bottom:24px}
+.tl-dot{position:absolute;left:-23px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid var(--surface);background:var(--gold);box-shadow:0 0 0 2px var(--border)}
+.tl-year{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--gold);font-weight:700;margin-bottom:2px;letter-spacing:.05em}
+.tl-title{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.tl-desc{font-size:12.5px;color:var(--mid);line-height:1.6}
+
+/* ── GHS PICTOGRAM CARDS ── */
+.ghs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.ghs-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:var(--sh);transition:all .2s}
+.ghs-item:hover{box-shadow:var(--sh-md)}
+.ghs-diamond-wrap{width:64px;height:64px;margin:0 auto 12px;position:relative;display:flex;align-items:center;justify-content:center}
+.ghs-diamond-wrap svg{position:absolute;top:0;left:0}
+.ghs-diamond-wrap .em{position:relative;z-index:1;font-size:22px}
+.ghs-code{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--gold);font-weight:600;margin-bottom:3px}
+.ghs-name{font-size:11.5px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.ghs-desc{font-size:10.5px;color:var(--muted);line-height:1.5}
+
+/* ── LINK EXTERNAL ── */
+.ext-link{background:var(--gold-dim);border:1px solid var(--gold-bd);border-radius:var(--r);padding:12px 16px;display:flex;align-items:center;gap:10px;margin-top:12px;transition:all .15s}
+.ext-link:hover{background:var(--gold-pale);border-color:var(--gold)}
+.ext-link .lnk-title{font-size:13px;font-weight:600;color:var(--gold)}
+.ext-link .lnk-sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);margin-top:2px}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:18px 2rem;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);letter-spacing:.07em;background:var(--surface)}
+
+/* ── UTILITY ── */
+.divider{border:none;border-top:1px solid var(--border);margin:0}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="logo-mark"><svg width="14" height="14" viewBox="0 0 12 12"><path d="M6 0L11 3V9L6 12L1 9V3Z"/></svg></div>
+    <div class="logo-txt">MD Signalisation <span>Matières Dangereuses</span></div>
+    <div class="hdr-sep"></div>
+    <nav class="hdr-nav">
+      <a href="#systemes">Systèmes</a>
+      <a href="#ghs">GHS / CLP</a>
+      <a href="#transport">Transport</a>
+      <a href="#nfpa">NFPA 704</a>
+      <a href="#iso-douane">ISO & Douane</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#historique">Historique</a>
+    </nav>
+    <div class="hdr-badges">
+      <span class="hb hb-gold">Réf. 2026</span>
+      <a href="classification-substances.html" class="hb hb-blue" style="cursor:pointer;">→ Classification</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Référentiel Professionnel · Avril 2026</div>
+      <h1>Marquage &amp; <em>Signalisation</em></h1>
+      <div class="hero-tags">
+        <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">UN / GHS / CLP</span>
+        <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ADR · IMDG · IATA · RID</span>
+        <span class="htag" style="background:var(--red-bg);border-color:var(--red-bd);color:var(--red)">NFPA 704</span>
+        <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">ISO 780 · Douane</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat"><div class="num">9</div><div class="lbl">Systèmes</div></div>
+      <div class="hero-stat"><div class="num">9</div><div class="lbl">Classes UN</div></div>
+      <div class="hero-stat"><div class="num">4</div><div class="lbl">Modes transport</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════
+     SECTION 02 — LES 9 GRANDS SYSTÈMES
+     (ACCORDÉONS ANTI-SCRAPING)
+═════════════════════════════════════════ -->
+<div class="wrap">
+<section id="systemes">
+  <div class="sec-head">
+    <div class="sec-label">02 · Vue d'ensemble</div>
+    <div class="sec-title">Les 9 Grands Systèmes</div>
+    <div class="sec-desc">Cliquez sur un système pour en afficher le détail. Le marquage MD est un écosystème multi-couches — chaque système a un public et un moment d'usage distincts.</div>
+  </div>
+
+  <div class="acc-grid" id="systemes-grid">
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--gold-dim);">🔶</div>
+        <div class="acc-title-block">
+          <div class="acc-title">Système UN / « Livre Orange »</div>
+          <div class="acc-subtitle">Universel — Classification de base</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Base de toute la réglementation mondiale. Les <strong>Recommandations ONU (« Livre Orange »)</strong> attribuent à chaque matière dangereuse :</p>
+        <ul>
+          <li>Un <strong>numéro UN à 4 chiffres</strong> (UN 0001–3600+) identifiant précisément la substance</li>
+          <li>Une <strong>classe de danger (1–9)</strong> traduisant le type de risque principal</li>
+          <li>Un <strong>groupe d'emballage (GE I, II, III)</strong> selon l'intensité du danger</li>
+          <li>Des <strong>risques subsidiaires</strong> (ex : liquide inflammable + toxique)</li>
+        </ul>
+        <p style="margin-top:8px;">Ce référentiel est mis à jour tous les 2 ans par le Comité d'experts ONU sur le transport des MD. Tous les codes (ADR, IMDG, IATA) en découlent.</p>
+        <div class="acc-footer">
+          <span class="tbadge b-gold">UN 0001–3600+</span>
+          <span class="tbadge b-gold">9 Classes</span>
+          <span class="tbadge b-gold">3 Groupes d'emballage</span>
+          <span class="tbadge b-gray">Mise à jour biannuelle</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--red-bg);">⬦</div>
+        <div class="acc-title-block">
+          <div class="acc-title">GHS / CLP</div>
+          <div class="acc-subtitle">Étiquetage chimique — Produits industriels</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Système Général Harmonisé ONU (Rev.11, 2025)</strong>. En Europe : règlement <strong>CLP (CE 1272/2008)</strong>. 9 pictogrammes normalisés (GHS01–GHS09) — losange sur fond blanc, cadre rouge. Inclut :</p>
+        <ul>
+          <li><strong>Mots-signal</strong> : « DANGER » (catégories sévères) / « ATTENTION » (autres)</li>
+          <li><strong>Mentions de danger (H-codes)</strong> : description du type de risque</li>
+          <li><strong>Conseils de prudence (P-codes)</strong> : prévention, réponse, stockage, élimination</li>
+          <li><strong>FDS/SDS</strong> (16 rubriques) : fiche de données de sécurité obligatoire</li>
+        </ul>
+        <div class="callout c-red" style="margin-top:10px;">
+          <h5>⚠️ Règle critique</h5>
+          Quand un pictogramme transport (ADR/IMDG) figure sur un colis, le pictogramme GHS correspondant au même danger <strong>NE DOIT PAS</strong> figurer simultanément.
+        </div>
+        <div class="acc-footer">
+          <span class="tbadge b-red">GHS01–09</span>
+          <span class="tbadge b-red">FDS/SDS 16 rubriques</span>
+          <span class="tbadge b-red">Rev.11 · 2025</span>
+          <span class="tbadge b-gray">CLP EU obligatoire</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:#FFF3E0;">🚛</div>
+        <div class="acc-title-block">
+          <div class="acc-title">ADR — Transport Routier</div>
+          <div class="acc-subtitle">Europe + Maroc · CEE-ONU</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Accord européen (CEE-ONU) pour le transport routier international de MD. Régit :</p>
+        <ul>
+          <li><strong>Plaques oranges</strong> (400×300 mm) : numéro Kemler (haut) + N° UN (bas)</li>
+          <li><strong>Étiquettes sur colis</strong> (min. 100×100 mm) : couleur et symbole selon la classe</li>
+          <li><strong>Documentation</strong> : document de transport CMR avec déclaration MD obligatoire</li>
+          <li><strong>Formation conducteurs</strong> : certificat ADR requis pour certains transports</li>
+          <li><strong>Fiche d'urgence (Tremcard)</strong> : à bord du véhicule en permanence</li>
+        </ul>
+        <p style="margin-top:8px;">Le numéro Kemler code les risques : lettre X en préfixe = réaction dangereuse avec l'eau. Ex : X333 = pyrophorique réactif eau.</p>
+        <div class="acc-footer">
+          <span class="tbadge b-amber">Plaque orange 400×300 mm</span>
+          <span class="tbadge b-amber">N° Kemler</span>
+          <span class="tbadge b-amber">ADR 2025</span>
+          <span class="tbadge b-gray">Obligatoire Europe + Maroc</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--blue-bg);">🚢</div>
+        <div class="acc-title-block">
+          <div class="acc-title">IMDG Code — Maritime</div>
+          <div class="acc-subtitle">OMI · Mondial · Amendment 42-24</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Code Maritime International des MD (OMI). <strong>Amendment 42-24</strong> : optionnel 2025, obligatoire au <strong>1er janvier 2026</strong>. Exigences spécifiques :</p>
+        <ul>
+          <li><strong>Étiquettes colis</strong> : min. 100×100 mm, résistance 3 mois en eau de mer (<strong>BS 5609</strong>)</li>
+          <li><strong>Placards conteneurs (CTU)</strong> : min. 250×250 mm sur les 4 faces</li>
+          <li><strong>Panneau orange UN</strong> : 120×300 mm adjacent au placard de classe</li>
+          <li><strong>Marque polluant marin</strong> : arbre mort + poisson (GHS09)</li>
+          <li><strong>Mention N.O.S.</strong> : nom technique entre parenthèses pour entrées génériques</li>
+        </ul>
+        <div class="callout c-blue" style="margin-top:10px;">
+          <h5>📋 Amdt 42-24 — Nouveautés 2026</h5>
+          Charbon = MD obligatoire · 60+ révisions DG List · « Battery mark » couvre désormais les batteries sodium-ion · Nouvelles entrées peroxydes organiques.
+        </div>
+        <div class="acc-footer">
+          <span class="tbadge b-blue">BS 5609</span>
+          <span class="tbadge b-blue">250×250 mm CTU</span>
+          <span class="tbadge b-blue">Amdt 42-24</span>
+          <span class="tbadge b-gray">Obligatoire 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--purple-bg);">✈️</div>
+        <div class="acc-title-block">
+          <div class="acc-title">IATA DGR — Aérien</div>
+          <div class="acc-subtitle">IATA/OACI · 66e éd. 2025 · Le plus strict</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Dangerous Goods Regulations IATA (66e édition 2025) — <strong>mode de transport le plus restrictif</strong>. Labels spécifiques :</p>
+        <ul>
+          <li><strong>Orientation arrows ↑</strong> : flèches sur 2 faces opposées pour liquides</li>
+          <li><strong>CAO (Cargo Aircraft Only)</strong> : noir/orange, interdit avion passagers</li>
+          <li><strong>Keep Away from Heat</strong> : peroxydes organiques</li>
+          <li><strong>LQ (Limited Quantity)</strong> : marque en Y, losange blanc — petites quantités</li>
+          <li><strong>EQ (Excepted Quantity)</strong> : losange lettre E — quantités très faibles</li>
+          <li><strong>Battery mark</strong> : UN 3480 / UN 3481 (lithium/sodium-ion)</li>
+        </ul>
+        <div class="acc-footer">
+          <span class="tbadge b-purple">DGR 66e éd. 2025</span>
+          <span class="tbadge b-purple">CAO · LQ · EQ</span>
+          <span class="tbadge b-gray">Mise à jour annuelle</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--teal-bg);">🚂</div>
+        <div class="acc-title-block">
+          <div class="acc-title">RID — Ferroviaire</div>
+          <div class="acc-subtitle">OTIF · Europe · Harmonisé ADR</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Règlement ferroviaire international (OTIF), fortement harmonisé avec l'ADR. Spécificités :</p>
+        <ul>
+          <li><strong>Wagons-citernes</strong> : plaque orange sur chaque extrémité, désignation officielle sur les côtés</li>
+          <li><strong>Conteneurs-citernes (TC)</strong> : étiquettes sur les 4 faces, date de révision visible</li>
+          <li><strong>Lettre de voiture CIM</strong> : N° UN, classe, GE, masse totale obligatoires</li>
+          <li>Applicable aux réseaux ONCF (Maroc) et SNCFT (Tunisie) connectés au réseau européen</li>
+        </ul>
+        <div class="acc-footer">
+          <span class="tbadge b-teal">OTIF</span>
+          <span class="tbadge b-teal">CIM</span>
+          <span class="tbadge b-gray">Obligatoire Europe + ONCF</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--amber-bg);">🔥</div>
+        <div class="acc-title-block">
+          <div class="acc-title">NFPA 704 — Diamant de Feu</div>
+          <div class="acc-subtitle">Stockage · Bâtiments · First Responders</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Standard NFPA américain (créé 1960) — 4 quadrants colorés destinés aux <strong>équipes de secours</strong> à l'entrée des bâtiments et sur les cuves de stockage :</p>
+        <ul>
+          <li><strong style="color:#1e40af;">Bleu (santé)</strong> : 0 = aucun danger → 4 = mortel rapidement</li>
+          <li><strong style="color:#dc2626;">Rouge (feu)</strong> : 0 = ininflammable → 4 = gaz extrêmement inflammable</li>
+          <li><strong style="color:#d97706;">Jaune (réactivité)</strong> : 0 = stable → 4 = détonation à T° ambiante</li>
+          <li><strong style="color:#374151;">Blanc (spécial)</strong> : W = réactif eau · OX = oxydant · SA = asphyxiant (3 symboles officiels seulement)</li>
+        </ul>
+        <div class="callout c-amber" style="margin-top:10px;">
+          <h5>⚠️ Attention — Confusion GHS vs NFPA</h5>
+          Les catégories GHS sont inversées : GHS catégorie 1 = danger max. En NFPA, 4 = danger max. Ne jamais transposer directement.
+        </div>
+        <div class="acc-footer">
+          <span class="tbadge b-amber">Cotation 0–4</span>
+          <span class="tbadge b-amber">4 Quadrants</span>
+          <span class="tbadge b-gray">Bâtiments / cuves</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--green-bg);">📦</div>
+        <div class="acc-title-block">
+          <div class="acc-title">ISO 780:2015 — Manutention</div>
+          <div class="acc-subtitle">Emballages distribution · 17 symboles</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Norme ISO pour les <strong>symboles graphiques d'emballages de distribution</strong> (5e édition, 2015). 17 pictogrammes universels, indépendants de la langue :</p>
+        <ul>
+          <li>Haut / This Way Up · Fragile · Ne pas empiler · Ne pas rouler</li>
+          <li>Centre de gravité · Protection humidité · Limites de température</li>
+          <li>Sac hermétique · Point de serrage (clamp truck)</li>
+        </ul>
+        <p style="margin-top:8px;">S'applique à <strong>tous les emballages</strong>, y compris les MD — en complément des étiquettes MD spécifiques (GHS/ADR/IMDG), sans les remplacer. La croix de prohibition peut être apposée manuellement en cas de dégradation de l'emballage.</p>
+        <div class="acc-footer">
+          <span class="tbadge b-green">17 Symboles</span>
+          <span class="tbadge b-green">ISO/TC122</span>
+          <span class="tbadge b-gray">Manutention + Stockage</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--purple-bg);">🛃</div>
+        <div class="acc-title-block">
+          <div class="acc-title">Marquage Douanier</div>
+          <div class="acc-subtitle">Frontières · Transit Maroc · Documents</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p>Le marquage des MD conditionne les procédures douanières. Documents obligatoires :</p>
+        <ul>
+          <li><strong>Déclaration MD</strong> sur CMR/BL/LTA : N° UN, classe, GE, désignation officielle, quantité</li>
+          <li><strong>FDS/SDS</strong> (16 rubriques GHS) : souvent exigée par les douanes</li>
+          <li><strong>Certificat emballage UN</strong> : attestation d'homologation</li>
+          <li><strong>Autorisations préalables</strong> : Classes 1, 6.2 Cat. A, 7 dans certains pays</li>
+        </ul>
+        <p style="margin-top:8px;"><strong>Maroc :</strong> plaques orange ADR obligatoires · carnet TIR section MD · ports Tanger Med / Casablanca : IMDG strict · autorisations ONSSA/Énergie pour classes 1, 6, 7.</p>
+        <div class="acc-footer">
+          <span class="tbadge b-purple">DUM / CMR / BL / LTA</span>
+          <span class="tbadge b-purple">TIR</span>
+          <span class="tbadge b-gray">Transit Maroc ADII</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end acc-grid -->
+
+  <!-- LIEN VERS PAGE CLASSIFICATION -->
+  <a href="classification-substances.html" class="ext-link" style="max-width:480px;margin-top:24px;display:flex;">
+    <span style="font-size:20px;">⬦</span>
+    <div>
+      <div class="lnk-title">→ Classification des Substances Toxiques</div>
+      <div class="lnk-sub">Les 9 classes de danger UN avec sous-classes, critères et pictogrammes officiels</div>
+    </div>
+  </a>
+</section>
+
+<hr class="divider" style="margin:48px 0 0">
+
+<!-- ═════════════════════════════════════════
+     SECTION 04 — GHS / CLP (accordéons)
+═════════════════════════════════════════ -->
+<section id="ghs" style="padding-top:40px">
+  <div class="sec-head">
+    <div class="sec-label">04 · GHS / CLP</div>
+    <div class="sec-title">Pictogrammes GHS &amp; Étiquetage</div>
+    <div class="sec-desc">Sélectionnez un pictogramme pour afficher sa définition, les classes de danger associées et les mentions H correspondantes.</div>
+  </div>
+
+  <div class="ghs-grid">
+    <!-- GHS01 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">💣</div>
+        </div>
+        <div class="ghs-code">GHS01</div>
+        <div class="ghs-name">Bombe explosant</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Explosibles instables · Auto-réactifs types A et B · Peroxydes organiques types A et B</p>
+        <p style="margin-top:6px;"><strong>H-codes associés :</strong> H200 · H201 · H202 · H203 · H204 · H205 · H240 · H241</p>
+        <p style="margin-top:6px;"><strong>Fond de l'étiquette transport :</strong> Orange (Classe 1)</p>
+      </div>
+    </div>
+    <!-- GHS02 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">🔥</div>
+        </div>
+        <div class="ghs-code">GHS02</div>
+        <div class="ghs-name">Flamme</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Gaz inflammables · Aérosols inflammables · Liquides inflammables · Solides inflammables · Substances auto-réactives types C–F · Liquides/solides pyrophoriques · Substances auto-échauffantes · Substances dégageant des gaz inflammables au contact de l'eau · Peroxydes organiques types C–F</p>
+        <p style="margin-top:6px;"><strong>H-codes :</strong> H220 · H221 · H222 · H223 · H224 · H225 · H226 · H228 · H242 · H250 · H251 · H252 · H260 · H261</p>
+        <p style="margin-top:6px;"><strong>Transport :</strong> Rouge (Classes 2.1, 3) · Blanc/rouge (4.1) · Bleu (4.3)</p>
+      </div>
+    </div>
+    <!-- GHS03 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">🔵</div>
+        </div>
+        <div class="ghs-code">GHS03</div>
+        <div class="ghs-name">Flamme sur cercle</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Gaz comburants · Liquides comburants · Solides comburants</p>
+        <p style="margin-top:6px;"><strong>H-codes :</strong> H270 · H271 · H272</p>
+        <p style="margin-top:6px;"><strong>Transport :</strong> Fond jaune avec flamme sur cercle (Classe 5.1)</p>
+      </div>
+    </div>
+    <!-- GHS04 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">🫙</div>
+        </div>
+        <div class="ghs-code">GHS04</div>
+        <div class="ghs-name">Bouteille pression</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Gaz sous pression comprimé · Gaz liquéfié · Gaz liquéfié réfrigéré · Gaz dissous</p>
+        <p style="margin-top:6px;"><strong>H-codes :</strong> H280 · H281</p>
+        <p style="margin-top:6px;"><strong>Transport :</strong> Vert (2.2 non inflammable) · Rouge (2.1 inflammable) · Blanc (2.3 toxique)</p>
+      </div>
+    </div>
+    <!-- GHS05 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">⚗️</div>
+        </div>
+        <div class="ghs-code">GHS05</div>
+        <div class="ghs-name">Corrosion</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Corrosion cutanée cat. 1A/1B/1C · Lésions oculaires graves cat. 1 · Corrosion des métaux</p>
+        <p style="margin-top:6px;"><strong>H-codes :</strong> H290 · H314 · H318</p>
+        <p style="margin-top:6px;"><strong>Transport :</strong> Fond noir/blanc (Classe 8). Séparation stricte acides + bases.</p>
+      </div>
+    </div>
+    <!-- GHS06 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">☠️</div>
+        </div>
+        <div class="ghs-code">GHS06</div>
+        <div class="ghs-name">Tête de mort</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Toxicité aiguë catégories 1–3 (voies orale, cutanée, inhalatoire)</p>
+        <p style="margin-top:6px;"><strong>H-codes :</strong> H300 · H301 · H310 · H311 · H330 · H331</p>
+        <p style="margin-top:6px;"><strong>Transport :</strong> Fond blanc (Classe 6.1). LC50 ≤5 000 ml/m³ pour gaz/vapeurs.</p>
+      </div>
+    </div>
+    <!-- GHS07 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">⚠️</div>
+        </div>
+        <div class="ghs-code">GHS07</div>
+        <div class="ghs-name">Point d'exclamation</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Toxicité aiguë cat. 4 · Irritant cutané cat. 2 · Irritant oculaire cat. 2 · Sensibilisant cutané cat. 1 · Toxicité spécifique pour organe cible (STOT) exposition unique cat. 3 · Narcotiques · Irritants respiratoires</p>
+        <p style="margin-top:6px;"><strong>H-codes :</strong> H302 · H312 · H315 · H317 · H319 · H332 · H335 · H336</p>
+      </div>
+    </div>
+    <!-- GHS08 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">🫁</div>
+        </div>
+        <div class="ghs-code">GHS08</div>
+        <div class="ghs-name">Risque pour la santé</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Cancérogènes cat. 1A/1B/2 · Mutagènes pour cellules germinales · Reprotoxiques · Sensibilisants respiratoires · STOT répétée · Danger d'aspiration</p>
+        <p style="margin-top:6px;"><strong>H-codes :</strong> H304 · H334 · H340 · H341 · H350 · H351 · H360 · H361 · H370 · H371 · H372 · H373</p>
+        <p style="margin-top:6px;"><strong>Nouveau 2025 (CLP) :</strong> Perturbateurs endocriniens PBT/vPvB/PMT obligatoires dès mai 2025 (substances).</p>
+      </div>
+    </div>
+    <!-- GHS09 -->
+    <div class="acc-card" style="cursor:pointer;" onclick="toggleAcc(this)">
+      <div class="acc-trigger" style="flex-direction:column;padding:16px 12px;gap:8px;text-align:center">
+        <div class="ghs-diamond-wrap" style="margin:0 auto">
+          <svg viewBox="0 0 64 64" width="64" height="64"><rect x="3" y="3" width="58" height="58" rx="2" transform="rotate(45 32 32)" fill="white" stroke="#cc0000" stroke-width="3.5"/></svg>
+          <div class="em">🌿</div>
+        </div>
+        <div class="ghs-code">GHS09</div>
+        <div class="ghs-name">Environnement</div>
+        <svg class="acc-chevron" style="margin:0 auto" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <p><strong>Hazard classes :</strong> Toxique pour le milieu aquatique (chronique cat. 1–2, aiguë cat. 1) · Polluant marin (IMDG)</p>
+        <p style="margin-top:6px;"><strong>H-codes :</strong> H400 · H410 · H411 · H412 · H413 · H420</p>
+        <p style="margin-top:6px;"><strong>Marque IMDG :</strong> Arbre mort + poisson (min. 100×100 mm sur colis). Non requis par OSHA USA (hors champ HazCom).</p>
+      </div>
+    </div>
+  </div><!-- end ghs-grid as acc cards -->
+
+  <!-- Éléments obligatoires étiquette GHS -->
+  <h3 style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);margin:40px 0 12px">Éléments obligatoires d'une étiquette GHS</h3>
+  <div class="acc-grid" style="grid-template-columns:1fr">
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-trigger">
+        <div class="acc-icon-wrap" style="background:var(--red-bg);font-size:14px;font-weight:700;color:var(--red);">7</div>
+        <div class="acc-title-block">
+          <div class="acc-title">Voir les 7 éléments obligatoires d'une étiquette GHS conforme</div>
+          <div class="acc-subtitle">Identifiant · Pictogrammes · Mot-signal · Mentions H · Conseils P · Fournisseur · Infos supp.</div>
+        </div>
+        <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="acc-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Élément</th><th>Description</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td class="mono" style="color:var(--gold)">01</td><td><strong>Identifiant produit</strong></td><td>Nom chimique, N° CAS, N° CE, N° index — concordance FDS</td><td><span class="tbadge b-red">Obligatoire</span></td></tr>
+            <tr><td class="mono" style="color:var(--gold)">02</td><td><strong>Pictogramme(s) GHS</strong></td><td>Losange sur point, fond blanc, cadre rouge — GHS01 à GHS09</td><td><span class="tbadge b-red">Obligatoire</span></td></tr>
+            <tr><td class="mono" style="color:var(--gold)">03</td><td><strong>Mot signal</strong></td><td>« DANGER » (catégories sévères) / « ATTENTION » (catégories moindres)</td><td><span class="tbadge b-red">Obligatoire</span></td></tr>
+            <tr><td class="mono" style="color:var(--gold)">04</td><td><strong>Mentions de danger (H)</strong></td><td>Ex. H314 — Provoque de graves brûlures / H360 — Peut nuire à la fertilité</td><td><span class="tbadge b-red">Obligatoire</span></td></tr>
+            <tr><td class="mono" style="color:var(--gold)">05</td><td><strong>Conseils de prudence (P)</strong></td><td>Prévention P2xx · Réponse P3xx · Stockage P4xx · Élimination P5xx</td><td><span class="tbadge b-red">Obligatoire</span></td></tr>
+            <tr><td class="mono" style="color:var(--gold)">06</td><td><strong>Identité fournisseur</strong></td><td>Nom, adresse, numéro de téléphone du fabricant ou importateur</td><td><span class="tbadge b-red">Obligatoire</span></td></tr>
+            <tr><td class="mono" style="color:var(--gold)">07</td><td><strong>Informations supplémentaires</strong></td><td>Phrases EUH, références réglementaires, restrictions d'usage</td><td><span class="tbadge b-gray">Optionnel</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="callout c-amber" style="margin-top:10px;">
+          <h5>🆕 Évolutions CLP 2024–2026</h5>
+          Règlement UE 2024/2865 : étiquetage numérique (QR code) autorisé en Europe. Nouvelles classes perturbateurs endocriniens : substances dès mai 2025, mélanges dès mai 2026. OSHA HazCom Rev.7 : conformité USA janvier 2026 (substances), juillet 2027 (mélanges).
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" style="margin:48px 0 0">
+
+<!-- ═════════════════════════════════════════
+     SECTION 05 — TRANSPORT (onglets + accordéons)
+═════════════════════════════════════════ -->
+<section id="transport" style="padding-top:40px">
+  <div class="sec-head">
+    <div class="sec-label">05 · Transport Multimodal</div>
+    <div class="sec-title">Marquage par Mode de Transport</div>
+    <div class="sec-desc">Sélectionnez un mode de transport, puis cliquez sur un thème pour afficher le détail.</div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="openTab(event,'route')">🚛 Route — ADR</button>
+    <button class="tab-btn" onclick="openTab(event,'mer')">🚢 Mer — IMDG</button>
+    <button class="tab-btn" onclick="openTab(event,'air')">✈️ Air — IATA</button>
+    <button class="tab-btn" onclick="openTab(event,'rail')">🚂 Rail — RID</button>
+  </div>
+
+  <!-- ROUTE -->
+  <div id="route" class="tab-pane active">
+    <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;margin-bottom:24px;">
+      <div>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Plaque Orange — Essence (UN 1203)</p>
+        <div class="kemler-demo"><div class="k-top">33</div><div class="k-bot">1203</div></div>
+      </div>
+      <div style="flex:1;min-width:220px;">
+        <p style="font-size:13px;color:var(--mid);">La <strong style="color:var(--ink);">plaque orange rectangulaire</strong> (400×300 mm, bordure + barre noire 15 mm) est l'élément central du marquage ADR véhicule. <strong>Kemler en haut</strong> (code danger), <strong>N° UN en bas</strong> (identification matière).</p>
+      </div>
+    </div>
+    <div class="acc-grid">
+      <div class="acc-card" onclick="toggleAcc(this)">
+        <div class="acc-trigger"><div class="acc-icon-wrap" style="background:#FFF3E0;">🔢</div><div class="acc-title-block"><div class="acc-title">Principaux Codes Kemler</div><div class="acc-subtitle">Décodage du numéro d'identification du danger</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body">
+          <div class="tbl-wrap"><table><thead><tr><th>Code</th><th>Signification</th><th>Exemple</th></tr></thead><tbody>
+            <tr><td class="mono" style="color:var(--gold)">20</td><td>Gaz asphyxiant sans risque subsidiaire</td><td>Azote liquide</td></tr>
+            <tr><td class="mono" style="color:var(--gold)">23</td><td>Gaz inflammable</td><td>Propane (UN 1978)</td></tr>
+            <tr><td class="mono" style="color:var(--gold)">30</td><td>Liquide inflammable (PE ≥ 23°C)</td><td>Gasoil (UN 1202)</td></tr>
+            <tr><td class="mono" style="color:var(--gold)">33</td><td>Liquide très inflammable (PE &lt; 23°C)</td><td>Essence (UN 1203)</td></tr>
+            <tr><td class="mono" style="color:var(--gold)">336</td><td>Liquide très inflammable + toxique</td><td>Méthanol (UN 1230)</td></tr>
+            <tr><td class="mono" style="color:var(--gold)">60</td><td>Matière toxique</td><td>Pesticides divers</td></tr>
+            <tr><td class="mono" style="color:var(--gold)">80</td><td>Matière corrosive</td><td>Acide sulfurique (UN 1832)</td></tr>
+            <tr><td class="mono" style="color:var(--gold)">X333</td><td>Liquide pyrophorique réactif à l'eau</td><td>Aluminium triéthyle</td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+      <div class="acc-card" onclick="toggleAcc(this)">
+        <div class="acc-trigger"><div class="acc-icon-wrap" style="background:#FFF3E0;">🎨</div><div class="acc-title-block"><div class="acc-title">Couleurs des Étiquettes par Classe</div><div class="acc-subtitle">ADR — Dimensions minimales 100×100 mm</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body">
+          <div class="tbl-wrap"><table><thead><tr><th>Classe</th><th>Fond</th><th>Symbole</th></tr></thead><tbody>
+            <tr><td>1 — Explosibles</td><td style="background:#fff3e0;">Orange</td><td>💣 Bombe</td></tr>
+            <tr><td>2.1 — Gaz inflammables</td><td style="background:#ffebee;">Rouge</td><td>🔥 Flamme</td></tr>
+            <tr><td>2.2 — Gaz non inflammables</td><td style="background:#e8f5e9;">Vert</td><td>🫙 Bouteille</td></tr>
+            <tr><td>2.3 — Gaz toxiques</td><td>Blanc</td><td>☠️ Tête de mort</td></tr>
+            <tr><td>3 — Liquides inflammables</td><td style="background:#ffebee;">Rouge</td><td>🔥 Flamme</td></tr>
+            <tr><td>4.3 — Hydroréactifs</td><td style="background:#e3f2fd;">Bleu</td><td>🔥 Flamme</td></tr>
+            <tr><td>5.1 — Comburants</td><td style="background:#fffde7;">Jaune</td><td>🔵 Flamme/cercle</td></tr>
+            <tr><td>6.1 — Toxiques</td><td>Blanc</td><td>☠️ Tête de mort</td></tr>
+            <tr><td>6.2 — Infectieux</td><td>Blanc</td><td>☣️ Biohazard</td></tr>
+            <tr><td>7 — Radioactifs</td><td>Blanc / Jaune</td><td>☢️ Trèfle</td></tr>
+            <tr><td>8 — Corrosifs</td><td>Noir/Blanc</td><td>⚗️ Corrosion</td></tr>
+            <tr><td>9 — Divers</td><td>Blanc + bandes noires</td><td>Classe 9</td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MER -->
+  <div id="mer" class="tab-pane">
+    <div class="callout c-blue"><h5>📋 IMDG Amendment 42-24 — Obligatoire 1er janvier 2026</h5>Charbon = MD obligatoire · 60+ révisions DG List · « Battery mark » couvre sodium-ion · Nouvelles entrées peroxydes organiques. Optionnel pendant 2025.</div>
+    <div class="acc-grid" style="margin-top:16px;">
+      <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--blue-bg);">📦</div><div class="acc-title-block"><div class="acc-title">Étiquettes sur Colis</div><div class="acc-subtitle">IMDG — Spécifications BS 5609</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body"><p>Losanges min. <strong>100×100 mm</strong>. Résistance obligatoire à <strong>3 mois d'immersion en eau de mer</strong> (standard BS 5609). Apposées à 45°, sur surface plane. Pas aux coins ni jonctions. Pas de chevauchement avec d'autres marques.</p></div>
+      </div>
+      <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--blue-bg);">🚢</div><div class="acc-title-block"><div class="acc-title">Placards sur Conteneurs (CTU)</div><div class="acc-subtitle">250×250 mm · Panneau orange</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body"><p>Losanges min. <strong>250×250 mm</strong> sur les 4 faces. N° UN sur panneau orange adjacent (min. <strong>120×300 mm</strong>, bordure noire 10 mm). Valable aussi pour véhicules et wagons dans les ports.</p></div>
+      </div>
+      <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--green-bg);">🌿</div><div class="acc-title-block"><div class="acc-title">Marque Polluant Marin</div><div class="acc-subtitle">GHS09 — Arbre mort + poisson</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body"><p>Obligatoire si polluant marin : min. <strong>100×100 mm</strong> sur colis, <strong>250×250 mm</strong> sur conteneur. Exemption si &lt;5 L (liquide) ou &lt;5 kg (solide) avec emballage homologué.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AIR -->
+  <div id="air" class="tab-pane">
+    <div class="callout c-red"><h5>⚠️ Mode le plus restrictif — IATA DGR 66e éd. 2025</h5>Nombreuses substances interdites en avion passagers. Quantités maximales très inférieures à ADR/IMDG. Mise à jour annuelle obligatoire.</div>
+    <div class="acc-grid" style="margin-top:16px;">
+      <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--purple-bg);">🏷️</div><div class="acc-title-block"><div class="acc-title">Labels Spécifiques IATA</div><div class="acc-subtitle">CAO · LQ · EQ · Orientation · Battery</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body"><ul><li><strong>Orientation arrows ↑</strong> : flèches sur 2 faces opposées pour liquides</li><li><strong>CAO (Cargo Aircraft Only)</strong> : étiquette noire/orange — interdit avion passagers</li><li><strong>Keep Away from Heat</strong> : peroxydes organiques</li><li><strong>LQ (Limited Quantity)</strong> : marque en Y, losange blanc — petites quantités, avion passagers</li><li><strong>EQ (Excepted Quantity)</strong> : losange lettre E — très faibles quantités, exigences allégées</li><li><strong>Battery mark</strong> : UN 3480 (lithium seul) / UN 3481 (lithium dans équipement)</li></ul></div>
+      </div>
+      <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--purple-bg);">📦</div><div class="acc-title-block"><div class="acc-title">Code Emballage Homologué UN</div><div class="acc-subtitle">Lecture et décodage du marquage</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--bg2);padding:12px;border-radius:var(--r);margin-bottom:10px;color:var(--gold)">UN 4G / Y / 12 / S / 22 / F / ABC123</div>
+          <ul><li><strong>4G</strong> = Type (4=caisse, G=fibre)</li><li><strong>Y</strong> = Performance (X=GE I, Y=GE II, Z=GE III)</li><li><strong>12</strong> = Masse brute max. en kg</li><li><strong>S</strong> = Solide (ou pression d'épreuve pour liquides)</li><li><strong>22</strong> = Année de fabrication (2022)</li><li><strong>F</strong> = Pays de fabrication (F=France)</li><li><strong>ABC123</strong> = N° autorisation fabricant</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAIL -->
+  <div id="rail" class="tab-pane">
+    <div class="acc-grid">
+      <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--teal-bg);">🚂</div><div class="acc-title-block"><div class="acc-title">Wagons-Citernes &amp; Conteneurs TC</div><div class="acc-subtitle">RID — OTIF</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body"><ul><li>Plaque orange sur chaque extrémité du wagon</li><li>Désignation officielle de la matière sur les côtés de la citerne</li><li>Capacité, tare et pression visible</li><li>Date de la prochaine révision périodique obligatoire</li><li>Étiquettes de danger sur les 4 faces des conteneurs-citernes</li></ul></div>
+      </div>
+      <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--teal-bg);">📄</div><div class="acc-title-block"><div class="acc-title">Lettre de Voiture CIM</div><div class="acc-subtitle">Document international rail MD</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+        <div class="acc-body"><p>Lettre de voiture internationale CIM avec déclaration MD obligatoire. Mentions requises : <strong>appellation officielle + N° UN</strong>, classe, groupe d'emballage, nombre de colis, masse totale nette et brute.</p><p style="margin-top:8px;">Applicable aux réseaux ONCF (Maroc) et SNCFT (Tunisie) connectés au réseau ferroviaire européen.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" style="margin:48px 0 0">
+
+<!-- ═════════════════════════════════════════
+     SECTION 06 — NFPA 704
+═════════════════════════════════════════ -->
+<section id="nfpa" style="padding-top:40px">
+  <div class="sec-head">
+    <div class="sec-label">06 · NFPA 704</div>
+    <div class="sec-title">Le Diamant de Feu</div>
+    <div class="sec-desc">Cliquez sur un quadrant pour comprendre sa signification.</div>
+  </div>
+  <div class="nfpa-layout">
+    <div>
+      <svg viewBox="0 0 240 240" width="240" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 3px 14px rgba(0,0,0,.12))">
+        <polygon points="120,6 6,120 120,234 234,120" fill="white" stroke="#D0CEC4" stroke-width="2"/>
+        <polygon points="120,6 6,120 120,120" fill="#1e40af"/>
+        <polygon points="120,6 234,120 120,120" fill="#dc2626"/>
+        <polygon points="120,120 234,120 120,234" fill="#d97706"/>
+        <polygon points="6,120 120,120 120,234" fill="#f3f4f6"/>
+        <polygon points="120,6 6,120 120,234 234,120" fill="none" stroke="#374151" stroke-width="3"/>
+        <line x1="6" y1="120" x2="234" y2="120" stroke="#374151" stroke-width="2"/>
+        <line x1="120" y1="6" x2="120" y2="234" stroke="#374151" stroke-width="2"/>
+        <text x="66" y="126" text-anchor="middle" fill="white" font-family="DM Serif Display,serif" font-size="40" font-weight="800">2</text>
+        <text x="174" y="126" text-anchor="middle" fill="white" font-family="DM Serif Display,serif" font-size="40" font-weight="800">1</text>
+        <text x="120" y="76" text-anchor="middle" fill="white" font-family="DM Serif Display,serif" font-size="40" font-weight="800">3</text>
+        <text x="120" y="192" text-anchor="middle" fill="#374151" font-family="JetBrains Mono,monospace" font-size="15" font-weight="700">W</text>
+        <text x="50" y="106" text-anchor="middle" fill="rgba(255,255,255,.7)" font-family="JetBrains Mono,monospace" font-size="8">SANTÉ</text>
+        <text x="192" y="106" text-anchor="middle" fill="rgba(255,255,255,.7)" font-family="JetBrains Mono,monospace" font-size="8">RÉACT.</text>
+        <text x="120" y="42" text-anchor="middle" fill="rgba(255,255,255,.7)" font-family="JetBrains Mono,monospace" font-size="8">FEU</text>
+        <text x="120" y="210" text-anchor="middle" fill="rgba(55,65,81,.55)" font-family="JetBrains Mono,monospace" font-size="8">SPÉCIAL</text>
+      </svg>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-align:center;margin-top:8px">Exemple : Acide sulfurique concentré</p>
+    </div>
+    <div style="flex:1;min-width:260px">
+      <p style="font-size:13px;color:var(--mid);margin-bottom:16px">Créé en 1960, le « Fire Diamond » permet aux secouristes d'évaluer instantanément les risques sans consulter de documentation. Cliquez sur chaque quadrant pour le détail.</p>
+      <div class="acc-grid" style="grid-template-columns:1fr">
+        <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:#1e40af;width:28px;height:28px;border-radius:5px;font-size:12px;"></div><div class="acc-title-block"><div class="acc-title" style="color:#1e40af">Bleu — Santé (Health)</div><div class="acc-subtitle">Risques pour la santé humaine</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+          <div class="acc-body"><ul><li><strong>0</strong> = Aucun danger pour la santé</li><li><strong>1</strong> = Peut causer irritation légère en exposition prolongée</li><li><strong>2</strong> = Peut causer incapacité temporaire ou effets résiduels</li><li><strong>3</strong> = Exposition courte peut causer dommages graves</li><li><strong>4</strong> = Très court contact peut causer la mort</li></ul></div>
+        </div>
+        <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:#dc2626;width:28px;height:28px;border-radius:5px;font-size:12px;"></div><div class="acc-title-block"><div class="acc-title" style="color:#dc2626">Rouge — Inflammabilité (Fire)</div><div class="acc-subtitle">Degré de susceptibilité à l'inflammation</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+          <div class="acc-body"><ul><li><strong>0</strong> = Ininflammable dans les conditions normales</li><li><strong>1</strong> = Point d'éclair &gt; 93°C</li><li><strong>2</strong> = Point d'éclair entre 38°C et 93°C</li><li><strong>3</strong> = Point d'éclair &lt; 38°C (PE &lt; 100°F)</li><li><strong>4</strong> = Point d'éclair &lt; 23°C, gaz extrêmement inflammables</li></ul></div>
+        </div>
+        <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:#d97706;width:28px;height:28px;border-radius:5px;font-size:12px;"></div><div class="acc-title-block"><div class="acc-title" style="color:#d97706">Jaune — Réactivité (Instability)</div><div class="acc-subtitle">Instabilité de la substance</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+          <div class="acc-body"><ul><li><strong>0</strong> = Stable même en cas d'incendie</li><li><strong>1</strong> = Instable si chauffé, mais peut brûler</li><li><strong>2</strong> = Réaction chimique violente possible</li><li><strong>3</strong> = Peut détonner si choc, chaleur ou eau</li><li><strong>4</strong> = Peut détonner à température et pression normales</li></ul></div>
+        </div>
+        <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:#e5e7eb;border:1px solid var(--border);width:28px;height:28px;border-radius:5px;font-size:12px;"></div><div class="acc-title-block"><div class="acc-title">Blanc — Risques Spéciaux</div><div class="acc-subtitle">3 symboles officiels NFPA seulement</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+          <div class="acc-body"><ul><li><strong>W</strong> = Réactif dangereux avec l'eau (ex. : sodium, potassium)</li><li><strong>OX</strong> = Oxydant — réaction violente si exposé à l'oxygène (ex. : nitrate d'ammonium)</li><li><strong>SA</strong> = Gaz asphyxiant simple (ex. : azote, hélium, argon, néon)</li></ul><div class="callout c-amber" style="margin-top:8px;"><h5>⚠️ Symboles non-officiels répandus</h5>ACID, ALK, COR sont utilisés sur le terrain mais ne sont pas définis dans NFPA 704. Les secouristes locaux peuvent ne pas les reconnaître.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" style="margin:48px 0 0">
+
+<!-- ═════════════════════════════════════════
+     SECTION 07+08 — ISO 780 & DOUANE
+═════════════════════════════════════════ -->
+<section id="iso-douane" style="padding-top:40px">
+  <div class="sec-head">
+    <div class="sec-label">07 + 08 · ISO 780 &amp; Douane</div>
+    <div class="sec-title">Manutention &amp; Contexte Douanier</div>
+    <div class="sec-desc">Cliquez sur un sujet pour afficher le détail.</div>
+  </div>
+
+  <h4 style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);margin-bottom:12px">ISO 780:2015 — Symboles de Manutention</h4>
+  <div class="iso-grid" style="margin-bottom:36px">
+    <div class="iso-item"><div class="iso-sym">⬆️</div><div class="iso-code">Haut</div><div class="iso-name">This Way Up</div><div class="iso-desc">Position d'orientation. 2 faces opposées. Indispensable pour liquides.</div></div>
+    <div class="iso-item"><div class="iso-sym">🍷</div><div class="iso-code">Fragile</div><div class="iso-name">Handle with Care</div><div class="iso-desc">4 faces verticales, coins supérieurs. Seulement si protection normale insuffisante.</div></div>
+    <div class="iso-item"><div class="iso-sym">🚫</div><div class="iso-code">Ne pas empiler</div><div class="iso-name">Do Not Stack</div><div class="iso-desc">Aucune charge au-dessus. Croix peut être manuscrite.</div></div>
+    <div class="iso-item"><div class="iso-sym">⚡</div><div class="iso-code">Centre de gravité</div><div class="iso-name">Centre of Gravity</div><div class="iso-desc">Masse inégale. 2 faces perpendiculaires.</div></div>
+    <div class="iso-item"><div class="iso-sym">💧</div><div class="iso-code">Protection humidité</div><div class="iso-name">Keep Dry</div><div class="iso-desc">Protéger contre pluie et humidité.</div></div>
+    <div class="iso-item"><div class="iso-sym">🌡️</div><div class="iso-code">Temp. limites</div><div class="iso-name">Temperature Limits</div><div class="iso-desc">T° min. et max. à respecter. Critique pour pharma et biologiques.</div></div>
+    <div class="iso-item"><div class="iso-sym">🔒</div><div class="iso-code">Hermétique</div><div class="iso-name">Hermetically Sealed</div><div class="iso-desc">Étanche à l'air. Biohazard, poudres, produits médicaux.</div></div>
+    <div class="iso-item"><div class="iso-sym">🔧</div><div class="iso-code">Serrage</div><div class="iso-name">Clamp as Indicated</div><div class="iso-desc">Points de serrage chariot à pince. 2 faces opposées.</div></div>
+    <div class="iso-item"><div class="iso-sym">↺</div><div class="iso-code">Ne pas rouler</div><div class="iso-name">Do Not Roll</div><div class="iso-desc">Optique, verre, sculptures. Croix peut être manuscrite.</div></div>
+  </div>
+
+  <h4 style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);margin-bottom:12px">Marquage Douanier</h4>
+  <div class="acc-grid">
+    <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--purple-bg);">📄</div><div class="acc-title-block"><div class="acc-title">Documents Obligatoires — MD</div><div class="acc-subtitle">CMR · BL · LTA · FDS · Certificat emballage</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body"><ul><li><strong>Déclaration MD</strong> sur CMR/BL/LTA : N° UN, classe, GE, désignation officielle, quantité</li><li><strong>FDS/SDS</strong> (16 rubriques GHS/REACH) : souvent exigée par les douanes</li><li><strong>Certificat emballage UN</strong> : attestation d'homologation physique</li><li><strong>Autorisation préalable</strong> : Classes 1, 6.2 Cat. A, 7 dans certains pays</li><li><strong>Fiche d'urgence (Tremcard)</strong> : ADR — obligatoire à bord du véhicule</li></ul></div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--red-bg);">🇲🇦</div><div class="acc-title-block"><div class="acc-title">Transit Maroc — Spécificités MD</div><div class="acc-subtitle">ADII · Tanger Med · ONCF</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body"><ul><li>Plaques orange ADR obligatoires sur camions en transit international</li><li>Carnet TIR avec section spécifique MD pour le transit douanier</li><li>Ports Tanger Med et Casablanca : application stricte du Code IMDG</li><li>Autorisations ONSSA, OMC ou Ministère Énergie pour classes 1, 6, 7</li><li>Harmonisation ADR en cours au Maroc (réglementation nationale en développement)</li></ul></div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--amber-bg);">📦</div><div class="acc-title-block"><div class="acc-title">Lecture Code Emballage UN</div><div class="acc-subtitle">UN 1A1 / X / 1.4 / S / 22 / F / REF</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--bg2);padding:12px;border-radius:var(--r);margin-bottom:10px;color:var(--gold)">UN 1A1 / X / 1.4 / S / 22 / F / ABC123</div>
+        <ul><li><strong>1A1</strong> = Type (1=bidon, A=acier, 1=fond non amovible)</li><li><strong>X</strong> = Performance (X=GE I, Y=GE II, Z=GE III)</li><li><strong>1.4</strong> = Masse brute max. en kg</li><li><strong>S</strong> = Solide (ou pression d'épreuve pour liquides)</li><li><strong>22</strong> = Année de fabrication (2022)</li><li><strong>F</strong> = Pays (F=France, MA=Maroc)</li><li><strong>ABC123</strong> = N° autorisation fabricant</li></ul>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--red-bg);">⚠️</div><div class="acc-title-block"><div class="acc-title">Sanctions — Non-Conformités</div><div class="acc-subtitle">Blocage · Amendes · Responsabilité pénale</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body"><ul><li>🚫 Blocage de la cargaison à la frontière ou au port</li><li>💰 Amendes — USA OSHA : jusqu'à <strong>$165 514</strong> par violation intentionnelle</li><li>⏱️ Délais + surfrais de stockage</li><li>📋 Responsabilité pénale du transitaire et de l'expéditeur</li><li>🔴 Suspension d'agréments MD</li><li>🌊 En cas d'accident : responsabilité civile aggravée si marquage déficient prouvé</li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" style="margin:48px 0 0">
+
+<!-- ═════════════════════════════════════════
+     SECTION 09 — BENCHMARK
+═════════════════════════════════════════ -->
+<section id="benchmark" style="padding-top:40px">
+  <div class="sec-head">
+    <div class="sec-label">09 · Benchmark</div>
+    <div class="sec-title">Tableau Comparatif des Systèmes</div>
+    <div class="sec-desc">Cliquez sur chaque volet pour afficher les tableaux de comparaison.</div>
+  </div>
+  <div class="acc-grid" style="grid-template-columns:1fr">
+    <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--gold-dim);">📊</div><div class="acc-title-block"><div class="acc-title">Comparaison des 8 Systèmes Majeurs</div><div class="acc-subtitle">Organisme · Domaine · Format · Statut</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <div class="tbl-wrap"><table><thead><tr><th>Système</th><th>Organisme</th><th>Domaine</th><th>Format</th><th>Dim. min.</th><th>Màj</th><th>Statut</th></tr></thead><tbody>
+          <tr><td><strong>UN / Livre Orange</strong></td><td>ONU-CEE</td><td>Classification universelle</td><td>N° UN + Classe + GE</td><td>—</td><td>2 ans</td><td><span class="tbadge b-blue">Base mondiale</span></td></tr>
+          <tr><td><strong>GHS / CLP (EU)</strong></td><td>ONU / ECHA</td><td>Chimie, industrie, labo</td><td>Losange rouge 45°</td><td>100×100 mm</td><td>~2 ans</td><td><span class="tbadge b-green">Obligatoire mondial</span></td></tr>
+          <tr><td><strong>ADR</strong></td><td>CEE-ONU</td><td>Transport routier</td><td>Plaque orange + étiquettes</td><td>400×300 mm</td><td>2 ans</td><td><span class="tbadge b-green">Obligatoire EU+MA</span></td></tr>
+          <tr><td><strong>IMDG Code</strong></td><td>OMI</td><td>Transport maritime</td><td>Losanges + panneaux orange</td><td>100/250×100/250 mm</td><td>2 ans</td><td><span class="tbadge b-amber">Obligatoire 2026</span></td></tr>
+          <tr><td><strong>IATA DGR</strong></td><td>IATA/OACI</td><td>Transport aérien</td><td>Labels DGR spécifiques</td><td>Selon DGR</td><td>Annuelle</td><td><span class="tbadge b-green">Obligatoire mondial</span></td></tr>
+          <tr><td><strong>RID</strong></td><td>OTIF</td><td>Transport ferroviaire</td><td>Étiquettes + plaques (≈ADR)</td><td>≈ ADR</td><td>2 ans</td><td><span class="tbadge b-green">Obligatoire Europe</span></td></tr>
+          <tr><td><strong>NFPA 704</strong></td><td>NFPA</td><td>Stockage, bâtiments</td><td>Losange 4 quadrants</td><td>≥50 ft visible</td><td>Périodique</td><td><span class="tbadge b-gray">Recommandé / local</span></td></tr>
+          <tr><td><strong>ISO 780:2015</strong></td><td>ISO/TC122</td><td>Emballage distribution</td><td>17 pictogrammes B&amp;W</td><td>Proportionnel</td><td>2015</td><td><span class="tbadge b-gray">Norme internationale</span></td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)"><div class="acc-trigger"><div class="acc-icon-wrap" style="background:var(--gold-dim);">🗂️</div><div class="acc-title-block"><div class="acc-title">Matrice : Classes UN × GHS × Couleurs Transport</div><div class="acc-subtitle">Correspondance des systèmes par classe de danger</div></div><svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,6 8,10 12,6"/></svg></div>
+      <div class="acc-body">
+        <div class="tbl-wrap"><table><thead><tr><th>Classe UN</th><th>Désignation</th><th>GHS</th><th>Couleur ADR/IMDG</th><th>NFPA (indicatif)</th></tr></thead><tbody>
+          <tr><td class="mono" style="color:var(--gold)">1</td><td>Explosibles</td><td>GHS01 💣</td><td style="background:#fff3e0;">Orange</td><td>Variable</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">2.1</td><td>Gaz inflammables</td><td>GHS02 🔥</td><td style="background:#ffebee;">Rouge</td><td>Rouge 3–4</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">2.2</td><td>Gaz non inflammables</td><td>GHS04 🫙</td><td style="background:#e8f5e9;">Vert</td><td>Rouge 0</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">2.3</td><td>Gaz toxiques</td><td>GHS06 ☠️</td><td>Blanc</td><td>Bleu 3–4</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">3</td><td>Liquides inflammables</td><td>GHS02 🔥</td><td style="background:#ffebee;">Rouge</td><td>Rouge 2–4</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">4.3</td><td>Hydroréactifs</td><td>GHS02 🔥</td><td style="background:#e3f2fd;">Bleu</td><td>Jaune W</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">5.1</td><td>Comburants</td><td>GHS03 🔵</td><td style="background:#fffde7;">Jaune</td><td>Jaune OX</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">6.1</td><td>Matières toxiques</td><td>GHS06 ☠️</td><td>Blanc</td><td>Bleu 3–4</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">6.2</td><td>Infectieux</td><td>☣️ Biohazard</td><td>Blanc</td><td>Bleu 4</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">7</td><td>Radioactifs</td><td>☢️ (transport seul)</td><td style="background:#fffde7;">Blanc/Jaune</td><td>Jaune W</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">8</td><td>Corrosifs</td><td>GHS05 ⚗️</td><td>Noir/Blanc</td><td>Bleu 2–3</td></tr>
+          <tr><td class="mono" style="color:var(--gold)">9</td><td>Divers</td><td>GHS09 🌿</td><td>Blanc/bandes noires</td><td>Variable</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" style="margin:48px 0 0">
+
+<!-- ═════════════════════════════════════════
+     SECTION 10 — HISTORIQUE
+═════════════════════════════════════════ -->
+<section id="historique" style="padding-top:40px">
+  <div class="sec-head">
+    <div class="sec-label">10 · Historique &amp; Évolutions</div>
+    <div class="sec-title">Chronologie Réglementaire</div>
+    <div class="sec-desc">L'évolution du marquage MD reflète l'histoire de la mondialisation et des accidents industriels majeurs.</div>
+  </div>
+  <div style="max-width:680px">
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1956</div><div class="tl-title">ADR — Accord Européen Transport Routier</div><div class="tl-desc">Signature à Genève sous l'égide de la CEE-ONU. Premiers systèmes de placards standardisés en Europe.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1960</div><div class="tl-title">NFPA 704 — Naissance du Diamant de Feu</div><div class="tl-desc">Adopté aux USA après l'incident de Charlotte (NC) impliquant du sodium non identifié. Le pompier J.F. Morris crée le système de 4 quadrants colorés.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1965</div><div class="tl-title">IMDG Code — Organisation Maritime Internationale</div><div class="tl-desc">Première codification internationale du transport maritime des MD, après plusieurs catastrophes en mer impliquant des cargaisons mal identifiées.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:#dc2626"></div><div class="tl-year">1984</div><div class="tl-title">Bhopal — Tournant mondial</div><div class="tl-desc">Explosion Union Carbide — 3 500+ morts. Renforcement mondial des exigences d'identification et de marquage des dangers chimiques.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1997</div><div class="tl-title">ISO 780 — 4e édition</div><div class="tl-desc">Codification des symboles graphiques de manutention d'emballage. Remplacée en 2015 par la 5e édition actuelle avec 17 symboles harmonisés ISO 7000.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2003</div><div class="tl-title">GHS — Adoption ONU (« Livre Violet »)</div><div class="tl-desc">Publication de la 1re édition du GHS. Première harmonisation mondiale de la classification et de l'étiquetage chimiques après des décennies de systèmes nationaux incompatibles.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2009</div><div class="tl-title">CLP — Mise en œuvre dans l'Union Européenne</div><div class="tl-desc">Règlement CLP (CE 1272/2008) : remplacement des étiquettes orange de la directive 67/548/CEE par les nouveaux losanges rouges. Substances : 2010, mélanges : 2015.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2012</div><div class="tl-title">OSHA HazCom — USA adopte GHS</div><div class="tl-desc">Plus de 70 pays avaient adopté le GHS en 2017, faisant de lui le standard mondial de communication des dangers chimiques.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2015</div><div class="tl-title">ISO 780 — 5e et dernière édition</div><div class="tl-desc">17 symboles mis à jour selon IEC 80416-1:2008. Renommage en « Distribution Packaging » (intègre le stockage). Instructions manuscrites autorisées pour la croix de prohibition.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2024</div><div class="tl-title">IMDG Amdt 42-24 + OSHA HazCom Rev.7</div><div class="tl-desc">60+ révisions IMDG · charbon = MD obligatoire · « battery mark » sodium-ion. OSHA aligne HazCom sur GHS Rev.7. UE introduit l'étiquetage digital CLP (Règlement 2024/2865).</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:#16a34a"></div><div class="tl-year">2025–2026</div><div class="tl-title">GHS Rev.11 + Nouvelles classes CLP + IMDG obligatoire</div><div class="tl-desc">GHS Rev.11 publié. Perturbateurs endocriniens CLP obligatoires : substances mai 2025, mélanges mai 2026. IMDG 42-24 obligatoire au 1er janvier 2026. OSHA : conformité jan. 2026 (substances), juil. 2027 (mélanges).</div></div>
+  </div>
+  </div>
+</section>
+
+</div><!-- end .wrap -->
+
+<footer>MD Signalisation — Référentiel Professionnel · Sources : ONU · IMDG 42-24 · GHS Rev.11 · NFPA 704 · ISO 780:2015 · ADR 2025 · IATA DGR 66e · ECHA CLP · Avril 2026</footer>
+
+<script>
+// ── Toggle accordion
+function toggleAcc(el){
+  const open = el.classList.contains('open');
+  // Close siblings in same grid only
+  const grid = el.closest('.acc-grid, .ghs-grid, section');
+  if(grid) grid.querySelectorAll('.acc-card.open').forEach(c=>{ if(c!==el) c.classList.remove('open'); });
+  if(!open) el.classList.add('open'); else el.classList.remove('open');
+}
+
+// ── Tabs
+function openTab(e,id){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  e.target.classList.add('active');
+}
+
+// ── Nav active on scroll
+const navLinks = document.querySelectorAll('.hdr-nav a');
+const secs = document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{ if(window.scrollY>=s.offsetTop-100) cur=s.id; });
+  navLinks.forEach(a=>{ a.classList.remove('active'); if(a.getAttribute('href')==='#'+cur) a.classList.add('active'); });
+},{ passive:true });
+
+// ── Disable right-click (light anti-scraping)
+document.addEventListener('contextmenu',e=>e.preventDefault());
+</script>
+</body>
+</html>

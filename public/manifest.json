@@ -1,8 +1,8 @@
 {
-  "name": "Transit-IA — Douane.ia",
-  "short_name": "Transit-IA",
+  "name": "Transit-eXPert",
+  "short_name": "Transit-eXPert",
   "description": "Outils douaniers Transit-IA : classement tarifaire, glossaire, calculateurs",
-  "start_url": "/mobile",
+  "start_url": "/app",
   "display": "standalone",
   "background_color": "#153E82",
   "theme_color": "#153E82",

@@ -9,6 +9,11 @@
 // - /api/* : exclu — chaque route API vérifie sa propre session en Node
 //   runtime (verifyUserToken de lib/userAuth.ts) et répond en JSON plutôt
 //   que par une redirection, qui n'a pas de sens pour un appel API.
+// - /app/* : exclu — espace mobile indépendant (voir lib/appAccess.ts),
+//   avec son propre contrôle d'accès en Node runtime, distinct de ce
+//   middleware et de moduleAccess.ts (décision du 2026-08-28, suite à un
+//   bug de redirection post-connexion resté non résolu sur mobile malgré
+//   plusieurs correctifs sur ce système historique).
 // - Tourne sur l'Edge Runtime : utilise lib/edgeAuth.ts (Web Crypto), jamais
 //   lib/userAuth.ts (module Node 'crypto', indisponible en Edge).
 // ─────────────────────────────────────────────────────────────────────────────
@@ -52,6 +57,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|backoffice$|backoffice/|_next/static|_next/image|favicon.ico|manifest.json|icons/|sw.js|workbox-).*)',
+    '/((?!api/|backoffice$|backoffice/|_next/static|_next/image|favicon.ico|manifest.json|icons/|sw.js|workbox-|app/).*)',
   ],
 }
