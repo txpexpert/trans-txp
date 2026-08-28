@@ -1,10 +1,11 @@
-import { useRouter } from 'next/router'
+import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
 
-export default function AbonnementRequis() {
-  const router = useRouter()
-  const from = typeof router.query.from === 'string' ? router.query.from : null
+interface Props {
+  from: string | null
+}
 
+export default function AbonnementRequis({ from }: Props) {
   return (
     <div style={{
       minHeight: '70vh', display: 'flex', flexDirection: 'column',
@@ -25,7 +26,7 @@ export default function AbonnementRequis() {
         }}>
           Voir les abonnements
         </Link>
-                <Link href={from ? `/auth/login?redirect=${encodeURIComponent(from)}` : "/auth/login"} style={{
+        <Link href={from ? `/auth/login?redirect=${encodeURIComponent(from)}` : "/auth/login"} style={{
           border: '1px solid #ccc', padding: '10px 20px',
           borderRadius: 6, textDecoration: 'none', color: '#333',
         }}>
@@ -34,4 +35,17 @@ export default function AbonnementRequis() {
       </div>
     </div>
   )
+}
+
+// ✅ FIX — getServerSideProps au lieu de useRouter().query : le paramètre
+// "from" est désormais résolu côté serveur, donc le lien "Se connecter"
+// contient déjà ?redirect=... dans le tout premier HTML envoyé au
+// navigateur. Avant ce correctif, le lien était rendu sans "from" tant que
+// React n'avait pas terminé l'hydratation côté client (router.query vide
+// au premier rendu) — un clic rapide sur mobile utilisait ce lien "vide"
+// et renvoyait ensuite vers la page d'accueil après connexion.
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+  const raw = context.query.from
+  const from = typeof raw === 'string' ? raw : null
+  return { props: { from } }
 }
