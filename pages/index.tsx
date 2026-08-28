@@ -645,6 +645,62 @@ const bodyHTML = `
     </div>
   </aside>
 </div>
+
+<!-- ═══ TOUS LES OUTILS — section provisoire, à trier/regrouper par thématique ═══ -->
+<div class="cv-section" id="cv-all-tools" style="max-width:1280px;margin:0 auto;padding:0 2rem 3rem">
+  <div class="cv-section-hdr">
+    <div class="cv-eyebrow">TOUS NOS OUTILS</div>
+    <div class="cv-title">L'ensemble des modules Transit-IA</div>
+    <div class="cv-sub">Liste complète — 45 modules. Tri et regroupement par thématique à venir.</div>
+  </div>
+  <div class="stage-body-inner" style="border:1px solid var(--border);padding:1.25rem;background:var(--white);display:flex;flex-wrap:wrap;gap:.5rem">
+          <a class="mod-chip" href="/modules/verificateur-dum">Vérificateur DUM</a>
+          <a class="mod-chip" href="/modules/surestaries">Surestaries &amp; Pénalités</a>
+          <a class="mod-chip" href="/modules/audit">Audit Douanier &amp; OEA</a>
+          <a class="mod-chip" href="/modules/contentieux">Contentieux &amp; Litiges</a>
+          <a class="mod-chip" href="/modules/simulateur">Simulateur Droits &amp; Taxes</a>
+          <a class="mod-chip" href="/modules/comparateur">Comparateur Régimes</a>
+          <a class="mod-chip" href="/modules/veille-reglementaire">Veille Réglementaire &amp; LF 2026</a>
+          <a class="mod-chip" href="/modules/classement">Classement tarifaire et SH — 17 224 codes</a>
+          <a class="mod-chip" href="/modules/decisions-classement">Décisions de Classement — 247 décisions ADII</a>
+          <a class="mod-chip" href="/modules/origine-aleca">Origine ALECA / UE</a>
+          <a class="mod-chip" href="/modules/incoterms-shipping">Incoterms × Shipping Terms</a>
+          <a class="mod-chip" href="/modules/simulateur-fiscal">Simulateur Fiscal Import</a>
+          <a class="mod-chip" href="/modules/valeur-douane">Valeur en Douane (WCO)</a>
+          <a class="mod-chip" href="/modules/cgi-fiscal">Index du Code des Impôts — 296 art. CGI 2026</a>
+          <a class="mod-chip" href="/modules/cgi-search">Recherche Fiscale CGI (IA)</a>
+          <a class="mod-chip" href="/modules/tic-reference">Référence TIC</a>
+          <a class="mod-chip" href="/modules/regime-change">Régime de Change</a>
+          <a class="mod-chip" href="/modules/calc-conteneurs">Calculateur Conteneurs</a>
+          <a class="mod-chip" href="/modules/regimes-economiques">Régimes Économiques</a>
+          <a class="mod-chip" href="/modules/facilitation">Facilitation Douanière</a>
+          <a class="mod-chip" href="/modules/documents-sh">Documents par Code SH</a>
+          <a class="mod-chip" href="/modules/autorisations-licences">Autorisations &amp; Licences</a>
+          <a class="mod-chip" href="/modules/substances-dangereuses">Substances Dangereuses</a>
+          <a class="mod-chip" href="/modules/marquage-warnings">Marquage &amp; Warnings</a>
+          <a class="mod-chip" href="/modules/generateur-docs">Générateur Documents</a>
+          <a class="mod-chip" href="/modules/transit-doc-generator">Générateur Doc Transit</a>
+          <a class="mod-chip" href="/modules/procedures">Procédures Douanières</a>
+          <a class="mod-chip" href="/modules/procedures-process">Procédures &amp; Régimes</a>
+          <a class="mod-chip" href="/modules/calc-colis-sre">Calculateur Colis &amp; SRE</a>
+          <a class="mod-chip" href="/modules/risques">Contrôle des Risques — 38 situations</a>
+          <a class="mod-chip" href="/modules/tracking">Tracking &amp; Intelligence</a>
+          <a class="mod-chip" href="/modules/conseil">Conseil Personnalisé</a>
+          <a class="mod-chip" href="/modules/alertes-fiscales">Alertes Fiscales</a>
+          <a class="mod-chip" href="/modules/oea">Opérateur Économique Agréé</a>
+          <a class="mod-chip" href="/modules/intelligence-fiscale">Intelligence Fiscale</a>
+          <a class="mod-chip" href="/modules/intelligence-strategique">Intelligence Stratégique</a>
+          <a class="mod-chip" href="/modules/intelligence-import">Intelligence Import</a>
+          <a class="mod-chip" href="/modules/mondoscope">Global MondoScope</a>
+          <a class="mod-chip" href="/modules/index-commerce">Index Commerce International</a>
+          <a class="mod-chip" href="/modules/analyses">Analyses Stratégiques</a>
+          <a class="mod-chip" href="/modules/douane-engineering">Douane Engineering</a>
+          <a class="mod-chip" href="/modules/export">Export</a>
+          <a class="mod-chip" href="/modules/faq">FAQ Douanière — 173 questions</a>
+          <a class="mod-chip" href="/modules/glossaire-douanier">Glossaire Douanier FR/AR</a>
+          <a class="mod-chip" href="/modules/carte-bureauxdouaniers">Carte des Bureaux Douaniers</a>
+  </div>
+</div>
 </div>
 
 <!-- ═══════════════════════════════════════════════ MODE CLASSIQUE -->
