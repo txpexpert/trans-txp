@@ -26,8 +26,13 @@ export default function Login() {
       const data = await res.json()
       if (!res.ok) { setError(data.error || 'Erreur lors de la connexion'); setLoading(false); return }
 
+      // ✅ FIX — navigation complète (pas router.push) : nécessaire pour une
+      // redirection fiable vers des fichiers .html statiques (public/tools/*)
+      // et pour garantir que le middleware relit bien le cookie de session
+      // fraîchement posé par /api/auth/login, plutôt qu'une transition
+      // purement côté client qui pouvait ignorer la valeur de "redirect".
       const redirect = typeof router.query.redirect === 'string' ? router.query.redirect : '/'
-      router.push(redirect)
+      window.location.href = redirect
     } catch {
       setError('Erreur réseau — réessayez')
 
