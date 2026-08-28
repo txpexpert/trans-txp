@@ -77,7 +77,7 @@ export default function DecisionsClassement() {
           padding: '8px 16px',
           borderBottom: '.5px solid var(--rule)',
           background: 'var(--bl)',
-          fontSize: '11px', fontFamily: 'monospace', color: 'var(--inkm)',
+          fontSize: '13px', fontFamily: 'monospace', color: 'var(--inkm)',
         }}>
           {!decLoaded ? 'Chargement...' : decisionsFiltered.length + ' designation' + (decisionsFiltered.length !== 1 ? 's' : '')}
         </div>
@@ -101,7 +101,7 @@ export default function DecisionsClassement() {
               background: i % 2 === 0 ? 'var(--surface, #fff)' : 'var(--bg2, #fafafa)',
             }}>
               <summary style={{
-                padding: '10px 16px',
+                padding: '16px',
                 display: 'flex',
                 alignItems: 'baseline',
                 justifyContent: 'space-between',
@@ -109,11 +109,11 @@ export default function DecisionsClassement() {
                 cursor: d.resume ? 'pointer' : 'default',
                 listStyle: 'none',
               }}>
-                <span style={{ fontSize: '13px', color: 'var(--ink)', lineHeight: 1.5, flex: 1, minWidth: 0 }}>
+                <span style={{ fontSize: '16px', color: 'var(--ink)', lineHeight: 1.5, flex: 1, minWidth: 0 }}>
                   {d.designation}
                 </span>
                 <span style={{
-                  fontFamily: 'monospace', fontSize: '11px',
+                  fontFamily: 'monospace', fontSize: '13px',
                   color: 'var(--inkm)', whiteSpace: 'nowrap', flexShrink: 0,
                 }}>
                   {d.circulaire.replace('Circulaire ', '')} · {d.code_sh}
@@ -122,7 +122,7 @@ export default function DecisionsClassement() {
               {d.resume && (
                 <div style={{
                   padding: '0 16px 12px 16px',
-                  fontSize: '12.5px', color: 'var(--inkm)', lineHeight: 1.6,
+                  fontSize: '15px', color: 'var(--inkm)', lineHeight: 1.7,
                 }}>
                   {d.resume}
                 </div>

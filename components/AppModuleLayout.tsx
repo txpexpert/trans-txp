@@ -83,18 +83,18 @@ body {
   margin-bottom: 1.75rem;
 }
 .mod-kicker {
-  font-family: "JetBrains Mono", monospace; font-size: 10px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
   letter-spacing: .14em; color: var(--gold); text-transform: uppercase;
   margin-bottom: .4rem;
 }
 .mod-hero h1 {
   font-family: "DM Serif Display", Georgia, serif;
-  font-size: clamp(22px, 3vw, 32px); font-weight: 400;
-  letter-spacing: -.01em; line-height: 1.1; color: var(--ink);
+  font-size: clamp(24px, 4vw, 32px); font-weight: 400;
+  letter-spacing: -.01em; line-height: 1.15; color: var(--ink);
 }
 .mod-hero h1 em { font-style: italic; color: var(--gold); }
 .mod-hero p {
-  margin-top: .5rem; font-size: 13px; color: var(--mid);
+  margin-top: .5rem; font-size: 15px; color: var(--mid);
   line-height: 1.65; max-width: 720px;
 }
 
@@ -105,11 +105,11 @@ body {
   padding: 1rem 1.25rem; box-shadow: var(--sh);
 }
 .istat-n {
-  font-family: "DM Serif Display", serif; font-size: 32px;
+  font-family: "DM Serif Display", serif; font-size: 44px;
   font-weight: 400; color: var(--gold); line-height: 1; margin-bottom: .25rem;
 }
 .istat-l {
-  font-size: 11px; color: var(--muted); line-height: 1.4;
+  font-size: 13px; color: var(--muted); line-height: 1.4;
   font-family: "JetBrains Mono", monospace; letter-spacing: .04em;
 }
 .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; background: var(--bg2); }
@@ -131,19 +131,30 @@ body {
   letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem;
 }
 .form-select, .form-input, .search-input {
-  width: 100%; padding: 8px 12px; border: 1px solid var(--border-mid);
+  width: 100%; padding: 13px 14px; border: 1px solid var(--border-mid);
   background: var(--surface); color: var(--ink);
-  font-family: "DM Sans", sans-serif; font-size: 13px;
+  font-family: "DM Sans", sans-serif; font-size: 17px;
+  min-height: 48px; border-radius: 6px;
   outline: none; transition: border-color .18s;
 }
 .form-select:focus, .form-input:focus, .search-input:focus {
   border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,146,42,.1);
 }
-.btn { padding: 8px 18px; font-size: 12px; letter-spacing: .06em; cursor: pointer; font-family: "DM Sans", sans-serif; transition: all .15s; border: 1px solid; }
+.btn { padding: 13px 20px; font-size: 16px; letter-spacing: .04em; cursor: pointer; font-family: "DM Sans", sans-serif; transition: all .15s; border: 1px solid; min-height: 48px; border-radius: 6px; }
 .btn-primary   { background: var(--gold); color: #fff; border-color: var(--gold); }
 .btn-primary:hover { background: var(--gold-h); border-color: var(--gold-h); }
 .btn-outline   { background: transparent; color: var(--ink); border-color: var(--border-mid); }
 .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Tableau — défini ici (pas dans le globals.css desktop) pour rester
+   totalement indépendant et adapté à la lecture mobile. */
+table.data-table { width: 100%; border-collapse: collapse; margin-top: .75rem; }
+table.data-table th {
+  text-align: left; font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); padding: 10px 8px; border-bottom: 1px solid var(--border);
+  font-family: "JetBrains Mono", monospace;
+}
+table.data-table td { padding: 14px 8px; font-size: 15px; border-bottom: 1px solid var(--border); color: var(--inks); }
 
 /* ── Footer ── */
 footer {

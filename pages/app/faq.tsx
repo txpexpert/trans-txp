@@ -122,7 +122,7 @@ function ProtectedAnswer({ text }: { text: string }) {
             return (
               <ul key={i} style={{ margin: '0 0 .875rem', paddingLeft: '1.5rem', listStyle: 'none' }}>
                 {lines.map((line, j) => (
-                  <li key={j} style={{ fontSize: 13, color: 'var(--inks)', lineHeight: 1.75, padding: '2px 0', position: 'relative' }}>
+                  <li key={j} style={{ fontSize: 15, color: 'var(--inks)', lineHeight: 1.8, padding: '4px 0', position: 'relative' }}>
                     <span style={{ position: 'absolute', left: '-1rem', color: 'var(--ba)', fontWeight: 700 }}>·</span>
                     {line.replace(/^[-•]\s*/, '')}
                   </li>
@@ -135,7 +135,7 @@ function ProtectedAnswer({ text }: { text: string }) {
             return (
               <ol key={i} style={{ margin: '0 0 .875rem', paddingLeft: '1.5rem' }}>
                 {lines.map((line, j) => (
-                  <li key={j} style={{ fontSize: 13, color: 'var(--inks)', lineHeight: 1.75, padding: '2px 0' }}>
+                  <li key={j} style={{ fontSize: 15, color: 'var(--inks)', lineHeight: 1.8, padding: '4px 0' }}>
                     {line.replace(/^\d+[.-]\s*/, '')}
                   </li>
                 ))}
@@ -153,7 +153,7 @@ function ProtectedAnswer({ text }: { text: string }) {
           }
 
           return (
-            <p key={i} style={{ fontSize: 13, color: 'var(--inks)', lineHeight: 1.8, margin: '0 0 .875rem', textAlign: 'justify' }}>
+            <p key={i} style={{ fontSize: 15, color: 'var(--inks)', lineHeight: 1.8, margin: '0 0 .875rem', textAlign: 'justify' }}>
               {p}
             </p>
           )
@@ -193,7 +193,7 @@ function ThemeCard({ theme, active, onClick, realCount }: {
       </span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{
-          fontSize: 12, fontWeight: 500, lineHeight: 1.3,
+          fontSize: 14, fontWeight: 500, lineHeight: 1.35,
           color: active ? 'white' : 'var(--bd)',
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
         }}>
@@ -253,7 +253,7 @@ function FaqItem({ entry, isOpen, onToggle, searchQuery }: {
         onClick={onToggle}
         style={{
           width: '100%', textAlign: 'left', background: isOpen ? colors.light : 'transparent',
-          border: 'none', padding: '.875rem 1.25rem .875rem 1rem',
+          border: 'none', padding: '1.1rem 1.25rem 1.1rem 1rem',
           cursor: 'pointer', display: 'flex', gap: '.875rem', alignItems: 'flex-start',
           transition: 'background .12s',
         }}>
@@ -268,7 +268,7 @@ function FaqItem({ entry, isOpen, onToggle, searchQuery }: {
 
         {/* Question */}
         <span style={{
-          flex: 1, fontSize: 13, fontWeight: isOpen ? 600 : 500,
+          flex: 1, fontSize: 16, fontWeight: isOpen ? 600 : 500,
           color: 'var(--bd)', lineHeight: 1.55,
           fontFamily: "'Source Serif 4', Georgia, serif",
         }}>
@@ -277,7 +277,7 @@ function FaqItem({ entry, isOpen, onToggle, searchQuery }: {
 
         {/* Right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, marginTop: 1 }}>
-          <span style={{ fontSize: 10, padding: '1px 6px', ...diffStyle }}>
+          <span style={{ fontSize: 12, padding: '3px 8px', ...diffStyle }}>
             {entry.difficulte}
           </span>
           <span style={{
@@ -301,7 +301,7 @@ function FaqItem({ entry, isOpen, onToggle, searchQuery }: {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: '1rem' }}>
             {entry.tags.slice(0, 5).map(tag => (
               <span key={tag} style={{
-                fontSize: 10, padding: '1px 7px',
+                fontSize: 12, padding: '3px 9px',
                 background: colors.light, color: colors.accent,
                 border: `.5px solid ${colors.accent}30`,
                 letterSpacing: '.05em'
@@ -311,7 +311,7 @@ function FaqItem({ entry, isOpen, onToggle, searchQuery }: {
             ))}
             {entry.profils.filter(p => p !== 'général').map(p => (
               <span key={p} style={{
-                fontSize: 10, padding: '1px 7px',
+                fontSize: 12, padding: '3px 9px',
                 background: '#F5F3FF', color: '#4C1D95',
                 border: '.5px solid #DDD6FE', letterSpacing: '.05em'
               }}>
