@@ -137,7 +137,7 @@ export default function DecisionsClassement() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const result = await requireAppAccess(context, 'decisions-classement')
-  if ('redirect' in result) return result
+  const redirectTo = await requireAppAccess(context, 'decisions-classement')
+  if (redirectTo) return { redirect: { destination: redirectTo, permanent: false } }
   return { props: {} }
 }

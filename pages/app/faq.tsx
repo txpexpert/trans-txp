@@ -749,7 +749,7 @@ export default function FaqPage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const result = await requireAppAccess(context, 'faq')
-  if ('redirect' in result) return result
+  const redirectTo = await requireAppAccess(context, 'faq')
+  if (redirectTo) return { redirect: { destination: redirectTo, permanent: false } }
   return { props: {} }
 }

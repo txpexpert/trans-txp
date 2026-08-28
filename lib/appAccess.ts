@@ -92,29 +92,29 @@ async function fetchSession(
 }
 
 // ── Helper pour getServerSideProps des pages React de /app ──────────────────
+// Renvoie l'URL de redirection (string) si l'accès est refusé, ou null si
+// l'accès est autorisé. Volontairement simple (pas de type discriminé
+// {ok:true/false}) après une erreur de build TypeScript où le narrowing
+// sur un tel type ne se comportait pas comme attendu.
+//
 // Usage :
 //   export const getServerSideProps: GetServerSideProps = async (context) => {
-//     const result = await requireAppAccess(context, 'classement')
-//     if ('redirect' in result) return result
+//     const redirectTo = await requireAppAccess(context, 'classement')
+//     if (redirectTo) return { redirect: { destination: redirectTo, permanent: false } }
 //     return { props: {} }
 //   }
 export async function requireAppAccess(
   context: GetServerSidePropsContext,
   moduleCode: string
-) {
+): Promise<string | null> {
   const session = await getAppSession(context)
   const allowed = session
     ? canAccessAppModule(session.plan, session.statut, moduleCode, session.trialEnds)
     : false
 
   if (!allowed) {
-    return {
-      redirect: {
-        destination: `/app/login?redirect=${encodeURIComponent(context.resolvedUrl)}`,
-        permanent: false,
-      },
-    } as const
+    return `/app/login?redirect=${encodeURIComponent(context.resolvedUrl)}`
   }
 
-  return { session }
+  return null
 }
