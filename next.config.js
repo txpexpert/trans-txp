@@ -2,6 +2,12 @@
 const withPWA = require('next-pwa')({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
+  runtimeCaching: [
+    {
+      urlPattern: ({ request }) => request.mode === 'navigate',
+      handler: 'NetworkOnly',
+    },
+  ],
 })
 
 const nextConfig = {
@@ -32,3 +38,4 @@ module.exports = withPWA(nextConfig)
 // n'y renvoie (probablement supersédée par /modules/logistique2, conservé).
 // pages/api/ref-log.ts existe toujours dans le dépôt source si besoin de
 // la restaurer, mais n'a pas été copié dans ce build.
+
