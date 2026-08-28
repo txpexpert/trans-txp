@@ -4,7 +4,7 @@
 
 import type { GetServerSideProps } from 'next'
 import { useState, useEffect, useCallback } from 'react'
-import ModuleLayout from '../../components/ModuleLayout'
+import AppModuleLayout from '../../components/AppModuleLayout'
 import { requireAppAccess } from '../../lib/appAccess'
 
 interface Decision {
@@ -44,7 +44,7 @@ export default function DecisionsClassement() {
   const decisionsFiltered = decisions
 
   return (
-    <ModuleLayout
+    <AppModuleLayout
       kicker="MODULE 05B"
       title="Décisions de Classement"
       sub="Référentiel ADII des décisions de classement tarifaire — recherchez par nom de produit, circulaire ou code SH.">
@@ -132,7 +132,7 @@ export default function DecisionsClassement() {
         </div>
       </div>
 
-    </ModuleLayout>
+    </AppModuleLayout>
   )
 }
 

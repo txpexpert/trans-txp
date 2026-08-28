@@ -6,7 +6,7 @@
 
 import type { GetServerSideProps } from 'next'
 import { useState, useEffect, useCallback, useRef } from 'react'
-import ModuleLayout from '../../components/ModuleLayout'
+import AppModuleLayout from '../../components/AppModuleLayout'
 import { supabase } from '../../lib/supabase'
 import { requireAppAccess } from '../../lib/appAccess'
 
@@ -486,7 +486,7 @@ export default function FaqPage() {
   ).sort()
 
   return (
-    <ModuleLayout
+    <AppModuleLayout
       kicker="Base de connaissances douanières"
       title="Espace Expert Opérateurs"
       sub="Vos opérations, nos réponses sur mesure. · 269 questions & réponses · Droit douanier 2025">
@@ -744,7 +744,7 @@ export default function FaqPage() {
         <span>Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 
-    </ModuleLayout>
+    </AppModuleLayout>
   )
 }
 

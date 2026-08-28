@@ -6,7 +6,7 @@
 
 import type { GetServerSideProps } from 'next'
 import { useState, useEffect, useCallback } from 'react'
-import ModuleLayout from '../../components/ModuleLayout'
+import AppModuleLayout from '../../components/AppModuleLayout'
 import { requireAppAccess } from '../../lib/appAccess'
 
 // ── Types ───────────────────────────────────────────────────
@@ -186,7 +186,7 @@ export default function Classement() {
     c.slice(0,4) + '.' + c.slice(4,6) + '.' + c.slice(6,8) + '.' + c.slice(8,10)
 
   return (
-    <ModuleLayout
+    <AppModuleLayout
       kicker="MODULE 05"
       title="Classement tarifaire et SH"
       sub="Faites vos recherches dans les 17 224 codes SH du tarif douanier marocain (dossier actualisé).">
@@ -320,7 +320,7 @@ export default function Classement() {
         </>
       )}
 
-    </ModuleLayout>
+    </AppModuleLayout>
   )
 }
 
