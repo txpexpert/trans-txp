@@ -42,7 +42,7 @@ button{cursor:pointer;font-family:'DM Sans',sans-serif;border:none;background:no
 header{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
 #diagnostic,#modules,#barometre,#kits,#modules-plus,#strategies,#copilote{scroll-margin-top:95px}
 html{scroll-behavior:smooth}
-.hdr{max-width:1280px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;height:60px;gap:1.5rem}
+.hdr{max-width:1280px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;height:72px;gap:1.5rem}
 .logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;letter-spacing:-.02em;flex-shrink:0}
 .logo em{color:var(--gold);font-style:normal}
 .logo sup{font-size:10px;font-weight:300;color:var(--ink3);letter-spacing:.06em;vertical-align:super}
@@ -63,10 +63,10 @@ html{scroll-behavior:smooth}
 .hdr-nav a:nth-child(6):hover{background:#E4E3F7}
 .hdr-nav a:nth-child(7){background:#E9F7F8;color:#0A8890}
 .hdr-nav a:nth-child(7):hover{background:#D9F1F3}
-.hdr-actions{display:flex;gap:8px;margin-left:auto;align-items:center;flex-shrink:0}
-.btn-in{padding:7px 16px;font-size:11px;letter-spacing:.07em;color:var(--ink2);border:1px solid var(--border2);transition:all .15s}
+.hdr-actions{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:4px;margin-left:auto;flex-shrink:0}
+.btn-in{padding:5px 14px;font-size:10.5px;letter-spacing:.06em;color:var(--ink2);border:1px solid var(--border2);transition:all .15s}
 .btn-in:hover{border-color:var(--gold);color:var(--gold)}
-.btn-sub{padding:7px 18px;font-size:11px;letter-spacing:.07em;background:var(--ink);color:var(--gold2);transition:all .15s}
+.btn-sub{padding:5px 16px;font-size:10.5px;letter-spacing:.06em;background:var(--ink);color:var(--gold2);transition:all .15s}
 .btn-sub:hover{background:var(--gold);color:var(--ink)}
 
 /* ---------- HERO : nouvelle philosophie diagnostic-first ---------- */
@@ -270,7 +270,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem 1rem;margin-top:1r
 }
 
 /* ---------- Authentification (connexion / inscription) — repris du site en production ---------- */
-.hdr-user{font-size:12px;color:var(--ink2);margin-right:.5rem;white-space:nowrap;text-decoration:none;cursor:pointer}
+.hdr-user{font-size:10.5px;color:var(--ink2);white-space:nowrap;text-decoration:none;cursor:pointer}
 .hdr-user:hover{text-decoration:underline;color:var(--gold)}
 .overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,.6);z-index:500;align-items:center;justify-content:center}
 .overlay.open{display:flex}
