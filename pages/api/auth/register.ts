@@ -13,7 +13,7 @@ const supabase = createClient(
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end()
 
-  const { email, password, nom, prenom, societe, profil } = req.body
+  const { email, password, nom, prenom, societe, telephone, profil } = req.body
 
   if (!email || !password) return res.status(400).json({ error: 'Email et mot de passe requis' })
   if (password.length < 8) return res.status(400).json({ error: 'Mot de passe trop court (8 caractères minimum)' })
@@ -46,6 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       email: email.toLowerCase(),
       password_hash,
       nom, prenom, societe,
+      telephone: telephone || null,
       profil: profil || 'autre',
       plan: 'trial',
       statut: 'trial',

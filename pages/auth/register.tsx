@@ -16,7 +16,7 @@ export default function Register() {
 
   const [form, setForm] = useState({
     email: '', password: '', confirm: '',
-    nom: '', prenom: '', societe: '', profil: 'transitaire',
+    nom: '', prenom: '', societe: '', telephone: '', profil: 'transitaire',
   })
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState('')
@@ -36,12 +36,13 @@ export default function Register() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email:   form.email,
-          password: form.password,
-          nom:     form.nom,
-          prenom:  form.prenom,
-          societe: form.societe,
-          profil:  form.profil,
+          email:     form.email,
+          password:  form.password,
+          nom:       form.nom,
+          prenom:    form.prenom,
+          societe:   form.societe,
+          telephone: form.telephone,
+          profil:    form.profil,
         }),
       })
       const data = await res.json()
@@ -123,9 +124,16 @@ export default function Register() {
                 <input className="inp" type="email" placeholder="m.alami@entreprise.ma" value={form.email} onChange={set('email')} autoComplete="email" />
               </div>
 
-              <div className="field">
-                <label className="label">SOCIÉTÉ / CABINET</label>
-                <input className="inp" type="text" placeholder="ATLAS TRANSIT SARL" value={form.societe} onChange={set('societe')} />
+              {/* Ligne société / téléphone */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '.75rem' }}>
+                <div className="field">
+                  <label className="label">SOCIÉTÉ / CABINET</label>
+                  <input className="inp" type="text" placeholder="ATLAS TRANSIT SARL" value={form.societe} onChange={set('societe')} />
+                </div>
+                <div className="field">
+                  <label className="label">TÉLÉPHONE</label>
+                  <input className="inp" type="tel" placeholder="06 12 34 56 78" value={form.telephone} onChange={set('telephone')} autoComplete="tel" />
+                </div>
               </div>
 
               <div className="field">
