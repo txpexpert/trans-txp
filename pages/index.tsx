@@ -46,8 +46,8 @@ html{scroll-behavior:smooth}
 .logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;letter-spacing:-.02em;flex-shrink:0}
 .logo em{color:var(--gold);font-style:normal}
 .logo sup{font-size:10px;font-weight:300;color:var(--ink3);letter-spacing:.06em;vertical-align:super}
-.hdr-nav{display:flex;gap:.5rem;margin-left:1rem;font-size:12.5px;font-weight:700;letter-spacing:-.005em;color:var(--ink);white-space:nowrap;flex:1 1 auto;min-width:0;overflow:hidden}
-.hdr-nav a{position:relative;padding:6px 12px;border-radius:20px;transition:all .16s ease}
+.hdr-nav{display:flex;gap:.4rem;margin-left:1rem;font-size:11px;font-weight:700;letter-spacing:-.005em;color:var(--ink);flex:1 1 auto;min-width:0}
+.hdr-nav a{position:relative;padding:5px 10px;border-radius:10px;transition:all .16s ease;text-align:center;line-height:1.2;white-space:normal;max-width:104px}
 .hdr-nav a:hover{transform:translateY(-1px)}
 .hdr-nav a:nth-child(1){background:#EEF3FC;color:#3E5A9E}
 .hdr-nav a:nth-child(1):hover{background:#E1EAFA}
