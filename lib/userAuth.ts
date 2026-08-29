@@ -9,12 +9,20 @@
  * lib/edgeAuth.ts à la place. La logique de plans/modules (sans dépendance
  * Node) vit dans lib/moduleAccess.ts et est réexportée ci-dessous pour
  * compatibilité avec le code existant qui importe depuis userAuth.ts.
+ *
+ * ✅ Verrouillage de session (2026-08-29) : chaque connexion génère un
+ * sessionId unique (crypto.randomUUID), stocké à la fois dans le jeton
+ * (champ ci-dessous) et en base (colonne users.current_session_id, voir
+ * pages/api/auth/login.ts). pages/api/auth/me.ts compare les deux à chaque
+ * appel : s'ils diffèrent, une connexion plus récente a eu lieu ailleurs et
+ * la session en cours est rejetée. Limite connue : le middleware Edge
+ * (middleware.ts) ne fait pas cette vérification — voir note dans ce
+ * fichier-là — donc une page /modules ou /tools déjà ouverte peut rester
+ * techniquement accessible jusqu'à expiration naturelle du jeton.
  */
-
 import crypto from 'crypto'
 import { USER_COOKIE } from './moduleAccess'
 import type { Plan, Statut } from './moduleAccess'
-
 export * from './moduleAccess'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -27,6 +35,7 @@ export interface SessionPayload {
   plan:      Plan
   statut:    Statut
   trialEnds?: number
+  sessionId: string   // ✅ identifiant unique de cette connexion précise
   exp:       number
 }
 
@@ -43,7 +52,6 @@ export function verifyUserToken(token: string | undefined): SessionPayload | nul
   const parts = token.split('.')
   if (parts.length !== 2) return null
   const [encoded, sig] = parts
-
   const expected = crypto.createHmac('sha256', SECRET).update(encoded).digest('base64url')
   try {
     const valid = crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))

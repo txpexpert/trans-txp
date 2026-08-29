@@ -22,11 +22,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // fallback sur la comparaison ADMIN_EMAIL. Avant ce patch, me.ts ignorait
   // totalement la colonne 'role' et un admin défini uniquement via cette
   // colonne redevenait 'user' au premier rafraîchissement de page.
+  //
+  // ✅ Verrouillage de session (2026-08-29) : on récupère aussi
+  // current_session_id pour la comparer au sessionId du jeton. Si elles
+  // diffèrent, une connexion plus récente a eu lieu ailleurs sur ce compte
+  // — cette session-ci est donc périmée, même si le jeton est encore
+  // valide et non expiré.
   const { data: dbUser } = await supabase
     .from('users')
-    .select('role')
+    .select('role, current_session_id')
     .eq('email', payload.email.toLowerCase())
     .single()
+
+  if (dbUser?.current_session_id && dbUser.current_session_id !== payload.sessionId) {
+    return res.status(401).json({ error: 'Session invalidée — une connexion plus récente a eu lieu sur ce compte.' })
+  }
 
   const role: string =
     dbUser?.role ?? (payload.email.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? 'admin' : 'user')

@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
 import { createUserToken, userCookieOptions } from '../../../lib/userAuth'
 
 const supabase = createClient(
@@ -74,10 +75,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await supabase.from('users').update({ statut: 'expired' }).eq('id', user.id)
   }
 
+  // ✅ Verrouillage de session — un identifiant unique par connexion. Toute
+  // connexion ultérieure (même compte, autre appareil) écrase cette valeur
+  // en base, ce qui invalide automatiquement la session précédente dès son
+  // prochain passage par /api/auth/me (voir ce fichier pour la vérification).
+  const sessionId = crypto.randomUUID()
+
   await supabase.from('users').update({
-    login_attempts:  0,
-    locked_until:    null,
-    last_login_at:   new Date().toISOString(),
+    login_attempts:      0,
+    locked_until:        null,
+    last_login_at:       new Date().toISOString(),
+    current_session_id:  sessionId,
   }).eq('id', user.id)
 
   const role: string = user.role ?? (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? 'admin' : 'user')
@@ -87,6 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     email:  user.email,
     plan:   user.plan,
     statut,
+    sessionId,
     // ✅ FIX — trialEnds renseigné depuis la base : permet au dashboard client
     // d'afficher la date de fin d'essai / renouvellement sans requête supplémentaire.
     trialEnds: user.trial_ends_at ? new Date(user.trial_ends_at).getTime() : undefined,
