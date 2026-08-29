@@ -28,6 +28,9 @@ const NAV = [
     { href:'/backoffice/admins',     label:'Administrateurs',         icon:'⊕' },
     { href:'/backoffice/parametres', label:'Paramètres',              icon:'⚙' },
   ]},
+  { section: 'ACQUISITION', items: [
+    { href:'/backoffice/scanner-leads', label:'Leads Scanner', icon:'⚡', highlight: true },
+  ]},
 ]
 
 export default function BackofficeLayout({ children, title = '' }: { children: React.ReactNode; title?: string }) {
