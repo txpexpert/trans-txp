@@ -329,7 +329,7 @@ const bodyHTML = `
   </div>
   <div>
     <div class="copilot-input-row">
-      <input type="text" class="copilot-input" placeholder="Ex : Quels documents pour une admission temporaire ?">
+      <input type="text" class="copilot-input" name="copilot-question" autocomplete="off" placeholder="Ex : Quels documents pour une admission temporaire ?">
       <button class="copilot-submit">SOUMETTRE →</button>
     </div>
   </div>
