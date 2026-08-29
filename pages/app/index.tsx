@@ -189,7 +189,7 @@ export default function AppHome() {
         </div>
 
         <iframe
-          src="/tools/mondoscope-veillestrategique.html"
+          src="/tools/mondoscope-mobile.html"
           title="MondoScope — Veille stratégique"
           style={{
             width: '100%',
