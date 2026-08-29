@@ -840,6 +840,7 @@ const bodyHTML = `
     <div class="m-field"><label>PROFIL</label>
       <select id="reg-profil"><option value="transitaire">Transitaire / Agent en douane</option><option value="importateur">Importateur / Exportateur PME</option><option value="directeur_logistique">Directeur logistique</option><option value="consultant">Cabinet conseil douanier</option><option value="autre">Autre</option></select>
     </div>
+    <div class="m-field"><label>TÉLÉPHONE</label><input id="reg-tel" type="tel" placeholder="06 12 34 56 78"/></div>
     <div class="m-field"><label>MOT DE PASSE</label><input id="reg-pwd" type="password" placeholder="••••••••"/></div>
     <button class="m-submit" onclick="submitRegister()">DÉMARRER MON ESSAI GRATUIT →</button>
     <p style="text-align:center;font-size:11px;color:var(--ink3);margin-top:1rem">Déjà inscrit ? <span style="color:var(--gold);cursor:pointer" onclick="closeModal('register');openModal('login')">Se connecter</span></p>
@@ -973,12 +974,13 @@ async function submitRegister(){
   var email=document.getElementById('reg-email').value.trim();
   var pwd=document.getElementById('reg-pwd').value;
   var profil=document.getElementById('reg-profil').value;
+  var tel=document.getElementById('reg-tel').value.trim();
   if(!email||!pwd){alert('Email et mot de passe requis');return;}
   if(pwd.length<8){alert('Mot de passe trop court (8 caract\u00e8res minimum)');return;}
   var btn=document.querySelector('#overlay-register .m-submit');
   if(btn)btn.textContent='CR\u00c9ATION...';
   try{
-    var res=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,password:pwd,nom:nom,profil:profil})});
+    var res=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,password:pwd,nom:nom,telephone:tel,profil:profil})});
     var data=await res.json();
     if(!res.ok){alert(data.error||'Erreur inscription');if(btn)btn.textContent='D\u00c9MARRER MON ESSAI GRATUIT \u2192';return;}
     closeModal('register');
