@@ -76,9 +76,6 @@ html{scroll-behavior:smooth}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .hero h1{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:400;line-height:1.16;letter-spacing:-.02em;color:var(--ink)}
 .hero h1 strong{font-weight:600;color:var(--pain)}
-.hero h1 .kw{display:inline-block;opacity:0;transform:translateY(.35em);animation:kwIn .65s cubic-bezier(.16,1,.3,1) forwards}
-@keyframes kwIn{to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:reduce){.hero h1 .kw{opacity:1;transform:none;animation:none}}
 .cta-primary{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
 .cta-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px -6px rgba(0,0,0,.35)}
 .hero p.lead{margin-top:1.1rem;font-size:15.5px;color:var(--ink2);line-height:1.7;max-width:480px}
@@ -852,27 +849,6 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
   e.preventDefault();
   document.querySelector('.scanner-card').scrollIntoView({behavior:'smooth', block:'center'});
 });
-
-/* Typographie cinétique — un seul moment, au chargement du H1 uniquement */
-(function(){
-  var h1 = document.getElementById('hero-h1');
-  if(!h1) return;
-  var html = h1.innerHTML;
-  var parts = html.split(/(<br>|<strong>|<\/strong>)/gi);
-  var out = '', delay = 0, inStrong = false;
-  parts.forEach(function(part){
-    if(/<br>/i.test(part)){ out += '<br>'; return; }
-    if(/<strong>/i.test(part)){ inStrong = true; out += '<strong>'; return; }
-    if(/<\/strong>/i.test(part)){ inStrong = false; out += '</strong>'; return; }
-    part.split(/(\s+)/).forEach(function(token){
-      if(!token) return;
-      if(/^\s+$/.test(token)){ out += '&nbsp;'; return; }
-      out += '<span class="kw" style="animation-delay:'+delay+'ms">'+token+'</span>';
-      delay += 55;
-    });
-  });
-  h1.innerHTML = out;
-})();
 
 /* Scroll-reveal discret — fade + léger déplacement, respecte prefers-reduced-motion via CSS */
 (function(){
