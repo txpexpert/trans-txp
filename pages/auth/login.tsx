@@ -63,7 +63,7 @@ export default function Login() {
       {/* Header */}
       <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em' }}>
-          Douane<span style={{ color: 'var(--gold)' }}>.</span>ia
+          Transit-eXPert
         </Link>
         <span style={{ fontSize: 11, letterSpacing: '.1em', color: 'var(--ink3)' }}>CONNEXION</span>
       </header>
