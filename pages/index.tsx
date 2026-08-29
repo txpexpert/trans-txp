@@ -26,7 +26,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;opa
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;font-family:'DM Sans',sans-serif;border:none;background:none}
 .demo-flag{position:fixed;bottom:0;left:0;right:0;background:#0A0A0A;color:#C9A84C;font-size:11px;letter-spacing:.1em;padding:6px 1rem;text-align:center;z-index:9999;border-top:1px solid rgba(201,168,76,.3)}
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
 .reveal.in{opacity:1;transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none!important}}
 
