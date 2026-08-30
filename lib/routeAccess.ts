@@ -34,6 +34,9 @@ export const FREE_PATHS = [
 
   '/modules/analyses',
 
+  // Audit Express — mini-audit gratuit (lead magnet), voir pages/api/audit-lead.ts
+  '/modules/audit-express',
+
   '/tools/alertes-fiscales.html',
   '/modules/contentieux',
   '/modules/veille-reglementaire',

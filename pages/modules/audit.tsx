@@ -9,6 +9,7 @@ import {
   AUDIT_DOMAINS, computeDomainScore, computeGlobalScore,
   getScoreLevel, type Answer, type AuditDomain
 } from '../../lib/auditData'
+import { generateAuditReport, type AuditReport } from '../../lib/auditReport'
 
 // ── Radar SVG ─────────────────────────────────────────────────────────────────
 
@@ -277,12 +278,149 @@ function ChecklistPanel({ domain, answers, onAnswer, onClose }: {
   )
 }
 
+// ── Composant rapport complet (vue étendue) ───────────────────────────────────
+
+const NIVEAU_COLORS: Record<string, { color: string; bg: string }> = {
+  critique:  { color: '#991B1B', bg: '#FEE2E2' },
+  ameliorer: { color: '#92400E', bg: '#FEF3C7' },
+  conforme:  { color: '#166534', bg: '#DCFCE7' },
+  modere:    { color: '#92400E', bg: '#FEF3C7' },
+}
+
+function ReportView({ report, onClose }: { report: AuditReport; onClose: () => void }) {
+  const gCol = NIVEAU_COLORS[report.globalLevelKey]
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,.65)',
+      zIndex: 320, display: 'flex', justifyContent: 'center',
+      overflowY: 'auto', padding: '2rem 1rem',
+    }} onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div style={{
+        width: '100%', maxWidth: 760, height: 'fit-content',
+        background: '#FFFFFF', boxShadow: '0 8px 40px rgba(0,0,0,.35)',
+      }}>
+        {/* Header */}
+        <div style={{
+          padding: '1.5rem 2rem', borderBottom: '.5px solid var(--color-border-tertiary)',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+          position: 'sticky', top: 0, background: '#FFFFFF', zIndex: 1,
+        }}>
+          <div>
+            <div style={{ fontSize: 10, letterSpacing: '.1em', color: 'var(--color-text-secondary)', marginBottom: 4 }}>
+              RAPPORT D'AUDIT DOUANIER — USAGE INTERNE ABONNÉS
+            </div>
+            <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, color: 'var(--color-text-primary)' }}>
+              Rapport complet de conformité
+            </div>
+          </div>
+          <button onClick={onClose} style={{
+            background: 'var(--color-background-secondary)', border: 'none',
+            width: 32, height: 32, borderRadius: '50%', cursor: 'pointer', fontSize: 16, flexShrink: 0,
+          }}>✕</button>
+        </div>
+
+        <div style={{ padding: '1.75rem 2rem' }}>
+          {/* Intro */}
+          <p style={{ fontSize: 13, lineHeight: 1.75, color: 'var(--color-text-secondary)', marginBottom: '1.5rem' }}>
+            {report.intro}
+          </p>
+
+          {/* Verdict global */}
+          <div style={{ background: gCol.bg, borderLeft: `4px solid ${gCol.color}`, padding: '1.25rem 1.5rem', marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
+              <span style={{ fontFamily: "'Playfair Display',serif", fontSize: 36, fontWeight: 700, color: gCol.color }}>
+                {report.globalScore}%
+              </span>
+              <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: gCol.color }}>
+                {report.globalVerdictLabel}
+              </span>
+            </div>
+            <p style={{ fontSize: 12.5, lineHeight: 1.7, color: 'var(--color-text-primary)', marginBottom: 10 }}>
+              {report.globalSynthese}
+            </p>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.06em', color: gCol.color, marginBottom: 4 }}>
+              PLAN D'ACTION
+            </div>
+            <p style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--color-text-primary)', whiteSpace: 'pre-line' }}>
+              {report.globalPlan}
+            </p>
+          </div>
+
+          {/* Détail par domaine */}
+          {report.domaines.map(domaine => {
+            const col = NIVEAU_COLORS[domaine.levelKey]
+            return (
+              <div key={domaine.id} style={{ marginBottom: '1.75rem', paddingBottom: '1.75rem', borderBottom: '.5px solid var(--color-border-tertiary)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                  <span style={{ fontSize: 18, color: domaine.color }}>{domaine.icon}</span>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--color-text-primary)', flex: 1 }}>
+                    {domaine.label}
+                  </div>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: domaine.color }}>{domaine.score}%</span>
+                  <span style={{ fontSize: 10, padding: '2px 8px', background: col.bg, color: col.color }}>
+                    {domaine.levelLabel}
+                  </span>
+                </div>
+                <p style={{ fontSize: 12.5, lineHeight: 1.7, color: 'var(--color-text-secondary)', marginBottom: 8 }}>
+                  {domaine.synthese}
+                </p>
+                <p style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-primary)', fontStyle: 'italic', marginBottom: domaine.pointsNonConformes.length ? 12 : 0 }}>
+                  → {domaine.action}
+                </p>
+
+                {domaine.pointsNonConformes.length > 0 && (
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.06em', color: 'var(--color-text-secondary)', marginBottom: 6 }}>
+                      {domaine.pointsNonConformes.length} POINT{domaine.pointsNonConformes.length > 1 ? 'S' : ''} À TRAITER
+                    </div>
+                    {domaine.pointsNonConformes.map(item => {
+                      const rc = item.risque === 'critique' ? '#DC2626' : item.risque === 'important' ? '#D97706' : '#059669'
+                      return (
+                        <div key={item.id} style={{ padding: '.65rem .85rem', marginBottom: 6, background: '#F8FAFC', borderLeft: `3px solid ${rc}` }}>
+                          <div style={{ fontSize: 12, fontWeight: 500, color: 'var(--color-text-primary)', marginBottom: 3 }}>
+                            {item.question}
+                          </div>
+                          <div style={{ fontSize: 11.5, lineHeight: 1.6, color: 'var(--color-text-secondary)' }}>
+                            {item.conseil}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Footer */}
+        <div style={{
+          padding: '1rem 2rem', borderTop: '.5px solid var(--color-border-tertiary)',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#F8FAFC',
+        }}>
+          <span style={{ fontSize: 10.5, color: 'var(--color-text-secondary)' }}>
+            Généré le {new Date(report.genereLe).toLocaleString('fr-FR')}
+          </span>
+          <button onClick={onClose} style={{
+            padding: '.5rem 1.25rem', fontSize: 12, cursor: 'pointer',
+            background: 'var(--color-text-primary)', color: 'white', border: 'none',
+          }}>
+            Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── PAGE PRINCIPALE ───────────────────────────────────────────────────────────
 
 export default function AuditPage() {
   const [answers, setAnswers] = useState<Record<string, Answer>>({})
   const [activePanel, setActivePanel] = useState<AuditDomain | null>(null)
   const [showIntro, setShowIntro] = useState(true)
+  const [showReport, setShowReport] = useState(false)
 
   // Load from localStorage
   useEffect(() => {
@@ -397,6 +535,24 @@ export default function AuditPage() {
             </div>
           )}
 
+          {/* Rapport complet */}
+          {totalAnswered > 0 && (
+            <button
+              onClick={() => setShowReport(true)}
+              style={{
+                width: '100%', marginTop: '.75rem', padding: '.7rem', fontSize: 12, fontWeight: 700,
+                cursor: 'pointer', background: 'var(--color-text-primary)', color: 'white', border: 'none',
+                letterSpacing: '.02em',
+              }}>
+              Voir mon rapport complet →
+            </button>
+          )}
+          {totalAnswered > 0 && totalAnswered < totalQuestions && (
+            <div style={{ fontSize: 10.5, color: 'var(--color-text-secondary)', marginTop: 6, textAlign: 'center' }}>
+              Le rapport reflète vos {totalAnswered}/{totalQuestions} réponses actuelles.
+            </div>
+          )}
+
           {/* Reset */}
           {totalAnswered > 0 && (
             <button
@@ -452,6 +608,14 @@ export default function AuditPage() {
           answers={answers}
           onAnswer={handleAnswer}
           onClose={() => setActivePanel(null)}
+        />
+      )}
+
+      {/* ── RAPPORT COMPLET ── */}
+      {showReport && (
+        <ReportView
+          report={generateAuditReport(answers)}
+          onClose={() => setShowReport(false)}
         />
       )}
 
