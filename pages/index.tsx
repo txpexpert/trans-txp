@@ -952,7 +952,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
         var srcList = data.sources.map(function(s){
           return s.titre + (s.numero ? ' (n° ' + s.numero + ')' : '');
         }).join(' · ');
-        text += '\n\nSources : ' + srcList;
+        text += '\\n\\nSources : ' + srcList;
       }
       answerText.textContent = text;
       if (listenBtn) listenBtn.style.display = '';
