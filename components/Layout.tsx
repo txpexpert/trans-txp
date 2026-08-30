@@ -142,7 +142,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
               <span>{mastDate}</span>
             </div>
             <div className="mast-main">
-              <Link href="/" className="mast-logo">DAS</Link>
+              <Link href="/" className="mast-logo">Transit-IA</Link>
               <div className="mast-tagline">Démo interne — Phase de développement</div>
             </div>
             <div className="mast-nav">
@@ -163,7 +163,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
       {/* -- TOPNAV — pages internes -- */}
       {!isLanding && (
         <nav className="topnav">
-          <Link href="/" className="topnav-logo">DAS</Link>
+          <Link href="/" className="topnav-logo">Transit-IA</Link>
           <div className="topnav-links">
             <Link href="/"                    className={`topnav-link ${router.pathname === '/'                         ? 'active' : ''}`}>ACCUEIL</Link>
             <Link href="/modules/simulateur"  className={`topnav-link ${router.pathname.includes('simulateur')          ? 'active' : ''}`}>SIMULATEUR</Link>
@@ -251,7 +251,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
       >
         <div className="modal">
           <div className="modal-header">
-            <div className="modal-title">Connexion à DAS</div>
+            <div className="modal-title">Connexion à Transit-IA</div>
             <button className="modal-close" onClick={() => setLoginOpen(false)}>×</button>
           </div>
           <div className="modal-body">

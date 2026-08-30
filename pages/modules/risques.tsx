@@ -122,7 +122,7 @@ function SituationCard({ s, isOpen, onToggle }: {
               Réf. FAQ douanière : {s.ref_faq}
             </span>
             <span style={{ fontSize:9, color:'var(--color-border-secondary)', letterSpacing:'.05em' }}>
-              DOCUMENT SOUS DROIT D'AUTEUR · DAS
+              DOCUMENT SOUS DROIT D'AUTEUR · TRANSIT-IA
             </span>
           </div>
         </div>
@@ -281,7 +281,7 @@ export default function RisquesPage() {
         borderTop:'.5px solid var(--color-border-tertiary)',
         display:'flex', justifyContent:'space-between',
         fontSize:11, color:'var(--color-text-secondary)' }}>
-        <span>Contrôle des Risques · FAQ en Douane · Document sous droit d'auteur · DAS</span>
+        <span>Contrôle des Risques · FAQ en Douane · Document sous droit d'auteur · Transit-IA</span>
         <span>Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 

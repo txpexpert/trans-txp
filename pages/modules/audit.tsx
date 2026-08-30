@@ -597,7 +597,7 @@ export default function AuditPage() {
 
       {/* Footer */}
       <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '.5px solid var(--color-border-tertiary)', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--color-text-secondary)' }}>
-        <span>Audit Douanier · DAS — Usage interne abonnés</span>
+        <span>Audit Douanier · Transit-IA — Usage interne abonnés</span>
         <span>Basé sur le Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 
