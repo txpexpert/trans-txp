@@ -233,6 +233,17 @@ html{scroll-behavior:smooth}
 .copilot-input:focus{border-color:var(--gold)}
 .copilot-submit{padding:13px 20px;background:var(--ink);color:var(--gold2);font-size:11px;letter-spacing:.08em;white-space:nowrap}
 .copilot-submit:hover{background:var(--gold);color:var(--ink)}
+.copilot-submit:disabled{opacity:.5;pointer-events:none}
+.copilot-voice-btn{padding:13px 16px;background:var(--white);border:1px solid var(--border2);color:var(--ink2);font-size:15px;transition:all .15s;flex-shrink:0}
+.copilot-voice-btn:hover{border-color:var(--gold);color:var(--gold)}
+.copilot-voice-btn.listening{background:var(--live-bg);border-color:var(--live);color:var(--live);animation:pulse 1.2s infinite}
+.copilot-answer{margin-top:1rem;padding:1rem 1.25rem;background:var(--gold4);border:1px solid var(--border);font-size:13px;line-height:1.6;color:var(--ink2);display:none}
+.copilot-answer.show{display:block}
+.copilot-answer-actions{margin-top:.6rem;display:flex;gap:.5rem}
+.copilot-listen-btn{padding:6px 12px;font-size:10.5px;letter-spacing:.05em;background:var(--ink);color:var(--gold2);border:none;transition:all .15s}
+.copilot-listen-btn:hover{background:var(--gold);color:var(--ink)}
+.copilot-listen-btn:disabled{opacity:.5;pointer-events:none}
+.copilot-status{font-size:10.5px;color:var(--ink3);margin-top:.4rem;min-height:14px}
 
 /* ---------- Footer : tous les liens/infos utiles conservés ---------- */
 footer{border-top:1px solid var(--border);padding:1.5rem 2rem 1rem;margin-top:1rem;background:var(--gold4)}
@@ -329,8 +340,16 @@ const bodyHTML = `
   </div>
   <div>
     <div class="copilot-input-row">
-      <input type="text" class="copilot-input" name="copilot-question" autocomplete="off" data-lpignore="true" data-form-type="other" placeholder="Ex : Quels documents pour une admission temporaire ?">
-      <button class="copilot-submit">SOUMETTRE →</button>
+      <input type="text" class="copilot-input" id="copilot-input" name="copilot-question" autocomplete="off" data-lpignore="true" data-form-type="other" placeholder="Ex : Quels documents pour une admission temporaire ?">
+      <button class="copilot-voice-btn" id="copilot-mic" type="button" aria-label="Poser la question à la voix">🎤</button>
+      <button class="copilot-submit" id="copilot-submit" type="button">SOUMETTRE →</button>
+    </div>
+    <div class="copilot-status" id="copilot-status"></div>
+    <div class="copilot-answer" id="copilot-answer">
+      <div id="copilot-answer-text"></div>
+      <div class="copilot-answer-actions">
+        <button class="copilot-listen-btn" id="copilot-listen" type="button">🔊 ÉCOUTER LA RÉPONSE</button>
+      </div>
     </div>
   </div>
 </section>
@@ -827,7 +846,7 @@ document.getElementById('capture-submit').addEventListener('click', async functi
     });
     if(res.ok){
       var data = await res.json();
-      showMsg('Rapport envoyé à ' + email + ' — score ' + data.score + '/100. Vérifiez votre boîte de réception.', 'ok');
+      showMsg('Diagnostic enregistré — un expert Transit-IA revient vers vous sous 24-48h à ' + email + '.', 'ok');
       btn.style.display = 'none';
     } else {
       var errData = await res.json().catch(function(){ return {}; });
@@ -839,7 +858,7 @@ document.getElementById('capture-submit').addEventListener('click', async functi
     // Page de démo statique : /api/scanner-lead n'existe pas en dehors du projet Next.js.
     // On simule ici le résultat attendu une fois le endpoint branché, pour valider le flux visuellement.
     var score = Math.round(((answers[1]+answers[2]+answers[3]) / 15) * 100);
-    showMsg('[MODE DÉMO — pas de backend ici] Une fois déployé sur trans-txp, ceci enverrait le rapport à ' + email + ' via /api/scanner-lead. Score simulé : ' + score + '/100.', 'demo');
+    showMsg('[MODE DÉMO — pas de backend ici] Une fois déployé sur trans-txp, ce diagnostic serait enregistré via /api/scanner-lead pour suivi par un expert. Score simulé : ' + score + '/100.', 'demo');
     btn.disabled = false;
     btn.textContent = 'RECEVOIR MON RAPPORT COMPLET →';
   }
@@ -849,6 +868,140 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
   e.preventDefault();
   document.querySelector('.scanner-card').scrollIntoView({behavior:'smooth', block:'center'});
 });
+
+/* ---------- Copilote vocal : STT (Web Speech API) + TTS (cloud, via /api/voice/synthesize) ---------- */
+(function(){
+  var input = document.getElementById('copilot-input');
+  var micBtn = document.getElementById('copilot-mic');
+  var submitBtn = document.getElementById('copilot-submit');
+  var status = document.getElementById('copilot-status');
+  var answerBox = document.getElementById('copilot-answer');
+  var answerText = document.getElementById('copilot-answer-text');
+  var listenBtn = document.getElementById('copilot-listen');
+  var currentAudio = null;
+
+  if(!input || !micBtn || !submitBtn) return;
+
+  // --- STT : dictée de la question ---
+  var SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SpeechRecognitionCtor) {
+    var recognition = new SpeechRecognitionCtor();
+    recognition.lang = 'fr-FR';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    var listening = false;
+
+    recognition.onresult = function(event){
+      var transcript = event.results[0][0].transcript;
+      input.value = transcript;
+      status.textContent = 'Question captée : "' + transcript + '"';
+    };
+    recognition.onend = function(){
+      listening = false;
+      micBtn.classList.remove('listening');
+    };
+    recognition.onerror = function(){
+      listening = false;
+      micBtn.classList.remove('listening');
+      status.textContent = 'Micro non disponible — vérifiez les permissions du navigateur.';
+    };
+
+    micBtn.addEventListener('click', function(){
+      if (listening) { recognition.stop(); return; }
+      listening = true;
+      micBtn.classList.add('listening');
+      status.textContent = 'Je vous écoute...';
+      recognition.start();
+    });
+  } else {
+    micBtn.style.display = 'none'; // navigateur non compatible (ex. Safari) — repli sur la saisie clavier
+  }
+
+  // --- Soumission de la question au copilote (pipeline RAG existant : /api/chat-homepage) ---
+  async function submitQuestion(){
+    var question = input.value.trim();
+    if (!question) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'RECHERCHE EN COURS...';
+    status.textContent = '';
+    answerBox.classList.remove('show');
+
+    try {
+      var res = await fetch('/api/chat-homepage', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ message: question })
+      });
+
+      if (res.status === 403) {
+        // Module réservé aux abonnés — on invite à se connecter plutôt que d'afficher une erreur brute
+        status.textContent = 'Cette fonctionnalité est réservée aux abonnés.';
+        answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger le copilote.';
+        answerBox.classList.add('show');
+        if (listenBtn) listenBtn.style.display = 'none';
+        if (typeof openModal === 'function') openModal('login');
+        return;
+      }
+
+      if (!res.ok) throw new Error('Réponse copilote indisponible');
+      var data = await res.json();
+
+      var text = data.answer || 'Réponse indisponible pour le moment.';
+      if (data.sources && data.sources.length > 0) {
+        var srcList = data.sources.map(function(s){
+          return s.titre + (s.numero ? ' (n° ' + s.numero + ')' : '');
+        }).join(' · ');
+        text += '\n\nSources : ' + srcList;
+      }
+      answerText.textContent = text;
+      if (listenBtn) listenBtn.style.display = '';
+      answerBox.classList.add('show');
+    } catch(e) {
+      answerText.textContent = 'Le copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.';
+      answerBox.classList.add('show');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'SOUMETTRE →';
+    }
+  }
+
+  submitBtn.addEventListener('click', submitQuestion);
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') submitQuestion();
+  });
+
+  // --- TTS : lecture de la réponse (cloud, via /api/voice/synthesize) ---
+  if (listenBtn) {
+    listenBtn.addEventListener('click', async function(){
+      var text = answerText.textContent.trim();
+      if (!text) return;
+
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+
+      listenBtn.disabled = true;
+      listenBtn.textContent = '⏳ SYNTHÈSE...';
+
+      try {
+        var res = await fetch('/api/voice/synthesize', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ text: text })
+        });
+        if (!res.ok) throw new Error('TTS indisponible');
+        var blob = await res.blob();
+        currentAudio = new Audio(URL.createObjectURL(blob));
+        currentAudio.play();
+        listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
+      } catch(e) {
+        listenBtn.textContent = 'Audio indisponible';
+        setTimeout(function(){ listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE'; }, 2500);
+      } finally {
+        listenBtn.disabled = false;
+      }
+    });
+  }
+})();
 
 /* Scroll-reveal discret — fade + léger déplacement, respecte prefers-reduced-motion via CSS */
 (function(){
