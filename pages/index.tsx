@@ -127,6 +127,16 @@ html{scroll-behavior:smooth}
 .capture-msg.err{background:rgba(232,93,93,.12);color:#f0a8a8;border:1px solid rgba(232,93,93,.3)}
 .capture-msg.demo{background:rgba(15,185,196,.1);color:#7fe0e6;border:1px solid rgba(15,185,196,.3)}
 .scanner-note{font-size:9px;color:rgba(253,252,248,.35);text-align:center;margin-top:.4rem;letter-spacing:.02em}
+.scanner-report{display:none;margin-top:.75rem}
+.scanner-report.show{display:block}
+.report-verdict{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--gold2);text-align:center;margin-bottom:.6rem;padding-bottom:.6rem;border-bottom:1px solid rgba(201,168,76,.2)}
+.report-synthese{font-size:11px;line-height:1.65;color:rgba(253,252,248,.8);margin-bottom:.85rem}
+.report-axe{margin-bottom:.55rem;padding:.6rem .75rem;background:rgba(255,255,255,.03);border-left:3px solid var(--gold)}
+.report-axe-titre{font-size:8.5px;letter-spacing:.07em;color:var(--gold2);margin-bottom:3px}
+.report-axe-label{font-size:10.5px;font-weight:600;color:rgba(253,252,248,.92);margin-bottom:4px}
+.report-axe-texte{font-size:10.5px;line-height:1.55;color:rgba(253,252,248,.62)}
+.report-plan{margin-top:.75rem;padding-top:.65rem;border-top:1px solid rgba(201,168,76,.15);font-size:10.5px;line-height:1.6;color:rgba(253,252,248,.75)}
+.report-plan-title{font-size:9px;font-weight:700;letter-spacing:.07em;color:var(--gold2);margin-bottom:5px}
 
 /* ---------- Section: Où en êtes-vous (tuiles réorganisées par valeur) ---------- */
 .section{max-width:1280px;margin:0 auto;padding:3rem 2rem}
@@ -419,7 +429,8 @@ const bodyHTML = `
         <button class="capture-submit" id="capture-submit">RECEVOIR MON RAPPORT COMPLET →</button>
         <div class="capture-msg" id="capture-msg"></div>
       </div>
-      <div class="scanner-note" id="scanner-note">Aucune carte bancaire requise — résultat par e-mail</div>
+      <div class="scanner-report" id="scanner-report"></div>
+      <div class="scanner-note" id="scanner-note">Aucune carte bancaire requise — résultat affiché immédiatement</div>
     </div>
   </div>
 </section>
@@ -807,6 +818,34 @@ document.getElementById('scanner-cta').addEventListener('click', function(){
   document.getElementById('cap-email').focus();
 });
 
+function niveauColor(n){
+  if(n === 'critique') return '#E85D5D';
+  if(n === 'important') return '#C9A84C';
+  if(n === 'conforme') return '#4CAF7C';
+  return '#8FB8E8';
+}
+
+function renderScannerReport(report){
+  var el = document.getElementById('scanner-report');
+  if(!el || !report) return;
+
+  var html = '<div class="report-verdict">' + report.verdictLabel + ' — ' + report.score + '/100</div>';
+  html += '<div class="report-synthese">' + report.syntheseGlobale + '</div>';
+
+  report.axes.forEach(function(axe){
+    html += '<div class="report-axe" style="border-left-color:' + niveauColor(axe.niveau) + '">'
+      + '<div class="report-axe-titre">' + axe.titre.toUpperCase() + '</div>'
+      + '<div class="report-axe-label">' + axe.label + '</div>'
+      + '<div class="report-axe-texte">' + axe.texte + '</div>'
+      + '</div>';
+  });
+
+  html += '<div class="report-plan"><div class="report-plan-title">PLAN D’ACTION</div>' + report.planAction + '</div>';
+
+  el.innerHTML = html;
+  el.classList.add('show');
+}
+
 document.getElementById('capture-submit').addEventListener('click', async function(){
   var btn = this;
   var msg = document.getElementById('capture-msg');
@@ -846,8 +885,9 @@ document.getElementById('capture-submit').addEventListener('click', async functi
     });
     if(res.ok){
       var data = await res.json();
-      showMsg('Diagnostic enregistré — un expert Transit-IA revient vers vous sous 24-48h à ' + email + '.', 'ok');
-      btn.style.display = 'none';
+      document.getElementById('capture-form').style.display = 'none';
+      document.getElementById('scanner-note').style.display = 'none';
+      renderScannerReport(data.report);
     } else {
       var errData = await res.json().catch(function(){ return {}; });
       showMsg('Erreur : ' + (errData.error || 'l\u2019envoi a échoué') + '. Réessayez dans un instant.', 'err');

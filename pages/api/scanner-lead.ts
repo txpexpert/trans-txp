@@ -12,6 +12,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { generateScannerReport } from '../../lib/scannerReport'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -78,7 +79,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: "Erreur lors de l'enregistrement du diagnostic" })
   }
 
-  return res.status(200).json({ success: true, score })
+  const report = generateScannerReport(reponseSH, reponseALE, reponseCtrl, score)
+
+  return res.status(200).json({ success: true, score, report })
 }
 
 /* Migration Supabase requise avant mise en service :
