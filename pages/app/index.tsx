@@ -204,7 +204,7 @@ export default function AppHome() {
 
   // ── Écran 3 : liste des 8 modules (état actuel, inchangé) ───────────────
   return (
-    <div style={{ padding: 20, fontFamily: 'sans-serif', minHeight: '100vh', background: '#F5F7FA' }}>
+    <div style={{ padding: 20, fontFamily: 'sans-serif', minHeight: '100vh', background: '#E4EDFB' }}>
 
       {sessionBanner}
 
@@ -231,7 +231,7 @@ export default function AppHome() {
             display: 'block', padding: 16, borderRadius: 10,
             background: '#fff', color: '#1C1C1C', textDecoration: 'none',
             fontWeight: 600, border: '1px solid #153E8222',
-            boxShadow: '0 1px 4px rgba(0,0,0,.04)',
+            boxShadow: '0 2px 8px rgba(21,62,130,.12)',
           }}>
             {m.label}
           </Link>
