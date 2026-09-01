@@ -12,6 +12,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '../../lib/supabase'
 import { embedText } from '../../lib/ingestion'
 import { verifyUserToken, canAccessModule, USER_COOKIE } from '../../lib/userAuth'
+import { buildAssistantSystemPrompt } from '../../lib/assistantPrompt'
 
 type ChatResponse = {
   answer?: string
@@ -66,26 +67,25 @@ export default async function handler(
     }
 
     // 3) Construction du contexte et génération de la réponse
+    // Le type de document (circulaire / note) est injecté dans le libellé de
+    // chaque source : c'est ce terme que le prompt système utilise (règle 5)
+    // pour décider d'afficher ou de masquer la référence. Par prudence, un
+    // type manquant ou inconnu est étiqueté "note" (jamais l'inverse).
     const context = chunks
       .map(
-        (c: { titre: string; numero: string | null; contenu: string }, i: number) =>
-          `[Source ${i + 1}] ${c.titre}${c.numero ? ' (n° ' + c.numero + ')' : ''}\n${c.contenu}`
+        (
+          c: { titre: string; numero: string | null; contenu: string; type_document: string | null },
+          i: number
+        ) => {
+          const typeLabel = c.type_document?.toLowerCase().includes('circulaire')
+            ? 'circulaire'
+            : 'note'
+          return `[Source ${i + 1} - ${typeLabel}] ${c.titre}${c.numero ? ' (n° ' + c.numero + ')' : ''}\n${c.contenu}`
+        }
       )
       .join('\n\n---\n\n')
 
-        const systemPrompt = `Tu es l'assistant documentaire de Transit-IA / TXP, spécialisé en réglementation douanière marocaine (ADII, CDII, CGI, circulaires).
-Réponds UNIQUEMENT à partir du contexte fourni ci-dessous. Si le contexte ne permet pas de répondre avec certitude, dis-le clairement plutôt que d'inventer.
-Cite la source (numéro de circulaire ou titre) quand c'est pertinent. Réponds en français, de façon claire et professionnelle, en 3 à 6 phrases maximum sauf si la question exige plus de détail.
-
-FORMAT DE SORTIE — IMPORTANT :
-N'utilise JAMAIS de syntaxe Markdown (pas de #, pas de **, pas de tableaux avec |, pas de citations avec >).
-Écris en texte brut uniquement. Pour structurer une liste, utilise des tirets simples suivis d'un retour à la ligne, par exemple :
-- Premier élément : description
-- Deuxième élément : description
-Utilise de vrais sauts de ligne entre les paragraphes et les éléments de liste pour aérer le texte.
-
-CONTEXTE DOCUMENTAIRE :
-${context}`
+    const systemPrompt = buildAssistantSystemPrompt(session.plan, context)
 
     const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
