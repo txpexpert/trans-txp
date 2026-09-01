@@ -117,3 +117,54 @@ MÉTHODE
 CONTEXTE DOCUMENTAIRE :
 ${context}`
 }
+
+// ============================================================
+// Application forcée, côté serveur, de la contrainte de longueur.
+//
+// Le prompt ci-dessus donne l'instruction au modèle, mais un LLM ne respecte
+// pas toujours une consigne de longueur avec certitude — en particulier sur
+// des questions riches à plusieurs volets, où il privilégie l'exhaustivité.
+// Cette fonction post-traite la réponse pour GARANTIR le comportement attendu,
+// plutôt que d'en dépendre uniquement côté prompt (défense en profondeur).
+//
+// À appeler systématiquement sur la réponse brute retournée par le modèle,
+// avant de la renvoyer au client.
+// ============================================================
+
+const UPSELL_MESSAGE =
+  'Les réponses complètes sont disponibles uniquement avec les abonnements premium et entreprise.'
+
+const CLOSING_CTA =
+  'Pour des éléments de réponse plus approfondis ou personnalisés, veuillez contacter notre équipe d\'experts et envoyez une requête via la section "Conseils Personnalisés".'
+
+function truncateToWords(text: string, maxWords: number): { truncated: string; wasCut: boolean } {
+  const words = text.trim().split(/\s+/)
+  if (words.length <= maxWords) return { truncated: text.trim(), wasCut: false }
+  return { truncated: words.slice(0, maxWords).join(' ') + '…', wasCut: true }
+}
+
+export function enforceResponseConstraints(rawAnswer: string, plan: Plan): string {
+  var answer = rawAnswer.trim()
+
+  // La clôture obligatoire (règle 9) s'applique à TOUS les paliers. On ne la
+  // rajoute que si le modèle ne l'a pas déjà incluse, pour éviter un doublon.
+  const hasClosing = answer.includes('Conseils Personnalisés')
+
+  if (!hasUnlockedLength(plan)) {
+    // Palier contraint (trial / free / pro) : on retire d'abord toute
+    // clôture ou mention d'upsell que le modèle aurait pu ajouter lui-même,
+    // pour ne pas la compter dans les 100 mots, puis on reconstruit
+    // proprement dans l'ordre attendu : réponse tronquée → upsell → clôture.
+    var core = answer
+      .replace(CLOSING_CTA, '')
+      .replace(UPSELL_MESSAGE, '')
+      .trim()
+
+    const { truncated } = truncateToWords(core, 100)
+    return `${truncated}\n\n${UPSELL_MESSAGE}\n\n${CLOSING_CTA}`
+  }
+
+  // Palier développé (premium / enterprise) : on ne touche pas au contenu,
+  // on s'assure seulement que la clôture obligatoire est bien présente.
+  return hasClosing ? answer : `${answer}\n\n${CLOSING_CTA}`
+}

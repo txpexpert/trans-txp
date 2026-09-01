@@ -237,6 +237,13 @@ html{scroll-behavior:smooth}
 .copilot-listen-btn:hover{background:var(--gold);color:var(--ink)}
 .copilot-listen-btn:disabled{opacity:.5;pointer-events:none}
 .copilot-status{font-size:10.5px;color:var(--ink3);margin-top:.4rem;min-height:14px}
+.copilot-loading{display:none;align-items:center;gap:8px;margin-top:.6rem;font-size:12px;color:var(--ink3)}
+.copilot-loading.show{display:flex}
+.copilot-spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:copilotSpin .7s linear infinite;flex-shrink:0}
+@keyframes copilotSpin{to{transform:rotate(360deg)}}
+.copilot-stop-btn{padding:6px 12px;font-size:10.5px;letter-spacing:.05em;background:var(--white);color:var(--pain);border:1px solid var(--pain-brd);transition:all .15s;display:none}
+.copilot-stop-btn.show{display:inline-block}
+.copilot-stop-btn:hover{background:var(--pain-bg)}
 
 /* ---------- Footer : tous les liens/infos utiles conservés ---------- */
 footer{border-top:1px solid var(--border);padding:1.5rem 2rem 1rem;margin-top:1rem;background:var(--gold4)}
@@ -338,10 +345,12 @@ const bodyHTML = `
       <button class="copilot-submit" id="copilot-submit" type="button">SOUMETTRE →</button>
     </div>
     <div class="copilot-status" id="copilot-status"></div>
+    <div class="copilot-loading" id="copilot-loading"><span class="copilot-spinner"></span>Recherche dans la base documentaire…</div>
     <div class="copilot-answer" id="copilot-answer">
       <div id="copilot-answer-text"></div>
       <div class="copilot-answer-actions">
         <button class="copilot-listen-btn" id="copilot-listen" type="button">🔊 ÉCOUTER LA RÉPONSE</button>
+        <button class="copilot-stop-btn" id="copilot-stop" type="button">⏹ ARRÊTER</button>
       </div>
     </div>
   </div>
@@ -938,12 +947,20 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
   var micBtn = document.getElementById('copilot-mic');
   var submitBtn = document.getElementById('copilot-submit');
   var status = document.getElementById('copilot-status');
+  var loading = document.getElementById('copilot-loading');
   var answerBox = document.getElementById('copilot-answer');
   var answerText = document.getElementById('copilot-answer-text');
   var listenBtn = document.getElementById('copilot-listen');
+  var stopBtn = document.getElementById('copilot-stop');
   var currentAudio = null;
 
   if(!input || !micBtn || !submitBtn) return;
+
+  function stopAudio(){
+    if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
+    if (stopBtn) stopBtn.classList.remove('show');
+    if (listenBtn) listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
+  }
 
   // --- STT : dictée de la question ---
   var SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -985,10 +1002,12 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
     var question = input.value.trim();
     if (!question) return;
 
+    stopAudio();
     submitBtn.disabled = true;
     submitBtn.textContent = 'RECHERCHE EN COURS...';
     status.textContent = '';
     answerBox.classList.remove('show');
+    if (loading) loading.classList.add('show');
 
     try {
       var res = await fetch('/api/chat-homepage', {
@@ -1026,6 +1045,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'SOUMETTRE →';
+      if (loading) loading.classList.remove('show');
     }
   }
 
@@ -1040,8 +1060,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
       var text = answerText.textContent.trim();
       if (!text) return;
 
-      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-
+      stopAudio();
       listenBtn.disabled = true;
       listenBtn.textContent = '⏳ SYNTHÈSE...';
 
@@ -1054,8 +1073,13 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
         if (!res.ok) throw new Error('TTS indisponible');
         var blob = await res.blob();
         currentAudio = new Audio(URL.createObjectURL(blob));
+        currentAudio.addEventListener('ended', function(){
+          if (stopBtn) stopBtn.classList.remove('show');
+          listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
+        });
         currentAudio.play();
         listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
+        if (stopBtn) stopBtn.classList.add('show');
       } catch(e) {
         listenBtn.textContent = 'Audio indisponible';
         setTimeout(function(){ listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE'; }, 2500);
@@ -1063,6 +1087,10 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
         listenBtn.disabled = false;
       }
     });
+  }
+
+  if (stopBtn) {
+    stopBtn.addEventListener('click', stopAudio);
   }
 })();
 

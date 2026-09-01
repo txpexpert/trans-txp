@@ -12,7 +12,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '../../lib/supabase'
 import { embedText } from '../../lib/ingestion'
 import { verifyUserToken, canAccessModule, USER_COOKIE } from '../../lib/userAuth'
-import { buildAssistantSystemPrompt } from '../../lib/assistantPrompt'
+import { buildAssistantSystemPrompt, enforceResponseConstraints } from '../../lib/assistantPrompt'
 
 type ChatResponse = {
   answer?: string
@@ -109,9 +109,10 @@ export default async function handler(
     }
 
     const anthropicData = await anthropicRes.json()
-    const answer =
+    const rawAnswer =
       anthropicData?.content?.find((b: { type: string }) => b.type === 'text')?.text ??
       "Aucune réponse générée."
+    const answer = enforceResponseConstraints(rawAnswer, session.plan)
 
     const sources = chunks.map(
       (c: { titre: string; numero: string | null; type_document: string | null }) => ({
