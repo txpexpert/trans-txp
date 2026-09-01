@@ -237,6 +237,9 @@ html{scroll-behavior:smooth}
 .copilot-listen-btn:hover{background:var(--gold);color:var(--ink)}
 .copilot-listen-btn:disabled{opacity:.5;pointer-events:none}
 .copilot-status{font-size:10.5px;color:var(--ink3);margin-top:.4rem;min-height:14px}
+.copilot-login-hint{font-size:11px;color:var(--ink3);margin-top:.5rem;letter-spacing:.02em}
+.copilot-refresh-btn{padding:6px 12px;font-size:10.5px;letter-spacing:.05em;background:var(--white);color:var(--ink2);border:1px solid var(--border2);transition:all .15s}
+.copilot-refresh-btn:hover{border-color:var(--gold);color:var(--gold)}
 .copilot-loading{display:none;align-items:center;gap:8px;margin-top:.6rem;font-size:12px;color:var(--ink3)}
 .copilot-loading.show{display:flex}
 .copilot-spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:copilotSpin .7s linear infinite;flex-shrink:0}
@@ -344,6 +347,7 @@ const bodyHTML = `
       <button class="copilot-voice-btn" id="copilot-mic" type="button" aria-label="Poser la question à la voix">🎤</button>
       <button class="copilot-submit" id="copilot-submit" type="button">SOUMETTRE →</button>
     </div>
+    <div class="copilot-login-hint" id="copilot-login-hint">🔒 Connectez-vous pour interroger le copilote</div>
     <div class="copilot-status" id="copilot-status"></div>
     <div class="copilot-loading" id="copilot-loading"><span class="copilot-spinner"></span>Recherche dans la base documentaire…</div>
     <div class="copilot-answer" id="copilot-answer">
@@ -351,6 +355,7 @@ const bodyHTML = `
       <div class="copilot-answer-actions">
         <button class="copilot-listen-btn" id="copilot-listen" type="button">🔊 ÉCOUTER LA RÉPONSE</button>
         <button class="copilot-stop-btn" id="copilot-stop" type="button">⏹ ARRÊTER</button>
+        <button class="copilot-refresh-btn" id="copilot-refresh" type="button">↻ NOUVELLE QUESTION</button>
       </div>
     </div>
   </div>
@@ -709,16 +714,19 @@ async function submitRegister(){
 async function checkSession(){
   try{
     var res = await fetch('/api/auth/me');
-    if(!res.ok) return;
+    if(!res.ok) { window.__copilotAuthorized = false; return; }
     var data = await res.json();
-    if(!data || !data.email) return;
+    if(!data || !data.email) { window.__copilotAuthorized = false; return; }
+    window.__copilotAuthorized = true;
+    var hint = document.getElementById('copilot-login-hint');
+    if(hint) hint.style.display = 'none';
     var box = document.getElementById('hdr-actions');
     if(!box) return;
     var name = data.email.split('@')[0];
     box.innerHTML =
   '<a href="/dashboard" class="hdr-user" title="Plan : '+data.plan+' — Accéder à mon compte">'+escHtml(name)+' · '+escHtml(data.plan)+'</a>' +
   '<button class="btn-in" onclick="doLogout()">DÉCONNEXION</button>';
-  }catch(e){}
+  }catch(e){ window.__copilotAuthorized = undefined; }
 }
 
 async function doLogout(){
@@ -952,6 +960,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
   var answerText = document.getElementById('copilot-answer-text');
   var listenBtn = document.getElementById('copilot-listen');
   var stopBtn = document.getElementById('copilot-stop');
+  var refreshBtn = document.getElementById('copilot-refresh');
   var currentAudio = null;
 
   if(!input || !micBtn || !submitBtn) return;
@@ -961,6 +970,18 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
     if (stopBtn) stopBtn.classList.remove('show');
     if (listenBtn) listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
   }
+
+  function resetCopilot(){
+    stopAudio();
+    answerBox.classList.remove('show');
+    answerText.textContent = '';
+    status.textContent = '';
+    if (listenBtn) listenBtn.style.display = '';
+    input.value = '';
+    input.focus();
+  }
+
+  if (refreshBtn) refreshBtn.addEventListener('click', resetCopilot);
 
   // --- STT : dictée de la question ---
   var SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1001,6 +1022,19 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
   async function submitQuestion(){
     var question = input.value.trim();
     if (!question) return;
+
+    // Confort UX : si on sait déjà (via checkSession) que personne n'est
+    // connecté, on évite l'aller-retour réseau inutile. Le vrai verrou de
+    // sécurité reste côté serveur (pages/api/chat-homepage.ts) — ce test
+    // client ne fait qu'accélérer et clarifier l'expérience.
+    if (window.__copilotAuthorized === false) {
+      status.textContent = 'Cette fonctionnalité est réservée aux abonnés.';
+      answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger le copilote.';
+      answerBox.classList.add('show');
+      if (listenBtn) listenBtn.style.display = 'none';
+      if (typeof openModal === 'function') openModal('login');
+      return;
+    }
 
     stopAudio();
     submitBtn.disabled = true;
