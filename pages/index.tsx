@@ -109,17 +109,24 @@ html{scroll-behavior:smooth}
 .scanner-cta{width:100%;padding:9px;background:var(--gold);color:var(--ink);font-size:10px;letter-spacing:.07em;font-weight:600;text-align:center;transition:all .15s;opacity:.4;pointer-events:none}
 .scanner-cta.ready{opacity:1;pointer-events:auto;cursor:pointer}
 .scanner-cta:hover.ready{background:var(--gold2)}
+
+.capture-form{display:none;margin-top:.6rem;padding-top:.6rem;border-top:1px solid rgba(201,168,76,.15)}
+.capture-form.open{display:block}
+.capture-row{display:flex;gap:6px;margin-bottom:5px}
+.capture-field{flex:1;display:flex;flex-direction:column;gap:3px}
+.capture-field label{font-size:8.5px;letter-spacing:.06em;color:rgba(253,252,248,.45)}
+.capture-field input{padding:6px 8px;font-size:11px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.25);color:#FDFCF8;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+.capture-field input::placeholder{color:rgba(253,252,248,.3)}
+.capture-field input:focus{border-color:var(--gold)}
+.capture-submit{width:100%;padding:8px;background:var(--gold);color:var(--ink);font-size:10.5px;letter-spacing:.07em;font-weight:600;margin-top:.25rem;transition:all .15s}
+.capture-submit:hover{background:var(--gold2)}
+.capture-submit:disabled{opacity:.5;pointer-events:none}
+.capture-msg{margin-top:.5rem;font-size:10px;line-height:1.4;padding:8px 10px;display:none}
+.capture-msg.show{display:block}
+.capture-msg.ok{background:rgba(76,175,124,.12);color:#8FDDB4;border:1px solid rgba(76,175,124,.3)}
+.capture-msg.err{background:rgba(232,93,93,.12);color:#f0a8a8;border:1px solid rgba(232,93,93,.3)}
+.capture-msg.demo{background:rgba(15,185,196,.1);color:#7fe0e6;border:1px solid rgba(15,185,196,.3)}
 .scanner-note{font-size:9px;color:rgba(253,252,248,.35);text-align:center;margin-top:.4rem;letter-spacing:.02em}
-.scanner-report{display:none;margin-top:.75rem}
-.scanner-report.show{display:block}
-.report-verdict{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--gold2);text-align:center;margin-bottom:.6rem;padding-bottom:.6rem;border-bottom:1px solid rgba(201,168,76,.2)}
-.report-synthese{font-size:11px;line-height:1.65;color:rgba(253,252,248,.8);margin-bottom:.85rem}
-.report-axe{margin-bottom:.55rem;padding:.6rem .75rem;background:rgba(255,255,255,.03);border-left:3px solid var(--gold)}
-.report-axe-titre{font-size:8.5px;letter-spacing:.07em;color:var(--gold2);margin-bottom:3px}
-.report-axe-label{font-size:10.5px;font-weight:600;color:rgba(253,252,248,.92);margin-bottom:4px}
-.report-axe-texte{font-size:10.5px;line-height:1.55;color:rgba(253,252,248,.62)}
-.report-plan{margin-top:.75rem;padding-top:.65rem;border-top:1px solid rgba(201,168,76,.15);font-size:10.5px;line-height:1.6;color:rgba(253,252,248,.75)}
-.report-plan-title{font-size:9px;font-weight:700;letter-spacing:.07em;color:var(--gold2);margin-bottom:5px}
 
 /* ---------- Section: Où en êtes-vous (tuiles réorganisées par valeur) ---------- */
 .section{max-width:1280px;margin:0 auto;padding:3rem 2rem}
@@ -226,17 +233,15 @@ html{scroll-behavior:smooth}
 .copilot-input:focus{border-color:var(--gold)}
 .copilot-submit{padding:13px 20px;background:var(--ink);color:var(--gold2);font-size:11px;letter-spacing:.08em;white-space:nowrap}
 .copilot-submit:hover{background:var(--gold);color:var(--ink)}
-.copilot-submit:disabled{opacity:.5;pointer-events:none}
-.copilot-voice-btn{padding:13px 16px;background:var(--white);border:1px solid var(--border2);color:var(--ink2);font-size:15px;transition:all .15s;flex-shrink:0}
-.copilot-voice-btn:hover{border-color:var(--gold);color:var(--gold)}
-.copilot-voice-btn.listening{background:var(--live-bg);border-color:var(--live);color:var(--live);animation:pulse 1.2s infinite}
-.copilot-answer{margin-top:1rem;padding:1rem 1.25rem;background:var(--gold4);border:1px solid var(--border);font-size:13px;line-height:1.6;color:var(--ink2);display:none}
-.copilot-answer.show{display:block}
-.copilot-answer-actions{margin-top:.6rem;display:flex;gap:.5rem}
-.copilot-listen-btn{padding:6px 12px;font-size:10.5px;letter-spacing:.05em;background:var(--ink);color:var(--gold2);border:none;transition:all .15s}
-.copilot-listen-btn:hover{background:var(--gold);color:var(--ink)}
-.copilot-listen-btn:disabled{opacity:.5;pointer-events:none}
-.copilot-status{font-size:10.5px;color:var(--ink3);margin-top:.4rem;min-height:14px}
+
+.copilot-response{display:none;margin-top:1rem;padding:1rem 1.25rem;border-left:3px solid var(--gold);background:var(--gold4);font-size:13px;line-height:1.65;color:var(--ink)}
+.copilot-response.show{display:block}
+.copilot-response.loading{color:var(--ink3);font-style:italic;border-left-color:var(--border2);background:transparent}
+.copilot-response.error{border-left-color:var(--pain);background:var(--pain-bg)}
+.copilot-response .cr-text{white-space:pre-line}
+.copilot-response .cr-sources{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border2);display:flex;flex-wrap:wrap;gap:6px}
+.copilot-response .cr-source-chip{font-size:10.5px;color:var(--ink3);border:1px solid var(--border2);padding:3px 9px;background:var(--white)}
+.copilot-response .cr-login-link{color:var(--gold);text-decoration:underline;cursor:pointer;font-weight:600}
 
 /* ---------- Footer : tous les liens/infos utiles conservés ---------- */
 footer{border-top:1px solid var(--border);padding:1.5rem 2rem 1rem;margin-top:1rem;background:var(--gold4)}
@@ -333,17 +338,10 @@ const bodyHTML = `
   </div>
   <div>
     <div class="copilot-input-row">
-      <input type="text" class="copilot-input" id="copilot-input" name="copilot-question" autocomplete="off" data-lpignore="true" data-form-type="other" placeholder="Ex : Quels documents pour une admission temporaire ?">
-      <button class="copilot-voice-btn" id="copilot-mic" type="button" aria-label="Poser la question à la voix">🎤</button>
-      <button class="copilot-submit" id="copilot-submit" type="button">SOUMETTRE →</button>
+      <input type="text" id="copilot-question" class="copilot-input" name="copilot-question" autocomplete="off" data-lpignore="true" data-form-type="other" placeholder="Ex : Quels documents pour une admission temporaire ?">
+      <button type="button" class="copilot-submit" id="copilot-submit-btn">SOUMETTRE →</button>
     </div>
-    <div class="copilot-status" id="copilot-status"></div>
-    <div class="copilot-answer" id="copilot-answer">
-      <div id="copilot-answer-text"></div>
-      <div class="copilot-answer-actions">
-        <button class="copilot-listen-btn" id="copilot-listen" type="button">🔊 ÉCOUTER LA RÉPONSE</button>
-      </div>
-    </div>
+    <div class="copilot-response" id="copilot-response"></div>
   </div>
 </section>
 
@@ -398,9 +396,21 @@ const bodyHTML = `
     </div>
 
     <div class="scanner-foot">
-      <div class="scanner-cta" id="scanner-cta">VOIR VOTRE SCORE DE CRITICITÉ</div>
-      <div class="scanner-report" id="scanner-report"></div>
-      <div class="scanner-note" id="scanner-note">Aucune carte bancaire requise — résultat affiché immédiatement</div>
+      <div class="scanner-cta" id="scanner-cta">VOIR MON SCORE COMPLET ET MON PLAN D'ACTION</div>
+      <div class="capture-form" id="capture-form">
+        <div class="capture-row">
+          <div class="capture-field"><label>PRÉNOM</label><input type="text" id="cap-prenom" placeholder="Mohamed"></div>
+          <div class="capture-field"><label>NOM</label><input type="text" id="cap-nom" placeholder="Alami"></div>
+        </div>
+        <div class="capture-field" style="margin-bottom:8px"><label>E-MAIL PROFESSIONNEL</label><input type="email" id="cap-email" placeholder="m.alami@entreprise.ma"></div>
+        <div class="capture-row">
+          <div class="capture-field"><label>FONCTION</label><input type="text" id="cap-fonction" placeholder="Directeur Supply Chain"></div>
+          <div class="capture-field"><label>ENTREPRISE</label><input type="text" id="cap-entreprise" placeholder="Nom de l'entreprise"></div>
+        </div>
+        <button class="capture-submit" id="capture-submit">RECEVOIR MON RAPPORT COMPLET →</button>
+        <div class="capture-msg" id="capture-msg"></div>
+      </div>
+      <div class="scanner-note" id="scanner-note">Aucune carte bancaire requise — résultat par e-mail</div>
     </div>
   </div>
 </section>
@@ -721,87 +731,87 @@ async function doLogout(){
 
 checkSession();
 
-/* ---------- Scanner de vulnérabilité et interactions visuelles (nouvelle hero) ---------- */
-/* ---------- Contenu éditorial du rapport Scanner (même source que content/scanner-report-content.json) ---------- */
-var SCANNER_CONTENT = {
-  "axes": {
-    "sh": {
-      "titre": "Classification tarifaire (codes SH)",
-      "habitude": {
-        "label": "Réponse : Habitude / transitaire",
-        "niveau": "critique",
-        "texte": "S'en remettre entièrement à l'habitude ou au transitaire, sans registre interne validé, est le motif de redressement le plus fréquent lors d'un contrôle a posteriori : chaque transitaire peut classer différemment un même article, et l'entreprise reste seule responsable du code déclaré. Recommandation : centraliser vos codes SH dans un registre unique validé, avec justificatif technique par article."
-      },
-      "cas_par_cas": {
-        "label": "Réponse : Au cas par cas",
-        "niveau": "important",
-        "texte": "Une vérification ponctuelle à l'apparition d'un nouveau produit est un bon réflexe, mais elle laisse les articles déjà classés sans revalidation périodique — un risque si la nomenclature ou vos produits évoluent. Recommandation : basculer vers un registre centralisé qui trace la date et l'auteur de chaque validation."
-      },
-      "registre_audite": {
-        "label": "Réponse : Registre audité",
-        "niveau": "conforme",
-        "texte": "Un registre centralisé, validé et audité est la pratique la plus sécurisante face à un contrôle : elle démontre une démarche de diligence raisonnable. Recommandation : maintenir cette discipline et la documenter formellement pour toute nouvelle référence produit."
-      }
-    },
-    "ale": {
-      "titre": "Origine préférentielle (ALE)",
-      "sans_tracabilite": {
-        "label": "Réponse : Oui, sans traçabilité",
-        "niveau": "critique",
-        "texte": "Utiliser un accord de libre-échange sans traçabilité formalisée des déclarations fournisseurs expose à la remise en cause rétroactive de l'exonération accordée — avec rappel des droits sur toutes les opérations concernées. Recommandation : constituer sans délai un dossier de preuves d'origine par fournisseur (déclarations, factures, règles de cumul)."
-      },
-      "documente": {
-        "label": "Réponse : Oui, documenté",
-        "niveau": "important",
-        "texte": "La collecte des certificats à l'expédition est une bonne base, mais sans vérification approfondie des règles de cumul, certains dossiers restent fragiles en cas de contrôle serré. Recommandation : faire auditer un échantillon de vos certificats d'origine sur les 7 points de contrôle usuels (validité, cumul, seuils de valeur ajoutée)."
-      },
-      "non_concerne": {
-        "label": "Réponse : Non concerné",
-        "niveau": "neutre",
-        "texte": "Vous n'utilisez pas d'accord de libre-échange à ce jour. Selon votre corridor d'approvisionnement (UE, USA, Golfe, ZLECAf), des exonérations de droits existent peut-être sans que vous les exploitiez. Recommandation : faire évaluer votre éligibilité — c'est souvent une économie immédiate, pas seulement une mise en conformité."
-      }
-    },
-    "ctrl": {
-      "titre": "Antécédents de contrôle (3 dernières années)",
-      "plusieurs_fois": {
-        "label": "Réponse : Plusieurs fois",
-        "niveau": "critique",
-        "texte": "Des blocages ou contrôles répétés indiquent une faille structurelle plutôt qu'un incident isolé — c'est le signal le plus lourd du diagnostic. Recommandation : un audit préventif complet est prioritaire, avant qu'un nouveau contrôle ne porte sur des exercices déjà clos."
-      },
-      "une_fois": {
-        "label": "Réponse : Une fois",
-        "niveau": "important",
-        "texte": "Un incident ponctuel suite à une divergence documentaire reste courant, mais mérite d'être requalifié : était-ce un cas isolé, ou un symptôme d'une faille qui pourrait se reproduire ? Recommandation : revérifier le dossier concerné et croiser avec les deux axes précédents."
-      },
-      "jamais": {
-        "label": "Réponse : Jamais",
-        "niveau": "conforme",
-        "texte": "Aucun antécédent connu est un signal positif, mais ne dispense pas de vigilance : un contrôle a posteriori peut porter sur des exercices jamais encore audités. Recommandation : maintenir une veille documentaire active plutôt que d'attendre un premier contrôle pour s'organiser."
-      }
+/* ---------- Copilote IA — soumission vers /api/chat-homepage ---------- */
+(function(){
+  var input = document.getElementById('copilot-question');
+  var btn = document.getElementById('copilot-submit-btn');
+  var box = document.getElementById('copilot-response');
+  if(!input || !btn || !box) return;
+
+  function escHtmlLocal(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderLoading(){
+    box.className = 'copilot-response show loading';
+    box.innerHTML = 'Recherche dans la base documentaire…';
+  }
+
+  function renderError(message){
+    box.className = 'copilot-response show error';
+    box.innerHTML = '<div class="cr-text">' + escHtmlLocal(message) + '</div>';
+  }
+
+  function renderAnswer(answer, sources){
+    box.className = 'copilot-response show';
+    var html = '<div class="cr-text">' + escHtmlLocal(answer) + '</div>';
+    // Sécurité : on n'affiche jamais les sources de type "note" ici, même si
+    // l'API les retourne — seule la circulaire peut être citée en clair
+    // (voir lib/assistantPrompt.ts, règle 6). Filtrage appliqué côté client
+    // en plus de la consigne donnée au modèle, en profondeur de défense.
+    var circulaires = (sources || []).filter(function(s){
+      return s.type_document && s.type_document.toLowerCase().indexOf('circulaire') !== -1;
+    });
+    if(circulaires.length > 0){
+      html += '<div class="cr-sources">' + circulaires.map(function(s){
+        var label = s.titre + (s.numero ? ' (n° ' + s.numero + ')' : '');
+        return '<span class="cr-source-chip">' + escHtmlLocal(label) + '</span>';
+      }).join('') + '</div>';
     }
-  },
-  "tiers": {
-    "faible": {
-      "verdictLabel": "RISQUE MAÎTRISÉ",
-      "synthese": "Vos fondamentaux opérationnels semblent solides : la manière dont vous validez vos codes SH et documentez vos origines préférentielles limite votre exposition aux redressements les plus fréquents. L'enjeu, à ce niveau, n'est plus la mise en conformité mais l'optimisation — repérer les économies de droits de douane que vous laissez peut-être sur la table, et sécuriser cet acquis face aux évolutions réglementaires de la Loi de Finances en cours.",
-      "plan": "1. Faire évaluer les accords de libre-échange non exploités sur vos corridors actuels.  2. Activer une veille réglementaire continue (circulaires ADII, Lois de Finances).  3. Explorer l'abonnement à la plateforme de veille sémantique Transit-IA pour formaliser ce suivi."
-    },
-    "modere": {
-      "verdictLabel": "RISQUE MODÉRÉ À ÉLEVÉ",
-      "synthese": "Votre diagnostic fait apparaître des points de friction concrets — le plus souvent sur la validation des codes SH ou la traçabilité des justificatifs d'origine. Ce ne sont pas encore des contentieux ouverts, mais ce sont précisément les motifs les plus fréquents de redressement lors d'un contrôle a posteriori, qui porte généralement sur les 4 à 5 dernières années. Un ajustement ciblé de vos process documentaires suffit, dans la majorité des cas, à corriger ces failles avant qu'elles ne deviennent coûteuses.",
-      "plan": "1. Acquérir le Kit correspondant à l'axe le plus faible (Classement SH ou Origine & ALE).  2. Reprendre le Scanner dans 60 jours pour mesurer l'amélioration.  3. Envisager le Pack Compliance Suite si plusieurs axes sont concernés."
-    },
-    "critique": {
-      "verdictLabel": "RISQUE CRITIQUE",
-      "synthese": "Votre configuration actuelle — combinant volume d'opérations, zones d'ombre sur l'origine préférentielle et antécédents de blocage ou de contrôle — vous expose directement à un risque de redressement lourd sur vos exercices passés. À ce niveau d'exposition, un ajustement ponctuel ne suffit plus : un audit préventif structuré de vos dossiers est recommandé avant qu'un contrôle de l'administration ne l'impose.",
-      "plan": "1. Planifier un Audit Flash avec un expert senior sous 15 jours.  2. Geler toute déclaration en cours utilisant le même code SH ou la même base d'origine tant que l'audit n'a pas confirmé leur validité.  3. Constituer un dossier de régularisation préventive avant toute notification de contrôle."
+    box.innerHTML = html;
+  }
+
+  async function submitQuestion(){
+    var question = input.value.trim();
+    if(!question) { input.focus(); return; }
+    btn.disabled = true;
+    var originalLabel = btn.textContent;
+    btn.textContent = '...';
+    renderLoading();
+    try{
+      var res = await fetch('/api/chat-homepage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: question })
+      });
+      var data = await res.json();
+      if(res.status === 403){
+        box.className = 'copilot-response show error';
+        box.innerHTML = '<div class="cr-text">' + escHtmlLocal(data.error || 'Fonctionnalité réservée aux abonnés.') +
+          ' <span class="cr-login-link" onclick="openModal(\'login\')">Se connecter</span> ou ' +
+          '<span class="cr-login-link" onclick="openModal(\'register\')">démarrer un essai gratuit</span>.</div>';
+      } else if(!res.ok){
+        renderError(data.error || 'Une erreur est survenue. Merci de réessayer.');
+      } else {
+        renderAnswer(data.answer || 'Aucune réponse générée.', data.sources);
+      }
+    }catch(e){
+      renderError('Impossible de contacter le service pour le moment. Vérifiez votre connexion et réessayez.');
+    }finally{
+      btn.disabled = false;
+      btn.textContent = originalLabel;
     }
   }
-};
 
+  btn.addEventListener('click', submitQuestion);
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); submitQuestion(); }
+  });
+})();
+
+/* ---------- Scanner de vulnérabilité et interactions visuelles (nouvelle hero) ---------- */
 var answers = {1:null, 2:null, 3:null};
 var answerKeys = {1:null, 2:null, 3:null};
-var lastScore = 0;
 
 document.querySelectorAll('.scan-q').forEach(function(qEl){
   var qNum = qEl.getAttribute('data-q');
@@ -823,7 +833,6 @@ function updateGauge(){
   var sum = answered.reduce(function(a,b){ return a+b; }, 0);
   var maxPossible = answered.length * 5;
   var score = Math.round((sum / maxPossible) * 100);
-  lastScore = score;
 
   var arc = document.getElementById('gauge-arc');
   var offset = 251 - (251 * score / 100);
@@ -853,218 +862,81 @@ function updateGauge(){
   if(answered.length === 3){
     var cta = document.getElementById('scanner-cta');
     cta.classList.add('ready');
+    cta.textContent = 'RECEVOIR MON RAPPORT COMPLET →';
   }
-}
-
-function niveauColor(n){
-  if(n === 'critique') return '#E85D5D';
-  if(n === 'important') return '#C9A84C';
-  if(n === 'conforme') return '#4CAF7C';
-  return '#8FB8E8';
-}
-
-function getScannerTier(score){
-  if(score <= 35) return 'faible';
-  if(score <= 70) return 'modere';
-  return 'critique';
-}
-
-function buildScannerReport(){
-  var tier = getScannerTier(lastScore);
-  var tierContent = SCANNER_CONTENT.tiers[tier];
-
-  var axesData = [
-    { cle: 'sh', reponse: answerKeys[1] },
-    { cle: 'ale', reponse: answerKeys[2] },
-    { cle: 'ctrl', reponse: answerKeys[3] }
-  ];
-
-  var axes = axesData.map(function(a){
-    var axeContent = SCANNER_CONTENT.axes[a.cle];
-    var reponseContent = axeContent[a.reponse];
-    return {
-      titre: axeContent.titre,
-      label: reponseContent.label,
-      niveau: reponseContent.niveau,
-      texte: reponseContent.texte
-    };
-  });
-
-  return {
-    score: lastScore,
-    verdictLabel: tierContent.verdictLabel,
-    syntheseGlobale: tierContent.synthese,
-    planAction: tierContent.plan,
-    axes: axes
-  };
-}
-
-function renderScannerReport(report){
-  var el = document.getElementById('scanner-report');
-  if(!el || !report) return;
-
-  var html = '<div class="report-verdict">' + report.verdictLabel + ' — ' + report.score + '/100</div>';
-  html += '<div class="report-synthese">' + report.syntheseGlobale + '</div>';
-
-  report.axes.forEach(function(axe){
-    html += '<div class="report-axe" style="border-left-color:' + niveauColor(axe.niveau) + '">'
-      + '<div class="report-axe-titre">' + axe.titre.toUpperCase() + '</div>'
-      + '<div class="report-axe-label">' + axe.label + '</div>'
-      + '<div class="report-axe-texte">' + axe.texte + '</div>'
-      + '</div>';
-  });
-
-  html += '<div class="report-plan"><div class="report-plan-title">PLAN D’ACTION</div>' + report.planAction + '</div>';
-
-  el.innerHTML = html;
-  el.classList.add('show');
 }
 
 document.getElementById('scanner-cta').addEventListener('click', function(){
   if(!this.classList.contains('ready')) return;
+  var form = document.getElementById('capture-form');
+  var note = document.getElementById('scanner-note');
+  form.classList.add('open');
+  note.style.display = 'none';
   this.style.display = 'none';
-  document.getElementById('scanner-note').style.display = 'none';
-  renderScannerReport(buildScannerReport());
+  document.getElementById('cap-email').focus();
+});
+
+document.getElementById('capture-submit').addEventListener('click', async function(){
+  var btn = this;
+  var msg = document.getElementById('capture-msg');
+  var prenom = document.getElementById('cap-prenom').value.trim();
+  var nom = document.getElementById('cap-nom').value.trim();
+  var email = document.getElementById('cap-email').value.trim();
+  var fonction = document.getElementById('cap-fonction').value.trim();
+  var entreprise = document.getElementById('cap-entreprise').value.trim();
+
+  function showMsg(text, cls){
+    msg.textContent = text;
+    msg.className = 'capture-msg show ' + cls;
+  }
+
+  if(!email || email.indexOf('@') === -1){
+    showMsg('Merci de renseigner un e-mail professionnel valide.', 'err');
+    return;
+  }
+  if(!answerKeys[1] || !answerKeys[2] || !answerKeys[3]){
+    showMsg('Merci de répondre aux 3 questions avant de recevoir le rapport.', 'err');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'ENVOI EN COURS...';
+
+  var payload = {
+    prenom: prenom, nom: nom, email: email, fonction: fonction, entreprise: entreprise,
+    reponseSH: answerKeys[1], reponseALE: answerKeys[2], reponseCtrl: answerKeys[3]
+  };
+
+  try{
+    var res = await fetch('/api/scanner-lead', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if(res.ok){
+      var data = await res.json();
+      showMsg('Rapport envoyé à ' + email + ' — score ' + data.score + '/100. Vérifiez votre boîte de réception.', 'ok');
+      btn.style.display = 'none';
+    } else {
+      var errData = await res.json().catch(function(){ return {}; });
+      showMsg('Erreur : ' + (errData.error || 'l\u2019envoi a échoué') + '. Réessayez dans un instant.', 'err');
+      btn.disabled = false;
+      btn.textContent = 'RECEVOIR MON RAPPORT COMPLET →';
+    }
+  } catch(e){
+    // Page de démo statique : /api/scanner-lead n'existe pas en dehors du projet Next.js.
+    // On simule ici le résultat attendu une fois le endpoint branché, pour valider le flux visuellement.
+    var score = Math.round(((answers[1]+answers[2]+answers[3]) / 15) * 100);
+    showMsg('[MODE DÉMO — pas de backend ici] Une fois déployé sur trans-txp, ceci enverrait le rapport à ' + email + ' via /api/scanner-lead. Score simulé : ' + score + '/100.', 'demo');
+    btn.disabled = false;
+    btn.textContent = 'RECEVOIR MON RAPPORT COMPLET →';
+  }
 });
 
 document.getElementById('hero-cta-scroll').addEventListener('click', function(e){
   e.preventDefault();
   document.querySelector('.scanner-card').scrollIntoView({behavior:'smooth', block:'center'});
 });
-
-/* ---------- Copilote vocal : STT (Web Speech API) + TTS (cloud, via /api/voice/synthesize) ---------- */
-(function(){
-  var input = document.getElementById('copilot-input');
-  var micBtn = document.getElementById('copilot-mic');
-  var submitBtn = document.getElementById('copilot-submit');
-  var status = document.getElementById('copilot-status');
-  var answerBox = document.getElementById('copilot-answer');
-  var answerText = document.getElementById('copilot-answer-text');
-  var listenBtn = document.getElementById('copilot-listen');
-  var currentAudio = null;
-
-  if(!input || !micBtn || !submitBtn) return;
-
-  // --- STT : dictée de la question ---
-  var SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (SpeechRecognitionCtor) {
-    var recognition = new SpeechRecognitionCtor();
-    recognition.lang = 'fr-FR';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    var listening = false;
-
-    recognition.onresult = function(event){
-      var transcript = event.results[0][0].transcript;
-      input.value = transcript;
-      status.textContent = 'Question captée : "' + transcript + '"';
-    };
-    recognition.onend = function(){
-      listening = false;
-      micBtn.classList.remove('listening');
-    };
-    recognition.onerror = function(){
-      listening = false;
-      micBtn.classList.remove('listening');
-      status.textContent = 'Micro non disponible — vérifiez les permissions du navigateur.';
-    };
-
-    micBtn.addEventListener('click', function(){
-      if (listening) { recognition.stop(); return; }
-      listening = true;
-      micBtn.classList.add('listening');
-      status.textContent = 'Je vous écoute...';
-      recognition.start();
-    });
-  } else {
-    micBtn.style.display = 'none'; // navigateur non compatible (ex. Safari) — repli sur la saisie clavier
-  }
-
-  // --- Soumission de la question au copilote (pipeline RAG existant : /api/chat-homepage) ---
-  async function submitQuestion(){
-    var question = input.value.trim();
-    if (!question) return;
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'RECHERCHE EN COURS...';
-    status.textContent = '';
-    answerBox.classList.remove('show');
-
-    try {
-      var res = await fetch('/api/chat-homepage', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ message: question })
-      });
-
-      if (res.status === 403) {
-        // Module réservé aux abonnés — on invite à se connecter plutôt que d'afficher une erreur brute
-        status.textContent = 'Cette fonctionnalité est réservée aux abonnés.';
-        answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger le copilote.';
-        answerBox.classList.add('show');
-        if (listenBtn) listenBtn.style.display = 'none';
-        if (typeof openModal === 'function') openModal('login');
-        return;
-      }
-
-      if (!res.ok) throw new Error('Réponse copilote indisponible');
-      var data = await res.json();
-
-      var text = data.answer || 'Réponse indisponible pour le moment.';
-      if (data.sources && data.sources.length > 0) {
-        var srcList = data.sources.map(function(s){
-          return s.titre + (s.numero ? ' (n° ' + s.numero + ')' : '');
-        }).join(' · ');
-        text += '\\n\\nSources : ' + srcList;
-      }
-      answerText.textContent = text;
-      if (listenBtn) listenBtn.style.display = '';
-      answerBox.classList.add('show');
-    } catch(e) {
-      answerText.textContent = 'Le copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.';
-      answerBox.classList.add('show');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'SOUMETTRE →';
-    }
-  }
-
-  submitBtn.addEventListener('click', submitQuestion);
-  input.addEventListener('keydown', function(e){
-    if (e.key === 'Enter') submitQuestion();
-  });
-
-  // --- TTS : lecture de la réponse (cloud, via /api/voice/synthesize) ---
-  if (listenBtn) {
-    listenBtn.addEventListener('click', async function(){
-      var text = answerText.textContent.trim();
-      if (!text) return;
-
-      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-
-      listenBtn.disabled = true;
-      listenBtn.textContent = '⏳ SYNTHÈSE...';
-
-      try {
-        var res = await fetch('/api/voice/synthesize', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ text: text })
-        });
-        if (!res.ok) throw new Error('TTS indisponible');
-        var blob = await res.blob();
-        currentAudio = new Audio(URL.createObjectURL(blob));
-        currentAudio.play();
-        listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
-      } catch(e) {
-        listenBtn.textContent = 'Audio indisponible';
-        setTimeout(function(){ listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE'; }, 2500);
-      } finally {
-        listenBtn.disabled = false;
-      }
-    });
-  }
-})();
 
 /* Scroll-reveal discret — fade + léger déplacement, respecte prefers-reduced-motion via CSS */
 (function(){
@@ -1097,3 +969,4 @@ export default function Home() {
     </>
   );
 }
+
