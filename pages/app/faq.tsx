@@ -505,15 +505,15 @@ export default function FaqPage() {
         display: 'flex', alignItems: 'center', gap: '.75rem'
       }}>
         <span style={{ fontSize: 11, color: '#92400E', letterSpacing: '.04em' }}>
-          Contenu protégé · Document sous droit d'auteur · Accès réservé aux abonnés TXP
+          Contenu protégé · Document sous droit d'auteur · Accès réservé aux abonnés DAS
         </span>
       </div>
 
       {/* ── LAYOUT PRINCIPAL ── */}
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
         {/* ── SIDEBAR THÈMES ── */}
-        <div style={{ width: 220, flexShrink: 0 }}>
+        <div style={{ width: '100%' }}>
           <div style={{ fontSize: 10, letterSpacing: '.1em', color: 'var(--inkm)', marginBottom: '.5rem' }}>
             THÈMES
           </div>
@@ -740,8 +740,8 @@ export default function FaqPage() {
         display: 'flex', justifyContent: 'space-between',
         fontSize: 11, color: 'var(--inkm)'
       }}>
-        <span>Espace Expert Opérateurs · Document sous droit d'auteur · Usage réservé aux abonnés TXP</span>
-        <span>-</span>
+        <span>Espace Expert Opérateurs · Document sous droit d'auteur · Usage réservé aux abonnés DAS</span>
+        <span>Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 
     </AppModuleLayout>
