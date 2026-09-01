@@ -15,7 +15,7 @@ export const PLANS = {
   trial:      { label: 'Essai gratuit 14j', prix: 0,    duree: '14 jours' },
   free:       { label: 'Gratuit',           prix: 0,    duree: 'Illimité' },
   pro:        { label: 'Pro',               prix: 799,  duree: '/mois'    },
-  cabinet:    { label: 'Cabinet',           prix: 1990, duree: '/mois'    },
+  premium:    { label: 'Premium',           prix: 1990, duree: '/mois'    },
   enterprise: { label: 'Enterprise',        prix: 4990, duree: '/mois'    },
 } as const
 
@@ -56,7 +56,7 @@ const MODULE_ACCESS: Record<Plan, string[]> = {
     'chat-homepage', // ✅ module chat — réservé aux comptes abonnés (trial ou payant)
   ],
 
-  cabinet: [
+  premium: [
     'faq',
     'simulateur',
     'glossaire-douanier',
@@ -131,7 +131,7 @@ export function canAccessModule(
 // ── Helper : plan minimum requis pour un module ───────────────────────────────
 
 export function getMinPlanForModule(moduleCode: string): Plan | null {
-  const order: Plan[] = ['free', 'pro', 'cabinet', 'enterprise']
+  const order: Plan[] = ['free', 'pro', 'premium', 'enterprise']
   for (const plan of order) {
     const perms = MODULE_ACCESS[plan]
     if (!perms) continue

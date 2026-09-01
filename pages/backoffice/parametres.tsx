@@ -19,7 +19,7 @@ export default function BackofficeParametres() {
   // Quotas
   const [quotaConsultation, setQuotaConsultation] = useState('5')
   const [quotaPro, setQuotaPro] = useState('30')
-  const [quotaCabinet, setQuotaCabinet] = useState('100')
+  const [quotaPremium, setQuotaPremium] = useState('100')
 
   // Fonctionnalités
   const [ragActif, setRagActif] = useState(true)
@@ -121,8 +121,8 @@ export default function BackofficeParametres() {
         <Field label="Plan Professionnel">
           <input type="number" value={quotaPro} onChange={e => setQuotaPro(e.target.value)} style={inputStyle} min="1" max="500" />
         </Field>
-        <Field label="Plan Cabinet">
-          <input type="number" value={quotaCabinet} onChange={e => setQuotaCabinet(e.target.value)} style={inputStyle} min="1" max="1000" />
+        <Field label="Plan Premium">
+          <input type="number" value={quotaPremium} onChange={e => setQuotaPremium(e.target.value)} style={inputStyle} min="1" max="1000" />
         </Field>
       </Section>
 

@@ -24,13 +24,13 @@ export default function BackofficeDashboard() {
     { label:'Codes SH en base',      value: tarifsCount ? tarifsCount.toLocaleString('fr') : '17 881', sub:'Tarif ADII 2025',       color:'#2563EB', href:'/backoffice/tarifs' },
     { label:'Utilisateurs actifs',   value:'248',   sub:'+12 ce mois',        color:'#059669', href:'/backoffice/utilisateurs' },
     { label:'MRR',                   value:'302 K', sub:'DH / mois',           color:'#D97706', href:'/backoffice/abonnements' },
-    { label:'Abonnements actifs',    value:'159',   sub:'dont 22 Cabinet',     color:'#7C3AED', href:'/backoffice/abonnements' },
+    { label:'Abonnements actifs',    value:'159',   sub:'dont 22 Premium',     color:'#7C3AED', href:'/backoffice/abonnements' },
     { label:'Circulaires indexées',  value:'1 847', sub:'Sync ADII 20/03',     color:'#0891B2', href:'/backoffice/circulaires' },
     { label:'Alertes actives',       value:'3',     sub:'1 critique',           color:'#DC2626', href:'/backoffice/alertes' },
   ]
 
   const recentActions = [
-    { user:'fz.idrissi@cabinet-fzi.ma', action:'Upgrade Cabinet → Cabinet (renouvellement)',     date:'Il y a 2h' },
+    { user:'fz.idrissi@cabinet-fzi.ma', action:'Upgrade Premium → Premium (renouvellement)',     date:'Il y a 2h' },
     { user:'k.benali@transitaire.ma',   action:'Recherche code SH 8703210010',                  date:'Il y a 3h' },
     { user:'m.tazi@importexport.ma',    action:'Nouvel abonnement Consultation',                 date:'Hier 14:22' },
     { user:'SYSTÈME',                   action:'Synchronisation ADII — 12 nouvelles circulaires',date:'Hier 06:00' },

@@ -27,18 +27,18 @@ interface Equipe {
 }
 
 const EQUIPES: Equipe[] = [
-  { id:1, nom:'Cabinet FZI Douane',      plan:'Cabinet',       membres:6, limite:10, admin:'fz.idrissi@cabinet-fzi.ma',  creee:'02/02/2025' },
-  { id:2, nom:'SOTRALY Casablanca',      plan:'Cabinet',       membres:4, limite:10, admin:'contact@sotraly.ma',          creee:'01/03/2026' },
-  { id:3, nom:'Industrielle du Détroit', plan:'Cabinet',       membres:8, limite:10, admin:'adm@ind-detroit.ma',          creee:'10/10/2024' },
+  { id:1, nom:'Cabinet FZI Douane',      plan:'Premium',       membres:6, limite:10, admin:'fz.idrissi@cabinet-fzi.ma',  creee:'02/02/2025' },
+  { id:2, nom:'SOTRALY Casablanca',      plan:'Premium',       membres:4, limite:10, admin:'contact@sotraly.ma',          creee:'01/03/2026' },
+  { id:3, nom:'Industrielle du Détroit', plan:'Premium',       membres:8, limite:10, admin:'adm@ind-detroit.ma',          creee:'10/10/2024' },
   { id:4, nom:'MEDLOGIX Transit',        plan:'Professionnel', membres:2, limite:3,  admin:'ops@medlogix.ma',             creee:'14/01/2026' },
 ]
 
 const MEMBRES: Membre[] = [
-  { id:1, nom:'Fatima Zahra Idrissi',  email:'fz.idrissi@cabinet-fzi.ma',  role:'Administrateur', entreprise:'Cabinet FZI Douane', plan:'Cabinet', statut:'actif',    inscrit:'02/02/2025', derniere_connexion:'Aujourd\'hui' },
-  { id:2, nom:'Ahmed Idrissi',         email:'a.idrissi@cabinet-fzi.ma',   role:'Membre',         entreprise:'Cabinet FZI Douane', plan:'Cabinet', statut:'actif',    inscrit:'05/02/2025', derniere_connexion:'Hier' },
-  { id:3, nom:'Layla Ouali',           email:'l.ouali@cabinet-fzi.ma',     role:'Membre',         entreprise:'Cabinet FZI Douane', plan:'Cabinet', statut:'actif',    inscrit:'10/03/2025', derniere_connexion:'Il y a 3 jours' },
-  { id:4, nom:'Hassan Belmkaddem',     email:'h.belmkaddem@sotraly.ma',    role:'Membre',         entreprise:'SOTRALY Casablanca', plan:'Cabinet', statut:'invite',   inscrit:'02/03/2026', derniere_connexion:'Jamais' },
-  { id:5, nom:'Karim Nassiri',         email:'k.nassiri@ind-detroit.ma',   role:'Membre',         entreprise:'Ind. du Détroit',    plan:'Cabinet', statut:'suspendu', inscrit:'15/11/2024', derniere_connexion:'Il y a 60j' },
+  { id:1, nom:'Fatima Zahra Idrissi',  email:'fz.idrissi@cabinet-fzi.ma',  role:'Administrateur', entreprise:'Cabinet FZI Douane', plan:'Premium', statut:'actif',    inscrit:'02/02/2025', derniere_connexion:'Aujourd\'hui' },
+  { id:2, nom:'Ahmed Idrissi',         email:'a.idrissi@cabinet-fzi.ma',   role:'Membre',         entreprise:'Cabinet FZI Douane', plan:'Premium', statut:'actif',    inscrit:'05/02/2025', derniere_connexion:'Hier' },
+  { id:3, nom:'Layla Ouali',           email:'l.ouali@cabinet-fzi.ma',     role:'Membre',         entreprise:'Cabinet FZI Douane', plan:'Premium', statut:'actif',    inscrit:'10/03/2025', derniere_connexion:'Il y a 3 jours' },
+  { id:4, nom:'Hassan Belmkaddem',     email:'h.belmkaddem@sotraly.ma',    role:'Membre',         entreprise:'SOTRALY Casablanca', plan:'Premium', statut:'invite',   inscrit:'02/03/2026', derniere_connexion:'Jamais' },
+  { id:5, nom:'Karim Nassiri',         email:'k.nassiri@ind-detroit.ma',   role:'Membre',         entreprise:'Ind. du Détroit',    plan:'Premium', statut:'suspendu', inscrit:'15/11/2024', derniere_connexion:'Il y a 60j' },
 ]
 
 const STATUT_C: Record<string,{ bg:string; color:string; label:string }> = {

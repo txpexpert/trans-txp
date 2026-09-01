@@ -14,7 +14,7 @@ import {
   ReactNode,
 } from 'react'
 
-type Plan   = 'trial' | 'pro' | 'cabinet' | 'enterprise'
+type Plan   = 'trial' | 'pro' | 'premium' | 'enterprise'
 type Statut = 'trial' | 'active' | 'expired' | 'suspended'
 
 interface SessionUser {

@@ -9,14 +9,14 @@
 // faire perdre le paramètre de redirection après connexion.
 //
 // Décision produit (2026-08-28) : l'accès mobile suit les plans existants
-// du site desktop (Pro/Cabinet/Enterprise). Le plan Free n'a accès à aucun
+// du site desktop (Pro/Premium/Enterprise). Le plan Free n'a accès à aucun
 // des modules de /app — il reste limité à Mondoscope ailleurs sur le site.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { GetServerSidePropsContext } from 'next'
 import type { NextApiRequest } from 'next'
 
-export type AppPlan   = 'trial' | 'free' | 'pro' | 'cabinet' | 'enterprise'
+export type AppPlan   = 'trial' | 'free' | 'pro' | 'premium' | 'enterprise'
 export type AppStatut = 'trial' | 'active' | 'suspended' | 'expired' | 'pending'
 
 export interface AppSession {
@@ -38,7 +38,7 @@ const APP_MODULE_ACCESS: Record<AppPlan, string[]> = {
     'glossaire-douanier',
     'calc-conteneurs',
   ],
-  cabinet: [
+  premium: [
     'faq',
     'glossaire-douanier',
     'calc-conteneurs',

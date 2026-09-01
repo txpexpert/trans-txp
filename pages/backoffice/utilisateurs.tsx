@@ -5,13 +5,13 @@ import BackofficeLayout from '../../components/BackofficeLayout'
 
 const USERS = [
   { id:1, nom:'Karim Benali', email:'k.benali@transitaire.ma', societe:'ATLAS TRANSIT SARL', plan:'Professionnel', statut:'Actif', inscrit:'15/01/2025', tel:'+212 6 12 34 56 78', ville:'Casablanca', requetes:23, joursRestants:24 },
-  { id:2, nom:'Fatima Zahra Idrissi', email:'fz.idrissi@cabinet-fzi.ma', societe:'Cabinet FZI Douane', plan:'Cabinet', statut:'Actif', inscrit:'02/02/2025', tel:'+212 6 98 76 54 32', ville:'Casablanca', requetes:0, joursRestants:41 },
+  { id:2, nom:'Fatima Zahra Idrissi', email:'fz.idrissi@cabinet-fzi.ma', societe:'Cabinet FZI Douane', plan:'Premium', statut:'Actif', inscrit:'02/02/2025', tel:'+212 6 98 76 54 32', ville:'Casablanca', requetes:0, joursRestants:41 },
   { id:3, nom:'Mohammed Tazi', email:'m.tazi@importexport.ma', societe:'TAZI IMPORT EXPORT', plan:'Consultation', statut:'Actif', inscrit:'10/02/2025', tel:'+212 5 22 12 34 56', ville:'Rabat', requetes:44, joursRestants:19 },
   { id:4, nom:'Sara Chaoui', email:'s.chaoui@logima.ma', societe:'LOGIMA TRANSPORT', plan:'Professionnel', statut:'Essai', inscrit:'19/03/2025', tel:'+212 6 55 44 33 22', ville:'Tanger', requetes:5, joursRestants:14 },
   { id:5, nom:'Youssef Alami', email:'y.alami@freelance.ma', societe:'Indépendant', plan:'Consultation', statut:'Suspendu', inscrit:'05/12/2024', tel:'+212 6 11 22 33 44', ville:'Marrakech', requetes:0, joursRestants:0 },
 ]
 
-const PLAN_C: Record<string,string> = { 'Cabinet':'br','Professionnel':'bb','Consultation':'ba' }
+const PLAN_C: Record<string,string> = { 'Premium':'br','Professionnel':'bb','Consultation':'ba' }
 const STAT_C: Record<string,string> = { 'Actif':'bg','Essai':'ba','Suspendu':'br' }
 
 export const getServerSideProps: GetServerSideProps = requireAdminSSR

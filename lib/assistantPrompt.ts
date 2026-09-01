@@ -5,15 +5,16 @@
 // le palier d'abonnement de l'utilisateur.
 //
 // - Paliers "contraints" (trial, free, pro) : réponse 50-100 mots,
-//   percutante, sans détail exhaustif.
-// - Paliers "développés" (cabinet, enterprise, et tout futur palier
-//   ajouté à UNLOCKED_ABOVE) : pas de limite de mots, réponse
+//   percutante, sans détail exhaustif, suivie d'un message invitant à
+//   passer au palier supérieur pour une réponse complète.
+// - Paliers "développés" (premium, enterprise, et tout futur palier
+//   ajouté à UNLOCKED_FROM) : pas de limite de mots, réponse
 //   complète avec nuances/exceptions si le contexte documentaire
 //   le justifie.
 //
 // Pour ajouter un futur palier "max" : il suffit de l'ajouter à
 // PLANS dans lib/moduleAccess.ts (il prendra sa place dans l'ordre
-// de hiérarchie), puis d'ajuster UNLOCKED_ABOVE ci-dessous si besoin
+// de hiérarchie), puis d'ajuster UNLOCKED_FROM ci-dessous si besoin
 // — aucune autre modification n'est nécessaire.
 // ============================================================
 
@@ -22,12 +23,12 @@ import type { Plan } from './moduleAccess'
 // Ordre de hiérarchie des paliers, du plus bas au plus haut.
 // Reprend l'ordre déjà utilisé par getMinPlanForModule() dans moduleAccess.ts,
 // avec 'trial' ajouté en position la plus basse (accès découverte).
-const PLAN_HIERARCHY: Plan[] = ['trial', 'free', 'pro', 'cabinet', 'enterprise']
+const PLAN_HIERARCHY: Plan[] = ['trial', 'free', 'pro', 'premium', 'enterprise']
 
 // Palier à partir duquel la contrainte de longueur est levée.
-// ⚠️ À confirmer : réglé sur 'cabinet' (donc cabinet + enterprise) —
-// changez en 'enterprise' si seul ce palier doit être illimité.
-const UNLOCKED_FROM: Plan = 'cabinet'
+// Réglé sur 'premium' (donc premium + enterprise) — changez en 'enterprise'
+// si seul ce palier doit être illimité.
+const UNLOCKED_FROM: Plan = 'premium'
 
 function planRank(plan: Plan): number {
   const idx = PLAN_HIERARCHY.indexOf(plan)
@@ -43,7 +44,8 @@ function hasUnlockedLength(plan: Plan): boolean {
 const RULE_4_CONSTRAINED = `4. FORMAT DE RÉPONSE — COURT ET CIBLÉ :
    - Réponse strictement comprise entre 50 et 100 mots.
    - Style direct, percutant, sans détour ni développement superflu.
-   - Une seule idée centrale par réponse ; pas de listes à puces, pas de sous-sections.`
+   - Une seule idée centrale par réponse ; pas de listes à puces, pas de sous-sections.
+   - Immédiatement après la réponse (et avant la phrase de clôture de la règle 9), ajoute sur sa propre ligne, mot pour mot, sans reformulation : « Les réponses complètes sont disponibles uniquement avec les abonnements premium et entreprise. »`
 
 const RULE_4_UNLOCKED = `4. FORMAT DE RÉPONSE — DÉVELOPPÉ :
    - Aucune limite stricte de longueur : développe la réponse aussi complètement que le contexte documentaire le permet.

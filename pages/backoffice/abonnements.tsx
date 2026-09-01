@@ -18,17 +18,17 @@ interface Abonnement {
 }
 
 const ABONNEMENTS: Abonnement[] = [
-  { id:1, client:'Cabinet FZI Douane',      email:'fz.idrissi@cabinet-fzi.ma',  plan:'Cabinet',       montant:3200, devise:'DH/mois', statut:'actif',    debut:'02/02/2025', renouvellement:'02/05/2026', factures:14 },
+  { id:1, client:'Cabinet FZI Douane',      email:'fz.idrissi@cabinet-fzi.ma',  plan:'Premium',       montant:3200, devise:'DH/mois', statut:'actif',    debut:'02/02/2025', renouvellement:'02/05/2026', factures:14 },
   { id:2, client:'ATLAS TRANSIT SARL',      email:'k.benali@transitaire.ma',    plan:'Professionnel', montant:950,  devise:'DH/mois', statut:'actif',    debut:'15/01/2025', renouvellement:'15/04/2026', factures:15 },
   { id:3, client:'TAZI IMPORT EXPORT',      email:'m.tazi@importexport.ma',     plan:'Consultation',  montant:350,  devise:'DH/mois', statut:'actif',    debut:'10/02/2025', renouvellement:'10/05/2026', factures:13 },
   { id:4, client:'LOGIMA TRANSPORT',        email:'s.chaoui@logima.ma',         plan:'Professionnel', montant:950,  devise:'DH/mois', statut:'essai',    debut:'19/03/2026', renouvellement:'19/04/2026', factures:0  },
   { id:5, client:'Youssef Alami',           email:'y.alami@freelance.ma',       plan:'Consultation',  montant:350,  devise:'DH/mois', statut:'suspendu', debut:'05/12/2024', renouvellement:'–',          factures:4  },
-  { id:6, client:'SOTRALY Casablanca',      email:'contact@sotraly.ma',         plan:'Cabinet',       montant:3200, devise:'DH/mois', statut:'actif',    debut:'01/03/2026', renouvellement:'01/06/2026', factures:2  },
+  { id:6, client:'SOTRALY Casablanca',      email:'contact@sotraly.ma',         plan:'Premium',       montant:3200, devise:'DH/mois', statut:'actif',    debut:'01/03/2026', renouvellement:'01/06/2026', factures:2  },
   { id:7, client:'MEDLOGIX Transit',        email:'ops@medlogix.ma',            plan:'Professionnel', montant:950,  devise:'DH/mois', statut:'actif',    debut:'14/01/2026', renouvellement:'14/04/2026', factures:3  },
-  { id:8, client:'Industrielle du Détroit', email:'adm@ind-detroit.ma',         plan:'Cabinet',       montant:3200, devise:'DH/mois', statut:'expire',   debut:'10/10/2024', renouvellement:'10/10/2025', factures:12 },
+  { id:8, client:'Industrielle du Détroit', email:'adm@ind-detroit.ma',         plan:'Premium',       montant:3200, devise:'DH/mois', statut:'expire',   debut:'10/10/2024', renouvellement:'10/10/2025', factures:12 },
 ]
 
-const PLAN_PRICES: Record<string, number> = { Cabinet:3200, Professionnel:950, Consultation:350 }
+const PLAN_PRICES: Record<string, number> = { Premium:3200, Professionnel:950, Consultation:350 }
 
 const STATUT_C: Record<string,{ bg:string; color:string; label:string }> = {
   actif:    { bg:'#E6F7EE', color:'#1A7A40', label:'Actif' },
@@ -54,7 +54,7 @@ export default function BackofficeAbonnements() {
   const mrr = ABONNEMENTS.filter(a => a.statut === 'actif').reduce((s, a) => s + a.montant, 0)
   const actifs = ABONNEMENTS.filter(a => a.statut === 'actif').length
   const essais = ABONNEMENTS.filter(a => a.statut === 'essai').length
-  const cabinets = ABONNEMENTS.filter(a => a.plan === 'Cabinet' && a.statut === 'actif').length
+  const cabinets = ABONNEMENTS.filter(a => a.plan === 'Premium' && a.statut === 'actif').length
 
   return (
     <BackofficeLayout title="Abonnements & MRR">
@@ -76,7 +76,7 @@ export default function BackofficeAbonnements() {
           { label:'MRR Total', value:`${mrr.toLocaleString('fr')} DH`, color:'#7C3AED' },
           { label:'Abonnements actifs', value:actifs, color:'#059669' },
           { label:'Périodes d\'essai', value:essais, color:'#2563EB' },
-          { label:'Comptes Cabinet', value:cabinets, color:'#D97706' },
+          { label:'Comptes Premium', value:cabinets, color:'#D97706' },
         ].map(s => (
           <div key={s.label} style={{ background:'var(--white)', border:'.5px solid var(--rule)', borderTop:`3px solid ${s.color}`, padding:'1rem 1.25rem' }}>
             <div style={{ fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', marginBottom:4 }}>{s.label}</div>

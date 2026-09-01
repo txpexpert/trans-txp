@@ -20,7 +20,7 @@ const LOGS: LogEntry[] = [
   { id:2,  date:'09/04/2026', heure:'13:58', user:'k.benali@transitaire.ma',    action:'Génération DUM — lots 240409-KBT',           module:'Générateur',   statut:'success', ip:'196.22.11.8'  },
   { id:3,  date:'09/04/2026', heure:'13:15', user:'SYSTÈME',                    action:'Sync ADII — 3 nouvelles circulaires',        module:'Ingestion RAG',statut:'info',    ip:'–'            },
   { id:4,  date:'09/04/2026', heure:'12:40', user:'m.tazi@importexport.ma',     action:'Simulation fiscale — CH07020090',            module:'Simulateur',   statut:'success', ip:'41.249.87.33' },
-  { id:5,  date:'09/04/2026', heure:'11:55', user:'s.chaoui@logima.ma',         action:'Tentative accès module Cabinet (quota)',     module:'Auth',         statut:'warning', ip:'105.67.23.4'  },
+  { id:5,  date:'09/04/2026', heure:'11:55', user:'s.chaoui@logima.ma',         action:'Tentative accès module Premium (quota)',     module:'Auth',         statut:'warning', ip:'105.67.23.4'  },
   { id:6,  date:'09/04/2026', heure:'11:20', user:'SYSTÈME',                    action:'Échec import tarifs CSV — format invalide',  module:'Ingestion',    statut:'error',   ip:'–'            },
   { id:7,  date:'09/04/2026', heure:'10:44', user:'y.alami@freelance.ma',       action:'Login refusé — compte suspendu',             module:'Auth',         statut:'error',   ip:'160.154.9.2'  },
   { id:8,  date:'09/04/2026', heure:'10:03', user:'admin@Transit-IA',            action:'Ajout circulaire ADII n° 5801/2026',         module:'Backoffice',   statut:'success', ip:'127.0.0.1'    },
