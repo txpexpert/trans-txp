@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const modules = [
+  { label: 'Copilote IA',                href: '/app/copilote' },
   { label: 'Classement tarifaire',       href: '/app/classement' },
   { label: 'Décisions de classement',    href: '/app/decisions-classement' },
   { label: 'FAQ — Espace Expert',        href: '/app/faq' },
