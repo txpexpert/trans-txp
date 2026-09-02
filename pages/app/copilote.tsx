@@ -221,16 +221,14 @@ export default function AppCopilote() {
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-            {!isPlaying ? (
-              <button className="btn btn-outline" onClick={listenToAnswer} disabled={synthesizing}>
-                {synthesizing ? '⏳ Synthèse...' : '🔊 Écouter la réponse'}
-              </button>
-            ) : (
-              <button className="btn btn-outline" onClick={stopAudio}>
-                ⏹ Arrêter
-              </button>
-            )}
+          <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+            <button className="btn btn-outline" onClick={listenToAnswer} disabled={synthesizing || isPlaying} style={{ opacity: synthesizing || isPlaying ? 0.5 : 1 }}>
+              🔊 Écouter la réponse
+            </button>
+            {synthesizing && <span className="app-spinner" aria-label="Synthèse en cours" />}
+            <button className="btn btn-outline" onClick={stopAudio} disabled={!isPlaying} style={{ opacity: !isPlaying ? 0.5 : 1 }}>
+              ⏹ Arrêter
+            </button>
             <button className="btn btn-outline" onClick={resetCopilot}>
               ↻ Nouvelle question
             </button>

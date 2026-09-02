@@ -13,7 +13,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const modules = [
-  { label: 'Copilote IA',                href: '/app/copilote' },
+  { label: 'Copilote IA',                href: '/app/copilote', icon: '🎙️', highlight: true },
   { label: 'Classement tarifaire',       href: '/app/classement' },
   { label: 'Décisions de classement',    href: '/app/decisions-classement' },
   { label: 'FAQ — Espace Expert',        href: '/app/faq' },
@@ -229,11 +229,16 @@ export default function AppHome() {
       <div style={{ display: 'grid', gap: 12 }}>
         {modules.map(m => (
           <Link key={m.href} href={m.href} style={{
-            display: 'block', padding: 16, borderRadius: 10,
-            background: '#fff', color: '#1C1C1C', textDecoration: 'none',
-            fontWeight: 600, border: '1px solid #153E8222',
-            boxShadow: '0 2px 8px rgba(21,62,130,.12)',
+            display: 'flex', alignItems: 'center', gap: 10,
+            padding: 16, borderRadius: 10,
+            background: m.highlight ? '#F5EDE0' : '#fff',
+            color: m.highlight ? '#6B4A1E' : '#1C1C1C',
+            textDecoration: 'none',
+            fontWeight: 600,
+            border: m.highlight ? '1px solid #B8863A66' : '1px solid #153E8222',
+            boxShadow: m.highlight ? '0 2px 8px rgba(139,94,24,.18)' : '0 2px 8px rgba(21,62,130,.12)',
           }}>
+            {m.icon && <span style={{ fontSize: 20, lineHeight: 1 }}>{m.icon}</span>}
             {m.label}
           </Link>
         ))}
