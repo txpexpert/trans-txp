@@ -1,4 +1,4 @@
-// pages/app/index.tsx
+﻿// pages/app/index.tsx
 // Écran d'accueil de l'espace mobile, en 3 temps :
 //  1) Splash — logo animé façon radar (ouverture 1.5s + maintien 1.5s)
 //  2) Hero — MondoScope (outil marketing) intégré, avec la tuile
@@ -81,7 +81,7 @@ export default function AppHome() {
             <div className="radar-sweep" />
           </div>
 
-          {/* Logo TXP au centre */}
+          {/* Logo IXP au centre */}
           <div style={{
             position: 'absolute', inset: 0, display: 'flex',
             alignItems: 'center', justifyContent: 'center',
@@ -92,7 +92,7 @@ export default function AppHome() {
               fontFamily: 'sans-serif', fontWeight: 800, fontSize: 28,
               color: '#fff', letterSpacing: 1,
             }}>
-              TXP
+              IXP
             </span>
           </div>
         </div>
