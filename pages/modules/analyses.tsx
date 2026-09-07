@@ -1,5 +1,5 @@
-﻿// pages/modules/analyses.tsx
-// Module 11 — Analyses Stratégiques + Transit-IA IA
+// pages/modules/analyses.tsx
+// Module 11 — Analyses Stratégiques + Import-IA IA
 // Version fusionnée : cartes éditoriales + module d'analyse IA
 
 import ModuleLayout from '../../components/ModuleLayout';
@@ -114,7 +114,7 @@ export default function Analyses() {
   useEffect(() => {
     setMessages([{
       role: 'ai',
-      text: "Bonjour. Je suis **Transit-IA**, votre assistant personnalisé en douanes et commerce international.\n\nSélectionnez votre secteur et périmètre ci-dessus, puis posez votre question. J'effectue des recherches sur des sources officielles vérifiables et vous délivre une analyse structurée avec citations.",
+      text: "Bonjour. Je suis **Import-IA**, votre assistant personnalisé en douanes et commerce international.\n\nSélectionnez votre secteur et périmètre ci-dessus, puis posez votre question. J'effectue des recherches sur des sources officielles vérifiables et vous délivre une analyse structurée avec citations.",
     }]);
   }, []);
 
@@ -139,7 +139,7 @@ export default function Analyses() {
       if (!res.ok) throw new Error(data.error || 'Erreur serveur');
       setMessages(prev => [...prev, { role: 'ai', text: data.text || '', sources: data.sources || [], ts: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) }]);
     } catch (err: any) {
-      setMessages(prev => [...prev, { role: 'ai', text: err.message || 'Erreur de connexion. Réessayez.\n\n---\n*Transit-IA, votre assistant personnalisé*' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: err.message || 'Erreur de connexion. Réessayez.\n\n---\n*Import-IA, votre assistant personnalisé*' }]);
     } finally {
       setLoading(false);
       taRef.current?.focus();
@@ -188,7 +188,7 @@ export default function Analyses() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          SECTION IA — Transit-IA Analyses en temps réel
+          SECTION IA — Import-IA Analyses en temps réel
       ───────────────────────────────────────────────────────────── */}
 
       {/* Séparateur */}
@@ -196,12 +196,12 @@ export default function Analyses() {
         <div className="ia-sep-line" />
         <div className="ia-sep-badge">
           <div className="ia-sep-dot" />
-          Transit-IA — ANALYSE EN TEMPS RÉEL
+          Import-IA — ANALYSE EN TEMPS RÉEL
         </div>
         <div className="ia-sep-line" />
       </div>
 
-      {/* Header Transit-IA */}
+      {/* Header Import-IA */}
       <div className="ia-hdr">
         <div className="ia-av">DI</div>
         <div className="ia-hdr-text">
@@ -248,7 +248,7 @@ export default function Analyses() {
                     {msg.role === 'ai' ? (
                       <>
                         <div dangerouslySetInnerHTML={{ __html: mdToHtml(body) }} />
-                        {hasSig && <div className="ia-sig">— Transit-IA, votre assistant personnalisé</div>}
+                        {hasSig && <div className="ia-sig">— Import-IA, votre assistant personnalisé</div>}
                         {msg.sources && msg.sources.length > 0 && (
                           <div className="ia-sources">
                             {msg.sources.slice(0, 5).map((s, j) => (

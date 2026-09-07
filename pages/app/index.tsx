@@ -100,7 +100,7 @@ export default function AppHome() {
           color: '#fff', fontSize: 14, fontWeight: 600, letterSpacing: 2,
           animation: 'logoFadeIn 1.5s ease forwards', opacity: 0,
         }}>
-          TRANSIT-EXPERT
+          IMPORT-EXPERT
         </div>
 
         <style>{`
@@ -220,7 +220,7 @@ export default function AppHome() {
       </button>
 
       <h1 style={{ color: '#153E82', fontSize: 22, marginBottom: 4, fontWeight: 700 }}>
-        Transit-eXPert
+        IMPORT-EXPERT
       </h1>
       <p style={{ color: '#666', fontSize: 13, marginBottom: 20 }}>
         Outils douaniers — accès mobile

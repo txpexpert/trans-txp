@@ -177,7 +177,7 @@ export default function AppModuleLayout({ children, kicker, title, sub }: AppMod
   return (
     <>
       <Head>
-        <title>{title ? `${title} — Transit-eXPert` : 'Transit-eXPert'}</title>
+        <title>{title ? `${title} — IMPORT-EXPERT` : 'IMPORT-EXPERT'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
       </Head>

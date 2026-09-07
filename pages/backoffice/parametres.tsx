@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { GetServerSideProps } from 'next'
 import { requireAdminSSR } from '../../lib/adminAuth'
 import { useRouter } from 'next/router'
@@ -11,10 +11,10 @@ export default function BackofficeParametres() {
   const [toast, setToast] = useState('')
 
   // Paramètres généraux
-  const [nomSite, setNomSite] = useState('Transit-IA')
-  const [urlSite, setUrlSite] = useState('https://Transit-IA')
-  const [emailContact, setEmailContact] = useState('contact@Transit-IA')
-  const [emailSupport, setEmailSupport] = useState('support@Transit-IA')
+  const [nomSite, setNomSite] = useState('Import-IA')
+  const [urlSite, setUrlSite] = useState('https://Import-IA')
+  const [emailContact, setEmailContact] = useState('contact@Import-IA')
+  const [emailSupport, setEmailSupport] = useState('support@Import-IA')
 
   // Quotas
   const [quotaConsultation, setQuotaConsultation] = useState('5')

@@ -1,6 +1,6 @@
-﻿import Head from 'next/head';
+import Head from 'next/head';
 
-// pages/index.tsx — Transit-IA / TXP, hero page
+// pages/index.tsx — Import-IA / TXP, hero page
 // Version fusionnée : agencement visuel "Scanner-first" (demo-hero-v2)
 //   + authentification, session utilisateur et logique essentielle du site en production.
 
@@ -305,7 +305,7 @@ const bodyHTML = `
 </div></div>
 
 <header><div class="hdr">
-  <div class="logo">Transit<em>-</em>IA<sup>MAROC</sup></div>
+  <div class="logo">Import<em>-</em>IA<sup>MAROC</sup></div>
   <nav class="hdr-nav">
     <a href="#diagnostic">Audits et diagnostics</a>
     <a href="#modules">Modules d'efficience</a>
@@ -325,7 +325,7 @@ const bodyHTML = `
 <section class="copilot reveal" id="copilote">
   <div>
     <div class="copilot-title">Une question précise ?</div>
-    <div class="copilot-sub">Le copilote Transit-IA répond en citant la circulaire, l'article ou l'accord exact — pour ceux qui savent déjà ce qu'ils cherchent.</div>
+    <div class="copilot-sub">Le copilote Import-IA répond en citant la circulaire, l'article ou l'accord exact — pour ceux qui savent déjà ce qu'ils cherchent.</div>
   </div>
   <div>
     <div class="copilot-input-row">
@@ -347,7 +347,7 @@ const bodyHTML = `
   </div>
 
   <div class="scanner-card">
-    <div class="scanner-seal">TRANSIT<br>—<br>IA · MAROC</div>
+    <div class="scanner-seal">IMPORT<br>—<br>IA · MAROC</div>
     <div class="scanner-title">SCANNER DE VULNÉRABILITÉ</div>
     <div class="scanner-sub">Répondez à 3 questions rapides pour une première estimation de votre exposition.</div>
 
@@ -410,7 +410,7 @@ const bodyHTML = `
   <div class="section-hdr">
     <div class="section-eyebrow">OÙ EN ÊTES-VOUS ?</div>
     <div class="section-title">Vos outils, classés selon vos besoins et selon ce qu'ils résolvent</div>
-    <div class="section-sub">Les 39 modules Transit-IA regroupés selon la situation réelle qui vous amène ici : un problème à traiter maintenant, un risque à prévenir avant qu'il ne coûte, ou une veille à entretenir en continu.</div>
+    <div class="section-sub">Les 39 modules Import-IA regroupés selon la situation réelle qui vous amène ici : un problème à traiter maintenant, un risque à prévenir avant qu'il ne coûte, ou une veille à entretenir en continu.</div>
   </div>
 
   <div class="clusters">
@@ -539,7 +539,7 @@ const bodyHTML = `
 <section class="mx-wrap reveal" id="modules-plus">
   <div class="section-hdr">
     <div class="section-eyebrow">COMPLÉTEZ VOTRE BOÎTE À OUTILS</div>
-    <div class="section-title">19 autres modules Transit-IA, en un coup d'œil</div>
+    <div class="section-title">19 autres modules Import-IA, en un coup d'œil</div>
     <div class="section-sub">Calculateurs, référentiels et procédures utiles au quotidien — pas encore rattachés à l'un des volets ci-dessus, mais bien disponibles dès aujourd'hui.</div>
   </div>
   <div class="mx-grid">
@@ -593,7 +593,7 @@ const bodyHTML = `
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo">Transit<em>-</em>IA<sup style="font-size:9px;color:#8A8078;letter-spacing:.06em;vertical-align:super"> MAROC</sup></div>
+        <div class="logo">Import<em>-</em>IA<sup style="font-size:9px;color:#8A8078;letter-spacing:.06em;vertical-align:super"> MAROC</sup></div>
         <p>Intelligence douanière marocaine — circulaires ADII, tarifs, régimes économiques, fiscalité CGI 2026. 39 modules, une seule source de vérité.</p>
       </div>
       <div class="footer-col">
@@ -619,7 +619,7 @@ const bodyHTML = `
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2026 Transit-IA — TOUS DROITS RÉSERVÉS</div>
+      <div class="footer-copy">© 2026 Import-IA — TOUS DROITS RÉSERVÉS</div>
       <div class="footer-legal"><a href="https://www.douane.gov.ma" target="_blank">douane.gov.ma ↗</a><a href="https://www.portnet.ma" target="_blank">portnet.ma ↗</a></div>
     </div>
   </div>
@@ -627,7 +627,7 @@ const bodyHTML = `
 <div class="overlay" id="overlay-register" onclick="if(event.target===this)closeModal('register')">
   <div class="modal">
     <span class="m-close" onclick="closeModal('register')">✕</span>
-    <h2>Rejoindre <em>Transit-IA</em></h2>
+    <h2>Rejoindre <em>Import-IA</em></h2>
     <div class="trial-badge">✦ <strong>14 jours d'accès complet offerts</strong> — sans carte bancaire</div>
     <div class="m-field"><label>PRÉNOM & NOM</label><input id="reg-nom" type="text" placeholder="Mohamed Alami"/></div>
     <div class="m-field"><label>EMAIL PROFESSIONNEL</label><input id="reg-email" type="email" placeholder="m.alami@entreprise.ma"/></div>
@@ -643,7 +643,7 @@ const bodyHTML = `
 <div class="overlay" id="overlay-login" onclick="if(event.target===this)closeModal('login')">
   <div class="modal">
     <span class="m-close" onclick="closeModal('login')">✕</span>
-    <h2>Connexion à <em>Transit-IA</em></h2>
+    <h2>Connexion à <em>Import-IA</em></h2>
     <p>Accédez à votre espace et reprenez là où vous en étiez.</p>
     <div class="m-field"><label>EMAIL</label><input id="login-email" type="email" placeholder="votre@email.ma" onkeydown="if(event.key==='Enter')submitLogin()"/></div>
     <div class="m-field"><label>MOT DE PASSE</label><input id="login-pwd" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitLogin()"/></div>
@@ -867,7 +867,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Transit-IA — Diagnostic de Vulnérabilité Douanière</title>
+        <title>Import-IA — Diagnostic de Vulnérabilité Douanière</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

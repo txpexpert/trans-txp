@@ -1,5 +1,5 @@
-﻿/**
- * logger.ts — Transit-IA
+/**
+ * logger.ts — Import-IA
  * Service de logging asynchrone vers Supabase (table chat_logs).
  */
 

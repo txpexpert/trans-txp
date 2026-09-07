@@ -1,4 +1,4 @@
-﻿import { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import ModuleLayout from '../../components/ModuleLayout'
 
 interface CodeDUM { code: string; label: string }
@@ -974,7 +974,7 @@ export default function ProceduresProcessPage() {
               })}
             </div>
           </div>
-          <div className="pr-conseil"><div className="pr-conseil-label">CONSEIL Transit-IA</div><div className="pr-conseil-text">{proc.conseilIA}</div></div>
+          <div className="pr-conseil"><div className="pr-conseil-label">CONSEIL Import-IA</div><div className="pr-conseil-text">{proc.conseilIA}</div></div>
           {proc.questionsOuvertes.length>0&&(<div className="pr-qo"><div className="pr-qo-label">POINTS À COMPLÉTER / QUESTIONS NON RÉSOLUES</div>{proc.questionsOuvertes.map((q,i)=>(<div key={i} className="pr-qo-item">❓ {q}</div>))}</div>)}
         </div>
       </div>

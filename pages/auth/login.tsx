@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -43,7 +43,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Connexion — Transit-IA</title>
+        <title>Connexion — Import-IA</title>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
       </Head>
       <style dangerouslySetInnerHTML={{ __html: `
@@ -63,7 +63,7 @@ export default function Login() {
       {/* Header */}
       <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em' }}>
-          Transit-eXPert
+          IMPORT-EXPERT
         </Link>
         <span style={{ fontSize: 11, letterSpacing: '.1em', color: 'var(--ink3)' }}>CONNEXION</span>
       </header>
@@ -75,7 +75,7 @@ export default function Login() {
 
             <div style={{ padding: '1.5rem 2rem 1rem', borderBottom: '1px solid var(--border)' }}>
               <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 26, fontWeight: 400, color: 'var(--ink)', marginBottom: '.2rem' }}>
-                Se connecter à <span style={{ color: 'var(--gold)' }}>Transit-IA</span>
+                Se connecter à <span style={{ color: 'var(--gold)' }}>Import-IA</span>
               </div>
               <div style={{ fontSize: 13, color: 'var(--ink3)' }}>Plateforme d'intelligence douanière marocaine</div>
             </div>
@@ -132,7 +132,7 @@ export default function Login() {
       </main>
 
       <footer style={{ borderTop: '1px solid var(--border)', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--ink3)' }}>
-        <span>© 2026 Transit-IA</span>
+        <span>© 2026 Import-IA</span>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
 
           <Link href="#">Mentions légales</Link>

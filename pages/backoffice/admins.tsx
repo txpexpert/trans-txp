@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { GetServerSideProps } from 'next'
 import { requireAdminSSR } from '../../lib/adminAuth'
 import { useRouter } from 'next/router'
@@ -16,10 +16,10 @@ interface Admin {
 }
 
 const ADMINS: Admin[] = [
-  { id:1, nom:'Owner',          email:'admin@Transit-IA',           role:'super_admin', permissions:['all'],                               statut:'actif',   derniere_connexion:"Aujourd'hui 14:32", cree:'01/01/2025' },
-  { id:2, nom:'Rachid Moufid',  email:'r.moufid@Transit-IA',        role:'admin',       permissions:['tarifs','circulaires','utilisateurs'],statut:'actif',   derniere_connexion:'08/04/2026',        cree:'15/03/2025' },
-  { id:3, nom:'Nadia Ouaali',   email:'n.ouaali@Transit-IA',        role:'moderateur',  permissions:['support','alertes','contenus'],       statut:'actif',   derniere_connexion:'07/04/2026',        cree:'01/06/2025' },
-  { id:4, nom:'Tarik Lamsini',  email:'t.lamsini@Transit-IA',       role:'admin',       permissions:['ingest','circulaires','logs'],        statut:'inactif', derniere_connexion:'01/03/2026',        cree:'10/09/2025' },
+  { id:1, nom:'Owner',          email:'admin@Import-IA',           role:'super_admin', permissions:['all'],                               statut:'actif',   derniere_connexion:"Aujourd'hui 14:32", cree:'01/01/2025' },
+  { id:2, nom:'Rachid Moufid',  email:'r.moufid@Import-IA',        role:'admin',       permissions:['tarifs','circulaires','utilisateurs'],statut:'actif',   derniere_connexion:'08/04/2026',        cree:'15/03/2025' },
+  { id:3, nom:'Nadia Ouaali',   email:'n.ouaali@Import-IA',        role:'moderateur',  permissions:['support','alertes','contenus'],       statut:'actif',   derniere_connexion:'07/04/2026',        cree:'01/06/2025' },
+  { id:4, nom:'Tarik Lamsini',  email:'t.lamsini@Import-IA',       role:'admin',       permissions:['ingest','circulaires','logs'],        statut:'inactif', derniere_connexion:'01/03/2026',        cree:'10/09/2025' },
 ]
 
 const ROLE_C: Record<string,{ bg:string; color:string; label:string }> = {
@@ -88,7 +88,7 @@ export default function BackofficeAdmins() {
             <input value={newNom} onChange={e => setNewNom(e.target.value)} placeholder="Nom complet"
               style={{ padding:'8px 12px', border:'.5px solid var(--rule)', background:'#F9F8F4', fontSize:12, outline:'none', fontFamily:'inherit' }}
             />
-            <input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="Email @Transit-IA"
+            <input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="Email @Import-IA"
               style={{ padding:'8px 12px', border:'.5px solid var(--rule)', background:'#F9F8F4', fontSize:12, outline:'none', fontFamily:'inherit' }}
             />
             <select value={newRole} onChange={e => setNewRole(e.target.value as Admin['role'])}

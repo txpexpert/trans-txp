@@ -53,7 +53,7 @@ export default function AppLogin({ redirect }: Props) {
         padding: 28, boxShadow: '0 2px 12px rgba(0,0,0,.08)',
       }}>
         <h1 style={{ fontSize: 20, marginBottom: 4, color: '#153E82', fontWeight: 700 }}>
-          Transit-eXPert
+          IMPORT-EXPERT
         </h1>
         <p style={{ fontSize: 13, color: '#666', marginBottom: 20 }}>
           Connexion à l'espace mobile

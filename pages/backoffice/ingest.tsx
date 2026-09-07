@@ -1,4 +1,4 @@
-﻿// pages/backoffice/ingest.tsx
+// pages/backoffice/ingest.tsx
 import { useState, useCallback } from 'react'
 import type { GetServerSideProps } from 'next'
 import { requireAdminSSR } from '../../lib/adminAuth'
@@ -127,7 +127,7 @@ export default function BackofficeIngest() {
 
   return (
     <>
-      <Head><title>Ingestion — Backoffice Transit-IA</title></Head>
+      <Head><title>Ingestion — Backoffice Import-IA</title></Head>
       <BackofficeLayout title="Ingestion de données">
         <div style={{ maxWidth: 720 }}>
 

@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 const modules = [
   { label: "Classement tarifaire", href: "/modules/classement" },
@@ -15,7 +15,7 @@ export default function MobileHome() {
   return (
     <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
       <h1 style={{ color: "#1A5C2A", fontSize: "22px", marginBottom: "16px" }}>
-        Transit-IA
+        Import-IA
       </h1>
       <div style={{ display: "grid", gap: "12px" }}>
         {modules.map((m) => (

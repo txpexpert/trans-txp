@@ -1,5 +1,5 @@
-﻿// pages/modules/origine-aleca.tsx
-// Simulateur d'origine / UE — Transit-IA
+// pages/modules/origine-aleca.tsx
+// Simulateur d'origine / UE — Import-IA
 // Route : /modules/origine-aleca
 
 import Head from 'next/head';
@@ -237,7 +237,7 @@ export default function OrigineAlecaPage() {
   return (
     <>
       <Head>
-        <title>Origine ALECA / UE — Transit-IA</title>
+        <title>Origine ALECA / UE — Import-IA</title>
         <meta name="description" content="Simulateur d'origine préférentielle ALECA/PEM 2025 — Tarif UE NC8 — Accord Maroc-UE." />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -455,7 +455,7 @@ export default function OrigineAlecaPage() {
 
       </div>
 
-      <footer>Transit-IA — Module ORI · Origine ALECA / UE · Convention PEM 2025 · Tarif NC8 UE</footer>
+      <footer>Import-IA — Module ORI · Origine ALECA / UE · Convention PEM 2025 · Tarif NC8 UE</footer>
 
       <Script src="/aleca-calc.js" strategy="afterInteractive" />
     </>
