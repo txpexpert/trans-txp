@@ -1,0 +1,80 @@
+{
+  "_lisez_moi": "Fichier de contenu du rapport Scanner. Modifiable directement, sans toucher au code TypeScript. Les clés (habitude, cas_par_cas, etc.) correspondent aux data-key des boutons du Scanner sur la hero page — ne pas renommer une clé sans mettre à jour aussi le HTML/JS du Scanner.",
+
+  "axes": {
+    "sh": {
+      "titre": "Classification tarifaire (codes SH)",
+      "habitude": {
+        "label": "Réponse : Habitude / transitaire",
+        "niveau": "critique",
+        "texte": "S'en remettre entièrement à l'habitude ou au transitaire, sans registre interne validé, est le motif de redressement le plus fréquent lors d'un contrôle a posteriori : chaque transitaire peut classer différemment un même article, et l'entreprise reste seule responsable du code déclaré. Recommandation : centraliser vos codes SH dans un registre unique validé, avec justificatif technique par article."
+      },
+      "cas_par_cas": {
+        "label": "Réponse : Au cas par cas",
+        "niveau": "important",
+        "texte": "Une vérification ponctuelle à l'apparition d'un nouveau produit est un bon réflexe, mais elle laisse les articles déjà classés sans revalidation périodique — un risque si la nomenclature ou vos produits évoluent. Recommandation : basculer vers un registre centralisé qui trace la date et l'auteur de chaque validation."
+      },
+      "registre_audite": {
+        "label": "Réponse : Registre audité",
+        "niveau": "conforme",
+        "texte": "Un registre centralisé, validé et audité est la pratique la plus sécurisante face à un contrôle : elle démontre une démarche de diligence raisonnable. Recommandation : maintenir cette discipline et la documenter formellement pour toute nouvelle référence produit."
+      }
+    },
+
+    "ale": {
+      "titre": "Origine préférentielle (ALE)",
+      "sans_tracabilite": {
+        "label": "Réponse : Oui, sans traçabilité",
+        "niveau": "critique",
+        "texte": "Utiliser un accord de libre-échange sans traçabilité formalisée des déclarations fournisseurs expose à la remise en cause rétroactive de l'exonération accordée — avec rappel des droits sur toutes les opérations concernées. Recommandation : constituer sans délai un dossier de preuves d'origine par fournisseur (déclarations, factures, règles de cumul)."
+      },
+      "documente": {
+        "label": "Réponse : Oui, documenté",
+        "niveau": "important",
+        "texte": "La collecte des certificats à l'expédition est une bonne base, mais sans vérification approfondie des règles de cumul, certains dossiers restent fragiles en cas de contrôle serré. Recommandation : faire auditer un échantillon de vos certificats d'origine sur les 7 points de contrôle usuels (validité, cumul, seuils de valeur ajoutée)."
+      },
+      "non_concerne": {
+        "label": "Réponse : Non concerné",
+        "niveau": "neutre",
+        "texte": "Vous n'utilisez pas d'accord de libre-échange à ce jour. Selon votre corridor d'approvisionnement (UE, USA, Golfe, ZLECAf), des exonérations de droits existent peut-être sans que vous les exploitiez. Recommandation : faire évaluer votre éligibilité — c'est souvent une économie immédiate, pas seulement une mise en conformité."
+      }
+    },
+
+    "ctrl": {
+      "titre": "Antécédents de contrôle (3 dernières années)",
+      "plusieurs_fois": {
+        "label": "Réponse : Plusieurs fois",
+        "niveau": "critique",
+        "texte": "Des blocages ou contrôles répétés indiquent une faille structurelle plutôt qu'un incident isolé — c'est le signal le plus lourd du diagnostic. Recommandation : un audit préventif complet est prioritaire, avant qu'un nouveau contrôle ne porte sur des exercices déjà clos."
+      },
+      "une_fois": {
+        "label": "Réponse : Une fois",
+        "niveau": "important",
+        "texte": "Un incident ponctuel suite à une divergence documentaire reste courant, mais mérite d'être requalifié : était-ce un cas isolé, ou un symptôme d'une faille qui pourrait se reproduire ? Recommandation : revérifier le dossier concerné et croiser avec les deux axes précédents."
+      },
+      "jamais": {
+        "label": "Réponse : Jamais",
+        "niveau": "conforme",
+        "texte": "Aucun antécédent connu est un signal positif, mais ne dispense pas de vigilance : un contrôle a posteriori peut porter sur des exercices jamais encore audités. Recommandation : maintenir une veille documentaire active plutôt que d'attendre un premier contrôle pour s'organiser."
+      }
+    }
+  },
+
+  "tiers": {
+    "faible": {
+      "verdictLabel": "RISQUE MAÎTRISÉ",
+      "synthese": "Vos fondamentaux opérationnels semblent solides : la manière dont vous validez vos codes SH et documentez vos origines préférentielles limite votre exposition aux redressements les plus fréquents. L'enjeu, à ce niveau, n'est plus la mise en conformité mais l'optimisation — repérer les économies de droits de douane que vous laissez peut-être sur la table, et sécuriser cet acquis face aux évolutions réglementaires de la Loi de Finances en cours.",
+      "plan": "1. Faire évaluer les accords de libre-échange non exploités sur vos corridors actuels.  2. Activer une veille réglementaire continue (circulaires ADII, Lois de Finances).  3. Explorer l'abonnement à la plateforme de veille sémantique Transit-IA pour formaliser ce suivi."
+    },
+    "modere": {
+      "verdictLabel": "RISQUE MODÉRÉ À ÉLEVÉ",
+      "synthese": "Votre diagnostic fait apparaître des points de friction concrets — le plus souvent sur la validation des codes SH ou la traçabilité des justificatifs d'origine. Ce ne sont pas encore des contentieux ouverts, mais ce sont précisément les motifs les plus fréquents de redressement lors d'un contrôle a posteriori, qui porte généralement sur les 4 à 5 dernières années. Un ajustement ciblé de vos process documentaires suffit, dans la majorité des cas, à corriger ces failles avant qu'elles ne deviennent coûteuses.",
+      "plan": "1. Acquérir le Kit correspondant à l'axe le plus faible (Classement SH ou Origine & ALE).  2. Reprendre le Scanner dans 60 jours pour mesurer l'amélioration.  3. Envisager le Pack Compliance Suite si plusieurs axes sont concernés."
+    },
+    "critique": {
+      "verdictLabel": "RISQUE CRITIQUE",
+      "synthese": "Votre configuration actuelle — combinant volume d'opérations, zones d'ombre sur l'origine préférentielle et antécédents de blocage ou de contrôle — vous expose directement à un risque de redressement lourd sur vos exercices passés. À ce niveau d'exposition, un ajustement ponctuel ne suffit plus : un audit préventif structuré de vos dossiers est recommandé avant qu'un contrôle de l'administration ne l'impose.",
+      "plan": "1. Planifier un Audit Flash avec un expert senior sous 15 jours.  2. Geler toute déclaration en cours utilisant le même code SH ou la même base d'origine tant que l'audit n'a pas confirmé leur validité.  3. Constituer un dossier de régularisation préventive avant toute notification de contrôle."
+    }
+  }
+}

@@ -12,7 +12,7 @@ import { useAuth } from '../context/AuthContext'
 const PLAN_LABELS: Record<string, string> = {
   trial:      'Essai gratuit',
   pro:        'Professionnel',
-  cabinet:    'Cabinet',
+  premium:    'Premium',
   enterprise: 'Entreprise',
 }
 
@@ -90,7 +90,11 @@ export default function Dashboard() {
               Passez à un plan supérieur
             </div>
             <p style={{ fontSize: 12, color: 'var(--inkm)', marginBottom: 12, lineHeight: 1.6 }}>
+<<<<<<< HEAD
               Débloquez l'ensemble des modules Import-IA (classement tarifaire, tracking, générateur de documents) avec un plan Professionnel ou Cabinet.
+=======
+              Débloquez l'ensemble des modules Transit-IA (classement tarifaire, tracking, générateur de documents) avec un plan Professionnel ou Premium.
+>>>>>>> 6f64096256c5fd96985b646a1c61fdc7543147a4
             </p>
             <Link href="/abonnements">
               <button style={{ padding: '9px 20px', background: '#C9A84C', color: '#0A0A0A', border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>

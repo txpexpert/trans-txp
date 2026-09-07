@@ -1,0 +1,41 @@
+{
+  "_lisez_moi": "Contenu éditorial du rapport d'audit douanier (module Audit, abonnés pro+). Modifiable directement, sans toucher au code TypeScript. Le jeton {domaine} est remplacé automatiquement par le libellé du domaine concerné — ne pas renommer ce jeton sans mettre à jour lib/auditReport.ts.",
+
+  "intro": "Ce rapport dresse un état des lieux de votre conformité douanière sur les 10 domaines audités, à partir de vos réponses aux points de contrôle. Il combine votre score de conformité, les points de vigilance identifiés et les conseils préventifs associés à chaque non-conformité relevée.",
+
+  "niveauxDomaine": {
+    "critique": {
+      "label": "Critique",
+      "synthese": "Le domaine {domaine} affiche un score de conformité inférieur à 50 % : plusieurs points de contrôle essentiels ne sont pas couverts. Cette zone représente une exposition directe en cas de contrôle a posteriori ou de vérification approfondie de l'ADII.",
+      "action": "Traiter en priorité les points signalés critiques ci-dessous avant tout autre chantier de mise en conformité."
+    },
+    "ameliorer": {
+      "label": "À améliorer",
+      "synthese": "Le domaine {domaine} obtient un score intermédiaire : les fondamentaux sont globalement en place, mais certains points de contrôle restent à sécuriser pour limiter le risque en cas de contrôle.",
+      "action": "Planifier la mise à niveau des points non conformes de ce domaine dans les prochaines semaines, en commençant par ceux marqués critiques."
+    },
+    "conforme": {
+      "label": "Conforme",
+      "synthese": "Le domaine {domaine} affiche un score de conformité satisfaisant. Les pratiques en place couvrent l'essentiel des points de vigilance identifiés pour cette thématique.",
+      "action": "Maintenir cette discipline et revalider ce domaine lors du prochain audit périodique."
+    }
+  },
+
+  "global": {
+    "critique": {
+      "verdictLabel": "EXPOSITION CRITIQUE",
+      "synthese": "Votre score de conformité global place votre entreprise en zone de risque élevé. Les domaines signalés critiques ci-dessus concentrent l'essentiel de votre exposition et méritent un traitement prioritaire avant tout contrôle de l'administration.",
+      "plan": "1. Traiter en urgence les domaines en zone critique.  2. Constituer un dossier de régularisation préventive sur les points les plus sensibles.  3. Envisager un accompagnement expert pour sécuriser les dossiers les plus exposés."
+    },
+    "modere": {
+      "verdictLabel": "CONFORMITÉ PARTIELLE",
+      "synthese": "Votre conformité globale est correcte mais incomplète : certains domaines nécessitent une mise à niveau pour réduire votre exposition en cas de contrôle a posteriori.",
+      "plan": "1. Prioriser les domaines sous 50 % de score.  2. Mettre en place un calendrier de mise à niveau sur 90 jours.  3. Revenir sur cet audit une fois les actions engagées pour mesurer la progression."
+    },
+    "conforme": {
+      "verdictLabel": "CONFORMITÉ SOLIDE",
+      "synthese": "Votre conformité globale est bonne : la majorité des domaines audités atteignent un score satisfaisant. L'enjeu, à ce stade, est de maintenir cette discipline dans la durée.",
+      "plan": "1. Maintenir une veille réglementaire active sur les domaines audités.  2. Revalider cet audit à échéance semestrielle.  3. Documenter formellement vos procédures pour pérenniser les bonnes pratiques."
+    }
+  }
+}

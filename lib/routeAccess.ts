@@ -19,7 +19,7 @@ export const FREE_PATHS = [
   '/mobile',
 
   // Vitrines/démos marketing — choix assumé : aperçu de fonctionnalités
-  // Pro/Cabinet en accès libre pour convaincre. Changement futur possible
+  // Pro/Premium en accès libre pour convaincre. Changement futur possible
   // mais rare — si le module est retiré des plans payants, le retirer ici.
   '/tools/carte-bureauxdouaniers.html',
   '/modules/conseil',

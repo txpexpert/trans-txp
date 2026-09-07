@@ -501,7 +501,7 @@ export default function FaqPage() {
         display: 'flex', alignItems: 'center', gap: '.75rem'
       }}>
         <span style={{ fontSize: 11, color: '#92400E', letterSpacing: '.04em' }}>
-          Contenu protégé · Document sous droit d'auteur · Accès réservé aux abonnés DAS
+          Contenu protégé · Document sous droit d'auteur · Accès réservé aux abonnés Transit-IA
         </span>
       </div>
 
@@ -736,7 +736,7 @@ export default function FaqPage() {
         display: 'flex', justifyContent: 'space-between',
         fontSize: 11, color: 'var(--inkm)'
       }}>
-        <span>Espace Expert Opérateurs · Document sous droit d'auteur · Usage réservé aux abonnés DAS</span>
+        <span>Espace Expert Opérateurs · Document sous droit d'auteur · Usage réservé aux abonnés Transit-IA</span>
         <span>Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 

@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface PlanDef {
-  id:       'free' | 'pro' | 'cabinet' | 'enterprise'
+  id:       'free' | 'pro' | 'premium' | 'enterprise'
   name:     string
   price:    string
   period:   string
@@ -59,8 +59,8 @@ const PLANS: PlanDef[] = [
     ctaStyle: 'primary',
   },
   {
-    id:       'cabinet',
-    name:     'CABINET',
+    id:       'premium',
+    name:     'PREMIUM',
     price:    '1 990',
     period:   'par mois · TVA incluse',
     tag:      'RECOMMANDÉ',
@@ -90,7 +90,7 @@ const PLANS: PlanDef[] = [
     featured: false,
     modules:  'Accès illimité',
     items: [
-      { ok: true, text: 'Tout le plan Cabinet inclus' },
+      { ok: true, text: 'Tout le plan Premium inclus' },
       { ok: true, text: 'Accès wildcard — tous modules présents et futurs' },
       { ok: true, text: 'API & intégration ERP / TMS' },
       { ok: true, text: 'Analyses stratégiques ZLECAf' },
@@ -193,7 +193,7 @@ export default function Abonnements() {
   [`L'essai gratuit inclut-il tous les modules ?`, `Oui — pendant 14 jours vous avez accès à l'intégralité de la plateforme, sans restriction.`],
   [`Comment s'effectue le paiement ?`, `Par virement bancaire Banque Populaire. Une facture TVA est émise à chaque renouvellement mensuel.`],
   [`Puis-je changer de plan en cours de mois ?`, `Oui — le changement prend effet immédiatement. La différence est ajustée sur la prochaine facture.`],
-  [`L'accès API est-il disponible sur le plan Cabinet ?`, `Non — l'API et l'intégration ERP sont réservées au plan Enterprise. Contactez-nous pour un devis.`],
+  [`L'accès API est-il disponible sur le plan Premium ?`, `Non — l'API et l'intégration ERP sont réservées au plan Enterprise. Contactez-nous pour un devis.`],
 ].map(([q, a], i) => (
             <details key={i} style={{ borderBottom: '0.5px solid var(--brd, #ddd)', padding: '.75rem 0' }}>
               <summary style={{ cursor: 'pointer', fontWeight: 500, fontSize: '14px', listStyle: 'none' }}>

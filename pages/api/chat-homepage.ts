@@ -12,6 +12,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '../../lib/supabase'
 import { embedText } from '../../lib/ingestion'
 import { verifyUserToken, canAccessModule, USER_COOKIE } from '../../lib/userAuth'
+import { buildAssistantSystemPrompt, enforceResponseConstraints } from '../../lib/assistantPrompt'
 
 type ChatResponse = {
   answer?: string
@@ -66,13 +67,25 @@ export default async function handler(
     }
 
     // 3) Construction du contexte et génération de la réponse
+    // Le type de document (circulaire / note) est injecté dans le libellé de
+    // chaque source : c'est ce terme que le prompt système utilise (règle 5)
+    // pour décider d'afficher ou de masquer la référence. Par prudence, un
+    // type manquant ou inconnu est étiqueté "note" (jamais l'inverse).
     const context = chunks
       .map(
-        (c: { titre: string; numero: string | null; contenu: string }, i: number) =>
-          `[Source ${i + 1}] ${c.titre}${c.numero ? ' (n° ' + c.numero + ')' : ''}\n${c.contenu}`
+        (
+          c: { titre: string; numero: string | null; contenu: string; type_document: string | null },
+          i: number
+        ) => {
+          const typeLabel = c.type_document?.toLowerCase().includes('circulaire')
+            ? 'circulaire'
+            : 'note'
+          return `[Source ${i + 1} - ${typeLabel}] ${c.titre}${c.numero ? ' (n° ' + c.numero + ')' : ''}\n${c.contenu}`
+        }
       )
       .join('\n\n---\n\n')
 
+<<<<<<< HEAD
         const systemPrompt = `Tu es l'assistant documentaire de Import-IA / TXP, spécialisé en réglementation douanière marocaine (ADII, CDII, CGI, circulaires).
 Réponds UNIQUEMENT à partir du contexte fourni ci-dessous. Si le contexte ne permet pas de répondre avec certitude, dis-le clairement plutôt que d'inventer.
 Cite la source (numéro de circulaire ou titre) quand c'est pertinent. Réponds en français, de façon claire et professionnelle, en 3 à 6 phrases maximum sauf si la question exige plus de détail.
@@ -86,6 +99,9 @@ Utilise de vrais sauts de ligne entre les paragraphes et les éléments de liste
 
 CONTEXTE DOCUMENTAIRE :
 ${context}`
+=======
+    const systemPrompt = buildAssistantSystemPrompt(session.plan, context)
+>>>>>>> 6f64096256c5fd96985b646a1c61fdc7543147a4
 
     const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -109,9 +125,10 @@ ${context}`
     }
 
     const anthropicData = await anthropicRes.json()
-    const answer =
+    const rawAnswer =
       anthropicData?.content?.find((b: { type: string }) => b.type === 'text')?.text ??
       "Aucune réponse générée."
+    const answer = enforceResponseConstraints(rawAnswer, session.plan)
 
     const sources = chunks.map(
       (c: { titre: string; numero: string | null; type_document: string | null }) => ({
