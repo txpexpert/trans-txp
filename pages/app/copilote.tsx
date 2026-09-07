@@ -152,7 +152,7 @@ export default function AppCopilote() {
   return (
     <AppModuleLayout
       kicker="COPILOTE IA"
-      title="Votre Copilote Transit-IA"
+      title="Votre Copilote Import-IA"
       sub="Posez une question à la voix ou au clavier — le copilote répond en citant la circulaire exacte."
     >
       <div className="form-group">

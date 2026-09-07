@@ -495,7 +495,6 @@ export default function FaqPage() {
       <div className="info-grid" style={{ marginBottom: '1.5rem' }}>
         <div className="istat"><div className="istat-n">269</div><div className="istat-l">Questions indexées</div></div>
         <div className="istat"><div className="istat-n">11</div><div className="istat-l">Catégories couvertes</div></div>
-        <div className="istat"><div className="istat-n">2025</div><div className="istat-l">Droit douanier marocain</div></div>
       </div>
 
       {/* ── NOTICE ── */}
