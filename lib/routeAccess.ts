@@ -18,6 +18,12 @@ export const FREE_PATHS = [
   '/a-propos',
   '/mobile',
 
+  // Pages légales / conformité stores — doivent rester accessibles sans
+  // compte pour les reviewers Google Play et les visiteurs anonymes
+  // (Data safety / Privacy policy / Delete account declarations).
+  '/politique-confidentialite.html',
+  '/suppression-compte.html',
+
   // Vitrines/démos marketing — choix assumé : aperçu de fonctionnalités
   // Pro/Premium en accès libre pour convaincre. Changement futur possible
   // mais rare — si le module est retiré des plans payants, le retirer ici.
@@ -58,6 +64,3 @@ export function pathToModuleCode(pathname: string): string | null {
   }
   return null
 }
-
-
-
