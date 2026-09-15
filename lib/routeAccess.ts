@@ -23,6 +23,13 @@ export const FREE_PATHS = [
   // (Data safety / Privacy policy / Delete account declarations).
   '/politique-confidentialite.html',
   '/suppression-compte.html',
+  '/politique-confidentialite', // page Next.js (pages/politique-confidentialite.tsx) — sans .html, distincte du fichier statique ci-dessus
+
+  // Pages légales / consentement à l'inscription (CGU + confidentialité,
+  // liées depuis le formulaire d'inscription — doivent être consultables
+  // par un visiteur qui n'a pas encore de compte, avant de s'inscrire).
+  '/cgu',
+  '/confidentialite',
 
   // Vitrines/démos marketing — choix assumé : aperçu de fonctionnalités
   // Pro/Premium en accès libre pour convaincre. Changement futur possible
