@@ -641,17 +641,28 @@ const bodyHTML = `
 <div class="overlay" id="overlay-register" onclick="if(event.target===this)closeModal('register')">
   <div class="modal">
     <span class="m-close" onclick="closeModal('register')">✕</span>
-    <h2>Rejoindre <em>Import-IA</em></h2>
-    <div class="trial-badge">✦ <strong>14 jours d'accès complet offerts</strong> — sans carte bancaire</div>
-    <div class="m-field"><label>PRÉNOM & NOM</label><input id="reg-nom" type="text" placeholder="Mohamed Alami"/></div>
-    <div class="m-field"><label>EMAIL PROFESSIONNEL</label><input id="reg-email" type="email" placeholder="m.alami@entreprise.ma"/></div>
-    <div class="m-field"><label>PROFIL</label>
-      <select id="reg-profil"><option value="transitaire">Transitaire / Agent en douane</option><option value="importateur">Importateur / Exportateur PME</option><option value="directeur_logistique">Directeur logistique</option><option value="consultant">Cabinet conseil douanier</option><option value="autre">Autre</option></select>
+    <div id="register-form-body">
+      <h2>Rejoindre <em>Import-IA</em></h2>
+      <div class="trial-badge">✦ <strong>14 jours d'accès complet offerts</strong></div>
+      <div class="m-field"><label>PRÉNOM & NOM</label><input id="reg-nom" type="text" placeholder="Mohamed Alami"/></div>
+      <div class="m-field"><label>EMAIL PROFESSIONNEL</label><input id="reg-email" type="email" placeholder="m.alami@entreprise.ma"/></div>
+      <div class="m-field"><label>PROFIL</label>
+        <select id="reg-profil"><option value="transitaire">Transitaire / Agent en douane</option><option value="importateur">Importateur / Exportateur PME</option><option value="directeur_logistique">Directeur logistique</option><option value="consultant">Cabinet conseil douanier</option><option value="autre">Autre</option></select>
+      </div>
+      <div class="m-field"><label>TÉLÉPHONE</label><input id="reg-tel" type="tel" placeholder="06 12 34 56 78"/></div>
+      <div class="m-field"><label>MOT DE PASSE</label><input id="reg-pwd" type="password" placeholder="••••••••"/></div>
+      <div style="display:flex;align-items:flex-start;gap:.5rem;margin-bottom:1rem;font-size:12px;color:var(--ink2)">
+        <input type="checkbox" id="reg-cgu" style="margin-top:2px;cursor:pointer;flex-shrink:0"/>
+        <label for="reg-cgu" style="cursor:pointer">J'accepte les <a href="/cgu" target="_blank" style="color:var(--gold);text-decoration:underline">Conditions d'utilisation</a> et la <a href="/confidentialite" target="_blank" style="color:var(--gold);text-decoration:underline">Politique de confidentialité</a></label>
+      </div>
+      <button class="m-submit" onclick="submitRegister()">DÉMARRER MON ESSAI GRATUIT →</button>
+      <p style="text-align:center;font-size:11px;color:var(--ink3);margin-top:1rem">Déjà inscrit ? <span style="color:var(--gold);cursor:pointer" onclick="closeModal('register');openModal('login')">Se connecter</span></p>
     </div>
-    <div class="m-field"><label>TÉLÉPHONE</label><input id="reg-tel" type="tel" placeholder="06 12 34 56 78"/></div>
-    <div class="m-field"><label>MOT DE PASSE</label><input id="reg-pwd" type="password" placeholder="••••••••"/></div>
-    <button class="m-submit" onclick="submitRegister()">DÉMARRER MON ESSAI GRATUIT →</button>
-    <p style="text-align:center;font-size:11px;color:var(--ink3);margin-top:1rem">Déjà inscrit ? <span style="color:var(--gold);cursor:pointer" onclick="closeModal('register');openModal('login')">Se connecter</span></p>
+    <div id="register-success-body" style="display:none;text-align:center;padding:1rem 0">
+      <div style="font-size:36px;margin-bottom:.75rem">📬</div>
+      <h2 style="margin-bottom:.75rem">Vérifiez votre boîte mail</h2>
+      <p style="font-size:13px;color:var(--ink2);line-height:1.6">Veuillez consulter votre boîte mail pour valider votre inscription et démarrer votre essai gratuit de 14 jours.</p>
+    </div>
   </div>
 </div>
 <div class="overlay" id="overlay-login" onclick="if(event.target===this)closeModal('login')">
@@ -698,16 +709,20 @@ async function submitRegister(){
   var pwd=document.getElementById('reg-pwd').value;
   var profil=document.getElementById('reg-profil').value;
   var tel=document.getElementById('reg-tel').value.trim();
+  var cgu=document.getElementById('reg-cgu');
   if(!email||!pwd){alert('Email et mot de passe requis');return;}
   if(pwd.length<8){alert('Mot de passe trop court (8 caract\u00e8res minimum)');return;}
+  if(!cgu||!cgu.checked){alert('Vous devez accepter les Conditions d\u2019utilisation et la Politique de confidentialit\u00e9 pour continuer');return;}
   var btn=document.querySelector('#overlay-register .m-submit');
   if(btn)btn.textContent='CR\u00c9ATION...';
   try{
     var res=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,password:pwd,nom:nom,telephone:tel,profil:profil})});
     var data=await res.json();
     if(!res.ok){alert(data.error||'Erreur inscription');if(btn)btn.textContent='D\u00c9MARRER MON ESSAI GRATUIT \u2192';return;}
-    closeModal('register');
-    window.location.href='/?welcome=1';
+    var formBody=document.getElementById('register-form-body');
+    var successBody=document.getElementById('register-success-body');
+    if(formBody)formBody.style.display='none';
+    if(successBody)successBody.style.display='block';
   }catch(e){alert('Erreur r\u00e9seau');if(btn)btn.textContent='D\u00c9MARRER MON ESSAI GRATUIT \u2192';}
 }
 
