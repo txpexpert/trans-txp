@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -18,6 +18,8 @@ export default function Register() {
     email: '', password: '', confirm: '',
     nom: '', prenom: '', societe: '', telephone: '', profil: 'transitaire',
   })
+  const [cguAccepted, setCguAccepted] = useState(false)
+  const [registered, setRegistered] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState('')
 
@@ -29,6 +31,7 @@ export default function Register() {
     if (!form.email || !form.password) { setError('Email et mot de passe requis'); return }
     if (form.password.length < 8) { setError('Mot de passe trop court (8 caractères minimum)'); return }
     if (form.password !== form.confirm) { setError('Les mots de passe ne correspondent pas'); return }
+    if (!cguAccepted) { setError('Vous devez accepter les Conditions Générales d\'Utilisation pour continuer'); return }
 
     setLoading(true)
     try {
@@ -47,17 +50,57 @@ export default function Register() {
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error || 'Erreur lors de l\'inscription'); setLoading(false); return }
-      router.push('/?welcome=1')
+      setRegistered(true)
+      setLoading(false)
     } catch {
       setError('Erreur réseau — réessayez')
       setLoading(false)
     }
   }
 
+  if (registered) {
+    return (
+      <>
+        <Head>
+          <title>Vérifiez votre email — Import-IA</title>
+        </Head>
+        <style dangerouslySetInnerHTML={{ __html: `
+          *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+          :root{--gold:#C9A84C;--gold2:#E8C97A;--gold3:#F5E4B0;--gold4:#FBF5E6;
+            --ink:#0A0A0A;--ink2:#3A3530;--ink3:#8A8078;--white:#FDFCF8;--border:#E8DFC8}
+          body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);min-height:100vh}
+          a{text-decoration:none;color:inherit}
+        ` }} />
+        <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center' }}>
+          <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em' }}>
+            IMPORT-EXPERT
+          </Link>
+        </header>
+        <main style={{ display: 'flex', justifyContent: 'center', padding: '4rem 1rem' }}>
+          <div style={{ width: '100%', maxWidth: 480, textAlign: 'center' }}>
+            <div style={{ fontSize: 40, marginBottom: '1rem' }}>📬</div>
+            <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 26, fontWeight: 400, marginBottom: '.75rem' }}>
+              Vérifiez votre boîte mail
+            </h1>
+            <p style={{ fontSize: 14, color: 'var(--ink2)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+              Un email de confirmation a été envoyé à <strong>{form.email}</strong>. Cliquez sur le lien qu'il contient
+              pour activer votre compte et démarrer votre essai gratuit de 14 jours.
+            </p>
+            <p style={{ fontSize: 12, color: 'var(--ink3)' }}>
+              Rien reçu après quelques minutes ? Pensez à vérifier vos courriers indésirables, ou{' '}
+              <Link href="/auth/login" style={{ color: 'var(--gold)', fontWeight: 500 }}>connectez-vous</Link>{' '}
+              pour redemander l'envoi.
+            </p>
+          </div>
+        </main>
+      </>
+    )
+  }
+
   return (
     <>
       <Head>
-        <title>Inscription — Transit-IA</title>
+        <title>Inscription — Import-IA</title>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
       </Head>
       <style dangerouslySetInnerHTML={{ __html: `
@@ -77,7 +120,7 @@ export default function Register() {
       {/* Header */}
       <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em' }}>
-          Transit-eXPert
+          IMPORT-EXPERT
         </Link>
         <span style={{ fontSize: 11, letterSpacing: '.1em', color: 'var(--ink3)' }}>INSCRIPTION GRATUITE</span>
       </header>
@@ -95,7 +138,7 @@ export default function Register() {
 
             <div style={{ padding: '1.5rem 2rem 1rem', borderBottom: '1px solid var(--border)' }}>
               <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 26, fontWeight: 400, color: 'var(--ink)', marginBottom: '.2rem' }}>
-                Rejoindre <span style={{ color: 'var(--gold)' }}>Transit-IA</span>
+                Rejoindre <span style={{ color: 'var(--gold)' }}>Import-IA</span>
               </div>
               <div style={{ fontSize: 13, color: 'var(--ink3)' }}>Plateforme d'intelligence douanière marocaine</div>
             </div>
@@ -170,6 +213,17 @@ export default function Register() {
                 </div>
               )}
 
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', marginBottom: '1rem', fontSize: 12, color: 'var(--ink2)' }}>
+                <input
+                  type="checkbox" checked={cguAccepted} onChange={e => setCguAccepted(e.target.checked)}
+                  style={{ marginTop: 2, cursor: 'pointer', flexShrink: 0 }}
+                />
+                <span>
+                  J'accepte les <Link href="/cgu" target="_blank" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Conditions Générales d'Utilisation</Link>
+                  {' '}et la <Link href="/confidentialite" target="_blank" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Politique de confidentialité</Link>
+                </span>
+              </div>
+
               <button
                 onClick={submit} disabled={loading}
                 style={{ width: '100%', padding: '13px', background: loading ? 'var(--ink3)' : 'var(--ink)', color: 'var(--gold2)', border: 'none', fontSize: 12, letterSpacing: '.1em', cursor: loading ? 'not-allowed' : 'pointer' }}
@@ -199,10 +253,10 @@ export default function Register() {
       </main>
 
       <footer style={{ borderTop: '1px solid var(--border)', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--ink3)' }}>
-        <span>© 2026 Transit-IA</span>
+        <span>© 2026 Import-IA</span>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
-          <Link href="#">Mentions légales</Link>
-          <Link href="#">Confidentialité</Link>
+          <Link href="/cgu">Conditions d'utilisation</Link>
+          <Link href="/confidentialite">Confidentialité</Link>
         </div>
       </footer>
     </>

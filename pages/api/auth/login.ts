@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { data: user, error: dbError } = await supabase
     .from('users')
-    .select('id, email, password_hash, plan, statut, trial_ends_at, login_attempts, locked_until, role')
+    .select('id, email, password_hash, plan, statut, trial_ends_at, login_attempts, locked_until, role, email_verified')
     .eq('email', email.toLowerCase())
     .single()
 
@@ -73,6 +73,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (statut === 'trial' && user.trial_ends_at && new Date(user.trial_ends_at) < new Date()) {
     statut = 'expired'
     await supabase.from('users').update({ statut: 'expired' }).eq('id', user.id)
+  }
+
+  // ✅ Vérification d'email — bloque l'accès tant que le lien reçu par email
+  // n'a pas été cliqué. Placé après la vérification du mot de passe pour ne
+  // pas révéler le statut de vérification à quelqu'un qui devine juste un
+  // email au hasard sans en connaître le mot de passe.
+  if (!user.email_verified) {
+    return res.status(403).json({
+      error: 'Email non confirmé. Vérifiez votre boîte mail, ou demandez un nouvel envoi.',
+      code: 'EMAIL_NOT_VERIFIED',
+    })
   }
 
   // ✅ Verrouillage de session — un identifiant unique par connexion. Toute

@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -10,10 +10,23 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [needsVerification, setNeedsVerification] = useState(false)
+  const [resendSent, setResendSent] = useState(false)
+
+  const resendVerification = async () => {
+    setResendSent(false)
+    await fetch('/api/auth/resend-verification', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+    setResendSent(true)
+  }
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setNeedsVerification(false)
     if (!email || !password) { setError('Email et mot de passe requis'); return }
 
     setLoading(true)
@@ -24,7 +37,12 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       })
       const data = await res.json()
-      if (!res.ok) { setError(data.error || 'Erreur lors de la connexion'); setLoading(false); return }
+      if (!res.ok) {
+        setError(data.error || 'Erreur lors de la connexion')
+        if (data.code === 'EMAIL_NOT_VERIFIED') setNeedsVerification(true)
+        setLoading(false)
+        return
+      }
 
       // ✅ FIX — navigation complète (pas router.push) : nécessaire pour une
       // redirection fiable vers des fichiers .html statiques (public/tools/*)
@@ -43,7 +61,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Connexion — Transit-IA</title>
+        <title>Connexion — Import-IA</title>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
       </Head>
       <style dangerouslySetInnerHTML={{ __html: `
@@ -63,7 +81,7 @@ export default function Login() {
       {/* Header */}
       <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em' }}>
-          Transit-eXPert
+          IMPORT-EXPERT
         </Link>
         <span style={{ fontSize: 11, letterSpacing: '.1em', color: 'var(--ink3)' }}>CONNEXION</span>
       </header>
@@ -75,7 +93,7 @@ export default function Login() {
 
             <div style={{ padding: '1.5rem 2rem 1rem', borderBottom: '1px solid var(--border)' }}>
               <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 26, fontWeight: 400, color: 'var(--ink)', marginBottom: '.2rem' }}>
-                Se connecter à <span style={{ color: 'var(--gold)' }}>Transit-IA</span>
+                Se connecter à <span style={{ color: 'var(--gold)' }}>Import-IA</span>
               </div>
               <div style={{ fontSize: 13, color: 'var(--ink3)' }}>Plateforme d'intelligence douanière marocaine</div>
             </div>
@@ -84,6 +102,17 @@ export default function Login() {
               {error && (
                 <div style={{ padding: '.75rem 1rem', background: '#FEE2E2', border: '1px solid #FECACA', color: 'var(--red)', fontSize: 13, marginBottom: '1rem' }}>
                   ⚠ {error}
+                  {needsVerification && (
+                    <div style={{ marginTop: '.5rem' }}>
+                      {resendSent ? (
+                        <span style={{ color: 'var(--ink2)' }}>Email renvoyé — vérifiez votre boîte mail.</span>
+                      ) : (
+                        <button type="button" onClick={resendVerification} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontWeight: 600, cursor: 'pointer', padding: 0, fontSize: 13, textDecoration: 'underline' }}>
+                          Renvoyer l'email de confirmation
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -132,11 +161,11 @@ export default function Login() {
       </main>
 
       <footer style={{ borderTop: '1px solid var(--border)', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--ink3)' }}>
-        <span>© 2026 Transit-IA</span>
+        <span>© 2026 Import-IA</span>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
 
-          <Link href="#">Mentions légales</Link>
-          <Link href="#">Confidentialité</Link>
+          <Link href="/cgu">Conditions d'utilisation</Link>
+          <Link href="/confidentialite">Confidentialité</Link>
         </div>
       </footer>
     </>

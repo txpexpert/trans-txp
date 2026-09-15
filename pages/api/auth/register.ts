@@ -3,12 +3,15 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
-import { createUserToken, userCookieOptions, TRIAL_TTL_MS } from '../../../lib/userAuth'
+import { TRIAL_TTL_MS } from '../../../lib/userAuth'
+import { sendVerificationEmail } from '../../../lib/email'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_KEY!    // ← clé SERVICE (pas anon) pour bypasser RLS
 )
+
+const VERIFY_TOKEN_TTL_MS = 48 * 60 * 60 * 1000 // 48h
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end()
@@ -36,9 +39,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const password_hash = await bcrypt.hash(password, 12)
 
-  // ✅ Verrouillage de session — identifiant unique dès la création du compte,
-  // cohérent avec pages/api/auth/login.ts (voir ce fichier pour le détail).
-  const sessionId = crypto.randomUUID()
+  // ── Vérification d'email ──────────────────────────────────────────────────
+  // Le compte est créé immédiatement (essai de 14 jours calculé dès
+  // maintenant, cf. TRIAL_TTL_MS), mais NE PEUT PAS se connecter tant que
+  // l'email n'est pas confirmé — voir la vérification ajoutée dans login.ts.
+  // Le compteur d'essai démarre à l'inscription, pas à la confirmation :
+  // laisser traîner un email non confirmé ne prolonge pas l'essai gratuit.
+  const verifyToken = crypto.randomBytes(32).toString('hex')
+  const verifyTokenExpires = new Date(Date.now() + VERIFY_TOKEN_TTL_MS).toISOString()
 
   const { data: user, error } = await supabase
     .from('users')
@@ -51,9 +59,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       plan: 'trial',
       statut: 'trial',
       trial_ends_at: new Date(Date.now() + TRIAL_TTL_MS).toISOString(),
-      current_session_id: sessionId,
+      email_verified: false,
+      verify_token: verifyToken,
+      verify_token_expires: verifyTokenExpires,
     })
-    .select('id, email, plan, statut, trial_ends_at')
+    .select('id, email, prenom')
     .single()
 
   if (error) {
@@ -61,20 +71,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Erreur lors de la création du compte' })
   }
 
-  const token = createUserToken({
-    userId:    user.id,
-    email:     user.email,
-    plan:      user.plan,
-    statut:    user.statut,
-    sessionId,
-    // ✅ FIX — même logique que login.ts : trialEnds transmis dès la création
-    // du compte, disponible immédiatement dans le dashboard.
-    trialEnds: user.trial_ends_at ? new Date(user.trial_ends_at).getTime() : undefined,
-  })
+  const emailResult = await sendVerificationEmail(user.email, user.prenom || '', verifyToken)
+  if (!emailResult.ok) {
+    // Le compte existe déjà en base à ce stade — on ne l'annule pas pour un
+    // simple échec d'envoi (l'utilisateur peut redemander l'email ensuite),
+    // mais on le signale clairement au front pour qu'il informe l'utilisateur.
+    console.error('[register] Email de vérification non envoyé pour', user.email)
+    return res.status(201).json({
+      success: true,
+      emailSent: false,
+      message: 'Compte créé, mais l\'email de confirmation n\'a pas pu être envoyé. Contactez le support.',
+    })
+  }
 
-  res.setHeader('Set-Cookie', userCookieOptions(token))
+  // Pas de cookie de session ici — la connexion ne sera possible qu'après
+  // avoir cliqué le lien reçu par email (voir verify-email.ts).
   return res.status(201).json({
     success: true,
-    user: { id: user.id, email: user.email, plan: user.plan, statut: user.statut },
+    emailSent: true,
+    message: 'Compte créé ! Vérifiez votre boîte mail pour confirmer votre adresse et activer votre essai.',
   })
 }
