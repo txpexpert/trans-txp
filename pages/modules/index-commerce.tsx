@@ -1,4 +1,4 @@
-﻿import { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -626,14 +626,14 @@ export default function IndexCommerceInternational() {
 
   return (
     <>
-      <Head><title>Index du Commerce International — Transit-IA</title></Head>
+      <Head><title>Index du Commerce International — Import-IA</title></Head>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="ic-wrap">
 
         {/* ── Header ── */}
         <div className="ic-header">
           <div>
-            <div className="ic-kicker">Transit-IA — INTELLIGENCE RÉGLEMENTAIRE</div>
+            <div className="ic-kicker">Import-IA — INTELLIGENCE RÉGLEMENTAIRE</div>
             <div className="ic-title">Index du Commerce International</div>
           </div>
           <div className="ic-header-right">
@@ -784,7 +784,7 @@ export default function IndexCommerceInternational() {
 
         {/* ── Footer ── */}
         <div className="ic-footer">
-          <span>Transit-IA · Index du Commerce International · {totalPays} pays · 11 rubriques · 2025–2026</span>
+          <span>Import-IA · Index du Commerce International · {totalPays} pays · 11 rubriques · 2025–2026</span>
           <span>Informatif — consultez un transitaire agréé pour toute opération réelle</span>
         </div>
       </div>

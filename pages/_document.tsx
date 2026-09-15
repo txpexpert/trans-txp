@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html lang="fr">
       <Head>
-        {/* ── PWA — Transit-IA mobile ── */}
+        {/* ── PWA — Import-IA mobile ── */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#153E82" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />

@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import ForexWidget from "../../components/ForexWidget";
 
@@ -236,7 +236,7 @@ export default function Comparateur() {
   return (
     <>
       <Head>
-        <title>Comparateur de régimes douaniers — Transit-IA</title>
+        <title>Comparateur de régimes douaniers — Import-IA</title>
       </Head>
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
@@ -253,7 +253,7 @@ export default function Comparateur() {
         {/* Header */}
         <div style={{ background:"#0A0A0A", borderBottom:"2px solid #C9A84C", padding:".75rem 1.25rem", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div>
-            <div style={{ fontSize:9, letterSpacing:".14em", color:"#C9A84C", marginBottom:2 }}>Transit-IA — OUTIL D'AIDE À LA DÉCISION · CDII MAROC 2026</div>
+            <div style={{ fontSize:9, letterSpacing:".14em", color:"#C9A84C", marginBottom:2 }}>Import-IA — OUTIL D'AIDE À LA DÉCISION · CDII MAROC 2026</div>
             <div style={{ fontSize:15, fontWeight:500, color:"#E8C97A" }}>Comparateur des régimes douaniers — 9 régimes · Contraintes réelles</div>
           </div>
           <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6 }}>
@@ -489,7 +489,7 @@ export default function Comparateur() {
                   return (
                     <>
                       <div style={{ background:"#0A0A0A", padding:"1rem", borderBottom:"2px solid #C9A84C", marginBottom:"1rem" }}>
-                        <div style={{ fontSize:9, letterSpacing:".14em", color:"#C9A84C", marginBottom:3 }}>RECOMMANDATION Transit-IA</div>
+                        <div style={{ fontSize:9, letterSpacing:".14em", color:"#C9A84C", marginBottom:3 }}>RECOMMANDATION Import-IA</div>
                         <div style={{ fontSize:15, fontWeight:500, color:"#E8C97A", marginBottom:2 }}>{best.long}</div>
                         <div style={{ fontSize:11, color:"#8A8078" }}>Contrainte : {best.constraint_type}</div>
                       </div>

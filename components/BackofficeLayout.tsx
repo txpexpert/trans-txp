@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 const NAV = [
@@ -117,7 +117,7 @@ export default function BackofficeLayout({ children, title = '' }: { children: R
           </div>
           <div style={{ display:'flex', alignItems:'center', gap:'1rem' }}>
             <div style={{ background:'rgba(201,168,76,.15)', color:'#E8C97A', fontSize:10, padding:'2px 8px', letterSpacing:'.08em', borderRadius:2 }}>
-              Transit-IA · 2026
+              Import-IA · 2026
             </div>
             <div style={{ fontSize:11, color:'rgba(255,255,255,.3)' }}>
               {new Date().toLocaleDateString('fr-MA', { day:'2-digit', month:'long', year:'numeric' })}

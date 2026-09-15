@@ -1,5 +1,5 @@
-﻿// pages/modules/incoterms-shipping.tsx
-// Transit-IA — Module 15 : Qui Paie Quoi ? Matrice Incoterms × Termes Armateurs
+// pages/modules/incoterms-shipping.tsx
+// Import-IA — Module 15 : Qui Paie Quoi ? Matrice Incoterms × Termes Armateurs
 // Stack : Next.js 14 Pages Router — TypeScript — CSS Modules
 
 import { useState, useEffect, useRef } from 'react'
@@ -163,8 +163,8 @@ export default function IncotermsShippingPage() {
   return (
     <>
       <Head>
-        <title>Qui Paie Quoi ? — Matrice Incoterms × Termes Armateurs | Transit-IA</title>
-        <meta name="description" content="Matrice interactive Incoterms 2020 × Shipping Terms. Comparez la couverture, identifiez les gaps de coût, vérifiez la cohérence de vos contrats de transport. Outil Transit-IA." />
+        <title>Qui Paie Quoi ? — Matrice Incoterms × Termes Armateurs | Import-IA</title>
+        <meta name="description" content="Matrice interactive Incoterms 2020 × Shipping Terms. Comparez la couverture, identifiez les gaps de coût, vérifiez la cohérence de vos contrats de transport. Outil Import-IA." />
         <meta property="og:title" content="Qui Paie Quoi ? — Matrice Incoterms × Termes Armateurs" />
         <meta property="og:description" content="Les Incoterms et les shipping terms parlent du même voyage mais pas avec le même langage. Voici le pont." />
       </Head>

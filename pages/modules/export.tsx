@@ -1,4 +1,4 @@
-﻿import { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import Head from 'next/head'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -192,7 +192,7 @@ export default function ModuleExport() {
   return (
     <>
       <Head>
-        <title>Module Export — Transit-IA</title>
+        <title>Module Export — Import-IA</title>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </Head>
 
@@ -878,7 +878,7 @@ export default function ModuleExport() {
             </div>
 
             <div className="card-gold card" style={{ marginTop: '1.5rem' }}>
-              <div className="sec-title" style={{ marginBottom: '.75rem' }}>Recommandations Transit-IA pour l'export marocain</div>
+              <div className="sec-title" style={{ marginBottom: '.75rem' }}>Recommandations Import-IA pour l'export marocain</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: 13, color: 'var(--ink2)' }}>
                 <div style={{ padding: '.75rem', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)' }}>
                   <strong style={{ color: 'var(--ink)', display: 'block', marginBottom: '.4rem' }}>🚢 Maritime Maroc → Europe</strong>

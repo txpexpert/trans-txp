@@ -42,7 +42,7 @@ export default function BackofficeLogin() {
 
   return (
     <>
-      <Head><title>Backoffice — Transit-IA</title></Head>
+      <Head><title>Backoffice — Import-IA</title></Head>
       <style suppressHydrationWarning>{`
         *{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',system-ui,sans-serif}
         body{background:#0A0A0A;min-height:100vh;display:flex;align-items:center;justify-content:center}
@@ -95,7 +95,7 @@ export default function BackofficeLogin() {
         </form>
 
         <div style={{ marginTop:'2rem', textAlign:'center', fontSize:10, color:'#1A1A1A' }}>
-          Accès restreint · Transit-IA · 2026
+          Accès restreint · Import-IA · 2026
         </div>
       </div>
     </>
