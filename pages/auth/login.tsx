@@ -49,7 +49,18 @@ export default function Login() {
       // et pour garantir que le middleware relit bien le cookie de session
       // fraîchement posé par /api/auth/login, plutôt qu'une transition
       // purement côté client qui pouvait ignorer la valeur de "redirect".
-      const redirect = typeof router.query.redirect === 'string' ? router.query.redirect : '/'
+      //
+      // 🔒 SÉCURITÉ — redirection ouverte corrigée : "redirect" vient de
+      // l'URL, donc non fiable. On n'accepte qu'un chemin interne commençant
+      // par un seul "/" — on rejette "//" et "/\" (URL protocol-relative
+      // vers un domaine externe, contournement classique de ce filtre).
+      const raw = router.query.redirect
+      const isSafeInternalPath =
+        typeof raw === 'string' &&
+        raw.startsWith('/') &&
+        !raw.startsWith('//') &&
+        !raw.startsWith('/\\')
+      const redirect = isSafeInternalPath ? raw : '/'
       window.location.href = redirect
     } catch {
       setError('Erreur réseau — réessayez')

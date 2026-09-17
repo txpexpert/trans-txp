@@ -31,7 +31,17 @@ export default function BackofficeLogin() {
       const data = await res.json()
       if (!res.ok) { setError(data.error || 'Identifiants incorrects.'); return }
 
-      const redirect = typeof router.query.redirect === 'string' ? router.query.redirect : '/backoffice/dashboard'
+      // 🔒 SÉCURITÉ — redirection ouverte corrigée : "redirect" vient de
+      // l'URL, donc non fiable. On n'accepte qu'un chemin interne commençant
+      // par un seul "/" — on rejette "//" et "/\" (URL protocol-relative
+      // vers un domaine externe, contournement classique de ce filtre).
+      const raw = router.query.redirect
+      const isSafeInternalPath =
+        typeof raw === 'string' &&
+        raw.startsWith('/') &&
+        !raw.startsWith('//') &&
+        !raw.startsWith('/\\')
+      const redirect = isSafeInternalPath ? raw : '/backoffice/dashboard'
       router.push(redirect)
     } catch {
       setError('Erreur réseau — réessayez.')
