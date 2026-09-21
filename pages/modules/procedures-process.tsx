@@ -184,9 +184,9 @@ const PROCEDURES: Procedure[] = [
     id:'import-at', categorie:'IMPORT',
     titre:'AT — Admission Temporaire (sans transformation)',
     codes:[
-      {code:'030',label:'IT Mat. recherche hydrocarbure'},{code:'031',label:'IT Mat. soumis à redevances'},
-      {code:'032',label:'IT Mat. non soumis à redevance'},{code:'033',label:'IT Véhicules automobiles'},
-      {code:'034',label:'Autres IT'},{code:'501',label:'Admission temporaire'},
+      {code:'300',label:'AT Mat. recherche hydrocarbure'},{code:'301',label:'AT Mat. soumis à redevances trimestrielles'},
+      {code:'302',label:'AT Mat. non soumis à redevance'},{code:'331',label:'AT Véhicules automobiles'},
+      {code:'332',label:'Autres AT'},{code:'321',label:'AT marchandises délai 6 mois'},{code:'322',label:'AT marchandises délai 2 ans'},
     ],
     description:'Importation temporaire de matériels ou véhicules sur le TA, sans transformation, avec réexportation en l\'état dans le délai imparti. Aucun droit de douane dû si les conditions sont respectées.',
     vigilance:[
@@ -931,7 +931,7 @@ export default function ProceduresProcessPage() {
   const tabIsQuestion = (tab: Tab, i: number) => tab === 'vigilance' && i >= proc.vigilance.length
 
   return (
-    <ModuleLayout kicker="PROCÉDURES DOUANIÈRES" title="Régimes & Procédures" sub="22 procédures · 5 catégories · Codes régimes DUM · Version draft">
+    <ModuleLayout kicker="PROCÉDURES DOUANIÈRES" title="Régimes & Procédures" sub="22 procédures · 5 catégories · Codes régimes DUM · Recoupé RAG ADII · Septembre 2026">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="pr-search-wrap">
         <input className="pr-search" placeholder="Rechercher (titre ou code DUM)…" value={search} onChange={e => setSearch(e.target.value)} />
@@ -996,10 +996,6 @@ export default function ProceduresProcessPage() {
 }
 
 const CSS = `
-.pr-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem}
-.pr-kicker{font-size:9px;letter-spacing:.2em;color:var(--gold,#C9A84C);margin-bottom:.2rem}
-.pr-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3vw,30px);font-weight:400;color:var(--ink,#0A0A0A);line-height:1.1}
-.pr-sub{font-size:12px;color:var(--inkm,#8A8078);margin-top:.2rem}
 .pr-search{padding:7px 14px;font-size:12px;border:1px solid var(--border,#E8DFC8);background:var(--white,#FDFCF8);color:var(--ink,#0A0A0A);width:260px;outline:none;font-family:'DM Sans',sans-serif}
 .pr-search:focus{border-color:var(--gold,#C9A84C)}
 .pr-cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}

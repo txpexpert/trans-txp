@@ -136,17 +136,20 @@ footer{border-top:1px solid var(--border);padding:1.25rem 2rem;text-align:center
 
 export default function Procedures() {
   const [q, setQ] = useState('')
-  // Délais corrigés d'après le RAG du projet (durées légales de séjour sous régime,
-  // distinctes du temps de traitement administratif — voir légende sous le tableau).
+  // Référence = code régime DUM réel repris du guide détaillé (procedures-process.tsx),
+  // et non plus une numérotation "ADII-00X" arbitraire sans correspondance côté guide.
+  // Délais = durées légales de séjour sous régime (RAG), distinctes d'un délai de traitement — voir légende.
+  // "Fiche guide" indique si la ligne a une correspondance directe dans les 22 procédures détaillées.
   const data: [string, string, string, string, string, string][] = [
-    ['ADII-001', "Dédouanement à l'importation", 'Mise à la consommation (010)', 'Dépôt DUM : 45 j max*', 'Actif', 'bg'],
-    ['ADII-002', 'Exportation définitive',        'Exportation (060/061)',        'Non chiffré dans le RAG', 'Actif', 'bg'],
-    ['ADII-003', 'Transit douanier national',      'Transit (085/086)',            'Délai fixé par l\'administration (art. 156-3° CDII)', 'Actif', 'bg'],
-    ['ADII-004', 'Admission temporaire (AT)',      'Régime économique (301/321/322…)', 'Séjour 6 mois à 2 ans, prorogeable au double*', 'Actif', 'bg'],
-    ['ADII-005', 'Entrepôt de stockage',           'Régime suspensif (035/036/037)', 'Séjour 1 an + 2×6 mois (max 24 mois)*', 'Actif', 'bg'],
-    ['ADII-006', 'ATPA — Perfectionnement actif',  'Régime économique (022/023)',   'Séjour max 2 ans (1 an si cession)*', 'Actif', 'bg'],
-    ['ADII-007', 'Zones franches / ZAI',            'Zone franche (765/769/855/856/866…)', 'Non chiffré dans le RAG', 'Actif', 'bg'],
-    ['ADII-008', 'Dédouanement OEA',               'Opérateur économique agréé', 'Non chiffré dans le RAG', 'OEA uniquement','bb'],
+    ['010',      "Dédouanement à l'importation (droit commun)", 'Mise à la consommation directe', 'Dépôt DUM : 45 j max*', 'Fiche guide ✓', 'bg'],
+    ['022/023',  'ATPA — Perfectionnement actif',  'Régime économique',   'Séjour max 2 ans (1 an si cession)*', 'Fiche guide ✓', 'bg'],
+    ['300–332',  'Admission temporaire (AT)',      'Régime économique', 'Séjour 6 mois à 2 ans, prorogeable au double*', 'Fiche guide ✓', 'bg'],
+    ['241/242/243', 'Transformation sous douane (TSD)', 'Régime économique', 'Séjour 1 an (3→9 mois si fractionné)*', 'Fiche guide ✓', 'bg'],
+    ['035/036/037', 'Entrepôt de stockage / EPP',   'Régime suspensif', 'Séjour 1 an + 2×6 mois (max 24 mois)*', 'Fiche guide ✓', 'bg'],
+    ['085/086',  'Transit douanier',                'Transit',           'Délai fixé par l\'administration (art. 156-3° CDII)', 'Fiche guide ✓', 'bg'],
+    ['765/766/769/855/856/866…', 'Zones franches / ZAI', 'Zone franche', 'Non chiffré dans le RAG', 'Catégorie ZAI du guide (5 fiches)', 'ba'],
+    ['060/061',  'Exportation définitive (droit commun)', 'Exportation', 'Non chiffré dans le RAG', 'Pas de fiche dédiée dans le guide', 'ba'],
+    ['—',        'Dédouanement simplifié OEA',      'Opérateur économique agréé', 'Non chiffré dans le RAG', 'Pas de fiche dédiée dans le guide', 'ba'],
   ]
   const rows = data.filter(r => r.join(' ').toLowerCase().includes(q.toLowerCase()))
 
@@ -223,11 +226,11 @@ export default function Procedures() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Référence</th>
+                <th>Code régime (DUM)</th>
                 <th>Procédure</th>
                 <th>Régime</th>
-                <th>Délai moyen</th>
-                <th>Statut</th>
+                <th>Délai</th>
+                <th>Correspondance guide</th>
               </tr>
             </thead>
             <tbody>
