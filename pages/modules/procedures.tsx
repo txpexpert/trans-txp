@@ -136,15 +136,17 @@ footer{border-top:1px solid var(--border);padding:1.25rem 2rem;text-align:center
 
 export default function Procedures() {
   const [q, setQ] = useState('')
+  // Délais corrigés d'après le RAG du projet (durées légales de séjour sous régime,
+  // distinctes du temps de traitement administratif — voir légende sous le tableau).
   const data: [string, string, string, string, string, string][] = [
-    ['ADII-001', "Dédouanement à l'importation", 'Mise à la consommation', '2–5 jours', 'Actif', 'bg'],
-    ['ADII-002', 'Exportation définitive',        'Exportation',           '1–3 jours', 'Actif', 'bg'],
-    ['ADII-003', 'Transit douanier national',      'Transit',               'Même jour', 'Actif', 'bg'],
-    ['ADII-004', 'Admission temporaire',           'Régime économique',     '3–7 jours', 'Actif', 'bg'],
-    ['ADII-005', 'Entrepôt de stockage',           'Régime suspensif',      '2–4 jours', 'Actif', 'bg'],
-    ['ADII-006', 'Perfectionnement actif',         'Régime économique',     '5–10 jours','En révision','ba'],
-    ['ADII-007', 'Zone franche (TFZ)',              'Zone franche',          '1–2 jours', 'Actif', 'bg'],
-    ['ADII-008', 'Dédouanement simplifié OEA',    'Opérateur économique agréé','4h',   'OEA uniquement','bb'],
+    ['ADII-001', "Dédouanement à l'importation", 'Mise à la consommation (010)', 'Dépôt DUM : 45 j max*', 'Actif', 'bg'],
+    ['ADII-002', 'Exportation définitive',        'Exportation (060/061)',        'Non chiffré dans le RAG', 'Actif', 'bg'],
+    ['ADII-003', 'Transit douanier national',      'Transit (085/086)',            'Délai fixé par l\'administration (art. 156-3° CDII)', 'Actif', 'bg'],
+    ['ADII-004', 'Admission temporaire (AT)',      'Régime économique (301/321/322…)', 'Séjour 6 mois à 2 ans, prorogeable au double*', 'Actif', 'bg'],
+    ['ADII-005', 'Entrepôt de stockage',           'Régime suspensif (035/036/037)', 'Séjour 1 an + 2×6 mois (max 24 mois)*', 'Actif', 'bg'],
+    ['ADII-006', 'ATPA — Perfectionnement actif',  'Régime économique (022/023)',   'Séjour max 2 ans (1 an si cession)*', 'Actif', 'bg'],
+    ['ADII-007', 'Zones franches / ZAI',            'Zone franche (765/769/855/856/866…)', 'Non chiffré dans le RAG', 'Actif', 'bg'],
+    ['ADII-008', 'Dédouanement OEA',               'Opérateur économique agréé', 'Non chiffré dans le RAG', 'OEA uniquement','bb'],
   ]
   const rows = data.filter(r => r.join(' ').toLowerCase().includes(q.toLowerCase()))
 
@@ -189,17 +191,20 @@ export default function Procedures() {
         {/* ── Stats ── */}
         <div className="info-grid">
           <div className="istat">
-            <div className="istat-n">124</div>
-            <div className="istat-l">Procédures documentées</div>
+            <div className="istat-n">344</div>
+            <div className="istat-l">Documents ADII en base (RAG projet)</div>
           </div>
           <div className="istat">
-            <div className="istat-n">38</div>
-            <div className="istat-l">Formulaires disponibles</div>
+            <div className="istat-n">22</div>
+            <div className="istat-l">Procédures détaillées (guide approfondi)</div>
           </div>
           <div className="istat">
-            <div className="istat-n">2025</div>
-            <div className="istat-l">Dernière mise à jour ADII</div>
+            <div className="istat-n">2026</div>
+            <div className="istat-l">Dernière circulaire LF intégrée (6702/210, LF 2026)</div>
           </div>
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: '-.75rem', marginBottom: '1.5rem' }}>
+          Chiffres alignés sur le contenu réel de la base documentaire du projet (les valeurs précédentes — 124 procédures / 38 formulaires / 2025 — n'étaient pas vérifiables dans le RAG).
         </div>
 
         {/* ── Recherche ── */}
@@ -240,6 +245,10 @@ export default function Procedures() {
               )}
             </tbody>
           </table>
+          <div style={{ padding: '.75rem 1.25rem', fontSize: 11, color: 'var(--muted)', borderTop: '1px solid var(--bg2)' }}>
+            * Durées légales maximales de séjour sous régime (RAG : Code des douanes 1-77-339, décret 2-77-862, circ. 6164/313, circ. 5171/313) —
+            à ne pas confondre avec un délai de traitement administratif, non chiffré dans les documents du projet pour la plupart des régimes.
+          </div>
         </div>
 
         {/* ── Étapes dédouanement import ── */}
@@ -247,11 +256,11 @@ export default function Procedures() {
           <div className="section-title">Étapes — dédouanement à l'importation</div>
           <ul className="steps">
             {([
-              ['Dépôt de la déclaration DUM',      "Transmission électronique via BADR. Délai : J+0."],
-              ['Vérification documentaire',          "Facture, LTA/connaissement, certificat d'origine, liste de colisage. Délai : J+1."],
-              ['Liquidation des droits et taxes',    "Calcul droits de douane, TVA, TIC selon le code SH. Paiement en ligne ou chèque certifié."],
-              ['Visite et vérification physique',    "Sur circuit rouge uniquement. Inspection des marchandises, contrôle de conformité."],
-              ['Bon à enlever (BAE)',                "Délivrance après apurement. Enlèvement des marchandises du port ou de l'aéroport."],
+              ['Dépôt de la déclaration en détail (DUM)', "Transmission électronique via BADR, par anticipation ou après arrivée. Délai réglementaire de dépôt : 45 jours à compter de l'arrivée au bureau de douane (arrêté 1318-77, art. 2 ; circ. 6369/312)."],
+              ['Sélectivité et contrôle documentaire',    "Le circuit (vert / orange / rouge) est attribué automatiquement par BADR dès l'enregistrement. En circuit orange : contrôle documentaire avant mainlevée (circ. 6369/312)."],
+              ['Liquidation des droits et taxes',    "Calcul des droits d'importation, TVA et TIC selon le code SH ; paiement en ligne ou par obligation cautionnée (60 à 180 jours) selon l'option retenue (décret 2-77-862, art. 55-59)."],
+              ['Visite et vérification physique',    "Circuit rouge : contrôle documentaire et visite physique (partielle ou intégrale) avant mainlevée ; circuit vert : mainlevée automatique sans contrôle (circ. 6369/312, circ. 6456/412)."],
+              ['Bon à enlever (BAE / BAD)',           "Le Bon à Délivrer est dématérialisé via PortNet depuis le 3 février 2020 (circ. 5995/300) ; la mainlevée conditionne l'enlèvement des marchandises."],
             ] as [string,string][]).map(([t, d], i) => (
               <li key={i} className="step">
                 <div className="step-num">{i + 1}</div>
@@ -276,7 +285,7 @@ export default function Procedures() {
 
       </div>
 
-      <footer>Import-IA — Module PRO · Procédures Douanières ADII · Mise à jour 2025</footer>
+      <footer>Import-IA — Module PRO · Procédures Douanières ADII · Contenu recoupé avec le RAG projet (CDII, décret 2-77-862, circulaires ADII) · Septembre 2026</footer>
     </>
   )
 }
