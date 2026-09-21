@@ -17,14 +17,26 @@
 //    /api/auth/me), matrice APP_MODULE_ACCESS indépendante.
 // Ce fichier expose un point d'entrée pour chaque cas, plus un combiné
 // pour les routes appelées à la fois par le desktop et par /app.
+//
+// ⚠️ ModuleCheck est volontairement un type "plat" (ok/status/error TOUJOURS
+// présents, jamais une union discriminée {ok:true} | {ok:false,...}). Ce
+// projet compile avec "strict": false (tsconfig.json) donc sans
+// strictNullChecks — dans ce mode, TypeScript ne rétrécit pas correctement
+// les unions discriminées après un test sur leur champ discriminant (ex:
+// `if (!x.ok) return x.status` échoue en build même si x.ok est bien
+// `false` à cet endroit). Un type plat évite complètement ce piège.
 // ─────────────────────────────────────────────────────────────────────────────
 import type { NextApiRequest } from 'next'
 import { verifyUserToken, canAccessModule, USER_COOKIE } from './userAuth'
 import { getAppSessionFromReq, canAccessAppModule } from './appAccess'
 
-export type ModuleCheck =
-  | { ok: true }
-  | { ok: false; status: 401 | 403; error: string }
+export interface ModuleCheck {
+  ok: boolean
+  status: 200 | 401 | 403
+  error: string
+}
+
+const OK: ModuleCheck = { ok: true, status: 200, error: '' }
 
 /** Session desktop (pages /modules/*, /tools/*.html) — même logique que middleware.ts. */
 export function checkDesktopModuleAccess(req: NextApiRequest, moduleCode: string): ModuleCheck {
@@ -34,7 +46,7 @@ export function checkDesktopModuleAccess(req: NextApiRequest, moduleCode: string
   if (!canAccessModule(session.plan, session.statut, moduleCode, session.trialEnds)) {
     return { ok: false, status: 403, error: 'Module non inclus dans votre abonnement' }
   }
-  return { ok: true }
+  return OK
 }
 
 /** Session mobile /app/* — même logique qu'appAccess.ts (requireAppAccess). */
@@ -44,7 +56,7 @@ export async function checkAppModuleAccess(req: NextApiRequest, moduleCode: stri
   if (!canAccessAppModule(session.plan, session.statut, moduleCode, session.trialEnds)) {
     return { ok: false, status: 403, error: 'Module non inclus dans votre abonnement' }
   }
-  return { ok: true }
+  return OK
 }
 
 /**
