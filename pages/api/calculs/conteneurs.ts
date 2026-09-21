@@ -5,6 +5,7 @@
 // ============================================================
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { checkDesktopModuleAccess } from '../../../lib/apiAuth';
 
 // ── Données référentielles des conteneurs (jamais exposées) ──
 
@@ -126,6 +127,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  // ✅ Contrôle d'accès — module 'calc-conteneurs' (Pro+), absent jusqu'ici
+  // malgré le commentaire "ROUTE PROTÉGÉE" en tête de fichier.
+  const access = checkDesktopModuleAccess(req, 'calc-conteneurs');
+  if (!access.ok) return res.status(access.status).json({ ok: false, error: access.error });
 
   // GET — retourne la liste des conteneurs disponibles (sans algorithme)
   if (req.method === 'GET') {

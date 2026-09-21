@@ -8,9 +8,20 @@
 // ============================================================
 
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { checkDesktopModuleAccess } from '../../../lib/apiAuth'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'Méthode non autorisée' })
+
+  // ✅ Contrôle d'accès — module 'classement' (appelé depuis
+  // modules-classement-clf.html, le sous-outil de classification du module
+  // classement), absent jusqu'ici. Particulièrement important ici : cette
+  // route consomme le budget ANTHROPIC_API_KEY du site à chaque appel.
+  // ⚠️ À confirmer : aucun code module explicite n'est visible dans le
+  // fichier statique lui-même — déduit du nom du fichier et du fait que
+  // tarifs/search.ts (même écran "classement") utilise déjà ce code.
+  const access = checkDesktopModuleAccess(req, 'classement')
+  if (!access.ok) return res.status(access.status).json({ ok: false, error: access.error })
 
   const { description, paysOrigine } = req.body
 

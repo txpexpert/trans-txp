@@ -3,6 +3,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { checkAnyModuleAccess } from '../../../lib/apiAuth'
 
 function getSupabase() {
   return createClient(
@@ -19,7 +20,15 @@ interface StatsResponse {
   error?: string
 }
 
-export default async function handler(_req: NextApiRequest, res: NextApiResponse<StatsResponse>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<StatsResponse>) {
+  // ✅ Contrôle d'accès — module 'classement' (Premium+, desktop
+  // /modules/classement.tsx et mobile /app/classement.tsx), absent
+  // jusqu'ici : cette route répondait à quiconque l'appelait directement.
+  const access = await checkAnyModuleAccess(req, 'classement')
+  if (!access.ok) {
+    return res.status(access.status).json({ total: 0, withTaux: 0, chapitres: 0, annee: new Date().getFullYear(), error: access.error })
+  }
+
   try {
     const supabase = getSupabase()
 

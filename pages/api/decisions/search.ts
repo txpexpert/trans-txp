@@ -10,6 +10,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { checkAnyModuleAccess } from '../../../lib/apiAuth'
 
 function getSupabase() {
   return createClient(
@@ -20,6 +21,12 @@ function getSupabase() {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Méthode non autorisée' })
+
+  // ✅ Contrôle d'accès — module 'decisions-classement' (Premium+, desktop
+  // /modules/decisions-classement.tsx et mobile /app/decisions-classement.tsx),
+  // absent jusqu'ici : cette route répondait à quiconque l'appelait directement.
+  const access = await checkAnyModuleAccess(req, 'decisions-classement')
+  if (!access.ok) return res.status(access.status).json({ error: access.error })
 
   const { q = '' } = req.query
   const qStr = String(q).trim()

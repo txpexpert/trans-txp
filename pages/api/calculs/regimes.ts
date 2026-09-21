@@ -6,6 +6,7 @@
 // ============================================================
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { checkDesktopModuleAccess } from '../../../lib/apiAuth';
 
 // ── Données régimes (jamais exposées) ────────────────────────
 
@@ -207,6 +208,14 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  // ✅ Contrôle d'accès — module 'regimes-economiques' (Premium+), absent
+  // jusqu'ici malgré le commentaire "ROUTE PROTÉGÉE" en tête de fichier.
+  // ⚠️ Aucune page/tool n'appelle actuellement cette route dans le repo —
+  // code deviné par analogie avec pages/modules/regimes-economiques.tsx ;
+  // à confirmer/ajuster si cette route est en fait rattachée à un autre module.
+  const access = checkDesktopModuleAccess(req, 'regimes-economiques');
+  if (!access.ok) return res.status(access.status).json({ ok: false, error: access.error });
 
   // GET — liste des régimes (sans pénalités détaillées ni formules)
   if (req.method === 'GET') {

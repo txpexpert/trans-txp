@@ -5,6 +5,7 @@
 // ============================================================
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { checkDesktopModuleAccess } from '../../../lib/apiAuth';
 
 // ── Méthodes de calcul (jamais exposées) ─────────────────────
 
@@ -186,6 +187,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  // ✅ Contrôle d'accès — module 'valeur-douane' (Pro+), absent jusqu'ici
+  // malgré le commentaire "ROUTE PROTÉGÉE" en tête de fichier.
+  const access = checkDesktopModuleAccess(req, 'valeur-douane');
+  if (!access.ok) return res.status(access.status).json({ ok: false, error: access.error });
 
   if (req.method !== 'POST') {
     return res.status(405).json({ ok: false, error: 'Méthode non autorisée' });

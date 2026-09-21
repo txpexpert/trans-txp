@@ -6,6 +6,7 @@
 // ============================================================
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { checkDesktopModuleAccess } from '../../../lib/apiAuth';
 
 // ── Données régimes douaniers (jamais exposées) ──────────────
 
@@ -181,6 +182,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  // ✅ Contrôle d'accès — module 'verificateur-dum' (Premium+), absent
+  // jusqu'ici malgré le commentaire "ROUTE PROTÉGÉE" en tête de fichier.
+  const access = checkDesktopModuleAccess(req, 'verificateur-dum');
+  if (!access.ok) return res.status(access.status).json({ ok: false, error: access.error });
 
   // GET — retourne les régimes disponibles (sans logique d'analyse)
   if (req.method === 'GET') {

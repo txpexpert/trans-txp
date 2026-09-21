@@ -12,6 +12,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { checkAnyModuleAccess } from '../../../lib/apiAuth'
 
 function getSupabase() {
   return createClient(
@@ -45,6 +46,14 @@ const PAGE_SIZE = 30
 export default async function handler(req: NextApiRequest, res: NextApiResponse<SearchResponse>) {
   if (req.method !== 'GET') {
     return res.status(405).json({ data: [], count: 0, page: 0, totalPages: 0, error: 'Method not allowed' })
+  }
+
+  // ✅ Contrôle d'accès — module 'classement' (Premium+, desktop
+  // /modules/classement.tsx et mobile /app/classement.tsx), absent
+  // jusqu'ici : cette route répondait à quiconque l'appelait directement.
+  const access = await checkAnyModuleAccess(req, 'classement')
+  if (!access.ok) {
+    return res.status(access.status).json({ data: [], count: 0, page: 0, totalPages: 0, error: access.error })
   }
 
   const { q = '', chapitre = '', niveau, page = '0' } = req.query

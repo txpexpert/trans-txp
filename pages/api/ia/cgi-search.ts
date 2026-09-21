@@ -10,9 +10,17 @@
 // ============================================================
 
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { checkDesktopModuleAccess } from '../../../lib/apiAuth'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' })
+
+  // ✅ Contrôle d'accès — module 'cgi-search' (Premium+), absent jusqu'ici.
+  // Particulièrement important ici : cette route consomme le budget
+  // ANTHROPIC_API_KEY du site à chaque appel — un accès non authentifié
+  // exposait ce coût à quiconque connaissait l'URL.
+  const access = checkDesktopModuleAccess(req, 'cgi-search')
+  if (!access.ok) return res.status(access.status).json({ error: access.error })
 
   const { systemPrompt, userMsg } = req.body
   if (!systemPrompt || !userMsg) {
