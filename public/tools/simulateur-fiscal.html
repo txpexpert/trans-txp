@@ -46,6 +46,15 @@
     .error-msg{display:none;background:#fef2f2;border:1px solid #fecaca;color:var(--red);border-radius:8px;padding:12px;font-size:13px;margin-top:8px}
     .empty-state{text-align:center;padding:32px;color:#94a3b8;font-size:14px}
     @media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}}
+
+    /* Synthèse produit — liste déroulante (accordéon) */
+    .synth-section{border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden}
+    .synth-section summary{padding:10px 12px;cursor:pointer;font-size:13px;font-weight:700;background:#f8fafc;list-style:none;display:flex;justify-content:space-between;align-items:center}
+    .synth-section summary::-webkit-details-marker{display:none}
+    .synth-section summary::after{content:'▾';color:#94a3b8;transition:transform .15s}
+    .synth-section[open] summary::after{transform:rotate(180deg)}
+    .synth-body{padding:12px;font-size:13px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;max-width:100%;max-height:320px;overflow-y:auto}
+    .synth-meta{font-size:11px;color:#94a3b8;margin-bottom:10px}
   </style>
 </head>
 <body>
@@ -102,9 +111,20 @@
   <!-- Droits et taxes -->
   <div class="card">
     <div class="card-title">📋 Droits & Taxes</div>
+    <!-- Recherche du taux DI par code SH (base tarifaire) -->
+    <div style="margin-bottom:12px">
+      <label class="form-label">Code SH (position tarifaire) — optionnel</label>
+      <div style="display:flex;gap:8px">
+        <input class="form-input" type="text" id="f-sh" placeholder="Ex: 8501.32 ou 0101210000" oninput="this.value=this.value.trim()">
+        <button type="button" class="btn-calc" style="width:auto;white-space:nowrap;margin-top:0;padding:9px 16px" onclick="rechercherTauxSH()">🔎 Chercher le taux</button>
+      </div>
+      <div id="sh-lookup-msg" style="font-size:12px;margin-top:6px;display:none"></div>
+      <div id="sh-candidates" style="margin-top:8px;display:none"></div>
+    </div>
+
     <div class="grid2" style="margin-bottom:14px">
       <div>
-        <label class="form-label">Taux DI (%)</label>
+        <label class="form-label">Taux DI (%) <span style="font-weight:400;color:#94a3b8">— saisie manuelle toujours possible</span></label>
         <input class="form-input" type="number" id="f-di" placeholder="Ex: 2.5" min="0" max="100" step="0.5" oninput="calculer()">
       </div>
       <div>
@@ -175,6 +195,17 @@
     <div style="margin-top:12px;font-size:11px;color:#94a3b8" id="ref-legale"></div>
   </div>
 
+  <!-- Synthèse produit — recherche transversale RAG -->
+  <div class="card">
+    <div class="card-title">🧠 Synthèse produit — recherche transversale</div>
+    <div class="grid2" style="margin-bottom:10px">
+      <input class="form-input" type="text" id="f-synthese-q" placeholder="Désignation du produit ou code SH (ex: panneaux solaires, 8541.43)">
+      <button type="button" class="btn-calc" style="margin-top:0" onclick="genererSynthese(this)">🔎 Générer la synthèse</button>
+    </div>
+    <div id="synthese-msg" style="font-size:12px;color:#64748b;display:none;margin-bottom:8px"></div>
+    <div id="synthese-result"></div>
+  </div>
+
   <!-- Méthodologie -->
   <div class="methodo">
     <div style="font-weight:700;margin-bottom:6px">⚖️ Méthodologie — Art. 96 CGI Maroc</div>
@@ -199,6 +230,127 @@
 // ════════════════════════════════════════════════════════
 
 const TAUX_CHANGE = { EUR: 10.90, USD: 10.10, GBP: 12.80, AED: 2.75, CNY: 1.40, MAD: 1 };
+
+// ── Recherche du taux DI dans la base tarifaire (code SH) ────────
+// Le champ Taux DI reste éditable dans tous les cas : ceci ne fait
+// que pré-remplir une proposition quand le code SH est trouvé.
+async function rechercherTauxSH() {
+  const code = (document.getElementById('f-sh').value || '').trim();
+  const msg = document.getElementById('sh-lookup-msg');
+  const candBox = document.getElementById('sh-candidates');
+  msg.style.display = 'block';
+  candBox.style.display = 'none';
+  candBox.innerHTML = '';
+
+  if (!code) {
+    msg.style.color = '#ef4444';
+    msg.textContent = 'Saisissez un code SH (ex : 8501.32) ou laissez vide pour une saisie manuelle du taux.';
+    return;
+  }
+
+  msg.style.color = '#64748b';
+  msg.textContent = '⏳ Recherche dans la base tarifaire…';
+
+  try {
+    // Réutilise la route existante /api/tarifs/search (déjà en prod, table
+    // `tarifs` via SUPABASE_SERVICE_KEY côté serveur) — aucune nouvelle
+    // route API n'est nécessaire.
+    const resp = await fetch('/api/tarifs/search?q=' + encodeURIComponent(code));
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+
+    // Ne garder que les lignes "feuille" avec un taux réellement renseigné
+    // (search.ts renvoie aussi les lignes de chapitre/titre sans taux).
+    const candidats = (data.data || []).filter(r => r.est_feuille && r.taux_droit !== null);
+
+    if (candidats.length === 0) {
+      msg.style.color = '#f59e0b';
+      msg.textContent = '⚠️ Code non trouvé dans le tarif — saisissez le taux DI manuellement.';
+      return;
+    }
+
+    // Correspondance exacte sur le code SH tel que saisi (une fois les
+    // séparateurs retirés) -> on l'applique directement.
+    const codeDigits = code.replace(/\D/g, '');
+    const exact = candidats.find(r => r.code_sh.replace(/\D/g, '') === codeDigits);
+    if (exact || candidats.length === 1) {
+      appliquerTauxTrouve(exact || candidats[0]);
+      return;
+    }
+
+    msg.style.color = '#64748b';
+    msg.textContent = 'Plusieurs sous-positions correspondent — choisissez la bonne :';
+    candBox.style.display = 'block';
+    candBox.innerHTML = candidats.slice(0, 8).map((r, i) =>
+      `<div style="padding:8px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer" onclick='appliquerTauxTrouve(${JSON.stringify(r).replace(/'/g, "&#39;")})'>
+        <strong>${r.code_sh}</strong> — ${r.designation_clean || ''}<br>
+        <span style="color:#2563eb;font-weight:700">${r.taux_droit}%</span>
+      </div>`
+    ).join('');
+  } catch (e) {
+    msg.style.color = '#ef4444';
+    msg.textContent = '⚠️ ' + e.message;
+  }
+}
+
+function appliquerTauxTrouve(r) {
+  document.getElementById('f-di').value = r.taux_droit;
+  const msg = document.getElementById('sh-lookup-msg');
+  msg.style.display = 'block';
+  msg.style.color = '#10b981';
+  msg.textContent = '✅ Taux extrait automatiquement — ' + r.code_sh + ' : ' + (r.designation_clean || '') + ' (' + r.taux_droit + '%). Modifiable si besoin.';
+  document.getElementById('sh-candidates').style.display = 'none';
+  calculer();
+}
+
+// ── Synthèse produit — recherche transversale (tarifs + décisions + RAG) ──
+async function genererSynthese(btn) {
+  const q = (document.getElementById('f-synthese-q').value || '').trim();
+  const msg = document.getElementById('synthese-msg');
+  const resultBox = document.getElementById('synthese-result');
+
+  if (!q) {
+    msg.style.display = 'block';
+    msg.style.color = '#ef4444';
+    msg.textContent = 'Saisissez une désignation de produit ou un code SH.';
+    return;
+  }
+
+  msg.style.display = 'block';
+  msg.style.color = '#64748b';
+  msg.textContent = '⏳ Recherche dans la base tarifaire, les décisions de classement et la base réglementaire, puis génération de la synthèse…';
+  resultBox.innerHTML = '';
+  if (btn) btn.disabled = true;
+
+  try {
+    const resp = await fetch('/api/synthese/produit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: q }),
+    });
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error || 'Erreur lors de la génération de la synthèse');
+
+    msg.style.display = 'none';
+
+    const meta = data.meta
+      ? `<div class="synth-meta">Trouvé : ${data.meta.nbTarifs} ligne(s) tarifaire(s) · ${data.meta.nbDecisions} décision(s) de classement · ${data.meta.nbChunks} extrait(s) réglementaire(s)</div>`
+      : '';
+
+    resultBox.innerHTML = meta + (data.sections || []).map((s, i) =>
+      `<details class="synth-section" ${i === 0 ? 'open' : ''}>
+        <summary>${s.titre}</summary>
+        <div class="synth-body">${(s.contenu || '').replace(/</g, '&lt;')}</div>
+      </details>`
+    ).join('');
+  } catch (e) {
+    msg.style.display = 'block';
+    msg.style.color = '#ef4444';
+    msg.textContent = '⚠️ ' + e.message;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
 
 function updateDevise() {
   const dev = document.getElementById('f-devise').value;
