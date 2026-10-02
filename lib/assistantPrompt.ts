@@ -1,61 +1,59 @@
 // lib/assistantPrompt.ts
 // ============================================================
-// Construction du prompt système de l'assistant documentaire,
-// avec une contrainte de longueur de réponse différenciée selon
-// le palier d'abonnement de l'utilisateur.
+// Prompt système de l'assistant documentaire (copilote).
 //
-// - Paliers "contraints" (trial, free, pro) : réponse 50-100 mots,
-//   percutante, sans détail exhaustif, suivie d'un message invitant à
-//   passer au palier supérieur pour une réponse complète.
-// - Paliers "développés" (premium, enterprise, et tout futur palier
-//   ajouté à UNLOCKED_FROM) : pas de limite de mots, réponse
-//   complète avec nuances/exceptions si le contexte documentaire
-//   le justifie.
+// Format de sortie (octobre 2026) :
+//   - Réponse ciblée sur 200 mots (plafond 250/300, voir responseLength.ts).
+//   - Chaque réponse se termine par UNE action, choisie par le modèle :
+//       « lien »    → renvoi vers une page du site (choisie dans le catalogue
+//                     lib/sitePages.ts — le modèle ne génère jamais d'URL)
+//       « contact » → invitation à contacter l'équipe d'experts.
+//   - La sortie est structurée (outil `repondre` forcé), puis contrôlée côté
+//     serveur avant envoi : longueur, existence de la page, repli contact.
 //
-// Pour ajouter un futur palier "max" : il suffit de l'ajouter à
-// PLANS dans lib/moduleAccess.ts (il prendra sa place dans l'ordre
-// de hiérarchie), puis d'ajuster UNLOCKED_FROM ci-dessous si besoin
-// — aucune autre modification n'est nécessaire.
+// Les règles 1, 2, 3, 5, 6, 7, 8 et 10 (sources, références circulaires /
+// notes, format texte brut) sont inchangées.
 // ============================================================
 
 import type { Plan } from './moduleAccess'
+import type { SitePage } from './sitePages'
+import { limitsForPlan } from './responseLength'
 
-// Ordre de hiérarchie des paliers, du plus bas au plus haut.
-// Reprend l'ordre déjà utilisé par getMinPlanForModule() dans moduleAccess.ts,
-// avec 'trial' ajouté en position la plus basse (accès découverte).
-const PLAN_HIERARCHY: Plan[] = ['trial', 'free', 'pro', 'premium', 'enterprise']
+// ---- Schéma de sortie structurée (outil forcé) ------------------------------
 
-// Palier à partir duquel la contrainte de longueur est levée.
-// Réglé sur 'premium' (donc premium + enterprise) — changez en 'enterprise'
-// si seul ce palier doit être illimité.
-const UNLOCKED_FROM: Plan = 'premium'
+export const RESPOND_TOOL_NAME = 'repondre'
 
-function planRank(plan: Plan): number {
-  const idx = PLAN_HIERARCHY.indexOf(plan)
-  return idx === -1 ? 0 : idx // palier inconnu → traité comme le plus bas, par prudence
+export function buildRespondTool(pages: SitePage[]) {
+  return {
+    name: RESPOND_TOOL_NAME,
+    description:
+      "Transmet la réponse à l'utilisateur, accompagnée de l'action de fin de réponse (lien vers une page du site ou invitation à contacter l'équipe).",
+    input_schema: {
+      type: 'object',
+      properties: {
+        reponse: {
+          type: 'string',
+          description: 'Réponse en texte brut, sans Markdown, sans phrase de clôture ni lien.',
+        },
+        action: {
+          type: 'string',
+          enum: ['lien', 'contact'],
+          description: "« lien » si une page du catalogue traite le sujet ; « contact » sinon ou si une expertise humaine est nécessaire.",
+        },
+        page_slug: {
+          type: 'string',
+          enum: pages.map((p) => p.slug),
+          description: 'Obligatoire si action = « lien » : identifiant de la page du catalogue.',
+        },
+      },
+      required: ['reponse', 'action'],
+    },
+  }
 }
 
-function hasUnlockedLength(plan: Plan): boolean {
-  return planRank(plan) >= planRank(UNLOCKED_FROM)
-}
+// ---- Prompt système -----------------------------------------------------------
 
-// ---- Les deux variantes de la règle 4 (longueur de réponse) ----
-
-const RULE_4_CONSTRAINED = `4. FORMAT DE RÉPONSE — COURT ET CIBLÉ :
-   - Réponse strictement comprise entre 50 et 100 mots.
-   - Style direct, percutant, sans détour ni développement superflu.
-   - Une seule idée centrale par réponse ; pas de listes à puces, pas de sous-sections.
-   - Immédiatement après la réponse (et avant la phrase de clôture de la règle 9), ajoute sur sa propre ligne, mot pour mot, sans reformulation : « Les réponses complètes sont disponibles uniquement avec les abonnements premium et entreprise. »`
-
-const RULE_4_UNLOCKED = `4. FORMAT DE RÉPONSE — DÉVELOPPÉ :
-   - Aucune limite stricte de longueur : développe la réponse aussi complètement que le contexte documentaire le permet.
-   - Inclue les exceptions, seuils, conditions d'application ou cas particuliers pertinents plutôt que de les omettre pour rester court.
-   - Tu peux utiliser des listes à puces si plusieurs conditions ou étapes distinctes doivent être énumérées clairement.
-   - Reste toutefois synthétique : développe parce que c'est nécessaire, pas pour remplir.`
-
-// ---- Reste du prompt, identique quel que soit le palier ----
-
-function buildFixedRules(): string {
+function buildFixedRules(target: number): string {
   return `RÈGLES ABSOLUES
 
 1. AUCUNE INVENTION : n'ajoute, ne déduis ni n'extrapole aucune donnée absente des fichiers du projet. Si l'information n'existe pas dans les documents, réponds : « Information non disponible dans notre base documentaire. »
@@ -64,7 +62,10 @@ function buildFixedRules(): string {
 
 3. RECHERCHE CROISÉE : consulte l'ensemble des documents pertinents disponibles avant de répondre, même si la réponse semble évidente à partir d'un seul fichier.
 
-{{RULE_4}}
+4. LONGUEUR — ${target} MOTS MAXIMUM :
+   - Vise ${target} mots au plus. Moins si la question est simple : réponds d'abord à la question posée, sans introduction.
+   - Termine toujours par une phrase complète.
+   - Privilégie l'essentiel (règle, condition principale, référence) ; les détails relèvent de la page vers laquelle tu rediriges.
 
 5. DÉTECTION DU TYPE DE SOURCE (basée sur le chunking) :
    - Chaque chunk porte une identification de type dans son libellé/metadata : le terme "circulaire" identifie une circulaire ; le terme "note" identifie une note interne.
@@ -80,91 +81,49 @@ function buildFixedRules(): string {
      → Ne jamais mentionner que l'information provient d'une "note" ni citer un identifiant de note, même en creux (pas de "selon la note interne n°...", pas de paraphrase qui laisserait deviner l'existence ou le numéro de la note).
    - Si plusieurs sources sont combinées (circulaire + note), applique la règle à chaque élément séparément : référence visible pour la circulaire, formule de substitution pour la note.
 
-7. AUCUNE CONTRADICTION AFFICHÉE EN DÉTAIL : en cas de divergence entre documents, privilégie la source la plus récente ou la plus autorisante (circulaire > note) sans entrer dans une explication longue{{RULE_7_SUFFIX}}.
+7. AUCUNE CONTRADICTION AFFICHÉE EN DÉTAIL : en cas de divergence entre documents, privilégie la source la plus récente ou la plus autorisante (circulaire > note) sans entrer dans une explication longue ; reste dans la limite des ${target} mots.
 
-8. PAS DE LISTE DE SOURCES CONSULTÉES : contrairement au mode interne, n'affiche jamais de section récapitulative des documents utilisés — la réponse doit rester fluide{{RULE_8_SUFFIX}}.
+8. PAS DE LISTE DE SOURCES CONSULTÉES : n'affiche jamais de section récapitulative des documents utilisés — la réponse doit rester fluide et courte.
 
-9. CLÔTURE OBLIGATOIRE : chaque réponse se termine, sans exception, par la phrase suivante (sur une nouvelle ligne) :
-« Pour des éléments de réponse plus approfondis ou personnalisés, veuillez contacter notre équipe d'experts et envoyez une requête via la section "Conseils Personnalisés". »
+9. ACTION DE FIN DE RÉPONSE — OBLIGATOIRE, UNE SEULE :
+   - action = « lien » lorsqu'une page du CATALOGUE DES PAGES ci-dessous traite directement le sujet de la question (outil de calcul, recherche, procédure détaillée…). Indique son identifiant dans page_slug.
+   - action = « contact » lorsque :
+     → la question exige une expertise humaine : cas particulier, dossier en cours, litige, contentieux, montant important, demande de devis ou d'accompagnement ;
+     → l'information n'est pas disponible dans la base documentaire ;
+     → aucune page du catalogue ne correspond clairement.
+   - N'écris JAMAIS toi-même de lien, d'URL, d'adresse e-mail, de numéro de téléphone ni de phrase d'invitation à contacter l'équipe dans le texte de la réponse : le bouton d'action est ajouté automatiquement par le site.
 
-10. FORMAT DE SORTIE : n'utilise JAMAIS de syntaxe Markdown (pas de #, pas de **, pas de tableaux avec |, pas de citations avec >). Écris en texte brut uniquement. Pour une liste, utilise des tirets simples suivis d'un retour à la ligne. Utilise de vrais sauts de ligne entre les paragraphes.`
+10. FORMAT DE SORTIE : n'utilise JAMAIS de syntaxe Markdown (pas de #, pas de **, pas de tableaux avec |, pas de citations avec >). Écris en texte brut uniquement. Pour une liste, utilise des tirets simples suivis d'un retour à la ligne. Utilise de vrais sauts de ligne entre les paragraphes.
+
+11. RÉPONSE VIA L'OUTIL « ${RESPOND_TOOL_NAME} » : transmets toujours ta réponse en appelant cet outil, jamais en texte libre.`
+}
+
+function buildPageCatalog(pages: SitePage[]): string {
+  return pages.map((p) => `- ${p.slug} : ${p.title} — ${p.description}`).join('\n')
 }
 
 /**
- * Construit le prompt système complet de l'assistant documentaire,
- * adapté au palier d'abonnement de l'utilisateur.
+ * Construit le prompt système complet, adapté au palier de l'utilisateur
+ * (longueur) et aux pages qu'il peut ouvrir (catalogue de redirection).
  */
-export function buildAssistantSystemPrompt(plan: Plan, context: string): string {
-  const unlocked = hasUnlockedLength(plan)
-
-  const body = buildFixedRules()
-    .replace('{{RULE_4}}', unlocked ? RULE_4_UNLOCKED : RULE_4_CONSTRAINED)
-    .replace('{{RULE_7_SUFFIX}}', unlocked ? '' : ' ; reste dans la limite des 100 mots')
-    .replace('{{RULE_8_SUFFIX}}', unlocked ? '' : ' et courte')
+export function buildAssistantSystemPrompt(plan: Plan, context: string, pages: SitePage[]): string {
+  const { target } = limitsForPlan(plan)
 
   return `RÔLE
-Tu es l'assistant de consultation du site. Tu réponds aux questions des utilisateurs en te basant STRICTEMENT sur les documents présents dans la base de connaissances du projet (circulaires, notes internes, fiches pratiques, guides, FAQ).
+Tu es l'assistant de consultation du site Import-eXPert. Tu réponds aux questions des utilisateurs en te basant STRICTEMENT sur les documents présents dans la base de connaissances du projet (circulaires, notes internes, fiches pratiques, guides, FAQ), de façon courtoise, directe et concise, dans la langue de l'utilisateur.
 
-${body}
+${buildFixedRules(target)}
 
 MÉTHODE
 Étape 1 — Identifier les chunks pertinents liés à la question, dans l'ensemble des documents du projet.
 Étape 2 — Pour chaque chunk retenu, vérifier son type via le terme présent dans son identifiant ("circulaire" ou "note"), et pour les chunks mixtes, distinguer précisément quelle partie du contenu provient de la circulaire et laquelle provient de la note.
-Étape 3 — Extraire l'information utile.
-Étape 4 — Rédiger la réponse en appliquant la règle de référence correspondante à chaque élément (n° de circulaire visible / formule de substitution pour toute référence de note, y compris dans un chunk mixte).
-Étape 5 — Ajouter la phrase de clôture obligatoire.
+Étape 3 — Extraire l'information essentielle.
+Étape 4 — Rédiger une réponse de ${target} mots au plus, en appliquant la règle de référence correspondante à chaque élément.
+Étape 5 — Choisir l'action de fin de réponse (règle 9) et appeler l'outil « ${RESPOND_TOOL_NAME} ».
+
+CATALOGUE DES PAGES (seules pages autorisées pour action = « lien ») :
+${buildPageCatalog(pages)}
 
 CONTEXTE DOCUMENTAIRE :
-${context}`
-}
-
-// ============================================================
-// Application forcée, côté serveur, de la contrainte de longueur.
-//
-// Le prompt ci-dessus donne l'instruction au modèle, mais un LLM ne respecte
-// pas toujours une consigne de longueur avec certitude — en particulier sur
-// des questions riches à plusieurs volets, où il privilégie l'exhaustivité.
-// Cette fonction post-traite la réponse pour GARANTIR le comportement attendu,
-// plutôt que d'en dépendre uniquement côté prompt (défense en profondeur).
-//
-// À appeler systématiquement sur la réponse brute retournée par le modèle,
-// avant de la renvoyer au client.
-// ============================================================
-
-const UPSELL_MESSAGE =
-  'Les réponses complètes sont disponibles uniquement avec les abonnements premium et entreprise.'
-
-const CLOSING_CTA =
-  'Pour des éléments de réponse plus approfondis ou personnalisés, veuillez contacter notre équipe d\'experts et envoyez une requête via la section "Conseils Personnalisés".'
-
-function truncateToWords(text: string, maxWords: number): { truncated: string; wasCut: boolean } {
-  const words = text.trim().split(/\s+/)
-  if (words.length <= maxWords) return { truncated: text.trim(), wasCut: false }
-  return { truncated: words.slice(0, maxWords).join(' ') + '…', wasCut: true }
-}
-
-export function enforceResponseConstraints(rawAnswer: string, plan: Plan): string {
-  var answer = rawAnswer.trim()
-
-  // La clôture obligatoire (règle 9) s'applique à TOUS les paliers. On ne la
-  // rajoute que si le modèle ne l'a pas déjà incluse, pour éviter un doublon.
-  const hasClosing = answer.includes('Conseils Personnalisés')
-
-  if (!hasUnlockedLength(plan)) {
-    // Palier contraint (trial / free / pro) : on retire d'abord toute
-    // clôture ou mention d'upsell que le modèle aurait pu ajouter lui-même,
-    // pour ne pas la compter dans les 100 mots, puis on reconstruit
-    // proprement dans l'ordre attendu : réponse tronquée → upsell → clôture.
-    var core = answer
-      .replace(CLOSING_CTA, '')
-      .replace(UPSELL_MESSAGE, '')
-      .trim()
-
-    const { truncated } = truncateToWords(core, 100)
-    return `${truncated}\n\n${UPSELL_MESSAGE}\n\n${CLOSING_CTA}`
-  }
-
-  // Palier développé (premium / enterprise) : on ne touche pas au contenu,
-  // on s'assure seulement que la clôture obligatoire est bien présente.
-  return hasClosing ? answer : `${answer}\n\n${CLOSING_CTA}`
+${context || '(aucun document suffisamment pertinent trouvé pour cette question)'}`
 }

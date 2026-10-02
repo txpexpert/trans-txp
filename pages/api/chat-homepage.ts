@@ -7,7 +7,11 @@
 // 3) NOUVEAU — Recall mémoire : recherche dans user_memories (mémoire privée
 //    du client, via match_user_memories, client service_role) pour
 //    personnaliser la réponse avec des faits déjà connus sur ce client.
-// 4) Génération de la réponse (Anthropic claude-sonnet-4-6)
+// 4) Génération de la réponse (Anthropic claude-sonnet-4-6) en sortie
+//    structurée (outil `repondre` forcé) : texte + action de fin de réponse
+//    (lien vers une page du site OU invitation à contacter l'équipe).
+// 4b) Contrôle serveur : longueur (200 mots, phrase en cours complétée,
+//    plafond 250/300), existence de la page, repli sur « contact ».
 // 5) Persistance de la conversation et des messages
 // 6) NOUVEAU — Capture mémoire : si le message contient une formule du type
 //    "retiens que...", le fait est extrait et sauvegardé dans user_memories
@@ -19,7 +23,15 @@ import { createClient } from '@supabase/supabase-js'
 import { supabase } from '../../lib/supabase'
 import { embedText } from '../../lib/ingestion'
 import { verifyUserToken, canAccessModule, USER_COOKIE } from '../../lib/userAuth'
-import { buildAssistantSystemPrompt, enforceResponseConstraints } from '../../lib/assistantPrompt'
+import { buildAssistantSystemPrompt, buildRespondTool, RESPOND_TOOL_NAME } from '../../lib/assistantPrompt'
+import { enforceLength, limitsForPlan } from '../../lib/responseLength'
+import {
+  pagesForUser,
+  findPage,
+  contactAction,
+  linkAction,
+  type ChatAction,
+} from '../../lib/sitePages'
 import { extractMemoryFromMessage, generateMemoryKey } from '../../lib/memoryTriggers'
 
 const supabaseAdmin = createClient(
@@ -29,6 +41,7 @@ const supabaseAdmin = createClient(
 
 type ChatResponse = {
   answer?: string
+  action?: ChatAction
   sources?: { titre: string; numero: string | null; type_document: string | null }[]
   conversationId?: string
   memorySaved?: boolean
@@ -126,24 +139,13 @@ export default async function handler(
         `\n\n`
     }
 
-    if (!chunks || chunks.length === 0) {
-      const fallbackAnswer =
-        "Je n'ai pas trouvé d'élément suffisamment pertinent dans la base documentaire pour répondre avec certitude à cette question. Pourriez-vous la reformuler ou préciser le régime douanier concerné ?"
-
-      if (activeConversationId) {
-        await supabaseAdmin.from('messages').insert({
-          conversation_id: activeConversationId,
-          user_id: session.userId,
-          role: 'assistant',
-          content: fallbackAnswer,
-        })
-      }
-
-      return res.status(200).json({ answer: fallbackAnswer, sources: [], conversationId: activeConversationId })
-    }
+    // Aucun chunk pertinent : on appelle quand même le modèle, avec un
+    // contexte vide, pour qu'il réponde « information non disponible » ET
+    // oriente l'utilisateur vers la bonne page ou vers l'équipe.
+    const foundChunks = chunks ?? []
 
     // 4) Construction du contexte (mémoire client + documentation) et génération
-    const documentContext = chunks
+    const documentContext = foundChunks
       .map(
         (
           c: { titre: string; numero: string | null; contenu: string; type_document: string | null },
@@ -155,7 +157,12 @@ export default async function handler(
       )
       .join('\n\n---\n\n')
 
-    const systemPrompt = buildAssistantSystemPrompt(session.plan, memoryContext + documentContext)
+    const allowedPages = pagesForUser(session.plan, session.statut, session.trialEnds)
+    const systemPrompt = buildAssistantSystemPrompt(
+      session.plan,
+      documentContext ? memoryContext + documentContext : '',
+      allowedPages
+    )
 
     const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -166,8 +173,12 @@ export default async function handler(
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 800,
+        // ~200 mots FR ≈ 300 tokens ; marge pour le JSON de l'outil et le
+        // plafond de 300 mots, afin de ne jamais couper la sortie structurée.
+        max_tokens: 900,
         system: systemPrompt,
+        tools: [buildRespondTool(allowedPages)],
+        tool_choice: { type: 'tool', name: RESPOND_TOOL_NAME },
         messages: [{ role: 'user', content: message }],
       }),
     })
@@ -179,11 +190,39 @@ export default async function handler(
     }
 
     const anthropicData = await anthropicRes.json()
-    const rawAnswer =
-      anthropicData?.content?.find((b: { type: string }) => b.type === 'text')?.text ?? 'Aucune réponse générée.'
-    const answer = enforceResponseConstraints(rawAnswer, session.plan)
 
-    const sources = chunks.map(
+    // Sortie structurée attendue ; repli sur un éventuel bloc texte.
+    const toolBlock = anthropicData?.content?.find(
+      (b: { type: string; name?: string }) => b.type === 'tool_use' && b.name === RESPOND_TOOL_NAME
+    )
+    const output: { reponse?: string; action?: string; page_slug?: string } = toolBlock?.input ?? {}
+    const rawAnswer: string =
+      (typeof output.reponse === 'string' && output.reponse.trim()) ||
+      anthropicData?.content?.find((b: { type: string }) => b.type === 'text')?.text ||
+      'Aucune réponse générée.'
+
+    // 4b) Contrôle serveur — longueur puis action.
+    const sanitized = rawAnswer
+      .replace(/https?:\/\/\S+/g, '') // le modèle ne doit jamais écrire de lien lui-même
+      .replace(/[ \t]+\n/g, '\n')
+      .trim()
+    const lengthCheck = enforceLength(sanitized, limitsForPlan(session.plan))
+    const answer = lengthCheck.text
+
+    const page = output.action === 'lien' ? findPage(output.page_slug, allowedPages) : null
+    const action: ChatAction = page
+      ? linkAction(page)
+      : contactAction(session.plan, session.statut, session.trialEnds)
+
+    console.log(
+      '[chat-homepage] action=%s slug=%s mots=%d coupe=%s',
+      action.type,
+      page?.slug ?? '-',
+      lengthCheck.words,
+      lengthCheck.wasCut
+    )
+
+    const sources = foundChunks.map(
       (c: { titre: string; numero: string | null; type_document: string | null }) => ({
         titre: c.titre,
         numero: c.numero,
@@ -196,7 +235,8 @@ export default async function handler(
         conversation_id: activeConversationId,
         user_id: session.userId,
         role: 'assistant',
-        content: answer,
+        // l'historique conserve l'action sous forme lisible
+        content: `${answer}\n\n→ ${action.label} : ${action.url}`,
         sources,
       })
     }
@@ -222,7 +262,7 @@ export default async function handler(
       }
     }
 
-    return res.status(200).json({ answer, sources, conversationId: activeConversationId, memorySaved })
+    return res.status(200).json({ answer, action, sources, conversationId: activeConversationId, memorySaved })
   } catch (err) {
     console.error('Erreur chat-homepage:', err)
     return res.status(500).json({ error: 'Erreur serveur lors du traitement de la question' })

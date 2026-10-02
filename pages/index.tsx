@@ -232,6 +232,9 @@ html{scroll-behavior:smooth}
 .copilot-voice-btn.listening{background:var(--live-bg);border-color:var(--live);color:var(--live);animation:pulse 1.2s infinite}
 .copilot-answer{margin-top:1rem;padding:1rem 1.25rem;background:var(--gold4);border:1px solid var(--border);font-size:13px;line-height:1.6;color:var(--ink2);display:none}
 .copilot-answer.show{display:block}
+.copilot-action-link{display:inline-block;margin-top:.75rem;padding:7px 14px;font-size:11px;letter-spacing:.04em;font-weight:600;background:var(--ink);color:var(--gold2);text-decoration:none;border:1px solid var(--ink);transition:all .15s}
+.copilot-action-link:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.copilot-action-link.contact{background:transparent;color:var(--ink);border-color:var(--gold)}
 .copilot-answer-actions{margin-top:.6rem;display:flex;gap:.5rem}
 .copilot-listen-btn{padding:6px 12px;font-size:10.5px;letter-spacing:.05em;background:var(--ink);color:var(--gold2);border:none;transition:all .15s}
 .copilot-listen-btn:hover{background:var(--gold);color:var(--ink)}
@@ -352,6 +355,7 @@ const bodyHTML = `
     <div class="copilot-loading" id="copilot-loading"><span class="copilot-spinner"></span>Recherche dans la base documentaire…</div>
     <div class="copilot-answer" id="copilot-answer">
       <div id="copilot-answer-text"></div>
+      <a class="copilot-action-link" id="copilot-action" href="#" style="display:none"></a>
       <div class="copilot-answer-actions">
         <button class="copilot-listen-btn" id="copilot-listen" type="button">🔊 ÉCOUTER LA RÉPONSE</button>
         <button class="copilot-stop-btn" id="copilot-stop" type="button">⏹ ARRÊTER</button>
@@ -973,6 +977,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
   var loading = document.getElementById('copilot-loading');
   var answerBox = document.getElementById('copilot-answer');
   var answerText = document.getElementById('copilot-answer-text');
+  var actionLink = document.getElementById('copilot-action');
   var listenBtn = document.getElementById('copilot-listen');
   var stopBtn = document.getElementById('copilot-stop');
   var refreshBtn = document.getElementById('copilot-refresh');
@@ -986,8 +991,24 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
     if (listenBtn) listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
   }
 
+  // Action de fin de réponse renvoyée par l'API : lien vers une page du site
+  // ou invitation à contacter l'équipe. URL toujours relative, fournie par le
+  // serveur (catalogue lib/sitePages.ts) — jamais rédigée par le modèle.
+  function showAction(action){
+    if (!actionLink) return;
+    if (!action || !action.url || action.url.charAt(0) !== '/') {
+      actionLink.style.display = 'none';
+      return;
+    }
+    actionLink.textContent = (action.type === 'contact' ? '✉ ' : '→ ') + action.label;
+    actionLink.href = action.url;
+    actionLink.className = 'copilot-action-link' + (action.type === 'contact' ? ' contact' : '');
+    actionLink.style.display = '';
+  }
+
   function resetCopilot(){
     stopAudio();
+    showAction(null);
     answerBox.classList.remove('show');
     answerText.textContent = '';
     status.textContent = '';
@@ -1056,6 +1077,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
     submitBtn.textContent = 'RECHERCHE EN COURS...';
     status.textContent = '';
     answerBox.classList.remove('show');
+    showAction(null);
     if (loading) loading.classList.add('show');
 
     try {
@@ -1086,6 +1108,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
         text += '\\n\\nSources : ' + srcList;
       }
       answerText.textContent = text;
+      showAction(data.action);
       if (listenBtn) listenBtn.style.display = '';
       answerBox.classList.add('show');
     } catch(e) {

@@ -14,6 +14,8 @@ import Link from 'next/link'
 import AppModuleLayout from '../../components/AppModuleLayout'
 
 type Source = { titre: string; numero: string | null; type_document: string | null }
+// Action de fin de réponse renvoyée par /api/chat-homepage (lib/sitePages.ts)
+type ChatAction = { type: 'lien' | 'contact'; label: string; url: string }
 
 export default function AppCopilote() {
   const [question, setQuestion] = useState('')
@@ -21,6 +23,7 @@ export default function AppCopilote() {
   const [loading, setLoading] = useState(false)
   const [answer, setAnswer] = useState<string | null>(null)
   const [sources, setSources] = useState<Source[]>([])
+  const [action, setAction] = useState<ChatAction | null>(null)
   const [status, setStatus] = useState<string | null>(null)
   const [needsLogin, setNeedsLogin] = useState(false)
   const [synthesizing, setSynthesizing] = useState(false)
@@ -78,6 +81,7 @@ export default function AppCopilote() {
     stopAudio()
     setAnswer(null)
     setSources([])
+    setAction(null)
     setStatus(null)
     setNeedsLogin(false)
     setQuestion('')
@@ -92,6 +96,7 @@ export default function AppCopilote() {
     setStatus(null)
     setAnswer(null)
     setSources([])
+    setAction(null)
     setNeedsLogin(false)
 
     try {
@@ -111,6 +116,8 @@ export default function AppCopilote() {
       const data = await res.json()
       setAnswer(data.answer || 'Réponse indisponible pour le moment.')
       setSources(data.sources || [])
+      // URL toujours relative et fournie par le serveur — jamais par le modèle
+      setAction(data.action && typeof data.action.url === 'string' && data.action.url.startsWith('/') ? data.action : null)
     } catch (e) {
       setAnswer('Le copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.')
     } finally {
@@ -210,6 +217,14 @@ export default function AppCopilote() {
       {answer && !needsLogin && (
         <div className="alert alert-info" style={{ whiteSpace: 'pre-line' }}>
           {answer}
+
+          {action && (
+            <div style={{ marginTop: 12 }}>
+              <Link href={action.url} className={action.type === 'contact' ? 'btn btn-outline' : 'btn btn-primary'}>
+                {action.type === 'contact' ? '✉ ' : '→ '}{action.label}
+              </Link>
+            </div>
+          )}
 
           {circulaireSources.length > 0 && (
             <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
