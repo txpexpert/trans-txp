@@ -119,7 +119,7 @@ export default function AppCopilote() {
       // URL toujours relative et fournie par le serveur — jamais par le modèle
       setAction(data.action && typeof data.action.url === 'string' && data.action.url.startsWith('/') ? data.action : null)
     } catch (e) {
-      setAnswer('Le copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.')
+      setAnswer('IXP-copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.')
     } finally {
       setLoading(false)
     }
@@ -159,8 +159,8 @@ export default function AppCopilote() {
   return (
     <AppModuleLayout
       kicker="COPILOTE IA"
-      title="Votre Copilote Import-IA"
-      sub="Posez une question à la voix ou au clavier — le copilote répond en citant la circulaire exacte."
+      title="IXP-copilote"
+      sub="Votre copilote IA Import-eXPert — posez une question à la voix ou au clavier, IXP-copilote répond en citant la circulaire exacte."
     >
       <div className="form-group">
         <label className="form-label">Votre question</label>
@@ -189,7 +189,7 @@ export default function AppCopilote() {
       </div>
 
       <p style={{ fontSize: 12, color: 'var(--inkm)', marginBottom: 6 }}>
-        🔒 Connectez-vous pour interroger le copilote
+        🔒 Connectez-vous pour interroger IXP-copilote
       </p>
 
       {status && !needsLogin && (
@@ -205,7 +205,7 @@ export default function AppCopilote() {
 
       {needsLogin && (
         <div className="alert alert-info">
-          Connectez-vous ou démarrez votre essai gratuit pour interroger le copilote.
+          Connectez-vous ou démarrez votre essai gratuit pour interroger IXP-copilote.
           <div style={{ marginTop: 10 }}>
             <Link href="/app/login" className="btn btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
               Se connecter

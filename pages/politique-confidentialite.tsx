@@ -25,7 +25,7 @@ export default function PolitiqueConfidentialite() {
         <ul style={{ paddingLeft: 20, marginBottom: 12 }}>
           <li><strong>Informations de compte</strong> : adresse e-mail, lors de la création d'un compte ou d'un essai gratuit.</li>
           <li><strong>Données d'utilisation</strong> : pages consultées, modules utilisés, à des fins d'amélioration du service.</li>
-          <li><strong>Contenu des requêtes</strong> : les questions posées au Copilote IA sont transmises à notre service d'intelligence artificielle pour générer une réponse.</li>
+          <li><strong>Contenu des requêtes</strong> : les questions posées au Copilote IA (IXP-copilote) sont transmises à notre service d'intelligence artificielle pour générer une réponse.</li>
           <li><strong>Données techniques</strong> : type d'appareil, système d'exploitation, à des fins de compatibilité et de sécurité.</li>
         </ul>
         <p>Nous ne collectons pas de données de localisation précise, de contacts, ni de données biométriques.</p>

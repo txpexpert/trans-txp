@@ -232,6 +232,7 @@ html{scroll-behavior:smooth}
 .copilot-voice-btn.listening{background:var(--live-bg);border-color:var(--live);color:var(--live);animation:pulse 1.2s infinite}
 .copilot-answer{margin-top:1rem;padding:1rem 1.25rem;background:var(--gold4);border:1px solid var(--border);font-size:13px;line-height:1.6;color:var(--ink2);display:none}
 .copilot-answer.show{display:block}
+.copilot-answer-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:.45rem}
 .copilot-action-link{display:inline-block;margin-top:.75rem;padding:7px 14px;font-size:11px;letter-spacing:.04em;font-weight:600;background:var(--ink);color:var(--gold2);text-decoration:none;border:1px solid var(--ink);transition:all .15s}
 .copilot-action-link:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
 .copilot-action-link.contact{background:transparent;color:var(--ink);border-color:var(--gold)}
@@ -330,7 +331,7 @@ const bodyHTML = `
     <a href="#kits">Vos Kits pratiques</a>
     <a href="#modules-plus">Votre Boîte à outils</a>
     <a href="#strategies">Stratégies et analyses</a>
-    <a href="#copilote">Votre Copilote IA</a>
+    <a href="#copilote">IXP-copilote</a>
   </nav>
   <div class="hdr-actions" id="hdr-actions">
     <button class="btn-in" onclick="openModal('login')">CONNEXION</button>
@@ -342,7 +343,7 @@ const bodyHTML = `
 <section class="copilot reveal" id="copilote">
   <div>
     <div class="copilot-title">Une question précise ?</div>
-    <div class="copilot-sub">Le copilote Import-IA répond en citant la circulaire, l'article ou l'accord exact — pour ceux qui savent déjà ce qu'ils cherchent.</div>
+    <div class="copilot-sub">IXP-copilote, le copilote IA d'Import-eXPert, répond en citant la circulaire, l'article ou l'accord exact — pour ceux qui savent déjà ce qu'ils cherchent.</div>
   </div>
   <div>
     <div class="copilot-input-row">
@@ -350,10 +351,11 @@ const bodyHTML = `
       <button class="copilot-voice-btn" id="copilot-mic" type="button" aria-label="Poser la question à la voix">🎤</button>
       <button class="copilot-submit" id="copilot-submit" type="button">SOUMETTRE →</button>
     </div>
-    <div class="copilot-login-hint" id="copilot-login-hint">🔒 Connectez-vous pour interroger le copilote</div>
+    <div class="copilot-login-hint" id="copilot-login-hint">🔒 Connectez-vous pour interroger IXP-copilote</div>
     <div class="copilot-status" id="copilot-status"></div>
     <div class="copilot-loading" id="copilot-loading"><span class="copilot-spinner"></span>Recherche dans la base documentaire…</div>
     <div class="copilot-answer" id="copilot-answer">
+      <div class="copilot-answer-label">IXP-copilote</div>
       <div id="copilot-answer-text"></div>
       <a class="copilot-action-link" id="copilot-action" href="#" style="display:none"></a>
       <div class="copilot-answer-actions">
@@ -1065,7 +1067,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
     // client ne fait qu'accélérer et clarifier l'expérience.
     if (window.__copilotAuthorized === false) {
       status.textContent = 'Cette fonctionnalité est réservée aux abonnés.';
-      answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger le copilote.';
+      answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger IXP-copilote.';
       answerBox.classList.add('show');
       if (listenBtn) listenBtn.style.display = 'none';
       if (typeof openModal === 'function') openModal('login');
@@ -1090,7 +1092,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
       if (res.status === 403) {
         // Module réservé aux abonnés — on invite à se connecter plutôt que d'afficher une erreur brute
         status.textContent = 'Cette fonctionnalité est réservée aux abonnés.';
-        answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger le copilote.';
+        answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger IXP-copilote.';
         answerBox.classList.add('show');
         if (listenBtn) listenBtn.style.display = 'none';
         if (typeof openModal === 'function') openModal('login');
@@ -1112,7 +1114,7 @@ document.getElementById('hero-cta-scroll').addEventListener('click', function(e)
       if (listenBtn) listenBtn.style.display = '';
       answerBox.classList.add('show');
     } catch(e) {
-      answerText.textContent = 'Le copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.';
+      answerText.textContent = 'IXP-copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.';
       answerBox.classList.add('show');
     } finally {
       submitBtn.disabled = false;
