@@ -198,6 +198,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         results: [],
       })
     }
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SUPABASE_SERVICE_KEY) {
+      return res.status(500).json({
+        error: 'Clé service_role manquante (SUPABASE_SERVICE_ROLE_KEY ou SUPABASE_SERVICE_KEY) — requise pour écrire dans knowledge_chunks (RLS)',
+        summary: { total: 0, success: 0, skipped: 0, errors: 1 },
+        results: [],
+      })
+    }
     if (!process.env.SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL) {
       return res.status(500).json({
         error: 'SUPABASE_URL manquante — vérifier les variables d\'environnement Vercel',

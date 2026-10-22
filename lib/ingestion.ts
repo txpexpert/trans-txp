@@ -13,9 +13,23 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import OpenAI from 'openai'
-import { supabase } from './supabase'
+import { createClient } from '@supabase/supabase-js'
 
-export { supabase }
+// Client Supabase ADMIN (clé service_role) — réservé au serveur.
+// L'écriture dans knowledge_chunks (et faq/tarifs/procedures/glossaire/
+// decisions) est protégée par RLS : la clé anon publique est refusée
+// ("new row violates row-level security policy"). Les routes qui importent
+// ce module sont toutes protégées par le cookie admin.
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const serviceKey  = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || ''
+if (!serviceKey) {
+  console.warn('[ingestion] Clé service_role (SUPABASE_SERVICE_ROLE_KEY ou SUPABASE_SERVICE_KEY) manquante — les insertions seront bloquées par RLS')
+}
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  serviceKey || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder',
+  { auth: { persistSession: false, autoRefreshToken: false } }
+)
 
 // Client OpenAI initialisé UNIQUEMENT au premier appel réel (jamais au
 // chargement du module) — évite tout crash silencieux au niveau du serveur
