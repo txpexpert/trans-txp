@@ -1,5 +1,5 @@
 /**
- * logger.ts — Import-IA
+ * logger.ts — Import-eXPert
  * Service de logging asynchrone vers Supabase (table chat_logs).
  */
 

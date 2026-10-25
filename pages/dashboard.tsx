@@ -55,11 +55,11 @@ export default function Dashboard() {
   return (
     <Layout>
       <div style={{ maxWidth: 640, margin: '0 auto', padding: '2rem 1rem' }}>
-        <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 28, fontWeight: 700, color: 'var(--bd)', marginBottom: 6 }}>
+        <h1 style={{ fontFamily: "'DM Serif Display',serif", fontSize: 28, fontWeight: 700, color: 'var(--bd)', marginBottom: 6 }}>
           Mon compte
         </h1>
         <p style={{ fontSize: 13, color: 'var(--inkm)', marginBottom: '2rem' }}>
-          Gérez vos informations et votre abonnement Import-IA.
+          Gérez vos informations et votre abonnement Import-eXPert.
         </p>
 
         <div style={{ background: 'var(--white)', border: '.5px solid var(--rule)', padding: '1.5rem', marginBottom: '1.5rem' }}>
@@ -90,7 +90,7 @@ export default function Dashboard() {
               Passez à un plan supérieur
             </div>
             <p style={{ fontSize: 12, color: 'var(--inkm)', marginBottom: 12, lineHeight: 1.6 }}>
-              Débloquez l'ensemble des modules Import-IA (classement tarifaire, tracking, générateur de documents) avec un plan Professionnel ou Premium.
+              Débloquez l'ensemble des modules Import-eXPert (classement tarifaire, tracking, générateur de documents) avec un plan Professionnel ou Premium.
             </p>
             <Link href="/abonnements">
               <button style={{ padding: '9px 20px', background: '#C9A84C', color: '#0A0A0A', border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>

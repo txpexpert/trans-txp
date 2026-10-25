@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="fr" class="ixp-theme">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enquête Baromètre 2026 | IXP-Import-eXPert</title>
+<meta name="description" content="Enquête sur la friction douanière et la conformité à l'importation au Maroc : 12 questions, résultats immédiats.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--paper:#FAF7F0;--line:#E6DCC7;--line2:#D6C9AC;--gold:#A8822F;--gold2:#C9A84C;
+--navy:#153E82;--navy2:#0E2C5E;--red:#A82D3C;--green:#1E7346;
+--serif:'DM Serif Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;font-size:15.5px}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.logo{font-family:var(--serif);font-size:23px;text-decoration:none}.logo b{font-weight:400;color:var(--red)}
+.logo sup{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--ink3);margin-left:5px}
+.toplinks{margin-left:auto;display:flex;gap:8px}
+.toplinks a{text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff}
+.eb{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.2vw,48px);line-height:1.08;margin:12px 0 14px}
+h1 em{color:var(--navy)}
+h2{font-family:var(--serif);font-weight:400;font-size:30px;margin:0 0 8px}
+.lead{font-size:17px;color:var(--ink2);max-width:760px}
+.hero{padding:44px 0 18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:13px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+.prog{position:sticky;top:64px;z-index:10;background:var(--paper);padding:10px 0}
+.bar0{height:8px;background:#EEE6D4;border-radius:99px;overflow:hidden}.bar0 i{display:block;height:100%;background:var(--navy);width:0;transition:width .25s}
+.prog small{font-size:12.5px;color:var(--ink3)}
+/* Questions */
+.q{background:#fff;border:1px solid var(--line);border-left:5px solid var(--c);border-radius:16px;padding:20px 22px;margin:14px 0}
+.qn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--c)}
+.qt{font-weight:600;font-size:16.5px;margin:4px 0 2px}
+.qh{font-size:13px;color:var(--ink3);margin-bottom:12px}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line2);border-radius:11px;cursor:pointer;background:#fff;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--c)}
+.opt input{margin:2px 0 0;width:17px;height:17px;accent-color:var(--c);flex:0 0 17px}
+.opt.on{background:var(--cb);border-color:var(--c)}
+.opt.dis{opacity:.45;cursor:not-allowed}
+.c1{--c:#1F4E9A;--cb:#EDF3FC}.c2{--c:#1E7346;--cb:#EBF6EF}.c3{--c:#9A620C;--cb:#FCF4E3}.c4{--c:#5B3FA0;--cb:#F2EEFB}
+.c5{--c:#A82D3C;--cb:#FCEEF0}.c6{--c:#16706B;--cb:#E8F6F5}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;margin:16px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label.f{display:block;font-size:13.5px;font-weight:500;margin-bottom:6px}
+input[type=text],input[type=email]{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--paper)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink2);margin-top:12px}
+.consent input{margin-top:3px;width:17px;height:17px;accent-color:var(--navy)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:500;font-size:14.5px;padding:12px 22px;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.dark{background:var(--ink);color:#fff}.dark:hover{background:var(--navy2)}.dark:disabled{opacity:.5;cursor:not-allowed}
+.line{background:#fff;border-color:var(--line2);color:var(--ink)}.line:hover{border-color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.note{font-size:12.5px;color:var(--ink3)}
+.msg{border-left:4px solid var(--green);background:#EBF6EF;padding:12px 14px;border-radius:0 12px 12px 0;margin:12px 0;font-size:14.5px}
+.msg.warn{border-left-color:var(--red);background:#FCEEF0}
+/* Résultats */
+#results{scroll-margin-top:80px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;border-top:4px solid var(--c)}
+.kpi b{display:block;font-family:var(--serif);font-weight:400;font-size:36px;line-height:1.05;color:var(--c)}
+.kpi span{font-size:13px;color:var(--ink3)}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chart{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.chart h4{margin:0 0 4px;font-size:15px;font-weight:600}
+.chart .sub{font-size:12px;color:var(--ink3);margin-bottom:12px}
+.row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) 46px;gap:10px;align-items:center;margin-bottom:8px;font-size:13.5px}
+.row .lab{line-height:1.25}
+.row .lab.me{font-weight:600}
+.row .lab.me::after{content:' · vous';font-family:var(--mono);font-size:10px;color:var(--navy)}
+.track{height:12px;background:#EEE6D4;border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;border-radius:99px;background:var(--c);opacity:.85}
+.row .v{font-family:var(--mono);font-size:12px;text-align:right}
+.donut{display:flex;gap:18px;align-items:center}
+.legend{font-size:13px;display:grid;gap:6px}
+.legend span{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+.empty{color:var(--ink3);font-size:14px;padding:12px 0}
+footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink3)}
+@media (max-width:860px){.opts,.charts,.grid2{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.kpis{grid-template-columns:1fr}.toplinks{display:none}.q{padding:16px}.row{grid-template-columns:minmax(0,1fr) 90px 40px}}
+@media print{header.top,.prog,#form-zone,.actions,footer.b{display:none!important}body{background:#fff}.chart,.kpi{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
+</head>
+<body>
+<header class="top" data-ixp-own-header><div class="wrap">
+  <a class="logo" href="/">Import<b>-</b>eXPert<sup>MAROC</sup></a>
+  <nav class="toplinks"><a href="/diagnostic">Diagnostic</a><a href="/expertise">Expertise</a><a href="#results">Résultats</a></nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eb">Baromètre 2026 · Enquête</div>
+    <h1>La friction douanière au Maroc, <em>mesurée par ceux qui la vivent</em>.</h1>
+    <p class="lead">Douze questions à cases à cocher sur vos délais, vos difficultés de conformité, vos usages des accords de libre-échange et des régimes économiques, et vos priorités. Les résultats s’affichent en bas de page dès votre réponse.</p>
+    <div class="chips"><span class="chip">12 questions · 4 minutes</span><span class="chip">Réponses anonymes</span><span class="chip">Résultats immédiats</span></div>
+  </section>
+
+  <div class="prog"><div class="bar0"><i id="pbar"></i></div><small id="ptxt">0 question sur 12</small></div>
+
+  <div id="form-zone">
+    <div id="questions"></div>
+    <div class="panel">
+      <h2 style="font-size:24px">Recevoir le rapport (facultatif)</h2>
+      <p class="note" style="margin-top:0">Laissez vos coordonnées si vous souhaitez recevoir le rapport du Baromètre 2026. Elles ne sont jamais publiées avec les réponses.</p>
+      <div class="grid2">
+        <div><label class="f" for="c-nom">Nom et fonction</label><input type="text" id="c-nom" autocomplete="name"></div>
+        <div><label class="f" for="c-mail">E-mail professionnel</label><input type="email" id="c-mail" autocomplete="email"></div>
+      </div>
+      <label class="consent"><input type="checkbox" id="c-ok"><span>J’accepte que mes coordonnées soient utilisées pour m’envoyer le rapport du Baromètre 2026 et les informations qui s’y rapportent.</span></label>
+    </div>
+    <div class="actions">
+      <button class="btn dark" id="submit" disabled>Envoyer mes réponses et voir les résultats</button>
+      <span class="note" id="req">Répondez au moins aux 10 premières questions.</span>
+    </div>
+    <div id="sent"></div>
+  </div>
+
+  <!-- RÉSULTATS -->
+  <section id="results">
+    <div class="panel" style="margin-top:34px">
+      <div class="eb">Résultats</div>
+      <h2 id="r-title">Résultats de l’enquête</h2>
+      <p class="note" id="r-src" style="margin-top:0"></p>
+      <div class="kpis" id="kpis"></div>
+      <div class="actions">
+        <button class="btn line" id="kiosk">Nouveau répondant (mode collecte)</button>
+        <button class="btn line" id="csv">Exporter les réponses (CSV)</button>
+        <button class="btn line" id="print">Imprimer les résultats</button>
+      </div>
+    </div>
+    <div class="charts" id="charts"></div>
+  </section>
+</main>
+
+<footer class="b"><div class="wrap">Import-eXPert · Baromètre 2026 de la friction douanière et de la conformité à l’importation. Les résultats affichés sont ceux des réponses réellement collectées ; leur portée dépend du nombre de répondants, indiqué au-dessus des graphiques.</div></footer>
+
+<script>
+(function(){
+'use strict';
+/* type : 'one' = une seule case ; 'many' = plusieurs cases ; max = nombre maximum */
+var Q=[
+ {id:'profil',c:'c1',type:'one',t:'Quel est votre profil ?',o:['Importateur industriel','PME importatrice','Transitaire ou commissionnaire','Exportateur sous régimes économiques','Direction financière ou contrôle de gestion','Autre']},
+ {id:'volume',c:'c1',type:'one',t:'Combien de déclarations (DUM) traitez-vous par an ?',o:['Moins de 50','De 50 à 200','De 200 à 1 000','Plus de 1 000']},
+ {id:'bureaux',c:'c1',type:'many',t:'Par quels points d’entrée passent vos opérations ?',o:['Port de Tanger Med','Port de Casablanca','Port d’Agadir','Port de Jorf Lasfar','Aéroport Mohammed V','Bureaux intérieurs et MEAD','Frontières terrestres','Autre']},
+ {id:'delai',c:'c2',type:'one',t:'Quel est votre délai moyen de dédouanement, de l’arrivée à l’enlèvement ?',o:['Moins de 24 heures','De 1 à 3 jours','De 3 à 7 jours','Plus de 7 jours','Je ne sais pas']},
+ {id:'retards',c:'c2',type:'many',max:3,t:'Quelles sont les principales causes de retard ?',h:'Trois réponses au plus.',o:['Documents manquants ou incomplets','Contrôles techniques (normes, ONSSA…)','Classement tarifaire contesté','Valeur contestée','Preuve d’origine refusée ou incomplète','Titre d’importation ou domiciliation','Paiement des droits et garanties','Visite physique et disponibilité du service','Systèmes informatiques (BADR, PortNet)']},
+ {id:'erreurs',c:'c3',type:'many',t:'Quelles difficultés de conformité avez-vous rencontrées ces trois dernières années ?',o:['Classement SH','Valeur en douane (fret, redevances, commissions)','Origine ou préférence refusée','Comptes de régimes économiques échus','Licences et autorisations','Étiquetage et normes','Aucune difficulté notable']},
+ {id:'controle',c:'c3',type:'one',t:'Avez-vous fait l’objet d’un contrôle a posteriori ou d’un redressement ces trois dernières années ?',o:['Jamais','Une fois','Plusieurs fois','Je ne sais pas']},
+ {id:'ale',c:'c4',type:'many',t:'Quels accords de libre-échange utilisez-vous ?',o:['Union européenne','Turquie','États-Unis','AELE (Suisse, Norvège…)','Accord d’Agadir','Royaume-Uni','Zone arabe de libre-échange','ZLECAf','Aucun']},
+ {id:'freins',c:'c4',type:'many',t:'Qu’est-ce qui vous empêche d’utiliser davantage les préférences tarifaires ?',o:['Méconnaissance des accords','Règles d’origine trop complexes','Le fournisseur ne fournit pas les preuves','Coût administratif trop élevé','Crainte d’un contrôle a posteriori','Rien : nous les exploitons pleinement']},
+ {id:'regimes',c:'c5',type:'many',t:'Quels régimes économiques utilisez-vous ?',o:['Admission temporaire pour perfectionnement actif','Admission temporaire en l’état','Entrepôt de douane','Transformation sous douane','Zone d’accélération industrielle','Drawback','Aucun']},
+ {id:'outils',c:'c6',type:'many',t:'Avec quels outils pilotez-vous la conformité douanière ?',o:['Tableurs','ERP','Logiciel douane dédié','Uniquement via le transitaire','Assistant ou outil d’IA','Aucun outil formalisé']},
+ {id:'priorites',c:'c6',type:'many',max:3,t:'Quelles sont vos priorités pour les douze prochains mois ?',h:'Trois réponses au plus.',o:['Réduire les délais de dédouanement','Sécuriser le classement tarifaire','Mieux exploiter les accords de libre-échange','Maîtriser le coût rendu','Mieux apurer les régimes économiques','Obtenir ou renouveler le statut OEA','Former les équipes','Digitaliser la fonction douane']}
+];
+var KEY='ixp-enquete-2026', MINE='ixp-enquete-2026-moi';
+var ans={};
+function $(id){return document.getElementById(id);}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
+function save(l){try{localStorage.setItem(KEY,JSON.stringify(l));}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* ── Formulaire ── */
+function render(){
+  var h='';
+  Q.forEach(function(q,i){
+    var sel=ans[q.id]||[], full=q.max&&sel.length>=q.max;
+    h+='<fieldset class="q '+q.c+'" style="margin-inline:0"><legend class="qn" style="padding:0">QUESTION '+(i+1)+' / 12</legend><div class="qt">'+esc(q.t)+'</div>'+
+      '<div class="qh">'+(q.h?esc(q.h):(q.type==='one'?'Une seule réponse.':'Plusieurs réponses possibles.'))+'</div><div class="opts">'+
+      q.o.map(function(o,j){var on=sel.indexOf(j)>=0,dis=full&&!on;
+        return '<label class="opt'+(on?' on':'')+(dis?' dis':'')+'"><input type="checkbox" data-q="'+q.id+'" data-j="'+j+'"'+(on?' checked':'')+(dis?' disabled':'')+'><span>'+esc(o)+'</span></label>';}).join('')+
+      '</div></fieldset>';
+  });
+  $('questions').innerHTML=h;
+  $('questions').querySelectorAll('input[type=checkbox]').forEach(function(cb){cb.addEventListener('change',function(){
+    var q=Q.filter(function(x){return x.id===cb.dataset.q;})[0],j=+cb.dataset.j,sel=ans[q.id]||[];
+    if(q.type==='one'){sel=cb.checked?[j]:[];}
+    else{
+      var exclusive=/^(Aucun|Aucune difficulté notable|Rien :|Aucun outil formalisé)/.test(q.o[j]);
+      if(cb.checked){sel=exclusive?[j]:sel.filter(function(k){return !/^(Aucun|Aucune difficulté notable|Rien :|Aucun outil formalisé)/.test(q.o[k]);}).concat([j]);}
+      else sel=sel.filter(function(k){return k!==j;});
+    }
+    if(sel.length)ans[q.id]=sel;else delete ans[q.id];
+    var y=window.scrollY;render();window.scrollTo(0,y);progress();});});
+}
+function progress(){
+  var n=Q.filter(function(q){return ans[q.id];}).length;
+  $('pbar').style.width=(n/12*100)+'%';$('ptxt').textContent=n+' question'+(n>1?'s':'')+' sur 12';
+  var ok=Q.slice(0,10).every(function(q){return ans[q.id];});
+  $('submit').disabled=!ok;$('req').textContent=ok?'Vous pouvez envoyer vos réponses.':'Répondez au moins aux 10 premières questions.';
+}
+$('submit').addEventListener('click',function(){
+  var mail=$('c-mail').value.trim();
+  if(mail&&!$('c-ok').checked){$('sent').innerHTML='<div class="msg warn">Cochez la case de consentement pour recevoir le rapport, ou effacez votre e-mail.</div>';return;}
+  if(mail&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)){$('sent').innerHTML='<div class="msg warn">L’adresse e-mail semble incorrecte.</div>';return;}
+  var rep={id:'R'+Date.now(),date:new Date().toISOString(),a:JSON.parse(JSON.stringify(ans)),contact:mail?{nom:$('c-nom').value.trim(),mail:mail}:null};
+  var l=load();l.push(rep);save(l);
+  try{localStorage.setItem(MINE,rep.id);}catch(e){}
+  // Démo : la réponse est enregistrée sur ce poste. En production, l'envoyer aussi à une table dédiée (voir la note de mise en ligne).
+  $('sent').innerHTML='<div class="msg">Merci, vos réponses sont enregistrées. Les résultats ci-dessous en tiennent compte.</div>';
+  results();document.getElementById('results').scrollIntoView({behavior:'smooth'});
+});
+
+/* ── Résultats ── */
+var PAL=['#1F4E9A','#1E7346','#9A620C','#5B3FA0','#A82D3C','#16706B','#3D4A63','#A8822F'];
+function stats(l,q){var cnt=q.o.map(function(){return 0;}),n=0;
+  l.forEach(function(r){var s=r.a[q.id];if(!s)return;n++;s.forEach(function(j){cnt[j]++;});});return {cnt:cnt,n:n};}
+function pc(x,n){return n?Math.round(x/n*100):0;}
+function bars(q,st,mine){
+  var order=q.o.map(function(_,j){return j;});
+  if(q.type==='many')order.sort(function(a,b){return st.cnt[b]-st.cnt[a];});
+  return order.map(function(j){var p=pc(st.cnt[j],st.n),me=mine&&mine.indexOf(j)>=0;
+    return '<div class="row"><span class="lab'+(me?' me':'')+'">'+esc(q.o[j])+'</span><div class="track"><i style="width:'+p+'%"></i></div><span class="v">'+p+' %</span></div>';}).join('');
+}
+function donut(q,st,mine){
+  var tot=st.cnt.reduce(function(a,b){return a+b;},0)||1,a0=-Math.PI/2,R=54,r=32,cx=64,cy=64,svg='';
+  st.cnt.forEach(function(v,j){if(!v)return;var a1=a0+v/tot*2*Math.PI;
+    if(v===tot){svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+((R+r)/2)+'" fill="none" stroke="'+PAL[j%8]+'" stroke-width="'+(R-r)+'"/>';}
+    else{var L=a1-a0>Math.PI?1:0,p=function(rad,a){return [cx+rad*Math.cos(a),cy+rad*Math.sin(a)];},A=p(R,a0),B=p(R,a1),C=p(r,a1),D=p(r,a0);
+      svg+='<path d="M'+A+' A'+R+' '+R+' 0 '+L+' 1 '+B+' L'+C+' A'+r+' '+r+' 0 '+L+' 0 '+D+' Z" fill="'+PAL[j%8]+'" opacity=".88"/>';}
+    a0=a1;});
+  var leg=q.o.map(function(o,j){var me=mine&&mine.indexOf(j)>=0;return '<div'+(me?' style="font-weight:600"':'')+'><span style="background:'+PAL[j%8]+'"></span>'+esc(o)+' · '+pc(st.cnt[j],st.n)+' %'+(me?' · vous':'')+'</div>';}).join('');
+  return '<div class="donut"><svg viewBox="0 0 128 128" width="128" height="128" aria-hidden="true">'+svg+'<text x="64" y="69" text-anchor="middle" font-size="15" font-family="DM Sans" fill="#14120F">n = '+st.n+'</text></svg><div class="legend">'+leg+'</div></div>';
+}
+function results(){
+  var l=load(),n=l.length,mineId=null;try{mineId=localStorage.getItem(MINE);}catch(e){}
+  var mine=l.filter(function(r){return r.id===mineId;})[0];
+  $('r-title').textContent=n?'Résultats : '+n+' répondant'+(n>1?'s':''):'Aucune réponse pour l’instant';
+  $('r-src').textContent=n?'Réponses enregistrées sur ce poste ('+(n<30?'échantillon encore restreint : à interpréter avec prudence':'échantillon exploitable')+'). Les cases en gras sont les vôtres.':'Les graphiques apparaîtront dès la première réponse envoyée.';
+  if(!n){$('kpis').innerHTML='';$('charts').innerHTML='<div class="chart"><div class="empty">Répondez au questionnaire pour afficher les premiers résultats.</div></div>';return;}
+  function share(id,test){var s=0,m=0;l.forEach(function(r){var a=r.a[id];if(!a)return;m++;if(test(a))s++;});return m?Math.round(s/m*100)+' %':'—';}
+  var qc=Q[6],qa=Q[7],qr=Q[4],qp=Q[11];
+  var tr=stats(l,qr),tp=stats(l,qp),ir=tr.cnt.indexOf(Math.max.apply(null,tr.cnt)),ip=tp.cnt.indexOf(Math.max.apply(null,tp.cnt));
+  $('kpis').innerHTML=
+    '<div class="kpi c5"><b>'+share('controle',function(a){return a[0]===1||a[0]===2;})+'</b><span>ont subi un contrôle a posteriori ou un redressement en 3 ans</span></div>'+
+    '<div class="kpi c4"><b>'+share('ale',function(a){return a.indexOf(qa.o.length-1)<0;})+'</b><span>utilisent au moins un accord de libre-échange</span></div>'+
+    '<div class="kpi c2"><b style="font-size:20px;line-height:1.25">'+(tr.n?esc(qr.o[ir]):'—')+'</b><span>première cause de retard citée</span></div>'+
+    '<div class="kpi c6"><b style="font-size:20px;line-height:1.25">'+(tp.n?esc(qp.o[ip]):'—')+'</b><span>première priorité à 12 mois</span></div>';
+  var h='';
+  Q.forEach(function(q,i){var st=stats(l,q),me=mine?mine.a[q.id]:null;
+    h+='<div class="chart '+q.c+'"><h4>'+(i+1)+'. '+esc(q.t)+'</h4><div class="sub">'+st.n+' réponse'+(st.n>1?'s':'')+(q.type==='many'?' · plusieurs choix possibles : les pourcentages ne s’additionnent pas':'')+'</div>'+
+      (st.n?(q.type==='one'&&q.o.length<=6?donut(q,st,me):bars(q,st,me)):'<div class="empty">Pas encore de réponse.</div>')+'</div>';});
+  $('charts').innerHTML=h;
+}
+$('kiosk').addEventListener('click',function(){ans={};['c-nom','c-mail'].forEach(function(id){$(id).value='';});$('c-ok').checked=false;$('sent').innerHTML='';
+  try{localStorage.removeItem(MINE);}catch(e){}render();progress();results();window.scrollTo({top:0,behavior:'smooth'});});
+$('print').addEventListener('click',function(){window.print();});
+$('csv').addEventListener('click',function(){var l=load();if(!l.length)return;
+  var head=['id','date'].concat(Q.map(function(q,i){return 'Q'+(i+1)+' '+q.t;})).concat(['contact_nom','contact_email']);
+  var rows=l.map(function(r){return [r.id,r.date].concat(Q.map(function(q){return (r.a[q.id]||[]).map(function(j){return q.o[j];}).join(' | ');})).concat([r.contact?r.contact.nom:'',r.contact?r.contact.mail:'']);});
+  var csv='﻿'+[head].concat(rows).map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(';');}).join('\n');
+  var b=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='enquete-barometre-2026.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);});
+
+render();progress();results();
+})();
+</script>
+</body>
+</html>

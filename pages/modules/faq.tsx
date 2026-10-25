@@ -266,7 +266,7 @@ function FaqItem({ entry, isOpen, onToggle, searchQuery }: {
         <span style={{
           flex: 1, fontSize: 13, fontWeight: isOpen ? 600 : 500,
           color: 'var(--bd)', lineHeight: 1.55,
-          fontFamily: "'Source Serif 4', Georgia, serif",
+          fontFamily: "'DM Serif Display', Georgia, serif",
         }}>
           {highlightText(entry.question, searchQuery)}
         </span>
@@ -501,7 +501,7 @@ export default function FaqPage() {
         display: 'flex', alignItems: 'center', gap: '.75rem'
       }}>
         <span style={{ fontSize: 11, color: '#92400E', letterSpacing: '.04em' }}>
-          Contenu protégé · Document sous droit d'auteur · Accès réservé aux abonnés Transit-IA
+          Contenu protégé · Document sous droit d'auteur · Accès réservé aux abonnés Import-eXPert
         </span>
       </div>
 
@@ -648,7 +648,7 @@ export default function FaqPage() {
               padding: '2.5rem', textAlign: 'center',
               border: '.5px solid var(--rule)', color: 'var(--inkm)'
             }}>
-              <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 17, color: 'var(--bd)', marginBottom: 8 }}>
+              <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 17, color: 'var(--bd)', marginBottom: 8 }}>
                 Aucun résultat
               </div>
               {searchQuery
@@ -736,7 +736,7 @@ export default function FaqPage() {
         display: 'flex', justifyContent: 'space-between',
         fontSize: 11, color: 'var(--inkm)'
       }}>
-        <span>Espace Expert Opérateurs · Document sous droit d'auteur · Usage réservé aux abonnés Transit-IA</span>
+        <span>Espace Expert Opérateurs · Document sous droit d'auteur · Usage réservé aux abonnés Import-eXPert</span>
         <span>Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 

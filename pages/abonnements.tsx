@@ -131,7 +131,7 @@ export default function Abonnements() {
 
         {/* Essai gratuit */}
         <div className="alert alert-info" style={{ marginBottom: '1.5rem' }}>
-          14 jours d'essai gratuit sur tous les plans payants — accès complet, aucune carte bancaire requise.
+          14 jours d'essai gratuit sur tous les plans payants, avec accès complet.
         </div>
 
         {/* Grille des plans */}

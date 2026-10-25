@@ -83,7 +83,7 @@ function SituationCard({ s, isOpen, onToggle }: {
             </span>
           </div>
           <div style={{ fontSize:13, fontWeight:600, color:'#1A1A2E', lineHeight:1.4,
-            fontFamily:"'Source Serif 4',Georgia,serif" }}>
+            fontFamily:"'DM Serif Display',Georgia,serif" }}>
             {s.titre}
           </div>
         </div>
@@ -122,7 +122,7 @@ function SituationCard({ s, isOpen, onToggle }: {
               Réf. FAQ douanière : {s.ref_faq}
             </span>
             <span style={{ fontSize:9, color:'var(--color-border-secondary)', letterSpacing:'.05em' }}>
-              DOCUMENT SOUS DROIT D'AUTEUR · TRANSIT-IA
+              DOCUMENT SOUS DROIT D'AUTEUR · IXP-IMPORT-EXPERT
             </span>
           </div>
         </div>
@@ -260,7 +260,7 @@ export default function RisquesPage() {
       ) : filtered.length === 0 ? (
         <div style={{ padding:'3rem', textAlign:'center',
           border:'.5px solid var(--color-border-tertiary)', color:'var(--color-text-secondary)' }}>
-          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:18, color:'#0C2D5C', marginBottom:8 }}>
+          <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:18, color:'#0C2D5C', marginBottom:8 }}>
             Aucune situation trouvée
           </div>
           Essayez un autre filtre ou terme de recherche.
@@ -281,7 +281,7 @@ export default function RisquesPage() {
         borderTop:'.5px solid var(--color-border-tertiary)',
         display:'flex', justifyContent:'space-between',
         fontSize:11, color:'var(--color-text-secondary)' }}>
-        <span>Contrôle des Risques · FAQ en Douane · Document sous droit d'auteur · Transit-IA</span>
+        <span>Contrôle des Risques · FAQ en Douane · Document sous droit d'auteur · Import-eXPert</span>
         <span>Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 

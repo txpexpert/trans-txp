@@ -310,7 +310,7 @@ function ReportView({ report, onClose }: { report: AuditReport; onClose: () => v
             <div style={{ fontSize: 10, letterSpacing: '.1em', color: 'var(--color-text-secondary)', marginBottom: 4 }}>
               RAPPORT D'AUDIT DOUANIER — USAGE INTERNE ABONNÉS
             </div>
-            <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, color: 'var(--color-text-primary)' }}>
+            <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 22, fontWeight: 700, color: 'var(--color-text-primary)' }}>
               Rapport complet de conformité
             </div>
           </div>
@@ -329,7 +329,7 @@ function ReportView({ report, onClose }: { report: AuditReport; onClose: () => v
           {/* Verdict global */}
           <div style={{ background: gCol.bg, borderLeft: `4px solid ${gCol.color}`, padding: '1.25rem 1.5rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
-              <span style={{ fontFamily: "'Playfair Display',serif", fontSize: 36, fontWeight: 700, color: gCol.color }}>
+              <span style={{ fontFamily: "'DM Serif Display',serif", fontSize: 36, fontWeight: 700, color: gCol.color }}>
                 {report.globalScore}%
               </span>
               <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: gCol.color }}>
@@ -470,7 +470,7 @@ export default function AuditPage() {
         }}>
           <span style={{ fontSize: 24, flexShrink: 0 }}>◈</span>
           <div>
-            <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 16, fontWeight: 700, color: '#1E40AF', marginBottom: 6 }}>
+            <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 16, fontWeight: 700, color: '#1E40AF', marginBottom: 6 }}>
               Comment fonctionne cet outil ?
             </div>
             <div style={{ fontSize: 12, color: '#1E3A8A', lineHeight: 1.7 }}>
@@ -501,7 +501,7 @@ export default function AuditPage() {
             <div style={{ fontSize: 10, letterSpacing: '.1em', color: globalLevel.color, marginBottom: 4 }}>
               SCORE DE CONFORMITÉ GLOBAL
             </div>
-            <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 52, fontWeight: 700, color: globalLevel.color, lineHeight: 1 }}>
+            <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 52, fontWeight: 700, color: globalLevel.color, lineHeight: 1 }}>
               {globalScore}<span style={{ fontSize: 20 }}>%</span>
             </div>
             <div style={{ fontSize: 12, fontWeight: 500, color: globalLevel.color, marginTop: 6 }}>
@@ -597,7 +597,7 @@ export default function AuditPage() {
 
       {/* Footer */}
       <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '.5px solid var(--color-border-tertiary)', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--color-text-secondary)' }}>
-        <span>Audit Douanier · Transit-IA — Usage interne abonnés</span>
+        <span>Audit Douanier · Import-eXPert — Usage interne abonnés</span>
         <span>Basé sur le Code des douanes 2022 · Loi de Finances 2025</span>
       </div>
 

@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="fr" class="ixp-theme"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pack conformité intégral | IXP-Import-eXPert</title><meta name="description" content="Relier les trois kits en un programme : organisation, contrôles, indicateurs, plan de déploiement en 90 jours.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"><style>
+:root{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--paper:#FAF7F0;--card:#fff;--line:#E6DCC7;--line2:#D6C9AC;
+--gold:#A8822F;--gold2:#C9A84C;--navy:#153E82;--navy2:#0E2C5E;--red:#A82D3C;--green:#1E7346;--amber:#9A620C;--violet:#5B3FA0;--teal:#16706B;
+--serif:'DM Serif Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--side:300px}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;font-size:15.5px}
+a{color:var(--navy)}
+/* En-tête */
+.top{position:sticky;top:0;z-index:30;height:60px;display:flex;align-items:center;gap:14px;padding:0 18px;background:rgba(250,247,240,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .brand{font-family:var(--serif);font-size:21px;text-decoration:none;color:var(--ink);white-space:nowrap}
+.top .brand b{font-weight:400;color:var(--red)}
+.top .kitname{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:var(--kb);color:var(--kc);border:1px solid var(--kl);white-space:nowrap}
+.top .search{margin-left:auto;position:relative}
+.top .search input{width:260px;font:inherit;font-size:14px;padding:8px 12px 8px 32px;border:1px solid var(--line2);border-radius:999px;background:#fff}
+.top .search::before{content:'⌕';position:absolute;left:12px;top:6px;color:var(--ink3);font-size:16px}
+.top .tbtn{font:inherit;font-size:13.5px;padding:8px 13px;border-radius:999px;border:1px solid var(--line2);background:#fff;cursor:pointer;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.top .tbtn:hover{border-color:var(--ink)}
+.menubtn{display:none}
+/* Mise en page */
+.layout{display:grid;grid-template-columns:var(--side) minmax(0,1fr);min-height:calc(100vh - 60px)}
+aside.side{position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;border-right:1px solid var(--line);background:#fff;padding:18px 14px 40px}
+.side .kithead{padding:4px 8px 14px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.side .kithead .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--kc)}
+.side .kithead h2{font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.15;margin:4px 0 6px}
+.side .kithead p{margin:0;font-size:12.5px;color:var(--ink3)}
+.side .grp{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin:16px 8px 6px}
+.side a.it{display:flex;gap:9px;align-items:flex-start;padding:7px 10px;border-radius:10px;text-decoration:none;color:var(--ink2);font-size:14px;line-height:1.3}
+.side a.it .ic{flex:0 0 20px;text-align:center;font-size:14px}
+.side a.it:hover{background:var(--paper)}
+.side a.it.on{background:var(--kb);color:var(--kc);font-weight:600}
+.side a.it .tag{margin-left:auto;font-family:var(--mono);font-size:9.5px;padding:2px 6px;border-radius:99px;background:var(--paper);color:var(--ink3);white-space:nowrap}
+.side a.it.hide{display:none}
+.side .nores{font-size:13px;color:var(--ink3);padding:8px 10px;display:none}
+main.view{padding:34px 46px 80px;max-width:1040px;width:100%}
+section.sec{display:none;animation:fade .2s ease}
+section.sec.on{display:block}
+@keyframes fade{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:none}}
+/* Typo */
+.eb{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--kc)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.6vw,42px);line-height:1.1;margin:8px 0 14px}
+h1 em{color:var(--kc)}
+h3{font-family:var(--serif);font-weight:400;font-size:23px;margin:26px 0 8px}
+h4{font-size:15.5px;margin:18px 0 6px}
+.lead{font-size:17px;color:var(--ink2);max-width:780px}
+p{margin:0 0 12px}
+.muted{color:var(--ink3);font-size:13.5px}
+ul.l{padding-left:20px;margin:0 0 12px}ul.l li{margin-bottom:5px}
+ol.l{padding-left:22px;margin:0 0 12px}ol.l li{margin-bottom:6px}
+.ref{font-family:var(--mono);font-size:11.5px;color:var(--ink3)}
+/* Encadrés */
+.box{border-radius:14px;padding:16px 18px;margin:14px 0;border:1px solid var(--line);background:#fff}
+.box.key{border-left:5px solid var(--kc);background:var(--kb);border-color:var(--kl)}
+.box.warn{border-left:5px solid var(--red);background:#FCEEF0;border-color:#F0C9CF}
+.box.ok{border-left:5px solid var(--green);background:#EBF6EF;border-color:#C3E3CF}
+.box.tip{border-left:5px solid var(--gold);background:#FBF5E6;border-color:#E8D7A6}
+.box b.t{display:block;margin-bottom:4px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;text-decoration:none;color:var(--ink);display:block;transition:all .15s}
+.card:hover{border-color:var(--kc);transform:translateY(-2px)}
+.card .ic{font-size:20px}
+.card b{display:block;margin:6px 0 4px;font-size:15px}
+.card span{font-size:13px;color:var(--ink3)}
+.steps{counter-reset:s;display:grid;gap:10px;margin:14px 0}
+.step{display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.step::before{counter-increment:s;content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--kc);color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:12px}
+/* Tableaux */
+.tw{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:12px;background:#fff}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{text-align:left;font-weight:600;font-size:12px;letter-spacing:.03em;background:var(--kb);color:var(--kc);padding:9px 10px;border-bottom:1px solid var(--kl);white-space:nowrap}
+table.t td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+table.t tr:last-child td{border-bottom:none}
+table.t td.ref{white-space:nowrap}
+/* Formulaires */
+.form{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin:12px 0}
+.form.three{grid-template-columns:repeat(3,1fr)}
+.form .full{grid-column:1/-1}
+label.f{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+label.f small{font-weight:400;color:var(--ink3);display:block}
+input.i,select.i,textarea.i{width:100%;font:inherit;font-size:14.5px;padding:9px 11px;border:1px solid var(--line2);border-radius:9px;background:var(--paper)}
+textarea.i{min-height:76px;resize:vertical}
+input.i:focus,select.i:focus,textarea.i:focus{outline:none;border-color:var(--kc);background:#fff}
+.btn{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:14px;font-weight:500;padding:9px 16px;border-radius:999px;border:1px solid var(--line2);background:#fff;color:var(--ink);cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--ink)}
+.btn.p{background:var(--kc);border-color:var(--kc);color:#fff}
+.btn.p:hover{filter:brightness(.92)}
+.btn.s{padding:5px 11px;font-size:13px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+/* Résultats */
+.res{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.kpi{background:var(--paper);border-radius:12px;padding:12px 14px}
+.kpi b{display:block;font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.1;color:var(--kc)}
+.kpi span{font-size:12.5px;color:var(--ink3)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.pill.g{background:#E6F1E8;color:var(--green)}.pill.r{background:#FCEEF0;color:var(--red)}.pill.a{background:#FCF4E3;color:var(--amber)}.pill.n{background:#EEF1F6;color:#3D4A63}
+pre.out{white-space:pre-wrap;font-family:var(--sans);font-size:14.5px;line-height:1.6;background:#fff;border:1px dashed var(--line2);border-radius:12px;padding:16px 18px;margin:10px 0}
+/* Check-lists */
+.cl{list-style:none;padding:0;margin:10px 0}
+.cl li{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:7px}
+.cl li input{margin-top:3px;width:18px;height:18px;accent-color:var(--kc);flex:0 0 18px}
+.cl li.done{background:var(--kb);border-color:var(--kl)}
+.cl li.done .tx{text-decoration:line-through;text-decoration-color:var(--ink3);color:var(--ink2)}
+.cl li .rf{display:block;font-family:var(--mono);font-size:11px;color:var(--ink3);margin-top:2px}
+.progress{height:8px;background:#EEE6D4;border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.progress i{display:block;height:100%;background:var(--kc);width:0;transition:width .2s}
+/* Assistant (choix successifs) */
+.wiz{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin:12px 0}
+.wiz .q{font-weight:600;margin-bottom:10px}
+.wiz .opts{display:flex;flex-wrap:wrap;gap:8px}
+.wiz .opt{font:inherit;font-size:14px;padding:9px 14px;border-radius:10px;border:1px solid var(--line2);background:#fff;cursor:pointer;text-align:left}
+.wiz .opt:hover{border-color:var(--kc);background:var(--kb)}
+.wiz .trail{font-size:12.5px;color:var(--ink3);margin-bottom:8px}
+/* FAQ */
+details.fq{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:8px}
+details.fq summary{cursor:pointer;font-weight:600}
+details.fq p{margin:8px 0 0;color:var(--ink2)}
+/* Navigation bas de section */
+.secnav{display:flex;justify-content:space-between;gap:10px;margin-top:36px;padding-top:18px;border-top:1px solid var(--line)}
+.secnav a{display:flex;flex-direction:column;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;text-decoration:none;color:var(--ink);max-width:48%}
+.secnav a:hover{border-color:var(--kc)}
+.secnav a span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink3)}
+.secnav a.nx{margin-left:auto;text-align:right}
+.disclaimer{font-size:12px;color:var(--ink3);margin-top:26px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .2s;z-index:50;pointer-events:none}
+.toast.on{opacity:1}
+/* Responsive */
+@media (max-width:980px){
+  .layout{grid-template-columns:1fr}
+  aside.side{position:fixed;left:0;top:60px;bottom:0;width:86%;max-width:340px;z-index:40;transform:translateX(-102%);transition:transform .2s;box-shadow:0 10px 40px rgba(0,0,0,.15)}
+  body.menu aside.side{transform:none}
+  .menubtn{display:inline-flex}
+  main.view{padding:24px 18px 70px}
+  .top .search input{width:160px}
+  .cards{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .top .kitname,.top .hide-s{display:none}
+  .top .search input{width:120px}
+  .form,.form.three,.kpis,.cards{grid-template-columns:1fr}
+}
+@media print{
+  .top,aside.side,.secnav,.btns,.noprint{display:none!important}
+  .layout{display:block}
+  main.view{padding:0;max-width:none}
+  body.printall section.sec{display:block!important;break-after:page}
+  body{background:#fff}
+}
+
+:root{--kc:#153E82;--kb:#E9EFF9;--kl:#C9D6EE}</style><link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
+</head>
+<body data-kittitle="Pack conformité intégral">
+<header class="top">
+  <button class="tbtn menubtn" type="button" aria-label="Ouvrir le menu">☰ Menu</button>
+  <a class="brand" href="/">Import<b>-</b>eXPert</a>
+  <span class="kitname">Kit 04 · Pack intégral</span>
+  <div class="search"><input id="q" type="search" placeholder="Rechercher dans le kit" aria-label="Rechercher dans le kit"></div>
+  <button class="tbtn hide-s" id="printsec" type="button">Imprimer la page</button>
+  <button class="tbtn hide-s" id="printall" type="button">Imprimer le kit</button>
+</header>
+<div class="layout">
+  <aside class="side" aria-label="Sommaire du kit">
+    <div class="kithead"><div class="n">Kit 04</div><h2>Pack conformité intégral</h2><p>Relier les trois kits en un programme : organisation, contrôles, indicateurs, plan de déploiement en 90 jours.</p></div>
+    <div class="grp">Démarrer</div><a class="it" href="#accueil"><span class="ic">🏠</span><span>Accueil du pack</span></a><a class="it" href="#maturite"><span class="ic">📈</span><span>Évaluer votre maturité</span><span class="tag">outil</span></a><a class="it" href="#plan"><span class="ic">🗓️</span><span>Plan de déploiement 90 jours</span><span class="tag">outil</span></a><div class="grp">Organiser</div><a class="it" href="#raci"><span class="ic">👥</span><span>Matrice des responsabilités</span><span class="tag">outil</span></a><a class="it" href="#controles"><span class="ic">⏱️</span><span>Calendrier des contrôles clés</span><span class="tag">liste</span></a><div class="grp">Piloter</div><a class="it" href="#kpi"><span class="ic">📊</span><span>Tableau de bord</span><span class="tag">outil</span></a><a class="it" href="#erreur"><span class="ic">🚨</span><span>Quand une erreur est découverte</span><span class="tag">outil</span></a><a class="it" href="#oea"><span class="ic">🏅</span><span>Vers le statut OEA</span><span class="tag">liste</span></a><div class="grp">Référence</div><a class="it" href="#delais"><span class="ic">⏳</span><span>Délais clés consolidés</span></a><a class="it" href="#glossaire"><span class="ic">🔤</span><span>Glossaire</span></a><a class="it" href="#sources"><span class="ic">📚</span><span>Sources et mise à jour</span></a>
+    <div class="nores">Aucune rubrique ne contient ce terme.</div>
+  </aside>
+  <main class="view"><section class="sec" id="accueil" data-title="Accueil du pack">
+<div class="eb">Kit 04 · Pack conformité intégral</div>
+<h1>Piloter la conformité import <em>comme un programme</em>.</h1>
+<p class="lead">Les kits 01 à 03 outillent l’origine, les régimes économiques et le classement. Ce kit les relie en un programme de conformité : une organisation, des contrôles à des moments précis, des indicateurs, et un plan de déploiement en 90 jours.</p>
+<div class="box key"><b class="t">La logique de diligence raisonnable</b>L’entreprise démontre qu’elle a mis en place des procédures, des contrôles et des ressources proportionnés à ses risques. C’est ce qui fait la différence en cas de contrôle, et c’est la base d’un audit OEA (Import Process Management, 23.1).</div>
+<h3>Les trois kits spécialisés</h3>
+<div class="cards">
+  <a class="card" href="Kit01_Origine_preferentielle_ALE.html"><span class="ic">🌍</span><b>Kit 01 · Origine et ALE</b><span>Assistant d’accord, calculateur d’origine, déclarations, suivi des preuves</span></a>
+  <a class="card" href="Kit02_Regimes_suspensifs_economiques.html"><span class="ic">⚖️</span><b>Kit 02 · Régimes économiques</b><span>Choix du régime, échéances, apurement, cautionnement</span></a>
+  <a class="card" href="Kit03_Classement_SH_controle_a_posteriori.html"><span class="ic">🗂️</span><b>Kit 03 · Classement et contrôle</b><span>Arbre RGI, registre SH, décisions anticipées, délais</span></a>
+</div>
+<h3>Les outils de pilotage</h3>
+<div class="cards">
+  <a class="card" href="#maturite"><span class="ic">📈</span><b>Évaluer votre maturité</b><span>Les 10 composantes du programme, notées</span></a>
+  <a class="card" href="#plan"><span class="ic">🗓️</span><b>Plan de déploiement 90 jours</b><span>Tâches datées à partir de votre date de lancement</span></a>
+  <a class="card" href="#raci"><span class="ic">👥</span><b>Matrice des responsabilités</b><span>Qui fait quoi, modifiable</span></a>
+  <a class="card" href="#controles"><span class="ic">⏱️</span><b>Calendrier des contrôles clés</b><span>De la création de l’article à l’audit annuel</span></a>
+  <a class="card" href="#kpi"><span class="ic">📊</span><b>Tableau de bord</b><span>Indicateurs calculés à partir de vos chiffres</span></a>
+  <a class="card" href="#delais"><span class="ic">⏳</span><b>Délais clés consolidés</b><span>Tous les délais des trois kits</span></a>
+</div>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="maturite" data-title="Évaluer votre maturité">
+<div class="eb">Outil</div>
+<h1>Évaluer <em>votre maturité</em></h1>
+<p class="lead">Notez chacune des dix composantes d’un programme de conformité de 0 (inexistant) à 3 (en place et vérifié). Le score situe votre fonction import sur le modèle de maturité et désigne les priorités.</p>
+<div id="mat"></div>
+<div class="res" id="mat-res"></div>
+<h3>Le modèle de maturité</h3>
+<div class="tw"><table class="t">
+<tr><th>Niveau</th><th>Caractéristiques</th><th>Pour passer au niveau suivant</th></tr>
+<tr><td><b>1. Réactif</b></td><td>Dédouanement subi ; savoir concentré chez le transitaire ; erreurs découvertes au contrôle</td><td>Nommer un propriétaire de processus ; constituer le dossier d’opération unique</td></tr>
+<tr><td><b>2. Organisé</b></td><td>Procédures écrites ; base articles ; échéanciers des titres et des régimes</td><td>Généraliser le filtre d’admissibilité et la revue post-mainlevée ; mettre en place les indicateurs</td></tr>
+<tr><td><b>3. Maîtrisé</b></td><td>Filtre systématique ; contrôles clés ; indicateurs mensuels ; décisions anticipées sur les produits sensibles</td><td>Pré-diagnostic et audit OEA ou catégorisation commune</td></tr>
+<tr><td><b>4. Certifié</b></td><td>OEA ; circuit vert ; cautionnement sur engagement ; dédouanement à domicile</td><td>Pilotage par la donnée ; études de temps de mainlevée ; amélioration continue</td></tr>
+<tr><td><b>5. Optimisé</b></td><td>Décisions fondées sur les données ; anticipation réglementaire ; fonction import génératrice de valeur</td><td>Maintenir, auditer, partager les bonnes pratiques</td></tr>
+</table></div>
+<p class="ref">Import Process Management, 23.1 et 25.3.</p>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="plan" data-title="Plan de déploiement 90 jours">
+<div class="eb">Outil</div>
+<h1>Plan de déploiement <em>en 90 jours</em></h1>
+<p class="lead">Indiquez votre date de lancement : chaque tâche est datée et son avancement est enregistré. Le plan suit la méthode en cinq temps : mesurer, fonder la base articles, sécuriser les flux, piloter les régimes, réviser.</p>
+<div class="form three"><div><label class="f" for="p-start">Date de lancement</label><input class="i" type="date" id="p-start"></div><div><label class="f" for="p-owner">Propriétaire du processus</label><input class="i" id="p-owner" placeholder="Nom et fonction"></div></div>
+<div class="res" id="p-sum"></div>
+<div id="p-list"></div>
+<div class="btns noprint"><button class="btn" type="button" id="p-csv">Exporter le plan (CSV)</button><button class="btn" type="button" id="p-reset">Réinitialiser l’avancement</button></div>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="raci" data-title="Matrice des responsabilités">
+<div class="eb">Outil</div>
+<h1>Matrice <em>des responsabilités</em></h1>
+<p class="lead">Répartition proposée pour une importation avec paiement mise à la consommation par l’intermédiaire d’un transitaire. Adaptez-la à votre organisation : vos choix sont enregistrés. R : réalise ; A : rend compte ; C : consulté ; I : informé.</p>
+<div class="tw" id="raci-t"></div>
+<div class="res" id="raci-chk"></div>
+<div class="btns noprint"><button class="btn" type="button" id="raci-csv">Exporter (CSV)</button><button class="btn" type="button" id="raci-reset">Revenir à la proposition</button></div>
+<div class="box tip"><b class="t">Une règle simple</b>Chaque activité doit avoir un seul « A ». Nommez un propriétaire du processus import, qui rend compte de l’ensemble de la chaîne et arbitre entre les fonctions (Import Process Management, 1.4).</div>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="controles" data-title="Calendrier des contrôles clés">
+<div class="eb">Contrôle</div>
+<h1>Le calendrier <em>des contrôles clés</em></h1>
+<p class="lead">Chaque contrôle se place à un moment précis de l’opération et prévient une erreur précise. Cochez ceux qui sont en place dans votre organisation.</p>
+<ul class="cl" data-cl="ctrl">
+  <li><span class="tx"><b>Création d’un article</b> — Double validation du classement (import et technique) ; recherche de circulaires de classement<span class="rf">Prévient : sous-position erronée · Kit 03</span></span></li>
+  <li><span class="tx"><b>Avant commande</b> — Filtre d’admissibilité ; disponibilité du contingent ; droits antidumping par producteur<span class="rf">Prévient : marchandise bloquée, refoulée ou surtaxée</span></span></li>
+  <li><span class="tx"><b>Signature du contrat</b> — Mentions obligatoires ; documents exigés du fournisseur, dont preuve d’origine et clause de coopération<span class="rf">Prévient : rejet du titre ; preuve d’origine manquante · Kit 01</span></span></li>
+  <li><span class="tx"><b>Avant expédition</b> — Validité du titre d’importation ; preuve d’origine reçue et contrôlée<span class="rf">Prévient : droit commun au lieu du préférentiel</span></span></li>
+  <li><span class="tx"><b>Avant signature de la DUM</b> — Rapprochement facture, DUM, titre et preuve d’origine ; documents annexes complets ; valeur reconstituée selon l’Incoterm<span class="rf">Prévient : fausse déclaration</span></span></li>
+  <li><span class="tx"><b>Entre J+7 et J+30 après mainlevée</b> — Revue des écarts entre DUM, réception physique et comptabilité<span class="rf">Transforme une infraction en régularisation spontanée (CDII, art. 78-3°) · Kit 03</span></span></li>
+  <li><span class="tx"><b>Chaque mois</b> — Rapprochement des comptes sous régime ; échéanciers ; consignations à récupérer<span class="rf">Prévient : comptes échus ; droits non restitués · Kit 02</span></span></li>
+  <li><span class="tx"><b>Chaque année</b> — Audit d’un échantillon de dossiers ; revue des redevances, commissions et prix intragroupe<span class="rf">Prévient : redressement en contrôle a posteriori</span></span></li>
+</ul>
+<p class="ref">Import Process Management, 23.2.</p>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="kpi" data-title="Tableau de bord">
+<div class="eb">Outil</div>
+<h1>Tableau de bord <em>de la fonction import</em></h1>
+<p class="lead">Saisissez vos chiffres de la période : les indicateurs se calculent. Quatre dimensions : délai, coût, conformité, trésorerie.</p>
+<div class="form three">
+  <div><label class="f" for="k-per">Période</label><input class="i" id="k-per" placeholder="Ex. : septembre 2026"></div>
+  <div><label class="f" for="k-dum">DUM déposées</label><input class="i" id="k-dum" inputmode="numeric"></div>
+  <div><label class="f" for="k-anti">DUM enregistrées avant arrivée</label><input class="i" id="k-anti" inputmode="numeric"></div>
+  <div><label class="f" for="k-delai">Délai moyen arrivée – mainlevée (jours)</label><input class="i" id="k-delai" inputmode="decimal"></div>
+  <div><label class="f" for="k-vert">DUM en circuit vert</label><input class="i" id="k-vert" inputmode="numeric"></div>
+  <div><label class="f" for="k-rect">Rectifications et annulations</label><input class="i" id="k-rect" inputmode="numeric"></div>
+  <div><label class="f" for="k-bloc">Arrivages bloqués pour un document</label><input class="i" id="k-bloc" inputmode="numeric"></div>
+  <div><label class="f" for="k-art">Articles actifs</label><input class="i" id="k-art" inputmode="numeric"></div>
+  <div><label class="f" for="k-artok">Articles au classement validé et à jour</label><input class="i" id="k-artok" inputmode="numeric"></div>
+  <div><label class="f" for="k-mag">Frais de magasinage et surestaries (DH)</label><input class="i" id="k-mag" inputmode="decimal"></div>
+  <div><label class="f" for="k-eco">Droits économisés par les préférences (DH)</label><input class="i" id="k-eco" inputmode="decimal"></div>
+  <div><label class="f" for="k-ecop">Droits économisables sur les flux éligibles (DH)</label><input class="i" id="k-ecop" inputmode="decimal"></div>
+  <div><label class="f" for="k-ech">Comptes sous régime échus</label><input class="i" id="k-ech" inputmode="numeric"></div>
+  <div><label class="f" for="k-gar">Garanties mobilisées (DH)</label><input class="i" id="k-gar" inputmode="decimal"></div>
+  <div><label class="f" for="k-plaf">Plafond des garanties (DH)</label><input class="i" id="k-plaf" inputmode="decimal"></div>
+</div>
+<div class="res" id="k-out"></div>
+<div class="btns noprint"><button class="btn p" type="button" id="k-save">Enregistrer la période</button><button class="btn" type="button" id="k-csv">Exporter l’historique (CSV)</button></div>
+<div class="tw" id="k-hist"></div>
+<p class="ref">Indicateurs : Import Process Management, 25.1.</p>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="erreur" data-title="Quand une erreur est découverte">
+<div class="eb">Contrôle</div>
+<h1>Quand une erreur <em>est découverte</em></h1>
+<div id="wiz-err"></div>
+<div class="box warn"><b class="t">La pire option</b>Laisser l’erreur se répéter : chaque déclaration est une infraction distincte, et la récidive dans les trois ans d’une transaction double le maximum de l’amende (CDII, art. 257 ter).</div>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="oea" data-title="Vers le statut OEA">
+<div class="eb">Référence</div>
+<h1>Vers le statut <em>d’opérateur économique agréé</em></h1>
+<p class="lead">Le statut OEA est l’aboutissement naturel d’un programme de conformité : il est accordé, sur demande volontaire, aux entreprises établies au Maroc qui remplissent quatre conditions cumulatives (décret, art. 53 bis).</p>
+<ul class="cl" data-cl="oea">
+  <li><span class="tx">Absence d’antécédents contentieux graves<span class="rf">Décret, art. 53 bis</span></span></li>
+  <li><span class="tx">Gestion transparente des écritures et des stocks<span class="rf">Décret, art. 53 bis</span></span></li>
+  <li><span class="tx">Solvabilité financière, appréciée sur les trois dernières années<span class="rf">Brochure ADII</span></span></li>
+  <li><span class="tx">Respect des normes de sécurité et de sûreté<span class="rf">Décret, art. 53 bis</span></span></li>
+</ul>
+<div class="tw"><table class="t">
+<tr><th>Statut</th><th>Avantages</th></tr>
+<tr><td><b>Simplifications douanières (classe A ou B)</b></td><td>Allègement des contrôles, passage plus rapide, traitement prioritaire, accès au statut d’exportateur agréé ; plafond de cautionnement illimité en classe A</td></tr>
+<tr><td><b>Sécurité et Sûreté</b> (réservé aux titulaires de la classe A)</td><td>En plus : circuit vert systématique, dédouanement à domicile, facilités pour les MEAD, reconnaissance mutuelle à l’étranger</td></tr>
+</table></div>
+<h3>La procédure</h3>
+<ol class="l">
+<li>Demande en ligne sur Diw@nati ; éligibilité notifiée dans un délai d’un mois.</li>
+<li>Audit par un cabinet externe (Simplifications) ou questionnaire d’auto-évaluation en 13 volets suivi d’un audit douanier (Sécurité et Sûreté).</li>
+<li>Avis de la commission d’agrément, puis convention signée avec l’ADII.</li>
+<li>Certificat valable trois ans, renouvelable après un nouvel audit ; recours sous un mois en cas de rejet ou de retrait.</li>
+</ol>
+<div class="box tip"><b class="t">Catégorisation commune ADII–DGI</b>Avec au moins quatre ans d’activité, une seule procédure permet d’obtenir le statut OEA et le statut de contribuable catégorisé de la DGI (circ. n° 5542/314).</div>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="delais" data-title="Délais clés consolidés">
+<div class="eb">Référence</div>
+<h1>Délais clés <em>consolidés</em></h1>
+<div class="form three noprint" style="padding:12px 14px"><div class="full"><label class="f" for="dl-f">Filtrer</label><input class="i" id="dl-f" placeholder="Ex. : origine, ATPA, 4 ans, preuve"></div></div>
+<div class="tw"><table class="t" id="dl-t">
+<tr><th>Domaine</th><th>Délai</th><th>Durée</th><th>Référence</th></tr>
+<tr><td>Contrôle</td><td>Révélation volontaire après mainlevée</td><td>30 jours</td><td class="ref">CDII, art. 78-3°</td></tr>
+<tr><td>Contrôle</td><td>Reprise des droits</td><td>4 ans (fraude : à compter de la découverte)</td><td class="ref">CDII, art. 99 bis et 99 ter</td></tr>
+<tr><td>Contrôle</td><td>Prescription des infractions</td><td>4 ans</td><td class="ref">CDII, art. 239 bis</td></tr>
+<tr><td>Contrôle</td><td>Conservation des documents</td><td>4 ans</td><td class="ref">CDII, art. 42-2° et 72</td></tr>
+<tr><td>Contrôle</td><td>Astreinte après mise en demeure de communiquer</td><td>48 heures, puis 500 DH par jour au plus</td><td class="ref">CDII, art. 301</td></tr>
+<tr><td>Contrôle</td><td>Récidive</td><td>3 ans</td><td class="ref">CDII, art. 257 ter</td></tr>
+<tr><td>Classement</td><td>Réponse à une décision anticipée</td><td>150 jours au plus</td><td class="ref">CDII, art. 45 ter-2°</td></tr>
+<tr><td>Classement</td><td>Validité d’une décision anticipée</td><td>5 ans (classement), 3 ans (origine), 1 an (valeur)</td><td class="ref">CDII, art. 45 ter-2°</td></tr>
+<tr><td>Classement</td><td>Déclaration globale : régularisation</td><td>365 jours, prorogeable d’un an au plus</td><td class="ref">Note D201/2026</td></tr>
+<tr><td>Origine</td><td>Validité des preuves (UE, Turquie)</td><td>10 mois</td><td class="ref">Circ. 6706/233, annexe I, art. 23</td></tr>
+<tr><td>Origine</td><td>Déclaration à long terme du fournisseur</td><td>2 ans au plus</td><td class="ref">Annexe I, art. 29</td></tr>
+<tr><td>Origine</td><td>Délivrance d’un EUR.1 a posteriori</td><td>2 ans</td><td class="ref">Annexe I, art. 21</td></tr>
+<tr><td>Origine</td><td>Réponse de la douane étrangère à une vérification</td><td>10 mois</td><td class="ref">Annexe I, art. 35</td></tr>
+<tr><td>Origine</td><td>Conservation (UE et Turquie / États-Unis)</td><td>3 ans / 5 ans</td><td class="ref">Annexe I, art. 31 ; circ. 4977/222</td></tr>
+<tr><td>Origine</td><td>Notification d’un rejet de préférence (États-Unis)</td><td>1 mois</td><td class="ref">Circ. 4977/222</td></tr>
+<tr><td>Régimes</td><td>ATPA</td><td>6 mois, jusqu’à 2 ans</td><td class="ref">Décret, art. 105 ; CDII, art. 137</td></tr>
+<tr><td>Régimes</td><td>Contestation des éléments d’apurement par l’administration</td><td>2 mois après la déclaration d’exportation</td><td class="ref">CDII, art. 136-2°</td></tr>
+<tr><td>Régimes</td><td>Entrepôt de douane</td><td>1 an + 2 × 6 mois</td><td class="ref">CDII, art. 127 ; circ. 5171/313</td></tr>
+<tr><td>Régimes</td><td>Transformation sous douane</td><td>3 mois + 9 mois</td><td class="ref">Décret, art. 172 septies</td></tr>
+<tr><td>Régimes</td><td>Admission temporaire</td><td>2 ans, 1 an ou 6 mois selon la catégorie, jusqu’au double</td><td class="ref">Décret, art. 132</td></tr>
+<tr><td>Régimes</td><td>Examen de la demande d’outillage</td><td>Huitaine</td><td class="ref">Circ. 6538/313</td></tr>
+<tr><td>Régimes</td><td>Traitement d’une demande de facilité de cautionnement</td><td>30 jours</td><td class="ref">Circ. 6707/313</td></tr>
+<tr><td>Régimes</td><td>Suspension d’une facilité non utilisée</td><td>3 mois ; résiliation après 1 an de suspension</td><td class="ref">Circ. 6707/313</td></tr>
+<tr><td>Régimes</td><td>Drawback : demande et remboursement</td><td>Exportations de moins de 2 ans ; remboursement sous 30 jours ouvrables</td><td class="ref">CDII, art. 162 ; arrêté 840-21</td></tr>
+<tr><td>Régimes</td><td>Échange standard</td><td>6 mois ; sortie du défectueux sous 2 mois en cas d’importation anticipée</td><td class="ref">CDII, art. 152 bis et 152 ter</td></tr>
+<tr><td>OEA</td><td>Notification de l’éligibilité</td><td>1 mois au plus</td><td class="ref">Brochure ADII</td></tr>
+<tr><td>OEA</td><td>Validité du certificat</td><td>3 ans, renouvelable après audit</td><td class="ref">Guide, n° 8-004</td></tr>
+<tr><td>OEA</td><td>Suspension du statut</td><td>90 jours au plus</td><td class="ref">Guide, n° 8-004</td></tr>
+<tr><td>Recours</td><td>Commission locale de concertation</td><td>Réunion tous les 15 jours ; décision sous 15 jours</td><td class="ref">CDII, art. 22 bis-2°</td></tr>
+</table></div>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="glossaire" data-title="Glossaire">
+<div class="eb">Référence</div>
+<h1>Glossaire</h1>
+<div class="form three noprint" style="padding:12px 14px"><div class="full"><label class="f" for="gl-f">Filtrer</label><input class="i" id="gl-f" placeholder="Ex. : apurement"></div></div>
+<div class="tw"><table class="t" id="gl-t">
+<tr><th>Terme</th><th>Définition</th></tr>
+<tr><td><b>Acquit à caution</b></td><td>Titre qui couvre une marchandise placée sous régime suspensif et contient l’engagement solidaire du soumissionnaire et de sa caution</td></tr>
+<tr><td><b>Apurement</b></td><td>Opération qui solde un compte sous régime économique par une destination autorisée (exportation, entreposage, cession, mise à la consommation)</td></tr>
+<tr><td><b>ATPA</b></td><td>Admission temporaire pour perfectionnement actif</td></tr>
+<tr><td><b>BADR</b></td><td>Base automatisée des douanes en réseau, système de dédouanement de l’ADII</td></tr>
+<tr><td><b>CDII</b></td><td>Code des douanes et impôts indirects</td></tr>
+<tr><td><b>Certificat de décharge</b></td><td>Document qui libère le soumissionnaire et sa caution, totalement ou à proportion des quantités apurées</td></tr>
+<tr><td><b>Contrôle a posteriori</b></td><td>Révision des déclarations après la mainlevée, dans un délai de quatre ans</td></tr>
+<tr><td><b>Cumul</b></td><td>Règle qui permet de considérer comme originaires des matières d’un autre partenaire appliquant des règles identiques</td></tr>
+<tr><td><b>Décision anticipée</b></td><td>Décision rendue par l’ADII avant l’opération sur le classement, l’origine ou la méthode d’évaluation</td></tr>
+<tr><td><b>Drawback</b></td><td>Remboursement forfaitaire de droits perçus sur des matières incorporées dans des produits exportés</td></tr>
+<tr><td><b>DUM</b></td><td>Déclaration unique de marchandises</td></tr>
+<tr><td><b>EUR.1</b></td><td>Certificat de circulation des marchandises prouvant l’origine préférentielle</td></tr>
+<tr><td><b>Exportateur agréé</b></td><td>Exportateur autorisé à établir des déclarations d’origine sans limite de valeur</td></tr>
+<tr><td><b>MEAD</b></td><td>Magasins et aires de dédouanement</td></tr>
+<tr><td><b>Mainlevée</b></td><td>Autorisation donnée par la douane d’enlever la marchandise</td></tr>
+<tr><td><b>No-drawback</b></td><td>Règle interdisant l’utilisation, sous préférence, de matières non originaires importées en suspension de droits</td></tr>
+<tr><td><b>OEA</b></td><td>Opérateur économique agréé</td></tr>
+<tr><td><b>Prix départ usine</b></td><td>Prix payé au fabricant chez qui la dernière ouvraison a été effectuée</td></tr>
+<tr><td><b>Règle de liste</b></td><td>Condition d’ouvraison fixée produit par produit dans un accord pour conférer l’origine</td></tr>
+<tr><td><b>Révélation volontaire</b></td><td>Signalement spontané d’une inexactitude dans les 30 jours suivant la mainlevée, pouvant dispenser de pénalités</td></tr>
+<tr><td><b>RGI</b></td><td>Règles générales interprétatives du Système harmonisé</td></tr>
+<tr><td><b>SH</b></td><td>Système harmonisé de désignation et de codification des marchandises</td></tr>
+<tr><td><b>Soumissionnaire</b></td><td>Personne qui s’engage envers l’administration en plaçant une marchandise sous régime</td></tr>
+<tr><td><b>TIC</b></td><td>Taxe intérieure de consommation</td></tr>
+<tr><td><b>TSD</b></td><td>Transformation sous douane</td></tr>
+<tr><td><b>ZAI</b></td><td>Zone d’accélération industrielle</td></tr>
+</table></div>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section><section class="sec" id="sources" data-title="Sources et mise à jour">
+<div class="eb">Référence</div>
+<h1>Sources et mise à jour</h1>
+<p>Le pack est établi à partir du <b>Guide des procédures douanières Maroc</b> (édition 2026, à jour des textes disponibles au 04/10/2026) et du référentiel <b>Import Process Management</b> (mise à jour du 17/10/2026), chapitres 1.4, 21, 23 et 25.</p>
+<h3>Ce qu’il faut surveiller</h3>
+<ul class="l">
+<li>Les circulaires « études tarifaires » (nomenclature) et la série 232 (classement).</li>
+<li>La série 233 (règles d’origine) : alignement attendu de l’AELE et de l’accord d’Agadir sur les règles révisées.</li>
+<li>La série 313 (régimes économiques et cautionnement).</li>
+<li>La loi de finances annuelle, qui modifie le code et le tarif.</li>
+</ul>
+<div class="box warn"><b class="t">Vos données</b>Les informations saisies dans les kits restent dans le navigateur de ce poste. Utilisez les boutons « Sauvegarder » et « Exporter » pour les conserver ou les transmettre.</div>
+<p class="disclaimer">Outil d’aide à la conformité établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Il ne se substitue ni aux textes officiels ni à une consultation : avant toute opération, vérifiez que le texte cité n’a pas été modifié. Les données saisies restent dans votre navigateur ; utilisez « Sauvegarder » pour les conserver.</p></section></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>window.KIT='kit04';</script>
+<script>
+var COMP=[
+ ['Gouvernance','Propriétaire du processus, responsabilités, délégations, reporting à la direction'],
+ ['Politique et procédures écrites','Manuel des procédures import : filtre, déclaration, régimes, archivage, gestion des écarts'],
+ ['Base articles','Pour chaque article : sous-position, RGI, origine et preuve, éléments de valeur, réglementations, décisions anticipées'],
+ ['Partenaires','Sélection et suivi des transitaires, transporteurs, MEAD ; clauses fournisseurs ; agréments'],
+ ['Filtre d’admissibilité','Vérification avant commande : licences, normes, contrôles sanitaires, défense commerciale'],
+ ['Contrôles clés','Contrôles avant signature de la DUM, rapprochements, revue post-mainlevée'],
+ ['Gestion des régimes et franchises','Échéanciers, comptabilité matières, rendements, destination des biens exonérés'],
+ ['Archivage','Dossier d’opération unique, durées de conservation, restitution des originaux contre décharge'],
+ ['Formation et veille','Plan de formation par fonction ; veille par séries de circulaires'],
+ ['Audit et amélioration','Audit interne annuel, revue de direction, traitement des écarts, divulgation volontaire']];
+var LINK={2:'Kit03_Classement_SH_controle_a_posteriori.html#registre',5:'#controles',6:'Kit02_Regimes_suspensifs_economiques.html#comptes',7:'Kit03_Classement_SH_controle_a_posteriori.html#communication',0:'#raci'};
+var TASKS=[
+ [1,7,'Mesurer','Nommer le propriétaire du processus import et valider la matrice des responsabilités','#raci'],
+ [1,10,'Mesurer','Réaliser le diagnostic de conformité avec les fonctions import, achats, production et finance','/diagnostic'],
+ [8,14,'Mesurer','Évaluer la maturité sur les dix composantes et fixer les priorités','#maturite'],
+ [8,30,'Fonder la base articles','Classer chaque article actif dans le registre SH, avec fiche de classement et double validation','Kit03_Classement_SH_controle_a_posteriori.html#registre'],
+ [15,35,'Fonder la base articles','Établir une fiche d’origine par produit et par accord pour les flux sous préférence','Kit01_Origine_preferentielle_ALE.html#fiche'],
+ [22,40,'Fonder la base articles','Identifier les produits sensibles et déposer les demandes de décision anticipée','Kit03_Classement_SH_controle_a_posteriori.html#anticipee'],
+ [30,45,'Sécuriser les flux','Insérer la clause de coopération dans les contrats fournisseurs et obtenir les déclarations à long terme','Kit01_Origine_preferentielle_ALE.html#clause'],
+ [30,50,'Sécuriser les flux','Mettre en place le rapprochement à quatre pièces avant signature de la DUM','#controles'],
+ [35,55,'Sécuriser les flux','Instaurer la revue post-mainlevée (J+7 à J+30) et la procédure de révélation volontaire','Kit03_Classement_SH_controle_a_posteriori.html#revelation'],
+ [40,60,'Piloter les régimes','Saisir tous les comptes ouverts dans le tableau de bord et régulariser les comptes échus','Kit02_Regimes_suspensifs_economiques.html#comptes'],
+ [45,65,'Piloter les régimes','Documenter les taux de rendement et de déchets ; planifier le rapprochement mensuel','Kit02_Regimes_suspensifs_economiques.html#ouverture'],
+ [50,70,'Piloter les régimes','Préparer le dossier de facilité de cautionnement adaptée','Kit02_Regimes_suspensifs_economiques.html#caution'],
+ [55,75,'Réviser','Organiser l’archivage par dossier d’opération (4 ans) et les décharges du transitaire','Kit03_Classement_SH_controle_a_posteriori.html#communication'],
+ [60,80,'Réviser','Mettre en place le tableau de bord mensuel des indicateurs','#kpi'],
+ [70,85,'Réviser','Former les équipes : achats, logistique, finance, production','#maturite'],
+ [80,90,'Réviser','Refaire le diagnostic et la maturité ; présenter les résultats à la direction','/diagnostic']];
+var ROLES=['Achats','Supply / import','Finance','Qualité','Transitaire','Banque'];
+var ACT=[['Classement, origine, valeur (fiche article)','C','A','I','C','R','–'],['Filtre d’admissibilité','C','A/R','–','R','C','–'],['Négociation et contrat','A/R','C','C','C','–','–'],
+ ['Engagement d’importation (PortNet)','I','A/R','C','–','C','R'],['Paiement et couverture de change','I','C','A/R','–','–','R'],['Suivi du transport et déclaration sommaire','I','A','–','–','C','–'],
+ ['Dossier de conformité technique','C','A','–','R','C','–'],['Rédaction et signature de la DUM','–','A','I','–','R','–'],['Paiement ou garantie des droits','–','C','A/R','–','C','C'],
+ ['Remise du titre imputé à la banque','–','A/R','C','–','C','R'],['Archivage du dossier d’opération','–','A/R','C','C','R','–'],['Revue post-mainlevée à 30 jours','–','A/R','C','–','C','–']];
+document.addEventListener('kit:ready',function(){
+  /* Maturité */
+  var mat=store.get('mat',{}),lab=['0 · Inexistant','1 · Partiel, non écrit','2 · En place, non vérifié','3 · En place et vérifié'];
+  $('#mat').innerHTML='<div class="tw"><table class="t"><tr><th>#</th><th>Composante</th><th>Contenu attendu</th><th>Niveau</th></tr>'+COMP.map(function(c,i){
+    return '<tr><td>'+(i+1)+'</td><td><b>'+c[0]+'</b></td><td>'+c[1]+'</td><td><select class="i" data-m="'+i+'"><option value="">—</option>'+lab.map(function(l,j){return '<option value="'+j+'"'+(String(mat[i])===String(j)?' selected':'')+'>'+l+'</option>';}).join('')+'</select></td></tr>';}).join('')+'</table></div>';
+  function mr(){var vals=COMP.map(function(_,i){return mat[i]===''||mat[i]==null?null:+mat[i];}),done=vals.filter(function(v){return v!=null;});
+    if(!done.length){$('#mat-res').innerHTML='<p class="muted">Notez au moins une composante.</p>';return;}
+    var s=done.reduce(function(a,b){return a+b;},0)/(done.length*3),lvl=s<0.25?'1. Réactif':s<0.5?'2. Organisé':s<0.75?'3. Maîtrisé':s<0.92?'4. Certifié':'5. Optimisé';
+    var low=COMP.map(function(c,i){return [i,vals[i]];}).filter(function(x){return x[1]!=null&&x[1]<2;}).sort(function(a,b){return a[1]-b[1];});
+    var bars=COMP.map(function(c,i){var v=vals[i];return '<div style="display:grid;grid-template-columns:230px 1fr 40px;gap:10px;align-items:center;margin-bottom:6px;font-size:13.5px"><span>'+c[0]+'</span><div class="progress" style="margin:0"><i style="width:'+(v==null?0:v/3*100)+'%"></i></div><span class="ref">'+(v==null?'—':v+'/3')+'</span></div>';}).join('');
+    $('#mat-res').innerHTML='<div class="kpis"><div class="kpi"><b>'+pct(s,0)+'</b><span>Score de maturité ('+done.length+'/10 composantes notées)</span></div><div class="kpi"><b style="font-size:22px">'+lvl+'</b><span>Niveau indicatif</span></div><div class="kpi"><b>'+low.length+'</b><span>Composantes prioritaires (niveau 0 ou 1)</span></div></div>'+bars+
+      (low.length?'<h4>Priorités</h4><ol class="l">'+low.map(function(x){var l=LINK[x[0]];return '<li><b>'+COMP[x[0]][0]+'</b> — '+COMP[x[0]][1]+(l?' · <a href="'+l+'">Outil associé →</a>':'')+'</li>';}).join('')+'</ol>':'');}
+  $('#mat').addEventListener('change',function(e){var i=e.target.dataset.m;if(i==null)return;mat[i]=e.target.value;store.set('mat',mat);mr();});mr();
+
+  /* Plan 90 jours */
+  var pst=store.get('plan',{start:'',owner:'',done:{}});$('#p-start').value=pst.start||'';$('#p-owner').value=pst.owner||'';
+  function pl(){pst.start=$('#p-start').value;pst.owner=$('#p-owner').value;store.set('plan',pst);var d0=parseDate(pst.start),n=0,late=0,h='',cur='';
+    TASKS.forEach(function(t,i){var ok=!!pst.done[i];if(ok)n++;var deb=d0?addDays(d0,t[0]-1):null,fin=d0?addDays(d0,t[1]-1):null,lt=fin&&!ok&&fin<today();if(lt)late++;
+      if(t[2]!==cur){if(cur)h+='</ul>';h+='<h4>'+t[2]+'</h4><ul class="cl">';cur=t[2];}
+      h+='<li class="'+(ok?'done':'')+'"><input type="checkbox" data-t="'+i+'"'+(ok?' checked':'')+'><span class="tx">'+t[3]+' <a href="'+t[4]+'">→</a><span class="rf">Jours '+t[0]+' à '+t[1]+(d0?' · du '+fmtDate(deb)+' au '+fmtDate(fin):'')+(lt?' · <b style="color:var(--red)">en retard</b>':'')+'</span></span></li>';});
+    $('#p-list').innerHTML=h+'</ul>';
+    $('#p-sum').innerHTML='<div class="kpis"><div class="kpi"><b>'+n+'/'+TASKS.length+'</b><span>Tâches réalisées</span></div><div class="kpi"><b>'+late+'</b><span>Tâches en retard</span></div><div class="kpi"><b>'+(d0?fmtDate(addDays(d0,89)):'—')+'</b><span>Fin du plan</span></div></div><div class="progress"><i style="width:'+(n/TASKS.length*100)+'%"></i></div>';}
+  $('#p-list').addEventListener('change',function(e){var i=e.target.dataset.t;if(i==null)return;pst.done[i]=e.target.checked;pl();});
+  ['#p-start','#p-owner'].forEach(function(s){$(s).addEventListener('input',pl);});
+  $('#p-reset').addEventListener('click',function(){if(confirm('Réinitialiser l’avancement du plan ?')){pst.done={};pl();}});
+  $('#p-csv').addEventListener('click',function(){var d0=parseDate(pst.start);download(toCSV([['Étape','Tâche','Début','Fin','Fait']].concat(TASKS.map(function(t,i){return [t[2],t[3],d0?fmtDate(addDays(d0,t[0]-1)):'J'+t[0],d0?fmtDate(addDays(d0,t[1]-1)):'J'+t[1],pst.done[i]?'Oui':'Non'];}))),'plan-90-jours.csv','text/csv;charset=utf-8');});
+  pl();
+
+  /* RACI */
+  var rc=store.get('raci',null)||ACT.map(function(a){return a.slice(1);}),OPT=['–','R','A','C','I','A/R'];
+  function rd(){$('#raci-t').innerHTML='<table class="t"><tr><th>Activité</th>'+ROLES.map(function(r){return '<th>'+r+'</th>';}).join('')+'</tr>'+ACT.map(function(a,i){return '<tr><td><b>'+a[0]+'</b></td>'+ROLES.map(function(_,j){return '<td><select class="i" style="min-width:70px" data-r="'+i+'" data-c="'+j+'">'+OPT.map(function(o){return '<option'+(rc[i][j]===o?' selected':'')+'>'+o+'</option>';}).join('')+'</select></td>';}).join('')+'</tr>';}).join('')+'</table>';
+    var pb=ACT.map(function(a,i){var n=rc[i].filter(function(v){return v.indexOf('A')>=0;}).length;return n!==1?a[0]+' : '+(n?n+' responsables finaux (A)':'aucun responsable final (A)'):null;}).filter(Boolean);
+    $('#raci-chk').innerHTML=pb.length?'<div class="box warn"><b class="t">À corriger</b><ul class="l">'+pb.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul></div>':'<div class="box ok">Chaque activité a un seul responsable final (A).</div>';}
+  $('#raci-t').addEventListener('change',function(e){var t=e.target;if(t.dataset.r==null)return;rc[+t.dataset.r][+t.dataset.c]=t.value;store.set('raci',rc);rd();});
+  $('#raci-reset').addEventListener('click',function(){rc=ACT.map(function(a){return a.slice(1);});store.set('raci',rc);rd();});
+  $('#raci-csv').addEventListener('click',function(){download(toCSV([['Activité'].concat(ROLES)].concat(ACT.map(function(a,i){return [a[0]].concat(rc[i]);}))),'matrice-raci.csv','text/csv;charset=utf-8');});
+  rd();
+
+  /* Indicateurs */
+  var ids=['per','dum','anti','delai','vert','rect','bloc','art','artok','mag','eco','ecop','ech','gar','plaf'],kd=store.get('kpi-cur',{});ids.forEach(function(i){if(kd[i]!=null)$('#k-'+i).value=kd[i];});
+  function kc(){var v={};ids.forEach(function(i){v[i]=$('#k-'+i).value;});store.set('kpi-cur',v);var g=function(i){return num(v[i]);},dum=g('dum');
+    function r(a,b){return a!=null&&b?a/b:null;}
+    var K=[['Délai','Délai moyen arrivée – mainlevée',g('delai')==null?'—':g('delai').toString().replace('.',',')+' j'],['Délai','Taux de dédouanement avant arrivée',pct(r(g('anti'),dum))],
+      ['Conformité','Part du circuit vert',pct(r(g('vert'),dum))],['Conformité','Taux de rectification',pct(r(g('rect'),dum))],['Conformité','Taux de blocage pour document',pct(r(g('bloc'),dum))],
+      ['Conformité','Couverture de la base articles',pct(r(g('artok'),g('art')))],['Coût','Magasinage et surestaries par dossier',money(r(g('mag'),dum))],
+      ['Coût','Taux d’utilisation des préférences',pct(r(g('eco'),g('ecop')))],['Trésorerie','Comptes sous régime échus',g('ech')==null?'—':String(g('ech'))],['Trésorerie','Utilisation du plafond de garanties',pct(r(g('gar'),g('plaf')))]];
+    $('#k-out').innerHTML='<div class="tw"><table class="t"><tr><th>Dimension</th><th>Indicateur</th><th>Valeur</th></tr>'+K.map(function(k){return '<tr><td>'+k[0]+'</td><td>'+k[1]+'</td><td><b>'+k[2]+'</b></td></tr>';}).join('')+'</table></div>';return K;}
+  $$('#kpi input').forEach(function(el){el.addEventListener('input',kc);});
+  function kh(){var h=store.get('kpi-hist',[]);if(!h.length){$('#k-hist').innerHTML='';return;}
+    $('#k-hist').innerHTML='<table class="t"><tr><th>Période</th><th>Délai</th><th>Avant arrivée</th><th>Circuit vert</th><th>Rectification</th><th>Base articles</th><th>Préférences</th><th>Comptes échus</th><th></th></tr>'+h.map(function(x,i){return '<tr><td>'+esc(x.per)+'</td><td>'+x.k[0]+'</td><td>'+x.k[1]+'</td><td>'+x.k[2]+'</td><td>'+x.k[3]+'</td><td>'+x.k[5]+'</td><td>'+x.k[7]+'</td><td>'+x.k[8]+'</td><td><button class="btn s" data-kd="'+i+'">✕</button></td></tr>';}).join('')+'</table>';}
+  $('#k-hist').addEventListener('click',function(e){var i=e.target.dataset.kd;if(i==null)return;var h=store.get('kpi-hist',[]);h.splice(+i,1);store.set('kpi-hist',h);kh();});
+  $('#k-save').addEventListener('click',function(){var K=kc(),h=store.get('kpi-hist',[]);h.push({per:$('#k-per').value||new Date().toLocaleDateString('fr-FR'),k:K.map(function(k){return k[2];})});store.set('kpi-hist',h);kh();toast('Période enregistrée');});
+  $('#k-csv').addEventListener('click',function(){var h=store.get('kpi-hist',[]),K=kc();download(toCSV([['Période'].concat(K.map(function(k){return k[1];}))].concat(h.map(function(x){return [x.per].concat(x.k);}))),'indicateurs-import.csv','text/csv;charset=utf-8');});
+  kc();kh();
+
+  /* Erreur découverte */
+  var K3='Kit03_Classement_SH_controle_a_posteriori.html';
+  Wizard($('#wiz-err'),{
+    s:{q:'Avez-vous été informé d’un contrôle ou d’une enquête portant sur l’opération ?',o:[['Non','t'],['Oui','ctl']]},
+    t:{q:'Depuis combien de temps la mainlevée a-t-elle été donnée ?',o:[['30 jours au plus','rev'],['Plus de 30 jours','late']]},
+    rev:{r:'<h3 style="margin-top:0">Révélez l’erreur sans attendre</h3><p>Vous pouvez être dispensé de tout ou partie des pénalités : la demande indique les énonciations rectifiées et les motifs, avec les justificatifs ; les marchandises doivent être encore sous douane ou intactes et identifiables (CDII, art. 78-3° ; décret, art. 74 et 74 bis).</p><p><a href="'+K3+'#revelation">Préparer la lettre de révélation →</a></p>'},
+    late:{r:'<h3 style="margin-top:0">Régularisez quand même</h3><p>La dispense de l’article 78-3° n’est plus possible, mais la bonne foi, la régularisation spontanée et l’absence d’antécédents sont les éléments pris en compte en transaction (Import Process Management, 23.3). Corrigez la cause pour que l’erreur ne se répète pas.</p><p><a href="'+K3+'#delais">Vérifier les délais de reprise →</a></p>'},
+    ctl:{r:'<h3 style="margin-top:0">Coopérez et documentez</h3><p>La révélation volontaire n’est plus ouverte. Répondez par écrit dans les délais, en listant les pièces remises ; en cas de désaccord, saisissez la commission locale de concertation. Une transaction peut réduire les amendes, jamais les droits et taxes sauf abandon des marchandises (CDII, art. 22 bis, 273 à 278).</p><p><a href="'+K3+'#controle">Voir la conduite à tenir →</a></p>'}
+  },'s');
+
+  /* Filtres */
+  function filt(inp,tbl){$(inp).addEventListener('input',function(){var q=this.value.toLowerCase();$$(tbl+' tr').forEach(function(tr,i){if(i===0)return;tr.style.display=!q||tr.textContent.toLowerCase().indexOf(q)>=0?'':'none';});});}
+  filt('#dl-f','#dl-t');filt('#gl-f','#gl-t');
+});
+</script>
+<script>
+(function(){
+'use strict';
+var KIT=window.KIT||'kit';
+window.$=function(s,r){return (r||document).querySelector(s);};
+window.$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+window.store={get:function(k,d){try{var v=localStorage.getItem(KIT+':'+k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
+  set:function(k,v){try{localStorage.setItem(KIT+':'+k,JSON.stringify(v));}catch(e){}}};
+window.toast=function(m){var t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('on');},1800);};
+window.fmtDate=function(d){return d?d.toLocaleDateString('fr-FR'):'—';};
+window.parseDate=function(v){if(!v)return null;var d=new Date(v+'T00:00:00');return isNaN(d)?null:d;};
+window.addMonths=function(d,m){var x=new Date(d);var day=x.getDate();x.setMonth(x.getMonth()+m);if(x.getDate()<day)x.setDate(0);return x;};
+window.addDays=function(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x;};
+window.daysBetween=function(a,b){return Math.round((b-a)/86400000);};
+window.today=function(){var d=new Date();d.setHours(0,0,0,0);return d;};
+window.num=function(v){if(v==null||v==='')return null;var n=parseFloat(String(v).replace(/\s/g,'').replace(',','.'));return isNaN(n)?null:n;};
+window.money=function(n){return n==null||isNaN(n)?'—':Math.round(n).toLocaleString('fr-FR')+' DH';};
+window.pct=function(x,d){return x==null||isNaN(x)?'—':(x*100).toFixed(d==null?1:d).replace('.',',')+' %';};
+window.esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+window.download=function(content,name,type){var b=new Blob([content],{type:type||'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},400);};
+window.toCSV=function(rows){return '﻿'+rows.map(function(r){return r.map(function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"';}).join(';');}).join('\n');};
+window.copyText=function(t){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){toast('Copié dans le presse-papiers');});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('Copié dans le presse-papiers');}catch(e){}ta.remove();}};
+
+/* ── Navigation ── */
+var secs=$$('section.sec'), links=$$('aside.side a.it');
+function show(id){
+  var s=document.getElementById(id)||secs[0]; if(!s)return;
+  secs.forEach(function(x){x.classList.toggle('on',x===s);});
+  links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+s.id);});
+  document.body.classList.remove('menu');
+  window.scrollTo(0,0);setTimeout(function(){window.scrollTo(0,0);},0);
+  document.title=(s.dataset.title||'')+' · '+document.body.dataset.kittitle;
+  document.dispatchEvent(new CustomEvent('section:show',{detail:s.id}));
+}
+window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+// Navigation précédent / suivant
+secs.forEach(function(s,i){
+  var nav=document.createElement('nav');nav.className='secnav';var h='';
+  if(i>0)h+='<a href="#'+secs[i-1].id+'"><span>← PRÉCÉDENT</span>'+esc(secs[i-1].dataset.title)+'</a>';
+  if(i<secs.length-1)h+='<a class="nx" href="#'+secs[i+1].id+'"><span>SUIVANT →</span>'+esc(secs[i+1].dataset.title)+'</a>';
+  nav.innerHTML=h;s.appendChild(nav);
+});
+$('.menubtn').addEventListener('click',function(){document.body.classList.toggle('menu');});
+$('#printsec').addEventListener('click',function(){document.body.classList.remove('printall');window.print();});
+$('#printall').addEventListener('click',function(){document.body.classList.add('printall');window.print();setTimeout(function(){document.body.classList.remove('printall');},500);});
+// Recherche : filtre le menu sur le contenu des sections
+$('#q').addEventListener('input',function(){
+  var q=this.value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''),n=0;
+  links.forEach(function(a){var s=document.getElementById(a.getAttribute('href').slice(1));
+    var txt=(s?s.textContent:'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    var hit=!q||txt.indexOf(q)>=0;a.classList.toggle('hide',!hit);if(hit)n++;});
+  $$('aside.side .grp').forEach(function(g){var nx=g.nextElementSibling,any=false;while(nx&&!nx.classList.contains('grp')){if(nx.classList.contains('it')&&!nx.classList.contains('hide'))any=true;nx=nx.nextElementSibling;}g.style.display=any?'':'none';});
+  $('.nores').style.display=n?'none':'block';
+  if(q)document.body.classList.add('menu');
+});
+
+/* ── Check-lists sauvegardées : <ul class="cl" data-cl="cle"> ── */
+$$('ul.cl[data-cl]').forEach(function(ul){
+  var key='cl:'+ul.dataset.cl,st=store.get(key,{}),items=$$('li',ul);
+  var bar=document.createElement('div');bar.innerHTML='<div class="progress"><i></i></div><div class="muted"></div>';ul.parentNode.insertBefore(bar,ul);
+  function upd(){var n=items.filter(function(li){return li.querySelector('input').checked;}).length;
+    bar.querySelector('i').style.width=(items.length?n/items.length*100:0)+'%';
+    bar.querySelector('.muted').textContent=n+' point(s) vérifié(s) sur '+items.length+(n===items.length?' : check-list complète.':'');}
+  items.forEach(function(li,i){var cb=document.createElement('input');cb.type='checkbox';cb.checked=!!st[i];li.insertBefore(cb,li.firstChild);li.classList.toggle('done',cb.checked);
+    cb.addEventListener('change',function(){st[i]=cb.checked;store.set(key,st);li.classList.toggle('done',cb.checked);upd();});});
+  var r=document.createElement('div');r.className='btns noprint';r.innerHTML='<button class="btn s" type="button">Tout décocher</button>';ul.parentNode.insertBefore(r,ul.nextSibling);
+  r.querySelector('button').addEventListener('click',function(){st={};store.set(key,st);items.forEach(function(li){li.querySelector('input').checked=false;li.classList.remove('done');});upd();});
+  upd();
+});
+
+/* ── Générateurs de modèles : <form data-gen="id"> + <template id="tpl-id"> + <pre id="out-id"> ── */
+$$('form[data-gen]').forEach(function(f){
+  var id=f.dataset.gen,tpl=document.getElementById('tpl-'+id),out=document.getElementById('out-'+id),key='gen:'+id,saved=store.get(key,{});
+  $$('[name]',f).forEach(function(el){if(saved[el.name]!=null){if(el.type==='checkbox')el.checked=!!saved[el.name];else el.value=saved[el.name];}});
+  function render(){var v={};$$('[name]',f).forEach(function(el){v[el.name]=el.type==='checkbox'?el.checked:el.value;});store.set(key,v);
+    var t=tpl.innerHTML.replace(/\{\{#(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g,function(_,k,body){return v[k]?body:'';})
+      .replace(/\{\{(\w+)\}\}/g,function(_,k){var x=v[k];return x?esc(x):'…………………';});
+    var tmp=document.createElement('div');tmp.innerHTML=t;out.textContent=tmp.textContent.replace(/\n{3,}/g,'\n\n').trim();
+    document.dispatchEvent(new CustomEvent('gen:'+id,{detail:v}));}
+  f.addEventListener('input',render);f.addEventListener('change',render);render();
+  var b=document.createElement('div');b.className='btns noprint';
+  b.innerHTML='<button class="btn p" type="button" data-a="copy">Copier le texte</button><button class="btn" type="button" data-a="dl">Télécharger (.txt)</button><button class="btn" type="button" data-a="reset">Effacer les champs</button>';
+  out.parentNode.insertBefore(b,out.nextSibling);
+  b.addEventListener('click',function(e){var a=e.target.dataset.a;if(a==='copy')copyText(out.textContent);if(a==='dl')download(out.textContent,id+'.txt');
+    if(a==='reset'){f.reset();store.set(key,{});render();}});
+});
+
+/* ── Tableaux de suivi enregistrés : window.LocalTable(conteneur, config) ── */
+window.LocalTable=function(root,cfg){
+  var rows=store.get('tbl:'+cfg.key,null);if(rows==null){rows=cfg.example?[cfg.example]:[];}
+  function save(){store.set('tbl:'+cfg.key,rows);}
+  function draw(){
+    var h='<div class="btns noprint"><button class="btn p" type="button" data-a="add">+ Ajouter une ligne</button><button class="btn" type="button" data-a="csv">Exporter (CSV)</button><button class="btn" type="button" data-a="json">Sauvegarder (fichier)</button><label class="btn" style="cursor:pointer">Restaurer<input type="file" accept="application/json" hidden data-a="imp"></label></div>';
+    if(cfg.summary)h+='<div class="kpis">'+cfg.summary(rows)+'</div>';
+    h+='<div class="tw"><table class="t"><tr>'+cfg.cols.map(function(c){return '<th>'+esc(c.label)+'</th>';}).join('')+'<th></th></tr>';
+    if(!rows.length)h+='<tr><td colspan="'+(cfg.cols.length+1)+'" class="muted">Aucune ligne. Cliquez sur « Ajouter une ligne ».</td></tr>';
+    rows.forEach(function(r,i){h+='<tr>'+cfg.cols.map(function(c){
+      if(c.calc)return '<td>'+c.calc(r)+'</td>';
+      var v=r[c.k]==null?'':r[c.k];
+      if(c.type==='select')return '<td><select class="i" style="min-width:'+(c.w||150)+'px" data-r="'+i+'" data-k="'+c.k+'">'+c.opts.map(function(o){return '<option'+(o===v?' selected':'')+'>'+esc(o)+'</option>';}).join('')+'</select></td>';
+      return '<td><input class="i" style="min-width:'+(c.w||110)+'px" type="'+(c.type||'text')+'" data-r="'+i+'" data-k="'+c.k+'" value="'+esc(v)+'"></td>';
+    }).join('')+'<td><button class="btn s" type="button" data-del="'+i+'" title="Supprimer">✕</button></td></tr>';});
+    h+='</table></div>';root.innerHTML=h;
+  }
+  root.addEventListener('change',function(e){var el=e.target;
+    if(el.dataset.a==='imp'){var fr=new FileReader();fr.onload=function(){try{var d=JSON.parse(fr.result);if(Array.isArray(d)){rows=d;save();draw();toast('Données restaurées');}}catch(x){toast('Fichier non reconnu');}};fr.readAsText(el.files[0]);return;}
+    if(el.dataset.r!=null){rows[+el.dataset.r][el.dataset.k]=el.value;save();draw();}});
+  root.addEventListener('click',function(e){var el=e.target;
+    if(el.dataset.del!=null){if(confirm('Supprimer cette ligne ?')){rows.splice(+el.dataset.del,1);save();draw();}}
+    if(el.dataset.a==='add'){rows.push({});save();draw();}
+    if(el.dataset.a==='csv'){download(toCSV([cfg.cols.map(function(c){return c.label;})].concat(rows.map(function(r){return cfg.cols.map(function(c){return c.calc?c.calc(r).replace(/<[^>]+>/g,''):r[c.k];});}))),cfg.key+'.csv','text/csv;charset=utf-8');}
+    if(el.dataset.a==='json'){download(JSON.stringify(rows,null,2),cfg.key+'.json','application/json');}});
+  draw();
+};
+
+/* ── Assistants à choix successifs : window.Wizard(conteneur, arbre, départ) ── */
+window.Wizard=function(root,tree,start){
+  var trail=[];
+  function draw(id){var n=tree[id];
+    var h='<div class="wiz">';
+    if(trail.length)h+='<div class="trail">'+trail.map(function(t){return esc(t);}).join(' → ')+'</div>';
+    if(n.q){h+='<div class="q">'+n.q+'</div>'+(n.h?'<p class="muted">'+n.h+'</p>':'')+'<div class="opts">'+n.o.map(function(o,i){return '<button class="opt" type="button" data-i="'+i+'">'+o[0]+'</button>';}).join('')+'</div>';}
+    else{h+=n.r;}
+    h+='<div class="btns noprint" style="margin-top:14px">'+(trail.length?'<button class="btn s" type="button" data-back>← Revenir</button>':'')+(trail.length?'<button class="btn s" type="button" data-restart>Recommencer</button>':'')+'</div></div>';
+    root.innerHTML=h;root.dataset.node=id;
+  }
+  var hist=[];
+  root.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var n=tree[root.dataset.node];
+    if(b.dataset.i!=null){var o=n.o[+b.dataset.i];hist.push(root.dataset.node);trail.push(o[0].replace(/<[^>]+>/g,''));draw(o[1]);}
+    else if(b.hasAttribute('data-back')){trail.pop();draw(hist.pop());}
+    else if(b.hasAttribute('data-restart')){trail=[];hist=[];draw(start);}});
+  draw(start);
+};
+
+document.dispatchEvent(new CustomEvent('kit:ready'));
+if('scrollRestoration' in history)history.scrollRestoration='manual';
+show(location.hash.slice(1));
+window.addEventListener('load',function(){setTimeout(function(){window.scrollTo(0,0);},30);});
+})();
+</script>
+</body></html>

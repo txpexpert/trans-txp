@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="fr" class="ixp-theme">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnostic de conformité douanière | IXP-Import-eXPert</title>
+<meta name="description" content="Diagnostic de conformité douanière en huit domaines : indice de maîtrise, exposition chiffrée, plan d'action priorisé et suivi dans le temps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--paper:#FAF7F0;--line:#E6DCC7;--line2:#D6C9AC;--gold:#A8822F;--gold2:#C9A84C;
+--navy:#153E82;--navy2:#0E2C5E;--navys:#E9EFF9;--red:#A82D3C;--green:#1E7346;--amber:#9A620C;
+--serif:'DM Serif Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;font-size:15.5px}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.logo{font-family:var(--serif);font-size:23px;text-decoration:none}.logo b{font-weight:400;color:var(--red)}
+.logo sup{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--ink3);margin-left:5px}
+.toplinks{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.toplinks a{text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff}
+.toplinks a:hover{border-color:var(--ink)}
+.eb{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4.4vw,52px);line-height:1.06;margin:12px 0 14px}
+h1 em{color:var(--navy)}
+h2{font-family:var(--serif);font-weight:400;font-size:30px;margin:0 0 8px}
+h3{font-family:var(--serif);font-weight:400;font-size:22px;margin:0 0 6px}
+.lead{font-size:17.5px;color:var(--ink2);max-width:760px}
+.hero{padding:48px 0 22px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:13px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+/* Étapes */
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
+.stepbtn{font:inherit;font-size:14px;padding:10px 16px;border-radius:12px;border:1px solid var(--line2);background:#fff;cursor:pointer;display:flex;gap:8px;align-items:center}
+.stepbtn b{font-family:var(--mono);font-size:11px;color:var(--ink3);font-weight:400}
+.stepbtn.on{background:var(--ink);color:#fff;border-color:var(--ink)}.stepbtn.on b{color:var(--gold2)}
+.stepbtn:disabled{opacity:.45;cursor:not-allowed}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;margin-bottom:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+label.f{display:block;font-size:13.5px;font-weight:500;margin-bottom:6px}
+label.f small{display:block;font-weight:400;color:var(--ink3);font-size:12.5px}
+input[type=text],input[type=number],select{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--paper)}
+input:focus,select:focus{outline:none;border-color:var(--navy);background:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:500;font-size:14.5px;padding:11px 20px;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.dark{background:var(--ink);color:#fff}.dark:hover{background:var(--navy2)}
+.line{background:#fff;border-color:var(--line2);color:var(--ink)}.line:hover{border-color:var(--ink)}
+.gold{background:var(--gold2);color:var(--ink)}
+.navy{background:var(--navy);color:#fff}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+/* Domaines (couleurs) */
+.d-gouv{--c:#3D4A63;--cb:#EEF1F6;--cl:#CDD4E2}.d-clas{--c:#1F4E9A;--cb:#EDF3FC;--cl:#C9DAF3}.d-orig{--c:#1E7346;--cb:#EBF6EF;--cl:#C3E3CF}
+.d-val{--c:#9A620C;--cb:#FCF4E3;--cl:#EFD9A8}.d-adm{--c:#16706B;--cb:#E8F6F5;--cl:#BFE2DF}.d-ded{--c:#5B3FA0;--cb:#F2EEFB;--cl:#D8CDF1}
+.d-red{--c:#A8822F;--cb:#FBF5E6;--cl:#E8D7A6}.d-arch{--c:#A82D3C;--cb:#FCEEF0;--cl:#F0C9CF}
+.dtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.dtab{font:inherit;font-size:13.5px;padding:8px 13px;border-radius:999px;border:1px solid var(--cl);background:var(--cb);color:var(--c);cursor:pointer;font-weight:500}
+.dtab.on{box-shadow:0 0 0 2px var(--c) inset}
+.dtab .cnt{font-family:var(--mono);font-size:11px;margin-left:6px;opacity:.85}
+.dhead{border-left:4px solid var(--c);padding:4px 0 4px 14px;margin-bottom:14px}
+.dhead h3{color:var(--c)}
+.q{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:10px;background:#fff}
+.q.na{opacity:.6}
+.qtop{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.qtxt{font-weight:500}
+.qw{font-family:var(--mono);font-size:10.5px;color:var(--ink3);white-space:nowrap}
+.qref{font-size:12.5px;color:var(--ink3);margin-top:4px}
+.opts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.opt{font:inherit;font-size:13.5px;padding:7px 12px;border-radius:9px;border:1px solid var(--line2);background:#fff;cursor:pointer}
+.opt.on.v-oui{background:#E6F1E8;border-color:var(--green);color:var(--green);font-weight:600}
+.opt.on.v-partiel{background:#FCF4E3;border-color:var(--amber);color:var(--amber);font-weight:600}
+.opt.on.v-non{background:#FCEEF0;border-color:var(--red);color:var(--red);font-weight:600}
+.opt.on.v-nsp{background:#F2EEFB;border-color:#5B3FA0;color:#5B3FA0;font-weight:600}
+.opt.on.v-na{background:#EEF1F6;border-color:#3D4A63;color:#3D4A63;font-weight:600}
+.why{font-size:13px;color:var(--ink2);margin-top:8px;display:none;background:var(--paper);border-radius:9px;padding:8px 10px}
+.q.open .why{display:block}
+.whybtn{font:inherit;font-size:12.5px;background:none;border:none;color:var(--navy);cursor:pointer;padding:0;margin-top:6px;text-decoration:underline}
+.progress{height:8px;background:#EEE6D4;border-radius:99px;overflow:hidden;margin:6px 0 14px}
+.progress i{display:block;height:100%;background:var(--navy);width:0}
+.prog-pct{color:var(--navy);font-weight:700;font-size:14px;margin-left:4px}
+/* Résultats */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.kpi b{display:block;font-family:var(--serif);font-weight:400;font-size:38px;line-height:1.05}
+.kpi span{font-size:13px;color:var(--ink3)}
+.lvl-faible{color:var(--green)}.lvl-moderee{color:var(--amber)}.lvl-elevee{color:var(--red)}
+.bars .row{display:grid;grid-template-columns:210px 1fr 54px;gap:12px;align-items:center;margin-bottom:9px;font-size:14px}
+.bar{height:12px;background:#EEE6D4;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--c);border-radius:99px}
+.delta{font-family:var(--mono);font-size:11px;margin-left:6px}
+.up{color:var(--green)}.down{color:var(--red)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{text-align:left;font-weight:500;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--line);padding:8px 6px}
+table.t td{border-bottom:1px solid var(--line);padding:9px 6px;vertical-align:top}
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:99px;background:var(--cb);color:var(--c);border:1px solid var(--cl);white-space:nowrap}
+.hz{font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.hz1{background:#FCEEF0;color:var(--red)}.hz2{background:#FCF4E3;color:var(--amber)}.hz3{background:#EEF1F6;color:#3D4A63}
+.note{font-size:12.5px;color:var(--ink3)}
+.expo{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.expo .kpi b{font-size:28px}
+.formula{font-family:var(--mono);font-size:11.5px;color:var(--ink2);background:var(--paper);border-radius:8px;padding:6px 8px;margin-top:8px}
+.alert{border-left:4px solid var(--red);background:#FCEEF0;padding:12px 14px;border-radius:0 12px 12px 0;margin:12px 0;font-size:14px}
+.ok{border-left-color:var(--green);background:#EBF6EF}
+select.st{width:auto;padding:5px 8px;font-size:13px}
+.hidden{display:none!important}
+footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink3)}
+@media (max-width:900px){.grid2,.grid3,.kpis,.expo{grid-template-columns:1fr 1fr}.bars .row{grid-template-columns:130px 1fr 46px}}
+@media (max-width:600px){.grid2,.grid3,.kpis,.expo{grid-template-columns:1fr}.toplinks{display:none}.panel{padding:18px}}
+@media print{header.top,.steps,.actions,.noprint,footer.b{display:none!important}body{background:#fff}.panel{break-inside:avoid;border-color:#ccc}.sec{display:block!important}}
+</style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
+</head>
+<body>
+<header class="top" data-ixp-own-header><div class="wrap">
+  <a class="logo" href="/">Import<b>-</b>eXPert<sup>MAROC</sup></a>
+  <nav class="toplinks">
+    <a href="/plateforme">Présentation</a><a href="/espaces/securiser">Sécuriser</a><a href="/expertise#kits">Kits</a><a href="/tarifs">Tarifs</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eb">Outil · Diagnostic de conformité douanière</div>
+    <h1>Mesurez, chiffrez et <em>réduisez</em> votre exposition douanière.</h1>
+    <p class="lead">Huit domaines, une cinquantaine de points de contrôle tirés du Code des douanes et des circulaires de l’ADII. Vous obtenez un indice de maîtrise, un ordre de grandeur des droits exposés et un plan d’action priorisé, que vous suivez et mesurez d’un diagnostic à l’autre.</p>
+    <div class="chips"><span class="chip">≈ 15 minutes</span><span class="chip">Questions adaptées à votre profil</span><span class="chip">Historique et évolution</span><span class="chip">Export PDF et fichier</span><span class="chip">Données conservées sur votre poste</span></div>
+  </section>
+
+  <div class="steps" role="tablist">
+    <button class="stepbtn on" data-step="1"><b>01</b>Profil</button>
+    <button class="stepbtn" data-step="2"><b>02</b>Questionnaire</button>
+    <button class="stepbtn" data-step="3"><b>03</b>Résultats</button>
+    <button class="stepbtn" data-step="4"><b>04</b>Plan d’action et suivi</button>
+  </div>
+
+  <!-- 1. PROFIL -->
+  <section class="sec" id="s1">
+    <div class="panel">
+      <h2>Votre profil</h2>
+      <p class="note" style="margin-top:0">Le profil adapte les questions et permet de chiffrer l’exposition. Les montants sont facultatifs : sans eux, seul l’indice de maîtrise est calculé.</p>
+      <div class="grid3">
+        <div><label class="f" for="p-nom">Entreprise ou dossier<small>Libre, pour vous repérer</small></label><input type="text" id="p-nom" placeholder="Ex. : Société X, site de Tanger"></div>
+        <div><label class="f" for="p-type">Profil<small>Oriente les questions</small></label>
+          <select id="p-type"><option value="importateur">Importateur industriel</option><option value="pme">PME importatrice</option><option value="transitaire">Transitaire ou commissionnaire</option><option value="exportateur">Exportateur sous régimes économiques</option><option value="groupe">Groupe, direction financière</option></select></div>
+        <div><label class="f" for="p-oea">Statut OEA</label>
+          <select id="p-oea"><option value="non">Non</option><option value="encours">Demande en cours</option><option value="oui">Certifié</option></select></div>
+        <div><label class="f" for="p-vol">Valeur annuelle des importations (DH)<small>Valeur en douane approximative</small></label><input type="number" id="p-vol" min="0" step="1000" placeholder="Ex. : 50000000"></div>
+        <div><label class="f" for="p-taux">Taux moyen de droit d’importation (%)<small>Droit commun, hors TVA</small></label><input type="number" id="p-taux" min="0" max="200" step="0.1" placeholder="Ex. : 17,5"></div>
+        <div><label class="f" for="p-dum">Nombre de DUM par an</label><input type="number" id="p-dum" min="0" step="1" placeholder="Ex. : 300"></div>
+        <div><label class="f" for="p-pref">Part des importations sous préférence (%)<small>Accords de libre-échange</small></label><input type="number" id="p-pref" min="0" max="100" step="1" placeholder="Ex. : 40"></div>
+        <div><label class="f" for="p-us">Importations depuis les États-Unis</label><select id="p-us"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+        <div><label class="f" for="p-exp">Exportations sous preuve d’origine</label><select id="p-exp"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+        <div><label class="f" for="p-red">Régimes économiques utilisés<small>ATPA, admission temporaire, entrepôt…</small></label><select id="p-red"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+        <div><label class="f" for="p-encours">Droits et taxes suspendus en cours (DH)<small>Encours des comptes ouverts</small></label><input type="number" id="p-encours" min="0" step="1000" placeholder="Ex. : 2000000"></div>
+        <div><label class="f" for="p-cap">Contrôle a posteriori subi (3 dernières années)</label><select id="p-cap"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+      </div>
+      <div class="actions"><button class="btn dark" id="go-q">Commencer le questionnaire →</button><span class="note" id="resume-note"></span></div>
+    </div>
+  </section>
+
+  <!-- 2. QUESTIONNAIRE -->
+  <section class="sec hidden" id="s2">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline">
+        <h2>Questionnaire</h2><span class="note" id="prog-txt"></span>
+      </div>
+      <div class="progress"><i id="prog"></i></div>
+      <div class="dtabs" id="dtabs"></div>
+      <div id="qzone"></div>
+      <div class="actions"><button class="btn line" id="prev-d">← Domaine précédent</button><button class="btn dark" id="next-d">Domaine suivant →</button><button class="btn navy" id="to-res">Voir les résultats</button></div>
+      <p class="note">« Ne sais pas » compte comme un écart : une pratique que personne ne sait confirmer ne protège pas en cas de contrôle.</p>
+    </div>
+  </section>
+
+  <!-- 3. RÉSULTATS -->
+  <section class="sec hidden" id="s3">
+    <div class="panel">
+      <div class="eb" id="r-date"></div>
+      <h2 id="r-title">Résultats</h2>
+      <div class="kpis" style="margin-top:14px">
+        <div class="kpi"><b id="k-idx">—</b><span>Indice de maîtrise global</span></div>
+        <div class="kpi"><b id="k-lvl">—</b><span>Niveau d’exposition</span></div>
+        <div class="kpi"><b id="k-gaps">—</b><span>Écarts identifiés (dont critiques)</span></div>
+        <div class="kpi"><b id="k-next">—</b><span>Prochain diagnostic recommandé</span></div>
+      </div>
+      <div id="r-alerts"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>Maîtrise par domaine</h3><p class="note" style="margin-top:0" id="delta-note"></p><div class="bars" id="bars"></div></div>
+      <div class="panel" style="display:flex;flex-direction:column;align-items:center"><h3 style="align-self:flex-start">Profil de maîtrise</h3><svg id="radar" viewBox="0 0 360 330" width="100%" style="max-width:420px"></svg></div>
+    </div>
+    <div class="panel">
+      <h3>Ordre de grandeur des droits exposés</h3>
+      <p class="note" style="margin-top:0">Indicateurs, et non évaluation d’un risque : la part de l’assiette de droits sur la période de reprise de quatre ans (CDII, art. 99 bis) qui n’est pas couverte par des contrôles en place. Les formules sont affichées sous chaque montant.</p>
+      <div class="expo" id="expo"></div>
+    </div>
+    <div class="actions noprint"><button class="btn dark" id="to-plan">Voir le plan d’action →</button><button class="btn line" id="print">Imprimer ou enregistrer en PDF</button><button class="btn line" id="back-q">Modifier les réponses</button></div>
+  </section>
+
+  <!-- 4. PLAN ET SUIVI -->
+  <section class="sec hidden" id="s4">
+    <div class="panel">
+      <h2>Plan d’action priorisé</h2>
+      <p class="note" style="margin-top:0">Classé par criticité : poids du point de contrôle × écart. L’avancement est enregistré sur ce poste et repris au prochain diagnostic.</p>
+      <div style="overflow-x:auto"><table class="t" id="plan"></table></div>
+      <div class="actions noprint"><button class="btn line" id="csv">Exporter le plan (CSV)</button><button class="btn line" id="print2">Imprimer ou enregistrer en PDF</button></div>
+    </div>
+    <div class="panel">
+      <h2>Historique et évolution</h2>
+      <p class="note" style="margin-top:0">Chaque diagnostic enregistré reste consultable. Refaites-le après vos actions correctives pour mesurer le progrès.</p>
+      <div style="overflow-x:auto"><table class="t" id="hist"></table></div>
+      <div class="actions noprint">
+        <button class="btn dark" id="new">Nouveau diagnostic (reprendre les réponses)</button>
+        <button class="btn line" id="export">Exporter tous les diagnostics (fichier)</button>
+        <label class="btn line" style="cursor:pointer">Importer un fichier<input type="file" id="import" accept="application/json" hidden></label>
+        <button class="btn line" id="wipe">Effacer l’historique</button>
+      </div>
+      <p class="note">Les données restent dans le navigateur de ce poste ; exportez-les pour les conserver ou les transmettre. Le diagnostic est indicatif et ne remplace ni un audit ni l’avis d’un expert sur un dossier précis.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="b"><div class="wrap">Import-eXPert · Diagnostic établi à partir du Guide des procédures douanières Maroc (éd. 2026, à jour au 04/10/2026) et du référentiel Import Process Management. Outil d’aide : il ne se substitue ni aux textes officiels ni à une consultation.</div></footer>
+
+<script>
+(function(){
+'use strict';
+/* ═══════════ Référentiel ═══════════ */
+var DOMAINS=[
+ {id:'gouv',cls:'d-gouv',name:'Gouvernance et organisation'},
+ {id:'clas',cls:'d-clas',name:'Classement tarifaire'},
+ {id:'orig',cls:'d-orig',name:'Origine et préférences'},
+ {id:'val', cls:'d-val', name:'Valeur en douane'},
+ {id:'adm', cls:'d-adm', name:'Admissibilité et réglementations'},
+ {id:'ded', cls:'d-ded', name:'Dédouanement et contrôles clés'},
+ {id:'red', cls:'d-red', name:'Régimes économiques'},
+ {id:'arch',cls:'d-arch',name:'Archivage et contrôle a posteriori'}
+];
+/* w = poids (1 à 3) ; c = condition d'affichage ; r = risque ; a = action ; ref ; l = lien */
+var Q=[
+ {id:'g1',d:'gouv',w:2,t:"Un responsable de la fonction douane est désigné, avec une matrice des responsabilités (RACI) et des délégations de signature.",r:"Sans propriétaire du processus, les erreurs se répètent d'une opération à l'autre et personne ne répond aux demandes de l'administration.",a:"Désigner le responsable, formaliser le RACI et les délégations.",ref:"Import Process Management, 23.1",l:'/plateforme'},
+ {id:'g2',d:'gouv',w:2,t:"Un manuel de procédures import écrit couvre le filtre d'admissibilité, la déclaration, les régimes, l'archivage et la gestion des écarts.",r:"Les pratiques non écrites dépendent des personnes ; elles ne se démontrent pas lors d'un audit OEA ou d'un contrôle.",a:"Rédiger le manuel à partir de la notice méthodologique du kit 04.",ref:"IPM, 23.1 ; questionnaire OEA",l:'/expertise#kits'},
+ {id:'g3',d:'gouv',w:2,t:"Une veille suit les circulaires par série (études tarifaires, classement 232, origine 233, régimes 313) et la loi de finances.",r:"Une sous-position ou une règle d'origine qui change sans être suivie rend les déclarations erronées, même à droit constant.",a:"Mettre en place la veille par séries et dater chaque mise à jour.",ref:"Guide n° 2-001 ; IPM, ch. 2",l:'/modules/veille-reglementaire'},
+ {id:'g4',d:'gouv',w:1,t:"Un plan de formation existe pour chaque fonction impliquée (achats, logistique, finance, production).",r:"Les erreurs naissent souvent en amont : bon de commande, contrat, facture fournisseur.",a:"Établir un plan de formation par fonction.",ref:"IPM, 23.1"},
+ {id:'g5',d:'gouv',w:2,t:"Un audit interne annuel porte sur un échantillon de dossiers, avec une revue de direction.",r:"Sans audit, les écarts systématiques ne sont découverts que par l'administration, sur quatre ans d'opérations.",a:"Programmer l'audit annuel et refaire ce diagnostic à cette occasion.",ref:"IPM, 23.2 ; CDII, art. 99 bis"},
+ {id:'g6',d:'gouv',w:1,t:"Des indicateurs sont suivis : délais de dédouanement, taux d'erreurs, comptes échus, redressements.",r:"Sans mesure, impossible de démontrer l'amélioration ni de cibler l'effort.",a:"Définir 4 à 6 indicateurs et une revue mensuelle.",ref:"IPM, ch. 25"},
+ {id:'g7',d:'gouv',w:1,c:function(p){return p.oea!=='oui';},t:"Une trajectoire vers le statut d'opérateur économique agréé (OEA) est engagée ou étudiée.",r:"Le statut OEA donne accès à des facilités (procédures accélérées, cautionnement) et structure la conformité.",a:"Évaluer l'écart aux critères OEA.",ref:"Guide, section 8.1",l:'/modules/oea'},
+
+ {id:'c1',d:'clas',w:3,t:"Chaque article importé a une sous-position à 10 chiffres documentée, avec les RGI appliquées et la justification.",r:"Un code SH mal choisi rend faux le droit payé et les documents exigés ; l'écart peut être redressé sur quatre ans.",a:"Constituer le registre des codes SH (kit 03).",ref:"CDII, art. 15 ; Guide n° 2-002",l:'/modules/classement'},
+ {id:'c2',d:'clas',w:3,t:"Le classement est arrêté par l'entreprise, et non laissé à la seule habitude du transitaire.",r:"Le déclarant engage sa responsabilité sur l'espèce déclarée ; l'habitude ne vaut pas justification.",a:"Valider chaque code en interne et le communiquer au transitaire.",ref:"CDII, art. 15 ; IPM, 4.2"},
+ {id:'c3',d:'clas',w:2,t:"Tout nouvel article fait l'objet d'une double validation (import et technique).",r:"La composition, l'usage ou l'état chimique décident souvent du classement ; ils sont connus du technicien, pas de l'acheteur.",a:"Instaurer la double validation à la création de l'article.",ref:"IPM, 23.2 ; Guide n° 2-002"},
+ {id:'c4',d:'clas',w:2,t:"Les circulaires de classement (série 232) portant sur des produits voisins sont recherchées avant de classer.",r:"L'administration applique ses circulaires à toute importation du même produit.",a:"Intégrer la recherche des circulaires 232 à la procédure.",ref:"Guide n° 2-005",l:'/modules/decisions-classement'},
+ {id:'c5',d:'clas',w:2,t:"La base articles est mise à jour le jour d'entrée en vigueur de chaque circulaire « études tarifaires ».",r:"Une sous-position supprimée ou éclatée rend la déclaration erronée, même si le droit ne change pas.",a:"Abonner la base articles à la veille tarifaire.",ref:"Guide n° 2-001"},
+ {id:'c6',d:'clas',w:2,t:"Les notes de chapitre et les notes complémentaires nationales sont lues avant de choisir la sous-position.",r:"Les notes fixent des seuils (poids, teneur, conditionnement) qui changent la sous-position et parfois le taux.",a:"Ajouter la lecture des notes à la check-list de classement.",ref:"CDII, art. 2 et 5-3° ; Guide n° 2-003"},
+ {id:'c7',d:'clas',w:2,t:"Les produits dont le classement dépend de la composition disposent d'une fiche technique ou d'un bulletin d'analyse.",r:"En cas de doute, l'administration fait analyser ; les frais sont à votre charge si l'analyse infirme la déclaration.",a:"Exiger la fiche technique du fournisseur ; analyser les cas sensibles.",ref:"CDII, art. 81-2°"},
+ {id:'c8',d:'clas',w:2,t:"Les décisions anticipées sont tenues dans un registre avec leur date d'expiration (5 ans classement, 3 ans origine, 1 an valeur).",r:"Une décision expirée ou fondée sur une description incomplète ne protège plus ; elle peut même être nulle rétroactivement.",a:"Tenir le registre et revérifier à chaque changement de texte.",ref:"CDII, art. 45 ter-2°"},
+ {id:'c9',d:'clas',w:1,t:"Les matériels livrés en plusieurs envois sont déclarés sous autorisation (envois fractionnés ou déclaration globale).",r:"Déclarer chaque envoi selon la nature des pièces multiplie les positions et les droits.",a:"Demander l'autorisation avant l'arrivée du premier envoi.",ref:"CDII, art. 15-4° et 76 bis-4° ; circ. n° 6771/312"},
+
+ {id:'o1',d:'orig',w:3,c:function(p){return p.pref>0||p.exp==='oui';},t:"Une fiche d'origine existe pour chaque produit et chaque accord invoqué (intrants, origines, règle de liste, calcul).",r:"C'est la pièce demandée lors d'une vérification ; sans elle, la préférence est refusée et les droits de droit commun réclamés.",a:"Établir les fiches d'origine avec la matrice du kit 01.",ref:"Guide n° 2-021 et 2-024",l:'/modules/origine-aleca'},
+ {id:'o2',d:'orig',w:3,c:function(p){return p.pref>0;},t:"Les preuves d'origine reçues sont contrôlées avant la signature de la DUM (accord, validité de 10 mois pour l'UE et la Turquie, mentions, cachet).",r:"Une preuve expirée, incomplète ou au cachet non conforme fait tomber la préférence et déclenche une demande de vérification.",a:"Ajouter le contrôle des preuves au rapprochement avant signature.",ref:"Circ. n° 6706/233, annexe I, art. 23 ; note D105/2026"},
+ {id:'o3',d:'orig',w:2,c:function(p){return p.pref>0||p.exp==='oui';},t:"Les règles révisées appliquées à l'UE et à la Turquie depuis le 01/01/2026 sont intégrées (EUR-MED supprimés, mention « REVISED RULES »).",r:"Continuer à appliquer les anciennes règles ou à émettre des EUR-MED expose à un refus de la preuve.",a:"Réviser les fiches et les modèles de preuves UE et Turquie.",ref:"Circ. n° 6706/233 et 6722/233"},
+ {id:'o4',d:'orig',w:2,c:function(p){return p.pref>0;},t:"Pour une déclaration d'origine au-delà de 6 000 EUR, le numéro d'exportateur agréé du fournisseur est vérifié.",r:"Au-delà de 6 000 EUR, seul un exportateur agréé peut établir la déclaration : sinon la préférence est refusée.",a:"Vérifier le numéro et son format ; à défaut, exiger un EUR.1.",ref:"Annexe I, art. 18 ; note D99/2026"},
+ {id:'o5',d:'orig',w:2,c:function(p){return p.pref>0;},t:"Les fournisseurs se sont engagés par écrit à répondre aux demandes de vérification de l'origine.",r:"Si la douane étrangère ne confirme pas l'origine dans les 10 mois, la préférence est refusée a posteriori.",a:"Insérer la clause de coopération (kit 01, modèle C).",ref:"Annexe I, art. 34 et 35 ; Guide n° 2-027",l:'/expertise#kits'},
+ {id:'o6',d:'orig',w:2,c:function(p){return p.us==='oui';},t:"Importations des États-Unis : le dossier d'origine du fournisseur (critère de 35 %) est obtenu avant de demander la préférence et conservé 5 ans.",r:"Sans certificat, c'est l'importateur qui certifie l'éligibilité et en répond.",a:"Obtenir le dossier d'origine écrit du fournisseur.",ref:"Circ. n° 4977/222"},
+ {id:'o7',d:'orig',w:2,c:function(p){return p.exp==='oui';},t:"À l'export, les preuves sont émises dans les règles : exportateur agréé au-delà de 6 000 EUR, mentions de cumul, no-drawback pour les textiles.",r:"Une preuve irrégulière fait perdre la préférence au client et expose l'exportateur.",a:"Dérouler la check-list export du kit 01.",ref:"Annexe I, art. 7, 18 et 19 ; circ. n° 6139/222"},
+ {id:'o8',d:'orig',w:1,c:function(p){return p.pref>0||p.exp==='oui';},t:"Les déclarations à long terme des fournisseurs sont reçues et leur échéance (2 ans au plus) est suivie.",r:"Sans déclaration valable, le cumul ne peut être appliqué.",a:"Exiger la déclaration à long terme dès le premier envoi.",ref:"Annexe I, art. 29"},
+ {id:'o9',d:'orig',w:1,t:"Les opportunités d'accords de libre-échange non exploitées sont recherchées au moins une fois par an.",r:"Payer le droit commun sur un produit éligible est une perte sèche, sans risque de redressement mais sans contrepartie.",a:"Passer les principaux flux dans la matrice d'éligibilité.",ref:"Guide n° 2-021",l:'/modules/origine-aleca'},
+
+ {id:'v1',d:'val',w:3,t:"La valeur en douane est reconstituée selon l'Incoterm (fret, assurance, frais jusqu'au lieu d'introduction) avant la signature.",r:"Une valeur incomplète est une fausse déclaration ; c'est l'erreur la plus fréquente en contrôle a posteriori.",a:"Formaliser une fiche de calcul de la valeur par opération.",ref:"IPM, annexe D.2",l:'/modules/valeur-douane'},
+ {id:'v2',d:'val',w:3,t:"Les redevances, commissions, apports et frais de licence liés aux marchandises sont identifiés et, le cas échéant, intégrés à la valeur.",r:"Ces éléments, payés hors facture, sont recherchés en priorité lors des contrôles.",a:"Revoir chaque année redevances, commissions et apports.",ref:"IPM, 23.2 ; Guide, section 2.3"},
+ {id:'v3',d:'val',w:2,c:function(p){return p.type==='groupe'||p.type==='importateur';},t:"Les achats auprès de sociétés liées sont analysés (prix de transfert, influence du lien sur le prix).",r:"Le lien entre acheteur et vendeur peut conduire l'administration à écarter le prix déclaré.",a:"Documenter l'absence d'influence du lien sur le prix.",ref:"Guide, section 2.3"},
+ {id:'v4',d:'val',w:2,t:"Le coût rendu (droits, TVA, TIC, change) est calculé avant la commande.",r:"Sans coût rendu, la marge réelle et l'intérêt d'un accord ou d'un régime restent inconnus.",a:"Utiliser le simulateur de droits et taxes avant chaque nouvelle référence.",ref:"IPM, ch. 7",l:'/modules/simulateur'},
+ {id:'v5',d:'val',w:1,t:"Les répartitions de frais (fret groupé, assurance globale) suivent une clé documentée et constante.",r:"Une répartition arbitraire est difficile à justifier article par article.",a:"Définir et documenter la clé de répartition.",ref:"IPM, ch. 5"},
+
+ {id:'a1',d:'adm',w:3,t:"Un filtre d'admissibilité est appliqué avant la commande (liste des produits soumis à licence, mentions « EX »).",r:"Une marchandise soumise à licence importée sans titre est bloquée, refoulée ou sanctionnée.",a:"Mettre en place le filtre d'admissibilité avant commande.",ref:"IPM, ch. 6 et annexe D.1",l:'/modules/autorisations-licences'},
+ {id:'a2',d:'adm',w:2,t:"Les normes obligatoires et les contrôles techniques (à l'origine ou à l'arrivée) sont identifiés pour chaque produit.",r:"Un produit non conforme est bloqué ; les délais de contrôle génèrent des frais de séjour.",a:"Indiquer dans le registre SH les contrôles requis par article.",ref:"IPM, 6.3 ; loi n° 24-09",l:'/modules/documents-sh'},
+ {id:'a3',d:'adm',w:2,t:"Les contrôles sanitaires, vétérinaires ou phytosanitaires applicables sont identifiés (ONSSA et autres autorités).",r:"La suspension des droits ne dispense pas de ces formalités ; BADR les réclame.",a:"Lister les visas non suspendus par article.",ref:"Circ. n° 6164/313 ; IPM, 6.4"},
+ {id:'a4',d:'adm',w:2,t:"Les mesures de défense commerciale (antidumping, sauvegarde) sont vérifiées par produit et par producteur.",r:"Un droit antidumping non prévu peut absorber toute la marge.",a:"Vérifier les mesures en vigueur avant chaque nouveau fournisseur.",ref:"IPM, 6.6 ; Guide, section 5.2"},
+ {id:'a5',d:'adm',w:1,t:"L'étiquetage et le marquage obligatoires (dont l'arabe et l'identité de l'importateur) sont vérifiés.",r:"Un défaut d'étiquetage bloque la mise sur le marché.",a:"Ajouter l'étiquetage à la check-list fournisseur.",ref:"IPM, annexe D.1",l:'/modules/marquage-warnings'},
+ {id:'a6',d:'adm',w:1,t:"Les biens sensibles ou à double usage sont repérés et soumis aux autorisations requises.",r:"Ces biens relèvent de régimes d'autorisation stricts.",a:"Repérer les biens sensibles dans la base articles.",ref:"Guide, section 5.4"},
+
+ {id:'d1',d:'ded',w:3,t:"La facture, la DUM, le titre d'importation et la preuve d'origine sont rapprochés avant la signature de la déclaration.",r:"Un écart entre ces pièces est la source la plus directe de fausse déclaration.",a:"Mettre en place le rapprochement à quatre pièces.",ref:"IPM, 23.2"},
+ {id:'d2',d:'ded',w:3,t:"Une revue post-mainlevée (entre J+7 et J+30) compare la DUM, la réception physique et la comptabilité.",r:"Une erreur révélée spontanément dans les 30 jours suivant la mainlevée peut être dispensée de pénalités.",a:"Instaurer la revue post-mainlevée.",ref:"CDII, art. 78-3°"},
+ {id:'d3',d:'ded',w:2,t:"Une procédure de révélation volontaire existe (qui décide, sous quel délai, avec quels justificatifs).",r:"Passé 30 jours ou après l'annonce d'un contrôle, la dispense n'est plus possible.",a:"Écrire la procédure et désigner le décideur.",ref:"CDII, art. 78-3° ; décret, art. 74 et 74 bis"},
+ {id:'d4',d:'ded',w:2,c:function(p){return p.type!=='transitaire';},t:"Les mandats donnés aux transitaires sont à jour sur PortNet et visent expressément les acquits à caution si nécessaire.",r:"Un mandat inactif est annulé après un an ; sans mention expresse, l'acquit ou la cession n'est pas opposable.",a:"Revoir les mandats et leurs pouvoirs.",ref:"Circ. n° 6421/411 et 5496/400"},
+ {id:'d5',d:'ded',w:2,c:function(p){return p.type==='transitaire';},t:"Pour chaque client, le mandat, les pouvoirs spécifiques et les documents sources sont vérifiés avant de déclarer.",r:"Le transitaire engage sa responsabilité professionnelle sur les énonciations qu'il dépose.",a:"Formaliser une check-list d'ouverture de dossier client.",ref:"IPM, 4.2 ; CDII, art. 88 bis"},
+ {id:'d6',d:'ded',w:2,t:"Le titre d'importation est domicilié et valide avant l'expédition.",r:"Sans titre valable, pas de dédouanement ; en cas d'irrégularité, la réglementation des changes s'applique aussi.",a:"Contrôler le titre avant chaque expédition.",ref:"IPM, ch. 9"},
+ {id:'d7',d:'ded',w:1,t:"Les délais de séjour sous douane et les frais de surestaries sont suivis par opération.",r:"Les dépassements génèrent des coûts évitables et peuvent déclencher des procédures d'office.",a:"Suivre les délais par opération.",ref:"IPM, 11.3",l:'/modules/surestaries'},
+
+ {id:'r1',d:'red',w:3,c:function(p){return p.red==='oui';},t:"Un échéancier de tous les comptes ouverts est tenu, avec des alertes à J-90 et J-60.",r:"Un compte échu non apuré : droits exigibles et amende d'une fois et demie les droits.",a:"Utiliser le tableau d'apurement du kit 02.",ref:"CDII, art. 294 et 294 bis ; Guide n° 7-006",l:'/expertise#kits'},
+ {id:'r2',d:'red',w:3,c:function(p){return p.red==='oui';},t:"Aucun compte échu n'est en attente de régularisation.",r:"Un compte échu suspend les facilités de cautionnement, donc la trésorerie.",a:"Régulariser sans délai : exportation hors délai ou mise à la consommation autorisée.",ref:"Note n° 12014/313 ; circ. n° 6348/313"},
+ {id:'r3',d:'red',w:2,c:function(p){return p.red==='oui';},t:"Le sommier BADR est rapproché chaque mois de la comptabilité matières.",r:"Un écart non expliqué fait présumer l'abus du régime en cas de contrôle.",a:"Planifier le rapprochement mensuel.",ref:"CDII, art. 116 ter et 287"},
+ {id:'r4',d:'red',w:2,c:function(p){return p.red==='oui';},t:"Les taux de rendement et de déchets sont documentés pour chaque produit compensateur.",r:"Les éléments d'apurement déclarés doivent pouvoir être justifiés ; l'administration a deux mois pour les contrôler.",a:"Documenter les nomenclatures de fabrication et les taux.",ref:"CDII, art. 136"},
+ {id:'r5',d:'red',w:2,c:function(p){return p.red==='oui';},t:"Les déchets taxables sont régularisés pendant la validité du compte.",r:"À défaut, les droits sont liquidés d'office ; c'est la première cause de blocage des certificats de décharge.",a:"Traiter les déchets au fil de l'eau.",ref:"Circ. n° 5458/313"},
+ {id:'r6',d:'red',w:1,c:function(p){return p.red==='oui';},t:"Le ratio de mise à la consommation est suivi sous 15 % des quantités exportées.",r:"Au-delà de 15 %, la dispense d'amende tombe.",a:"Suivre le ratio en continu.",ref:"Circ. n° 6348/313, annexe I"},
+ {id:'r7',d:'red',w:1,c:function(p){return p.red==='oui';},t:"La garantie est dimensionnée sur l'encours maximal, et l'accès aux facilités de cautionnement est préparé.",r:"Une caution insuffisante bloque la mainlevée ; une facilité non utilisée trois mois est suspendue.",a:"Dimensionner la garantie et viser la facilité adaptée.",ref:"Circ. n° 6707/313"},
+ {id:'r8',d:'red',w:1,c:function(p){return p.red==='oui';},t:"Les cessions de marchandises sous régime ne sont livrées qu'après acceptation de l'administration.",r:"Jusqu'à l'acceptation, le cédant reste seul engagé.",a:"Suivre la procédure de cession en quatre étapes.",ref:"CDII, art. 116-5° ; Guide n° 7-007"},
+
+ {id:'x1',d:'arch',w:3,t:"Chaque opération dispose d'un dossier unique archivé quatre ans (facture, transport, titre, preuve de paiement, preuve d'origine).",r:"Le défaut de conservation est puni d'une amende égale à la valeur des marchandises.",a:"Organiser l'archivage par déclaration.",ref:"CDII, art. 42-2°, 72, 285-15° et 287 bis"},
+ {id:'x2',d:'arch',w:2,t:"Une procédure de réponse écrite aux demandes de communication existe, avec un responsable et un délai interne.",r:"Le refus de communication est puni de 30 000 à 60 000 DH, avec une astreinte jusqu'à 500 DH par jour.",a:"Désigner le responsable et écrire la procédure.",ref:"CDII, art. 297 bis et 301"},
+ {id:'x3',d:'arch',w:1,t:"Les originaux restitués par le transitaire le sont contre décharge.",r:"La conservation incombe au propriétaire de la marchandise ; sans décharge, la preuve de la remise manque.",a:"Faire signer une décharge à chaque restitution.",ref:"Circ. n° 6639/312"},
+ {id:'x4',d:'arch',w:2,t:"Aucune transaction ni condamnation douanière n'est intervenue dans les trois dernières années.",r:"La récidive dans les trois ans double le maximum de l'amende.",a:"En cas d'antécédent, renforcer les contrôles sur le domaine concerné.",ref:"CDII, art. 257 ter"},
+ {id:'x5',d:'arch',w:2,c:function(p){return p.cap==='oui';},t:"Les constats du dernier contrôle a posteriori ont donné lieu à des actions correctives documentées.",r:"Un écart déjà constaté qui se répète prive de l'argument de bonne foi.",a:"Lister les constats et suivre leur correction dans ce plan.",ref:"CDII, art. 86 bis ; IPM, 23.3"},
+ {id:'x6',d:'arch',w:1,t:"Les voies de concertation et de recours (commission locale, commission consultative et de recours) sont connues et utilisées en cas de désaccord.",r:"Un désaccord sur l'espèce, l'origine ou la valeur peut être porté devant ces commissions avant tout contentieux.",a:"Identifier la procédure et ses délais.",ref:"CDII, art. 22 bis et 22 ter"}
+];
+var ANS=[['oui','Oui'],['partiel','Partiel'],['non','Non'],['nsp','Ne sais pas'],['na','Sans objet']];
+var VAL={oui:1,partiel:0.5,non:0,nsp:0};
+var KEY='ixp-diagnostic-v1', DRAFT='ixp-diagnostic-brouillon-v1';
+
+/* ═══════════ État ═══════════ */
+var state={profile:{},answers:{},dom:0};
+function store(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
+function save(list){try{localStorage.setItem(KEY,JSON.stringify(list));}catch(e){}}
+function saveDraft(){try{localStorage.setItem(DRAFT,JSON.stringify(state));}catch(e){}}
+function $(id){return document.getElementById(id);}
+function fmt(n){return Math.round(n).toLocaleString('fr-FR')+' DH';}
+function pct(x){return Math.round(x*100)+' %';}
+function num(id){var v=parseFloat(String($(id).value).replace(',','.'));return isNaN(v)?null:v;}
+
+function readProfile(){
+  var p={nom:$('p-nom').value.trim(),type:$('p-type').value,oea:$('p-oea').value,vol:num('p-vol'),taux:num('p-taux'),dum:num('p-dum'),
+    pref:num('p-pref')||0,us:$('p-us').value,exp:$('p-exp').value,red:$('p-red').value,encours:num('p-encours'),cap:$('p-cap').value};
+  state.profile=p;return p;
+}
+function writeProfile(p){
+  ['nom','type','oea','vol','taux','dum','pref','us','exp','red','encours','cap'].forEach(function(k){var el=$('p-'+k);if(el&&p[k]!=null)el.value=p[k];});
+}
+function visible(q){return !q.c||q.c(state.profile);}
+function domQs(d){return Q.filter(function(q){return q.d===d&&visible(q);});}
+function activeDomains(){return DOMAINS.filter(function(d){return domQs(d.id).length>0;});}
+
+/* ═══════════ Navigation ═══════════ */
+function show(step){
+  for(var i=1;i<=4;i++){$('s'+i).classList.toggle('hidden',i!==step);}
+  document.querySelectorAll('.stepbtn').forEach(function(b){b.classList.toggle('on',+b.dataset.step===step);});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.stepbtn').forEach(function(b){b.addEventListener('click',function(){
+  var s=+b.dataset.step; if(s>=2)readProfile(); if(s===2)renderQ(); if(s===3){if(!compute())return;} if(s===4){if(!compute())return;renderPlan();renderHist();} show(s);});});
+
+/* ═══════════ Questionnaire ═══════════ */
+function renderTabs(){
+  var doms=activeDomains(),h='';
+  doms.forEach(function(d,i){var qs=domQs(d.id),n=qs.filter(function(q){return state.answers[q.id];}).length;
+    h+='<button class="dtab '+d.cls+(i===state.dom?' on':'')+'" data-i="'+i+'">'+d.name+'<span class="cnt">'+n+'/'+qs.length+'</span></button>';});
+  $('dtabs').innerHTML=h;
+  $('dtabs').querySelectorAll('.dtab').forEach(function(b){b.addEventListener('click',function(){state.dom=+b.dataset.i;renderQ();});});
+  var all=Q.filter(visible),done=all.filter(function(q){return state.answers[q.id];}).length;
+  $('prog').style.width=(all.length?done/all.length*100:0)+'%';
+  var pct=all.length?Math.round(done/all.length*100):0;$('prog-txt').innerHTML=done+' réponses sur '+all.length+' questions <b class="prog-pct">· '+pct+' %</b>';
+}
+function renderQ(){
+  var doms=activeDomains(); if(state.dom>=doms.length)state.dom=0;
+  var d=doms[state.dom],qs=domQs(d.id),h='<div class="dhead '+d.cls+'"><h3>'+d.name+'</h3><div class="note">'+qs.length+' points de contrôle</div></div>';
+  qs.forEach(function(q){var a=state.answers[q.id];
+    h+='<div class="q '+(a==='na'?'na':'')+'" id="q-'+q.id+'"><div class="qtop"><div class="qtxt">'+q.t+'</div><span class="qw">poids '+q.w+'</span></div>'+
+      '<div class="qref">'+q.ref+'</div><div class="opts">'+ANS.map(function(o){return '<button class="opt v-'+o[0]+(a===o[0]?' on':'')+'" data-q="'+q.id+'" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('')+'</div>'+
+      '<button class="whybtn" data-w="'+q.id+'">Pourquoi ce point compte</button><div class="why"><b>Risque :</b> '+q.r+'<br><b>Action :</b> '+q.a+'</div></div>';});
+  $('qzone').innerHTML=h;
+  $('qzone').querySelectorAll('.opt').forEach(function(b){b.addEventListener('click',function(){state.answers[b.dataset.q]=b.dataset.v;saveDraft();renderQ();});});
+  $('qzone').querySelectorAll('.whybtn').forEach(function(b){b.addEventListener('click',function(){$('q-'+b.dataset.w).classList.toggle('open');});});
+  $('prev-d').disabled=state.dom===0; $('next-d').classList.toggle('hidden',state.dom>=doms.length-1);
+  renderTabs();
+}
+$('go-q').addEventListener('click',function(){readProfile();saveDraft();state.dom=0;renderQ();show(2);});
+$('prev-d').addEventListener('click',function(){if(state.dom>0){state.dom--;renderQ();window.scrollTo({top:0});}});
+$('next-d').addEventListener('click',function(){state.dom++;renderQ();window.scrollTo({top:0});});
+$('to-res').addEventListener('click',function(){if(compute()){show(3);}});
+$('back-q').addEventListener('click',function(){renderQ();show(2);});
+$('to-plan').addEventListener('click',function(){renderPlan();renderHist();show(4);});
+
+/* ═══════════ Calcul ═══════════ */
+var current=null;
+function scoreOf(answers,profile){
+  var saveP=state.profile; state.profile=profile;
+  var res={domains:{},global:null,gaps:0,crit:0,answered:0,total:0};
+  var gp=0,gm=0;
+  DOMAINS.forEach(function(d){var qs=domQs(d.id),pt=0,mx=0;
+    qs.forEach(function(q){res.total++;var a=answers[q.id];if(!a)return;res.answered++;if(a==='na')return;
+      mx+=q.w;pt+=q.w*VAL[a];if(a!=='oui'){res.gaps++;if(q.w===3&&a!=='partiel')res.crit++;}});
+    res.domains[d.id]=mx?pt/mx:null;gp+=pt;gm+=mx;});
+  res.global=gm?gp/gm:null; state.profile=saveP; return res;
+}
+function level(x){return x==null?'—':x>=0.8?'Faible':x>=0.5?'Modérée':'Élevée';}
+function lvlCls(x){return x==null?'':x>=0.8?'lvl-faible':x>=0.5?'lvl-moderee':'lvl-elevee';}
+function nextDate(x,from){var d=new Date(from),m=x==null?6:x>=0.8?12:x>=0.5?6:3;d.setMonth(d.getMonth()+m);return d;}
+function compute(){
+  readProfile();
+  var vis=Q.filter(visible),ans=vis.filter(function(q){return state.answers[q.id];}).length;
+  if(ans<Math.ceil(vis.length*0.6)){alert('Répondez à au moins 60 % des questions ('+ans+' sur '+vis.length+' pour l’instant) pour obtenir des résultats fiables.');renderQ();show(2);return false;}
+  var s=scoreOf(state.answers,state.profile);
+  var hist=store(), now=new Date();
+  var prev=hist.length?hist[hist.length-1]:null;
+  current={id:'D'+now.getTime(),date:now.toISOString(),profile:JSON.parse(JSON.stringify(state.profile)),answers:JSON.parse(JSON.stringify(state.answers)),
+    domains:s.domains,global:s.global,gaps:s.gaps,crit:s.crit,status:prev&&prev.status?JSON.parse(JSON.stringify(prev.status)):{}};
+  // Remplace un diagnostic du même jour plutôt que d'empiler les essais
+  if(prev&&prev.date.slice(0,10)===current.date.slice(0,10)){current.status=prev.status||{};hist[hist.length-1]=current;prev=hist.length>1?hist[hist.length-2]:null;}
+  else hist.push(current);
+  save(hist); try{localStorage.removeItem(DRAFT);}catch(e){}
+  renderResults(current,prev); return true;
+}
+
+/* ═══════════ Résultats ═══════════ */
+function renderResults(c,prev){
+  var p=c.profile,d=new Date(c.date);
+  $('r-date').textContent='Diagnostic du '+d.toLocaleDateString('fr-FR')+(p.nom?' · '+p.nom:'');
+  $('r-title').textContent='Votre exposition est '+level(c.global).toLowerCase();
+  $('k-idx').textContent=c.global==null?'—':pct(c.global);
+  $('k-lvl').textContent=level(c.global); $('k-lvl').className=lvlCls(c.global);
+  $('k-gaps').textContent=c.gaps+' ('+c.crit+')';
+  $('k-next').textContent=nextDate(c.global,c.date).toLocaleDateString('fr-FR');
+  var al='';
+  if(c.crit>0)al+='<div class="alert"><b>'+c.crit+' écart(s) critique(s)</b> sur des points de poids 3 : ils figurent en tête du plan d’action, à traiter sous 30 jours.</div>';
+  if(p.red==='oui'&&c.answers.r2&&c.answers.r2!=='oui')al+='<div class="alert">Un compte sous régime économique peut être échu : droits exigibles, amende d’une fois et demie les droits et suspension des facilités de cautionnement (CDII, art. 294 bis ; note n° 12014/313).</div>';
+  if(c.answers.d2&&c.answers.d2!=='oui')al+='<div class="alert">Sans revue post-mainlevée, vous perdez la possibilité de révéler une erreur dans les 30 jours avec dispense de pénalités (CDII, art. 78-3°).</div>';
+  if(!al)al='<div class="alert ok">Aucun écart critique : maintenez le niveau par l’audit annuel et la veille.</div>';
+  $('r-alerts').innerHTML=al;
+  // barres
+  var h='';$('delta-note').textContent=prev?'Évolution par rapport au diagnostic du '+new Date(prev.date).toLocaleDateString('fr-FR')+'.':'Premier diagnostic : l’évolution apparaîtra au suivant.';
+  DOMAINS.forEach(function(dm){var v=c.domains[dm.id];if(v==null)return;var dl='';
+    if(prev&&prev.domains&&prev.domains[dm.id]!=null){var x=Math.round((v-prev.domains[dm.id])*100);dl=x===0?'<span class="delta">=</span>':'<span class="delta '+(x>0?'up':'down')+'">'+(x>0?'+':'')+x+'</span>';}
+    h+='<div class="row '+dm.cls+'"><span>'+dm.name+'</span><div class="bar"><i style="width:'+Math.round(v*100)+'%"></i></div><b>'+Math.round(v*100)+'%</b>'+dl+'</div>';});
+  $('bars').innerHTML=h;
+  radar(c,prev);
+  // exposition
+  var e='',vol=p.vol,t=(p.taux||0)/100;
+  function m(id){return c.domains[id]==null?1:c.domains[id];}
+  if(vol&&t){
+    var D=vol*t, mc=(m('clas')+m('val'))/2;
+    e+='<div class="kpi"><b>'+fmt(D*4*(1-mc))+'</b><span>Classement et valeur : assiette de droits non couverte sur 4 ans</span><div class="formula">valeur × taux × 4 × (1 − maîtrise moyenne classement et valeur)</div></div>';
+    if(p.pref>0)e+='<div class="kpi"><b>'+fmt(vol*p.pref/100*t*4*(1-m('orig')))+'</b><span>Préférences : droits de droit commun exigibles si la préférence était refusée, part non couverte sur 4 ans</span><div class="formula">valeur × part sous préférence × taux × 4 × (1 − maîtrise origine)</div></div>';
+    else e+='<div class="kpi"><b>—</b><span>Préférences : aucune importation déclarée sous préférence</span></div>';
+  }else{
+    e+='<div class="kpi"><b>—</b><span>Renseignez la valeur des importations et le taux moyen de droit dans le profil pour chiffrer l’exposition.</span></div><div class="kpi"><b>—</b><span>Préférences</span></div>';
+  }
+  if(p.red==='oui'&&p.encours)e+='<div class="kpi"><b>'+fmt(p.encours*(1-m('red')))+'</b><span>Régimes économiques : encours suspendu non couvert par les contrôles (amende jusqu’à 1,5 fois les droits en cas de défaut d’apurement)</span><div class="formula">encours × (1 − maîtrise régimes)</div></div>';
+  else e+='<div class="kpi"><b>—</b><span>Régimes économiques : '+(p.red==='oui'?'renseignez l’encours suspendu dans le profil':'non utilisés')+'</span></div>';
+  $('expo').innerHTML=e;
+}
+function radar(c,prev){
+  var doms=DOMAINS.filter(function(d){return c.domains[d.id]!=null;}),n=doms.length,cx=180,cy=160,R=115,s='';
+  if(n<3){$('radar').innerHTML='<text x="180" y="160" text-anchor="middle" font-size="13" fill="#7A7168">Au moins trois domaines sont nécessaires</text>';return;}
+  function pt(i,v){var a=-Math.PI/2+i*2*Math.PI/n;return [cx+Math.cos(a)*R*v,cy+Math.sin(a)*R*v];}
+  [0.25,0.5,0.75,1].forEach(function(r){s+='<polygon points="'+doms.map(function(_,i){return pt(i,r).join(',');}).join(' ')+'" fill="none" stroke="#E6DCC7"/>';});
+  doms.forEach(function(d,i){var p=pt(i,1),l=pt(i,1.17);s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="#E6DCC7"/>'+
+    '<text x="'+l[0]+'" y="'+l[1]+'" font-size="10.5" text-anchor="middle" dominant-baseline="middle" fill="#3B3631">'+d.name.split(' ')[0]+'</text>';});
+  if(prev&&prev.domains){var pp=doms.map(function(d,i){return pt(i,prev.domains[d.id]==null?0:prev.domains[d.id]).join(',');}).join(' ');
+    s+='<polygon points="'+pp+'" fill="none" stroke="#A8822F" stroke-dasharray="4 3" stroke-width="1.5"/>';}
+  s+='<polygon points="'+doms.map(function(d,i){return pt(i,c.domains[d.id]).join(',');}).join(' ')+'" fill="rgba(21,62,130,.18)" stroke="#153E82" stroke-width="2"/>';
+  doms.forEach(function(d,i){var p=pt(i,c.domains[d.id]);s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#153E82"/>';});
+  s+='<text x="12" y="318" font-size="10.5" fill="#153E82">━ Aujourd’hui</text>'+(prev?'<text x="110" y="318" font-size="10.5" fill="#A8822F">┅ Diagnostic précédent</text>':'');
+  $('radar').innerHTML=s;
+}
+
+/* ═══════════ Plan d'action ═══════════ */
+function planItems(c){
+  var save=state.profile;state.profile=c.profile;var items=[];
+  Q.forEach(function(q){if(!visible(q))return;var a=c.answers[q.id];if(!a||a==='oui'||a==='na')return;
+    var gap=a==='partiel'?0.5:1,crit=q.w*gap;
+    var hz=crit>=3?['hz1','Sous 30 jours']:crit>=2?['hz2','Sous 90 jours']:['hz3','Sous 6 mois'];
+    items.push({q:q,a:a,crit:crit,hz:hz});});
+  state.profile=save;
+  items.sort(function(x,y){return y.crit-x.crit||DOMAINS.findIndex(function(d){return d.id===x.q.d;})-DOMAINS.findIndex(function(d){return d.id===y.q.d;});});
+  return items;
+}
+function renderPlan(){
+  var c=current||store().slice(-1)[0]; if(!c){$('plan').innerHTML='<tr><td>Aucun diagnostic enregistré.</td></tr>';return;}
+  current=c; var items=planItems(c),lab={non:'Non',partiel:'Partiel',nsp:'Ne sais pas'};
+  if(!items.length){$('plan').innerHTML='<tr><td>Aucun écart : toutes les pratiques évaluées sont en place.</td></tr>';return;}
+  var h='<tr><th>#</th><th>Domaine</th><th>Action</th><th>Échéance</th><th>Référence</th><th>Avancement</th></tr>';
+  items.forEach(function(it,i){var d=DOMAINS.filter(function(x){return x.id===it.q.d;})[0],st=(c.status||{})[it.q.id]||'afaire';
+    h+='<tr><td>'+(i+1)+'</td><td><span class="tag '+d.cls+'">'+d.name+'</span></td><td><b>'+it.q.a+'</b><div class="note">Constat : '+lab[it.a]+' — '+it.q.t+'</div>'+
+      (it.q.l?'<div class="note"><a href="'+it.q.l+'">Ouvrir l’outil associé →</a></div>':'')+'</td><td><span class="hz '+it.hz[0]+'">'+it.hz[1]+'</span></td><td class="note">'+it.q.ref+'</td>'+
+      '<td><select class="st" data-q="'+it.q.id+'"><option value="afaire"'+(st==='afaire'?' selected':'')+'>À faire</option><option value="encours"'+(st==='encours'?' selected':'')+'>En cours</option><option value="fait"'+(st==='fait'?' selected':'')+'>Fait</option></select></td></tr>';});
+  $('plan').innerHTML=h;
+  $('plan').querySelectorAll('select.st').forEach(function(sel){sel.addEventListener('change',function(){
+    var hist=store();var last=hist[hist.length-1];if(!last)return;last.status=last.status||{};last.status[sel.dataset.q]=sel.value;save(hist);current=last;renderHist();});});
+}
+function renderHist(){
+  var hist=store(); if(!hist.length){$('hist').innerHTML='<tr><td>Aucun diagnostic enregistré.</td></tr>';return;}
+  var h='<tr><th>Date</th><th>Dossier</th><th>Indice global</th><th>Exposition</th><th>Écarts (critiques)</th><th>Actions faites</th></tr>';
+  hist.slice().reverse().forEach(function(c){var st=c.status||{},done=Object.keys(st).filter(function(k){return st[k]==='fait';}).length;
+    h+='<tr><td>'+new Date(c.date).toLocaleDateString('fr-FR')+'</td><td>'+(c.profile&&c.profile.nom||'—')+'</td><td><b>'+(c.global==null?'—':pct(c.global))+'</b></td><td class="'+lvlCls(c.global)+'">'+level(c.global)+'</td><td>'+c.gaps+' ('+c.crit+')</td><td>'+done+'</td></tr>';});
+  $('hist').innerHTML=h;
+}
+$('new').addEventListener('click',function(){var last=store().slice(-1)[0];if(last){state.answers=JSON.parse(JSON.stringify(last.answers));state.profile=last.profile;writeProfile(last.profile);}state.dom=0;show(1);
+  $('resume-note').textContent='Réponses du dernier diagnostic reprises : mettez à jour celles qui ont changé.';});
+$('csv').addEventListener('click',function(){var c=current||store().slice(-1)[0];if(!c)return;var rows=[['Rang','Domaine','Action','Constat','Échéance','Référence','Avancement']];
+  planItems(c).forEach(function(it,i){var d=DOMAINS.filter(function(x){return x.id===it.q.d;})[0];rows.push([i+1,d.name,it.q.a,it.q.t,it.hz[1],it.q.ref,((c.status||{})[it.q.id]||'afaire')]);});
+  var csv='﻿'+rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(';');}).join('\n');
+  dl(csv,'plan-action-diagnostic.csv','text/csv;charset=utf-8');});
+$('export').addEventListener('click',function(){dl(JSON.stringify(store(),null,2),'diagnostics-import-expert.json','application/json');});
+$('import').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var data=JSON.parse(r.result);if(!Array.isArray(data))throw 0;
+  var hist=store(),ids={};hist.forEach(function(h){ids[h.id]=1;});data.forEach(function(d){if(d&&d.id&&!ids[d.id])hist.push(d);});hist.sort(function(a,b){return a.date<b.date?-1:1;});save(hist);current=hist[hist.length-1];renderPlan();renderHist();alert('Import terminé : '+data.length+' diagnostic(s) lus.');}catch(err){alert('Fichier non reconnu.');}};r.readAsText(f);});
+$('wipe').addEventListener('click',function(){if(confirm('Effacer définitivement l’historique de ce poste ? Pensez à l’exporter avant.')){save([]);current=null;renderPlan();renderHist();}});
+$('print').addEventListener('click',function(){window.print();});
+$('print2').addEventListener('click',function(){window.print();});
+function dl(content,name,type){var b=new Blob([content],{type:type}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+/* ═══════════ Démarrage : brouillon ou dernier diagnostic ═══════════ */
+try{var dr=JSON.parse(localStorage.getItem(DRAFT)||'null');if(dr&&dr.profile){state=dr;writeProfile(dr.profile);var n=Object.keys(dr.answers||{}).length;if(n)$('resume-note').textContent='Brouillon en cours : '+n+' réponse(s) déjà saisie(s).';}}catch(e){}
+var last=store().slice(-1)[0];
+if(last&&!Object.keys(state.answers).length){$('resume-note').textContent='Dernier diagnostic le '+new Date(last.date).toLocaleDateString('fr-FR')+' ('+(last.global==null?'—':pct(last.global))+'). Consultez l’onglet « Plan d’action et suivi ».';current=last;}
+})();
+</script>
+</body>
+</html>

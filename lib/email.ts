@@ -6,7 +6,7 @@
 //
 // ── VARIABLES D'ENVIRONNEMENT REQUISES ──────────────────────────────────────
 //   RESEND_API_KEY   — clé API Resend
-//   RESEND_FROM      — adresse d'expédition, ex: "Import-IA <no-reply@import-ia.com>"
+//   RESEND_FROM      — adresse d'expédition, ex: "Import-eXPert <no-reply@import-ia.com>"
 //                      Doit être un domaine vérifié dans Resend (pas gmail.com etc.)
 //   NEXT_PUBLIC_SITE_URL — URL de base du site, ex: "https://import-ia.com"
 //                      (utilisée pour construire le lien de vérification)
@@ -27,7 +27,7 @@ async function sendEmail({ to, subject, html }: { to: string; subject: string; h
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: process.env.RESEND_FROM || 'Import-IA <no-reply@import-ia.com>',
+      from: process.env.RESEND_FROM || 'Import-eXPert <no-reply@import-ia.com>',
       to,
       subject,
       html,
@@ -53,7 +53,7 @@ export async function sendVerificationEmail(to: string, prenom: string, token: s
       <div style="padding: 32px 24px;">
         <h1 style="font-size: 20px; font-weight: 500; margin: 0 0 16px;">Bienvenue${prenom ? ', ' + prenom : ''} 👋</h1>
         <p style="font-size: 14px; line-height: 1.6; color: #3A3530;">
-          Merci de vous être inscrit sur Import-IA. Pour activer votre essai gratuit de 14 jours,
+          Merci de vous être inscrit sur Import-eXPert. Pour activer votre essai gratuit de 14 jours,
           confirmez votre adresse email en cliquant sur le bouton ci-dessous.
         </p>
         <div style="text-align: center; margin: 28px 0;">
@@ -69,10 +69,10 @@ export async function sendVerificationEmail(to: string, prenom: string, token: s
         </p>
       </div>
       <div style="border-top: 1px solid #E8DFC8; padding: 16px 24px; font-size: 11px; color: #8A8078;">
-        © 2026 Import-IA
+        © 2026 Import-eXPert
       </div>
     </div>
   `
 
-  return sendEmail({ to, subject: 'Confirmez votre email — Import-IA', html })
+  return sendEmail({ to, subject: 'Confirmez votre email — Import-eXPert', html })
 }

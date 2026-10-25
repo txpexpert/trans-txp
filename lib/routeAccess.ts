@@ -18,6 +18,35 @@ export const FREE_PATHS = [
   '/a-propos',
   '/mobile',
 
+  // Vitrine refonte 2026 : pages publiques de présentation de la suite
+  '/plateforme',
+  '/tarifs',
+  '/expertise',
+  '/espaces/qualifier',
+  '/espaces/optimiser',
+  '/espaces/chiffrer',
+  '/espaces/executer',
+  '/espaces/securiser',
+  '/espaces/bibliotheque',
+  '/espaces/piloter',
+  '/diagnostic',
+  '/enquete',
+  '/tools/enquete-barometre.html',
+  '/tools/diagnostic-conformite.html',
+  // Kits opérationnels téléchargeables (démo : accès libre, à arbitrer)
+  '/kits/Kit01_Origine_preferentielle_ALE.html',
+  '/kits/Kit02_Regimes_suspensifs_economiques.html',
+  '/kits/Kit03_Classement_SH_controle_a_posteriori.html',
+  '/kits/Kit04_Pack_conformite_integral.html',
+  // Kits pratiques (page Présentation) : consultation et téléchargement libres
+  '/kits/pratiques/IXP_Kit01_Origine_ALE.html',
+  '/kits/pratiques/IXP_Kit02_Regimes_economiques.html',
+  '/kits/pratiques/IXP_Kit03_Classement_SH.html',
+  '/kits/pratiques/IXP_Kit04_Pack_conformite.html',
+  '/kits/pratiques/IXP_Kit05_Commerce_exterieur.html',
+  '/kits/pratiques/IXP_Kit06_Regime_de_change.html',
+  '/kits/pratiques/IXP_Kit07_Logistique.html',
+
   // Pages légales / conformité stores — doivent rester accessibles sans
   // compte pour les reviewers Google Play et les visiteurs anonymes
   // (Data safety / Privacy policy / Delete account declarations).

@@ -1,7 +1,7 @@
 ﻿{
   "name": "Import-eXPert",
   "short_name": "Import-eXPert",
-  "description": "Outils douaniers Import-IA : classement tarifaire, glossaire, calculateurs",
+  "description": "Outils douaniers IXP-Import-eXPert : classement tarifaire, glossaire, calculateurs",
   "start_url": "/app",
   "display": "standalone",
   "background_color": "#153E82",

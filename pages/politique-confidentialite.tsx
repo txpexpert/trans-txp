@@ -25,7 +25,7 @@ export default function PolitiqueConfidentialite() {
         <ul style={{ paddingLeft: 20, marginBottom: 12 }}>
           <li><strong>Informations de compte</strong> : adresse e-mail, lors de la création d'un compte ou d'un essai gratuit.</li>
           <li><strong>Données d'utilisation</strong> : pages consultées, modules utilisés, à des fins d'amélioration du service.</li>
-          <li><strong>Contenu des requêtes</strong> : les questions posées au Copilote IA (IXP-copilote) sont transmises à notre service d'intelligence artificielle pour générer une réponse.</li>
+          <li><strong>Contenu des requêtes</strong> : les questions posées au Assistant IA (IXP-Assistant) sont transmises à notre service d'intelligence artificielle pour générer une réponse.</li>
           <li><strong>Données techniques</strong> : type d'appareil, système d'exploitation, à des fins de compatibilité et de sécurité.</li>
         </ul>
         <p>Nous ne collectons pas de données de localisation précise, de contacts, ni de données biométriques.</p>
@@ -34,7 +34,7 @@ export default function PolitiqueConfidentialite() {
       <Section title="3. Utilisation des données">
         <p style={{ marginBottom: 12 }}>Vos données sont utilisées pour :</p>
         <ul style={{ paddingLeft: 20 }}>
-          <li>Fournir et améliorer les fonctionnalités de l'application (classement tarifaire, copilote IA, calculateurs, veille réglementaire)</li>
+          <li>Fournir et améliorer les fonctionnalités de l'application (classement tarifaire, assistant IA, calculateurs, veille réglementaire)</li>
           <li>Gérer votre compte et votre abonnement</li>
           <li>Vous contacter en cas de support technique</li>
           <li>Assurer la sécurité et prévenir les fraudes</li>

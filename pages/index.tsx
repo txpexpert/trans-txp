@@ -1,1483 +1,260 @@
-import Head from 'next/head';
+// pages/index.tsx — Accueil IXP-Import-eXPert (refonte 2026)
+import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import SiteShell from '../components/SiteShell'
+import IxpAssistant from '../components/IxpAssistant'
+import IxpIntro from '../components/IxpIntro'
+import IxpTicker from '../components/IxpTicker'
+import IxpLogo from '../components/IxpLogo'
+import { CHAIN, PROFILS, espaceBySlug } from '../lib/suite'
 
-// pages/index.tsx — Import-IA / TXP, hero page
-// + Intro IXP : animation 3D du logo à l'ouverture (voir introCss / introHTML / introScript)
-// Version fusionnée : agencement visuel "Scanner-first" (demo-hero-v2)
-//   + authentification, session utilisateur et logique essentielle du site en production.
+const RISQUES = [
+  { t: 'Un code SH mal choisi', d: "Le droit payé est faux, les documents exigés aussi. L'écart peut être redressé lors d'un contrôle a posteriori, des années plus tard." },
+  { t: 'Une origine non prouvée', d: "La préférence tarifaire d'un accord de libre-échange tombe si la preuve d'origine ne tient pas. Les droits deviennent exigibles." },
+  { t: 'Un régime mal apuré', d: "Une admission temporaire ou un perfectionnement actif mal suivi transforme une suspension de droits en dette douanière." },
+  { t: 'Une valeur contestable', d: "Frais oubliés, redevances, Incoterm mal lu : la valeur déclarée devient le point faible du dossier." },
+]
 
-const css = `
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --ink:#0A0A0A;--ink2:#3A3530;--ink3:#8A8078;
-  --gold:#C9A84C;--gold2:#E8C97A;--gold3:#F5E4B0;--gold4:#FBF5E6;
-  --white:#FDFCF8;--border:#E8DFC8;--border2:#D4C8A8;
-  --up:#4CAF7C;--dn:#E85D5D;
-  --pain:#B5482E;--pain-bg:#FBEDE8;--pain-brd:#E7C4B6;
-  --gain:#1A5C2A;--gain-bg:#EEF5EA;--gain-brd:#C7DCC0;
-  --neutral:#8A6D1E;--neutral-bg:#FBF5E6;--neutral-brd:#E3D3A0;
-  /* Accent "vivant" — un seul ton froid, saturé, réservé aux éléments actifs/temps-réel
-     (badges LIVE, jauge, curseurs). Base crème + or restent la fondation calme ;
-     ce cyan-signal est l'unique éclat à haut contraste, pour éviter l'effet "tout est criard". */
-  --live:#0FB9C4;--live-glow:rgba(15,185,196,.35);--live-bg:#E4F7F8;
-}
-body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);min-height:100vh;overflow-x:hidden;line-height:1.5;position:relative}
-/* Texture tactile discrète (grain) — casse la platitude d'un aplat crème pur, sans imagerie IA générique */
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;mix-blend-mode:multiply;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-a{text-decoration:none;color:inherit}
-button{cursor:pointer;font-family:'DM Sans',sans-serif;border:none;background:none}
-.demo-flag{position:fixed;bottom:0;left:0;right:0;background:#0A0A0A;color:#C9A84C;font-size:11px;letter-spacing:.1em;padding:6px 1rem;text-align:center;z-index:9999;border-top:1px solid rgba(201,168,76,.3)}
-.reveal{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
-.reveal.in{opacity:1;transform:translateY(0)}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none!important}}
+type ScanQ = { q: string; o: [string, number][] }
+const SCAN: ScanQ[] = [
+  { q: 'Comment validez-vous vos codes SH ?', o: [['Habitude ou transitaire', 34], ['Au cas par cas', 18], ['Registre audité', 4]] },
+  { q: 'Utilisez-vous des accords de libre-échange ?', o: [['Oui, sans traçabilité', 33], ['Oui, documenté', 10], ['Non', 14]] },
+  { q: 'Contrôle ou blocage sur les 3 dernières années ?', o: [['Plusieurs fois', 33], ['Une fois', 18], ['Jamais', 5]] },
+]
 
-/* ---------- ticker + header (repris à l'identique de l'ancienne hero) ---------- */
-.ticker-wrap{background:var(--ink);overflow:hidden;height:34px;display:flex;align-items:center}
-.ticker-track{display:flex;animation:ticker 50s linear infinite;white-space:nowrap}
-.ticker-track:hover{animation-play-state:paused}
-.t-item{display:flex;align-items:center;gap:10px;padding:0 28px;border-right:1px solid rgba(201,168,76,.15)}
-.t-label{font-size:10px;letter-spacing:.14em;color:var(--ink3)}
-.t-val{font-size:11px;font-weight:500;color:var(--gold2)}
-.t-chg{font-size:10px}.up{color:var(--up)}.dn{color:var(--dn)}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-header{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
-#diagnostic,#modules,#barometre,#kits,#modules-plus,#strategies,#copilote{scroll-margin-top:95px}
-html{scroll-behavior:smooth}
-.hdr{max-width:1280px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;height:72px;gap:1.5rem}
-.logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;letter-spacing:-.02em;flex-shrink:0}
-.logo em{color:var(--gold);font-style:normal}
-.logo sup{font-size:10px;font-weight:300;color:var(--ink3);letter-spacing:.06em;vertical-align:super}
-.hdr-nav{display:flex;gap:.4rem;margin-left:1rem;font-size:12.5px;font-weight:700;letter-spacing:-.005em;color:var(--ink);flex:1 1 auto;min-width:0}
-.hdr-nav a{position:relative;padding:6px 12px;border-radius:10px;transition:all .16s ease;text-align:center;line-height:1.22;white-space:normal;max-width:120px}
-.hdr-nav a:hover{transform:translateY(-1px)}
-.hdr-nav a:nth-child(1){background:#EEF3FC;color:#3E5A9E}
-.hdr-nav a:nth-child(1):hover{background:#E1EAFA}
-.hdr-nav a:nth-child(2){background:#FBEFF6;color:#9C4373}
-.hdr-nav a:nth-child(2):hover{background:#F7E1EF}
-.hdr-nav a:nth-child(3){background:#EEFAF4;color:#227A54}
-.hdr-nav a:nth-child(3):hover{background:#DFF5EA}
-.hdr-nav a:nth-child(4){background:#FDF3E7;color:#A66A1E}
-.hdr-nav a:nth-child(4):hover{background:#FBE8D0}
-.hdr-nav a:nth-child(5){background:#FBEAE3;color:#A6512E}
-.hdr-nav a:nth-child(5):hover{background:#F7DDD2}
-.hdr-nav a:nth-child(6){background:#F0F0FB;color:#5B4CC4}
-.hdr-nav a:nth-child(6):hover{background:#E4E3F7}
-.hdr-nav a:nth-child(7){background:#E9F7F8;color:#0A8890}
-.hdr-nav a:nth-child(7):hover{background:#D9F1F3}
-.hdr-actions{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:4px;margin-left:auto;flex-shrink:0}
-.btn-in{padding:5px 14px;font-size:10.5px;letter-spacing:.06em;color:var(--ink2);border:1px solid var(--border2);transition:all .15s}
-.btn-in:hover{border-color:var(--gold);color:var(--gold)}
-.btn-sub{padding:5px 16px;font-size:10.5px;letter-spacing:.06em;background:var(--ink);color:var(--gold2);transition:all .15s}
-.btn-sub:hover{background:var(--gold);color:var(--ink)}
+export default function Accueil() {
+  const router = useRouter()
+  const [produit, setProduit] = useState('')
+  const [profil, setProfil] = useState(PROFILS[0].id)
+  const [rep, setRep] = useState<(number | null)[]>([null, null, null])
 
-/* ---------- HERO : nouvelle philosophie diagnostic-first ---------- */
-.hero{max-width:1280px;margin:0 auto;padding:3.5rem 2rem 3rem;display:grid;grid-template-columns:1.1fr 0.9fr;gap:3.5rem;align-items:center}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.16em;color:var(--live);background:var(--live-bg);border:1px solid rgba(15,185,196,.3);padding:5px 12px;margin-bottom:1.25rem}
-.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--live);animation:pulse 2s infinite;box-shadow:0 0 0 3px var(--live-glow)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:400;line-height:1.16;letter-spacing:-.02em;color:var(--ink)}
-.hero h1 strong{font-weight:600;color:var(--pain)}
-.cta-primary{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
-.cta-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px -6px rgba(0,0,0,.35)}
-.hero p.lead{margin-top:1.1rem;font-size:15.5px;color:var(--ink2);line-height:1.7;max-width:480px}
-.hero-cta-row{display:flex;align-items:center;gap:1.25rem;margin-top:1.75rem;flex-wrap:wrap}
-.cta-primary{padding:14px 26px;background:var(--ink);color:var(--gold2);font-size:12px;letter-spacing:.09em;font-weight:600;transition:all .18s;display:inline-flex;align-items:center;gap:8px}
-.cta-primary:hover{background:var(--gold);color:var(--ink)}
+  const complet = rep.every(r => r !== null)
+  const score = complet ? rep.reduce<number>((s, r, i) => s + SCAN[i].o[r as number][1], 0) : null
+  const niveau = score === null ? '' : score >= 70 ? 'Exposition élevée' : score >= 35 ? 'Exposition modérée' : 'Exposition maîtrisée'
 
-/* ---------- Scanner interactif (élément signature) — dimensions réduites de moitié ---------- */
-.scanner-card{background:var(--ink);position:relative;padding:1rem .95rem .9rem;overflow:hidden;border:1px solid var(--ink)}
-.scanner-card::before{content:'';position:absolute;inset:0;background:
-  radial-gradient(circle at 85% -10%, rgba(201,168,76,.16), transparent 55%),
-  radial-gradient(circle at 8% 108%, rgba(15,185,196,.14), transparent 50%);
-  pointer-events:none}
-.scanner-seal{position:absolute;top:.65rem;right:.65rem;width:36px;height:36px;border:1.5px solid rgba(201,168,76,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:7px;letter-spacing:.05em;color:var(--gold2);text-align:center;line-height:1.15;transform:rotate(8deg)}
-.scanner-title{font-size:9px;letter-spacing:.14em;color:var(--gold2);margin-bottom:.2rem}
-.scanner-sub{font-size:10.5px;color:rgba(253,252,248,.55);margin-bottom:.75rem;max-width:210px;line-height:1.4}
-.gauge-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:.75rem}
-.gauge-score{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;color:var(--gold2);line-height:1;margin-top:-.5rem}
-.gauge-score span{font-size:13px;color:rgba(253,252,248,.4);font-weight:400}
-.gauge-verdict{font-size:10px;letter-spacing:.07em;margin-top:.25rem;padding:2px 10px;border-radius:2px}
-.gauge-verdict.v-low{color:var(--gain);background:var(--gain-bg)}
-.gauge-verdict.v-mid{color:#B8862A;background:#3a2f14}
-.gauge-verdict.v-high{color:#f0a08c;background:rgba(181,72,46,.25)}
-.scan-q{margin-bottom:.55rem}
-.scan-q-label{font-size:10.5px;color:rgba(253,252,248,.7);margin-bottom:.3rem;line-height:1.35}
-.scan-opts{display:flex;gap:4px;flex-wrap:wrap}
-.scan-opt{padding:5px 9px;font-size:10px;color:rgba(253,252,248,.75);border:1px solid rgba(201,168,76,.25);transition:all .15s;background:rgba(255,255,255,.02)}
-.scan-opt:hover{border-color:var(--gold);color:var(--gold2)}
-.scan-opt.picked{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:600}
-.scanner-foot{margin-top:.75rem;padding-top:.6rem;border-top:1px solid rgba(201,168,76,.15)}
-.scanner-cta{width:100%;padding:9px;background:var(--gold);color:var(--ink);font-size:10px;letter-spacing:.07em;font-weight:600;text-align:center;transition:all .15s;opacity:.4;pointer-events:none}
-.scanner-cta.ready{opacity:1;pointer-events:auto;cursor:pointer}
-.scanner-cta:hover.ready{background:var(--gold2)}
-.scanner-note{font-size:9px;color:rgba(253,252,248,.35);text-align:center;margin-top:.4rem;letter-spacing:.02em}
-.scanner-report{display:none;margin-top:.75rem}
-.scanner-report.show{display:block}
-.report-verdict{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--gold2);text-align:center;margin-bottom:.6rem;padding-bottom:.6rem;border-bottom:1px solid rgba(201,168,76,.2)}
-.report-synthese{font-size:11px;line-height:1.65;color:rgba(253,252,248,.8);margin-bottom:.85rem}
-.report-axe{margin-bottom:.55rem;padding:.6rem .75rem;background:rgba(255,255,255,.03);border-left:3px solid var(--gold)}
-.report-axe-titre{font-size:8.5px;letter-spacing:.07em;color:var(--gold2);margin-bottom:3px}
-.report-axe-label{font-size:10.5px;font-weight:600;color:rgba(253,252,248,.92);margin-bottom:4px}
-.report-axe-texte{font-size:10.5px;line-height:1.55;color:rgba(253,252,248,.62)}
-.report-plan{margin-top:.75rem;padding-top:.65rem;border-top:1px solid rgba(201,168,76,.15);font-size:10.5px;line-height:1.6;color:rgba(253,252,248,.75)}
-.report-plan-title{font-size:9px;font-weight:700;letter-spacing:.07em;color:var(--gold2);margin-bottom:5px}
-
-/* ---------- Section: Où en êtes-vous (tuiles réorganisées par valeur) ---------- */
-.section{max-width:1280px;margin:0 auto;padding:3rem 2rem}
-.section-hdr{margin-bottom:1.75rem;max-width:640px}
-.section-eyebrow{font-size:10px;letter-spacing:.16em;color:var(--gold);margin-bottom:.5rem}
-.section-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;line-height:1.2}
-.section-sub{font-size:13.5px;color:var(--ink3);margin-top:.6rem;line-height:1.65}
-
-.clusters{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-.cluster{border:1px solid var(--border);display:flex;flex-direction:column}
-.cluster-hdr{padding:1.1rem 1.25rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid var(--border)}
-.cluster-hdr.pain{background:var(--pain-bg)}
-.cluster-hdr.gain{background:var(--gain-bg)}
-.cluster-hdr.neutral{background:var(--gold4)}
-.cluster-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--white);border:1px solid rgba(0,0,0,.08)}
-.cluster-hdr.pain .cluster-icon{color:var(--pain)}
-.cluster-hdr.gain .cluster-icon{color:var(--gain)}
-.cluster-hdr.neutral .cluster-icon{color:var(--neutral)}
-.cluster-name{font-size:16px;font-weight:700;color:var(--ink)}
-.cluster-tag{font-size:11px;color:var(--ink3);margin-top:2px}
-.cluster-list{flex:1;display:flex;flex-direction:column}
-.cluster-link{padding:1.05rem 1.35rem;font-size:14px;font-weight:600;color:var(--ink2);border-bottom:3px solid var(--white);border-left:4px solid transparent;transition:all .15s ease;display:flex;justify-content:space-between;align-items:center;gap:.5rem;letter-spacing:-.005em}
-.cluster-link:last-child{border-bottom:none}
-.cluster-link:hover{padding-left:1.65rem;color:var(--ink)}
-.cluster-link .arrow{opacity:.35;transition:all .15s;font-size:14px;font-weight:700}
-.cluster-link:hover .arrow{opacity:1;transform:translateX(3px)}
-.cluster-more{padding:.9rem 1.25rem;font-size:11.5px;font-weight:600;color:var(--ink3);background:var(--gold4);text-align:center;letter-spacing:.04em}
-
-/* Teintes individuelles par tuile — intensité légère, une couleur distincte par ligne, non liée au cluster */
-.cluster-link:nth-child(6n+1){background:#EEF3FC;border-left-color:#6E8FD4}
-.cluster-link:nth-child(6n+1):hover{background:#E3EBFA}
-.cluster-link:nth-child(6n+2){background:#FBEFF6;border-left-color:#C9679A}
-.cluster-link:nth-child(6n+2):hover{background:#F7E3EF}
-.cluster-link:nth-child(6n+3){background:#EEFAF4;border-left-color:#3FA57A}
-.cluster-link:nth-child(6n+3):hover{background:#E1F5EB}
-.cluster-link:nth-child(6n+4){background:#FDF3E7;border-left-color:#D6923E}
-.cluster-link:nth-child(6n+4):hover{background:#FCEAD3}
-.cluster-link:nth-child(6n+5){background:#F0F0FB;border-left-color:#8171C9}
-.cluster-link:nth-child(6n+5):hover{background:#E5E4F7}
-.cluster-link:nth-child(6n+6){background:#E9F7F8;border-left-color:#0FB9C4}
-.cluster-link:nth-child(6n+6):hover{background:#DAF1F3}
-
-/* ---------- Baromètre (autorité) — volet comprimé ---------- */
-.barometre{background:var(--ink);color:var(--white);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:1.25rem;padding:1.75rem;margin:1rem 2rem 0;max-width:1216px;margin-left:auto;margin-right:auto}
-.barometre-eyebrow{font-size:9px;letter-spacing:.14em;color:var(--gold2);margin-bottom:.4rem}
-.barometre h2{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:400;line-height:1.2;margin-bottom:.55rem}
-.barometre h2 em{color:var(--gold2);font-style:normal;font-weight:600}
-.barometre p{font-size:11.5px;color:rgba(253,252,248,.6);line-height:1.55;max-width:420px;margin-bottom:.85rem}
-.barometre-cta{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--gold2);color:var(--gold2);font-size:10px;letter-spacing:.07em;transition:all .15s}
-.barometre-cta:hover{background:var(--gold2);color:var(--ink)}
-.barometre-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(201,168,76,.2)}
-.baro-stat{background:var(--ink);padding:.85rem;text-align:center}
-.baro-stat-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--gold2);line-height:1}
-.baro-stat-label{font-size:9px;color:rgba(253,252,248,.5);margin-top:.3rem;letter-spacing:.03em;line-height:1.3}
-
-.cluster-hdr.strategic{background:#EFEDFB}
-.cluster-hdr.strategic .cluster-icon{color:#5B4CC4}
-.strategies-wrap .cluster{max-width:100%}
-.strategies-wrap .cluster-list{display:grid;grid-template-columns:repeat(3,1fr)}
-.strategies-wrap .cluster-link{border-left-width:4px;border-bottom:3px solid var(--white);border-right:1px solid var(--white)}
-.strategies-wrap .cluster-link:nth-child(3n){border-right:none}
-
-/* ---------- Kits Opérationnels (issus du document — packaging commercial) ---------- */
-.kits{max-width:1280px;margin:0 auto;padding:1rem 2rem 3rem}
-.kits-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
-.kit-card{border:1px solid var(--border);background:var(--white);padding:1.5rem 1.35rem;transition:all .2s ease;position:relative}
-.kit-card:hover{border-color:var(--live);box-shadow:0 10px 28px -12px rgba(15,185,196,.25);transform:translateY(-3px)}
-.kit-num{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.08em;color:var(--live);margin-bottom:.9rem;display:block}
-.kit-name{font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:.5rem;line-height:1.3}
-.kit-desc{font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:1rem}
-.kit-includes{list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
-.kit-includes li{font-size:11px;color:var(--ink2);padding-left:14px;position:relative}
-.kit-includes li::before{content:'—';position:absolute;left:0;color:var(--gold)}
-.kit-link{font-size:11px;letter-spacing:.05em;color:var(--ink);border-bottom:1px solid var(--gold);padding-bottom:2px}
-.kit-card:hover .kit-link{color:var(--live);border-color:var(--live)}
-
-/* ---------- Modules complémentaires (remplace l'ancien bandeau Sources & méthodologie) ---------- */
-.mx-wrap{max-width:1280px;margin:0 auto;padding:2.5rem 2rem}
-.mx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem}
-.mx-chip{border:1px solid var(--border);background:var(--white);padding:.95rem 1.1rem;font-size:12.5px;font-weight:600;color:var(--ink2);display:flex;justify-content:space-between;align-items:center;gap:.5rem;border-left:4px solid transparent;transition:all .15s}
-.mx-chip:hover{color:var(--ink);padding-left:1.35rem}
-.mx-chip .arrow{opacity:.35;font-size:13px;transition:all .15s}
-.mx-chip:hover .arrow{opacity:1;transform:translateX(3px)}
-/* même rotation de teintes que .cluster-link, pour rester cohérent avec le reste du site */
-.mx-chip:nth-child(6n+1){background:#EEF3FC;border-left-color:#6E8FD4}
-.mx-chip:nth-child(6n+1):hover{background:#E3EBFA}
-.mx-chip:nth-child(6n+2){background:#FBEFF6;border-left-color:#C9679A}
-.mx-chip:nth-child(6n+2):hover{background:#F7E3EF}
-.mx-chip:nth-child(6n+3){background:#EEFAF4;border-left-color:#3FA57A}
-.mx-chip:nth-child(6n+3):hover{background:#E1F5EB}
-.mx-chip:nth-child(6n+4){background:#FDF3E7;border-left-color:#D6923E}
-.mx-chip:nth-child(6n+4):hover{background:#FCEAD3}
-.mx-chip:nth-child(6n+5){background:#F0F0FB;border-left-color:#8171C9}
-.mx-chip:nth-child(6n+5):hover{background:#E5E4F7}
-.mx-chip:nth-child(6n+6){background:#E9F7F8;border-left-color:#0FB9C4}
-.mx-chip:nth-child(6n+6):hover{background:#DAF1F3}
-
-/* ---------- Copilote IA (repositionné en 2e intention) ---------- */
-.copilot{max-width:1280px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:1fr 1.3fr;gap:2.5rem;align-items:center;border-top:1px solid var(--border)}
-.copilot-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:.6rem;display:inline-block;background:#EFDFC8;color:#6B4A1E;padding:4px 14px}
-.copilot-sub{font-size:12.5px;color:var(--ink3);line-height:1.6}
-.copilot-input-row{display:flex;gap:.6rem}
-.copilot-input{flex:1;padding:13px 16px;border:1px solid var(--border2);background:var(--white);font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--ink);outline:none}
-.copilot-input:focus{border-color:var(--gold)}
-.copilot-submit{padding:13px 20px;background:var(--ink);color:var(--gold2);font-size:11px;letter-spacing:.08em;white-space:nowrap}
-.copilot-submit:hover{background:var(--gold);color:var(--ink)}
-.copilot-submit:disabled{opacity:.5;pointer-events:none}
-.copilot-voice-btn{padding:13px 16px;background:var(--white);border:1px solid var(--border2);color:var(--ink2);font-size:15px;transition:all .15s;flex-shrink:0}
-.copilot-voice-btn:hover{border-color:var(--gold);color:var(--gold)}
-.copilot-voice-btn.listening{background:var(--live-bg);border-color:var(--live);color:var(--live);animation:pulse 1.2s infinite}
-.copilot-answer{margin-top:1rem;padding:1rem 1.25rem;background:var(--gold4);border:1px solid var(--border);font-size:13px;line-height:1.6;color:var(--ink2);display:none}
-.copilot-answer.show{display:block}
-.copilot-answer-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:.45rem}
-.copilot-action-link{display:inline-block;margin-top:.75rem;padding:7px 14px;font-size:11px;letter-spacing:.04em;font-weight:600;background:var(--ink);color:var(--gold2);text-decoration:none;border:1px solid var(--ink);transition:all .15s}
-.copilot-action-link:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.copilot-action-link.contact{background:transparent;color:var(--ink);border-color:var(--gold)}
-.copilot-answer-actions{margin-top:.6rem;display:flex;gap:.5rem}
-.copilot-listen-btn{padding:6px 12px;font-size:10.5px;letter-spacing:.05em;background:var(--ink);color:var(--gold2);border:none;transition:all .15s}
-.copilot-listen-btn:hover{background:var(--gold);color:var(--ink)}
-.copilot-listen-btn:disabled{opacity:.5;pointer-events:none}
-.copilot-status{font-size:10.5px;color:var(--ink3);margin-top:.4rem;min-height:14px}
-.copilot-login-hint{font-size:11px;color:var(--ink3);margin-top:.5rem;letter-spacing:.02em}
-.copilot-refresh-btn{padding:6px 12px;font-size:10.5px;letter-spacing:.05em;background:var(--white);color:var(--ink2);border:1px solid var(--border2);transition:all .15s}
-.copilot-refresh-btn:hover{border-color:var(--gold);color:var(--gold)}
-.copilot-loading{display:none;align-items:center;gap:8px;margin-top:.6rem;font-size:12px;color:var(--ink3)}
-.copilot-loading.show{display:flex}
-.copilot-spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:copilotSpin .7s linear infinite;flex-shrink:0}
-@keyframes copilotSpin{to{transform:rotate(360deg)}}
-.copilot-stop-btn{padding:6px 12px;font-size:10.5px;letter-spacing:.05em;background:var(--white);color:var(--pain);border:1px solid var(--pain-brd);transition:all .15s;display:none}
-.copilot-stop-btn.show{display:inline-block}
-.copilot-stop-btn:hover{background:var(--pain-bg)}
-
-/* ---------- Footer : tous les liens/infos utiles conservés ---------- */
-footer{border-top:1px solid var(--border);padding:1.5rem 2rem 1rem;margin-top:1rem;background:var(--gold4)}
-.footer-inner{max-width:1280px;margin:0 auto}
-.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:1.5rem;margin-bottom:1.25rem}
-.footer-brand .logo{margin-bottom:.5rem}
-.footer-brand p{font-size:11px;color:var(--ink3);line-height:1.55;max-width:260px}
-.footer-col-title{font-size:10px;letter-spacing:.12em;color:var(--ink3);margin-bottom:.5rem}
-.footer-col a{display:inline;font-size:11px;color:var(--ink2);transition:color .13s}
-.footer-col a:not(:last-child)::after{content:'·';color:var(--ink3);margin:0 .4em}
-.footer-col a:hover{color:var(--gold)}
-.footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-top:1rem;border-top:1px solid var(--border2);flex-wrap:wrap}
-.footer-legal{display:flex;gap:1.5rem}
-.footer-legal a{font-size:11px;color:var(--ink3)}
-.footer-legal a:hover{color:var(--gold)}
-.footer-copy{font-size:10px;color:var(--ink3);letter-spacing:.06em}
-
-@media(max-width:1100px){
-  .hdr-nav{display:none}
-}
-@media(max-width:960px){
-  .hero{grid-template-columns:1fr;padding-top:2.5rem}
-  .hero h1{font-size:27px}
-  .clusters{grid-template-columns:1fr}
-  .barometre{grid-template-columns:1fr;margin:1rem}
-  .copilot{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr 1fr}
-  .hdr-nav{display:none}
-  .strategies-wrap .cluster-list{grid-template-columns:1fr}
-  .strategies-wrap .cluster-link{border-right:none}
-  .kits-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:600px){
-  .kits-grid{grid-template-columns:1fr}
-}
-
-/* ---------- Authentification (connexion / inscription) — repris du site en production ---------- */
-.hdr-user{font-size:10.5px;color:var(--ink2);white-space:nowrap;text-decoration:none;cursor:pointer}
-.hdr-user:hover{text-decoration:underline;color:var(--gold)}
-.overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,.6);z-index:500;align-items:center;justify-content:center}
-.overlay.open{display:flex}
-.modal{background:var(--white);border:1px solid var(--border2);padding:2.5rem;width:100%;max-width:420px;position:relative;animation:fadeUp .2s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.modal h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:.75rem}
-.modal h2 em{color:var(--gold);font-style:normal}
-.modal p{font-size:13px;color:var(--ink3);margin-bottom:1.5rem;line-height:1.6}
-.m-field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem}
-.m-field label{font-size:11px;letter-spacing:.08em;color:var(--ink3)}
-.m-field input,.m-field select{padding:.75rem 1rem;border:1px solid var(--border2);background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;transition:border-color .15s}
-.m-field input:focus,.m-field select:focus{border-color:var(--gold)}
-.m-submit{width:100%;padding:12px;background:var(--ink);color:var(--gold2);font-size:12px;letter-spacing:.1em;margin-top:.5rem;transition:all .15s}
-.m-submit:hover{background:var(--gold);color:var(--ink)}
-.m-close{position:absolute;top:1rem;right:1rem;font-size:18px;color:var(--ink3);cursor:pointer}
-.m-close:hover{color:var(--ink)}
-.trial-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold4);border:1px solid var(--gold3);padding:6px 12px;font-size:11px;color:var(--ink2);margin-bottom:1.5rem}
-.trial-badge strong{color:var(--gold)}
-`;
-
-const bodyHTML = `
-
-<div class="ticker-wrap"><div class="ticker-track">
-  <div class="t-item"><span class="t-label">DH/EUR</span><span class="t-val">10.82</span><span class="t-chg up">▲ +0.12%</span></div>
-  <div class="t-item"><span class="t-label">DH/USD</span><span class="t-val">9.97</span><span class="t-chg dn">▼ -0.08%</span></div>
-  <div class="t-item"><span class="t-label">FRET TANGER MED</span><span class="t-val">$2 140</span><span class="t-chg up">▲ +2.1%</span></div>
-  <div class="t-item"><span class="t-label">CIRCULAIRE ADII</span><span class="t-val">N° 6705/222</span><span class="t-chg up">NOUVELLE</span></div>
-  <div class="t-item"><span class="t-label">DH/EUR</span><span class="t-val">10.82</span><span class="t-chg up">▲ +0.12%</span></div>
-  <div class="t-item"><span class="t-label">DH/USD</span><span class="t-val">9.97</span><span class="t-chg dn">▼ -0.08%</span></div>
-  <div class="t-item"><span class="t-label">FRET TANGER MED</span><span class="t-val">$2 140</span><span class="t-chg up">▲ +2.1%</span></div>
-  <div class="t-item"><span class="t-label">CIRCULAIRE ADII</span><span class="t-val">N° 6705/222</span><span class="t-chg up">NOUVELLE</span></div>
-</div></div>
-
-<header><div class="hdr">
-  <div class="logo">Import<em>-</em>IA<sup>MAROC</sup></div>
-  <nav class="hdr-nav">
-    <a href="#diagnostic">Audits et diagnostics</a>
-    <a href="#modules">Modules d'efficience</a>
-    <a href="#barometre">Baromètre</a>
-    <a href="#kits">Vos Kits pratiques</a>
-    <a href="#modules-plus">Votre Boîte à outils</a>
-    <a href="#strategies">Stratégies et analyses</a>
-    <a href="#copilote">IXP-copilote</a>
-  </nav>
-  <div class="hdr-actions" id="hdr-actions">
-    <button class="btn-in" onclick="openModal('login')">CONNEXION</button>
-    <button class="btn-sub" onclick="openModal('register')">ESSAI GRATUIT</button>
-  </div>
-</div></header>
-
-<!-- ═══════════════════ COPILOTE IA (remonté en haut de page) ═══════════════════ -->
-<section class="copilot reveal" id="copilote">
-  <div>
-    <div class="copilot-title">Une question précise ?</div>
-    <div class="copilot-sub">IXP-copilote, le copilote IA d'Import-eXPert, répond en citant la circulaire, l'article ou l'accord exact — pour ceux qui savent déjà ce qu'ils cherchent.</div>
-  </div>
-  <div>
-    <div class="copilot-input-row">
-      <input type="text" class="copilot-input" id="copilot-input" name="copilot-question" autocomplete="off" data-lpignore="true" data-form-type="other" placeholder="Ex : Quels documents pour une admission temporaire ?">
-      <button class="copilot-voice-btn" id="copilot-mic" type="button" aria-label="Poser la question à la voix">🎤</button>
-      <button class="copilot-submit" id="copilot-submit" type="button">SOUMETTRE →</button>
-    </div>
-    <div class="copilot-login-hint" id="copilot-login-hint">🔒 Connectez-vous pour interroger IXP-copilote</div>
-    <div class="copilot-status" id="copilot-status"></div>
-    <div class="copilot-loading" id="copilot-loading"><span class="copilot-spinner"></span>Recherche dans la base documentaire…</div>
-    <div class="copilot-answer" id="copilot-answer">
-      <div class="copilot-answer-label">IXP-copilote</div>
-      <div id="copilot-answer-text"></div>
-      <a class="copilot-action-link" id="copilot-action" href="#" style="display:none"></a>
-      <div class="copilot-answer-actions">
-        <button class="copilot-listen-btn" id="copilot-listen" type="button">🔊 ÉCOUTER LA RÉPONSE</button>
-        <button class="copilot-stop-btn" id="copilot-stop" type="button">⏹ ARRÊTER</button>
-        <button class="copilot-refresh-btn" id="copilot-refresh" type="button">↻ NOUVELLE QUESTION</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════ HERO — diagnostic-first ═══════════════════ -->
-<section class="hero" id="diagnostic">
-  <div class="hero-copy">
-    <div class="hero-eyebrow"><span class="dot"></span>DIAGNOSTIC GRATUIT · 3 MINUTES</div>
-    <h1 id="hero-h1">Un code SH mal classé,<br>c'est <strong>5 ans de redressement</strong> possible.</h1>
-    <p class="lead">Découvrez votre Indice de Vulnérabilité Douanière — classement tarifaire, origine préférentielle, régimes économiques — avant qu'un contrôle a posteriori ne le fasse à votre place.</p>
-    <div class="hero-cta-row">
-      <a href="#" class="cta-primary" onclick="return false" id="hero-cta-scroll">LANCER MON DIAGNOSTIC →</a>
-    </div>
-  </div>
-
-  <div class="scanner-card">
-    <div class="scanner-seal">IMPORT<br>—<br>IA · MAROC</div>
-    <div class="scanner-title">SCANNER DE VULNÉRABILITÉ</div>
-    <div class="scanner-sub">Répondez à 3 questions rapides pour une première estimation de votre exposition.</div>
-
-    <div class="gauge-wrap">
-      <svg width="128" height="74" viewBox="0 0 180 104">
-        <path d="M 10 100 A 80 80 0 0 1 170 100" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="14" stroke-linecap="round"/>
-        <path id="gauge-arc" d="M 10 100 A 80 80 0 0 1 170 100" fill="none" stroke="#C9A84C" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251"/>
-      </svg>
-      <div class="gauge-score" id="gauge-score">—<span>/100</span></div>
-      <div class="gauge-verdict" id="gauge-verdict" style="visibility:hidden">Score</div>
-    </div>
-
-    <div class="scan-q" data-q="1">
-      <div class="scan-q-label">1. Comment validez-vous vos codes SH ?</div>
-      <div class="scan-opts">
-        <button class="scan-opt" data-val="5" data-key="habitude">Habitude / transitaire</button>
-        <button class="scan-opt" data-val="3" data-key="cas_par_cas">Au cas par cas</button>
-        <button class="scan-opt" data-val="1" data-key="registre_audite">Registre audité</button>
-      </div>
-    </div>
-    <div class="scan-q" data-q="2">
-      <div class="scan-q-label">2. Utilisez-vous des accords de libre-échange (ALE) ?</div>
-      <div class="scan-opts">
-        <button class="scan-opt" data-val="5" data-key="sans_tracabilite">Oui, sans traçabilité</button>
-        <button class="scan-opt" data-val="1" data-key="documente">Oui, documenté</button>
-        <button class="scan-opt" data-val="0" data-key="non_concerne">Non</button>
-      </div>
-    </div>
-    <div class="scan-q" data-q="3">
-      <div class="scan-q-label">3. Blocage ou contrôle a posteriori sur les 3 dernières années ?</div>
-      <div class="scan-opts">
-        <button class="scan-opt" data-val="5" data-key="plusieurs_fois">Plusieurs fois</button>
-        <button class="scan-opt" data-val="3" data-key="une_fois">Une fois</button>
-        <button class="scan-opt" data-val="1" data-key="jamais">Jamais</button>
-      </div>
-    </div>
-
-    <div class="scanner-foot">
-      <div class="scanner-cta" id="scanner-cta">VOIR VOTRE SCORE DE CRITICITÉ</div>
-      <div class="scanner-report" id="scanner-report"></div>
-      <div class="scanner-note" id="scanner-note">Aucune carte bancaire requise — résultat affiché immédiatement</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════ TUILES RÉORGANISÉES PAR VALEUR ═══════════════════ -->
-<section class="section reveal" id="modules">
-  <div class="section-hdr">
-    <div class="section-eyebrow">OÙ EN ÊTES-VOUS ?</div>
-    <div class="section-title">Vos outils, classés selon vos besoins et selon ce qu'ils résolvent</div>
-    <div class="section-sub">Les 39 modules Import-IA regroupés selon la situation réelle qui vous amène ici : un problème à traiter maintenant, un risque à prévenir avant qu'il ne coûte, ou une veille à entretenir en continu.</div>
-  </div>
-
-  <div class="clusters">
-    <div class="cluster">
-      <div class="cluster-hdr pain">
-        <div class="cluster-icon">⚠</div>
-        <div><div class="cluster-name">Un dossier vous bloque</div><div class="cluster-tag">Urgence — action immédiate</div></div>
-      </div>
-      <div class="cluster-list">
-        <a class="cluster-link" href="/modules/verificateur-dum">Vérificateur DUM <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/surestaries">Surestaries &amp; Pénalités <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/contentieux">Contentieux &amp; Litiges <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/audit">Audit Douanier &amp; OEA <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/risques">Contrôle des Risques — 38 situations <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/tracking">Tracking &amp; Intelligence <span class="arrow">→</span></a>
-      </div>
-    </div>
-
-    <div class="cluster">
-      <div class="cluster-hdr gain">
-        <div class="cluster-icon">✓</div>
-        <div><div class="cluster-name">Vous voulez sécuriser avant</div><div class="cluster-tag">Prévention — avant décision</div></div>
-      </div>
-      <div class="cluster-list">
-        <a class="cluster-link" href="/modules/classement">Classement tarifaire SH — 17 224 codes <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/decisions-classement">Décisions de Classement ADII <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/origine-aleca">Origine ALECA / UE <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/simulateur">Simulateur Droits &amp; Taxes <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/comparateur">Comparateur Régimes — 9 régimes CDII <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/valeur-douane">Valeur en Douane (WCO) <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/cgi-fiscal">Index du Code Général des Impôts (CGI) <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/transit-doc-generator">Suite Documentaire Transit <span class="arrow">→</span></a>
-        <div class="cluster-more">→ voir les autres modules de qualification et chiffrage</div>
-      </div>
-    </div>
-
-    <div class="cluster">
-      <div class="cluster-hdr neutral">
-        <div class="cluster-icon">◎</div>
-        <div><div class="cluster-name">Vous gardez une longueur d'avance</div><div class="cluster-tag">Veille — en continu</div></div>
-      </div>
-      <div class="cluster-list">
-        <a class="cluster-link" href="/modules/veille-reglementaire">Veille Réglementaire &amp; LF 2026 <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/alertes-fiscales">Alertes Fiscales <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/faq">FAQ Douanière — 173 questions <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/glossaire-douanier">Glossaire Douanier FR/AR — 1 081 termes <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/modules/carte-bureauxdouaniers">Carte des Bureaux Douaniers <span class="arrow">→</span></a>
-        <a class="cluster-link" href="/community">Communauté <span class="arrow">→</span></a>
-        <div class="cluster-more">+ 6 autres modules d'intelligence stratégique</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════ BAROMÈTRE (autorité de marque) ═══════════════════ -->
-<section class="barometre reveal" id="barometre">
-  <div>
-    <div class="barometre-eyebrow">ÉDITION 2026 — LIBRE TÉLÉCHARGEMENT</div>
-    <h2>Le <em>Baromètre</em> annuel de la friction douanière et de la performance logistique au Maroc.</h2>
-    <p>Délais de dédouanement, top 5 des erreurs de conformité, impact financier des accords de libre-échange non exploités — l'état des lieux du secteur, construit à partir de nos données de terrain et d'une enquête auprès de directeurs supply chain et CFO.</p>
-    <a href="#" class="barometre-cta">TÉLÉCHARGER LE RAPPORT (30 PAGES) →</a>
-  </div>
-  <div class="barometre-stats">
-    <div class="baro-stat"><div class="baro-stat-num">42%</div><div class="baro-stat-label">des entreprises redoutent un contrôle a posteriori</div></div>
-    <div class="baro-stat"><div class="baro-stat-num">1/3</div><div class="baro-stat-label">des blocages liés à une erreur de classement SH</div></div>
-    <div class="baro-stat"><div class="baro-stat-num">2h</div><div class="baro-stat-label">délai express OEA à Tanger Med</div></div>
-    <div class="baro-stat"><div class="baro-stat-num">6</div><div class="baro-stat-label">accords ALE sous-exploités par méconnaissance</div></div>
-  </div>
-</section>
-
-<!-- ═══════════════════ KITS OPÉRATIONNELS (issus du document stratégique) ═══════════════════ -->
-<section class="kits reveal" id="kits">
-  <div class="section-hdr">
-    <div class="section-eyebrow">PRÊT-À-L'EMPLOI</div>
-    <div class="section-title">Vos dossiers les plus sensibles, déjà structurés</div>
-    <div class="section-sub">Quatre kits opérationnels Word/Excel, méthodologie incluse — pour les points de friction qui reviennent le plus souvent dans un audit ou un contrôle.</div>
-  </div>
-  <div class="kits-grid">
-    <div class="kit-card">
-      <span class="kit-num">KIT 01</span>
-      <div class="kit-name">Origine Préférentielle &amp; ALE</div>
-      <div class="kit-desc">Sécuriser l'exonération des droits sur les corridors Maroc–UE, USA, Golfe et ZLECAf.</div>
-      <ul class="kit-includes">
-        <li>Matrice d'éligibilité (Excel dynamique)</li>
-        <li>Modèle de déclaration d'origine</li>
-        <li>Check-list d'audit des justificatifs</li>
-      </ul>
-      <a class="kit-link" href="#">Voir le contenu du kit →</a>
-    </div>
-    <div class="kit-card">
-      <span class="kit-num">KIT 02</span>
-      <div class="kit-name">Régimes Suspensifs &amp; Économiques</div>
-      <div class="kit-desc">Perfectionnement actif, admission temporaire — dossier d'agrément et suivi d'apurement.</div>
-      <ul class="kit-includes">
-        <li>Dossier de demande d'autorisation type</li>
-        <li>Tableau d'apurement des comptes</li>
-        <li>Guide des délais et contentieux</li>
-      </ul>
-      <a class="kit-link" href="#">Voir le contenu du kit →</a>
-    </div>
-    <div class="kit-card">
-      <span class="kit-num">KIT 03</span>
-      <div class="kit-name">Classement SH &amp; Contrôle A Posteriori</div>
-      <div class="kit-desc">Blinder la nomenclature avant qu'un inspecteur ne la conteste — jusqu'à 5 ans en arrière.</div>
-      <ul class="kit-includes">
-        <li>Arbre de décision RGI 1 à 6</li>
-        <li>Registre centralisé des codes SH</li>
-        <li>Auto-diagnostic contrôle a posteriori</li>
-      </ul>
-      <a class="kit-link" href="#">Voir le contenu du kit →</a>
-    </div>
-    <div class="kit-card">
-      <span class="kit-num">KIT 04</span>
-      <div class="kit-name">Compliance Suite — Pack Intégral</div>
-      <div class="kit-desc">Les trois kits ci-dessus, réunis pour équiper l'ensemble du département supply chain.</div>
-      <ul class="kit-includes">
-        <li>Origine · Régimes · Classement</li>
-        <li>Notice méthodologique unifiée</li>
-        <li>Mise à jour incluse (LF en cours)</li>
-      </ul>
-      <a class="kit-link" href="#">Voir le pack complet →</a>
-    </div>
-  </div>
-</section>
-
-<section class="mx-wrap reveal" id="modules-plus">
-  <div class="section-hdr">
-    <div class="section-eyebrow">COMPLÉTEZ VOTRE BOÎTE À OUTILS</div>
-    <div class="section-title">19 autres modules Import-IA, en un coup d'œil</div>
-    <div class="section-sub">Calculateurs, référentiels et procédures utiles au quotidien — pas encore rattachés à l'un des volets ci-dessus, mais bien disponibles dès aujourd'hui.</div>
-  </div>
-  <div class="mx-grid">
-    <a class="mx-chip" href="/modules/autorisations-licences">Contrôle des Autorisations et Licences <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/calc-colis-sre">Calculateur Colis &amp; Cartons <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/calc-conteneurs">Calculateur de Chargement Conteneurs <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/cgi-search">Recherche Fiscale CGI (IA) <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/documents-sh">Référentiel Documents par Code SH <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/export">Module Export — DDP, guide, checklist <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/facilitation">Customs Facilitation Global Hub <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/incoterms-shipping">Qui Paie Quoi ? — Incoterms × Termes Armateurs <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/index-commerce">Index du Commerce International <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/marquage-warnings">Marquage &amp; Signalisation <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/mondoscope">Global MondoScope — Intelligence Stratégique <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/oea">OEA — Fiche détaillée <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/procedures">Procédures Douanières <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/procedures-process">Régimes &amp; Procédures — 22 procédures <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/regime-change">IGOC 2026 — Régime de Change <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/regimes-economiques">Régimes Économiques Douaniers <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/simulateur-fiscal">Simulateur Fiscal Douanier <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/substances-dangereuses">Substances Dangereuses &amp; Classification <span class="arrow">→</span></a>
-    <a class="mx-chip" href="/modules/tic-reference">TIC — Taxes Intérieures de Consommation <span class="arrow">→</span></a>
-  </div>
-</section>
-
-<!-- ═══════════════════ CONDUIRE VOS STRATÉGIES ═══════════════════ -->
-<section class="section reveal strategies-wrap" id="strategies">
-  <div class="section-hdr">
-    <div class="section-eyebrow">PENSER PLUS LOIN</div>
-    <div class="section-title">Conduire vos Stratégies</div>
-    <div class="section-sub">Au-delà du dossier ponctuel — les modules d'intelligence et de conseil pour orienter vos décisions d'investissement, de sourcing et de développement à l'international.</div>
-  </div>
-  <div class="cluster">
-    <div class="cluster-hdr strategic">
-      <div class="cluster-icon">✦</div>
-      <div><div class="cluster-name">Intelligence &amp; conseil stratégique</div><div class="cluster-tag">Décision — direction générale, stratégie, investissement</div></div>
-    </div>
-    <div class="cluster-list">
-      <a class="cluster-link" href="https://trans-txp.vercel.app/modules/douane-engineering">Douane Engineering <span class="arrow">→</span></a>
-      <a class="cluster-link" href="https://trans-txp.vercel.app/modules/analyses">Analyses Stratégiques <span class="arrow">→</span></a>
-      <a class="cluster-link" href="https://trans-txp.vercel.app/modules/intelligence-fiscale">Intelligence Fiscale <span class="arrow">→</span></a>
-      <a class="cluster-link" href="https://trans-txp.vercel.app/modules/intelligence-strategique">Intelligence Stratégique <span class="arrow">→</span></a>
-      <a class="cluster-link" href="https://trans-txp.vercel.app/modules/intelligence-import">Intelligence Import <span class="arrow">→</span></a>
-      <a class="cluster-link" href="https://trans-txp.vercel.app/modules/conseil">Conseil Personnalisé <span class="arrow">→</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════ FOOTER — tous les liens conservés ═══════════════════ -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="logo">Import<em>-</em>IA<sup style="font-size:9px;color:#8A8078;letter-spacing:.06em;vertical-align:super"> MAROC</sup></div>
-        <p>Intelligence douanière marocaine — circulaires ADII, tarifs, régimes économiques, fiscalité CGI 2026. 39 modules, une seule source de vérité.</p>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">DIAGNOSTIC</div>
-        <a href="#diagnostic">Scanner de vulnérabilité</a>
-        <a href="#barometre">Baromètre 2026</a>
-        <a href="/modules/audit">Audit OEA</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">MODULES CLÉS</div>
-        <a href="/modules/classement">Classement tarifaire SH</a>
-        <a href="/modules/simulateur">Simulateur Droits &amp; Taxes</a>
-        <a href="/modules/veille-reglementaire">Veille Réglementaire</a>
-        <a href="/modules/faq">FAQ Douanière</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">ENTREPRISE</div>
-        <a href="#">Mentions légales</a>
-        <a href="#">Confidentialité</a>
-        <a href="#">Tarifs</a>
-        <a href="#">Contact</a>
-        <a href="#">API</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© 2026 Import-IA — TOUS DROITS RÉSERVÉS</div>
-      <div class="footer-legal"><a href="https://www.douane.gov.ma" target="_blank">douane.gov.ma ↗</a><a href="https://www.portnet.ma" target="_blank">portnet.ma ↗</a></div>
-    </div>
-  </div>
-</footer>
-<div class="overlay" id="overlay-register" onclick="if(event.target===this)closeModal('register')">
-  <div class="modal">
-    <span class="m-close" onclick="closeModal('register')">✕</span>
-    <div id="register-form-body">
-      <h2>Rejoindre <em>Import-IA</em></h2>
-      <div class="trial-badge">✦ <strong>14 jours d'accès complet offerts</strong></div>
-      <div class="m-field"><label>PRÉNOM & NOM</label><input id="reg-nom" type="text" placeholder="Mohamed Alami"/></div>
-      <div class="m-field"><label>EMAIL PROFESSIONNEL</label><input id="reg-email" type="email" placeholder="m.alami@entreprise.ma"/></div>
-      <div class="m-field"><label>PROFIL</label>
-        <select id="reg-profil"><option value="transitaire">Transitaire / Agent en douane</option><option value="importateur">Importateur / Exportateur PME</option><option value="directeur_logistique">Directeur logistique</option><option value="consultant">Cabinet conseil douanier</option><option value="autre">Autre</option></select>
-      </div>
-      <div class="m-field"><label>TÉLÉPHONE</label><input id="reg-tel" type="tel" placeholder="06 12 34 56 78"/></div>
-      <div class="m-field"><label>MOT DE PASSE</label><input id="reg-pwd" type="password" placeholder="••••••••"/></div>
-      <div style="display:flex;align-items:flex-start;gap:.5rem;margin-bottom:1rem;font-size:12px;color:var(--ink2)">
-        <input type="checkbox" id="reg-cgu" style="margin-top:2px;cursor:pointer;flex-shrink:0"/>
-        <label for="reg-cgu" style="cursor:pointer">J'accepte les <a href="/cgu" target="_blank" style="color:var(--gold);text-decoration:underline">Conditions d'utilisation</a> et la <a href="/confidentialite" target="_blank" style="color:var(--gold);text-decoration:underline">Politique de confidentialité</a></label>
-      </div>
-      <button class="m-submit" onclick="submitRegister()">DÉMARRER MON ESSAI GRATUIT →</button>
-      <p style="text-align:center;font-size:11px;color:var(--ink3);margin-top:1rem">Déjà inscrit ? <span style="color:var(--gold);cursor:pointer" onclick="closeModal('register');openModal('login')">Se connecter</span></p>
-    </div>
-    <div id="register-success-body" style="display:none;text-align:center;padding:1rem 0">
-      <div style="font-size:36px;margin-bottom:.75rem">📬</div>
-      <h2 style="margin-bottom:.75rem">Vérifiez votre boîte mail</h2>
-      <p style="font-size:13px;color:var(--ink2);line-height:1.6">Veuillez consulter votre boîte mail pour valider votre inscription et démarrer votre essai gratuit de 14 jours.</p>
-    </div>
-  </div>
-</div>
-<div class="overlay" id="overlay-login" onclick="if(event.target===this)closeModal('login')">
-  <div class="modal">
-    <span class="m-close" onclick="closeModal('login')">✕</span>
-    <h2>Connexion à <em>Import-IA</em></h2>
-    <p>Accédez à votre espace et reprenez là où vous en étiez.</p>
-    <div class="m-field"><label>EMAIL</label><input id="login-email" type="email" placeholder="votre@email.ma" onkeydown="if(event.key==='Enter')submitLogin()"/></div>
-    <div class="m-field"><label>MOT DE PASSE</label><input id="login-pwd" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitLogin()"/></div>
-    <button class="m-submit" onclick="submitLogin()">SE CONNECTER →</button>
-    <p style="text-align:center;font-size:11px;color:var(--ink3);margin-top:1rem">Pas encore de compte ? <span style="color:var(--gold);cursor:pointer" onclick="closeModal('login');openModal('register')">Essai gratuit 14 jours</span></p>
-  </div>
-</div>
-`;
-
-const scriptContent = `
-/* ---------- Authentification (repris du site en production) ---------- */
-function escHtml(s){
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function openModal(n){document.getElementById('overlay-'+n).classList.add('open');}
-function closeModal(n){document.getElementById('overlay-'+n).classList.remove('open');}
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal('register');closeModal('login');}});
-
-async function submitLogin(){
-  var email=document.getElementById('login-email').value.trim();
-  var pwd=document.getElementById('login-pwd').value;
-  if(!email||!pwd){alert('Email et mot de passe requis');return;}
-  var btn=document.querySelector('#overlay-login .m-submit');
-  if(btn)btn.textContent='CONNEXION...';
-  try{
-    var res=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,password:pwd})});
-    var data=await res.json();
-    if(!res.ok){alert(data.error||'Identifiants incorrects');if(btn)btn.textContent='SE CONNECTER \u2192';return;}
-    closeModal('login');
-    window.location.href='/';
-  }catch(e){alert('Erreur r\u00e9seau');if(btn)btn.textContent='SE CONNECTER \u2192';}
-}
-
-async function submitRegister(){
-  var nom=document.getElementById('reg-nom').value.trim();
-  var email=document.getElementById('reg-email').value.trim();
-  var pwd=document.getElementById('reg-pwd').value;
-  var profil=document.getElementById('reg-profil').value;
-  var tel=document.getElementById('reg-tel').value.trim();
-  var cgu=document.getElementById('reg-cgu');
-  if(!email||!pwd){alert('Email et mot de passe requis');return;}
-  if(pwd.length<8){alert('Mot de passe trop court (8 caract\u00e8res minimum)');return;}
-  if(!cgu||!cgu.checked){alert('Vous devez accepter les Conditions d\u2019utilisation et la Politique de confidentialit\u00e9 pour continuer');return;}
-  var btn=document.querySelector('#overlay-register .m-submit');
-  if(btn)btn.textContent='CR\u00c9ATION...';
-  try{
-    var res=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,password:pwd,nom:nom,telephone:tel,profil:profil})});
-    var data=await res.json();
-    if(!res.ok){alert(data.error||'Erreur inscription');if(btn)btn.textContent='D\u00c9MARRER MON ESSAI GRATUIT \u2192';return;}
-    var formBody=document.getElementById('register-form-body');
-    var successBody=document.getElementById('register-success-body');
-    if(formBody)formBody.style.display='none';
-    if(successBody)successBody.style.display='block';
-  }catch(e){alert('Erreur r\u00e9seau');if(btn)btn.textContent='D\u00c9MARRER MON ESSAI GRATUIT \u2192';}
-}
-
-async function checkSession(){
-  try{
-    var res = await fetch('/api/auth/me');
-    if(!res.ok) { window.__copilotAuthorized = false; return; }
-    var data = await res.json();
-    if(!data || !data.email) { window.__copilotAuthorized = false; return; }
-    window.__copilotAuthorized = true;
-    var hint = document.getElementById('copilot-login-hint');
-    if(hint) hint.style.display = 'none';
-    var box = document.getElementById('hdr-actions');
-    if(!box) return;
-    var name = data.email.split('@')[0];
-    box.innerHTML =
-  '<a href="/dashboard" class="hdr-user" title="Plan : '+data.plan+' — Accéder à mon compte">'+escHtml(name)+' · '+escHtml(data.plan)+'</a>' +
-  '<button class="btn-in" onclick="doLogout()">DÉCONNEXION</button>';
-  }catch(e){ window.__copilotAuthorized = undefined; }
-}
-
-async function doLogout(){
-  try{
-    await fetch('/api/auth/logout', { method:'POST' });
-  }catch(e){}
-  window.location.href='/';
-}
-
-checkSession();
-
-/* ---------- Scanner de vulnérabilité et interactions visuelles (nouvelle hero) ---------- */
-/* ---------- Contenu éditorial du rapport Scanner (même source que content/scanner-report-content.json) ---------- */
-var SCANNER_CONTENT = {
-  "axes": {
-    "sh": {
-      "titre": "Classification tarifaire (codes SH)",
-      "habitude": {
-        "label": "Réponse : Habitude / transitaire",
-        "niveau": "critique",
-        "texte": "S'en remettre entièrement à l'habitude ou au transitaire, sans registre interne validé, est le motif de redressement le plus fréquent lors d'un contrôle a posteriori : chaque transitaire peut classer différemment un même article, et l'entreprise reste seule responsable du code déclaré. Recommandation : centraliser vos codes SH dans un registre unique validé, avec justificatif technique par article."
-      },
-      "cas_par_cas": {
-        "label": "Réponse : Au cas par cas",
-        "niveau": "important",
-        "texte": "Une vérification ponctuelle à l'apparition d'un nouveau produit est un bon réflexe, mais elle laisse les articles déjà classés sans revalidation périodique — un risque si la nomenclature ou vos produits évoluent. Recommandation : basculer vers un registre centralisé qui trace la date et l'auteur de chaque validation."
-      },
-      "registre_audite": {
-        "label": "Réponse : Registre audité",
-        "niveau": "conforme",
-        "texte": "Un registre centralisé, validé et audité est la pratique la plus sécurisante face à un contrôle : elle démontre une démarche de diligence raisonnable. Recommandation : maintenir cette discipline et la documenter formellement pour toute nouvelle référence produit."
-      }
-    },
-    "ale": {
-      "titre": "Origine préférentielle (ALE)",
-      "sans_tracabilite": {
-        "label": "Réponse : Oui, sans traçabilité",
-        "niveau": "critique",
-        "texte": "Utiliser un accord de libre-échange sans traçabilité formalisée des déclarations fournisseurs expose à la remise en cause rétroactive de l'exonération accordée — avec rappel des droits sur toutes les opérations concernées. Recommandation : constituer sans délai un dossier de preuves d'origine par fournisseur (déclarations, factures, règles de cumul)."
-      },
-      "documente": {
-        "label": "Réponse : Oui, documenté",
-        "niveau": "important",
-        "texte": "La collecte des certificats à l'expédition est une bonne base, mais sans vérification approfondie des règles de cumul, certains dossiers restent fragiles en cas de contrôle serré. Recommandation : faire auditer un échantillon de vos certificats d'origine sur les 7 points de contrôle usuels (validité, cumul, seuils de valeur ajoutée)."
-      },
-      "non_concerne": {
-        "label": "Réponse : Non concerné",
-        "niveau": "neutre",
-        "texte": "Vous n'utilisez pas d'accord de libre-échange à ce jour. Selon votre corridor d'approvisionnement (UE, USA, Golfe, ZLECAf), des exonérations de droits existent peut-être sans que vous les exploitiez. Recommandation : faire évaluer votre éligibilité — c'est souvent une économie immédiate, pas seulement une mise en conformité."
-      }
-    },
-    "ctrl": {
-      "titre": "Antécédents de contrôle (3 dernières années)",
-      "plusieurs_fois": {
-        "label": "Réponse : Plusieurs fois",
-        "niveau": "critique",
-        "texte": "Des blocages ou contrôles répétés indiquent une faille structurelle plutôt qu'un incident isolé — c'est le signal le plus lourd du diagnostic. Recommandation : un audit préventif complet est prioritaire, avant qu'un nouveau contrôle ne porte sur des exercices déjà clos."
-      },
-      "une_fois": {
-        "label": "Réponse : Une fois",
-        "niveau": "important",
-        "texte": "Un incident ponctuel suite à une divergence documentaire reste courant, mais mérite d'être requalifié : était-ce un cas isolé, ou un symptôme d'une faille qui pourrait se reproduire ? Recommandation : revérifier le dossier concerné et croiser avec les deux axes précédents."
-      },
-      "jamais": {
-        "label": "Réponse : Jamais",
-        "niveau": "conforme",
-        "texte": "Aucun antécédent connu est un signal positif, mais ne dispense pas de vigilance : un contrôle a posteriori peut porter sur des exercices jamais encore audités. Recommandation : maintenir une veille documentaire active plutôt que d'attendre un premier contrôle pour s'organiser."
-      }
-    }
-  },
-  "tiers": {
-    "faible": {
-      "verdictLabel": "RISQUE MAÎTRISÉ",
-      "synthese": "Vos fondamentaux opérationnels semblent solides : la manière dont vous validez vos codes SH et documentez vos origines préférentielles limite votre exposition aux redressements les plus fréquents. L'enjeu, à ce niveau, n'est plus la mise en conformité mais l'optimisation — repérer les économies de droits de douane que vous laissez peut-être sur la table, et sécuriser cet acquis face aux évolutions réglementaires de la Loi de Finances en cours.",
-      "plan": "1. Faire évaluer les accords de libre-échange non exploités sur vos corridors actuels.  2. Activer une veille réglementaire continue (circulaires ADII, Lois de Finances).  3. Explorer l'abonnement à la plateforme de veille sémantique Transit-IA pour formaliser ce suivi."
-    },
-    "modere": {
-      "verdictLabel": "RISQUE MODÉRÉ À ÉLEVÉ",
-      "synthese": "Votre diagnostic fait apparaître des points de friction concrets — le plus souvent sur la validation des codes SH ou la traçabilité des justificatifs d'origine. Ce ne sont pas encore des contentieux ouverts, mais ce sont précisément les motifs les plus fréquents de redressement lors d'un contrôle a posteriori, qui porte généralement sur les 4 à 5 dernières années. Un ajustement ciblé de vos process documentaires suffit, dans la majorité des cas, à corriger ces failles avant qu'elles ne deviennent coûteuses.",
-      "plan": "1. Acquérir le Kit correspondant à l'axe le plus faible (Classement SH ou Origine & ALE).  2. Reprendre le Scanner dans 60 jours pour mesurer l'amélioration.  3. Envisager le Pack Compliance Suite si plusieurs axes sont concernés."
-    },
-    "critique": {
-      "verdictLabel": "RISQUE CRITIQUE",
-      "synthese": "Votre configuration actuelle — combinant volume d'opérations, zones d'ombre sur l'origine préférentielle et antécédents de blocage ou de contrôle — vous expose directement à un risque de redressement lourd sur vos exercices passés. À ce niveau d'exposition, un ajustement ponctuel ne suffit plus : un audit préventif structuré de vos dossiers est recommandé avant qu'un contrôle de l'administration ne l'impose.",
-      "plan": "1. Planifier un Audit Flash avec un expert senior sous 15 jours.  2. Geler toute déclaration en cours utilisant le même code SH ou la même base d'origine tant que l'audit n'a pas confirmé leur validité.  3. Constituer un dossier de régularisation préventive avant toute notification de contrôle."
-    }
-  }
-};
-
-var answers = {1:null, 2:null, 3:null};
-var answerKeys = {1:null, 2:null, 3:null};
-var lastScore = 0;
-
-document.querySelectorAll('.scan-q').forEach(function(qEl){
-  var qNum = qEl.getAttribute('data-q');
-  qEl.querySelectorAll('.scan-opt').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      qEl.querySelectorAll('.scan-opt').forEach(function(b){ b.classList.remove('picked'); });
-      btn.classList.add('picked');
-      answers[qNum] = parseInt(btn.getAttribute('data-val'), 10);
-      answerKeys[qNum] = btn.getAttribute('data-key');
-      updateGauge();
-    });
-  });
-});
-
-function updateGauge(){
-  var answered = Object.values(answers).filter(function(v){ return v !== null; });
-  if(answered.length === 0) return;
-
-  var sum = answered.reduce(function(a,b){ return a+b; }, 0);
-  var maxPossible = answered.length * 5;
-  var score = Math.round((sum / maxPossible) * 100);
-  lastScore = score;
-
-  var arc = document.getElementById('gauge-arc');
-  var offset = 251 - (251 * score / 100);
-  arc.style.transition = 'stroke-dashoffset .5s ease, stroke .3s ease';
-  arc.style.strokeDashoffset = offset;
-
-  var scoreEl = document.getElementById('gauge-score');
-  scoreEl.innerHTML = score + '<span>/100</span>';
-
-  var verdict = document.getElementById('gauge-verdict');
-  verdict.style.visibility = 'visible';
-  verdict.className = 'gauge-verdict';
-  if(score <= 35){
-    verdict.classList.add('v-low');
-    verdict.textContent = 'Risque maîtrisé';
-    arc.setAttribute('stroke', '#4CAF7C');
-  } else if(score <= 70){
-    verdict.classList.add('v-mid');
-    verdict.textContent = 'Risque modéré';
-    arc.setAttribute('stroke', '#C9A84C');
-  } else {
-    verdict.classList.add('v-high');
-    verdict.textContent = 'Risque critique';
-    arc.setAttribute('stroke', '#E85D5D');
+  const classer = (e: React.FormEvent) => {
+    e.preventDefault()
+    const q = produit.trim()
+    router.push(q ? `/modules/classement?q=${encodeURIComponent(q)}` : '/modules/classement')
   }
 
-  if(answered.length === 3){
-    var cta = document.getElementById('scanner-cta');
-    cta.classList.add('ready');
-  }
-}
-
-function niveauColor(n){
-  if(n === 'critique') return '#E85D5D';
-  if(n === 'important') return '#C9A84C';
-  if(n === 'conforme') return '#4CAF7C';
-  return '#8FB8E8';
-}
-
-function getScannerTier(score){
-  if(score <= 35) return 'faible';
-  if(score <= 70) return 'modere';
-  return 'critique';
-}
-
-function buildScannerReport(){
-  var tier = getScannerTier(lastScore);
-  var tierContent = SCANNER_CONTENT.tiers[tier];
-
-  var axesData = [
-    { cle: 'sh', reponse: answerKeys[1] },
-    { cle: 'ale', reponse: answerKeys[2] },
-    { cle: 'ctrl', reponse: answerKeys[3] }
-  ];
-
-  var axes = axesData.map(function(a){
-    var axeContent = SCANNER_CONTENT.axes[a.cle];
-    var reponseContent = axeContent[a.reponse];
-    return {
-      titre: axeContent.titre,
-      label: reponseContent.label,
-      niveau: reponseContent.niveau,
-      texte: reponseContent.texte
-    };
-  });
-
-  return {
-    score: lastScore,
-    verdictLabel: tierContent.verdictLabel,
-    syntheseGlobale: tierContent.synthese,
-    planAction: tierContent.plan,
-    axes: axes
-  };
-}
-
-function renderScannerReport(report){
-  var el = document.getElementById('scanner-report');
-  if(!el || !report) return;
-
-  var html = '<div class="report-verdict">' + report.verdictLabel + ' — ' + report.score + '/100</div>';
-  html += '<div class="report-synthese">' + report.syntheseGlobale + '</div>';
-
-  report.axes.forEach(function(axe){
-    html += '<div class="report-axe" style="border-left-color:' + niveauColor(axe.niveau) + '">'
-      + '<div class="report-axe-titre">' + axe.titre.toUpperCase() + '</div>'
-      + '<div class="report-axe-label">' + axe.label + '</div>'
-      + '<div class="report-axe-texte">' + axe.texte + '</div>'
-      + '</div>';
-  });
-
-  html += '<div class="report-plan"><div class="report-plan-title">PLAN D’ACTION</div>' + report.planAction + '</div>';
-
-  el.innerHTML = html;
-  el.classList.add('show');
-}
-
-document.getElementById('scanner-cta').addEventListener('click', function(){
-  if(!this.classList.contains('ready')) return;
-  this.style.display = 'none';
-  document.getElementById('scanner-note').style.display = 'none';
-  renderScannerReport(buildScannerReport());
-});
-
-document.getElementById('hero-cta-scroll').addEventListener('click', function(e){
-  e.preventDefault();
-  document.querySelector('.scanner-card').scrollIntoView({behavior:'smooth', block:'center'});
-});
-
-/* ---------- Copilote vocal : STT (Web Speech API) + TTS (cloud, via /api/voice/synthesize) ---------- */
-(function(){
-  var input = document.getElementById('copilot-input');
-  var micBtn = document.getElementById('copilot-mic');
-  var submitBtn = document.getElementById('copilot-submit');
-  var status = document.getElementById('copilot-status');
-  var loading = document.getElementById('copilot-loading');
-  var answerBox = document.getElementById('copilot-answer');
-  var answerText = document.getElementById('copilot-answer-text');
-  var actionLink = document.getElementById('copilot-action');
-  var listenBtn = document.getElementById('copilot-listen');
-  var stopBtn = document.getElementById('copilot-stop');
-  var refreshBtn = document.getElementById('copilot-refresh');
-  var currentAudio = null;
-
-  if(!input || !micBtn || !submitBtn) return;
-
-  function stopAudio(){
-    if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
-    if (stopBtn) stopBtn.classList.remove('show');
-    if (listenBtn) listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
-  }
-
-  // Action de fin de réponse renvoyée par l'API : lien vers une page du site
-  // ou invitation à contacter l'équipe. URL toujours relative, fournie par le
-  // serveur (catalogue lib/sitePages.ts) — jamais rédigée par le modèle.
-  function showAction(action){
-    if (!actionLink) return;
-    if (!action || !action.url || action.url.charAt(0) !== '/') {
-      actionLink.style.display = 'none';
-      return;
-    }
-    actionLink.textContent = (action.type === 'contact' ? '✉ ' : '→ ') + action.label;
-    actionLink.href = action.url;
-    actionLink.className = 'copilot-action-link' + (action.type === 'contact' ? ' contact' : '');
-    actionLink.style.display = '';
-  }
-
-  function resetCopilot(){
-    stopAudio();
-    showAction(null);
-    answerBox.classList.remove('show');
-    answerText.textContent = '';
-    status.textContent = '';
-    if (listenBtn) listenBtn.style.display = '';
-    input.value = '';
-    input.focus();
-  }
-
-  if (refreshBtn) refreshBtn.addEventListener('click', resetCopilot);
-
-  // --- STT : dictée de la question ---
-  var SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (SpeechRecognitionCtor) {
-    var recognition = new SpeechRecognitionCtor();
-    recognition.lang = 'fr-FR';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    var listening = false;
-
-    recognition.onresult = function(event){
-      var transcript = event.results[0][0].transcript;
-      input.value = transcript;
-      status.textContent = 'Question captée : "' + transcript + '"';
-    };
-    recognition.onend = function(){
-      listening = false;
-      micBtn.classList.remove('listening');
-    };
-    recognition.onerror = function(){
-      listening = false;
-      micBtn.classList.remove('listening');
-      status.textContent = 'Micro non disponible — vérifiez les permissions du navigateur.';
-    };
-
-    micBtn.addEventListener('click', function(){
-      if (listening) { recognition.stop(); return; }
-      listening = true;
-      micBtn.classList.add('listening');
-      status.textContent = 'Je vous écoute...';
-      recognition.start();
-    });
-  } else {
-    micBtn.style.display = 'none'; // navigateur non compatible (ex. Safari) — repli sur la saisie clavier
-  }
-
-  // --- Soumission de la question au copilote (pipeline RAG existant : /api/chat-homepage) ---
-  async function submitQuestion(){
-    var question = input.value.trim();
-    if (!question) return;
-
-    // Confort UX : si on sait déjà (via checkSession) que personne n'est
-    // connecté, on évite l'aller-retour réseau inutile. Le vrai verrou de
-    // sécurité reste côté serveur (pages/api/chat-homepage.ts) — ce test
-    // client ne fait qu'accélérer et clarifier l'expérience.
-    if (window.__copilotAuthorized === false) {
-      status.textContent = 'Cette fonctionnalité est réservée aux abonnés.';
-      answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger IXP-copilote.';
-      answerBox.classList.add('show');
-      if (listenBtn) listenBtn.style.display = 'none';
-      if (typeof openModal === 'function') openModal('login');
-      return;
-    }
-
-    stopAudio();
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'RECHERCHE EN COURS...';
-    status.textContent = '';
-    answerBox.classList.remove('show');
-    showAction(null);
-    if (loading) loading.classList.add('show');
-
-    try {
-      var res = await fetch('/api/chat-homepage', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ message: question })
-      });
-
-      if (res.status === 403) {
-        // Module réservé aux abonnés — on invite à se connecter plutôt que d'afficher une erreur brute
-        status.textContent = 'Cette fonctionnalité est réservée aux abonnés.';
-        answerText.innerHTML = 'Connectez-vous ou démarrez votre essai gratuit pour interroger IXP-copilote.';
-        answerBox.classList.add('show');
-        if (listenBtn) listenBtn.style.display = 'none';
-        if (typeof openModal === 'function') openModal('login');
-        return;
-      }
-
-      if (!res.ok) throw new Error('Réponse copilote indisponible');
-      var data = await res.json();
-
-      var text = data.answer || 'Réponse indisponible pour le moment.';
-      if (data.sources && data.sources.length > 0) {
-        var srcList = data.sources.map(function(s){
-          return s.titre + (s.numero ? ' (n° ' + s.numero + ')' : '');
-        }).join(' · ');
-        text += '\\n\\nSources : ' + srcList;
-      }
-      answerText.textContent = text;
-      showAction(data.action);
-      if (listenBtn) listenBtn.style.display = '';
-      answerBox.classList.add('show');
-    } catch(e) {
-      answerText.textContent = 'IXP-copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.';
-      answerBox.classList.add('show');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'SOUMETTRE →';
-      if (loading) loading.classList.remove('show');
-    }
-  }
-
-  submitBtn.addEventListener('click', submitQuestion);
-  input.addEventListener('keydown', function(e){
-    if (e.key === 'Enter') submitQuestion();
-  });
-
-  // --- TTS : lecture de la réponse (cloud, via /api/voice/synthesize) ---
-  if (listenBtn) {
-    listenBtn.addEventListener('click', async function(){
-      var text = answerText.textContent.trim();
-      if (!text) return;
-
-      stopAudio();
-      listenBtn.disabled = true;
-      listenBtn.textContent = '⏳ SYNTHÈSE...';
-
-      try {
-        var res = await fetch('/api/voice/synthesize', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ text: text })
-        });
-        if (!res.ok) throw new Error('TTS indisponible');
-        var blob = await res.blob();
-        currentAudio = new Audio(URL.createObjectURL(blob));
-        currentAudio.addEventListener('ended', function(){
-          if (stopBtn) stopBtn.classList.remove('show');
-          listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
-        });
-        currentAudio.play();
-        listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE';
-        if (stopBtn) stopBtn.classList.add('show');
-      } catch(e) {
-        listenBtn.textContent = 'Audio indisponible';
-        setTimeout(function(){ listenBtn.textContent = '🔊 ÉCOUTER LA RÉPONSE'; }, 2500);
-      } finally {
-        listenBtn.disabled = false;
-      }
-    });
-  }
-
-  if (stopBtn) {
-    stopBtn.addEventListener('click', stopAudio);
-  }
-})();
-
-/* Scroll-reveal discret — fade + léger déplacement, respecte prefers-reduced-motion via CSS */
-(function(){
-  var els = document.querySelectorAll('.reveal');
-  if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('in'); }); return; }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
-    });
-  }, {threshold:.12, rootMargin:'0px 0px -60px 0px'});
-  els.forEach(function(el){ io.observe(el); });
-})();
-`;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// INTRO IXP — animation d'ouverture du logo en 3D (Three.js, chargé à la demande).
-// Le logo s'assemble, éclate en I / X / P, se regroupe, puis le calque s'efface et
-// le visiteur entre sur la page d'accueil. Bouton « Passer » et touche Échap.
-// Jouée une fois par session (sessionStorage 'ixp-intro-seen'), jamais si
-// l'utilisateur a demandé de réduire les animations.
-// ─────────────────────────────────────────────────────────────────────────────
-const introCss = `
-/* ═══════════ INTRO IXP — logo 3D animé à l'ouverture (calque au-dessus du site) ═══════════ */
-#ixp-intro{position:fixed;inset:0;z-index:100000;background:radial-gradient(120% 90% at 50% 45%,#24539f 0%,#163d82 50%,#0f2f68 100%),#163d82;transition:opacity .7s ease;color:#f4f7fc}
-#ixp-intro.ixp-off{display:none}
-#ixp-intro.ixp-out{opacity:0;pointer-events:none}
-#ixp-stage{position:absolute;inset:0;width:100%;height:100%;display:block}
-#ixp-intro .ixp-cap,#ixp-intro .ixp-word{position:absolute;left:16px;right:16px;text-align:center;font-family:'DM Sans',Arial,Helvetica,sans-serif;font-weight:700;margin:0;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s;pointer-events:none}
-#ixp-intro .ixp-cap{bottom:18%;font-size:clamp(22px,3.4vw,36px);letter-spacing:.04em}
-#ixp-intro .ixp-cap b{color:#e2343a;font-weight:700}
-#ixp-intro .ixp-word{bottom:20%;font-size:clamp(20px,2.8vw,30px);letter-spacing:.06em}
-#ixp-intro .ixp-word span{color:#e2343a}
-#ixp-intro .ixp-on{opacity:1;transform:none}
-#ixp-intro .ixp-skip{position:absolute;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);font-family:'DM Sans',Arial,sans-serif;font-size:13px;letter-spacing:.08em;color:#f4f7fc;background:rgba(255,255,255,.08);border:1px solid rgba(244,247,252,.22);padding:9px 16px;border-radius:4px;cursor:pointer}
-#ixp-intro .ixp-skip:hover{background:rgba(255,255,255,.16)}
-#ixp-intro .ixp-skip:focus-visible{outline:2px solid #f4f7fc;outline-offset:2px}
-`;
-
-const introHTML = `
-<!-- ═══════════ INTRO IXP — calque d'ouverture (masqué si déjà vu dans la session) ═══════════ -->
-<div id="ixp-intro" role="dialog" aria-label="Animation d'ouverture Import-eXPert">
-  <canvas id="ixp-stage" aria-hidden="true"></canvas>
-  <p class="ixp-cap" id="ixp-cap" aria-live="polite"></p>
-  <p class="ixp-word" id="ixp-word">I<span>mport-e</span>XP<span>ert</span></p>
-  <button class="ixp-skip" id="ixp-skip" type="button">Passer →</button>
-</div>
-<script>(function(){var d=document.getElementById('ixp-intro');if(!d)return;var skip=false;try{skip=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}try{if(window.IXP_INTRO_ONCE!==false&&sessionStorage.getItem('ixp-intro-seen')==='1')skip=true}catch(e){}if(skip){d.className='ixp-off'}else{document.documentElement.style.overflow='hidden'}})();</script>
-`;
-
-const introScript = `
-/* ═══════════ INTRO IXP — logo 3D : assemblage, éclatement I / X / P, regroupement, entrée sur le site ═══════════ */
-(function(){
-  var root = document.getElementById('ixp-intro');
-  if (!root || root.className === 'ixp-off') return;
-
-  var THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-  var SEEN_KEY = 'ixp-intro-seen';
-  var canvas = document.getElementById('ixp-stage');
-  var cap = document.getElementById('ixp-cap');
-  var word = document.getElementById('ixp-word');
-  var LETTERS = ['I','X','P'];
-  var CAPTIONS = ['<b>I</b>mporter','e<b>X</b>pertise','<b>P</b>rocédures'];
-  var entered = false, running = false, renderer = null;
-
-  /* Entrée sur le site : le calque s'efface et la page d'accueil apparaît */
-  function enter(fast){
-    if (entered) return; entered = true;
-    try { sessionStorage.setItem(SEEN_KEY, '1'); } catch(e){}
-    root.classList.add('ixp-out');
-    document.documentElement.style.overflow = '';
-    setTimeout(function(){
-      running = false;
-      root.className = 'ixp-off';
-      if (renderer) { try { renderer.dispose(); } catch(e){} }
-    }, fast ? 350 : 750);
-  }
-  document.getElementById('ixp-skip').addEventListener('click', function(){ enter(true); });
-  window.addEventListener('keydown', function(e){ if (e.key === 'Escape') enter(true); });
-
-  /* Three.js chargé à la demande ; si le chargement échoue, on entre directement */
-  var guard = setTimeout(function(){ if (!running) enter(true); }, 6000);
-  if (window.THREE) start();
-  else {
-    var s = document.createElement('script');
-    s.src = THREE_URL; s.async = true;
-    s.onload = start; s.onerror = function(){ enter(true); };
-    document.head.appendChild(s);
-  }
-
-  function start(){
-    if (entered) return;
-    clearTimeout(guard);
-    var THREE = window.THREE;
-    try { renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true}); }
-    catch(e){ enter(true); return; }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setClearColor(0x000000, 0);
-
-    var scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x163d82, 14, 32);
-    var camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-    scene.add(new THREE.AmbientLight(0xbfd0f0, 0.5));
-    var key = new THREE.DirectionalLight(0xffffff, 0.95); key.position.set(4, 6, 8); scene.add(key);
-    var fill = new THREE.DirectionalLight(0x9fb8e8, 0.35); fill.position.set(-5, 2, 6); scene.add(fill);
-    var rim = new THREE.PointLight(0xe2343a, 1.4, 30); rim.position.set(-6, -3, 4); scene.add(rim);
-    var group = new THREE.Group(); scene.add(group);
-
-    /* Contours vectoriels des lettres (hauteur 10) : servent au logo lisse et au découpage en cubes */
-    var GAP = 1.6, WIDTHS = [2.2, 9, 7.45];
-    var TOTAL_U = WIDTHS[0] + WIDTHS[1] + WIDTHS[2] + GAP*2;
-    var K = 6.4/TOTAL_U;
-    var offsets = [], ox = -TOTAL_U/2;
-    WIDTHS.forEach(function(w){ offsets.push(ox); ox += w + GAP; });
-
-    function letterShape(li){
-      var o = offsets[li];
-      function X(u){ return (u + o)*K; } function Y(v){ return (v - 5)*K; }
-      var sh = new THREE.Shape();
-      if (li === 0){
-        sh.moveTo(X(0),Y(0)); sh.lineTo(X(2.2),Y(0)); sh.lineTo(X(2.2),Y(10)); sh.lineTo(X(0),Y(10)); sh.lineTo(X(0),Y(0));
-      } else if (li === 1){
-        var pts = [[0,0],[2.7,0],[4.5,3.1],[6.3,0],[9,0],[5.9,5],[9,10],[6.3,10],[4.5,6.9],[2.7,10],[0,10],[3.1,5]];
-        sh.moveTo(X(pts[0][0]),Y(pts[0][1]));
-        for (var i=1;i<pts.length;i++) sh.lineTo(X(pts[i][0]),Y(pts[i][1]));
-        sh.lineTo(X(0),Y(0));
-      } else {
-        sh.moveTo(X(0),Y(0)); sh.lineTo(X(2.4),Y(0)); sh.lineTo(X(2.4),Y(3.9)); sh.lineTo(X(4.4),Y(3.9));
-        sh.absarc(X(4.4),Y(6.95),3.05*K,-Math.PI/2,Math.PI/2,false);
-        sh.lineTo(X(0),Y(10)); sh.lineTo(X(0),Y(0));
-        var h = new THREE.Path();
-        h.moveTo(X(2.4),Y(5.9)); h.lineTo(X(4.2),Y(5.9));
-        h.absarc(X(4.2),Y(6.95),1.05*K,-Math.PI/2,Math.PI/2,false);
-        h.lineTo(X(2.4),Y(8.0)); h.lineTo(X(2.4),Y(5.9));
-        sh.holes.push(h);
-      }
-      return sh;
-    }
-
-    /* Logo lisse : une extrusion biseautée par lettre */
-    var DEPTH = 0.26;
-    var solids = LETTERS.map(function(_, li){
-      var g = new THREE.ExtrudeGeometry(letterShape(li), {depth:DEPTH, bevelEnabled:true, bevelThickness:.035, bevelSize:.025, bevelSegments:4, curveSegments:40});
-      g.translate(0, 0, -DEPTH/2);
-      var m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({color:0xffffff, roughness:.28, metalness:.06, transparent:true, opacity:0}));
-      m.visible = false; group.add(m);
-      return m;
-    });
-
-    /* Découpage en cubes à partir des mêmes contours */
-    function sample(cell){
-      var W = 1000, H = 400, ppw = 130;
-      var c = document.createElement('canvas'); c.width = W; c.height = H;
-      var g = c.getContext('2d'), out = [];
-      LETTERS.forEach(function(_, li){
-        g.clearRect(0,0,W,H); g.fillStyle = '#fff'; g.beginPath();
-        var sh = letterShape(li);
-        [sh.getPoints(48)].concat(sh.holes.map(function(hh){ return hh.getPoints(48); })).forEach(function(pts){
-          pts.forEach(function(p, i){ var x = W/2 + p.x*ppw, y = H/2 - p.y*ppw; if (i) g.lineTo(x,y); else g.moveTo(x,y); });
-          g.closePath();
-        });
-        g.fill('evenodd');
-        var d = g.getImageData(0,0,W,H).data, step = cell*ppw;
-        for (var y=step/2; y<H; y+=step) for (var x=step/2; x<W; x+=step)
-          if (d[((y|0)*W+(x|0))*4+3] > 128) out.push({x:(x-W/2)/ppw, y:-(y-H/2)/ppw, letter:li});
-      });
-      return out;
-    }
-
-    var narrow = window.innerWidth < 760;
-    var cell = narrow ? 0.13 : 0.085;
-    var pts = sample(cell), layers = [-0.5, 0.5], N = pts.length*layers.length;
-    var mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshStandardMaterial({color:0xffffff, roughness:.35, metalness:.1}), N);
-    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-    group.add(mesh);
-    var base = new Float32Array(N*3), letter = new Uint8Array(N), dir = new Float32Array(N*3), rot = new Float32Array(N*3), cloud = new Float32Array(N*3), far = new Float32Array(N*3);
-    var centers = [0,0,0], counts = [0,0,0], col = new THREE.Color(), k = 0;
-    pts.forEach(function(p){ layers.forEach(function(z){
-      base[k*3]=p.x; base[k*3+1]=p.y; base[k*3+2]=z*cell*1.4; letter[k]=p.letter;
-      centers[p.letter]+=p.x; counts[p.letter]++;
-      var th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1), r=2.5+Math.random()*3.5;
-      dir[k*3]=Math.sin(ph)*Math.cos(th)*r; dir[k*3+1]=Math.sin(ph)*Math.sin(th)*r; dir[k*3+2]=Math.cos(ph)*r;
-      for (var a=0;a<3;a++) rot[k*3+a]=(Math.random()-.5)*6;
-      var cr=7+Math.random()*7, ct=Math.random()*Math.PI*2;
-      far[k*3]=Math.cos(ct)*cr; far[k*3+1]=(Math.random()-.5)*10; far[k*3+2]=-6-Math.random()*10;
-      var R=9+Math.random()*9, t2=Math.random()*Math.PI*2, p2=Math.acos(2*Math.random()-1);
-      cloud[k*3]=Math.sin(p2)*Math.cos(t2)*R; cloud[k*3+1]=Math.sin(p2)*Math.sin(t2)*R*.7; cloud[k*3+2]=Math.cos(p2)*R-4;
-      var sh=.88+Math.random()*.12; col.setRGB(sh,sh,Math.min(1,sh+.03)); mesh.setColorAt(k,col);
-      k++;
-    }); });
-    for (var ci=0;ci<3;ci++) centers[ci] /= Math.max(1, counts[ci]);
-    var size = cell*.92;
-
-    /* États cibles : nuage, logo, lettre I, X ou P mise en avant */
-    function state(name){
-      var P = new Float32Array(N*3), S = new Float32Array(N);
-      var nar = window.innerWidth < 760, focusS = nar ? 1.5 : 2.0, lift = nar ? 1.6 : 1.1;
-      var solid = [null,null,null], fi = LETTERS.indexOf(name);
-      if (name === 'logo') for (var li=0; li<3; li++) solid[li] = {x:0, y:lift, s:1};
-      if (fi >= 0) solid[fi] = {x:-centers[fi]*focusS, y:lift*.6, s:focusS};
-      for (var i=0;i<N;i++){
-        var j=i*3, bx=base[j], by=base[j+1], bz=base[j+2];
-        if (name === 'cloud'){ P[j]=cloud[j]; P[j+1]=cloud[j+1]; P[j+2]=cloud[j+2]; S[i]=.5; }
-        else if (name === 'logo'){ P[j]=bx; P[j+1]=by+lift; P[j+2]=bz; S[i]=1; }
-        else if (letter[i] === fi){ P[j]=(bx-centers[fi])*focusS; P[j+1]=by*focusS+lift*.6; P[j+2]=bz*focusS; S[i]=focusS; }
-        else { P[j]=far[j]; P[j+1]=far[j+1]; P[j+2]=far[j+2]; S[i]=.5; }
-      }
-      return {P:P, S:S, solid:solid};
-    }
-
-    /* Scénario minuté (secondes). Le dernier temps de pause affiche le nom, puis on entre sur le site. */
-    var script = [
-      {to:'logo', dur:1.4, hold:.6,  burst:0},
-      {to:'I',    dur:.75, hold:.6,  burst:1, cap:0},
-      {to:'X',    dur:.75, hold:.6,  burst:1, cap:1},
-      {to:'P',    dur:.75, hold:.6,  burst:1, cap:2},
-      {to:'logo', dur:.9,  hold:1.1, burst:1, word:true}
-    ];
-    var frames;
-    function prepare(){ frames = [state('cloud')].concat(script.map(function(s){ return state(s.to); })); }
-    function ease(t){ return t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
-    function clamp01(v){ return Math.max(0, Math.min(1, v)); }
-    function at(sec){
-      var acc = 0;
-      for (var i=0;i<script.length;i++){
-        var s = script[i];
-        if (sec < acc + s.dur){ var raw=(sec-acc)/s.dur; return {a:i, b:i+1, raw:raw, t:ease(raw), burst:s.burst, cap:raw > .55 ? s.cap : undefined}; }
-        acc += s.dur;
-        if (sec < acc + s.hold) return {a:i+1, b:i+1, raw:1, t:0, burst:0, cap:s.cap, word:s.word};
-        acc += s.hold;
-      }
-      return null;
-    }
-
-    var dummy = new THREE.Object3D(), lastCap = null, t0;
-    function setCap(c){
-      if (c === lastCap) return; lastCap = c;
-      if (c === undefined) cap.classList.remove('ixp-on');
-      else { cap.innerHTML = CAPTIONS[c]; cap.classList.add('ixp-on'); }
-    }
-
-    function loop(now){
-      if (!running) return;
-      requestAnimationFrame(loop);
-      var f = at((now - t0)/1000);
-      if (!f){ enter(false); f = {a:script.length, b:script.length, raw:1, t:0, burst:0}; }
-      var A = frames[f.a], B = frames[f.b], t = f.t, burst = f.burst*Math.sin(Math.PI*t);
-
-      /* fondu cubes → logo lisse en fin de mouvement */
-      var holding = f.a === f.b, useB = holding || f.raw >= .5;
-      var cfg = useB ? B.solid : A.solid;
-      var alpha = holding ? 1 : (useB ? clamp01((f.raw - .78)/.22) : clamp01(1 - f.raw/.12));
-      for (var li=0; li<3; li++){
-        var m = solids[li], c = cfg[li];
-        if (!c || alpha <= 0){ m.visible = false; continue; }
-        m.visible = true; m.material.opacity = alpha;
-        m.position.set(c.x, c.y, 0); m.scale.setScalar(c.s);
-      }
-      for (var i=0;i<N;i++){
-        var j=i*3;
-        dummy.position.set(
-          A.P[j]+(B.P[j]-A.P[j])*t + dir[j]*burst,
-          A.P[j+1]+(B.P[j+1]-A.P[j+1])*t + dir[j+1]*burst,
-          A.P[j+2]+(B.P[j+2]-A.P[j+2])*t + dir[j+2]*burst);
-        dummy.rotation.set(rot[j]*burst, rot[j+1]*burst, rot[j+2]*burst);
-        var covered = cfg[letter[i]] ? alpha : 0;
-        dummy.scale.setScalar(size*(A.S[i]+(B.S[i]-A.S[i])*t)*(1 - covered));
-        dummy.updateMatrix();
-        mesh.setMatrixAt(i, dummy.matrix);
-      }
-      mesh.instanceMatrix.needsUpdate = true;
-      setCap(f.cap);
-      word.classList.toggle('ixp-on', !!f.word || entered);
-      if (f.word) group.rotation.y += (Math.sin(now*.0012)*.08 - group.rotation.y)*.05;
-      renderer.render(scene, camera);
-    }
-
-    function resize(){
-      renderer.setSize(window.innerWidth, window.innerHeight, false);
-      camera.aspect = window.innerWidth/window.innerHeight;
-      camera.position.set(0, 0, window.innerWidth < 760 ? 21 : 15);
-      camera.updateProjectionMatrix();
-      prepare();
-    }
-    window.addEventListener('resize', function(){ if (running) resize(); });
-
-    resize();
-    running = true;
-    t0 = performance.now();
-    requestAnimationFrame(loop);
-  }
-})();
-`;
-
-export default function Home() {
   return (
-    <>
-      <Head>
-        <title>Import-IA — Diagnostic de Vulnérabilité Douanière</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-      <style dangerouslySetInnerHTML={{ __html: css + introCss }} />
-      <div dangerouslySetInnerHTML={{ __html: introHTML }} />
-      <div dangerouslySetInnerHTML={{ __html: bodyHTML }} />
-      <script dangerouslySetInnerHTML={{ __html: introScript }} />
-      <script dangerouslySetInnerHTML={{ __html: scriptContent }} />
-    </>
-  );
+    <SiteShell title="IXP-Import-eXPert : conformité et optimisation douanière au Maroc"
+      description="Qualifiez, chiffrez et sécurisez chaque importation avant d’initier vos opérations : classement SH, origine, coût rendu, documents et conformité, avec des experts douaniers.">
+
+      <IxpIntro />
+      <IxpTicker />
+
+      {/* ── HERO ── */}
+      <section className="x-hero">
+        <div className="x-wrap"><IxpAssistant /></div>
+        <div className="x-wrap x-hero-grid">
+          <div>
+            <div className="x-eyebrow">Plateforme de conformité et d’optimisation douanière · Maroc</div>
+            <div className="x-h1-row">
+              <IxpLogo size={84} className="x-hero-logo" />
+              <h1 className="x-h1 x-h1-sm">Chaque importation <em>qualifiée, chiffrée et sécurisée</em>, avant d’initier vos opérations.</h1>
+            </div>
+            <p className="x-lead">Import-eXPert relie le classement SH des produits, l’origine, le coût rendu, les documents et la conformité dans un seul dossier traçable. Naviguez et consultez toutes les dispositions actualisées de la réglementation en matière d’impôts, d’opérations de change, de fiscalité territoriale, de commerce extérieur et de douane, en un seul endroit.<br />Nos experts prennent le relais quand un dossier l’exige ou quand vous sollicitez une assistance personnalisée.</p>
+            <div className="x-hero-cta">
+              <Link href="/diagnostic" className="x-btn x-btn-dark">Lancer le diagnostic de conformité</Link>
+              <Link href="/plateforme#video" className="x-btn x-btn-line">▶ Voir la présentation</Link>
+            </div>
+            <Link href="/plateforme" className="x-pres-link">
+              <span className="x-pres-link-k">Découvrir</span>
+              <span className="x-pres-link-t">Présentation de notre plateforme en 5 espaces</span>
+              <span className="x-pres-link-a" aria-hidden="true">→</span>
+            </Link>
+            <form className="x-try" onSubmit={classer}>
+              <label htmlFor="produit">Essayez : décrivez un produit à importer</label>
+              <div className="x-try-row">
+                <input id="produit" value={produit} onChange={e => setProduit(e.target.value)} placeholder="Ex. : roulements à billes pour moteur électrique" autoComplete="off" />
+                <button className="x-btn x-btn-gold" type="submit">Trouver le code SH</button>
+              </div>
+            </form>
+          </div>
+
+          <aside className="x-dossier" aria-label="Illustration d'un dossier d'opération">
+            <div className="x-dossier-hd">
+              <strong>Dossier d’opération</strong>
+              <span className="x-mono">Illustration</span>
+            </div>
+            <div style={{ padding: '14px 22px 4px' }}>
+              <div className="x-mono">PRODUIT</div>
+              <div style={{ fontSize: 15.5, fontWeight: 500 }}>Roulements à billes · import UE</div>
+            </div>
+            <ol className="x-steps">
+              {[
+                ['Qualifier', 'Code SH 8482.10 justifié', 'Fait', true],
+                ['Optimiser', 'Origine UE, preuve à joindre', 'Fait', true],
+                ['Chiffrer', 'Coût rendu calculé', 'Fait', true],
+                ['Exécuter', 'Documents générés, DUM à vérifier', 'En cours', false],
+                ['Sécuriser', 'Contrôle de conformité', 'À venir', false],
+              ].map(([v, d, s, ok], i) => (
+                <li className="x-step" key={v as string}>
+                  <span className={`x-step-n ${ok ? 'done' : ''}`}>{ok ? '✓' : `0${i + 1}`}</span>
+                  <div><b>{v}</b><span>{d}</span></div>
+                  <span className={`x-pill ${ok ? 'ok' : ''}`}>{s}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="x-dossier-ft">Chaque étape lit et enrichit le même dossier : rien n’est ressaisi.</div>
+          </aside>
+        </div>
+      </section>
+
+      {/* ── PROBLÈME ── */}
+      <section className="x-sec">
+        <div className="x-wrap x-split">
+          <div>
+            <div className="x-eyebrow">Le risque</div>
+            <h2 className="x-h2">Une erreur d’importation ne se voit pas <em>le jour où la marchandise arrive</em>.</h2>
+            <p className="x-sub">Elle se révèle plus tard : lors d’un contrôle, d’un litige fournisseur, d’un écart de stock ou d’une revue comptable, quand la marchandise est vendue depuis longtemps et que l’erreur est irréversible. Les quatre fragilités concentrent toutes ces mauvaises surprises ; chacune correspond à une étape sur la plateforme.</p>
+          </div>
+          <div className="x-risks">
+            {RISQUES.map((r, i) => (
+              <div className="x-risk" key={r.t}><i>{i + 1}</i><div><b>{r.t}</b><p>{r.d}</p></div></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── LA CHAÎNE ── */}
+      <section className="x-sec x-sec-dark" id="chaine">
+        <div className="x-wrap">
+          <div className="x-eyebrow">La plateforme</div>
+          <h2 className="x-h2">Une opération, <em>cinq étapes</em>, un seul dossier.</h2>
+          <p className="x-sub">Chaque espace répond à une question que vous vous posez à chaque importation, produit un livrable, et transmet ses données à l’étape suivante.</p>
+          <div className="x-chain">
+            {CHAIN.map((e, i) => (
+              <Link href={`/espaces/${e.slug}`} className={`x-link-card x-c-${e.slug}`} key={e.slug}>
+                <span className="x-num">{e.num}</span>
+                <div className="x-verb">{e.verb}</div>
+                <div className="x-card-t">{e.title}</div>
+                <p className="x-card-q">{e.question}</p>
+                <div className="x-card-out"><b>Livrable</b>{e.livrable}</div>
+                {i < CHAIN.length - 1 && <span className="x-arrow" aria-hidden="true" />}
+              </Link>
+            ))}
+          </div>
+          <div className="x-base">
+            <Link href="/espaces/bibliotheque" className="x-link-card x-c-bibliotheque"><div className="x-verb">Bibliothèque</div><p>Le socle : tarif, circulaires, CGI, IGOC, décisions, glossaire.</p></Link>
+            <Link href="#assistant" className="x-link-card x-c-assistant"><div className="x-verb">IXP-Assistant</div><p>Dans chaque espace, il répond en citant le texte exact.</p></Link>
+            <Link href="/espaces/piloter" className="x-link-card x-c-piloter"><div className="x-verb">Piloter</div><p>Intelligence et stratégie pour la direction générale.</p></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── HYBRIDE : LOGICIEL + EXPERT ── */}
+      <section className="x-sec">
+        <div className="x-wrap">
+          <div className="x-center" style={{ marginBottom: 40 }}>
+            <div className="x-eyebrow">Notre différence</div>
+            <h2 className="x-h2">IXP-Assistant répond à vos questions fréquentes. <em>Nos experts tranchent</em> les cas difficiles.</h2>
+            <p className="x-sub">Aucune IA ne signe un avis opposable. Import-eXPert combine une plateforme qui industrialise vos opérations et une équipe d’experts douaniers qui intervient, à l’acte, quand l’enjeu le justifie.</p>
+          </div>
+          <div className="x-two">
+            <div className="x-panel">
+              <div className="x-eyebrow">IXP-Assistant</div>
+              <h3 className="x-h3">Une réponse immédiate, toujours sourcée</h3>
+              <ul className="x-list">
+                <li>Cite la circulaire, l’article ou l’accord sur lequel il s’appuie</li>
+                <li>Interrogé à l’écrit ou à la voix, en réponses courtes et actionnables</li>
+                <li>Renvoie vers l’outil ou la page qui règle la question</li>
+              </ul>
+              <Link href="#assistant" className="x-btn x-btn-line">Essayer IXP-Assistant</Link>
+            </div>
+            <div className="x-panel dark">
+              <div className="x-eyebrow">Douane Engineering</div>
+              <h3 className="x-h3">Un expert, quand l’enjeu le justifie</h3>
+              <ul className="x-list">
+                <li>Renseignement express, réponse écrite sous 48 h ouvrées</li>
+                <li>Avis motivé, prêt à être joint au dossier</li>
+                <li>Accompagnement : contentieux, régimes économiques, OEA</li>
+              </ul>
+              <Link href="/expertise" className="x-btn x-btn-gold">Voir les services experts</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROFILS ── */}
+      <section className="x-sec x-sec-white" id="profils">
+        <div className="x-wrap">
+          <div className="x-eyebrow">Pour qui</div>
+          <h2 className="x-h2">Conçue pour ceux qui <em>signent</em> les opérations.</h2>
+          <div className="x-tabs" role="tablist">
+            {PROFILS.map(x => (
+              <button key={x.id} role="tab" data-tab={x.id} aria-selected={profil === x.id} className={`x-tab ${profil === x.id ? 'on' : ''}`} onClick={() => setProfil(x.id)}>{x.titre}</button>
+            ))}
+          </div>
+          {PROFILS.map(p => (
+            <div className="x-prof" key={p.id} data-panel={p.id} hidden={profil !== p.id}>
+              <div>
+                <h3 className="x-h3">{p.accroche}</h3>
+                <ul className="x-list">{p.points.map(t => <li key={t}>{t}</li>)}</ul>
+              </div>
+              <div>
+                <div className="x-mono" style={{ marginBottom: 12 }}>VOS ESPACES PRIORITAIRES</div>
+                <div className="x-chips">
+                  {p.espaces.map(s => { const e = espaceBySlug(s)!; return (
+                    <Link key={s} href={`/espaces/${s}`} className={`x-chip x-c-${s}`}><span className="x-num">{e.num}</span>{e.verb}</Link>
+                  ) })}
+                </div>
+                <div style={{ marginTop: 26 }}><Link href="/diagnostic" className="x-btn x-btn-dark">Évaluer votre conformité</Link></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── DIAGNOSTIC ── */}
+      <section className="x-sec x-sec-dark" id="diagnostic">
+        <div className="x-wrap x-scan">
+          <div>
+            <div className="x-eyebrow">Aperçu en 1 minute · diagnostic complet en 15 minutes</div>
+            <h2 className="x-h2">Mesurez votre <em>exposition douanière</em>.</h2>
+            <p className="x-sub" style={{ marginBottom: 28 }}>Trois questions pour une première indication. Le diagnostic complet couvre ensuite huit domaines, chiffre votre exposition et produit un plan d’action que vous suivez dans le temps.</p>
+            {SCAN.map((s, i) => (
+              <div className="x-q" key={s.q}>
+                <p>{i + 1}. {s.q}</p>
+                <div className="x-opts">
+                  {s.o.map(([lbl], j) => (
+                    <button key={lbl} type="button" data-q={i} data-a={j} data-v={SCAN[i].o[j][1]} className={`x-opt ${rep[i] === j ? 'on' : ''}`}
+                      onClick={() => setRep(r => r.map((v, k) => (k === i ? j : v)))}>{lbl}</button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="x-gauge" aria-live="polite">
+            <span>INDICE D’EXPOSITION</span>
+            <b><span id="x-score">{score ?? '—'}</span><small className="x-gauge-max">/100</small></b>
+            <p id="x-niveau">{complet ? `${niveau}. Indication sommaire, à confirmer par le diagnostic complet.` : 'Répondez aux trois questions pour obtenir votre indice.'}</p>
+            <Link href="/diagnostic" className="x-btn x-btn-gold">Lancer le diagnostic complet →</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── RESSOURCES ── */}
+      <section className="x-sec-tight">
+        <div className="x-wrap x-two">
+          <div className="x-panel">
+            <div className="x-eyebrow">Baromètre 2026 · en préparation</div>
+            <h3 className="x-h3">La friction douanière au Maroc, mesurée par ceux qui la vivent</h3>
+            <p className="x-sub">Délais, erreurs de conformité, accords sous-exploités : une enquête menée auprès d’importateurs, de transitaires et de directions financières. Participez et recevez le rapport en avant-première.</p>
+            <div style={{ marginTop: 20 }}><Link href="/enquete" className="x-btn x-btn-line">Participer à l’enquête</Link></div>
+          </div>
+          <div className="x-panel">
+            <div className="x-eyebrow">Kits opérationnels</div>
+            <h3 className="x-h3">Vos dossiers sensibles, déjà structurés</h3>
+            <p className="x-sub">Origine préférentielle, régimes suspensifs, classement et contrôle a posteriori : des kits interactifs avec assistants, calculateurs, modèles générés et tableaux de suivi, chaque règle rattachée à son texte.</p>
+            <div style={{ marginTop: 20 }}><Link href="/expertise#kits" className="x-btn x-btn-line">Ouvrir les kits</Link></div>
+          </div>
+        </div>
+      </section>
+
+    </SiteShell>
+  )
 }

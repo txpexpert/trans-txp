@@ -626,14 +626,14 @@ export default function IndexCommerceInternational() {
 
   return (
     <>
-      <Head><title>Index du Commerce International — Import-IA</title></Head>
+      <Head><title>Index du Commerce International — IXP-Import-eXPert</title></Head>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="ic-wrap">
 
         {/* ── Header ── */}
         <div className="ic-header">
           <div>
-            <div className="ic-kicker">Import-IA — INTELLIGENCE RÉGLEMENTAIRE</div>
+            <div className="ic-kicker">Import-eXPert — INTELLIGENCE RÉGLEMENTAIRE</div>
             <div className="ic-title">Index du Commerce International</div>
           </div>
           <div className="ic-header-right">
@@ -784,7 +784,7 @@ export default function IndexCommerceInternational() {
 
         {/* ── Footer ── */}
         <div className="ic-footer">
-          <span>Import-IA · Index du Commerce International · {totalPays} pays · 11 rubriques · 2025–2026</span>
+          <span>Import-eXPert · Index du Commerce International · {totalPays} pays · 11 rubriques · 2025–2026</span>
           <span>Informatif — consultez un transitaire agréé pour toute opération réelle</span>
         </div>
       </div>
@@ -794,14 +794,14 @@ export default function IndexCommerceInternational() {
 
 // ─── CSS ─────────────────────────────────────────────────────────────────────
 const CSS = `
-@import url(\'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap\');
+@import url(\'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap');
 :root{--gold:#C9A84C;--g2:#E8C97A;--g3:#F5E4B0;--g4:#FBF5E6;--ink:#0A0A0A;--ink2:#3A3530;--ink3:#8A8078;--white:#FDFCF8;--bd:#E8DFC8;--bd2:#D4C8A8;--green:#4CAF7C}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:\'DM Sans\',sans-serif;background:var(--g4);color:var(--ink);min-height:100vh}
 .ic-wrap{max-width:960px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
 .ic-header{background:var(--ink);border-bottom:2px solid var(--gold);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
 .ic-kicker{font-size:9px;letter-spacing:.16em;color:var(--gold);margin-bottom:3px}
-.ic-title{font-family:\'Cormorant Garamond\',serif;font-size:20px;font-weight:600;color:var(--g2)}
+.ic-title{font-family:\'DM Serif Display\',serif;font-size:20px;font-weight:600;color:var(--g2)}
 .ic-header-right{display:flex;align-items:center;gap:12px}
 .ic-header-meta{font-size:9px;color:var(--ink3);text-align:right;line-height:1.6}
 .ic-nav-btn{font-size:10px;color:var(--ink3);padding:4px 10px;border:1px solid #333;background:transparent;cursor:pointer;text-decoration:none;letter-spacing:.06em;transition:all .15s}
@@ -822,12 +822,12 @@ body{font-family:\'DM Sans\',sans-serif;background:var(--g4);color:var(--ink);mi
 .ic-main{flex:1;padding:1.25rem 1.5rem;display:flex;flex-direction:column}
 .ic-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem;background:var(--white);border:1px solid var(--bd)}
 .ic-empty-globe{font-size:40px;margin-bottom:1rem}
-.ic-empty-title{font-family:\'Cormorant Garamond\',serif;font-size:22px;color:var(--ink2);margin-bottom:.5rem}
+.ic-empty-title{font-family:\'DM Serif Display\',serif;font-size:22px;color:var(--ink2);margin-bottom:.5rem}
 .ic-empty-sub{font-size:12px;color:var(--ink3);max-width:480px;line-height:1.7;margin-bottom:1rem}
 .ic-empty-count{font-size:10px;padding:5px 14px;background:var(--g4);border:1px solid var(--bd);color:var(--ink3)}
 .ic-country-overview{background:var(--white);border:1px solid var(--bd);padding:1.5rem}
 .ic-co-head{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
-.ic-co-flag{font-size:44px}.ic-co-name{font-family:\'Cormorant Garamond\',serif;font-size:24px;font-weight:600;color:var(--ink)}
+.ic-co-flag{font-size:44px}.ic-co-name{font-family:\'DM Serif Display\',serif;font-size:24px;font-weight:600;color:var(--ink)}
 .ic-co-region{font-size:10px;color:var(--ink3);margin-top:3px}
 .ic-co-grid-label{font-size:9px;letter-spacing:.12em;color:var(--gold);margin-bottom:.75rem}
 .ic-co-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
@@ -844,7 +844,7 @@ body{font-family:\'DM Sans\',sans-serif;background:var(--g4);color:var(--ink);mi
 .ic-card-head{background:var(--ink);padding:.875rem 1.5rem;display:flex;align-items:center;gap:1rem}
 .ic-card-flag{font-size:30px}.ic-card-meta{flex:1}
 .ic-card-kicker{font-size:9px;letter-spacing:.14em;color:var(--gold);margin-bottom:3px}
-.ic-card-cat{font-family:\'Cormorant Garamond\',serif;font-size:17px;font-weight:600;color:var(--g2)}
+.ic-card-cat{font-family:\'DM Serif Display\',serif;font-size:17px;font-weight:600;color:var(--g2)}
 .ic-card-badge{font-size:9px;padding:3px 10px;background:rgba(76,175,124,.15);border:1px solid rgba(76,175,124,.3);color:var(--green);white-space:nowrap}
 .ic-tabs{border-bottom:1px solid var(--bd);padding:.5rem 1.5rem;display:flex;gap:4px;overflow-x:auto;background:var(--g4);align-items:center}
 .ic-tab{padding:4px 10px;font-size:10px;cursor:pointer;border:1px solid var(--bd);background:var(--white);color:var(--ink2);transition:all .12s;font-family:inherit;white-space:nowrap}
@@ -859,7 +859,7 @@ body{font-family:\'DM Sans\',sans-serif;background:var(--g4);color:var(--ink);mi
 .ic-text{font-size:13.5px;line-height:1.85;color:var(--ink2);text-align:justify}
 .ic-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;text-align:center;min-height:280px}
 .ic-ph-flag{font-size:40px;margin-bottom:1rem}
-.ic-ph-title{font-family:\'Cormorant Garamond\',serif;font-size:20px;color:var(--ink2);margin-bottom:.75rem}
+.ic-ph-title{font-family:\'DM Serif Display\',serif;font-size:20px;color:var(--ink2);margin-bottom:.75rem}
 .ic-ph-sub{font-size:12px;color:var(--ink3);max-width:440px;line-height:1.7;margin-bottom:1rem}
 .ic-ph-badge{font-size:10px;padding:5px 14px;background:var(--g4);border:1px solid var(--g3);color:var(--ink3)}
 .ic-nav-bottom{border-top:1px solid var(--bd);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;background:var(--g4)}

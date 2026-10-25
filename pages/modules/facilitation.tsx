@@ -218,7 +218,7 @@ export default function FacilitationHub() {
               {marSel===null ? (
                 <div className="h-fiche-empty">
                   <div style={{fontSize:30,marginBottom:'.75rem'}}>⬅️</div>
-                  <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,color:'var(--ink2)',marginBottom:'.5rem'}}>Sélectionnez une mesure</div>
+                  <div style={{fontFamily:"'DM Serif Display',serif",fontSize:16,color:'var(--ink2)',marginBottom:'.5rem'}}>Sélectionnez une mesure</div>
                   <div style={{fontSize:12,color:'var(--ink3)'}}>Cliquez sur une mesure dans la liste pour afficher les conditions d'application complètes.</div>
                 </div>
               ) : (() => {
@@ -419,7 +419,7 @@ export default function FacilitationHub() {
 const CSS = `
 .h-kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--bd);margin-bottom:1.25rem;background:var(--white)}
 .h-kpi{padding:.875rem 1rem;border-right:1px solid var(--bd);text-align:center}.h-kpi:last-child{border-right:none}
-.h-kpi-n{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--gold)}
+.h-kpi-n{font-family:'DM Serif Display',serif;font-size:26px;font-weight:600;color:var(--gold)}
 .h-kpi-l{font-size:10px;color:var(--ink2);margin-top:2px}
 @media(max-width:600px){.h-kpis{grid-template-columns:1fr 1fr}}
 .h-tabs{display:flex;border:1px solid var(--bd);margin-bottom:1rem;background:var(--white);overflow-x:auto}
@@ -428,11 +428,11 @@ const CSS = `
 .h-tab.act{background:var(--gold4);color:var(--ink);border-bottom:2px solid var(--gold);font-weight:600}
 .h-tab-body{display:flex;flex-direction:column;gap:1rem}
 .h-maroc-hdr{background:linear-gradient(135deg,#0F6E56,#1D9E75);padding:1.25rem 1.5rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
-.h-maroc-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#fff}
+.h-maroc-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:600;color:#fff}
 .h-maroc-sub{font-size:11px;color:rgba(255,255,255,.75);margin-top:3px}
 .h-mstats{display:flex;gap:.5rem;flex-wrap:wrap}
 .h-mstat{padding:.5rem .875rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);text-align:center;min-width:68px}
-.h-mstat-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#fff}
+.h-mstat-v{font-family:'DM Serif Display',serif;font-size:20px;font-weight:600;color:#fff}
 .h-mstat-l{font-size:9px;color:rgba(255,255,255,.7);margin-top:1px}
 .h-mlayout{display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;background:var(--white);border:1px solid var(--bd);padding:1.25rem}
 @media(max-width:750px){.h-mlayout{grid-template-columns:1fr}}
@@ -451,7 +451,7 @@ const CSS = `
 .h-fiche{display:flex;flex-direction:column;gap:.875rem;border:1px solid var(--bd);padding:1.25rem;background:var(--white)}
 .h-fiche-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem}
 .h-fiche-num{font-size:9px;letter-spacing:.14em;color:var(--gold);margin-bottom:.375rem}
-.h-fiche-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--ink);line-height:1.4}
+.h-fiche-title{font-family:'DM Serif Display',serif;font-size:17px;font-weight:600;color:var(--ink);line-height:1.4}
 .h-copy-btn{font-size:11px;padding:5px 12px;border:1px solid var(--bd2);background:var(--white);color:var(--ink2);cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap;transition:all .12s}
 .h-copy-btn:hover{border-color:var(--gold);color:var(--gold)}
 .h-fiche-lbl{font-size:9px;letter-spacing:.14em;color:var(--ink3);font-weight:600;margin-bottom:.375rem}
@@ -479,14 +479,14 @@ const CSS = `
 .h-comp-sel-wrap{display:flex;flex-direction:column;gap:.375rem;flex:1}
 .h-lbl{font-size:9px;letter-spacing:.14em;color:var(--ink3);font-weight:600}
 .h-sel-big{padding:.75rem 1rem;border:1px solid var(--bd2);background:var(--g4);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;width:100%}.h-sel-big:focus{border-color:var(--gold)}
-.h-comp-vs{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);font-weight:600;flex-shrink:0}
+.h-comp-vs{font-family:'DM Serif Display',serif;font-size:28px;color:var(--gold);font-weight:600;flex-shrink:0}
 .h-comp-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:700px){.h-comp-cards{grid-template-columns:1fr}}
 .h-comp-card{border:1px solid var(--bd);background:var(--white);padding:1.25rem;display:flex;flex-direction:column;gap:.75rem}
-.h-comp-card-hd{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--ink)}
+.h-comp-card-hd{font-family:'DM Serif Display',serif;font-size:18px;font-weight:600;color:var(--ink)}
 .h-comp-region{font-size:13px;color:var(--ink3);font-weight:400}
 .h-comp-score-row{display:flex;align-items:center;gap:.875rem}
-.h-comp-score-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:var(--ink);line-height:1;flex-shrink:0}
+.h-comp-score-num{font-family:'DM Serif Display',serif;font-size:36px;font-weight:600;color:var(--ink);line-height:1;flex-shrink:0}
 .h-score-bar{height:6px;background:var(--bd);border-radius:3px;margin-bottom:4px}
 .h-score-fill{height:100%;border-radius:3px;background:var(--gold)}
 .h-score-lbl{font-size:10px;color:var(--ink3)}
@@ -498,7 +498,7 @@ const CSS = `
 .h-strength{font-size:12px;padding:.375rem .75rem;border-left:2px solid var(--up);background:rgba(76,175,124,.06);color:var(--ink2)}
 .h-vigilance{font-size:12px;padding:.375rem .75rem;border-left:2px solid var(--gold);background:rgba(201,168,76,.06);color:var(--ink2)}
 .h-conv-box{border:1px solid var(--bd);background:var(--white);padding:1.25rem 1.5rem}
-.h-conv-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:.875rem}
+.h-conv-title{font-family:'DM Serif Display',serif;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:.875rem}
 .h-conv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
 @media(max-width:600px){.h-conv-grid{grid-template-columns:1fr}}
 .h-conv-item{font-size:12px;padding:.375rem .75rem;border-left:2px solid var(--up);background:rgba(76,175,124,.06);color:var(--ink2);margin-bottom:.375rem}
@@ -513,7 +513,7 @@ const CSS = `
 .h-ai-loading{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:.5rem;padding:.875rem 1rem;background:var(--white);border:1px solid var(--bd)}
 .h-ai-result{font-size:13px;color:var(--ink2);line-height:1.75;padding:1rem;background:var(--white);border:1px solid var(--bd)}
 .h-watch-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.h-watch-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--ink)}
+.h-watch-title{font-family:'DM Serif Display',serif;font-size:18px;font-weight:600;color:var(--ink)}
 .h-watch-sub{font-size:11px;color:var(--ink3);margin-top:3px}
 .h-watch-list{display:flex;flex-direction:column;gap:.5rem}
 .h-watch-item{border-left:3px solid;padding:.875rem 1.25rem;display:flex;flex-direction:column;gap:.375rem}
@@ -524,7 +524,7 @@ const CSS = `
 .h-watch-titre{font-size:13px;font-weight:500;color:var(--ink);line-height:1.4}
 .h-watch-desc{font-size:12px;color:var(--ink2);line-height:1.6}
 .h-bench-intro{background:var(--white);border:1px solid var(--bd);padding:1.25rem 1.5rem}
-.h-bench-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--ink)}
+.h-bench-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:600;color:var(--ink)}
 .h-bench-sub{font-size:12px;color:var(--ink3);margin-top:4px}
 .h-bench-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
 @media(max-width:700px){.h-bench-grid{grid-template-columns:1fr}}

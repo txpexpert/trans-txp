@@ -16,8 +16,8 @@ export default function AbonnementRequis({ from }: Props) {
       </h1>
       <p style={{ color: '#555', maxWidth: 480, marginBottom: '24px' }}>
         {from
-          ? `L'accès à "${from}" nécessite un compte actif ou un abonnement Import.ia.`
-          : `L'accès à cette page nécessite un compte actif ou un abonnement Import.ia.`}
+          ? `L'accès à "${from}" nécessite un compte actif ou un abonnement IXP-Import-eXPert.`
+          : `L'accès à cette page nécessite un compte actif ou un abonnement IXP-Import-eXPert.`}
       </p>
       <div style={{ display: 'flex', gap: 12 }}>
         <Link href="/abonnements" style={{

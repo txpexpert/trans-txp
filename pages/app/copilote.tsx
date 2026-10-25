@@ -1,7 +1,7 @@
 // pages/app/copilote.tsx
 // ─────────────────────────────────────────────────────────────────────────────
 // Copilote vocal — version mobile (/app).
-// Réutilise EXACTEMENT les mêmes endpoints que le copilote de la page
+// Réutilise EXACTEMENT les mêmes endpoints que l'assistant de la page
 // d'accueil desktop (pages/index.tsx) : aucune modification backend requise.
 //   - /api/chat-homepage    : pipeline RAG (question texte -> réponse)
 //   - /api/voice/synthesize : TTS cloud (ElevenLabs)
@@ -119,7 +119,7 @@ export default function AppCopilote() {
       // URL toujours relative et fournie par le serveur — jamais par le modèle
       setAction(data.action && typeof data.action.url === 'string' && data.action.url.startsWith('/') ? data.action : null)
     } catch (e) {
-      setAnswer('IXP-copilote n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.')
+      setAnswer('IXP-Assistant n\u2019a pas pu répondre pour le moment. Réessayez dans un instant.')
     } finally {
       setLoading(false)
     }
@@ -151,7 +151,7 @@ export default function AppCopilote() {
 
   // Sécurité : uniquement les sources de type "circulaire" sont affichées,
   // jamais les notes internes — même filtrage de défense en profondeur
-  // que sur le copilote desktop (voir lib/assistantPrompt.ts, règle 6).
+  // que sur l'assistant desktop (voir lib/assistantPrompt.ts, règle 6).
   const circulaireSources = sources.filter(
     (s) => s.type_document && s.type_document.toLowerCase().includes('circulaire')
   )
@@ -159,8 +159,8 @@ export default function AppCopilote() {
   return (
     <AppModuleLayout
       kicker="COPILOTE IA"
-      title="IXP-copilote"
-      sub="Votre copilote IA Import-eXPert — posez une question à la voix ou au clavier, IXP-copilote répond en citant la circulaire exacte."
+      title="IXP-Assistant"
+      sub="Votre assistant IA Import-eXPert — posez une question à la voix ou au clavier, IXP-Assistant répond en citant la circulaire exacte."
     >
       <div className="form-group">
         <label className="form-label">Votre question</label>
@@ -189,7 +189,7 @@ export default function AppCopilote() {
       </div>
 
       <p style={{ fontSize: 12, color: 'var(--inkm)', marginBottom: 6 }}>
-        🔒 Connectez-vous pour interroger IXP-copilote
+        🔒 Connectez-vous pour interroger IXP-Assistant
       </p>
 
       {status && !needsLogin && (
@@ -205,7 +205,7 @@ export default function AppCopilote() {
 
       {needsLogin && (
         <div className="alert alert-info">
-          Connectez-vous ou démarrez votre essai gratuit pour interroger IXP-copilote.
+          Connectez-vous ou démarrez votre essai gratuit pour interroger IXP-Assistant.
           <div style={{ marginTop: 10 }}>
             <Link href="/app/login" className="btn btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
               Se connecter

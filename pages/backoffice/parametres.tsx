@@ -11,10 +11,10 @@ export default function BackofficeParametres() {
   const [toast, setToast] = useState('')
 
   // Paramètres généraux
-  const [nomSite, setNomSite] = useState('Import-IA')
-  const [urlSite, setUrlSite] = useState('https://Import-IA')
-  const [emailContact, setEmailContact] = useState('contact@Import-IA')
-  const [emailSupport, setEmailSupport] = useState('support@Import-IA')
+  const [nomSite, setNomSite] = useState('Import-eXPert')
+  const [urlSite, setUrlSite] = useState('https://Import-eXPert')
+  const [emailContact, setEmailContact] = useState('contact@Import-eXPert')
+  const [emailSupport, setEmailSupport] = useState('support@Import-eXPert')
 
   // Quotas
   const [quotaConsultation, setQuotaConsultation] = useState('5')

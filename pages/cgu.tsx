@@ -5,8 +5,8 @@ export default function CGU() {
   return (
     <>
       <Head>
-        <title>Conditions Générales d'Utilisation — Import-IA</title>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+        <title>Conditions Générales d'Utilisation — IXP-Import-eXPert</title>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </Head>
       <style dangerouslySetInnerHTML={{ __html: `
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -14,7 +14,7 @@ export default function CGU() {
           --ink:#0A0A0A;--ink2:#3A3530;--ink3:#8A8078;--white:#FDFCF8;--border:#E8DFC8}
         body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);line-height:1.7}
         a{color:var(--gold)}
-        h1{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:8px}
+        h1{font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;margin-bottom:8px}
         h2{font-size:16px;font-weight:600;margin-top:32px;border-bottom:2px solid var(--gold4);padding-bottom:8px}
         p,li{font-size:14px;color:var(--ink2)}
         .warning{background:var(--gold4);border-left:4px solid var(--gold);border-radius:4px;padding:16px 20px;margin:16px 0}
@@ -23,17 +23,12 @@ export default function CGU() {
         .warning strong{color:var(--ink)}
       ` }} />
 
-      <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center' }}>
-        <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em', textDecoration: 'none' }}>
-          IMPORT-EXPERT
-        </Link>
-      </header>
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: '3rem 1.5rem 5rem' }}>
         <h1>Conditions Générales d'Utilisation</h1>
         <p style={{ fontSize: 12, color: 'var(--ink3)', marginBottom: 24 }}>Dernière mise à jour : Septembre 2026</p>
 
-        <p>Les présentes Conditions Générales d'Utilisation (« CGU ») régissent l'accès et l'utilisation de la plateforme Import-IA (le « Site »), plateforme d'intelligence douanière destinée aux transitaires, importateurs, exportateurs et professionnels du commerce international opérant au Maroc.</p>
+        <p>Les présentes Conditions Générales d'Utilisation (« CGU ») régissent l'accès et l'utilisation de la plateforme Import-eXPert (le « Site »), plateforme d'intelligence douanière destinée aux transitaires, importateurs, exportateurs et professionnels du commerce international opérant au Maroc.</p>
 
         <h2>1. Objet et acceptation</h2>
         <p>En créant un compte ou en utilisant le Site, l'utilisateur reconnaît avoir pris connaissance des présentes CGU et les accepter sans réserve.</p>
@@ -52,10 +47,10 @@ export default function CGU() {
         <p>L'accès aux fonctionnalités du Site nécessite la création d'un compte et la confirmation de l'adresse email fournie, via le lien envoyé automatiquement à l'inscription. L'utilisateur s'engage à fournir des informations exactes et à préserver la confidentialité de ses identifiants.</p>
 
         <h2>5. Essai gratuit et abonnements</h2>
-        <p>Le Site propose un essai gratuit de 14 jours, sans carte bancaire requise, débutant à la date de création du compte. Les modalités des abonnements payants (tarifs, périodicité, limites d'usage) sont précisées sur la page dédiée du Site.</p>
+        <p>Le Site propose un essai gratuit de 14 jours, débutant à la date de création du compte. Les modalités des abonnements payants (tarifs, périodicité, limites d'usage) sont précisées sur la page dédiée du Site.</p>
 
         <h2>6. Propriété intellectuelle</h2>
-        <p>L'ensemble des éléments du Site (textes, structure, bases de données, outils, code source, identité visuelle) demeure la propriété exclusive d'Import-IA ou de ses partenaires, sauf mention contraire.</p>
+        <p>L'ensemble des éléments du Site (textes, structure, bases de données, outils, code source, identité visuelle) demeure la propriété exclusive d'Import-eXPert ou de ses partenaires, sauf mention contraire.</p>
 
         <h2>7. Limitation de responsabilité</h2>
         <p>Le Site met tout en œuvre pour assurer la disponibilité et la fiabilité de ses services, sans garantie de résultat. Le Site ne saurait être tenu responsable des interruptions de service, des erreurs ou omissions dans les contenus, ni des conséquences directes ou indirectes de l'utilisation ou de l'impossibilité d'utiliser le Site, dans les limites permises par la loi applicable.</p>
@@ -70,9 +65,6 @@ export default function CGU() {
         <p>Le Site se réserve le droit de modifier les présentes CGU à tout moment. La poursuite de l'utilisation du Site après modification vaut acceptation des nouvelles conditions.</p>
       </main>
 
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '1rem 2rem', textAlign: 'center', fontSize: 11, color: 'var(--ink3)' }}>
-        © 2026 Import-IA
-      </footer>
     </>
   )
 }

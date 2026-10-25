@@ -22,6 +22,9 @@ const nextConfig = {
         destination: '/modules/classement',
         permanent: true,
       },
+      // Refonte 2026 : la grille tarifaire vit désormais sur /tarifs.
+      // Temporaire (302) tant que la refonte n'est pas validée.
+      { source: '/abonnements', destination: '/tarifs', permanent: false },
       {
         source: '/modules/classificateur',
         destination: '/modules/classement',

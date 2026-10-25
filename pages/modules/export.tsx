@@ -192,8 +192,8 @@ export default function ModuleExport() {
   return (
     <>
       <Head>
-        <title>Module Export — Import-IA</title>
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+        <title>Module Export — IXP-Import-eXPert</title>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </Head>
 
       <style dangerouslySetInnerHTML={{ __html: `
@@ -225,7 +225,7 @@ export default function ModuleExport() {
           padding: 3px 10px; border-radius: 3px; margin-bottom: .5rem; display: inline-block;
         }
         .exp-title {
-          font-family: 'Playfair Display', serif; font-size: 1.5rem;
+          font-family: 'DM Serif Display', serif; font-size: 1.5rem;
           color: var(--ink); margin-bottom: .25rem;
         }
         .exp-sub { font-size: 13px; color: var(--ink3); }
@@ -256,7 +256,7 @@ export default function ModuleExport() {
 
         /* ── Section title ── */
         .sec-title {
-          font-family: 'Playfair Display', serif; font-size: 1.05rem;
+          font-family: 'DM Serif Display', serif; font-size: 1.05rem;
           color: var(--ink); margin-bottom: 1rem;
           display: flex; align-items: center; gap: .6rem;
         }
@@ -361,7 +361,7 @@ export default function ModuleExport() {
           background: var(--gold4); border-top: 2px solid var(--gold3);
         }
         .ddp-row.total .ddp-row-label {
-          font-weight: 700; color: var(--ink); font-family: 'Playfair Display', serif;
+          font-weight: 700; color: var(--ink); font-family: 'DM Serif Display', serif;
         }
         .ddp-row.total .ddp-row-val { color: var(--gold2); font-size: 1.1rem; font-weight: 700; }
         .ddp-row-devise { font-size: 11px; color: var(--ink3); margin-top: 2px; text-align: right; }
@@ -406,7 +406,7 @@ export default function ModuleExport() {
         }
         .guide-fiche-flag { font-size: 2.5rem; }
         .guide-fiche-name {
-          font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #fff;
+          font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: #fff;
         }
         .guide-fiche-accord {
           font-size: 11px; color: var(--gold3); margin-top: 2px;
@@ -878,7 +878,7 @@ export default function ModuleExport() {
             </div>
 
             <div className="card-gold card" style={{ marginTop: '1.5rem' }}>
-              <div className="sec-title" style={{ marginBottom: '.75rem' }}>Recommandations Import-IA pour l'export marocain</div>
+              <div className="sec-title" style={{ marginBottom: '.75rem' }}>Recommandations Import-eXPert pour l'export marocain</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: 13, color: 'var(--ink2)' }}>
                 <div style={{ padding: '.75rem', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)' }}>
                   <strong style={{ color: 'var(--ink)', display: 'block', marginBottom: '.4rem' }}>🚢 Maritime Maroc → Europe</strong>

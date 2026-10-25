@@ -1,6 +1,6 @@
 // lib/sitePages.ts
 // ============================================================
-// Catalogue des pages du site vers lesquelles le copilote peut
+// Catalogue des pages du site vers lesquelles l'assistant peut
 // rediriger l'utilisateur.
 //
 // Principe de sécurité : le modèle ne génère JAMAIS d'URL. Il choisit

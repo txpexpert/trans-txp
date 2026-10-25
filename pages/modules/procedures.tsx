@@ -1,5 +1,5 @@
 // pages/modules/procedures.tsx
-// Module PRO — Procédures Douanières — Import-IA
+// Module PRO — Procédures Douanières — Import-eXPert
 
 import Head from 'next/head'
 import { useState } from 'react'
@@ -156,8 +156,8 @@ export default function Procedures() {
   return (
     <>
       <Head>
-        <title>Procédures Douanières — Import-IA</title>
-        <meta name="description" content="Guide complet des procédures douanières marocaines — ADII — Import-IA" />
+        <title>Procédures Douanières — IXP-Import-eXPert</title>
+        <meta name="description" content="Guide complet des procédures douanières marocaines — ADII — Import-eXPert" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
       </Head>
@@ -288,7 +288,7 @@ export default function Procedures() {
 
       </div>
 
-      <footer>Import-IA — Module PRO · Procédures Douanières ADII · Contenu recoupé avec le RAG projet (CDII, décret 2-77-862, circulaires ADII) · Septembre 2026</footer>
+      <footer>Import-eXPert — Module PRO · Procédures Douanières ADII · Contenu recoupé avec le RAG projet (CDII, décret 2-77-862, circulaires ADII) · Septembre 2026</footer>
     </>
   )
 }

@@ -309,7 +309,7 @@ export default function Conseil() {
           {/* DÉTAIL SERVICE */}
           {serviceSel && (
             <div style={{ background: 'var(--bl)', border: '.5px solid var(--rule)', padding: '1.5rem' }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: 'var(--bd)', marginBottom: '1rem' }}>
+              <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, color: 'var(--bd)', marginBottom: '1rem' }}>
                 {serviceSel.titre} — Ce qui est inclus
               </div>
               <div style={{ display: 'grid', gap: '.4rem' }}>
@@ -344,7 +344,7 @@ export default function Conseil() {
                 <div style={{
                   width: 44, height: 44, background: 'var(--bd)', color: 'var(--gold)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 700, flexShrink: 0,
+                  fontFamily: "'DM Serif Display', serif", fontSize: 16, fontWeight: 700, flexShrink: 0,
                 }}>
                   {e.initiales}
                 </div>
@@ -382,7 +382,7 @@ export default function Conseil() {
           {sent ? (
             <div style={{ background: '#F0FDF4', border: '.5px solid #86EFAC', padding: '1.5rem', textAlign: 'center' }}>
               <div style={{ fontSize: 24, marginBottom: '.5rem' }}>✓</div>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: '#166534', marginBottom: '.5rem' }}>
+              <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, color: '#166534', marginBottom: '.5rem' }}>
                 Demande envoyée
               </div>
               <div style={{ fontSize: 13, color: '#15803D' }}>
@@ -397,7 +397,7 @@ export default function Conseil() {
             </div>
           ) : (
             <div style={{ background: '#fff', border: '.5px solid var(--border)', padding: '1.5rem' }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: 'var(--bd)', marginBottom: '1.25rem' }}>
+              <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, color: 'var(--bd)', marginBottom: '1.25rem' }}>
                 Contacter un expert
               </div>
 

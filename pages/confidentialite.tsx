@@ -5,8 +5,8 @@ export default function Confidentialite() {
   return (
     <>
       <Head>
-        <title>Politique de confidentialité — Import-IA</title>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+        <title>Politique de confidentialité — IXP-Import-eXPert</title>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </Head>
       <style dangerouslySetInnerHTML={{ __html: `
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -14,22 +14,17 @@ export default function Confidentialite() {
           --ink:#0A0A0A;--ink2:#3A3530;--ink3:#8A8078;--white:#FDFCF8;--border:#E8DFC8}
         body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);line-height:1.7}
         a{color:var(--gold)}
-        h1{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:8px}
+        h1{font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;margin-bottom:8px}
         h2{font-size:16px;font-weight:600;margin-top:32px;border-bottom:2px solid var(--gold4);padding-bottom:8px}
         p,li{font-size:14px;color:var(--ink2)}
       ` }} />
 
-      <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center' }}>
-        <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em', textDecoration: 'none' }}>
-          IMPORT-EXPERT
-        </Link>
-      </header>
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: '3rem 1.5rem 5rem' }}>
         <h1>Politique de confidentialité</h1>
         <p style={{ fontSize: 12, color: 'var(--ink3)', marginBottom: 24 }}>Dernière mise à jour : Septembre 2026</p>
 
-        <p>La présente politique décrit la manière dont Import-IA collecte, utilise et protège les données personnelles des utilisateurs du Site, conformément à la loi n°09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel.</p>
+        <p>La présente politique décrit la manière dont Import-eXPert collecte, utilise et protège les données personnelles des utilisateurs du Site, conformément à la loi n°09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel.</p>
 
         <h2>1. Données collectées</h2>
         <ul>
@@ -58,12 +53,9 @@ export default function Confidentialite() {
         <p>Le Site utilise des cookies techniques nécessaires à son fonctionnement (maintien de la session de connexion). Aucun cookie publicitaire tiers n'est utilisé à ce jour.</p>
 
         <h2>8. Contact</h2>
-        <p>Pour toute question relative à la présente politique, contactez Import-IA via le formulaire de contact du Site.</p>
+        <p>Pour toute question relative à la présente politique, contactez Import-eXPert via le formulaire de contact du Site.</p>
       </main>
 
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '1rem 2rem', textAlign: 'center', fontSize: 11, color: 'var(--ink3)' }}>
-        © 2026 Import-IA
-      </footer>
     </>
   )
 }

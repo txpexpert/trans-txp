@@ -127,7 +127,7 @@ export default function BackofficeIngest() {
 
   return (
     <>
-      <Head><title>Ingestion — Backoffice Import-IA</title></Head>
+      <Head><title>Ingestion — Backoffice Import-eXPert</title></Head>
       <BackofficeLayout title="Ingestion de données">
         <div style={{ maxWidth: 720 }}>
 

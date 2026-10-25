@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useAuth } from '../context/AuthContext'
+import IxpLogo from './IxpLogo'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -133,72 +134,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
 
   return (
     <>
-      {/* -- MASTHEAD — landing uniquement -- */}
-      {isLanding && (
-        <header>
-          <div className="masthead">
-            <div className="mast-top">
-              <span>PLATEFORME DOUANIÈRE — DÉMONSTRATION INTERNE</span>
-              <span>{mastDate}</span>
-            </div>
-            <div className="mast-main">
-              <Link href="/" className="mast-logo">Transit-IA</Link>
-              <div className="mast-tagline">Démo interne — Phase de développement</div>
-            </div>
-            <div className="mast-nav">
-              <Link href="/modules/simulateur"  className="mast-nav-item">SIMULATEUR</Link>
-              <Link href="/modules/comparateur" className="mast-nav-item">COMPARATEUR</Link>
-              <Link href="/modules/analyses"    className="mast-nav-item">ANALYSES</Link>
-              <Link href="/abonnements"         className="mast-nav-item">ABONNEMENTS</Link>
-              {user ? (
-                <Link href="/dashboard" className="mast-nav-cta">MON COMPTE</Link>
-              ) : (
-                <button className="mast-nav-cta" onClick={() => setLoginOpen(true)}>ESSAYER GRATUITEMENT</button>
-              )}
-            </div>
-          </div>
-        </header>
-      )}
-
-      {/* -- TOPNAV — pages internes -- */}
-      {!isLanding && (
-        <nav className="topnav">
-          <Link href="/" className="topnav-logo">Transit-IA</Link>
-          <div className="topnav-links">
-            <Link href="/"                    className={`topnav-link ${router.pathname === '/'                         ? 'active' : ''}`}>ACCUEIL</Link>
-            <Link href="/modules/simulateur"  className={`topnav-link ${router.pathname.includes('simulateur')          ? 'active' : ''}`}>SIMULATEUR</Link>
-            <Link href="/modules/comparateur" className={`topnav-link ${router.pathname.includes('comparateur')         ? 'active' : ''}`}>COMPARATEUR</Link>
-            <Link href="/modules/analyses"    className={`topnav-link ${router.pathname.includes('analyses')            ? 'active' : ''}`}>ANALYSES</Link>
-            <Link href="/abonnements"         className={`topnav-link ${router.pathname === '/abonnements'              ? 'active' : ''}`}>ABONNEMENTS</Link>
-          </div>
-          <div className="topnav-right">
-            {user ? (
-              // ✅ FIX — lien "Mon compte" ajouté à côté du nom + plan
-              <Link
-                href="/dashboard"
-                className="topnav-user"
-                title={`Plan : ${user.plan} — Accéder à mon compte`}
-                style={{ textDecoration: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }}
-                onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
-                onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
-              >
-                {displayName} <span className="topnav-plan">· {user.plan}</span>
-              </Link>
-            ) : (
-              <span className="topnav-user">Non connecté</span>
-            )}
-
-            {user ? (
-              <button className="topnav-btn outline" onClick={doLogout}>Déconnexion</button>
-            ) : (
-              <>
-                <button className="topnav-btn outline" onClick={() => setLoginOpen(true)}>Connexion</button>
-                <Link href="/abonnements"><button className="topnav-btn">Essayer</button></Link>
-              </>
-            )}
-          </div>
-        </nav>
-      )}
+      {/* En-tête et navigation : fournis par le gabarit commun du site (SiteShell, via _app). */}
 
       {/* -- LAYOUT PRINCIPAL -- */}
       <div className="main-wrap">
@@ -251,7 +187,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
       >
         <div className="modal">
           <div className="modal-header">
-            <div className="modal-title">Connexion à Transit-IA</div>
+            <div className="modal-title">Connexion à Import-eXPert</div>
             <button className="modal-close" onClick={() => setLoginOpen(false)}>×</button>
           </div>
           <div className="modal-body">

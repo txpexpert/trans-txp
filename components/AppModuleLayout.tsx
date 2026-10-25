@@ -9,6 +9,7 @@
 
 import Head from 'next/head'
 import Link from 'next/link'
+import IxpLogo from './IxpLogo'
 
 interface AppModuleLayoutProps {
   children:  React.ReactNode
@@ -38,6 +39,7 @@ body {
 }
 
 /* ── Barre unique ── */
+.mod-brand{display:inline-flex;align-items:center;margin-right:10px;flex-shrink:0}
 .mod-bar {
   position: sticky; top: 0; z-index: 100;
   background: rgba(249,248,244,.97); backdrop-filter: blur(12px);
@@ -177,7 +179,7 @@ export default function AppModuleLayout({ children, kicker, title, sub }: AppMod
   return (
     <>
       <Head>
-        <title>{title ? `${title} — IMPORT-EXPERT` : 'IMPORT-EXPERT'}</title>
+        <title>{title ? `${title} — IXP-IMPORT-EXPERT` : 'IXP-IMPORT-EXPERT'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
       </Head>
@@ -186,6 +188,7 @@ export default function AppModuleLayout({ children, kicker, title, sub }: AppMod
 
       {/* ── Barre minimale — renvoie vers /app, jamais vers le site desktop ── */}
       <nav className="mod-bar">
+        <Link href="/app" className="mod-brand" aria-label="Import-eXPert, menu"><IxpLogo size={30} /></Link>
         <Link href="/app" className="mod-back">
           ← Menu
         </Link>

@@ -354,7 +354,7 @@ export default function Contentieux() {
                 <div style={{
                   width: 36, height: 36, background: 'var(--bd)', color: '#fff',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: "'Playfair Display', serif", fontSize: 16, flexShrink: 0,
+                  fontFamily: "'DM Serif Display', serif", fontSize: 16, flexShrink: 0,
                 }}>{e.etape}</div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--ink)', marginBottom: 4 }}>{e.titre}</div>
@@ -382,7 +382,7 @@ export default function Contentieux() {
       {onglet === 'transaction' && (
         <div>
           <div style={{ background: '#fff', border: '.5px solid var(--border)', padding: '1.25rem', marginBottom: '1.25rem' }}>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: 'var(--bd)', marginBottom: '.75rem' }}>
+            <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 16, color: 'var(--bd)', marginBottom: '.75rem' }}>
               Qu'est-ce que la transaction douanière ?
             </div>
             <p style={{ fontSize: 13, color: 'var(--inks)', lineHeight: 1.7, marginBottom: '.75rem' }}>
@@ -433,7 +433,7 @@ export default function Contentieux() {
                 <div style={{
                   width: 36, height: 36, background: '#1D4ED8', color: '#fff',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: "'Playfair Display', serif", fontSize: 16, flexShrink: 0,
+                  fontFamily: "'DM Serif Display', serif", fontSize: 16, flexShrink: 0,
                 }}>{e.etape}</div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--ink)', marginBottom: 4 }}>{e.titre}</div>
@@ -460,7 +460,7 @@ export default function Contentieux() {
       {onglet === 'simulateur' && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
           <div style={{ background: '#fff', border: '.5px solid var(--border)', padding: '1.5rem' }}>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: 'var(--bd)', marginBottom: '1.25rem' }}>
+            <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 16, color: 'var(--bd)', marginBottom: '1.25rem' }}>
               Paramètres du dossier
             </div>
             <div className="form-group" style={{ marginBottom: '1rem' }}>
@@ -516,7 +516,7 @@ export default function Contentieux() {
           </div>
 
           <div style={{ background: 'var(--bd)', padding: '1.5rem', color: '#fff' }}>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, marginBottom: '1.25rem', color: 'var(--gold)' }}>
+            <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 16, marginBottom: '1.25rem', color: 'var(--gold)' }}>
               Estimation pénalités
             </div>
             {(typeInfraction === 'contrebande' ? valeurMarchandises : montantDroits) ? (() => {
@@ -564,7 +564,7 @@ export default function Contentieux() {
         justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem',
       }}>
         <div>
-          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, marginBottom: '.4rem' }}>
+          <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 17, marginBottom: '.4rem' }}>
             Un cas de contentieux spécifique ?
           </div>
           <div style={{ fontSize: 13, color: 'rgba(255,255,255,.75)', maxWidth: 480 }}>

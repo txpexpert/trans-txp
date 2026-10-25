@@ -25,7 +25,7 @@ const FRAIS_PRESETS = [
 
 
 const SIM_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap');
   :root { --gold:#C9A84C;--gold2:#E8C97A;--gold3:#F5E4B0;--gold4:#FBF5E6;--ink:#0A0A0A;--ink2:#3A3530;--ink3:#8A8078;--white:#FDFCF8;--border:#E8DFC8;--border2:#D4C8A8;--up:#4CAF7C;--dn:#E85D5D; }
   .sim-input { width:100%;padding:9px 12px;border:1px solid var(--border2);background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;transition:border-color .15s; }
   .sim-input:focus { border-color:var(--gold); }
@@ -223,7 +223,7 @@ export default function Simulateur() {
       {/* Header */}
       <div style={{ background: "var(--ink)", borderBottom: "2px solid var(--gold)", padding: "1.25rem 2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "#E8C97A", letterSpacing: "-.02em" }}>
+          <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 22, fontWeight: 600, color: "#E8C97A", letterSpacing: "-.02em" }}>
             Douane<span style={{ color: "#C9A84C" }}>.</span>ia
           </div>
           <div style={{ fontSize: 11, letterSpacing: ".12em", color: "#8A8078", marginTop: 2 }}>SIMULATEUR DE DROITS & TAXES</div>
@@ -456,7 +456,7 @@ export default function Simulateur() {
 
           {!computed && (
             <div style={{ border: "1px dashed var(--border2)", padding: "2rem 1.5rem", textAlign: "center" }}>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: "var(--gold)", fontWeight: 300, marginBottom: 8 }}>Droits & Taxes</div>
+              <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 28, color: "var(--gold)", fontWeight: 300, marginBottom: 8 }}>Droits & Taxes</div>
               <div style={{ fontSize: 12, color: "var(--ink3)", lineHeight: 1.6 }}>Remplissez les champs et cliquez sur Calculer pour obtenir la simulation complète.</div>
             </div>
 
@@ -546,7 +546,7 @@ export default function Simulateur() {
 
     {/* ── Majoration Art. 76 ter & TBI Bois — LF 2026 ─────────────────────── */}
     <div id="majoration-tbi" style={{ maxWidth: 1100, margin: "0 auto", padding: "0 1.5rem 2rem", scrollMarginTop: "1.5rem" }}>
-      <div style={{ margin: "1rem 0 1.5rem", fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--ink)" }}>
+      <div style={{ margin: "1rem 0 1.5rem", fontFamily: "'DM Serif Display', serif", fontSize: 20, fontWeight: 600, color: "var(--ink)" }}>
         Majoration Art. 76 ter &amp; TBI Bois — LF 2026
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>

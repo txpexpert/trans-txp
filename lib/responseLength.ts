@@ -1,6 +1,6 @@
 // lib/responseLength.ts
 // ============================================================
-// Contrôle de longueur des réponses du copilote — côté serveur.
+// Contrôle de longueur des réponses de l'assistant — côté serveur.
 //
 // Règle :
 //   - Cible : 200 mots.

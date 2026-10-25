@@ -62,7 +62,7 @@ export default function Register() {
     return (
       <>
         <Head>
-          <title>Vérifiez votre email — Import-IA</title>
+          <title>Vérifiez votre email — IXP-Import-eXPert</title>
         </Head>
         <style dangerouslySetInnerHTML={{ __html: `
           *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -71,15 +71,10 @@ export default function Register() {
           body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);min-height:100vh}
           a{text-decoration:none;color:inherit}
         ` }} />
-        <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center' }}>
-          <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em' }}>
-            IMPORT-EXPERT
-          </Link>
-        </header>
         <main style={{ display: 'flex', justifyContent: 'center', padding: '4rem 1rem' }}>
           <div style={{ width: '100%', maxWidth: 480, textAlign: 'center' }}>
             <div style={{ fontSize: 40, marginBottom: '1rem' }}>📬</div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 26, fontWeight: 400, marginBottom: '.75rem' }}>
+            <h1 style={{ fontFamily: "'DM Serif Display',serif", fontSize: 26, fontWeight: 400, marginBottom: '.75rem' }}>
               Vérifiez votre boîte mail
             </h1>
             <p style={{ fontSize: 14, color: 'var(--ink2)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
@@ -100,8 +95,8 @@ export default function Register() {
   return (
     <>
       <Head>
-        <title>Inscription — Import-IA</title>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+        <title>Inscription — IXP-Import-eXPert</title>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </Head>
       <style dangerouslySetInnerHTML={{ __html: `
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -117,13 +112,6 @@ export default function Register() {
         .inp:focus{border-color:var(--gold)}
       ` }} />
 
-      {/* Header */}
-      <header style={{ background: 'var(--ink)', borderBottom: '2px solid var(--gold)', padding: '0 2rem', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link href="/" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, fontWeight: 600, color: 'var(--gold2)', letterSpacing: '-.02em' }}>
-          IMPORT-EXPERT
-        </Link>
-        <span style={{ fontSize: 11, letterSpacing: '.1em', color: 'var(--ink3)' }}>INSCRIPTION GRATUITE</span>
-      </header>
 
       <main style={{ display: 'flex', justifyContent: 'center', padding: '2rem 1rem' }}>
         <div style={{ width: '100%', maxWidth: 480 }}>
@@ -131,14 +119,14 @@ export default function Register() {
           {/* Badge essai */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem', background: 'var(--gold4)', border: '1px solid var(--gold3)', padding: '.6rem 1rem', marginBottom: '1.5rem', fontSize: 13 }}>
             <span style={{ color: 'var(--gold)', fontSize: 16 }}>✦</span>
-            <span><strong style={{ color: 'var(--gold)' }}>14 jours d'accès complet offerts</strong> — sans carte bancaire</span>
+            <span><strong style={{ color: 'var(--gold)' }}>14 jours d'accès complet offerts</strong></span>
           </div>
 
           <div style={{ border: '1px solid var(--border)', background: 'var(--white)' }}>
 
             <div style={{ padding: '1.5rem 2rem 1rem', borderBottom: '1px solid var(--border)' }}>
-              <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 26, fontWeight: 400, color: 'var(--ink)', marginBottom: '.2rem' }}>
-                Rejoindre <span style={{ color: 'var(--gold)' }}>Import-IA</span>
+              <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 26, fontWeight: 400, color: 'var(--ink)', marginBottom: '.2rem' }}>
+                Rejoindre <span style={{ color: 'var(--gold)' }}>Import-eXPert</span>
               </div>
               <div style={{ fontSize: 13, color: 'var(--ink3)' }}>Plateforme d'intelligence douanière marocaine</div>
             </div>
@@ -252,13 +240,6 @@ export default function Register() {
         </div>
       </main>
 
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--ink3)' }}>
-        <span>© 2026 Import-IA</span>
-        <div style={{ display: 'flex', gap: '1.5rem' }}>
-          <Link href="/cgu">Conditions d'utilisation</Link>
-          <Link href="/confidentialite">Confidentialité</Link>
-        </div>
-      </footer>
     </>
   )
 }

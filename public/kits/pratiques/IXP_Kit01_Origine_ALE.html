@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Origine préférentielle et ALE · Kit d'expertise | IXP-Import-eXPert</title>
+<meta name="description" content="Règles d'origine révisées, preuves, vérifications a posteriori : ce que les opérateurs et transitaires doivent maîtriser en 2026. Kit d'expertise IXP-Import-eXPert.">
+<!--
+  VERSION AUTONOME : fichier unique, sans police ni ressource externe, consultable hors connexion.
+  Liens à vérifier avant diffusion :
+    Abonnement : https://www.import-expert.ma/abonnement
+    E-mail     : contact@import-expert.ma (formulaire)
+    Kits       : https://www.import-expert.ma/kits/kit-0X-...
+-->
+<style>
+:root{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--paper:#FAF7F0;--line:#E6DCC7;--navy:#153E82;--navy2:#0E2C5E;--red:#A82D3C;--gold:#A8822F;--green:#1E7346;--gb:#EBF6EF;
+--serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;--sans:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;font-size:16px}
+a{color:var(--navy)}
+.w{max-width:1080px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.12;margin:0 0 12px}
+h1{font-size:clamp(34px,5vw,56px)}
+h2{font-size:clamp(28px,3.4vw,38px)}
+h3{font-size:21px}
+h1 em,h2 em{color:var(--red);font-style:italic}
+p{margin:0 0 12px}
+.eb{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+.lead{font-size:18px;color:var(--ink2);max-width:720px}
+.muted{color:var(--ink3);font-size:14px}
+section{padding:72px 0;border-top:1px solid var(--line)}
+/* Barre */
+.top{position:sticky;top:0;z-index:10;background:rgba(250,247,240,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .w{display:flex;align-items:center;gap:14px;height:62px}
+.brand{font-family:var(--serif);font-size:22px;text-decoration:none;color:var(--ink)}
+.brand b{font-weight:400;color:var(--red)}
+.tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--gb);color:var(--green);border:1px solid #C3E3CF}
+.top .sp{margin-left:auto;display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:500;padding:11px 20px;border-radius:99px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--ink);color:#fff}
+.btn.p{background:var(--red);border-color:var(--red);color:#fff}
+.btn.p:hover{background:#8E2533}
+.btn.n{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+/* Hero */
+.hero{padding:84px 0 64px;border:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:48px}
+.stat{background:#fff;padding:22px 20px}
+.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:40px;line-height:1;color:var(--navy)}
+.stat span{display:block;margin-top:8px;font-size:14px;color:var(--ink2)}
+/* Grilles */
+.g2,.g3,.g4{display:grid;gap:14px;margin-top:28px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.card .k{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+/* Risques */
+.risk{display:grid;grid-template-columns:56px 1fr;gap:16px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:14px;padding:20px;margin-top:12px}
+.risk .n{font-family:var(--serif);font-size:34px;color:var(--red);line-height:1}
+.risk .c{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:var(--red)}
+/* Accords */
+.acc{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}
+.acc div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.acc b{display:block;font-size:16px}
+.acc small{display:block;color:var(--ink3);font-size:13px;margin-top:4px}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:10px}
+.pill.g{background:var(--gb);color:var(--green)}.pill.a{background:#FCF4E3;color:#9A620C}.pill.b{background:#EEF1F6;color:var(--navy)}.pill.r{background:#FCEEF0;color:var(--red)}
+/* Questions */
+ol.q{counter-reset:q;list-style:none;padding:0;margin:24px 0 0}
+ol.q li{counter-increment:q;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:17px}
+ol.q li::before{content:counter(q);width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700}
+/* Kit verrouillé */
+.dark{background:var(--navy2);color:#fff;border:none}
+.dark .lead,.dark .muted{color:#C9D3E6}
+.dark .eb{color:#E3C77A}
+.lock{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+.lock div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:18px}
+.lock b{display:block;font-size:15.5px;margin-bottom:4px}
+.lock span{font-size:13.5px;color:#C9D3E6}
+.lock b::before{content:'🔒 ';font-size:13px}
+/* Offres */
+.offer{display:flex;flex-direction:column}
+.offer.hl{border:2px solid var(--red)}
+.offer ul{padding-left:18px;margin:8px 0 18px;font-size:15px;color:var(--ink2)}
+.offer ul li{margin-bottom:5px}
+.offer .btn{margin-top:auto;justify-content:center}
+.badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--red);color:#fff;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+/* Contact */
+form{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:26px}
+form .full{grid-column:1/-1}
+label{display:block;font-size:13.5px;font-weight:700;margin-bottom:5px}
+input,select,textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid #D6C9AC;border-radius:10px;background:var(--paper)}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);background:#fff}
+.kits{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}.kits a{font-size:13px;padding:6px 12px;border:1px solid var(--line);border-radius:99px;background:#fff;text-decoration:none;color:var(--ink2)}
+footer{padding:36px 0 50px;border-top:1px solid var(--line);font-size:13px;color:var(--ink3)}
+@media (max-width:900px){.g3,.g4,.acc,.lock,.stats{grid-template-columns:1fr 1fr}.top .tag{display:none}}
+@media (max-width:620px){.g2,.g3,.g4,.acc,.lock,.stats,form{grid-template-columns:1fr}.top .sp .btn:not(.p){display:none}section{padding:54px 0}.hero{padding:56px 0 44px}}
+@media print{.top,form,.btns{display:none!important}section{break-inside:avoid}.dark{background:#fff;color:var(--ink)}}
+.top .sp .pr{background:#fff}
+.dl{display:inline-block;font-size:12px;padding:4px 10px;border-radius:99px;background:var(--kb,#EEF1F6);color:var(--kc,var(--navy));margin-bottom:12px}
+@media (max-width:900px){.top .sp .pr{display:none}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="w">
+  <a class="brand" href="https://www.import-expert.ma">Import<b>-</b>eXPert</a>
+  <span class="tag">Kit 01 · Origine et ALE</span>
+  <div class="sp">
+    <button class="btn sm pr" type="button" onclick="window.print()">Imprimer / PDF</button><a class="btn sm" href="#contact">Parler à un expert</a>
+    <a class="btn sm p" href="https://www.import-expert.ma/abonnement">S'abonner</a>
+  </div>
+</div></header>
+
+<main>
+<!-- HERO -->
+<section class="hero"><div class="w">
+  <div class="eb">Kit d'expertise · Édition 2026</div>
+  <h1>Le droit préférentiel n'est pas acquis.<br><em>Il se prouve, parfois quatre ans plus tard.</em></h1>
+  <p class="lead">Depuis le 1<sup>er</sup> janvier 2026, les règles d'origine applicables aux échanges avec l'Union européenne et la Turquie ont changé, tandis que d'autres accords conservent leurs anciennes règles. Pour un même produit, il peut désormais exister plusieurs régimes, plusieurs preuves et plusieurs calendriers de contrôle. Ce kit présente les enjeux ; la méthode et les outils sont réservés à nos abonnés et clients.</p>
+  <div class="btns">
+    <a class="btn p" href="https://www.import-expert.ma/abonnement">Accéder au kit complet</a>
+    <a class="btn" href="#contact">Demander un diagnostic origine</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>10 mois</b><span>pour que la douane étrangère confirme l'origine, faute de quoi la préférence tombe</span></div>
+    <div class="stat"><b>4 ans</b><span>de délai de reprise des droits après un refus de préférence</span></div>
+    <div class="stat"><b>6 000 €</b><span>le seuil au-delà duquel une déclaration sur facture non agréée est rejetée</span></div>
+    <div class="stat"><b>7 régimes</b><span>d'origine distincts à maîtriser selon le partenaire commercial</span></div>
+  </div>
+</div></section>
+
+<!-- CE QUI A CHANGÉ -->
+<section><div class="w">
+  <div class="eb">Le contexte</div>
+  <h2>2026 : une rupture <em>que beaucoup n'ont pas encore intégrée</em></h2>
+  <p class="lead">L'entrée en application provisoire des règles pan-euro-méditerranéennes révisées a modifié les preuves, leur durée de validité, le cumul et les mentions obligatoires. Les flux en cours, les procédures internes et les contrats fournisseurs n'ont pas tous suivi.</p>
+  <div class="g4">
+    <div class="card"><div class="k">Preuves</div><h3>Une preuve disparaît</h3><p>Certains documents encore émis par habitude ne sont plus admis sur les flux UE et Turquie.</p></div>
+    <div class="card"><div class="k">Mentions</div><h3>Une mention devient décisive</h3><p>Son absence à l'export, ou une mention de cumul mal rédigée, expose votre client européen au refus.</p></div>
+    <div class="card"><div class="k">Cumul</div><h3>De nouvelles opportunités</h3><p>Le cumul est élargi, avec des exceptions sectorielles qui changent le calcul pour le textile.</p></div>
+    <div class="card"><div class="k">Coexistence</div><h3>Deux générations de règles</h3><p>Certains accords restent sous les anciennes règles : une seule fiche d'origine ne suffit plus.</p></div>
+  </div>
+</div></section>
+
+<!-- RISQUES -->
+<section><div class="w">
+  <div class="eb">Ce que nous observons sur le terrain</div>
+  <h2>Cinq situations <em>où la préférence est perdue</em></h2>
+  <p class="lead">Chacune est tirée de cas réels rendus anonymes. Dans chacune, la marchandise était bien originaire ; c'est la preuve, la procédure ou le contrat qui a fait défaut.</p>
+  <div class="risk"><div class="n">01</div><div><h3>L'exportateur qui certifie lui-même au-delà du seuil</h3><p>Des envois réguliers vers la Belgique, une déclaration d'origine établie sur facture sans le statut requis. L'importateur européen se voit refuser la préférence.</p><span class="c">Conséquence : droits pleins réclamés au client, relation commerciale fragilisée</span></div></div>
+  <div class="risk"><div class="n">02</div><div><h3>Le cumul avec la Turquie appliqué à l'ancienne</h3><p>Des faisceaux de câbles intégrant du cuivre turc, exportés vers l'Allemagne avec une preuve qui n'a plus cours depuis janvier 2026.</p><span class="c">Conséquence : préférence contestée sur l'ensemble des envois de la période</span></div></div>
+  <div class="risk"><div class="n">03</div><div><h3>Un produit, trois marchés, une seule fiche</h3><p>Le même modèle de chaussure vers l'Italie, la Turquie et la Tunisie, traité avec une analyse d'origine unique alors que les accords n'appliquent pas les mêmes règles.</p><span class="c">Conséquence : une partie des exportations certifiée à tort</span></div></div>
+  <div class="risk"><div class="n">04</div><div><h3>L'importation américaine sans dossier fournisseur</h3><p>Dans l'accord avec les États-Unis, aucun certificat n'est exigé : c'est l'importateur qui certifie l'éligibilité, et qui en répond lors d'un contrôle.</p><span class="c">Conséquence : refus notifié, droits de droit commun dus, aucun recours contre le fournisseur</span></div></div>
+  <div class="risk"><div class="n">05</div><div><h3>La vérification restée sans réponse</h3><p>Des luminaires importés sous EUR.1 parfaitement conforme. Un an plus tard, la douane étrangère ne confirme pas l'origine dans le délai.</p><span class="c">Conséquence : préférence refusée a posteriori, droits et pénalités recouvrés</span></div></div>
+  <div class="btns"><a class="btn n" href="#contact">Évaluer mon exposition</a></div>
+</div></section>
+
+<!-- ACCORDS -->
+<section><div class="w">
+  <div class="eb">Cartographie</div>
+  <h2>Sept régimes, <em>sept logiques de preuve</em></h2>
+  <p class="lead">Vue d'ensemble des accords couverts par le kit. Le détail des règles, preuves, délais et formats par accord est accessible aux abonnés.</p>
+  <div class="acc">
+    <div><b>Union européenne</b><small>Règles révisées, preuves et validité modifiées</small><span class="pill g">Révisé 2026</span></div>
+    <div><b>Turquie</b><small>Aligné sur l'UE, cumul diagonal</small><span class="pill g">Révisé 2026</span></div>
+    <div><b>États-Unis</b><small>Auto-certification, critère de valeur propre</small><span class="pill r">Risque importateur</span></div>
+    <div><b>Royaume-Uni</b><small>Cumul élargi par décision de 2026</small><span class="pill b">En évolution</span></div>
+    <div><b>AELE</b><small>Anciennes règles, régime agricole spécifique</small><span class="pill a">Anciennes règles</span></div>
+    <div><b>Accord d'Agadir</b><small>Tunisie, Égypte, Jordanie</small><span class="pill a">Anciennes règles</span></div>
+    <div><b>ZLECAf</b><small>Montée en charge, contrôle des cachets</small><span class="pill b">En évolution</span></div>
+    <div><b>Droit commun</b><small>Origine non préférentielle, certificat à l'export</small><span class="pill b">Hors accord</span></div>
+  </div>
+</div></section>
+
+<!-- AUTO-QUESTIONNEMENT -->
+<section><div class="w">
+  <div class="eb">Pour la direction</div>
+  <h2>Cinq questions <em>à poser à vos équipes</em> cette semaine</h2>
+  <p class="lead">Si une seule réponse est incertaine, votre préférence tarifaire repose sur une hypothèse plutôt que sur un dossier.</p>
+  <ol class="q">
+    <li>Avons-nous révisé nos preuves et nos mentions d'origine depuis le 1<sup>er</sup> janvier 2026 ?</li>
+    <li>Disposons-nous, pour chaque produit et chaque accord utilisé, d'une analyse d'origine documentée et datée ?</li>
+    <li>Nos contrats fournisseurs nous protègent-ils si une vérification n'aboutit pas ?</li>
+    <li>Savons-nous quelles preuves expirent ce trimestre, et lesquelles doivent encore être conservées ?</li>
+    <li>Pourrions-nous répondre à une demande de justification de la douane dans le délai, sans dépendre du fournisseur ?</li>
+  </ol>
+</div></section>
+
+<!-- KIT VERROUILLÉ -->
+<section class="dark"><div class="w">
+  <div class="eb">Le kit complet</div>
+  <h2 style="color:#fff">Ce que nos abonnés <em style="color:#E3C77A">utilisent au quotidien</em></h2>
+  <p class="lead">Treize modules opérationnels, référencés article par article sur les circulaires de l'ADII, mis à jour au fil des textes et intégrés à la plateforme IXP-Import-eXPert.</p>
+  <div class="lock">
+    <div><b>Assistant accord et preuve</b><span>Le bon accord, la bonne preuve, ses mentions et sa validité, en trois questions</span></div>
+    <div><b>Calculateur d'origine</b><span>Règle de valeur, tolérance, critère américain, plus-value de droit commun</span></div>
+    <div><b>Fiche d'origine produit</b><span>La pièce exigée en premier lors d'un contrôle</span></div>
+    <div><b>Suivi des preuves</b><span>Validité, conservation et alertes d'expiration</span></div>
+    <div><b>Déclaration d'origine</b><span>Modèle bilingue conforme aux règles révisées</span></div>
+    <div><b>Déclaration du fournisseur</b><span>Modèle à long terme pour sécuriser le cumul</span></div>
+    <div><b>Clause contractuelle</b><span>Coopération à la vérification et répartition du risque</span></div>
+    <div><b>Dossier États-Unis</b><span>Les pièces à obtenir avant la première importation</span></div>
+    <div><b>Check-lists import et export</b><span>Les points à valider avant chaque déclaration</span></div>
+    <div><b>Contrôle a posteriori</b><span>Déroulé, délais et conduite à tenir</span></div>
+    <div><b>Cas pratiques commentés</b><span>Les erreurs fréquentes et leur correction</span></div>
+    <div><b>Questions fréquentes et sources</b><span>Les réponses référencées aux textes en vigueur</span></div>
+  </div>
+  <div class="btns"><a class="btn p" href="https://www.import-expert.ma/abonnement">Débloquer le kit</a><a class="btn" style="border-color:#fff;color:#fff" href="#contact">Demander une démonstration</a></div>
+</div></section>
+
+<!-- POUR QUI -->
+<section><div class="w">
+  <div class="eb">Pour qui</div>
+  <h2>Conçu pour <em>ceux qui engagent leur signature</em></h2>
+  <div class="g2">
+    <div class="card"><div class="k">Importateurs, exportateurs industriels, DAF</div><h3>Sécuriser la marge et le cash</h3><p>Un droit préférentiel refusé quatre ans après l'opération, c'est une charge imprévue, des pénalités et un litige avec un fournisseur parfois disparu. Le kit vous donne une maîtrise documentée, défendable devant l'administration et opposable à vos partenaires.</p></div>
+    <div class="card"><div class="k">Transitaires et commissionnaires</div><h3>Transformer la conformité en service</h3><p>Vos clients attendent de vous plus qu'une déclaration : un conseil sûr sur l'accord, la preuve et le risque. Le kit standardise vos contrôles et vous permet de proposer une prestation d'origine à forte valeur ajoutée.</p></div>
+  </div>
+</div></section>
+
+<!-- OFFRES -->
+<section><div class="w">
+  <div class="eb">Travailler avec nous</div>
+  <h2>Trois façons <em>d'avancer</em></h2>
+  <div class="g3">
+    <div class="card offer"><div class="k">Plateforme</div><h3>Abonnement IXP-Import-eXPert</h3><ul><li>Kit 01 complet et kits à venir</li><li>IXP-Assistant adossé au corpus des circulaires de l'ADII</li><li>Mises à jour réglementaires</li></ul><a class="btn" href="https://www.import-expert.ma/abonnement">S'abonner</a></div>
+    <div class="card offer hl"><span class="badge">Le plus demandé</span><div class="k">Mission</div><h3>Diagnostic origine</h3><ul><li>Revue de vos flux préférentiels et de vos preuves</li><li>Cartographie de l'exposition au contrôle</li><li>Plan de mise en conformité priorisé</li></ul><a class="btn p" href="#contact">Demander un diagnostic</a></div>
+    <div class="card offer"><div class="k">Accompagnement</div><h3>Vérification et contentieux</h3><ul><li>Préparation de la réponse à une demande de justification</li><li>Coordination avec les fournisseurs</li><li>Assistance devant les commissions de recours</li></ul><a class="btn" href="#contact">Nous consulter</a></div>
+  </div>
+</div></section>
+
+<!-- CRÉDIBILITÉ -->
+<section><div class="w">
+  <div class="g2" style="align-items:center;margin-top:0">
+    <div>
+      <div class="eb">Notre expertise</div>
+      <h2>Des praticiens de la douane, <em>pas un simple logiciel</em></h2>
+      <p class="lead">IXP-Import-eXPert associe plus de dix-huit ans de pratique douanière marocaine, une méthode d'amélioration des processus et une plateforme d'intelligence réglementaire. Chaque contenu est rattaché à son texte source : article, circulaire, note.</p>
+    </div>
+    <div class="card">
+      <p><b>Fondements documentaires</b></p>
+      <p class="muted">Code des douanes et impôts indirects · Circulaires de l'ADII sur l'origine (UE, Turquie, États-Unis, Royaume-Uni, AELE, Agadir, ZLECAf) · Guide des procédures douanières Maroc, éd. 2026 · Référentiel <i>Import Process Management</i></p>
+      <p class="muted" style="margin-top:12px">Contenus à jour au 04/10/2026.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- CONTACT -->
+<section id="contact"><div class="w">
+  <div class="eb">Contact</div>
+  <h2>Parlons de <em>vos flux</em></h2>
+  <p class="lead">Décrivez votre activité en quelques lignes : un expert vous répond et vous propose un premier échange.</p>
+  <form id="f">
+    <div><label for="n">Nom et fonction</label><input id="n" required></div>
+    <div><label for="s">Société</label><input id="s" required></div>
+    <div><label for="e">E-mail professionnel</label><input id="e" type="email" required></div>
+    <div><label for="t">Téléphone</label><input id="t" type="tel"></div>
+    <div><label for="p">Vous êtes</label><select id="p"><option>Importateur / exportateur</option><option>Transitaire / commissionnaire</option><option>Direction financière</option><option>Autre</option></select></div>
+    <div><label for="o">Votre besoin</label><select id="o"><option>Abonnement à la plateforme</option><option>Diagnostic origine</option><option>Vérification ou contentieux en cours</option><option>Démonstration</option></select></div>
+    <div class="full"><label for="m">Accords et flux concernés</label><textarea id="m" placeholder="Ex. : exportations textiles vers l'UE et le Royaume-Uni, intrants turcs"></textarea></div>
+    <div class="full"><button class="btn p" type="submit">Envoyer ma demande</button></div>
+  </form>
+  <p class="muted" style="margin-top:12px">Le formulaire ouvre votre messagerie. Vous pouvez aussi écrire directement à <a href="mailto:contact@import-expert.ma">contact@import-expert.ma</a> ou consulter <a href="https://www.import-expert.ma">www.import-expert.ma</a>.</p>
+</div></section>
+</main>
+
+<footer><div class="w">
+  <span class="dl">Version téléchargeable · consultable hors connexion</span>
+  <div class="kits"><a href="https://www.import-expert.ma/kits/kit-01-origine-ale">Kit 01 · Origine et ALE</a><a href="https://www.import-expert.ma/kits/kit-02-regimes-economiques">Kit 02 · Régimes économiques</a><a href="https://www.import-expert.ma/kits/kit-03-classement-sh">Kit 03 · Classement et contrôle</a><a href="https://www.import-expert.ma/kits/kit-04-pack-conformite">Kit 04 · Pack intégral</a><a href="https://www.import-expert.ma/kits/kit-05-commerce-exterieur">Kit 05 · Commerce extérieur</a><a href="https://www.import-expert.ma/kits/kit-06-regime-de-change">Kit 06 · Régime de change</a><a href="https://www.import-expert.ma/kits/kit-07-logistique">Kit 07 · Logistique</a></div>
+  <p><b>IXP-Import-eXPert</b> · <a href="https://www.import-expert.ma">www.import-expert.ma</a></p>
+  <p>Document de présentation à caractère informatif. Il ne constitue ni un avis juridique ni une consultation ; les situations décrites sont rendues anonymes. © 2026 IXP-Import-eXPert. Reproduction interdite sans autorisation.</p>
+</div></footer>
+
+<script>
+document.getElementById('f').addEventListener('submit',function(e){
+  e.preventDefault();var g=function(i){return document.getElementById(i).value;};
+  var body='Nom et fonction : '+g('n')+'\nSociété : '+g('s')+'\nE-mail : '+g('e')+'\nTéléphone : '+g('t')+'\nProfil : '+g('p')+'\nBesoin : '+g('o')+'\n\n'+g('m');
+  location.href='mailto:contact@import-expert.ma?subject='+encodeURIComponent('Kit 01 Origine · '+g('o')+' · '+g('s'))+'&body='+encodeURIComponent(body);
+});
+</script>
+</body>
+</html>

@@ -658,7 +658,7 @@ const CSS = `
 .t-kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--bd);margin-bottom:1.25rem}
 .t-kpi{padding:.875rem 1rem;border-right:1px solid var(--bd);text-align:center;background:var(--white)}
 .t-kpi:last-child{border-right:none}
-.t-kpi-n{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--gold)}
+.t-kpi-n{font-family:'DM Serif Display',serif;font-size:26px;font-weight:600;color:var(--gold)}
 .t-kpi-l{font-size:10px;color:var(--ink2);margin-top:2px}
 @media(max-width:600px){.t-kpis{grid-template-columns:1fr 1fr}}
 
@@ -692,7 +692,7 @@ const CSS = `
 @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .t-res-head{background:var(--gold4);border-bottom:2px solid var(--gold3);padding:.875rem 1.5rem;display:flex;align-items:center;gap:1rem}
 .t-res-ico{font-size:26px}
-.t-res-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--ink)}
+.t-res-title{font-family:'DM Serif Display',serif;font-size:17px;font-weight:600;color:var(--ink)}
 .t-res-ref{font-size:11px;color:var(--gold);margin-top:2px;letter-spacing:.06em;font-weight:600}
 .t-api-error{display:flex;align-items:flex-start;gap:.875rem;padding:1rem 1.25rem;background:rgba(232,93,93,.07);border:1px solid rgba(232,93,93,.3);color:var(--ink2);font-size:13px;margin-bottom:.5rem}
 .t-api-error:before{flex-shrink:0}
@@ -731,7 +731,7 @@ const CSS = `
 
 /* ── Blocs info ── */
 .t-info-block{border:1px solid var(--bd);background:var(--white);padding:1.25rem 1.5rem}
-.t-info-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:.75rem}
+.t-info-title{font-family:'DM Serif Display',serif;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:.75rem}
 .t-info-text{font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:.875rem}
 .t-carriers{display:flex;flex-wrap:wrap;gap:4px;margin-top:.5rem}
 .t-carrier{font-size:10px;padding:4px 10px;border:1px solid var(--bd2);color:var(--ink2);background:var(--white)}
@@ -744,7 +744,7 @@ const CSS = `
 
 /* ── Calculateurs ── */
 .t-calc-box{border:1px solid var(--bd);background:var(--white);padding:1.5rem}
-.t-calc-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--ink);margin-bottom:.25rem}
+.t-calc-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:600;color:var(--ink);margin-bottom:.25rem}
 .t-calc-sub{font-size:12px;color:var(--ink2);margin-bottom:1.25rem}
 .t-fret-grid{display:grid;grid-template-columns:1fr 1fr;gap:.875rem;margin-bottom:1rem}
 @media(max-width:600px){.t-fret-grid{grid-template-columns:1fr}}
@@ -761,13 +761,13 @@ const CSS = `
 /* Résultat calculateur — fond crème, pas noir */
 .t-calc-result{margin-top:1.25rem;border:2px solid var(--gold3);animation:fadeIn .3s ease;background:var(--white)}
 .t-calc-res-head{background:var(--gold4);border-bottom:1px solid var(--gold3);padding:.875rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
-.t-calc-route{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--ink)}
+.t-calc-route{font-family:'DM Serif Display',serif;font-size:17px;font-weight:600;color:var(--ink)}
 .t-calc-route span{color:var(--gold)}
 .t-calc-mode{font-size:11px;padding:3px 10px;border:1px solid var(--gold);color:var(--gold);font-weight:600}
 .t-calc-amounts{display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--bd)}
 .t-calc-main{padding:1.25rem 1.5rem;background:var(--gold4);border-right:1px solid var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:150px}
 .t-calc-lbl{font-size:9px;letter-spacing:.12em;color:var(--ink2);margin-bottom:.5rem;font-weight:500}
-.t-calc-amount{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:var(--ink);line-height:1}
+.t-calc-amount{font-family:'DM Serif Display',serif;font-size:36px;font-weight:600;color:var(--ink);line-height:1}
 .t-calc-sub2{font-size:10px;color:var(--ink2);margin-top:.35rem}
 .t-calc-details{padding:.875rem 1.25rem;display:flex;flex-direction:column;gap:.3rem}
 .t-detail-row{display:flex;align-items:center;justify-content:space-between;padding:.4rem .625rem;background:var(--white);border:1px solid var(--bd);font-size:12px}
@@ -795,13 +795,13 @@ const CSS = `
 
 /* ── Matières premières ── */
 .t-commos-header{margin-bottom:.875rem}
-.t-commos-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--ink)}
+.t-commos-title{font-family:'DM Serif Display',serif;font-size:18px;font-weight:600;color:var(--ink)}
 .t-commos-sub{font-size:10px;color:var(--ink2);margin-top:3px}
 .t-commos{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
 @media(max-width:600px){.t-commos{grid-template-columns:1fr 1fr}}
 .t-commo{border:1px solid var(--bd);padding:.875rem 1rem;background:var(--white)}
 .t-commo-lbl{font-size:11px;color:var(--ink2);margin-bottom:.5rem;font-weight:500}
-.t-commo-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink)}
+.t-commo-val{font-family:'DM Serif Display',serif;font-size:22px;font-weight:600;color:var(--ink)}
 .t-commo-unit{font-size:11px;color:var(--ink3);margin-left:2px}
 .t-commo-chg{font-size:12px;margin-top:3px;font-weight:500}
 .t-commo-chg.up{color:var(--up)}.t-commo-chg.dn{color:var(--dn)}

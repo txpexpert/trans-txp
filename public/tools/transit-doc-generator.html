@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="ixp-theme">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transit-IA — Suite documentaire complète</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<title>IXP-Import-eXPert — Suite documentaire complète</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -31,13 +31,13 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background
 .logo-mark{width:28px;height:28px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .logo-mark svg{fill:#fff}
 .logo-txt{font-family:'DM Serif Display',serif;font-size:15px;color:var(--ink);line-height:1.1;white-space:nowrap}
-.logo-txt span{display:block;font-size:8.5px;font-family:'IBM Plex Mono',monospace;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
+.logo-txt span{display:block;font-size:8.5px;font-family:'JetBrains Mono',monospace;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
 .logo-tagline{font-size:13px!important;font-family:'DM Sans',sans-serif!important;letter-spacing:.01em!important;text-transform:none!important;color:var(--ink2)!important;font-weight:500}
 .hdr-sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
-.hdr-count{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);white-space:nowrap}
+.hdr-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);white-space:nowrap}
 .hdr-count strong{color:var(--gold)}
 .hdr-right{margin-left:auto;display:flex;gap:6px;align-items:center}
-.btn-hdr{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border);background:none;color:var(--ink2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-hdr{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border);background:none;color:var(--ink2);cursor:pointer;transition:all .15s;white-space:nowrap}
 .btn-hdr:hover{background:var(--paper3)}
 .btn-hdr.primary{background:var(--gold);color:#fff;border-color:var(--gold)}
 .btn-hdr.primary:hover{background:var(--gold-h)}
@@ -51,7 +51,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background
 
 /* ═══ FORM PANEL ═══ */
 .form-section{padding:1rem 1.3rem;border-bottom:1px solid var(--border2)}
-.section-label{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
+.section-label{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
 .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
 .field-row{display:grid;gap:7px;margin-bottom:7px}
 .field-row.cols2{grid-template-columns:1fr 1fr}
@@ -76,7 +76,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .btn-add:hover{background:rgba(13,110,110,.14);border-color:var(--teal)}
 
 /* ═══ BUTTONS ═══ */
-.btn{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn{font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
 .btn-sm{padding:5px 11px;font-size:10.5px}
 
 
@@ -89,10 +89,10 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 
 /* Pill de groupe */
 .tabs-group-pill{display:flex;align-items:center;gap:2px;background:rgba(0,0,0,.03);border:1px solid var(--border);border-radius:10px;padding:3px 4px;border-left:3px solid var(--grp)}
-.tg-label{font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grp);padding:0 6px;white-space:nowrap;opacity:.9}
+.tg-label{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grp);padding:0 6px;white-space:nowrap;opacity:.9}
 
 /* Tuiles / onglets */
-.doc-tab{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:6px 12px;border:1px solid transparent;border-radius:7px;cursor:pointer;transition:all .15s;color:var(--tc,var(--ink3));background:none;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.doc-tab{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;padding:6px 12px;border:1px solid transparent;border-radius:7px;cursor:pointer;transition:all .15s;color:var(--tc,var(--ink3));background:none;white-space:nowrap;display:flex;align-items:center;gap:4px}
 .doc-tab:hover{background:var(--tbg);border-color:color-mix(in srgb, var(--tc) 30%, transparent)}
 .doc-tab.active{background:var(--tc);color:#fff;border-color:var(--tc);box-shadow:0 2px 8px color-mix(in srgb, var(--tc) 35%, transparent)}
 
@@ -112,14 +112,14 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .doc-company-details{font-size:10.5px;color:var(--ink3);line-height:1.8}
 .doc-title-block{text-align:right}
 .doc-title{font-family:'DM Serif Display',serif;font-size:20px;font-style:italic;margin-bottom:5px}
-.doc-meta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink3);line-height:1.8}
+.doc-meta{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink3);line-height:1.8}
 .doc-meta strong{color:var(--ink)}
 
 .doc-parties{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
 .doc-party{background:var(--paper2);border-radius:var(--radius);padding:.65rem .85rem}
 .doc-party-label{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;display:flex;align-items:center;gap:5px}
 .doc-party-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.doc-party-name{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.doc-party-name{font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:2px}
 .doc-party-addr{font-size:10.5px;color:var(--ink2);line-height:1.7}
 
 .doc-info-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem}
@@ -136,7 +136,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .doc-totals{display:flex;justify-content:flex-end;margin-bottom:1rem}
 .doc-totals-box{width:240px}
 .doc-total-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11.5px;border-bottom:1px solid var(--border2)}
-.doc-total-row.grand{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--gold);border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);padding:7px 0;margin-top:3px}
+.doc-total-row.grand{font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;color:var(--gold);border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);padding:7px 0;margin-top:3px}
 
 .doc-footer{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
 .doc-footer-block-label{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
@@ -159,7 +159,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .ent-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);margin-bottom:6px}
 .ent-alert{color:#b91c1c;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
 .ent-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1.3rem;box-shadow:var(--shadow);margin-bottom:.9rem}
-.ent-card-title{font-family:'Syne',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.9rem;padding-bottom:.5rem;border-bottom:1px solid var(--border2)}
+.ent-card-title{font-family:'DM Sans',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.9rem;padding-bottom:.5rem;border-bottom:1px solid var(--border2)}
 .logo-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:1.3rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--paper);position:relative}
 .logo-zone:hover,.logo-zone.has-logo{border-color:var(--gold-bd);background:var(--gold-pale)}
 .logo-zone-inner img{max-height:70px;max-width:180px;object-fit:contain;margin-bottom:.4rem}
@@ -170,17 +170,17 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .sdot.ok{background:var(--green)}.sdot.no{background:var(--orange)}
 
 /* TOAST */
-.toast{position:fixed;bottom:1.4rem;right:1.4rem;background:var(--ink);color:#fff;font-size:12px;font-family:'Syne',sans-serif;font-weight:600;padding:9px 16px;border-radius:var(--radius2);box-shadow:var(--sh-md);z-index:9999;opacity:0;transform:translateY(6px);transition:all .22s;pointer-events:none}
+.toast{position:fixed;bottom:1.4rem;right:1.4rem;background:var(--ink);color:#fff;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;padding:9px 16px;border-radius:var(--radius2);box-shadow:var(--sh-md);z-index:9999;opacity:0;transform:translateY(6px);transition:all .22s;pointer-events:none}
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.ok{background:var(--green)}
 
 
 /* ═══ DOC ACTION BAR ═══ */
 .doc-action-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--paper2);border-top:1px solid var(--border);border-radius:0 0 var(--radius2) var(--radius2);margin-top:1.4rem}
-.doc-action-bar .btn-print{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
-.doc-action-bar .btn-pdf{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff}
+.doc-action-bar .btn-print{font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:700;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.doc-action-bar .btn-pdf{font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:700;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff}
 .doc-action-bar .btn-pdf:hover{opacity:.85}
-.doc-action-bar .doc-action-label{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-left:auto}
+.doc-action-bar .doc-action-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-left:auto}
 /* PRINT */
 @media print{
   .app-header,.panel-form,.preview-header,.form-actions{display:none!important}
@@ -197,13 +197,14 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   .panel-form,.panel-preview{height:auto;position:static}
 }
 </style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="app-header">
   <div class="logo-mark"><svg width="14" height="14" viewBox="0 0 14 14"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="8" y="0" width="6" height="6" rx="1"/><rect x="0" y="8" width="6" height="6" rx="1"/><rect x="8" y="8" width="6" height="6" rx="1"/></svg></div>
-  <div class="logo-txt">Transit-IA <span class="logo-tagline">Créer mes documents commerciaux : Import/Export</span></div>
+  <div class="logo-txt">Import-eXPert <span class="logo-tagline">Créer mes documents commerciaux : Import/Export</span></div>
   <div class="hdr-sep"></div>
   <div class="hdr-count"><strong>10</strong> documents disponibles</div>
   <div class="hdr-right">
@@ -809,7 +810,7 @@ function renderDV1(){
     <div class="doc-info-cell"><div class="doc-info-cell-label">Assurance (à compléter)</div><div class="doc-info-cell-val">—</div></div>
   </div>
   <div style="margin-bottom:1rem;padding:10px 14px;background:var(--paper2);border:1px solid var(--border);border-radius:var(--radius);font-size:11.5px">
-    <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:6px">Valeur en douane (CAF / CIF)</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:6px">Valeur en douane (CAF / CIF)</div>
     <div style="font-size:15px;font-weight:700;color:#1A3A9A">= Valeur transaction + Fret + Assurance<br>≈ <strong>${fmt(mont,2)} ${dev}</strong> (valeur transactionnelle)</div>
   </div>
   <div class="doc-footer">
@@ -833,7 +834,7 @@ function renderAT(){
   <table class="doc-table"><thead><tr><th style="width:35%">Désignation marchandise</th><th>Code HS</th><th class="num">Qté</th><th>Unité</th><th class="num">Valeur déclarée ${g('devise')}</th><th>Usage prévu</th></tr></thead>
   <tbody>${items.map(it=>`<tr><td>${esc(it.desc)||'—'}</td><td>${esc(it.hs)||'—'}</td><td class="num">${fmt(+it.qty,0)}</td><td>${esc(it.unit)}</td><td class="num">${fmt((+it.qty)*(+it.pu),2)}</td><td>Réexportation en l'état</td></tr>`).join('')||noItems(6)}</tbody></table>
   <div style="margin-bottom:1rem;padding:10px 14px;background:var(--paper2);border:1px solid var(--border);border-radius:var(--radius);font-size:11.5px">
-    <div style="font-family:'Syne',sans-serif;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:6px">Engagement de l'opérateur</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:6px">Engagement de l'opérateur</div>
     <div style="font-size:11.5px;color:var(--ink2)">Je soussigné m'engage à réexporter les marchandises ci-dessus décrites dans le délai accordé et à me conformer aux conditions du régime d'admission temporaire tel que prévu par le Code des Douanes et Accises du Royaume du Maroc.</div>
   </div>
   <div class="doc-footer">

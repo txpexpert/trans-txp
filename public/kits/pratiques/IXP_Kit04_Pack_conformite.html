@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pack conformité intégral · Programme d'expertise | IXP-Import-eXPert</title>
+<meta name="description" content="Faire de la fonction import un programme de conformité piloté : organisation, contrôles clés, indicateurs, déploiement en 90 jours, trajectoire OEA.">
+<!--
+  VERSION AUTONOME : fichier unique, sans police ni ressource externe, consultable hors connexion.
+  Liens à vérifier avant diffusion :
+    Abonnement : https://www.import-expert.ma/abonnement
+    E-mail     : contact@import-expert.ma (formulaire)
+    Kits       : https://www.import-expert.ma/kits/kit-0X-...
+-->
+<style>
+:root{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--paper:#FAF7F0;--line:#E6DCC7;--navy:#153E82;--navy2:#0E2C5E;--red:#A82D3C;--gold:#A8822F;--green:#1E7346;
+--kc:#153E82;--kb:#E9EFF9;--kl:#C9D6EE;--serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;--sans:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;font-size:16px}a{color:var(--navy)}
+.w{max-width:1080px;margin:0 auto;padding:0 20px}h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.12;margin:0 0 12px}
+h1{font-size:clamp(34px,5vw,56px)}h2{font-size:clamp(28px,3.4vw,38px)}h3{font-size:21px}h1 em,h2 em{color:var(--red);font-style:italic}p{margin:0 0 12px}
+.eb{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}.lead{font-size:18px;color:var(--ink2);max-width:720px}.muted{color:var(--ink3);font-size:14px}
+section{padding:72px 0;border-top:1px solid var(--line)}
+.top{position:sticky;top:0;z-index:10;background:rgba(250,247,240,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}.top .w{display:flex;align-items:center;gap:14px;height:62px}
+.brand{font-family:var(--serif);font-size:22px;text-decoration:none;color:var(--ink)}.brand b{font-weight:400;color:var(--red)}
+.tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--kb);color:var(--kc);border:1px solid var(--kl)}.top .sp{margin-left:auto;display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:500;padding:11px 20px;border-radius:99px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--ink);color:#fff}.btn.p{background:var(--red);border-color:var(--red);color:#fff}.btn.p:hover{background:#8E2533}.btn.n{background:var(--navy);border-color:var(--navy);color:#fff}.btn.sm{padding:8px 14px;font-size:14px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.hero{padding:84px 0 64px;border:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:48px}
+.stat{background:#fff;padding:22px 20px}.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:40px;line-height:1;color:var(--kc)}.stat span{display:block;margin-top:8px;font-size:14px;color:var(--ink2)}
+.g2,.g3,.g4{display:grid;gap:14px;margin-top:28px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}.card .k{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}.card p:last-child{margin-bottom:0}
+.risk{display:grid;grid-template-columns:56px 1fr;gap:16px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:14px;padding:20px;margin-top:12px}
+.risk .n{font-family:var(--serif);font-size:34px;color:var(--red);line-height:1}.risk .c{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:var(--red)}
+.acc{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}.acc div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}.acc b{display:block;font-size:16px}.acc small{display:block;color:var(--ink3);font-size:13px;margin-top:4px}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:10px}.pill.g{background:#EBF6EF;color:var(--green)}.pill.a{background:#FCF4E3;color:#9A620C}.pill.b{background:#EEF1F6;color:var(--navy)}.pill.r{background:#FCEEF0;color:var(--red)}
+ol.q{counter-reset:q;list-style:none;padding:0;margin:24px 0 0}ol.q li{counter-increment:q;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:17px}
+ol.q li::before{content:counter(q);width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700}
+.ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:28px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.ladder div{padding:22px;background:#fff;border-right:1px solid var(--line)}.ladder div:last-child{border:none;background:var(--kb)}.ladder b{display:block;font-family:var(--serif);font-weight:400;font-size:20px;margin-bottom:6px}.ladder .s{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--kc);font-weight:700}
+.dark{background:var(--navy2);color:#fff;border:none}.dark .lead{color:#C9D3E6}.dark .eb{color:#E3C77A}
+.lock{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}.lock div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:18px}
+.lock b{display:block;font-size:15.5px;margin-bottom:4px}.lock span{font-size:13.5px;color:#C9D3E6}.lock b::before{content:'🔒 ';font-size:13px}
+.offer{display:flex;flex-direction:column}.offer.hl{border:2px solid var(--red)}.offer ul{padding-left:18px;margin:8px 0 18px;font-size:15px;color:var(--ink2)}.offer ul li{margin-bottom:5px}.offer .btn{margin-top:auto;justify-content:center}
+.badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--red);color:#fff;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:26px}form .full{grid-column:1/-1}
+label{display:block;font-size:13.5px;font-weight:700;margin-bottom:5px}input,select,textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid #D6C9AC;border-radius:10px;background:var(--paper)}
+textarea{min-height:90px;resize:vertical}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);background:#fff}
+.kits{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}.kits a{font-size:13px;padding:6px 12px;border:1px solid var(--line);border-radius:99px;background:#fff;text-decoration:none;color:var(--ink2)}
+footer{padding:36px 0 50px;border-top:1px solid var(--line);font-size:13px;color:var(--ink3)}
+@media (max-width:900px){.g3,.g4,.acc,.lock,.stats{grid-template-columns:1fr 1fr}.top .tag{display:none}}
+@media (max-width:620px){.g2,.g3,.g4,.acc,.lock,.stats,.ladder,form{grid-template-columns:1fr}.ladder div{border-right:none;border-bottom:1px solid var(--line)}.top .sp .btn:not(.p){display:none}section{padding:54px 0}.hero{padding:56px 0 44px}}
+@media print{.top,form,.btns{display:none!important}section{break-inside:avoid}.dark{background:#fff;color:var(--ink)}}
+</style>
+<style>
+.mat{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:28px;align-items:end}
+.mat div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.mat div:nth-child(1){min-height:150px}.mat div:nth-child(2){min-height:175px}.mat div:nth-child(3){min-height:200px}.mat div:nth-child(4){min-height:225px;border-color:var(--kc)}.mat div:nth-child(5){min-height:250px;background:var(--kb);border-color:var(--kc)}
+.mat .s{font-family:var(--serif);font-size:30px;color:var(--kc);line-height:1}.mat b{display:block;margin:6px 0 4px}.mat span{font-size:13.5px;color:var(--ink2)}
+.ladder.c5{grid-template-columns:repeat(5,1fr)}
+.kitc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.kitc a{display:block;background:#fff;border:1px solid var(--line);border-top:4px solid var(--c);border-radius:16px;padding:22px;text-decoration:none;color:var(--ink)}
+.kitc a:hover{transform:translateY(-2px)}.kitc .k{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--c);font-weight:700}
+@media (max-width:900px){.mat,.ladder.c5{grid-template-columns:1fr 1fr}.mat div{min-height:0!important}.kitc{grid-template-columns:1fr}}
+@media (max-width:620px){.mat,.ladder.c5{grid-template-columns:1fr}}
+.top .sp .pr{background:#fff}
+.dl{display:inline-block;font-size:12px;padding:4px 10px;border-radius:99px;background:var(--kb,#EEF1F6);color:var(--kc,var(--navy));margin-bottom:12px}
+@media (max-width:900px){.top .sp .pr{display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="w">
+  <a class="brand" href="https://www.import-expert.ma">Import<b>-</b>eXPert</a>
+  <span class="tag">Kit 04 · Pack intégral</span>
+  <div class="sp"><button class="btn sm pr" type="button" onclick="window.print()">Imprimer / PDF</button><a class="btn sm" href="#contact">Parler à un expert</a><a class="btn sm p" href="https://www.import-expert.ma/abonnement">S'abonner</a></div>
+</div></header>
+
+<main>
+<section class="hero"><div class="w">
+  <div class="eb">Programme d'expertise · Édition 2026</div>
+  <h1>D'un dédouanement subi<br><em>à une fonction import pilotée.</em></h1>
+  <p class="lead">L'origine, les régimes et le classement ne sont pas trois sujets distincts : ce sont trois portes d'entrée du même risque. Le Pack conformité intégral les relie dans un programme qui s'appuie sur une organisation claire, des contrôles placés au bon moment, des indicateurs mensuels et un déploiement en 90 jours. C'est le socle qui fait la différence en cas de contrôle, et le chemin le plus direct vers le statut d'opérateur économique agréé.</p>
+  <div class="btns"><a class="btn p" href="#contact">Demander un diagnostic de maturité</a><a class="btn" href="https://www.import-expert.ma/abonnement">Voir l'abonnement</a></div>
+  <div class="stats">
+    <div class="stat"><b>90 jours</b><span>pour passer d'une conformité dispersée à un programme piloté</span></div>
+    <div class="stat"><b>10</b><span>composantes évaluées dans notre modèle de maturité</span></div>
+    <div class="stat"><b>8</b><span>contrôles clés, chacun placé au moment précis où l'erreur naît</span></div>
+    <div class="stat"><b>3 kits</b><span>spécialisés intégrés : origine, régimes, classement</span></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Le principe</div>
+  <h2>La diligence raisonnable, <em>votre meilleure défense</em></h2>
+  <p class="lead">Lors d'un contrôle, l'administration ne vous demande pas d'être infaillible. Elle cherche à savoir si vous avez mis en place des procédures, des contrôles et des ressources à la mesure de vos risques. Une entreprise qui le démontre négocie depuis une position solide ; celle qui ne le peut pas subit le contrôle.</p>
+  <div class="g3">
+    <div class="card"><div class="k">Sans programme</div><h3>Chaque erreur se répète</h3><p>Chaque déclaration est une infraction distincte, et la récidive alourdit les sanctions. Une erreur systémique coûte autant de fois qu'elle a été commise.</p></div>
+    <div class="card"><div class="k">Avec programme</div><h3>L'erreur est vue tôt</h3><p>Des contrôles placés au bon moment détectent l'écart pendant qu'il peut encore être régularisé dans des conditions favorables.</p></div>
+    <div class="card"><div class="k">Au-delà</div><h3>La conformité devient un avantage</h3><p>Circuit vert, garanties allégées, dédouanement à domicile : la certification transforme le coût de la conformité en gain opérationnel.</p></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Où en êtes-vous ?</div>
+  <h2>Cinq niveaux <em>de maturité</em></h2>
+  <p class="lead">Notre modèle situe votre fonction import sur une échelle de cinq niveaux. La plupart des entreprises que nous rencontrons se situent entre le premier et le deuxième.</p>
+  <div class="mat">
+    <div><span class="s">1</span><b>Réactif</b><span>Le dédouanement est subi, le savoir est chez le transitaire, les erreurs sont découvertes au contrôle.</span></div>
+    <div><span class="s">2</span><b>Organisé</b><span>Des procédures écrites, une base articles, des échéanciers.</span></div>
+    <div><span class="s">3</span><b>Maîtrisé</b><span>Des contrôles systématiques, des indicateurs mensuels, des décisions anticipées.</span></div>
+    <div><span class="s">4</span><b>Certifié</b><span>Le statut OEA, le circuit vert, des garanties allégées.</span></div>
+    <div><span class="s">5</span><b>Optimisé</b><span>Un pilotage par la donnée : la fonction import crée de la valeur.</span></div>
+  </div>
+  <div class="btns"><a class="btn n" href="#contact">Mesurer ma maturité avec un expert</a></div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">La méthode</div>
+  <h2>Un déploiement <em>en cinq temps</em></h2>
+  <p class="lead">Seize actions datées, un propriétaire de processus désigné et un point de passage devant la direction à 90 jours.</p>
+  <div class="ladder c5">
+    <div><span class="s">Jours 1 à 14</span><b>Mesurer</b><p class="muted">Diagnostic, maturité, responsabilités.</p></div>
+    <div><span class="s">Jours 8 à 40</span><b>Fonder</b><p class="muted">Une base articles classée et documentée.</p></div>
+    <div><span class="s">Jours 30 à 55</span><b>Sécuriser</b><p class="muted">Contrats, rapprochements, revue post-mainlevée.</p></div>
+    <div><span class="s">Jours 40 à 70</span><b>Piloter</b><p class="muted">Comptes sous régime et garanties.</p></div>
+    <div><span class="s">Jours 55 à 90</span><b>Réviser</b><p class="muted">Archivage, indicateurs, formation, bilan.</p></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Les risques que le programme neutralise</div>
+  <h2>Ce qui coûte cher <em>quand rien n'est organisé</em></h2>
+  <div class="risk"><div class="n">01</div><div><h3>Personne n'est responsable de l'ensemble</h3><p>Achats, logistique, finance et transitaire se partagent les tâches, mais aucun n'en répond de bout en bout.</p><span class="c">Conséquence : des angles morts que le contrôle trouve avant vous</span></div></div>
+  <div class="risk"><div class="n">02</div><div><h3>Les erreurs découvertes trop tard</h3><p>Sans revue après la mainlevée, la fenêtre où une rectification spontanée reste avantageuse se referme sans que personne s'en rende compte.</p><span class="c">Conséquence : une erreur régularisable devient une infraction</span></div></div>
+  <div class="risk"><div class="n">03</div><div><h3>Des préférences non utilisées</h3><p>Des flux éligibles à un droit réduit sont dédouanés au droit commun, faute de preuve ou de suivi.</p><span class="c">Conséquence : une perte sèche, invisible dans les comptes</span></div></div>
+  <div class="risk"><div class="n">04</div><div><h3>Aucun indicateur</h3><p>Ni le délai de mainlevée, ni le taux de rectification, ni l'encours des garanties ne sont mesurés.</p><span class="c">Conséquence : impossible de démontrer la diligence, ou de progresser</span></div></div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">L'aboutissement</div>
+  <h2>Vers le statut <em>d'opérateur économique agréé</em></h2>
+  <p class="lead">Le statut OEA est accordé sur demande aux entreprises qui démontrent leur fiabilité. Un programme de conformité en place couvre déjà l'essentiel de ce que l'audit examine.</p>
+  <div class="g4">
+    <div class="card"><div class="k">Contrôles</div><h3>Moins et plus vite</h3><p>Allègement des contrôles et traitement prioritaire.</p></div>
+    <div class="card"><div class="k">Trésorerie</div><h3>Garanties allégées</h3><p>Des plafonds de cautionnement très élevés, voire illimités.</p></div>
+    <div class="card"><div class="k">Logistique</div><h3>Circuit vert</h3><p>Et dédouanement à domicile pour le statut le plus élevé.</p></div>
+    <div class="card"><div class="k">International</div><h3>Reconnaissance</h3><p>Une reconnaissance mutuelle à l'étranger, et une procédure commune avec la DGI.</p></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Pour la direction</div>
+  <h2>Cinq questions <em>pour le prochain comité de direction</em></h2>
+  <ol class="q">
+    <li>Qui, chez nous, rend compte de l'ensemble de la chaîne import, de la commande à l'archivage ?</li>
+    <li>Combien de droits avons-nous économisés grâce aux préférences, et combien aurions-nous pu économiser ?</li>
+    <li>Combien de déclarations avons-nous rectifiées cette année, et pourquoi ?</li>
+    <li>Quelle part de nos garanties bancaires est immobilisée par la douane ?</li>
+    <li>Sommes-nous éligibles au statut OEA, et que nous manque-t-il ?</li>
+  </ol>
+</div></section>
+
+<section class="dark"><div class="w">
+  <div class="eb">Le pack complet</div>
+  <h2 style="color:#fff">Les outils de pilotage <em style="color:#E3C77A">réservés à nos clients</em></h2>
+  <p class="lead">Le pack inclut les trois kits spécialisés et les outils qui les relient en programme, au sein de la plateforme IXP-Import-eXPert.</p>
+  <div class="lock">
+    <div><b>Évaluation de maturité</b><span>Dix composantes notées, niveau et priorités</span></div>
+    <div><b>Plan de déploiement 90 jours</b><span>Seize actions datées à partir de votre lancement</span></div>
+    <div><b>Matrice des responsabilités</b><span>Qui fait quoi, avec un contrôle de cohérence</span></div>
+    <div><b>Calendrier des contrôles clés</b><span>De la création de l'article à l'audit annuel</span></div>
+    <div><b>Tableau de bord mensuel</b><span>Dix indicateurs : délai, coût, conformité, trésorerie</span></div>
+    <div><b>Conduite à tenir face à une erreur</b><span>Révéler, régulariser ou coopérer</span></div>
+    <div><b>Trajectoire OEA</b><span>Conditions, procédure et avantages</span></div>
+    <div><b>Délais clés consolidés</b><span>Une trentaine de délais en un seul tableau</span></div>
+    <div><b>Glossaire et veille</b><span>Les termes et les séries de circulaires à suivre</span></div>
+  </div>
+  <div class="btns"><a class="btn p" href="https://www.import-expert.ma/abonnement">Accéder au pack</a><a class="btn" style="border-color:#fff;color:#fff" href="#contact">Demander une démonstration</a></div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Inclus dans le pack</div>
+  <h2>Trois kits spécialisés, <em>un seul programme</em></h2>
+  <div class="kitc">
+    <a href="https://www.import-expert.ma/kits/kit-01-origine-ale" style="--c:#1E7346"><span class="k">Kit 01</span><h3>Origine et accords de libre-échange</h3><p class="muted">Payer le bon droit et pouvoir le prouver lors d'une vérification.</p></a>
+    <a href="https://www.import-expert.ma/kits/kit-02-regimes-economiques" style="--c:#9A620C"><span class="k">Kit 02</span><h3>Régimes suspensifs et économiques</h3><p class="muted">Ne jamais laisser un compte échu, et alléger les garanties.</p></a>
+    <a href="https://www.import-expert.ma/kits/kit-03-classement-sh" style="--c:#1F4E9A"><span class="k">Kit 03</span><h3>Classement SH et contrôle a posteriori</h3><p class="muted">Un code justifié et un dossier qui tient quatre ans.</p></a>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Travailler avec nous</div>
+  <h2>Trois niveaux <em>d'engagement</em></h2>
+  <div class="g3">
+    <div class="card offer"><div class="k">Plateforme</div><h3>Abonnement Pack intégral</h3><ul><li>L'ensemble des kits et leurs outils</li><li>IXP-Assistant adossé aux circulaires de l'ADII</li><li>Mises à jour réglementaires</li></ul><a class="btn" href="https://www.import-expert.ma/abonnement">S'abonner</a></div>
+    <div class="card offer hl"><span class="badge">Recommandé</span><div class="k">Mission</div><h3>Programme 90 jours accompagné</h3><ul><li>Diagnostic et évaluation de maturité</li><li>Déploiement avec votre propriétaire de processus</li><li>Bilan présenté à la direction</li></ul><a class="btn p" href="#contact">Lancer le programme</a></div>
+    <div class="card offer"><div class="k">Certification</div><h3>Préparation OEA</h3><ul><li>Pré-diagnostic au regard des conditions</li><li>Constitution du dossier</li><li>Préparation de l'audit</li></ul><a class="btn" href="#contact">Nous consulter</a></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="g2" style="align-items:center;margin-top:0">
+    <div><div class="eb">Notre expertise</div><h2>Des praticiens de la douane, <em>pas un simple logiciel</em></h2><p class="lead">IXP-Import-eXPert réunit plus de dix-huit ans de pratique douanière marocaine, la méthode Lean Six Sigma appliquée aux processus d'importation et une plateforme d'intelligence réglementaire.</p></div>
+    <div class="card"><p><b>Fondements documentaires</b></p><p class="muted">Code des douanes et impôts indirects · Décret n° 2-77-862 · Circulaires de l'ADII · Guide des procédures douanières Maroc, éd. 2026 · Référentiel <i>Import Process Management</i> (mise à jour du 17/10/2026)</p><p class="muted" style="margin-top:12px">Contenus à jour au 04/10/2026.</p></div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="w">
+  <div class="eb">Contact</div>
+  <h2>Commençons par <em>votre diagnostic</em></h2>
+  <p class="lead">Décrivez votre organisation import : un expert vous répond et vous propose un premier échange.</p>
+  <form id="f">
+    <div><label for="n">Nom et fonction</label><input id="n" required></div>
+    <div><label for="s">Société</label><input id="s" required></div>
+    <div><label for="e">E-mail professionnel</label><input id="e" type="email" required></div>
+    <div><label for="t">Téléphone</label><input id="t" type="tel"></div>
+    <div><label for="p">Vous êtes</label><select id="p"><option>Direction générale / financière</option><option>Responsable import / supply</option><option>Transitaire / commissionnaire</option><option>Autre</option></select></div>
+    <div><label for="o">Votre besoin</label><select id="o"><option>Diagnostic de maturité</option><option>Programme 90 jours</option><option>Préparation OEA</option><option>Abonnement Pack intégral</option><option>Démonstration</option></select></div>
+    <div class="full"><label for="m">Votre organisation import</label><textarea id="m" placeholder="Ex. : 600 DUM par an, trois transitaires, ATPA et préférences UE"></textarea></div>
+    <div class="full"><button class="btn p" type="submit">Envoyer ma demande</button></div>
+  </form>
+  <p class="muted" style="margin-top:12px">Le formulaire ouvre votre messagerie. Vous pouvez aussi écrire directement à <a href="mailto:contact@import-expert.ma">contact@import-expert.ma</a> ou consulter <a href="https://www.import-expert.ma">www.import-expert.ma</a>.</p>
+</div></section>
+</main>
+
+<footer><div class="w">
+  <span class="dl">Version téléchargeable · consultable hors connexion</span>
+  <div class="kits"><a href="https://www.import-expert.ma/kits/kit-01-origine-ale">Kit 01 · Origine et ALE</a><a href="https://www.import-expert.ma/kits/kit-02-regimes-economiques">Kit 02 · Régimes économiques</a><a href="https://www.import-expert.ma/kits/kit-03-classement-sh">Kit 03 · Classement et contrôle</a><a href="https://www.import-expert.ma/kits/kit-04-pack-conformite">Kit 04 · Pack intégral</a><a href="https://www.import-expert.ma/kits/kit-05-commerce-exterieur">Kit 05 · Commerce extérieur</a><a href="https://www.import-expert.ma/kits/kit-06-regime-de-change">Kit 06 · Régime de change</a><a href="https://www.import-expert.ma/kits/kit-07-logistique">Kit 07 · Logistique</a></div>
+  <p><b>IXP-Import-eXPert</b> · <a href="https://www.import-expert.ma">www.import-expert.ma</a></p>
+  <p>Document de présentation à caractère informatif, qui ne constitue ni un avis juridique ni une consultation. © 2026 IXP-Import-eXPert. Reproduction interdite sans autorisation.</p>
+</div></footer>
+<script>
+document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();var g=function(i){return document.getElementById(i).value;};
+var b='Nom et fonction : '+g('n')+'\nSociété : '+g('s')+'\nE-mail : '+g('e')+'\nTéléphone : '+g('t')+'\nProfil : '+g('p')+'\nBesoin : '+g('o')+'\n\n'+g('m');
+location.href='mailto:contact@import-expert.ma?subject='+encodeURIComponent('Kit 04 Pack intégral · '+g('o')+' · '+g('s'))+'&body='+encodeURIComponent(b);});
+</script>
+</body>
+</html>

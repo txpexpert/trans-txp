@@ -1,0 +1,31 @@
+import matplotlib; matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+NAVY="#153E82"; RED="#A82D3C"; GREEN="#1E7346"; AMB="#9A620C"; GREY="#5A6475"
+fig,ax=plt.subplots(figsize=(8.6,11),dpi=200); ax.set_xlim(0,100); ax.set_ylim(0,130); ax.axis("off")
+def box(x,y,w,h,t,fc="#EDF3FC",ec=NAVY,fs=8.6,bold=False):
+    ax.add_patch(FancyBboxPatch((x,y),w,h,boxstyle="round,pad=0.4,rounding_size=1.2",fc=fc,ec=ec,lw=1.2))
+    ax.text(x+w/2,y+h/2,t,ha="center",va="center",fontsize=fs,color="#14120F",weight="bold" if bold else "normal",wrap=True,linespacing=1.3)
+def arr(x1,y1,x2,y2,lab=None,col=GREY):
+    ax.add_patch(FancyArrowPatch((x1,y1),(x2,y2),arrowstyle="-|>",mutation_scale=11,color=col,lw=1.2))
+    if lab: ax.text((x1+x2)/2+1.2,(y1+y2)/2,lab,fontsize=7.5,color=col,va="center")
+ax.text(50,127,"Arbre de décision : classement d’une marchandise (RGI 1 à 6)",ha="center",fontsize=12.5,color=NAVY,weight="bold")
+box(18,113,64,8,"Dossier produit : fiche technique, composition, présentation,\nusage, procédé, photos ; recherche d’une circulaire 232 voisine",fc="#F4EBD3",ec=AMB)
+arr(50,113,50,108)
+box(18,99,64,9,"RGI 1 — Les libellés des positions et les notes de sections\net de chapitres désignent-ils la marchandise sans ambiguïté ?")
+arr(50,99,50,94,"non")
+ax.plot([82,92.5],[103.5,103.5],color=GREEN,lw=1.2); arr(92.5,103.5,92.5,100.6,col=GREEN); ax.text(84,105.3,"oui",fontsize=7.5,color=GREEN)
+box(86,86,13,14,"Position\ntrouvée :\naller à\nla RGI 6",fc="#EBF6EF",ec=GREEN,fs=7.6)
+box(18,84,64,10,"RGI 2 — Article incomplet ou non monté présentant le caractère\nessentiel de l’article fini (2 a) ? Mélange ou ouvrage d’une\nmatière visée par une position (2 b) ?",fs=8.2)
+arr(50,84,50,79,"plusieurs positions possibles")
+box(18,62,64,17,"RGI 3 — Plusieurs positions envisageables :\na) la position la plus spécifique l’emporte ;\nb) à défaut, mélanges, articles composites et assortiments :\nl’élément qui confère le caractère essentiel ;\nc) à défaut, la dernière position par ordre de numérotation",fs=8.2)
+arr(50,62,50,57,"aucune position ne convient")
+box(18,49,64,8,"RGI 4 — Classer dans la position des articles\nles plus analogues")
+arr(50,49,50,44)
+box(18,36,64,8,"RGI 5 — Étuis, contenants et emballages :\nclassés avec la marchandise dans les cas prévus")
+arr(50,36,50,31)
+box(18,21,64,10,"RGI 6 — Sous-positions : appliquer les mêmes règles\nau niveau des sous-positions de même niveau,\npuis les sous-positions nationales (10 chiffres)",fc="#EDF3FC",ec=NAVY,bold=False)
+arr(92,86,92,26); arr(92,26,82,26)
+arr(50,21,50,16)
+box(10,3,80,13,"Sécuriser : documenter le raisonnement RGI par RGI dans le registre SH ;\nen cas de doute sérieux, demander une décision anticipée (réponse en 150 jours,\nvalable 5 ans) ; si le classement dépend de la composition, joindre une analyse\n(frais à la charge du redevable si elle infirme la déclaration)",fc="#FCEEF0",ec=RED,fs=8)
+plt.savefig("out_rgi.png",bbox_inches="tight",facecolor="white")

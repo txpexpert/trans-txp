@@ -210,7 +210,7 @@ export default function AuditExpressPage() {
             <div style={{ fontSize: 10, letterSpacing: '.1em', color: '#8A8A82', marginBottom: 6 }}>
               VOTRE SCORE DE CONFORMITÉ PRÉLIMINAIRE
             </div>
-            <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 48, fontWeight: 700, color: scoreColor(result.score) }}>
+            <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 48, fontWeight: 700, color: scoreColor(result.score) }}>
               {result.score}%
             </div>
             <div style={{ fontSize: 13, fontWeight: 500, color: scoreColor(result.score) }}>
@@ -234,7 +234,7 @@ export default function AuditExpressPage() {
           )}
 
           <div style={{ padding: '1.5rem', background: '#1A1A18', color: 'white', textAlign: 'center' }}>
-            <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 17, marginBottom: 8 }}>
+            <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 17, marginBottom: 8 }}>
               Ce n'est qu'un aperçu sur 6 points de contrôle.
             </div>
             <div style={{ fontSize: 12, color: 'rgba(255,255,255,.7)', marginBottom: 14, lineHeight: 1.6 }}>

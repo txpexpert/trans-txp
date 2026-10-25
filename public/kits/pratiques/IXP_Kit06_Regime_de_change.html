@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Régime de change · Kit d'expertise | IXP-Import-eXPert</title>
+<meta name="description" content="IGOC 2026, rapatriement, règlement des importations, comptes en devises, dotations : ce que les importateurs, exportateurs et DAF doivent maîtriser face à l'Office des Changes.">
+<!--
+  VERSION AUTONOME : fichier unique, sans police ni ressource externe, consultable hors connexion.
+  Liens à vérifier avant diffusion :
+    Abonnement : https://www.import-expert.ma/abonnement
+    E-mail     : contact@import-expert.ma (formulaire)
+    Kits       : https://www.import-expert.ma/kits/kit-0X-...
+-->
+<style>
+:root{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--paper:#FAF7F0;--line:#E6DCC7;--navy:#153E82;--navy2:#0E2C5E;--red:#A82D3C;--gold:#A8822F;--green:#1E7346;
+--kc:#5B3A8C;--kb:#F1ECF8;--kl:#D6C8EA;--serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;--sans:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;font-size:16px}a{color:var(--navy)}
+.w{max-width:1080px;margin:0 auto;padding:0 20px}h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.12;margin:0 0 12px}
+h1{font-size:clamp(34px,5vw,56px)}h2{font-size:clamp(28px,3.4vw,38px)}h3{font-size:21px}h1 em,h2 em{color:var(--red);font-style:italic}p{margin:0 0 12px}
+.eb{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}.lead{font-size:18px;color:var(--ink2);max-width:720px}.muted{color:var(--ink3);font-size:14px}
+section{padding:72px 0;border-top:1px solid var(--line)}
+.top{position:sticky;top:0;z-index:10;background:rgba(250,247,240,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}.top .w{display:flex;align-items:center;gap:14px;height:62px}
+.brand{font-family:var(--serif);font-size:22px;text-decoration:none;color:var(--ink)}.brand b{font-weight:400;color:var(--red)}
+.tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--kb);color:var(--kc);border:1px solid var(--kl)}.top .sp{margin-left:auto;display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:500;padding:11px 20px;border-radius:99px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--ink);color:#fff}.btn.p{background:var(--red);border-color:var(--red);color:#fff}.btn.p:hover{background:#8E2533}.btn.n{background:var(--navy);border-color:var(--navy);color:#fff}.btn.sm{padding:8px 14px;font-size:14px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.hero{padding:84px 0 64px;border:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:48px}
+.stat{background:#fff;padding:22px 20px}.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:40px;line-height:1;color:var(--kc)}.stat span{display:block;margin-top:8px;font-size:14px;color:var(--ink2)}
+.g2,.g3,.g4{display:grid;gap:14px;margin-top:28px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}.card .k{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}.card p:last-child{margin-bottom:0}
+.risk{display:grid;grid-template-columns:56px 1fr;gap:16px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:14px;padding:20px;margin-top:12px}
+.risk .n{font-family:var(--serif);font-size:34px;color:var(--red);line-height:1}.risk .c{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:var(--red)}
+.acc{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}.acc div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}.acc b{display:block;font-size:16px}.acc small{display:block;color:var(--ink3);font-size:13px;margin-top:4px}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:10px}.pill.g{background:#EBF6EF;color:var(--green)}.pill.a{background:#FCF4E3;color:#9A620C}.pill.b{background:#EEF1F6;color:var(--navy)}.pill.r{background:#FCEEF0;color:var(--red)}
+ol.q{counter-reset:q;list-style:none;padding:0;margin:24px 0 0}ol.q li{counter-increment:q;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:17px}
+ol.q li::before{content:counter(q);width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700}
+.ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:28px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.ladder div{padding:22px;background:#fff;border-right:1px solid var(--line)}.ladder div:last-child{border:none;background:var(--kb)}.ladder b{display:block;font-family:var(--serif);font-weight:400;font-size:20px;margin-bottom:6px}.ladder .s{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--kc);font-weight:700}
+.dark{background:var(--navy2);color:#fff;border:none}.dark .lead{color:#C9D3E6}.dark .eb{color:#E3C77A}
+.lock{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}.lock div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:18px}
+.lock b{display:block;font-size:15.5px;margin-bottom:4px}.lock span{font-size:13.5px;color:#C9D3E6}.lock b::before{content:'🔒 ';font-size:13px}
+.offer{display:flex;flex-direction:column}.offer.hl{border:2px solid var(--red)}.offer ul{padding-left:18px;margin:8px 0 18px;font-size:15px;color:var(--ink2)}.offer ul li{margin-bottom:5px}.offer .btn{margin-top:auto;justify-content:center}
+.badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--red);color:#fff;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:26px}form .full{grid-column:1/-1}
+label{display:block;font-size:13.5px;font-weight:700;margin-bottom:5px}input,select,textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid #D6C9AC;border-radius:10px;background:var(--paper)}
+textarea{min-height:90px;resize:vertical}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);background:#fff}
+.kits{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}.kits a{font-size:13px;padding:6px 12px;border:1px solid var(--line);border-radius:99px;background:#fff;text-decoration:none;color:var(--ink2)}
+footer{padding:36px 0 50px;border-top:1px solid var(--line);font-size:13px;color:var(--ink3)}
+@media (max-width:900px){.g3,.g4,.acc,.lock,.stats{grid-template-columns:1fr 1fr}.top .tag{display:none}}
+@media (max-width:620px){.g2,.g3,.g4,.acc,.lock,.stats,.ladder,form{grid-template-columns:1fr}.ladder div{border-right:none;border-bottom:1px solid var(--line)}.top .sp .btn:not(.p){display:none}section{padding:54px 0}.hero{padding:56px 0 44px}}
+@media print{.top,form,.btns{display:none!important}section{break-inside:avoid}.dark{background:#fff;color:var(--ink)}}
+.top .sp .pr{background:#fff}
+.dl{display:inline-block;font-size:12px;padding:4px 10px;border-radius:99px;background:var(--kb,#EEF1F6);color:var(--kc,var(--navy));margin-bottom:12px}
+@media (max-width:900px){.top .sp .pr{display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="w">
+  <a class="brand" href="https://www.import-expert.ma">Import<b>-</b>eXPert</a>
+  <span class="tag">Kit 06 · Régime de change</span>
+  <div class="sp"><button class="btn sm pr" type="button" onclick="window.print()">Imprimer / PDF</button><a class="btn sm" href="#contact">Parler à un expert</a><a class="btn sm p" href="https://www.import-expert.ma/abonnement">S'abonner</a></div>
+</div></header>
+
+<main>
+<section class="hero"><div class="w">
+  <div class="eb">Kit d'expertise · Édition 2026</div>
+  <h1>Chaque déclaration en douane<br><em>ouvre un dossier de change.</em></h1>
+  <p class="lead">Dès que la DUM est enregistrée, un délai commence à courir et une obligation naît : régler, rapatrier ou justifier. L'Instruction générale des opérations de change 2026 a assoupli de nombreux plafonds et simplifié plusieurs procédures, mais la logique reste la même. L'Office des Changes rapproche les flux douaniers et les flux bancaires, et tout écart non justifié devient une infraction à expliquer.</p>
+  <div class="btns"><a class="btn p" href="https://www.import-expert.ma/abonnement">Accéder au kit complet</a><a class="btn" href="#contact">Faire auditer ma conformité change</a></div>
+  <div class="stats">
+    <div class="stat"><b>150 jours</b><span>pour rapatrier le produit d'une exportation de biens, à compter de la déclaration en douane</span></div>
+    <div class="stat"><b>90 jours</b><span>pour rapatrier le produit d'une exportation de services</span></div>
+    <div class="stat"><b>70 %</b><span>des recettes rapatriées pouvant alimenter un compte en devises, 85 % pour certains opérateurs</span></div>
+    <div class="stat"><b>1 lettre</b><span>adressée à temps à l'Office des Changes, qui peut éviter une sanction</span></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Le contexte</div>
+  <h2>IGOC 2026 : <em>plus de liberté, autant de traçabilité</em></h2>
+  <p class="lead">Publiée en janvier 2026, la nouvelle instruction relève les dotations, élargit l'accès aux services importables et allège les conditions faites aux entreprises innovantes. Les obligations de base demeurent : domiciliation, règlement, rapatriement, cession et compte rendu.</p>
+  <div class="g4">
+    <div class="card"><div class="k">Services</div><h3>Fin de la liste fermée</h3><p>Les services importables ne sont plus énumérés : l'éligibilité repose sur le besoin économique et le lien avec l'activité, ce qu'il faut pouvoir démontrer.</p></div>
+    <div class="card"><div class="k">Dotations</div><h3>Des plafonds relevés</h3><p>La dotation voyages d'affaires est doublée, et une dotation de démarrage est créée pour les sociétés nouvellement immatriculées.</p></div>
+    <div class="card"><div class="k">Catégorisation</div><h3>Un statut qui paie</h3><p>Les opérateurs catégorisés bénéficient de plafonds supérieurs et de facilités supplémentaires sur leurs comptes en devises.</p></div>
+    <div class="card"><div class="k">Contrôle</div><h3>Le rapprochement automatique</h3><p>La concordance entre les données douanières et bancaires reste au cœur du contrôle a posteriori.</p></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Ce que nous observons sur le terrain</div>
+  <h2>Six situations <em>qui déclenchent une demande de justification</em></h2>
+  <p class="lead">Ces cas réels ont été rendus anonymes. Dans la plupart d'entre eux, l'opération était économiquement saine : c'est la trace documentaire qui manquait.</p>
+  <div class="risk"><div class="n">01</div><div><h3>Le client étranger qui paie en retard</h3><p>La créance export dépasse le délai réglementaire sans que l'Office ait été informé des difficultés de recouvrement.</p><span class="c">Conséquence : non-rapatriement constaté, justification exigée a posteriori</span></div></div>
+  <div class="risk"><div class="n">02</div><div><h3>L'avance versée au fournisseur sans importation</h3><p>Un acompte est transféré, mais la marchandise n'arrive jamais ou arrive partiellement.</p><span class="c">Conséquence : transfert sans contrepartie douanière, à régulariser</span></div></div>
+  <div class="risk"><div class="n">03</div><div><h3>La valeur en douane différente du montant réglé</h3><p>Une remise ou un avoir est obtenu après la déclaration et n'est pas répercuté dans le dossier de change.</p><span class="c">Conséquence : écart douane-banque, double exposition change et douane</span></div></div>
+  <div class="risk"><div class="n">04</div><div><h3>La compensation de fait</h3><p>Une dette fournisseur est « soldée » contre une créance client chez la même société étrangère, sans autorisation.</p><span class="c">Conséquence : infraction au régime de change, même sans perte pour l'État</span></div></div>
+  <div class="risk"><div class="n">05</div><div><h3>Le service importé mal qualifié</h3><p>Des frais de licence, d'assistance technique ou de groupe sont réglés sans contrat ni justification du lien avec l'activité.</p><span class="c">Conséquence : transfert contesté, et souvent un redressement fiscal en parallèle</span></div></div>
+  <div class="risk"><div class="n">06</div><div><h3>Les devises conservées hors délai</h3><p>Les recettes rapatriées ne sont ni cédées ni portées en compte dans les conditions prévues.</p><span class="c">Conséquence : manquement à l'obligation de cession</span></div></div>
+  <div class="btns"><a class="btn n" href="#contact">Évaluer mon exposition</a></div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Cartographie</div>
+  <h2>Huit opérations, <em>huit régimes de preuve</em></h2>
+  <p class="lead">Chaque type d'opération a ses délais, ses pièces et son interlocuteur, banque ou Office. Le détail figure dans le kit complet.</p>
+  <div class="acc">
+    <div><b>Importations de biens</b><small>Domiciliation, règlement, avances</small><span class="pill b">Banque</span></div>
+    <div><b>Exportations de biens</b><small>Rapatriement à 150 jours, cession</small><span class="pill r">Délai strict</span></div>
+    <div><b>Services importés</b><small>Besoin économique à démontrer</small><span class="pill a">Libéralisé 2026</span></div>
+    <div><b>Services exportés</b><small>Rapatriement à 90 jours</small><span class="pill r">Délai strict</span></div>
+    <div><b>Comptes en devises</b><small>Alimentation, utilisation, plafonds</small><span class="pill g">Levier trésorerie</span></div>
+    <div><b>Financements extérieurs</b><small>Emprunts, garanties, délais de paiement</small><span class="pill a">Encadré</span></div>
+    <div><b>Investissements à l'étranger</b><small>Seuils et conditions d'ancienneté</small><span class="pill b">Assoupli 2026</span></div>
+    <div><b>Dotations</b><small>Voyages d'affaires, e-commerce, démarrage</small><span class="pill g">Relevées 2026</span></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Pour la direction</div>
+  <h2>Cinq questions <em>à poser à votre trésorerie</em> cette semaine</h2>
+  <p class="lead">Le change est rarement suivi par la même équipe que la douane. C'est précisément entre les deux que naissent les écarts.</p>
+  <ol class="q">
+    <li>Quelles créances export approchent aujourd'hui du délai de rapatriement, et l'Office a-t-il été informé des cas difficiles ?</li>
+    <li>Chaque avance versée à un fournisseur est-elle rapprochée d'une importation effective ?</li>
+    <li>Nos montants réglés concordent-ils avec nos valeurs déclarées en douane, ligne par ligne ?</li>
+    <li>Nos paiements de services à l'étranger sont-ils appuyés sur des contrats et des justificatifs du besoin ?</li>
+    <li>Utilisons-nous pleinement nos comptes en devises et les plafonds ouverts par l'IGOC 2026 ?</li>
+  </ol>
+</div></section>
+
+<section class="dark"><div class="w">
+  <div class="eb">Le kit complet</div>
+  <h2 style="color:#fff">Ce que nos abonnés <em style="color:#E3C77A">utilisent au quotidien</em></h2>
+  <p class="lead">Douze modules opérationnels adossés à l'IGOC 2026 et aux circulaires de l'Office des Changes, intégrés à la plateforme IXP-Import-eXPert.</p>
+  <div class="lock">
+    <div><b>Échéancier de rapatriement</b><span>Créances par client, délais, alertes, actions</span></div>
+    <div><b>Rapprochement douane-banque</b><span>Méthode et modèle pour isoler les écarts</span></div>
+    <div><b>Suivi des avances</b><span>Acomptes versés, importations attendues, apurement</span></div>
+    <div><b>Grille des services importables</b><span>Qualifier le besoin et constituer la preuve</span></div>
+    <div><b>Comptes en devises</b><span>Ce qui peut être crédité, débité et à quelles conditions</span></div>
+    <div><b>Lettre à l'Office des Changes</b><span>Signaler une difficulté de recouvrement dans les règles</span></div>
+    <div><b>Dotations 2026</b><span>Plafonds, conditions, catégorisation</span></div>
+    <div><b>Financements et garanties</b><span>Ce qui relève de la banque et ce qui relève de l'Office</span></div>
+    <div><b>Investir à l'étranger</b><span>Seuils, conditions, compte rendu</span></div>
+    <div><b>Face à un contrôle</b><span>Pièces, délais, transaction</span></div>
+    <div><b>Cas pratiques commentés</b><span>Les erreurs fréquentes et leur parade</span></div>
+    <div><b>FAQ et textes</b><span>Réponses référencées à l'instruction en vigueur</span></div>
+  </div>
+  <div class="btns"><a class="btn p" href="https://www.import-expert.ma/abonnement">Débloquer le kit</a><a class="btn" style="border-color:#fff;color:#fff" href="#contact">Demander une démonstration</a></div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Pour qui</div>
+  <h2>Conçu pour <em>ceux qui tiennent la trésorerie</em></h2>
+  <div class="g2">
+    <div class="card"><div class="k">DAF, trésoriers, exportateurs</div><h3>Relier la douane et la banque</h3><p>Le contrôle de change se joue sur la concordance des données. Le kit vous donne une méthode de rapprochement et un échéancier pour ne jamais découvrir un écart après l'Office.</p></div>
+    <div class="card"><div class="k">Transitaires et commissionnaires</div><h3>Sécuriser la donnée déclarée</h3><p>La valeur, l'Incoterm et la date que vous déclarez fondent le dossier de change de votre client. Le kit vous aide à l'alerter quand une déclaration crée une exposition, et à vous positionner en conseil.</p></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="eb">Travailler avec nous</div>
+  <h2>Trois façons <em>d'avancer</em></h2>
+  <div class="g3">
+    <div class="card offer"><div class="k">Plateforme</div><h3>Abonnement IXP-Import-eXPert</h3><ul><li>Kit 06 complet et autres kits</li><li>IXP-Assistant adossé à l'IGOC et aux circulaires</li><li>Veille sur la réglementation des changes</li></ul><a class="btn" href="https://www.import-expert.ma/abonnement">S'abonner</a></div>
+    <div class="card offer hl"><span class="badge">Le plus demandé</span><div class="k">Mission</div><h3>Audit de conformité change</h3><ul><li>Rapprochement de vos flux douaniers et bancaires</li><li>Inventaire des créances et avances à risque</li><li>Plan de régularisation priorisé</li></ul><a class="btn p" href="#contact">Demander un audit</a></div>
+    <div class="card offer"><div class="k">Accompagnement</div><h3>Office des Changes</h3><ul><li>Correspondances et demandes d'autorisation</li><li>Préparation d'un contrôle</li><li>Assistance en cas d'infraction relevée</li></ul><a class="btn" href="#contact">Nous consulter</a></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="g2" style="align-items:center;margin-top:0">
+    <div><div class="eb">Notre expertise</div><h2>Des praticiens du commerce extérieur, <em>pas un simple logiciel</em></h2><p class="lead">IXP-Import-eXPert réunit plus de dix-huit ans de pratique douanière marocaine, une maîtrise des interactions entre douane et change, et une plateforme d'intelligence réglementaire.</p></div>
+    <div class="card"><p><b>Fondements documentaires</b></p><p class="muted">Instruction générale des opérations de change 2026 · Circulaires de l'Office des Changes · Code des douanes et impôts indirects · Guide des procédures douanières Maroc, éd. 2026 · Référentiel <i>Import Process Management</i></p><p class="muted" style="margin-top:12px">Contenus à jour au 24/10/2026.</p></div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="w">
+  <div class="eb">Contact</div>
+  <h2>Parlons de <em>vos flux financiers</em></h2>
+  <p class="lead">Indiquez vos volumes d'import et d'export et vos principales devises : un expert vous répond et vous propose un premier échange.</p>
+  <form id="f">
+    <div><label for="n">Nom et fonction</label><input id="n" required></div>
+    <div><label for="s">Société</label><input id="s" required></div>
+    <div><label for="e">E-mail professionnel</label><input id="e" type="email" required></div>
+    <div><label for="t">Téléphone</label><input id="t" type="tel"></div>
+    <div><label for="p">Vous êtes</label><select id="p"><option>Direction financière / trésorerie</option><option>Importateur</option><option>Exportateur</option><option>Transitaire / commissionnaire</option><option>Autre</option></select></div>
+    <div><label for="o">Votre besoin</label><select id="o"><option>Abonnement à la plateforme</option><option>Audit de conformité change</option><option>Rapatriement en retard</option><option>Contrôle de l'Office des Changes</option><option>Démonstration</option></select></div>
+    <div class="full"><label for="m">Vos flux et vos devises</label><textarea id="m" placeholder="Ex. : exportations vers l'UE en euros, importations de services du groupe, avances fournisseurs Asie"></textarea></div>
+    <div class="full"><button class="btn p" type="submit">Envoyer ma demande</button></div>
+  </form>
+  <p class="muted" style="margin-top:12px">Le formulaire ouvre votre messagerie. Vous pouvez aussi écrire directement à <a href="mailto:contact@import-expert.ma">contact@import-expert.ma</a> ou consulter <a href="https://www.import-expert.ma">www.import-expert.ma</a>.</p>
+</div></section>
+</main>
+
+<footer><div class="w">
+  <span class="dl">Version téléchargeable · consultable hors connexion</span>
+  <div class="kits"><a href="https://www.import-expert.ma/kits/kit-01-origine-ale">Kit 01 · Origine et ALE</a><a href="https://www.import-expert.ma/kits/kit-02-regimes-economiques">Kit 02 · Régimes économiques</a><a href="https://www.import-expert.ma/kits/kit-03-classement-sh">Kit 03 · Classement et contrôle</a><a href="https://www.import-expert.ma/kits/kit-04-pack-conformite">Kit 04 · Pack intégral</a><a href="https://www.import-expert.ma/kits/kit-05-commerce-exterieur">Kit 05 · Commerce extérieur</a><a href="https://www.import-expert.ma/kits/kit-06-regime-de-change">Kit 06 · Régime de change</a><a href="https://www.import-expert.ma/kits/kit-07-logistique">Kit 07 · Logistique</a></div>
+  <p><b>IXP-Import-eXPert</b> · <a href="https://www.import-expert.ma">www.import-expert.ma</a></p>
+  <p>Document de présentation à caractère informatif, qui ne constitue ni un avis juridique ni une consultation ; les situations décrites ont été rendues anonymes. Les plafonds et délais cités doivent être vérifiés dans l'instruction en vigueur. © 2026 IXP-Import-eXPert. Reproduction interdite sans autorisation.</p>
+</div></footer>
+<script>
+document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();var g=function(i){return document.getElementById(i).value;};
+var b='Nom et fonction : '+g('n')+'\nSociété : '+g('s')+'\nE-mail : '+g('e')+'\nTéléphone : '+g('t')+'\nProfil : '+g('p')+'\nBesoin : '+g('o')+'\n\n'+g('m');
+location.href='mailto:contact@import-expert.ma?subject='+encodeURIComponent('Kit 06 Change · '+g('o')+' · '+g('s'))+'&body='+encodeURIComponent(b);});
+</script>
+</body>
+</html>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="ixp-theme">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alertes fiscales · Bien gérer vos impôts — Transit-IA</title>
+<title>Alertes fiscales · Bien gérer vos impôts — IXP-Import-eXPert</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 
 <!-- ═══════════════════════════════════════════════════════
@@ -24,9 +24,9 @@
   --g:#1A6038; --gbg:#EFF8F3; --gbr:rgba(26,96,56,.16);
   --b:#1A3BA0; --bbg:#EEF2FD; --bbr:rgba(26,59,160,.14);
   --r8:8px; --r14:14px; --r22:22px;
-  --fh:'Libre Baskerville',Georgia,serif;
-  --fb:'Outfit',sans-serif;
-  --fm:'DM Mono',monospace;
+  --fh:'DM Serif Display',Georgia,serif;
+  --fb:'DM Sans',sans-serif;
+  --fm:'JetBrains Mono',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--tx);font-family:var(--fb);font-size:14px;line-height:1.6}
@@ -309,6 +309,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .not-available { font-size:13px; color:var(--tx3); font-style:italic; padding:10px 0 }
 
 </style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
 </head>
 <body>
 
@@ -320,7 +321,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-brand">
-    <span class="brand-chip">TRANSIT-IA</span>
+    <span class="brand-chip">IXP-IMPORT-EXPERT</span>
     <span class="brand-name">Alertes Fiscales</span>
   </div>
   <nav class="hdr-nav">
@@ -692,7 +693,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
             <div class="sim-sub">Surcoût fiscal · Art. 208 CGI</div>
           </div>
           <div class="disclaimer-box">
-            <strong>Avertissement :</strong> Ce simulateur est fourni à titre indicatif uniquement. Les montants peuvent varier. Consultez un expert-comptable agréé ou la DGI (tax.gov.ma). <em>Transit-IA ne saurait être tenu responsable d'une décision fondée sur ces données.</em>
+            <strong>Avertissement :</strong> Ce simulateur est fourni à titre indicatif uniquement. Les montants peuvent varier. Consultez un expert-comptable agréé ou la DGI (tax.gov.ma). <em>Import-eXPert ne saurait être tenu responsable d'une décision fondée sur ces données.</em>
           </div>
         </div>
       </div>
@@ -722,7 +723,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
         <div class="wb">
           <div id="veille-list"></div>
           <div class="disclaimer-box" style="margin-top:8px">
-            <strong>Non-opposabilité :</strong> Cette veille est indicative. En cas d'ambiguïté, la version officielle du Bulletin Officiel et les circulaires DGI prévalent. Transit-IA ne saurait être tenu responsable.
+            <strong>Non-opposabilité :</strong> Cette veille est indicative. En cas d'ambiguïté, la version officielle du Bulletin Officiel et les circulaires DGI prévalent. Import-eXPert ne saurait être tenu responsable.
           </div>
         </div>
       </div>
@@ -835,7 +836,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
     { id: 'c2', name: 'Mesures dérogatoires — veille obligatoire', cat: 'Veille',
       desc: 'Le Maroc publie régulièrement des mesures dérogatoires (amnisties fiscales, reports). Ne vous fiez pas uniquement à cet outil. Veille active sur le Bulletin Officiel et les circulaires DGI indispensable.',
       ref: 'BO marocain · DGI', impact: 2, penaliteLabel: 'Retard non couvert par l\'outil' },
-    { id: 'c3', name: 'Clause de non-responsabilité Transit-IA', cat: 'Info',
+    { id: 'c3', name: 'Clause de non-responsabilité Import-eXPert', cat: 'Info',
       desc: 'Les informations présentées ont une valeur indicative et ne constituent pas un conseil fiscal. En cas de doute, consultez un expert-comptable agréé ou la DGI (tax.gov.ma).',
       ref: 'Non-opposabilité · CGI', impact: 1, penaliteLabel: '—' },
   ];

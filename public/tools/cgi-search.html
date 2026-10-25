@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="ixp-theme">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CGI Search</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<title>CGI Search | IXP-Import-eXPert</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
   --or: #B8862A;
@@ -52,7 +52,7 @@ body {
 }
 .logo-block { flex-shrink: 0; }
 .logo-block h1 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   color: #fff;
   font-size: 1.3rem;
   font-weight: 700;
@@ -162,7 +162,7 @@ body {
   box-shadow: var(--shadow);
 }
 .filter-card h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 0.92rem;
   color: var(--vert);
   font-weight: 600;
@@ -234,7 +234,7 @@ select:focus { border-color: var(--vert); }
   text-align: center;
 }
 .stat-num {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--vert);
@@ -268,7 +268,7 @@ select:focus { border-color: var(--vert); }
 }
 .taux-item:last-child { border-bottom: none; }
 .taux-name { font-weight: 600; color: var(--encre); }
-.taux-val { color: var(--vert); font-weight: 700; font-family: 'DM Mono', monospace; }
+.taux-val { color: var(--vert); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
 
 /* RESULTS PANEL */
 .results-panel { min-width: 0; }
@@ -282,7 +282,7 @@ select:focus { border-color: var(--vert); }
   border-bottom: 2px solid var(--border);
 }
 .results-count {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 1.1rem;
   color: var(--encre);
 }
@@ -317,7 +317,7 @@ select:focus { border-color: var(--vert); }
   color: #fff; font-size: 13px; flex-shrink: 0;
 }
 .llm-header h4 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 0.95rem;
   color: var(--or);
   font-weight: 600;
@@ -392,7 +392,7 @@ select:focus { border-color: var(--vert); }
   margin-bottom: 2px;
 }
 .art-num {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: #fff;
@@ -410,7 +410,7 @@ select:focus { border-color: var(--vert); }
   min-width: 0;
 }
 .card-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--encre);
@@ -494,7 +494,7 @@ mark {
   z-index: 1;
 }
 .modal-art-num {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 2rem;
   font-weight: 700;
   color: var(--or-light);
@@ -502,7 +502,7 @@ mark {
   margin-bottom: 4px;
 }
 .modal-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 1.1rem;
   color: #fff;
   font-weight: 600;
@@ -541,7 +541,7 @@ mark {
   border-radius: 8px;
   border-left: 3px solid var(--vert);
   white-space: pre-wrap;
-  font-family: 'DM Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.82rem;
 }
 .modal-tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
@@ -570,7 +570,7 @@ mark {
   background: var(--vert-pale);
   padding: 12px 16px;
   border-bottom: 1px solid var(--border);
-  font-family: 'Playfair Display', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--vert);
@@ -603,7 +603,7 @@ mark {
   border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 .taux-row:last-child { border-bottom: none; }
-.taux-row .v { font-weight: 700; color: var(--rouge); font-family: 'DM Mono', monospace; }
+.taux-row .v { font-weight: 700; color: var(--rouge); font-family: 'JetBrains Mono', monospace; }
 
 /* EMPTY STATE */
 .empty-state {
@@ -643,6 +643,7 @@ mark {
   .sidebar { position: static; }
 }
 </style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
 </head>
 <body>
 

@@ -3,7 +3,6 @@
 // Suppression : sidebar gauche, topnav multi-liens, tous les menus de navigation
 
 import Head from 'next/head'
-import Link from 'next/link'
 
 interface ModuleLayoutProps {
   children:  React.ReactNode
@@ -71,7 +70,7 @@ body {
 
 /* ── Contenu ── */
 .mod-wrap {
-  max-width: 1100px; margin: 0 auto; padding: 2rem 2rem 4rem;
+  max-width: 1180px; margin: 0 auto; padding: 2.5rem 24px 4rem;
 }
 .mod-hero {
   padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
@@ -155,27 +154,21 @@ footer {
   .tabs      { overflow-x: auto; }
   .mod-bar-title { display: none; }
 }
+.mod-brand{display:inline-flex;align-items:center;margin-right:12px;flex-shrink:0}
 `
 
 export default function ModuleLayout({ children, kicker, title, sub }: ModuleLayoutProps) {
   return (
     <>
       <Head>
-        <title>{title ? `${title} — Import-IA` : 'Import-IA'}</title>
+        <title>{title ? `${title} — IXP-Import-eXPert` : 'IXP-Import-eXPert'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
       </Head>
 
       <style dangerouslySetInnerHTML={{ __html: css }} />
 
-      {/* ── Barre minimale — un seul bouton Accueil ── */}
-      <nav className="mod-bar">
-        <Link href="/" className="mod-back">
-          ← Accueil
-        </Link>
-        {kicker && <span className="mod-bar-kicker">{kicker}</span>}
-        {title  && <span className="mod-bar-title">{title}</span>}
-      </nav>
+      {/* En-tête, logo et navigation : fournis par le gabarit commun du site (SiteShell, via _app). */}
 
       {/* ── Contenu pleine largeur — pas de sidebar ── */}
       <div className="mod-wrap">

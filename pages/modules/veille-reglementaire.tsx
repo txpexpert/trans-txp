@@ -269,7 +269,7 @@ export default function VeilleReglementaire() {
                 <span style={{ fontSize: 11, color: 'var(--inkm)', marginLeft: 'auto' }}>{a.date}</span>
                 <span style={{ fontSize: 11, color: 'var(--inkm)' }}>· {a.source}</span>
               </div>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontWeight: 500, color: 'var(--bd)', marginBottom: 4 }}>
+              <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 14, fontWeight: 500, color: 'var(--bd)', marginBottom: 4 }}>
                 {a.titre}
               </div>
               <div style={{ fontSize: 12, color: 'var(--inks)', lineHeight: 1.55 }}>{a.resume}</div>
@@ -325,7 +325,7 @@ export default function VeilleReglementaire() {
                 <span style={{ fontSize: 10, padding: '2px 8px', background: m.badgeBg, color: m.badgeColor, fontWeight: 600, letterSpacing: '.06em', flexShrink: 0 }}>
                   {m.badge}
                 </span>
-                <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontWeight: 500, color: 'var(--bd)', flex: 1, textAlign: 'left' }}>
+                <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 14, fontWeight: 500, color: 'var(--bd)', flex: 1, textAlign: 'left' }}>
                   {m.titre}
                 </span>
                 <span style={{ fontSize: 16, color: 'var(--ba)', flexShrink: 0 }}>
@@ -397,7 +397,7 @@ export default function VeilleReglementaire() {
         <div data-protected>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
             <div style={{ background: scoreConformite >= 80 ? '#DCFCE7' : scoreConformite >= 50 ? '#FEF3C7' : '#FEE2E2', padding: '1.25rem', textAlign: 'center', border: '.5px solid var(--rule)' }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: scoreConformite >= 80 ? '#166534' : scoreConformite >= 50 ? '#92400E' : '#991B1B' }}>
+              <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 36, fontWeight: 700, color: scoreConformite >= 80 ? '#166534' : scoreConformite >= 50 ? '#92400E' : '#991B1B' }}>
                 {scoreConformite}%
               </div>
               <div style={{ fontSize: 12, color: 'var(--inks)', marginTop: 4 }}>

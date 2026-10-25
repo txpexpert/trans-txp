@@ -987,7 +987,7 @@ export default function ProceduresProcessPage() {
               })}
             </div>
           </div>
-          <div className="pr-conseil"><div className="pr-conseil-label">CONSEIL Import-IA</div><div className="pr-conseil-text">{proc.conseilIA}</div></div>
+          <div className="pr-conseil"><div className="pr-conseil-label">CONSEIL Import-eXPert</div><div className="pr-conseil-text">{proc.conseilIA}</div></div>
           {proc.questionsOuvertes.length>0&&(<div className="pr-qo"><div className="pr-qo-label">POINTS À COMPLÉTER / QUESTIONS NON RÉSOLUES</div>{proc.questionsOuvertes.map((q,i)=>(<div key={i} className="pr-qo-item">❓ {q}</div>))}</div>)}
         </div>
       </div>
@@ -1013,9 +1013,9 @@ const CSS = `
 .pr-content{border:1px solid var(--border,#E8DFC8);background:var(--white,#FDFCF8);padding:1.25rem;overflow-y:auto;max-height:78vh}
 .pr-codes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.75rem}
 .pr-code{display:flex;align-items:center;gap:5px;background:var(--gold4,#FBF5E6);border:1px solid var(--gold3,#F5E4B0);padding:3px 8px}
-.pr-code-num{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--ink,#0A0A0A)}
+.pr-code-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--ink,#0A0A0A)}
 .pr-code-lbl{font-size:10px;color:var(--inkm,#8A8078)}
-.pr-proc-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:.4rem;line-height:1.2}
+.pr-proc-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:600;margin-bottom:.4rem;line-height:1.2}
 .pr-desc{font-size:12px;color:var(--ink2,#3A3530);line-height:1.65;margin-bottom:1rem;padding-bottom:.875rem;border-bottom:1px solid var(--border,#E8DFC8)}
 .pr-tab-row{display:flex;border-bottom:1px solid var(--border,#E8DFC8);margin-bottom:.875rem;overflow-x:auto}
 .pr-tab{padding:6px 16px;font-size:11px;letter-spacing:.05em;border:none;background:transparent;color:var(--inkm,#8A8078);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .15s}
