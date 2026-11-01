@@ -13,14 +13,29 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { GetServerSideProps } from 'next'
 import { requireGestionSSR } from '../../lib/adminAuth'
-import { PERMISSIONS, type AdminCapabilities } from '../../lib/adminPermissions'
+import { PERMISSIONS, hasPermission, type AdminCapabilities, type PermissionCode } from '../../lib/adminPermissions'
 import SubscriptionsBoard from '../../components/SubscriptionsBoard'
+import IngestDecisions from '../../components/IngestDecisions'
+import IngestTarif from '../../components/IngestTarif'
+
+// Onglets affichés selon les habilitations (2026-11-01). Les habilitations
+// d'abonnement ouvrent l'onglet « Abonnés » ; « ingerer_decisions » et
+// « maj_tarif » ouvrent les deux onglets d'ingestion.
+const SUB_PERMS: PermissionCode[] = ['activer_plans', 'emettre_proformas', 'valider_paiements', 'prolonger', 'voir_montants']
+type Onglet = 'abonnes' | 'decisions' | 'tarif'
 
 export const getServerSideProps: GetServerSideProps = requireGestionSSR
 
 export default function GestionAbonnements({ caps }: { caps: AdminCapabilities }) {
   const router = useRouter()
   const isSuper = caps.niveau === 'super'
+  const tabs: { id: Onglet; label: string }[] = [
+    ...(SUB_PERMS.some(p => hasPermission(caps, p)) ? [{ id: 'abonnes' as Onglet, label: 'Abonnés' }] : []),
+    ...(hasPermission(caps, 'ingerer_decisions') ? [{ id: 'decisions' as Onglet, label: 'Ingestion Décisions' }] : []),
+    ...(hasPermission(caps, 'maj_tarif') ? [{ id: 'tarif' as Onglet, label: 'Ingestion Tarif SH' }] : []),
+  ]
+  const asked = typeof router.query.onglet === 'string' ? router.query.onglet : ''
+  const onglet: Onglet | undefined = tabs.find(t => t.id === asked)?.id ?? tabs[0]?.id
 
   const logout = async () => {
     try { await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' }) } catch {}
@@ -65,7 +80,21 @@ export default function GestionAbonnements({ caps }: { caps: AdminCapabilities }
               ))}
             </div>
           )}
-          <SubscriptionsBoard caps={isSuper ? null : caps} title="Gestion des abonnements" />
+          {tabs.length > 1 && (
+            <nav style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--rule)', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+              {tabs.map(t => (
+                <Link key={t.id} href={{ pathname: '/gestion-abonnements', query: { onglet: t.id } }} shallow style={{
+                  padding: '10px 16px', fontSize: 13, textDecoration: 'none', marginBottom: -1,
+                  color: onglet === t.id ? 'var(--bd)' : 'var(--inkm)', fontWeight: onglet === t.id ? 600 : 400,
+                  borderBottom: '2px solid ' + (onglet === t.id ? '#C9A84C' : 'transparent'),
+                }}>{t.label}</Link>
+              ))}
+            </nav>
+          )}
+          {!onglet && <p style={{ fontSize: 13, color: 'var(--inkm)' }}>Aucune habilitation ne vous est attribuée. Contactez le super-administrateur.</p>}
+          {onglet === 'abonnes' && <SubscriptionsBoard caps={isSuper ? null : caps} title="Gestion des abonnements" />}
+          {onglet === 'decisions' && <IngestDecisions />}
+          {onglet === 'tarif' && <IngestTarif />}
         </main>
       </div>
     </>

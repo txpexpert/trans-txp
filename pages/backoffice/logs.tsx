@@ -14,21 +14,25 @@ import { supabaseAdmin } from '../../lib/supabaseAdmin'
 import BackofficeLayout from '../../components/BackofficeLayout'
 import { EVENT_LABEL, PLAN_LABEL, fmtAmount, type UserSession, type SubscriptionEvent } from '../../lib/subscriptions'
 
+interface Lot { id: string; type: 'tarif' | 'decisions'; fichier: string | null; actor: string; compte: Record<string, number>; created_at: string }
 interface Props {
   sessions: UserSession[]
   events: SubscriptionEvent[]
+  lots: Lot[]
   loadError?: string
 }
 
 export const getServerSideProps = withAdminData<Props>(async () => {
   const sb = supabaseAdmin()
-  const [sessions, events] = await Promise.all([
+  const [sessions, events, lots] = await Promise.all([
     sb.from('user_sessions').select('*').order('created_at', { ascending: false }).limit(300),
     sb.from('subscription_events').select('*').order('created_at', { ascending: false }).limit(300),
+    sb.from('ingestion_lots').select('*').order('created_at', { ascending: false }).limit(300),
   ])
   if (sessions.error) throw sessions.error
   if (events.error) throw events.error
-  return { sessions: sessions.data ?? [], events: events.data ?? [] }
+  if (lots.error) throw lots.error
+  return { sessions: sessions.data ?? [], events: events.data ?? [], lots: lots.data ?? [] }
 })
 
 const dt = (iso: string) => new Date(iso).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
@@ -44,13 +48,14 @@ const th: CSSProperties = { padding: '.5rem .75rem', textAlign: 'left', fontSize
 const td: CSSProperties = { padding: '.5rem .75rem', borderBottom: '.5px solid var(--rule)', fontSize: 12, verticalAlign: 'top' }
 const num: CSSProperties = { fontFamily: 'monospace', fontWeight: 600, color: 'var(--bd)', whiteSpace: 'nowrap' }
 
-export default function BackofficeLogs({ sessions = [], events = [], loadError }: Props) {
-  const [tab, setTab] = useState<'sessions' | 'abonnements'>('sessions')
+export default function BackofficeLogs({ sessions = [], events = [], lots = [], loadError }: Props) {
+  const [tab, setTab] = useState<'sessions' | 'abonnements' | 'ingestions'>('sessions')
   const [q, setQ] = useState('')
   const match = (...parts: (string | null | undefined)[]) => parts.join(' ').toLowerCase().includes(q.toLowerCase())
 
   const fSessions = sessions.filter(s => match(s.numero_abonne, s.email, s.ip))
   const fEvents   = events.filter(e => match(e.numero_abonne, e.user_email, EVENT_LABEL[e.type], e.note))
+  const fLots     = lots.filter(l => match(l.actor, l.fichier, l.type === 'tarif' ? 'tarif' : 'décisions'))
 
   return (
     <BackofficeLayout title="Journaux d'activité">
@@ -64,7 +69,7 @@ export default function BackofficeLogs({ sessions = [], events = [], loadError }
       {loadError && <div style={{ background: '#FEE8E8', color: '#C0392B', padding: '10px 14px', fontSize: 12, marginBottom: '1rem' }}>{loadError}</div>}
 
       <div style={{ display: 'flex', gap: 6, marginBottom: '.75rem', flexWrap: 'wrap' }}>
-        {([['sessions', 'Connexions'], ['abonnements', 'Abonnements']] as const).map(([id, label]) => (
+        {([['sessions', 'Connexions'], ['abonnements', 'Abonnements'], ['ingestions', 'Ingestions']] as const).map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)} style={{
             fontSize: 11, padding: '5px 12px', cursor: 'pointer', fontFamily: 'inherit',
             border: '.5px solid ' + (tab === id ? 'var(--bd)' : 'var(--rule)'),
@@ -76,7 +81,30 @@ export default function BackofficeLogs({ sessions = [], events = [], loadError }
         style={{ width: '100%', padding: '10px 14px', border: '.5px solid var(--rule)', background: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: 'inherit', marginBottom: '1rem' }} />
 
       <div style={{ background: 'var(--white)', border: '.5px solid var(--rule)', overflowX: 'auto' }}>
-        {tab === 'sessions' ? (
+        {tab === 'ingestions' ? (
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead><tr>{['DATE', 'TYPE', 'FICHIER', 'RÉSULTAT', 'PAR'].map(h => <th key={h} style={th}>{h}</th>)}</tr></thead>
+            <tbody>
+              {fLots.length === 0 && (
+                <tr><td colSpan={5} style={{ ...td, textAlign: 'center', color: 'var(--inkm)', padding: '2rem' }}>
+                  {lots.length === 0 ? 'Aucune ingestion de tarif ou de décisions pour l\'instant.' : 'Aucun résultat.'}
+                </td></tr>
+              )}
+              {fLots.map(l => (
+                <tr key={l.id}>
+                  <td style={{ ...td, whiteSpace: 'nowrap', color: 'var(--inkm)' }}>{dt(l.created_at)}</td>
+                  <td style={td}>{l.type === 'tarif' ? 'Tarif SH' : 'Décisions'}</td>
+                  <td style={{ ...td, fontFamily: 'monospace', fontSize: 11 }}>{l.fichier || '—'}</td>
+                  <td style={td}>
+                    {l.compte.new ?? 0} ajout(s) · {l.compte.upd ?? 0} {l.type === 'tarif' ? 'modification(s)' : 'complétée(s)'}
+                    {l.type === 'tarif' ? ` · ${l.compte.removed ?? 0} remplacement(s)` : ''} · {l.compte.err ?? 0} erreur(s)
+                  </td>
+                  <td style={{ ...td, color: 'var(--inkm)' }}>{l.actor}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : tab === 'sessions' ? (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead><tr>{['DATE', 'N° ABONNÉ', 'EMAIL', 'APPAREIL', 'ADRESSE IP', 'SESSION'].map(h => <th key={h} style={th}>{h}</th>)}</tr></thead>
             <tbody>

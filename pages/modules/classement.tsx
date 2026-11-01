@@ -238,7 +238,7 @@ export default function Classement() {
           color: 'var(--inkm)', fontSize: '13px', padding: '2.5rem',
           textAlign: 'center', border: '.5px solid var(--rule)', borderRadius: '6px',
         }}>
-          Saisissez un code SH ou un mot-cle pour rechercher dans les 17 224 codes du tarif 2025.
+          Saisissez un code SH ou un mot-clé pour rechercher dans les codes du tarif douanier en vigueur.
         </div>
       )}
 

@@ -7,12 +7,13 @@ const NAV = [
   ]},
   { section: 'INGESTION RAG', items: [
     { href:'/backoffice/ingest',     label:'Ingestion Circulaires',   icon:'⬆', highlight: true },
+    { href:'/backoffice/ingest-decisions', label:'Ingestion Décisions', icon:'⚑' },
+    { href:'/backoffice/ingest-tarif',     label:'Ingestion Tarif SH',  icon:'⊞' },
     { href:'/backoffice/logs',       label:'Journaux d\'activité',    icon:'⋮' },
   ]},
   { section: 'DONNÉES', items: [
     { href:'/backoffice/tarifs',     label:'Codes SH & Tarifs',       icon:'⊞' },
     { href:'/backoffice/circulaires',label:'Circulaires ADII',        icon:'≡' },
-    { href:'/backoffice/decisions',  label:'Décisions de Classement', icon:'⚑' },
     { href:'/backoffice/contenus',   label:'Contenus modules',        icon:'✦' },
   ]},
   { section: 'UTILISATEURS', items: [

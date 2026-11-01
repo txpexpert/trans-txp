@@ -11,6 +11,8 @@ export const PERMISSIONS = [
   { code: 'valider_paiements', label: 'Valider ou annuler une pro-forma',  help: 'Boutons « Valider le paiement » et « Annuler pro-forma ».' },
   { code: 'prolonger',         label: 'Prolonger une échéance',            help: 'Bouton « Prolonger » (geste commercial, sans facture).' },
   { code: 'voir_montants',     label: 'Voir les montants encaissés',       help: 'Tuiles et colonnes de chiffre d’affaires.' },
+  { code: 'ingerer_decisions', label: 'Ingérer des décisions de classement', help: 'Onglet « Ingestion Décisions » : import JSON vers decisions_classement.' },
+  { code: 'maj_tarif',         label: 'Mettre à jour le tarif SH',         help: 'Onglet « Ingestion Tarif SH » : import des lignes au format unifié.' },
 ] as const
 
 export type PermissionCode = typeof PERMISSIONS[number]['code']
