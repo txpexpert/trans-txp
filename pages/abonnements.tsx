@@ -1,5 +1,6 @@
 ﻿import { useRouter } from 'next/router'
 import Layout from '../components/Layout'
+import { PRICING, fmtDH } from '../lib/pricing'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface PlanDef {
@@ -15,7 +16,7 @@ interface PlanDef {
   modules:  string
 }
 
-// ── Plans — alignés sur lib/userAuth.ts ──────────────────────────────────────
+// ── Plans — montants issus de lib/pricing.ts (source unique) ──────────────────────────────────────
 const PLANS: PlanDef[] = [
   {
     id:       'free',
@@ -38,8 +39,8 @@ const PLANS: PlanDef[] = [
   {
     id:       'pro',
     name:     'PRO',
-    price:    '799',
-    period:   'par mois · TVA incluse',
+    price:    fmtDH(PRICING.pro.annual!),
+    period:   `par an · soit ${PRICING.pro.monthlyRef} DH/mois · ${PRICING.pro.note}`,
     featured: false,
     modules:  '18 modules',
     items: [
@@ -61,8 +62,8 @@ const PLANS: PlanDef[] = [
   {
     id:       'premium',
     name:     'PREMIUM',
-    price:    '1 990',
-    period:   'par mois · TVA incluse',
+    price:    fmtDH(PRICING.premium.annual!),
+    period:   `par an · soit ${PRICING.premium.monthlyRef} DH/mois · ${PRICING.premium.note}`,
     tag:      'RECOMMANDÉ',
     featured: true,
     modules:  '34 modules',
@@ -85,8 +86,8 @@ const PLANS: PlanDef[] = [
   {
     id:       'enterprise',
     name:     'ENTERPRISE',
-    price:    '4 990',
-    period:   'par mois · TVA incluse',
+    price:    'Sur contrat',
+    period:   PRICING.enterprise.note,
     featured: false,
     modules:  'Accès illimité',
     items: [
@@ -125,7 +126,7 @@ export default function Abonnements() {
           <h1 className="page-title">Abonnements</h1>
           <p className="page-sub">
             Choisissez le plan adapté à votre activité douanière.
-            TVA 20 % incluse. Paiement par virement Banque Populaire.
+            Abonnement annuel, payable par virement Banque Populaire.
           </p>
         </div>
 
@@ -143,8 +144,10 @@ export default function Abonnements() {
               <div className="plan-nm">{p.name}</div>
 
               <div className="plan-pr">
-                <span style={{ fontSize: '13px', verticalAlign: 'super' }}>DH </span>
-                {p.price}
+                {p.id !== 'enterprise' && p.id !== 'free' && (
+                  <span style={{ fontSize: '13px', verticalAlign: 'super' }}>DH </span>
+                )}
+                {p.id === 'free' ? '0 DH' : p.price}
               </div>
               <div className="plan-per">{p.period}</div>
 
@@ -183,7 +186,7 @@ export default function Abonnements() {
 
         {/* Note paiement */}
         <p style={{ fontSize: '12px', color: 'var(--inkm)', textAlign: 'center', marginBottom: '2rem' }}>
-          Paiement mensuel par virement bancaire · Facturation en DH MAD · Résiliation à tout moment
+          Abonnement annuel · Paiement par virement bancaire · Facturation en DH MAD · Activation dès réception du paiement
         </p>
 
         {/* FAQ rapide */}
@@ -191,8 +194,8 @@ export default function Abonnements() {
           <div className="page-kicker" style={{ marginBottom: '.75rem' }}>QUESTIONS FRÉQUENTES</div>
           {[
   [`L'essai gratuit inclut-il tous les modules ?`, `Oui — pendant 14 jours vous avez accès à l'intégralité de la plateforme, sans restriction.`],
-  [`Comment s'effectue le paiement ?`, `Par virement bancaire Banque Populaire. Une facture TVA est émise à chaque renouvellement mensuel.`],
-  [`Puis-je changer de plan en cours de mois ?`, `Oui — le changement prend effet immédiatement. La différence est ajustée sur la prochaine facture.`],
+  [`Comment s'effectue le paiement ?`, `Par virement bancaire Banque Populaire, en une fois pour l'année. Une facture est émise à la souscription puis à chaque renouvellement annuel ; votre plan est activé dès réception du paiement.`],
+  [`Puis-je changer de plan en cours d'année ?`, `Oui — le passage à un plan supérieur est activé dès réception du complément de paiement, pour la durée restante de votre abonnement.`],
   [`L'accès API est-il disponible sur le plan Premium ?`, `Non — l'API et l'intégration ERP sont réservées au plan Enterprise. Contactez-nous pour un devis.`],
 ].map(([q, a], i) => (
             <details key={i} style={{ borderBottom: '0.5px solid var(--brd, #ddd)', padding: '.75rem 0' }}>

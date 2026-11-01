@@ -1,3 +1,4 @@
+import { PRICING, fmtDH } from './pricing'
 // lib/suite.ts
 // ─────────────────────────────────────────────────────────────────────────────
 // Architecture d'offre Import-eXPert (refonte 2026) — source unique de vérité
@@ -178,8 +179,8 @@ export const PROFILS = [
   },
 ]
 
-// Tarification : abonnement par utilisateur + prestations expertes à l'acte.
-// Les montants reprennent la grille actuelle (pages/abonnements.tsx) — À VALIDER.
+// Tarification : abonnement ANNUEL + prestations expertes à l'acte.
+// Montants issus de lib/pricing.ts (source unique, grille du 2026-11-01).
 export const PLANS = [
   {
     id: 'free', nom: 'Découverte', prix: '0', unite: 'pour toujours',
@@ -188,19 +189,19 @@ export const PLANS = [
     cta: 'Créer un compte', href: '/auth/register?plan=free',
   },
   {
-    id: 'pro', nom: 'Opérateur', prix: '799', unite: 'DH HT / utilisateur / mois',
+    id: 'pro', nom: 'Opérateur', prix: fmtDH(PRICING.pro.annual!), unite: `DH / an · soit ${PRICING.pro.monthlyRef} DH/mois · ${PRICING.pro.note.toLowerCase()}`,
     pour: 'PME importatrices',
     inclus: ['Qualifier, Chiffrer et Exécuter', 'Classement SH inclus', 'Bibliothèque complète', 'IXP-Assistant illimité', 'Support par email'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=pro',
   },
   {
-    id: 'premium', nom: 'Expert', prix: '1 990', unite: 'DH HT / utilisateur / mois', vedette: true,
+    id: 'premium', nom: 'Expert', prix: fmtDH(PRICING.premium.annual!), unite: `DH / an · soit ${PRICING.premium.monthlyRef} DH/mois · ${PRICING.premium.note.toLowerCase()}`, vedette: true,
     pour: 'Transitaires, commissionnaires, cabinets',
     inclus: ['Les 5 espaces de la chaîne', 'Vérificateur DUM et suite documentaire', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients', '2 renseignements experts inclus / mois'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=premium',
   },
   {
-    id: 'enterprise', nom: 'Entreprise', prix: '4 990', unite: 'DH HT / mois, à partir de',
+    id: 'enterprise', nom: 'Entreprise', prix: 'Sur contrat', unite: PRICING.enterprise.note,
     pour: 'Groupes industriels, directions financières',
     inclus: ['Tout Expert, pour toute l’équipe', 'Espace Piloter et contentieux avancé', 'API ERP / TMS', 'Expert dédié et onboarding', 'Engagement de service (SLA)'],
     cta: 'Parler à un expert', href: '/contact?sujet=entreprise',

@@ -11,6 +11,7 @@ import { useAuth } from '../context/AuthContext'
 
 const PLAN_LABELS: Record<string, string> = {
   trial:      'Essai gratuit',
+  free:       'Gratuit',
   pro:        'Professionnel',
   premium:    'Premium',
   enterprise: 'Entreprise',
@@ -45,7 +46,7 @@ export default function Dashboard() {
   }
 
   const statut = STATUT_LABELS[user.statut] || { label: user.statut, color: '#888' }
-  const needsUpgrade = user.plan === 'trial' || user.statut === 'expired'
+  const needsUpgrade = user.plan === 'trial' || (user.plan as string) === 'free' || user.statut === 'expired'
 
   const handleLogout = async () => {
     await logout()
@@ -59,16 +60,22 @@ export default function Dashboard() {
           Mon compte
         </h1>
         <p style={{ fontSize: 13, color: 'var(--inkm)', marginBottom: '2rem' }}>
-          Gérez vos informations et votre abonnement Import-eXPert.
+          Gérez vos informations et votre abonnement Import-eXPert. Rappelez votre numéro d'abonné dans la référence de vos virements.
         </p>
 
         <div style={{ background: 'var(--white)', border: '.5px solid var(--rule)', padding: '1.5rem', marginBottom: '1.5rem' }}>
           {[
+            ...(user.numero ? [['N° d\'abonné', user.numero]] : []),
             ['Email', user.email],
             ['Plan actuel', PLAN_LABELS[user.plan] || user.plan],
-            ...(user.trialEnds
-              ? [[user.plan === 'trial' ? 'Fin de la période d\'essai' : 'Prochain renouvellement',
+            // Essai : date de fin d'essai. Plan payé : échéance de l'abonnement annuel.
+            ...(user.plan === 'trial' && user.trialEnds
+              ? [['Fin de la période d\'essai',
                   new Date(user.trialEnds).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })]]
+              : []),
+            ...(user.plan !== 'trial' && user.planEnds
+              ? [['Échéance de l\'abonnement annuel',
+                  new Date(user.planEnds).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })]]
               : []),
           ].map(([k, v]) => (
             <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '.5px solid var(--rule)', fontSize: 13 }}>
@@ -90,7 +97,7 @@ export default function Dashboard() {
               Passez à un plan supérieur
             </div>
             <p style={{ fontSize: 12, color: 'var(--inkm)', marginBottom: 12, lineHeight: 1.6 }}>
-              Débloquez l'ensemble des modules Import-eXPert (classement tarifaire, tracking, générateur de documents) avec un plan Professionnel ou Premium.
+              Débloquez l'ensemble des modules Import-eXPert (classement tarifaire, tracking, générateur de documents) avec un abonnement annuel Pro ou Premium. Votre plan est activé dès réception de votre virement.
             </p>
             <Link href="/abonnements">
               <button style={{ padding: '9px 20px', background: '#C9A84C', color: '#0A0A0A', border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>

@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getDailyCost, getDashboardStats, checkCostAlert } from '../../../lib/services/logger'
 import { COOKIE_NAME, verifyToken } from '../../../lib/adminAuth'
+import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 
 export const config = { api: { bodyParser: false } }
 
@@ -18,14 +19,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { date } = req.query
     const targetDate = typeof date === 'string' ? date : undefined
 
-    const [dailyCost, dashStats, alertTriggered] = await Promise.all([
+    const sb = supabaseAdmin()
+    const [dailyCost, dashStats, alertTriggered, overview, events, signups] = await Promise.all([
       getDailyCost(targetDate),
       getDashboardStats(),
       checkCostAlert(parseInt(process.env.COST_ALERT_THRESHOLD_USD ?? '5', 10)),
+      // Indicateurs réels (fonction SQL admin_dashboard_stats, migration 0004)
+      sb.rpc('admin_dashboard_stats').then(r => r.data ?? null),
+      sb.from('subscription_events')
+        .select('numero_abonne, user_email, type, from_plan, to_plan, to_statut, amount, created_at')
+        .order('created_at', { ascending: false }).limit(10)
+        .then(r => r.data ?? []),
+      sb.from('users')
+        .select('numero_abonne, email, created_at')
+        .order('created_at', { ascending: false }).limit(10)
+        .then(r => r.data ?? []),
     ])
 
     return res.status(200).json({
       date:        targetDate ?? new Date().toISOString().split('T')[0],
+      overview,
+      events,
+      signups,
       dailyCost,
       dashboard:   dashStats,
       alerts:      { costAlert: alertTriggered, threshold: process.env.COST_ALERT_THRESHOLD_USD ?? '5' },

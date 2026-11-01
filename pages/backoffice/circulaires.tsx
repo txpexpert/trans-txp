@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import type { GetServerSideProps } from 'next'
 import { requireAdminSSR } from '../../lib/adminAuth'
+import { supabaseAdmin } from '../../lib/supabaseAdmin'
 import { useRouter } from 'next/router'
 import BackofficeLayout from '../../components/BackofficeLayout'
 
 interface Circulaire {
-  id: number
+  id: string
   numero: string
   titre: string
   date: string
@@ -15,18 +16,43 @@ interface Circulaire {
   source: string
 }
 
-const CIRCULAIRES: Circulaire[] = [
-  { id:1,  numero:'5801/2026', titre:'Procédures simplifiées pour les opérateurs économiques agréés',  date:'01/04/2026', categorie:'OEA',             statut:'indexee',    chunks:24, source:'ADII' },
-  { id:2,  numero:'5799/2026', titre:'Mise à jour des droits applicables aux produits agroalimentaires',date:'28/03/2026', categorie:'Tarifs',          statut:'indexee',    chunks:31, source:'ADII' },
-  { id:3,  numero:'5796/2026', titre:'Modalités de dédouanement des envois express',                   date:'20/03/2026', categorie:'Express / e-com', statut:'indexee',    chunks:18, source:'ADII' },
-  { id:4,  numero:'5790/2026', titre:'Régime de l\'admission temporaire — nouvelles conditions',        date:'15/03/2026', categorie:'Régimes éco.',    statut:'en_attente', chunks:0,  source:'ADII' },
-  { id:5,  numero:'5785/2026', titre:'Instructions relatives au transit douanier international',        date:'10/03/2026', categorie:'Transit',         statut:'indexee',    chunks:42, source:'ADII' },
-  { id:6,  numero:'5780/2026', titre:'Contrôle de conformité des marchandises importées de Chine',     date:'03/03/2026', categorie:'Contrôle',        statut:'indexee',    chunks:27, source:'ADII' },
-  { id:7,  numero:'5775/2026', titre:'Nouvelle nomenclature des positions tarifaires 2026',            date:'25/02/2026', categorie:'Nomenclature',    statut:'erreur',     chunks:0,  source:'ADII' },
-  { id:8,  numero:'5770/2026', titre:'Procédure de mainlevée d\'urgence pour denrées périssables',     date:'18/02/2026', categorie:'Procédures',      statut:'indexee',    chunks:15, source:'ADII' },
-  { id:9,  numero:'5765/2026', titre:'Accords ALECA — mise à jour des règles d\'origine',              date:'10/02/2026', categorie:'ALECA / Origine', statut:'indexee',    chunks:38, source:'ADII' },
-  { id:10, numero:'5760/2026', titre:'Gestion des garanties et cautionnements douaniers',              date:'02/02/2026', categorie:'Garanties',       statut:'indexee',    chunks:22, source:'ADII' },
-]
+// ✅ 2026-11-01 — données réelles : documents indexés dans la base RAG
+// (table knowledge_chunks), regroupés par numéro / titre. Remplace la liste
+// d'exemples. L'ajout rapide (/api/quick-add) est inchangé.
+async function loadCirculaires(): Promise<Circulaire[]> {
+  // Lecture par pages de 1 000 lignes (plafond par requête de l'API Supabase).
+  const rows: any[] = []
+  for (let from = 0; from < 50000; from += 1000) {
+    const { data, error } = await supabaseAdmin()
+      .from('knowledge_chunks')
+      .select('numero, titre, date_document, type_document, domaine, emetteur, created_at')
+      .order('id')
+      .range(from, from + 999)
+    if (error) throw error
+    rows.push(...(data ?? []))
+    if (!data || data.length < 1000) break
+  }
+  const docs = new Map<string, Circulaire & { _at: string }>()
+  for (const r of rows) {
+    const key = `${r.numero || ''}|${r.titre || ''}`
+    const d = docs.get(key)
+    if (d) { d.chunks++; if (r.created_at > d._at) d._at = r.created_at; continue }
+    docs.set(key, {
+      id: key,
+      numero: r.numero || '—',
+      titre: r.titre || 'Sans titre',
+      date: r.date_document || (r.created_at ? new Date(r.created_at).toLocaleDateString('fr-FR') : '—'),
+      categorie: r.type_document || r.domaine || '—',
+      statut: 'indexee',
+      chunks: 1,
+      source: r.emetteur || 'ADII',
+      _at: r.created_at || '',
+    })
+  }
+  return Array.from(docs.values())
+    .sort((a, b) => (b._at || '').localeCompare(a._at || ''))
+    .map(({ _at, ...c }) => c)
+}
 
 const STATUT_C = {
   indexee:    { bg:'#E6F7EE', color:'#1A7A40', label:'Indexée RAG' },
@@ -34,10 +60,19 @@ const STATUT_C = {
   erreur:     { bg:'#FEE8E8', color:'#C0392B', label:'Erreur' },
 }
 
-export const getServerSideProps: GetServerSideProps = requireAdminSSR
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const guard = await requireAdminSSR(context)
+  if ('redirect' in guard) return guard
+  try {
+    return { props: { circulaires: await loadCirculaires() } }
+  } catch (e: any) {
+    return { props: { circulaires: [], loadError: e?.message || 'Chargement impossible' } }
+  }
+}
 
-export default function BackofficeCirulaires() {
+export default function BackofficeCirulaires({ circulaires = [], loadError }: { circulaires: Circulaire[]; loadError?: string }) {
   const router = useRouter()
+  const CIRCULAIRES = circulaires
   const [q, setQ] = useState('')
   const [filtre, setFiltre] = useState<Circulaire['statut'] | 'all'>('all')
   const [toast, setToast] = useState('')
@@ -70,6 +105,7 @@ export default function BackofficeCirulaires() {
       if (data.doublon) { showToast('Circulaire déjà indexée — ignorée'); return }
       showToast('Circulaire ajoutée et indexée dans le RAG')
       setQaNumero(''); setQaTitre(''); setQaObjet(''); setQaTexte(''); setShowQuickAdd(false)
+      router.replace(router.asPath)   // recharge la liste réelle depuis Supabase
     } catch {
       showToast('Erreur réseau — réessayez')
     } finally {
@@ -88,6 +124,7 @@ export default function BackofficeCirulaires() {
 
   return (
     <BackofficeLayout title="Circulaires ADII">
+      {loadError && <div style={{ background:'#FEE8E8', color:'#C0392B', padding:'10px 14px', fontSize:12, marginBottom:'1rem' }}>{loadError}</div>}
 
       {toast && (
         <div style={{ position:'fixed', bottom:24, right:24, background:'#059669', color:'white', padding:'10px 20px', fontSize:12, zIndex:999 }}>

@@ -3,6 +3,26 @@ import type { GetServerSideProps } from 'next'
 import { requireAdminSSR } from '../../lib/adminAuth'
 import BackofficeLayout from '../../components/BackofficeLayout'
 import Link from 'next/link'
+import AdminAccountsPanel from '../../components/AdminAccountsPanel'
+import { PLAN_LABEL, EVENT_LABEL, fmtAmount } from '../../lib/subscriptions'
+
+interface Overview {
+  users_total: number; users_new_30d: number; users_unverified: number
+  active_paid_by_plan: Record<string, number>; trials_running: number; expiring_30d: number
+  revenue_12m: number; revenue_ytd: number; proformas_pending: number; proformas_pending_amount: number
+  tarifs: number; circulaires: number; knowledge_chunks: number; decisions: number
+  leads: number; leads_30d: number
+}
+interface ActivityRow { user: string; action: string; at: string }
+
+function relative(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const h = Math.floor(diff / 3_600_000)
+  if (h < 1) return 'À l\u2019instant'
+  if (h < 24) return `Il y a ${h} h`
+  if (h < 48) return 'Hier'
+  return new Date(iso).toLocaleDateString('fr-FR')
+}
 
 // Remplace l'ancien pages/backoffice/index.tsx
 // — protégé côté serveur par requireAdminSSR (voir getServerSideProps)
@@ -11,30 +31,49 @@ import Link from 'next/link'
 export const getServerSideProps: GetServerSideProps = requireAdminSSR
 
 export default function BackofficeDashboard() {
-  const [tarifsCount, setTarifsCount] = useState(0)
+  // ✅ 2026-11-01 — données réelles uniquement (fonction SQL admin_dashboard_stats
+  // + journal subscription_events + dernières inscriptions, via /api/admin/stats).
+  // Les chiffres de démonstration (248 utilisateurs, MRR 302 K, etc.) ont été retirés.
+  const [overview, setOverview] = useState<Overview | null>(null)
+  const [activity, setActivity] = useState<ActivityRow[]>([])
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch('/api/admin/stats')
-      .then(r => r.json())
-      .then(d => { if (d?.tarifs) setTarifsCount(parseInt(d.tarifs.replace(/\s/g, '')) || 0) })
-      .catch(() => setTarifsCount(17881))
+    fetch('/api/admin/stats', { credentials: 'include' })
+      .then(async r => {
+        const d = await r.json()
+        if (!r.ok) throw new Error(d.error || `Erreur ${r.status}`)
+        setOverview(d.overview ?? null)
+        const rows: ActivityRow[] = [
+          ...(d.events || []).map((e: any) => ({
+            user: e.numero_abonne ? `${e.numero_abonne} · ${e.user_email}` : (e.user_email || 'SYSTÈME'),
+            action: (EVENT_LABEL[e.type] || e.type)
+              + (e.to_plan && !['suspension', 'reactivation'].includes(e.type) ? ` · ${PLAN_LABEL[e.to_plan] || e.to_plan}` : '')
+              + (e.amount != null ? ` · ${fmtAmount(e.amount)}` : ''),
+            at: e.created_at,
+          })),
+          ...(d.signups || []).map((u: any) => ({ user: `${u.numero_abonne} · ${u.email}`, action: 'Nouvelle inscription', at: u.created_at })),
+        ]
+        rows.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
+        setActivity(rows.slice(0, 10))
+      })
+      .catch(e => setError(e.message || 'Chargement impossible'))
   }, [])
 
-  const stats = [
-    { label:'Codes SH en base',      value: tarifsCount ? tarifsCount.toLocaleString('fr') : '17 881', sub:'Tarif ADII 2025',       color:'#2563EB', href:'/backoffice/tarifs' },
-    { label:'Utilisateurs actifs',   value:'248',   sub:'+12 ce mois',        color:'#059669', href:'/backoffice/utilisateurs' },
-    { label:'MRR',                   value:'302 K', sub:'DH / mois',           color:'#D97706', href:'/backoffice/abonnements' },
-    { label:'Abonnements actifs',    value:'159',   sub:'dont 22 Premium',     color:'#7C3AED', href:'/backoffice/abonnements' },
-    { label:'Circulaires indexées',  value:'1 847', sub:'Sync ADII 20/03',     color:'#0891B2', href:'/backoffice/circulaires' },
-    { label:'Alertes actives',       value:'3',     sub:'1 critique',           color:'#DC2626', href:'/backoffice/alertes' },
-  ]
+  const o = overview
+  const n = (v: number | undefined) => (v == null ? '…' : Number(v).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g, ' '))
+  const paid = o?.active_paid_by_plan || {}
+  const paidTotal = Object.values(paid).reduce((a, b) => a + Number(b), 0)
 
-  const recentActions = [
-    { user:'fz.idrissi@cabinet-fzi.ma', action:'Upgrade Premium → Premium (renouvellement)',     date:'Il y a 2h' },
-    { user:'k.benali@transitaire.ma',   action:'Recherche code SH 8703210010',                  date:'Il y a 3h' },
-    { user:'m.tazi@importexport.ma',    action:'Nouvel abonnement Consultation',                 date:'Hier 14:22' },
-    { user:'SYSTÈME',                   action:'Synchronisation ADII — 12 nouvelles circulaires',date:'Hier 06:00' },
-    { user:'s.chaoui@logima.ma',        action:'Début période d\'essai Professionnel',            date:'19/03/2025' },
+  const stats = [
+    { label:'Comptes utilisateurs',  value: n(o?.users_total),       sub: o ? `+${o.users_new_30d} ces 30 derniers jours` : '',                                   color:'#059669', href:'/backoffice/utilisateurs' },
+    { label:'Abonnés actifs',        value: o ? n(paidTotal) : '…',   sub: o ? ['pro','premium','enterprise'].map(p => `${PLAN_LABEL[p]} ${paid[p] || 0}`).join(' · ') : '', color:'#7C3AED', href:'/backoffice/abonnements' },
+    { label:'Encaissé (12 mois)',    value: o ? fmtAmount(o.revenue_12m) : '…', sub: o ? `dont ${fmtAmount(o.revenue_ytd)} depuis janvier` : '',              color:'#D97706', href:'/backoffice/abonnements' },
+    { label:'Pro-formas en attente', value: n(o?.proformas_pending), sub: o ? `${fmtAmount(o.proformas_pending_amount)} à encaisser` : '',                        color:'#B45309', href:'/backoffice/abonnements' },
+    { label:'Échéances < 30 jours',  value: n(o?.expiring_30d),      sub: o ? `${o.trials_running} essai(s) en cours` : '',                                       color:'#DC2626', href:'/backoffice/abonnements' },
+    { label:'Codes SH en base',      value: n(o?.tarifs),            sub:'Table tarifs',                                                                           color:'#2563EB', href:'/backoffice/tarifs' },
+    { label:'Base documentaire',     value: n(o?.circulaires),       sub: o ? `documents · ${n(o.knowledge_chunks)} extraits · ${n(o.decisions)} décisions` : '',  color:'#0891B2', href:'/backoffice/circulaires' },
+    { label:'Leads diagnostics',     value: n(o?.leads),             sub: o ? `+${o.leads_30d} ces 30 derniers jours` : '',                                        color:'#64748B', href:'/backoffice/scanner-leads' },
   ]
 
   return (
@@ -64,9 +103,12 @@ export default function BackofficeDashboard() {
       </Link>
 
       {/* ── STATS ── */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1rem', marginBottom:'2rem' }}>
+      {error && (
+        <div style={{ background:'#FEE8E8', color:'#C0392B', padding:'10px 14px', fontSize:12, marginBottom:'1rem' }}>{error}</div>
+      )}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(210px,1fr))', gap:'1rem', marginBottom:'2rem' }}>
         {stats.map(s => (
-          <Link key={s.href} href={s.href} style={{ textDecoration:'none' }}>
+          <Link key={s.label} href={s.href} style={{ textDecoration:'none' }}>
             <div style={{
               background:'var(--white)', border:'.5px solid var(--rule)', padding:'1.25rem',
               borderTop:`3px solid ${s.color}`, cursor:'pointer',
@@ -79,6 +121,9 @@ export default function BackofficeDashboard() {
         ))}
       </div>
 
+      {/* ── ADMINISTRATEURS (super-administrateur) ── */}
+      <AdminAccountsPanel />
+
       {/* ── ACTIVITÉ RÉCENTE ── */}
       <div style={{ background:'var(--white)', border:'.5px solid var(--rule)', padding:'1.5rem' }}>
         <div style={{ fontFamily:"'Playfair Display',serif", fontSize:17, fontWeight:500, color:'var(--bd)', marginBottom:'1rem', paddingBottom:'.5rem', borderBottom:'.5px solid var(--rule)' }}>
@@ -87,17 +132,20 @@ export default function BackofficeDashboard() {
         <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12 }}>
           <thead>
             <tr>
-              <th style={{ padding:'.4rem .75rem', textAlign:'left', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', borderBottom:'.5px solid var(--rule)' }}>UTILISATEUR</th>
+              <th style={{ padding:'.4rem .75rem', textAlign:'left', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', borderBottom:'.5px solid var(--rule)' }}>ABONNÉ</th>
               <th style={{ padding:'.4rem .75rem', textAlign:'left', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', borderBottom:'.5px solid var(--rule)' }}>ACTION</th>
               <th style={{ padding:'.4rem .75rem', textAlign:'right', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', borderBottom:'.5px solid var(--rule)' }}>DATE</th>
             </tr>
           </thead>
           <tbody>
-            {recentActions.map((a, i) => (
+            {activity.length === 0 && (
+              <tr><td colSpan={3} style={{ padding:'1rem .75rem', color:'var(--inkm)', fontSize:12 }}>{overview ? 'Aucune activité récente.' : 'Chargement…'}</td></tr>
+            )}
+            {activity.map((a, i) => (
               <tr key={i} style={{ borderBottom:'.5px solid var(--rule)' }}>
                 <td style={{ padding:'.5rem .75rem', fontFamily:'monospace', fontSize:11, color:'var(--ba)' }}>{a.user}</td>
                 <td style={{ padding:'.5rem .75rem', color:'var(--inks)' }}>{a.action}</td>
-                <td style={{ padding:'.5rem .75rem', textAlign:'right', color:'var(--inkm)', fontSize:11 }}>{a.date}</td>
+                <td style={{ padding:'.5rem .75rem', textAlign:'right', color:'var(--inkm)', fontSize:11 }}>{relative(a.at)}</td>
               </tr>
             ))}
           </tbody>

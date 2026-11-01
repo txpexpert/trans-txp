@@ -1,14 +1,14 @@
-// pages/tarifs.tsx — abonnement par utilisateur + prestations expertes à l'acte.
-// Montants repris de la grille actuelle (pages/abonnements.tsx) : à valider avant mise en ligne.
+// pages/tarifs.tsx — abonnement annuel + prestations expertes à l'acte.
+// Montants : lib/pricing.ts (source unique), via lib/suite.ts.
 import Link from 'next/link'
 import SiteShell from '../components/SiteShell'
 import { PLANS, PRESTATIONS } from '../lib/suite'
 
 const FAQ = [
-  ['Comment est calculé l’abonnement ?', 'Par utilisateur et par mois, hors taxes. Le plan Entreprise couvre toute une équipe sur devis.'],
+  ['Comment est calculé l’abonnement ?', 'L’abonnement est souscrit pour un an, deux mois offerts par rapport au tarif mensuel de référence. Le plan Entreprise est une option contractuelle couvrant toute une équipe.'],
   ['Que coûte l’avis d’un expert ?', 'Les renseignements et avis sont facturés à l’opération, selon un barème communiqué avant toute intervention. Le plan Expert en inclut deux par mois.'],
   ['L’essai gratuit donne-t-il accès à tout ?', 'Oui : 14 jours d’accès au plan Expert.'],
-  ['Comment se règle l’abonnement ?', 'Par virement bancaire, en dirhams, mensuellement ou annuellement (deux mois offerts).'],
+  ['Comment se règle l’abonnement ?', 'Par virement bancaire, en dirhams, en une fois pour l’année. Votre plan est activé dès réception du paiement.'],
 ]
 
 export default function Tarifs() {
@@ -29,13 +29,13 @@ export default function Tarifs() {
               <div key={p.id} className={`x-plan ${p.vedette ? 'vedette' : ''}`}>
                 <h3>{p.nom}</h3>
                 <p className="pour">{p.pour}</p>
-                <div className="x-price">{p.prix === '0' ? 'Gratuit' : `${p.prix} DH`}<small>{p.unite}</small></div>
+                <div className="x-price">{p.prix === '0' ? 'Gratuit' : p.id === 'enterprise' ? p.prix : `${p.prix} DH`}<small>{p.unite}</small></div>
                 <ul className="x-list">{p.inclus.map(t => <li key={t}>{t}</li>)}</ul>
                 <Link href={p.href} className={`x-btn ${p.vedette ? 'x-btn-dark' : 'x-btn-line'}`} style={{ justifyContent: 'center' }}>{p.cta}</Link>
               </div>
             ))}
           </div>
-          <p className="x-note x-center">Prix hors taxes. Engagement annuel : deux mois offerts.</p>
+          <p className="x-note x-center">Abonnement annuel, payable par virement. Deux mois offerts sur les plans Opérateur et Expert.</p>
         </div>
       </section>
 
