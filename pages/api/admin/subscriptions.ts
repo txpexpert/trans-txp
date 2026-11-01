@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(401).json({ error: 'Non autorisé' })
   }
 
-  let sb
+  let sb: ReturnType<typeof supabaseAdmin>
   try { sb = supabaseAdmin() } catch (e: any) {
     return res.status(500).json({ error: e.message })
   }

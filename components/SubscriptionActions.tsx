@@ -121,7 +121,9 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
   onClose: () => void
   onSubmit: (payload: AdminAction, okMsg: string) => Promise<boolean>
 }) {
-  const planRow = modal.kind === 'plan' ? plans.find(p => p.code === modal.plan) : undefined
+  // Valeurs extraites avant usage dans des callbacks (TS 5.3 perd le narrowing dans les closures)
+  const planCode = modal.kind === 'plan' ? modal.plan : null
+  const planRow = planCode ? plans.find(p => p.code === planCode) : undefined
   const [years, setYears]   = useState(1)
   const [amount, setAmount] = useState<string>(planRow?.price_per_year != null ? String(planRow.price_per_year) : '')
   const [mode, setMode]     = useState<'activate_plan' | 'create_proforma'>('activate_plan')
@@ -136,10 +138,11 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
     if (planRow?.price_per_year != null) setAmount(String(planRow.price_per_year * y))
   }
 
-  let title = '', body: ReactNode = null, cta = '', submit: () => Promise<boolean>
+  let title = '', body: ReactNode = null, cta = '', submit: () => Promise<boolean> = async () => false
   switch (modal.kind) {
     case 'plan': {
-      const label = PLAN_LABEL[modal.plan]
+      const code = modal.plan
+      const label = PLAN_LABEL[code]
       const contractual = planRow?.price_per_year == null
       title = `${modal.renew ? 'Renouveler' : 'Activer'} ${label} — ${name}`
       cta = mode === 'activate_plan' ? `Confirmer : paiement reçu, activer ${label}` : 'Émettre la pro-forma'
@@ -179,7 +182,7 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
       submit = () => {
         if (contractual && amount === '') { setErr('Saisir le montant du contrat.'); return Promise.resolve(false) }
         return onSubmit(
-          { action: mode, userId: user.id, plan: modal.plan, years, amount: amount === '' ? null : Number(amount), note: note || undefined },
+          { action: mode, userId: user.id, plan: code, years, amount: amount === '' ? null : Number(amount), note: note || undefined },
           mode === 'activate_plan' ? `${name} : plan ${label} activé` : `${name} : pro-forma ${label} émise`,
         )
       }
@@ -187,7 +190,8 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
     }
     case 'invoice': {
       const inv = modal.invoice
-      const confirm = modal.action === 'confirm_payment'
+      const invAction = modal.action
+      const confirm = invAction === 'confirm_payment'
       title = confirm ? `Valider le paiement — ${name}` : `Annuler la pro-forma — ${name}`
       cta = confirm ? `Paiement reçu : activer ${PLAN_LABEL[inv.plan_code]}` : 'Annuler la pro-forma'
       body = (
@@ -200,13 +204,14 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
         </p>
       )
       submit = () => onSubmit(
-        { action: modal.action, invoiceId: inv.id, note: note || undefined },
+        { action: invAction, invoiceId: inv.id, note: note || undefined },
         confirm ? `${name} : paiement validé, ${PLAN_LABEL[inv.plan_code]} activé` : `Pro-forma ${inv.proforma_number} annulée`,
       )
       break
     }
     case 'status': {
-      const suspend = modal.action === 'suspend'
+      const stAction = modal.action
+      const suspend = stAction === 'suspend'
       title = `${suspend ? 'Suspendre' : 'Réactiver'} — ${name}`
       cta = suspend ? 'Suspendre le compte' : 'Réactiver le compte'
       body = (
@@ -216,7 +221,7 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
             : 'Le statut est recalculé : actif si la période payée est en cours, essai si l\'essai court encore, sinon expiré.'}
         </p>
       )
-      submit = () => onSubmit({ action: modal.action, userId: user.id, note: note || undefined },
+      submit = () => onSubmit({ action: stAction, userId: user.id, note: note || undefined },
         `${name} ${suspend ? 'suspendu' : 'réactivé'}`)
       break
     }
