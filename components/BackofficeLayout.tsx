@@ -18,6 +18,7 @@ const NAV = [
   { section: 'UTILISATEURS', items: [
     { href:'/backoffice/utilisateurs',label:'Comptes utilisateurs',   icon:'◉' },
     { href:'/backoffice/abonnements', label:'Abonnements',            icon:'◇' },
+    { href:'/gestion-abonnements',    label:'Gestion des abonnements ↗', icon:'◆' },
     { href:'/backoffice/equipes',     label:'Équipes entreprises',    icon:'⬡' },
   ]},
   { section: 'COMMUNICATION', items: [
@@ -36,7 +37,11 @@ const NAV = [
 export default function BackofficeLayout({ children, title = '' }: { children: React.ReactNode; title?: string }) {
   const router = useRouter()
 
-  const logout = () => {
+  // Déconnexion réelle (2026-11-01) : efface les cookies admin côté serveur.
+  // Avant, seul un ancien flag sessionStorage était effacé : le cookie
+  // das_admin restait valide et la session n'était jamais fermée.
+  const logout = async () => {
+    try { await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' }) } catch {}
     if (typeof window !== 'undefined') sessionStorage.removeItem('bo_auth')
     router.push('/backoffice')
   }
@@ -55,10 +60,10 @@ export default function BackofficeLayout({ children, title = '' }: { children: R
           <div style={{ fontSize:9, color:'rgba(255,255,255,.3)', letterSpacing:'.18em', marginTop:2 }}>BACK-OFFICE</div>
           <div style={{ marginTop:'1rem', padding:'.5rem .75rem', background:'rgba(255,255,255,.07)', borderRadius:4, display:'flex', alignItems:'center', gap:8 }}>
             <div style={{ width:28, height:28, borderRadius:'50%', background:'#C9A84C', display:'flex', alignItems:'center', justifyContent:'center', fontSize:10, fontWeight:700, color:'#0A0A0A', flexShrink:0 }}>
-              OW
+              SA
             </div>
             <div>
-              <div style={{ fontSize:12, color:'white', fontWeight:500 }}>Owner</div>
+              <div style={{ fontSize:12, color:'white', fontWeight:500 }}>Super-administrateur</div>
               <div style={{ fontSize:10, color:'rgba(255,255,255,.35)' }}>Accès total</div>
             </div>
           </div>

@@ -76,3 +76,45 @@ export async function sendVerificationEmail(to: string, prenom: string, token: s
 
   return sendEmail({ to, subject: 'Confirmez votre email — Import-eXPert', html })
 }
+
+// ── Administrateurs (2026-11-01) ─────────────────────────────────────────────
+function adminEmailLayout(title: string, body: string, url: string, cta: string) {
+  return `
+    <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #0A0A0A;">
+      <div style="background: #0C2D5C; padding: 20px; text-align: center;">
+        <span style="color: #E8C97A; font-family: Georgia, serif; font-size: 20px;">IMPORT-EXPERT</span>
+      </div>
+      <div style="padding: 32px 24px;">
+        <h1 style="font-size: 20px; font-weight: 500; margin: 0 0 16px;">${title}</h1>
+        <p style="font-size: 14px; line-height: 1.6; color: #3A3530;">${body}</p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${url}" style="display: inline-block; background: #0C2D5C; color: #E8C97A; padding: 14px 28px; text-decoration: none; font-size: 13px; letter-spacing: 0.08em;">${cta}</a>
+        </div>
+        <p style="font-size: 12px; color: #6E6A62; line-height: 1.6;">
+          Ce lien est personnel et valable 48 heures. Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
+        </p>
+      </div>
+    </div>`
+}
+
+export async function sendAdminInviteEmail(to: string, nom: string, url: string) {
+  return sendEmail({
+    to,
+    subject: 'Votre accès « Gestion des abonnements » — Import-eXPert',
+    html: adminEmailLayout(
+      `Bonjour${nom ? ' ' + nom : ''},`,
+      'Un accès administrateur vous a été ouvert sur le tableau de bord « Gestion des abonnements » d’Import-eXPert. Créez votre mot de passe personnel pour l’activer.',
+      url, 'CRÉER MON MOT DE PASSE'),
+  })
+}
+
+export async function sendAdminResetEmail(to: string, url: string) {
+  return sendEmail({
+    to,
+    subject: 'Réinitialisation de votre mot de passe administrateur — Import-eXPert',
+    html: adminEmailLayout(
+      'Nouveau mot de passe',
+      'Une réinitialisation de votre mot de passe administrateur a été demandée. Cliquez ci-dessous pour en choisir un nouveau.',
+      url, 'CHOISIR UN MOT DE PASSE'),
+  })
+}

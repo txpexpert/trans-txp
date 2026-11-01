@@ -1,113 +1,124 @@
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import Head from 'next/head'
-
-// Corrigé — l'ancienne version comparait email/mot de passe en clair
-// directement dans ce fichier, envoyé tel quel au navigateur (visible en
-// affichant le code source). Passe maintenant par /api/admin/login, qui
-// vérifie le mot de passe côté serveur (comparaison timing-safe, limitation
-// de tentatives) et pose un cookie HttpOnly — jamais de secret côté client.
+// pages/backoffice/index.tsx
+// ─────────────────────────────────────────────────────────────────────────────
+// Connexion au backoffice — super-administrateur uniquement (2026-11-01).
+// Email + mot de passe personnel (plus de mot de passe partagé).
 //
-// ⚠️ Le mot de passe qui était exposé en clair ici doit être changé dans
-// ADMIN_PASSWORD (variable d'environnement) avant mise en service — il
-// doit être considéré comme compromis.
+// Première connexion du compte maître : l'écran « Créer mon mot de passe »
+// demande une seule fois l'ancien mot de passe partagé ADMIN_PASSWORD comme
+// preuve, puis ne sert plus (voir /api/admin/setup-master).
+// Les administrateurs de type 2 sont renvoyés vers « Gestion des abonnements ».
+// ─────────────────────────────────────────────────────────────────────────────
+import { useState } from 'react'
+import type { FormEvent } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { AdminAuthCard, Field, Notice, SubmitButton, safeRedirect } from '../../components/AdminAuthCard'
+
+type Step = 'login' | 'setup' | 'forgot'
 
 export default function BackofficeLogin() {
   const router = useRouter()
+  const [step, setStep]       = useState<Step>('login')
+  const [email, setEmail]     = useState('')
   const [pwd, setPwd]         = useState('')
+  const [shared, setShared]   = useState('')
+  const [pwd2, setPwd2]       = useState('')
   const [error, setError]     = useState('')
-  const [loading, setLoading] = useState(false)
+  const [info, setInfo]       = useState('')
+  const [wrongSpace, setWrongSpace] = useState(false)
+  const [busy, setBusy]       = useState(false)
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pwd }),
-      })
-      const data = await res.json()
-      if (!res.ok) { setError(data.error || 'Identifiants incorrects.'); return }
+  const goIn = () => router.push(safeRedirect(router.query.redirect, '/backoffice/dashboard'))
 
-      // 🔒 SÉCURITÉ — redirection ouverte corrigée : "redirect" vient de
-      // l'URL, donc non fiable. On n'accepte qu'un chemin interne commençant
-      // par un seul "/" — on rejette "//" et "/\" (URL protocol-relative
-      // vers un domaine externe, contournement classique de ce filtre).
-      const raw = router.query.redirect
-      const isSafeInternalPath =
-        typeof raw === 'string' &&
-        raw.startsWith('/') &&
-        !raw.startsWith('//') &&
-        !raw.startsWith('/\\')
-      const redirect = isSafeInternalPath ? raw : '/backoffice/dashboard'
-      router.push(redirect)
-    } catch {
-      setError('Erreur réseau — réessayez.')
-    } finally {
-      setLoading(false)
-    }
+  const post = async (url: string, body: object) => {
+    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+    return { ok: r.ok, status: r.status, data: await r.json().catch(() => ({})) }
   }
 
+  const onLogin = async (e: FormEvent) => {
+    e.preventDefault(); setError(''); setInfo(''); setWrongSpace(false); setBusy(true)
+    try {
+      const r = await post('/api/admin/login', { email, password: pwd, scope: 'backoffice' })
+      if (r.ok) return goIn()
+      if (r.data.code === 'SETUP_REQUIRED') { setStep('setup'); setPwd(''); setInfo(r.data.error); return }
+      if (r.data.code === 'WRONG_SPACE') setWrongSpace(true)
+      setError(r.data.error || 'Connexion impossible.')
+    } catch { setError('Erreur réseau — réessayez.') } finally { setBusy(false) }
+  }
+
+  const onSetup = async (e: FormEvent) => {
+    e.preventDefault(); setError(''); setBusy(true)
+    try {
+      if (pwd !== pwd2) { setError('Les deux mots de passe ne correspondent pas.'); return }
+      const r = await post('/api/admin/setup-master', { email, adminPassword: shared, newPassword: pwd })
+      if (r.ok) return goIn()
+      setError(r.data.error || 'Création impossible.')
+    } catch { setError('Erreur réseau — réessayez.') } finally { setBusy(false) }
+  }
+
+  const onForgot = async (e: FormEvent) => {
+    e.preventDefault(); setError(''); setBusy(true)
+    try {
+      const r = await post('/api/admin/forgot', { email })
+      if (r.ok) { setInfo(r.data.message); setStep('login') } else setError(r.data.error || 'Envoi impossible.')
+    } catch { setError('Erreur réseau — réessayez.') } finally { setBusy(false) }
+  }
+
+  const form = { display: 'flex', flexDirection: 'column' as const, gap: 12 }
+
   return (
-    <>
-      <Head><title>Backoffice — Import-eXPert</title></Head>
-      <style suppressHydrationWarning>{`
-        *{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',system-ui,sans-serif}
-        body{background:#0A0A0A;min-height:100vh;display:flex;align-items:center;justify-content:center}
-        input{width:100%;padding:10px 14px;border:1px solid #2A2A2A;background:#111;color:#E8C97A;font-family:inherit;font-size:13px;outline:none;transition:border-color .15s}
-        input:focus{border-color:#C9A84C}
-        input::placeholder{color:#3A3A3A}
-      `}</style>
-
-      <div style={{ width:'100%', maxWidth:360, padding:'0 20px' }}>
-
-        <div style={{ textAlign:'center', marginBottom:'2.5rem' }}>
-          <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:30, fontWeight:600, color:'#E8C97A' }}>
-            Douane<span style={{ color:'#C9A84C' }}>.</span>ia
-          </div>
-          <div style={{ fontSize:9, letterSpacing:'.18em', color:'#3A3A3A', marginTop:6 }}>
-            BACKOFFICE ADMINISTRATION
-          </div>
-        </div>
-
-        <form onSubmit={handleLogin} style={{ display:'flex', flexDirection:'column', gap:12 }}>
-          <div>
-            <div style={{ fontSize:9, letterSpacing:'.12em', color:'#5F5E5A', marginBottom:6 }}>MOT DE PASSE</div>
-            <input
-              type="password" placeholder="••••••••••"
-              value={pwd} onChange={e => { setPwd(e.target.value); setError('') }}
-              autoComplete="off"
-            />
-          </div>
-
-          {error && (
-            <div style={{ padding:'8px 12px', background:'rgba(232,93,93,.1)', border:'1px solid rgba(232,93,93,.3)', fontSize:12, color:'#E85D5D' }}>
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading || !pwd}
-            style={{
-              marginTop:8, padding:'12px',
-              background: loading || !pwd ? '#1A1A1A' : '#C9A84C',
-              color:       loading || !pwd ? '#3A3A3A' : '#0A0A0A',
-              fontSize:11, letterSpacing:'.1em', border:'none',
-              cursor: loading || !pwd ? 'not-allowed' : 'pointer',
-              fontFamily:'inherit', fontWeight:500, transition:'all .15s',
-            }}
-          >
-            {loading ? 'VÉRIFICATION...' : 'ACCÉDER AU BACKOFFICE'}
+    <AdminAuthCard
+      kicker="BACKOFFICE · SUPER-ADMINISTRATEUR"
+      title={step === 'setup' ? 'Créer mon mot de passe' : step === 'forgot' ? 'Mot de passe oublié' : 'Connexion'}
+      footer={
+        step === 'login' ? (
+          <>
+            <button type="button" onClick={() => { setStep('forgot'); setError(''); setInfo('') }}
+              style={{ background: 'none', border: 'none', color: '#C9A84C', cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, padding: 0 }}>
+              Mot de passe oublié
+            </button>
+            <br />Administrateur des abonnements ? <Link href="/gestion-abonnements/connexion">Gestion des abonnements</Link>
+          </>
+        ) : (
+          <button type="button" onClick={() => { setStep('login'); setError('') }}
+            style={{ background: 'none', border: 'none', color: '#C9A84C', cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, padding: 0 }}>
+            ← Retour à la connexion
           </button>
+        )
+      }
+    >
+      {step === 'login' && (
+        <form onSubmit={onLogin} style={form}>
+          <Field label="EMAIL"><input id="bo-email" type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} placeholder="vous@exemple.com" /></Field>
+          <Field label="MOT DE PASSE"><input id="bo-pwd" type="password" autoComplete="current-password" value={pwd} onChange={e => setPwd(e.target.value)} placeholder="••••••••••" /></Field>
+          {info && <Notice tone="info">{info}</Notice>}
+          {error && <Notice tone="error">{error}{wrongSpace && <> <Link href="/gestion-abonnements/connexion">Ouvrir la Gestion des abonnements →</Link></>}</Notice>}
+          <SubmitButton busy={busy} disabled={!email || !pwd}>ACCÉDER AU BACKOFFICE</SubmitButton>
         </form>
+      )}
 
-        <div style={{ marginTop:'2rem', textAlign:'center', fontSize:10, color:'#1A1A1A' }}>
-          Accès restreint · Import-eXPert · 2026
-        </div>
-      </div>
-    </>
+      {step === 'setup' && (
+        <form onSubmit={onSetup} style={form}>
+          <Notice tone="info">
+            Étape unique pour le compte maître. Saisissez l’ancien mot de passe partagé du backoffice, puis choisissez votre mot de passe personnel
+            (10 caractères minimum). Ensuite, l’ancien mot de passe n’ouvrira plus rien.
+          </Notice>
+          <Field label="EMAIL DU COMPTE MAÎTRE"><input id="su-email" type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} /></Field>
+          <Field label="ANCIEN MOT DE PASSE PARTAGÉ"><input id="su-shared" type="password" autoComplete="off" value={shared} onChange={e => setShared(e.target.value)} /></Field>
+          <Field label="NOUVEAU MOT DE PASSE PERSONNEL"><input id="su-pwd" type="password" autoComplete="new-password" value={pwd} onChange={e => setPwd(e.target.value)} /></Field>
+          <Field label="CONFIRMER LE NOUVEAU MOT DE PASSE"><input id="su-pwd2" type="password" autoComplete="new-password" value={pwd2} onChange={e => setPwd2(e.target.value)} /></Field>
+          {error && <Notice tone="error">{error}</Notice>}
+          <SubmitButton busy={busy} disabled={!email || !shared || pwd.length < 10 || !pwd2}>CRÉER MON MOT DE PASSE</SubmitButton>
+        </form>
+      )}
+
+      {step === 'forgot' && (
+        <form onSubmit={onForgot} style={form}>
+          <Field label="EMAIL"><input id="fg-email" type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} /></Field>
+          {error && <Notice tone="error">{error}</Notice>}
+          <SubmitButton busy={busy} disabled={!email}>RECEVOIR UN LIEN</SubmitButton>
+        </form>
+      )}
+    </AdminAuthCard>
   )
 }

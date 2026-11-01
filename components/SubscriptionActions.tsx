@@ -10,6 +10,12 @@
 //   • pro-forma en attente → « Valider le paiement » / « Annuler la pro-forma »
 //   • suspendu            → « Réactiver », sinon « Suspendre »
 //   • toujours            → « Prolonger » (geste commercial, en jours)
+//
+// Habilitations (2026-11-01) : la prop `caps` décrit l'administrateur connecté.
+// Un administrateur de type 2 ne voit que les boutons de ses habilitations ;
+// « Suspendre », « Réactiver » et « Supprimer » sont réservés au super. Sans
+// `caps`, tout est affiché (backoffice du super-administrateur). L'API
+// revérifie chaque action côté serveur.
 // ─────────────────────────────────────────────────────────────────────────────
 import { useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
@@ -17,6 +23,7 @@ import {
   PLAN_LABEL, PAID_PLANS, fmtAmount, fmtDate, displayName, endDate,
   type Subscriber, type Invoice, type PlanRow, type AdminAction,
 } from '../lib/subscriptions'
+import { can, type AdminCapabilities } from '../lib/adminPermissions'
 
 export async function postAdminAction(payload: AdminAction): Promise<{ ok: boolean; error?: string }> {
   try {
@@ -58,16 +65,19 @@ interface Props {
   onDone:    (message: string) => void
   onError:   (message: string) => void
   compact?:  boolean
+  caps?:     AdminCapabilities | null   // absent = tous les droits (super)
 }
 
-export default function SubscriptionActions({ user, plans, pending, onDone, onError, compact }: Props) {
+export default function SubscriptionActions({ user, plans, pending, onDone, onError, compact, caps }: Props) {
   const [modal, setModal] = useState<ModalState | null>(null)
+  const allowed = (action: string) => !caps || can(caps, action)
+  const canPlan = allowed('activate_plan') || allowed('create_proforma')
   const isPaidActive = user.statut === 'active' && (PAID_PLANS as readonly string[]).includes(user.plan)
 
   return (
     <>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }} onClick={e => e.stopPropagation()}>
-        {pending.map(inv => (
+        {allowed('confirm_payment') && pending.map(inv => (
           <span key={inv.id} style={{ display: 'contents' }}>
             <button style={S.btn('success')} onClick={() => setModal({ kind: 'invoice', action: 'confirm_payment', invoice: inv })}>
               ✓ Valider le paiement {PLAN_LABEL[inv.plan_code]}
@@ -80,7 +90,7 @@ export default function SubscriptionActions({ user, plans, pending, onDone, onEr
           </span>
         ))}
 
-        {PAID_PLANS.map(code => {
+        {canPlan && PAID_PLANS.map(code => {
           const current = isPaidActive && user.plan === code
           return (
             <button key={code} style={S.btn(current ? 'primary' : 'outline')}
@@ -90,15 +100,15 @@ export default function SubscriptionActions({ user, plans, pending, onDone, onEr
           )
         })}
 
-        {user.statut === 'suspended'
+        {allowed('suspend') && (user.statut === 'suspended'
           ? <button style={S.btn('success')} onClick={() => setModal({ kind: 'status', action: 'reactivate' })}>Réactiver</button>
-          : <button style={S.btn('danger')}  onClick={() => setModal({ kind: 'status', action: 'suspend' })}>Suspendre</button>}
+          : <button style={S.btn('danger')}  onClick={() => setModal({ kind: 'status', action: 'suspend' })}>Suspendre</button>)}
 
-        {(user.plan === 'trial' || (PAID_PLANS as readonly string[]).includes(user.plan)) && (
+        {allowed('extend') && (user.plan === 'trial' || (PAID_PLANS as readonly string[]).includes(user.plan)) && (
           <button style={S.btn('outline')} onClick={() => setModal({ kind: 'extend' })}>Prolonger</button>
         )}
 
-        {!compact && user.role !== 'admin' && (
+        {!compact && allowed('delete') && user.role !== 'admin' && (
           <button style={{ ...S.btn('danger'), background: '#FEE8E8' }} onClick={() => setModal({ kind: 'delete' })}>
             Supprimer
           </button>
@@ -108,6 +118,7 @@ export default function SubscriptionActions({ user, plans, pending, onDone, onEr
       {modal && (
         <ActionModal
           modal={modal} user={user} plans={plans}
+          canActivate={allowed('activate_plan')} canProforma={allowed('create_proforma')}
           onClose={() => setModal(null)}
           onSubmit={async (payload, okMsg) => {
             const r = await postAdminAction(payload)
@@ -121,7 +132,9 @@ export default function SubscriptionActions({ user, plans, pending, onDone, onEr
 }
 
 // ── Fenêtre de confirmation ──────────────────────────────────────────────────
-function ActionModal({ modal, user, plans, onClose, onSubmit }: {
+function ActionModal({ modal, user, plans, onClose, onSubmit, canActivate = true, canProforma = true }: {
+  canActivate?: boolean
+  canProforma?: boolean
   modal: ModalState
   user: Subscriber
   plans: PlanRow[]
@@ -133,7 +146,7 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
   const planRow = planCode ? plans.find(p => p.code === planCode) : undefined
   const [years, setYears]   = useState(1)
   const [amount, setAmount] = useState<string>(planRow?.price_per_year != null ? String(planRow.price_per_year) : '')
-  const [mode, setMode]     = useState<'activate_plan' | 'create_proforma'>('activate_plan')
+  const [mode, setMode]     = useState<'activate_plan' | 'create_proforma'>(canActivate ? 'activate_plan' : 'create_proforma')
   const [days, setDays]     = useState('30')
   const [note, setNote]     = useState('')
   const [busy, setBusy]     = useState(false)
@@ -172,14 +185,18 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
           </div>
           <div style={{ marginTop: 14 }}>
             <label style={S.label}>MODE</label>
-            <label style={{ display: 'flex', gap: 8, fontSize: 13, marginBottom: 6, cursor: 'pointer' }}>
-              <input type="radio" checked={mode === 'activate_plan'} onChange={() => setMode('activate_plan')} />
-              <span><b>Paiement reçu</b> — activer maintenant et émettre la facture</span>
-            </label>
-            <label style={{ display: 'flex', gap: 8, fontSize: 13, cursor: 'pointer' }}>
-              <input type="radio" checked={mode === 'create_proforma'} onChange={() => setMode('create_proforma')} />
-              <span><b>En attente de virement</b> — émettre une pro-forma ; le plan sera activé à la validation du paiement</span>
-            </label>
+            {canActivate && (
+              <label style={{ display: 'flex', gap: 8, fontSize: 13, marginBottom: 6, cursor: 'pointer' }}>
+                <input type="radio" checked={mode === 'activate_plan'} onChange={() => setMode('activate_plan')} />
+                <span><b>Paiement reçu</b> — activer maintenant et émettre la facture</span>
+              </label>
+            )}
+            {canProforma && (
+              <label style={{ display: 'flex', gap: 8, fontSize: 13, cursor: 'pointer' }}>
+                <input type="radio" checked={mode === 'create_proforma'} onChange={() => setMode('create_proforma')} />
+                <span><b>En attente de virement</b> — émettre une pro-forma ; le plan sera activé à la validation du paiement</span>
+              </label>
+            )}
           </div>
           <p style={{ fontSize: 12, color: 'var(--inkm)', marginTop: 12, lineHeight: 1.5 }}>
             {modal.renew

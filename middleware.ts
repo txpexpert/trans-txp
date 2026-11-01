@@ -6,6 +6,8 @@
 //   (lib/moduleAccess.ts) selon le plan et le statut de l'utilisateur connecté.
 // - /backoffice/* : exclu — déjà protégé indépendamment par requireAdminSSR
 //   (lib/adminAuth.ts) au niveau de chaque page.
+// - /gestion-abonnements/* : exclu — tableau de bord des administrateurs de
+//   type 2, protégé par requireGestionSSR (lib/adminAuth.ts).
 // - /api/* : exclu — chaque route API vérifie sa propre session en Node
 //   runtime (verifyUserToken de lib/userAuth.ts) et répond en JSON plutôt
 //   que par une redirection, qui n'a pas de sens pour un appel API.
@@ -57,6 +59,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|backoffice$|backoffice/|_next/static|_next/image|favicon.ico|manifest.json|icons/|brand/|sw.js|workbox-|app/|google[a-z0-9]+\\.html|robots.txt|sitemap.xml).*)',
+    '/((?!api/|backoffice$|backoffice/|gestion-abonnements$|gestion-abonnements/|_next/static|_next/image|favicon.ico|manifest.json|icons/|brand/|sw.js|workbox-|app/|google[a-z0-9]+\\.html|robots.txt|sitemap.xml).*)',
   ],
 }

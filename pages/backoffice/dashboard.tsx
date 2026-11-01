@@ -3,6 +3,7 @@ import type { GetServerSideProps } from 'next'
 import { requireAdminSSR } from '../../lib/adminAuth'
 import BackofficeLayout from '../../components/BackofficeLayout'
 import Link from 'next/link'
+import AdminAccountsPanel from '../../components/AdminAccountsPanel'
 import { PLAN_LABEL, EVENT_LABEL, fmtAmount } from '../../lib/subscriptions'
 
 interface Overview {
@@ -119,6 +120,9 @@ export default function BackofficeDashboard() {
           </Link>
         ))}
       </div>
+
+      {/* ── ADMINISTRATEURS (super-administrateur) ── */}
+      <AdminAccountsPanel />
 
       {/* ── ACTIVITÉ RÉCENTE ── */}
       <div style={{ background:'var(--white)', border:'.5px solid var(--rule)', padding:'1.5rem' }}>
