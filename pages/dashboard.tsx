@@ -60,11 +60,12 @@ export default function Dashboard() {
           Mon compte
         </h1>
         <p style={{ fontSize: 13, color: 'var(--inkm)', marginBottom: '2rem' }}>
-          Gérez vos informations et votre abonnement Import-eXPert.
+          Gérez vos informations et votre abonnement Import-eXPert. Rappelez votre numéro d'abonné dans la référence de vos virements.
         </p>
 
         <div style={{ background: 'var(--white)', border: '.5px solid var(--rule)', padding: '1.5rem', marginBottom: '1.5rem' }}>
           {[
+            ...(user.numero ? [['N° d\'abonné', user.numero]] : []),
             ['Email', user.email],
             ['Plan actuel', PLAN_LABELS[user.plan] || user.plan],
             // Essai : date de fin d'essai. Plan payé : échéance de l'abonnement annuel.

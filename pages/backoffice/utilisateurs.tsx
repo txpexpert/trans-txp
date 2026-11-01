@@ -51,7 +51,7 @@ export default function BackofficeUtilisateurs() {
   }, [invoices])
 
   const filtered = users.filter(u =>
-    [u.email, u.nom, u.prenom, u.societe, PLAN_LABEL[u.plan], u.telephone].join(' ').toLowerCase().includes(q.toLowerCase())
+    [u.numero_abonne, u.email, u.nom, u.prenom, u.societe, PLAN_LABEL[u.plan], u.telephone].join(' ').toLowerCase().includes(q.toLowerCase())
   )
 
   const onDone  = (m: string) => { showToast(m); load() }
@@ -68,7 +68,7 @@ export default function BackofficeUtilisateurs() {
 
       {loadError && <div style={{ background: '#FEE8E8', color: '#C0392B', padding: '10px 14px', fontSize: 12, marginBottom: '1rem' }}>{loadError}</div>}
 
-      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher nom, société, email, téléphone…"
+      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher n° d'abonné (26IXP…), nom, société, email, téléphone…"
         style={{ width: '100%', padding: '10px 14px', border: '.5px solid var(--rule)', background: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: 'inherit', marginBottom: '1rem' }} />
 
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
@@ -76,21 +76,22 @@ export default function BackofficeUtilisateurs() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
             <thead>
               <tr style={{ borderBottom: '.5px solid var(--rule)' }}>
-                {['UTILISATEUR', 'SOCIÉTÉ', 'PLAN', 'STATUT', 'ÉCHÉANCE', 'INSCRIT'].map(h => (
+                {['N° ABONNÉ', 'UTILISATEUR', 'SOCIÉTÉ', 'PLAN', 'STATUT', 'ÉCHÉANCE', 'INSCRIT', 'ACTIONS'].map(h => (
                   <th key={h} style={{ padding: '.5rem .75rem', textAlign: 'left', fontSize: 10, letterSpacing: '.06em', color: 'var(--inkm)', fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {!loading && filtered.length === 0 && (
-                <tr><td colSpan={6} style={{ padding: '2rem', textAlign: 'center', color: 'var(--inkm)' }}>Aucun compte.</td></tr>
+                <tr><td colSpan={8} style={{ padding: '2rem', textAlign: 'center', color: 'var(--inkm)' }}>Aucun compte.</td></tr>
               )}
               {filtered.map(u => {
                 const s = STATUT_STYLE[u.statut] || { bg: '#eee', color: '#555', label: u.statut }
                 const dl = daysLeft(endDate(u))
                 return (
                   <tr key={u.id} onClick={() => setSelectedId(u.id)}
-                    style={{ borderBottom: '.5px solid var(--rule)', cursor: 'pointer', background: selectedId === u.id ? 'var(--bl)' : '' }}>
+                    style={{ borderBottom: '.5px solid var(--rule)', cursor: 'pointer', background: selectedId === u.id ? 'var(--bl)' : '', verticalAlign: 'top' }}>
+                    <td style={{ padding: '.55rem .75rem', fontFamily: 'monospace', fontSize: 12, fontWeight: 600, color: 'var(--bd)', whiteSpace: 'nowrap' }}>{u.numero_abonne}</td>
                     <td style={{ padding: '.55rem .75rem' }}>
                       <div style={{ fontWeight: 500, fontSize: 13, color: 'var(--bd)' }}>{displayName(u)}</div>
                       <div style={{ fontSize: 11, color: 'var(--inkm)' }}>{u.email}{!u.email_verified && ' · non confirmé'}</div>
@@ -106,6 +107,9 @@ export default function BackofficeUtilisateurs() {
                       {dl !== null && dl >= 0 && <span style={{ fontSize: 10, color: dl <= 30 ? '#D97706' : 'var(--inkm)' }}> · {dl} j</span>}
                     </td>
                     <td style={{ padding: '.55rem .75rem', color: 'var(--inkm)' }}>{fmtDate(u.created_at)}</td>
+                    <td style={{ padding: '.55rem .75rem', minWidth: 260 }}>
+                      <SubscriptionActions user={u} plans={plans} pending={pendingByUser[u.id] || []} onDone={onDone} onError={onError} />
+                    </td>
                   </tr>
                 )
               })}
@@ -120,6 +124,7 @@ export default function BackofficeUtilisateurs() {
               <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: 'var(--inkm)' }} onClick={() => setSelectedId(null)}>✕</button>
             </div>
             <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+              <div style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 700, color: 'var(--bd)', letterSpacing: '.04em', marginBottom: 4 }}>{selected.numero_abonne}</div>
               <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--bd)' }}>{displayName(selected)}</div>
               <div style={{ fontSize: 11, color: 'var(--inkm)', marginTop: 2 }}>{selected.societe || '—'}</div>
             </div>

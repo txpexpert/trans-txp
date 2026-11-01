@@ -3,7 +3,7 @@
 // Pilotage des abonnements depuis le backoffice — évite toute intervention
 // manuelle dans Supabase.
 //
-//   GET  → abonnés (table users), factures, grille des plans, derniers événements
+//   GET  → abonnés (table users, triés par numéro 26IXP…), factures, plans, derniers événements
 //   POST → { action, ... } — voir AdminAction dans lib/subscriptions.ts
 //
 // Protégé par le cookie admin das_admin (même mécanisme que requireAdminSSR).
@@ -17,7 +17,7 @@ import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import type { AdminAction } from '../../../lib/subscriptions'
 
 const USER_COLUMNS =
-  'id, email, nom, prenom, societe, telephone, profil, plan, statut, trial_ends_at, plan_ends_at, created_at, last_login_at, email_verified, role'
+  'id, numero_abonne, email, nom, prenom, societe, telephone, profil, plan, statut, trial_ends_at, plan_ends_at, created_at, last_login_at, email_verified, role'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!verifyToken(req.cookies[COOKIE_NAME])) {
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     const [users, invoices, plans, events] = await Promise.all([
-      sb.from('users').select(USER_COLUMNS).order('created_at', { ascending: false }),
+      sb.from('users').select(USER_COLUMNS).order('numero_abonne', { ascending: true }),
       sb.from('invoices').select('*').order('created_at', { ascending: false }).limit(500),
       sb.from('subscription_plans').select('code, label, price_per_year, monthly_ref, note').eq('active', true).order('sort_order'),
       sb.from('subscription_events').select('*').order('created_at', { ascending: false }).limit(50),
@@ -88,6 +88,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         rpc = { fn: 'admin_extend_subscription', args: { p_user_id: body.userId, p_days: days, p_note: note } }
         break
       }
+      case 'delete':
+        // Confirmation obligatoire : le numéro d'abonné ressaisi par l'admin
+        // est revérifié côté base (admin_delete_user).
+        if (!body.userId || !body.confirm) return res.status(400).json({ error: 'userId et confirmation requis' })
+        rpc = { fn: 'admin_delete_user', args: { p_user_id: body.userId, p_confirm: String(body.confirm), p_note: note } }
+        break
       default:
         return res.status(400).json({ error: 'Action inconnue' })
     }

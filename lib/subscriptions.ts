@@ -7,6 +7,7 @@
 
 export interface Subscriber {
   id:             string
+  numero_abonne:  string        // identifiant unique, format 26IXP001
   email:          string
   nom:            string | null
   prenom:         string | null
@@ -25,7 +26,9 @@ export interface Subscriber {
 
 export interface Invoice {
   id:              string
-  user_id:         string
+  user_id:         string | null  // NULL si le compte a été supprimé (facture conservée)
+  numero_abonne:   string | null
+  client_email:    string | null
   plan_code:       string
   years:           number
   amount:          number
@@ -40,6 +43,7 @@ export interface Invoice {
 
 export interface SubscriptionEvent {
   id:           string
+  numero_abonne: string | null
   user_email:   string | null
   type:         string
   from_plan:    string | null
@@ -69,6 +73,17 @@ export type AdminAction =
   | { action: 'suspend';         userId: string; note?: string }
   | { action: 'reactivate';      userId: string; note?: string }
   | { action: 'extend';          userId: string; days: number; note?: string }
+  | { action: 'delete';          userId: string; confirm: string; note?: string }
+
+export interface UserSession {
+  id:            string
+  numero_abonne: string
+  email:         string | null
+  session_id:    string
+  ip:            string | null
+  user_agent:    string | null
+  created_at:    string
+}
 
 export const PLAN_LABEL: Record<string, string> = {
   trial: 'Essai', free: 'Gratuit', pro: 'Pro', premium: 'Premium', enterprise: 'Entreprise',
@@ -91,6 +106,7 @@ export const EVENT_LABEL: Record<string, string> = {
   prolongation:      'Échéance prolongée',
   expiration:        'Abonnement expiré',
   proforma_annulee:  'Pro-forma annulée',
+  suppression:       'Compte supprimé',
 }
 
 export const PAID_PLANS = ['pro', 'premium', 'enterprise'] as const

@@ -49,6 +49,7 @@ type ModalState =
   | { kind: 'extend' }
   | { kind: 'status'; action: 'suspend' | 'reactivate' }
   | { kind: 'invoice'; action: 'confirm_payment' | 'cancel_proforma'; invoice: Invoice }
+  | { kind: 'delete' }
 
 interface Props {
   user:      Subscriber
@@ -96,6 +97,12 @@ export default function SubscriptionActions({ user, plans, pending, onDone, onEr
         {(user.plan === 'trial' || (PAID_PLANS as readonly string[]).includes(user.plan)) && (
           <button style={S.btn('outline')} onClick={() => setModal({ kind: 'extend' })}>Prolonger</button>
         )}
+
+        {!compact && user.role !== 'admin' && (
+          <button style={{ ...S.btn('danger'), background: '#FEE8E8' }} onClick={() => setModal({ kind: 'delete' })}>
+            Supprimer
+          </button>
+        )}
       </div>
 
       {modal && (
@@ -131,7 +138,9 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
   const [note, setNote]     = useState('')
   const [busy, setBusy]     = useState(false)
   const [err, setErr]       = useState('')
-  const name = displayName(user)
+  const [confirmNum, setConfirmNum] = useState('')
+  // Le numéro d'abonné identifie le compte dans chaque fenêtre d'action.
+  const name = `${user.numero_abonne} · ${displayName(user)}`
 
   const setYearsAndAmount = (y: number) => {
     setYears(y)
@@ -241,6 +250,30 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
         `${name} : échéance prolongée de ${days} jours`)
       break
     }
+    case 'delete': {
+      title = `Supprimer le compte — ${name}`
+      cta = 'Supprimer définitivement'
+      const ok = confirmNum.trim().toUpperCase() === user.numero_abonne
+      body = (
+        <>
+          <p style={{ fontSize: 13, lineHeight: 1.6, margin: 0 }}>
+            Le compte <b>{user.email}</b> sera supprimé : le client ne pourra plus se connecter et devra se réinscrire
+            (il recevra alors un nouveau numéro). Les pro-formas non payées sont annulées. Les factures payées et le
+            journal sont conservés sous le numéro <b>{user.numero_abonne}</b>, qui ne sera jamais réattribué.
+          </p>
+          <p style={{ fontSize: 12, color: '#C0392B', margin: '10px 0' }}>Cette action est irréversible.</p>
+          <label style={S.label}>POUR CONFIRMER, SAISIR LE NUMÉRO D'ABONNÉ {user.numero_abonne}</label>
+          <input style={{ ...S.input, fontFamily: 'monospace', borderColor: ok ? '#1A7A40' : 'var(--rule)' }}
+            value={confirmNum} onChange={e => setConfirmNum(e.target.value)} placeholder={user.numero_abonne} autoComplete="off" />
+        </>
+      )
+      submit = () => {
+        if (!ok) { setErr(`Saisir exactement ${user.numero_abonne} pour confirmer.`); return Promise.resolve(false) }
+        return onSubmit({ action: 'delete', userId: user.id, confirm: confirmNum.trim(), note: note || undefined },
+          `Compte ${user.numero_abonne} supprimé`)
+      }
+      break
+    }
   }
 
   return (
@@ -255,7 +288,7 @@ function ActionModal({ modal, user, plans, onClose, onSubmit }: {
         {err && <div style={{ marginTop: 10, fontSize: 12, color: '#C0392B' }}>{err}</div>}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: '1.25rem' }}>
           <button style={S.btn('outline')} onClick={onClose} disabled={busy}>Fermer</button>
-          <button style={{ ...S.btn(modal.kind === 'status' && modal.action === 'suspend' ? 'danger' : 'primary'), padding: '7px 14px', fontSize: 12 }}
+          <button style={{ ...S.btn((modal.kind === 'status' && modal.action === 'suspend') || modal.kind === 'delete' ? 'danger' : 'primary'), padding: '7px 14px', fontSize: 12 }}
             disabled={busy}
             onClick={async () => { setErr(''); setBusy(true); await submit(); setBusy(false) }}>
             {busy ? 'En cours…' : cta}

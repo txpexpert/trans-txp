@@ -18,6 +18,7 @@ type Plan   = 'trial' | 'pro' | 'premium' | 'enterprise'
 type Statut = 'trial' | 'active' | 'expired' | 'suspended'
 
 interface SessionUser {
+  numero:     string | null   // numéro d'abonné, format 26IXP001
   email:      string
   role:       'admin' | 'user'
   plan:       Plan
@@ -58,7 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return
       }
       const data = await res.json()
-      setUser({ email: data.email, role: data.role, plan: data.plan, statut: data.statut, trialEnds: data.trialEnds ?? null, planEnds: data.planEnds ?? null })
+      setUser({ numero: data.numero ?? null, email: data.email, role: data.role, plan: data.plan, statut: data.statut, trialEnds: data.trialEnds ?? null, planEnds: data.planEnds ?? null })
     } catch {
       setUser(null)
     }

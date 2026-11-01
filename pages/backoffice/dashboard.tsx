@@ -45,13 +45,13 @@ export default function BackofficeDashboard() {
         setOverview(d.overview ?? null)
         const rows: ActivityRow[] = [
           ...(d.events || []).map((e: any) => ({
-            user: e.user_email || 'SYSTÈME',
+            user: e.numero_abonne ? `${e.numero_abonne} · ${e.user_email}` : (e.user_email || 'SYSTÈME'),
             action: (EVENT_LABEL[e.type] || e.type)
               + (e.to_plan && !['suspension', 'reactivation'].includes(e.type) ? ` · ${PLAN_LABEL[e.to_plan] || e.to_plan}` : '')
               + (e.amount != null ? ` · ${fmtAmount(e.amount)}` : ''),
             at: e.created_at,
           })),
-          ...(d.signups || []).map((u: any) => ({ user: u.email, action: 'Nouvelle inscription', at: u.created_at })),
+          ...(d.signups || []).map((u: any) => ({ user: `${u.numero_abonne} · ${u.email}`, action: 'Nouvelle inscription', at: u.created_at })),
         ]
         rows.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
         setActivity(rows.slice(0, 10))
@@ -128,7 +128,7 @@ export default function BackofficeDashboard() {
         <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12 }}>
           <thead>
             <tr>
-              <th style={{ padding:'.4rem .75rem', textAlign:'left', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', borderBottom:'.5px solid var(--rule)' }}>UTILISATEUR</th>
+              <th style={{ padding:'.4rem .75rem', textAlign:'left', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', borderBottom:'.5px solid var(--rule)' }}>ABONNÉ</th>
               <th style={{ padding:'.4rem .75rem', textAlign:'left', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', borderBottom:'.5px solid var(--rule)' }}>ACTION</th>
               <th style={{ padding:'.4rem .75rem', textAlign:'right', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', borderBottom:'.5px solid var(--rule)' }}>DATE</th>
             </tr>

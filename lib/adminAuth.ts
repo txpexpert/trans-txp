@@ -81,3 +81,22 @@ export async function requireAdminSSR(context: GetServerSidePropsContext) {
   }
   return { props: {} }
 }
+// ── Variante : page backoffice qui charge ses données côté serveur ──────────
+// Vérifie le cookie admin, puis exécute `load` (clé service) et passe son
+// résultat en props. Évite d'exposer une API supplémentaire pour une page en
+// lecture seule.
+//
+// Usage :
+//   export const getServerSideProps = withAdminData(async () => ({ rows: [...] }))
+export function withAdminData<P extends object>(load: () => Promise<P>) {
+  return async (context: GetServerSidePropsContext) => {
+    const guard = await requireAdminSSR(context)
+    if ('redirect' in guard) return guard
+    try {
+      return { props: await load() }
+    } catch (e: any) {
+      console.error('[backoffice] chargement :', e?.message || e)
+      return { props: { loadError: e?.message || 'Chargement impossible' } as unknown as P }
+    }
+  }
+}

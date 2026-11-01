@@ -27,11 +27,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Indicateurs réels (fonction SQL admin_dashboard_stats, migration 0004)
       sb.rpc('admin_dashboard_stats').then(r => r.data ?? null),
       sb.from('subscription_events')
-        .select('user_email, type, from_plan, to_plan, to_statut, amount, created_at')
+        .select('numero_abonne, user_email, type, from_plan, to_plan, to_statut, amount, created_at')
         .order('created_at', { ascending: false }).limit(10)
         .then(r => r.data ?? []),
       sb.from('users')
-        .select('email, created_at')
+        .select('numero_abonne, email, created_at')
         .order('created_at', { ascending: false }).limit(10)
         .then(r => r.data ?? []),
     ])

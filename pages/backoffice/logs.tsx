@@ -1,156 +1,129 @@
-import { useEffect, useState } from 'react'
-import type { GetServerSideProps } from 'next'
-import { requireAdminSSR } from '../../lib/adminAuth'
-import { useRouter } from 'next/router'
+// pages/backoffice/logs.tsx
+// ─────────────────────────────────────────────────────────────────────────────
+// Journaux d'activité — données réelles uniquement (2026-11-01) :
+//   • Connexions : table user_sessions, une ligne par session ouverte,
+//     identifiée par le numéro d'abonné (26IXP…).
+//   • Abonnements : table subscription_events (activations, paiements,
+//     suspensions, suppressions…).
+// Remplace l'ancienne liste de journaux fictifs.
+// ─────────────────────────────────────────────────────────────────────────────
+import { useState } from 'react'
+import type { CSSProperties } from 'react'
+import { withAdminData } from '../../lib/adminAuth'
+import { supabaseAdmin } from '../../lib/supabaseAdmin'
 import BackofficeLayout from '../../components/BackofficeLayout'
+import { EVENT_LABEL, PLAN_LABEL, fmtAmount, type UserSession, type SubscriptionEvent } from '../../lib/subscriptions'
 
-interface LogEntry {
-  id: number
-  date: string
-  heure: string
-  user: string
-  action: string
-  module: string
-  statut: 'success' | 'error' | 'warning' | 'info'
-  ip: string
+interface Props {
+  sessions: UserSession[]
+  events: SubscriptionEvent[]
+  loadError?: string
 }
 
-const LOGS: LogEntry[] = [
-  { id:1,  date:'09/04/2026', heure:'14:32', user:'fz.idrissi@cabinet-fzi.ma',  action:'Recherche code SH 8703210010',              module:'Tarifs',       statut:'success', ip:'196.12.44.21' },
-  { id:2,  date:'09/04/2026', heure:'13:58', user:'k.benali@transitaire.ma',    action:'Génération DUM — lots 240409-KBT',           module:'Générateur',   statut:'success', ip:'196.22.11.8'  },
-  { id:3,  date:'09/04/2026', heure:'13:15', user:'SYSTÈME',                    action:'Sync ADII — 3 nouvelles circulaires',        module:'Ingestion RAG',statut:'info',    ip:'–'            },
-  { id:4,  date:'09/04/2026', heure:'12:40', user:'m.tazi@importexport.ma',     action:'Simulation fiscale — CH07020090',            module:'Simulateur',   statut:'success', ip:'41.249.87.33' },
-  { id:5,  date:'09/04/2026', heure:'11:55', user:'s.chaoui@logima.ma',         action:'Tentative accès module Premium (quota)',     module:'Auth',         statut:'warning', ip:'105.67.23.4'  },
-  { id:6,  date:'09/04/2026', heure:'11:20', user:'SYSTÈME',                    action:'Échec import tarifs CSV — format invalide',  module:'Ingestion',    statut:'error',   ip:'–'            },
-  { id:7,  date:'09/04/2026', heure:'10:44', user:'y.alami@freelance.ma',       action:'Login refusé — compte suspendu',             module:'Auth',         statut:'error',   ip:'160.154.9.2'  },
-  { id:8,  date:'09/04/2026', heure:'10:03', user:'admin@Import-eXPert',            action:'Ajout circulaire ADII n° 5801/2026',         module:'Backoffice',   statut:'success', ip:'127.0.0.1'    },
-  { id:9,  date:'08/04/2026', heure:'17:30', user:'k.benali@transitaire.ma',    action:'Chat IA — 8 requêtes',                      module:'Chat',         statut:'success', ip:'196.22.11.8'  },
-  { id:10, date:'08/04/2026', heure:'16:50', user:'SYSTÈME',                    action:'Backup automatique base Supabase',           module:'Système',      statut:'success', ip:'–'            },
-  { id:11, date:'08/04/2026', heure:'15:22', user:'fz.idrissi@cabinet-fzi.ma',  action:'Export rapport PDF — Régimes économiques',   module:'Documents',    statut:'success', ip:'196.12.44.21' },
-  { id:12, date:'08/04/2026', heure:'14:08', user:'SYSTÈME',                    action:'Rate limit atteint — IP 41.249.87.33',       module:'Auth',         statut:'warning', ip:'41.249.87.33' },
-]
+export const getServerSideProps = withAdminData<Props>(async () => {
+  const sb = supabaseAdmin()
+  const [sessions, events] = await Promise.all([
+    sb.from('user_sessions').select('*').order('created_at', { ascending: false }).limit(300),
+    sb.from('subscription_events').select('*').order('created_at', { ascending: false }).limit(300),
+  ])
+  if (sessions.error) throw sessions.error
+  if (events.error) throw events.error
+  return { sessions: sessions.data ?? [], events: events.data ?? [] }
+})
 
-const STATUT_COLORS: Record<string, { bg: string; color: string; label: string }> = {
-  success: { bg:'#E6F7EE', color:'#1A7A40', label:'Succès' },
-  error:   { bg:'#FEE8E8', color:'#C0392B', label:'Erreur' },
-  warning: { bg:'#FEF5E4', color:'#8A5A10', label:'Attention' },
-  info:    { bg:'#EEF4FE', color:'#1A3A9A', label:'Info' },
+const dt = (iso: string) => new Date(iso).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
+
+function device(ua: string | null): string {
+  if (!ua) return '—'
+  const os = /Android/i.test(ua) ? 'Android' : /iPhone|iPad/i.test(ua) ? 'iOS' : /Windows/i.test(ua) ? 'Windows' : /Mac OS/i.test(ua) ? 'macOS' : /Linux/i.test(ua) ? 'Linux' : 'Autre'
+  const br = /Edg\//.test(ua) ? 'Edge' : /Chrome\//.test(ua) ? 'Chrome' : /Firefox\//.test(ua) ? 'Firefox' : /Safari\//.test(ua) ? 'Safari' : ''
+  return br ? `${br} · ${os}` : os
 }
 
-export const getServerSideProps: GetServerSideProps = requireAdminSSR
+const th: CSSProperties = { padding: '.5rem .75rem', textAlign: 'left', fontSize: 10, letterSpacing: '.06em', color: 'var(--inkm)', fontWeight: 600, whiteSpace: 'nowrap', borderBottom: '.5px solid var(--rule)' }
+const td: CSSProperties = { padding: '.5rem .75rem', borderBottom: '.5px solid var(--rule)', fontSize: 12, verticalAlign: 'top' }
+const num: CSSProperties = { fontFamily: 'monospace', fontWeight: 600, color: 'var(--bd)', whiteSpace: 'nowrap' }
 
-export default function BackofficeLogs() {
-  const router = useRouter()
-  const [logs, setLogs] = useState(LOGS)
+export default function BackofficeLogs({ sessions = [], events = [], loadError }: Props) {
+  const [tab, setTab] = useState<'sessions' | 'abonnements'>('sessions')
   const [q, setQ] = useState('')
-  const [filtre, setFiltre] = useState<string>('all')
-  const [toast, setToast] = useState('')
+  const match = (...parts: (string | null | undefined)[]) => parts.join(' ').toLowerCase().includes(q.toLowerCase())
 
-
-  const filtered = logs.filter(l => {
-    const matchQ = [l.user, l.action, l.module].join(' ').toLowerCase().includes(q.toLowerCase())
-    const matchF = filtre === 'all' || l.statut === filtre
-    return matchQ && matchF
-  })
-
-  const showToast = (m: string) => { setToast(m); setTimeout(() => setToast(''), 3000) }
-
-  const badge = (s: LogEntry['statut']) => {
-    const c = STATUT_COLORS[s]
-    return (
-      <span style={{ fontSize:10, padding:'2px 8px', background:c.bg, color:c.color, fontWeight:600, letterSpacing:'.05em', whiteSpace:'nowrap' }}>
-        {c.label}
-      </span>
-    )
-  }
+  const fSessions = sessions.filter(s => match(s.numero_abonne, s.email, s.ip))
+  const fEvents   = events.filter(e => match(e.numero_abonne, e.user_email, EVENT_LABEL[e.type], e.note))
 
   return (
     <BackofficeLayout title="Journaux d'activité">
-
-      {toast && (
-        <div style={{ position:'fixed', bottom:24, right:24, background:'#1A3A9A', color:'white', padding:'10px 20px', fontSize:12, zIndex:999 }}>
-          {toast}
-        </div>
-      )}
-
-      {/* Header */}
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1.5rem' }}>
-        <div>
-          <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:26, fontWeight:700, color:'var(--bd)', marginBottom:4 }}>
-            Journaux d'activité
-          </h1>
-          <p style={{ fontSize:13, color:'var(--inkm)' }}>{filtered.length} entrée(s) · mise à jour en temps réel</p>
-        </div>
-        <button
-          onClick={() => { setLogs([...LOGS]); showToast('Journaux actualisés') }}
-          style={{ padding:'8px 16px', background:'var(--ba)', color:'white', border:'none', cursor:'pointer', fontSize:12, letterSpacing:'.05em' }}>
-          ↻ Actualiser
-        </button>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 26, fontWeight: 700, color: 'var(--bd)', marginBottom: 4 }}>Journaux d'activité</h1>
+        <p style={{ fontSize: 13, color: 'var(--inkm)' }}>
+          {sessions.length} connexion{sessions.length > 1 ? 's' : ''} · {events.length} opération{events.length > 1 ? 's' : ''} d'abonnement · 300 dernières de chaque
+        </p>
       </div>
 
-      {/* Filtres */}
-      <div style={{ display:'flex', gap:'1rem', marginBottom:'1.5rem', flexWrap:'wrap' }}>
-        <input
-          value={q}
-          onChange={e => setQ(e.target.value)}
-          placeholder="Rechercher utilisateur, action, module…"
-          style={{ flex:1, minWidth:200, padding:'8px 12px', border:'.5px solid var(--rule)', background:'var(--white)', fontSize:12, color:'var(--bd)', outline:'none', fontFamily:'inherit' }}
-        />
-        {(['all','success','error','warning','info'] as const).map(f => (
-          <button key={f} onClick={() => setFiltre(f)} style={{
-            padding:'6px 14px', fontSize:11, border:'.5px solid var(--rule)', cursor:'pointer', letterSpacing:'.05em',
-            background: filtre === f ? '#0C2D5C' : 'var(--white)', color: filtre === f ? 'white' : 'var(--inkm)',
-            fontFamily:'inherit',
-          }}>
-            {f === 'all' ? 'Tous' : STATUT_COLORS[f].label}
-          </button>
+      {loadError && <div style={{ background: '#FEE8E8', color: '#C0392B', padding: '10px 14px', fontSize: 12, marginBottom: '1rem' }}>{loadError}</div>}
+
+      <div style={{ display: 'flex', gap: 6, marginBottom: '.75rem', flexWrap: 'wrap' }}>
+        {([['sessions', 'Connexions'], ['abonnements', 'Abonnements']] as const).map(([id, label]) => (
+          <button key={id} onClick={() => setTab(id)} style={{
+            fontSize: 11, padding: '5px 12px', cursor: 'pointer', fontFamily: 'inherit',
+            border: '.5px solid ' + (tab === id ? 'var(--bd)' : 'var(--rule)'),
+            background: tab === id ? 'var(--bd)' : 'var(--white)', color: tab === id ? '#fff' : 'var(--inks)',
+          }}>{label}</button>
         ))}
       </div>
+      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Filtrer par n° d'abonné (26IXP…), email, adresse IP…"
+        style={{ width: '100%', padding: '10px 14px', border: '.5px solid var(--rule)', background: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: 'inherit', marginBottom: '1rem' }} />
 
-      {/* Stats rapides */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'.75rem', marginBottom:'1.5rem' }}>
-        {(['success','error','warning','info'] as const).map(s => {
-          const c = STATUT_COLORS[s]
-          const cnt = logs.filter(l => l.statut === s).length
-          return (
-            <div key={s} style={{ background:'var(--white)', border:`.5px solid var(--rule)`, borderTop:`3px solid ${c.color}`, padding:'1rem', cursor:'pointer' }} onClick={() => setFiltre(s)}>
-              <div style={{ fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', marginBottom:4 }}>{c.label.toUpperCase()}</div>
-              <div style={{ fontFamily:"'Playfair Display',serif", fontSize:24, fontWeight:700, color:'var(--bd)' }}>{cnt}</div>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Table */}
-      <div style={{ background:'var(--white)', border:'.5px solid var(--rule)', overflowX:'auto' }}>
-        <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12 }}>
-          <thead>
-            <tr style={{ borderBottom:'.5px solid var(--rule)' }}>
-              {['DATE / HEURE','UTILISATEUR','ACTION','MODULE','STATUT','IP'].map(h => (
-                <th key={h} style={{ padding:'.5rem .75rem', textAlign:'left', fontSize:10, letterSpacing:'.06em', color:'var(--inkm)', fontWeight:600, whiteSpace:'nowrap' }}>
-                  {h}
-                </th>
+      <div style={{ background: 'var(--white)', border: '.5px solid var(--rule)', overflowX: 'auto' }}>
+        {tab === 'sessions' ? (
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead><tr>{['DATE', 'N° ABONNÉ', 'EMAIL', 'APPAREIL', 'ADRESSE IP', 'SESSION'].map(h => <th key={h} style={th}>{h}</th>)}</tr></thead>
+            <tbody>
+              {fSessions.length === 0 && (
+                <tr><td colSpan={6} style={{ ...td, textAlign: 'center', color: 'var(--inkm)', padding: '2rem' }}>
+                  {sessions.length === 0 ? 'Aucune connexion enregistrée. Chaque nouvelle connexion d\'un abonné apparaîtra ici.' : 'Aucun résultat.'}
+                </td></tr>
+              )}
+              {fSessions.map(s => (
+                <tr key={s.id}>
+                  <td style={{ ...td, whiteSpace: 'nowrap', color: 'var(--inkm)' }}>{dt(s.created_at)}</td>
+                  <td style={{ ...td, ...num }}>{s.numero_abonne}</td>
+                  <td style={{ ...td, fontFamily: 'monospace', fontSize: 11, color: 'var(--ba)' }}>{s.email}</td>
+                  <td style={td}>{device(s.user_agent)}</td>
+                  <td style={{ ...td, fontFamily: 'monospace', fontSize: 11 }}>{s.ip || '—'}</td>
+                  <td style={{ ...td, fontFamily: 'monospace', fontSize: 10, color: 'var(--inkm)' }} title={s.session_id}>{s.session_id.slice(0, 8)}</td>
+                </tr>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 ? (
-              <tr><td colSpan={6} style={{ padding:'2rem', textAlign:'center', color:'var(--inkm)', fontSize:13 }}>Aucun journal correspondant</td></tr>
-            ) : filtered.map(l => (
-              <tr key={l.id} style={{ borderBottom:'.5px solid var(--rule)' }}>
-                <td style={{ padding:'.5rem .75rem', fontFamily:'monospace', fontSize:11, color:'var(--inkm)', whiteSpace:'nowrap' }}>{l.date} {l.heure}</td>
-                <td style={{ padding:'.5rem .75rem', fontFamily:'monospace', fontSize:11, color:'var(--ba)', maxWidth:200, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{l.user}</td>
-                <td style={{ padding:'.5rem .75rem', color:'var(--inks)' }}>{l.action}</td>
-                <td style={{ padding:'.5rem .75rem', color:'var(--inkm)' }}>{l.module}</td>
-                <td style={{ padding:'.5rem .75rem' }}>{badge(l.statut)}</td>
-                <td style={{ padding:'.5rem .75rem', fontFamily:'monospace', fontSize:11, color:'var(--inkm)' }}>{l.ip}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead><tr>{['DATE', 'N° ABONNÉ', 'EMAIL', 'OPÉRATION', 'MONTANT', 'PAR'].map(h => <th key={h} style={th}>{h}</th>)}</tr></thead>
+            <tbody>
+              {fEvents.length === 0 && (
+                <tr><td colSpan={6} style={{ ...td, textAlign: 'center', color: 'var(--inkm)', padding: '2rem' }}>
+                  {events.length === 0 ? 'Aucune opération d\'abonnement pour l\'instant.' : 'Aucun résultat.'}
+                </td></tr>
+              )}
+              {fEvents.map(e => (
+                <tr key={e.id}>
+                  <td style={{ ...td, whiteSpace: 'nowrap', color: 'var(--inkm)' }}>{dt(e.created_at)}</td>
+                  <td style={{ ...td, ...num }}>{e.numero_abonne || '—'}</td>
+                  <td style={{ ...td, fontFamily: 'monospace', fontSize: 11, color: 'var(--ba)' }}>{e.user_email}</td>
+                  <td style={td}>
+                    {EVENT_LABEL[e.type] || e.type}
+                    {e.to_plan && !['suspension', 'reactivation', 'suppression'].includes(e.type) ? ` · ${PLAN_LABEL[e.to_plan] || e.to_plan}` : ''}
+                    {e.note && <div style={{ fontSize: 11, color: 'var(--inkm)' }}>{e.note}</div>}
+                  </td>
+                  <td style={{ ...td, whiteSpace: 'nowrap' }}>{e.amount != null ? fmtAmount(e.amount) : '—'}</td>
+                  <td style={{ ...td, color: 'var(--inkm)' }}>{e.actor}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
-
     </BackofficeLayout>
   )
 }
-

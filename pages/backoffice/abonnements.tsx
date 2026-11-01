@@ -79,7 +79,7 @@ export default function BackofficeAbonnements() {
       filter === 'a_echeance' ? (u.statut === 'active' || u.statut === 'trial') && dl !== null && dl >= 0 && dl <= 30 :
       filter === 'expires'    ? u.statut === 'expired' :
       filter === 'suspendus'  ? u.statut === 'suspended' : true
-    const hay = [u.email, u.nom, u.prenom, u.societe, PLAN_LABEL[u.plan]].join(' ').toLowerCase()
+    const hay = [u.numero_abonne, u.email, u.nom, u.prenom, u.societe, PLAN_LABEL[u.plan]].join(' ').toLowerCase()
     return okFilter && hay.includes(q.toLowerCase())
   })
 
@@ -154,6 +154,7 @@ export default function BackofficeAbonnements() {
             return (
               <div key={inv.id} style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', padding: '.5rem 0', borderTop: '.5px solid #F0E0B0' }}>
                 <span style={{ fontFamily: 'monospace', fontSize: 11 }}>{inv.proforma_number}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 600, color: 'var(--bd)' }}>{u.numero_abonne}</span>
                 <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--bd)' }}>{displayName(u)}</span>
                 <span style={{ fontSize: 12, color: 'var(--inks)' }}>{PLAN_LABEL[inv.plan_code]} · {inv.years} an{inv.years > 1 ? 's' : ''} · {fmtAmount(inv.amount)}</span>
                 <span style={{ fontSize: 11, color: 'var(--inkm)' }}>émise le {fmtDate(inv.sent_at || inv.created_at)}</span>
@@ -176,7 +177,7 @@ export default function BackofficeAbonnements() {
           }}>{f.label}</button>
         ))}
       </div>
-      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher nom, société, email ou plan…"
+      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher n° d'abonné (26IXP…), nom, société, email ou plan…"
         style={{ width: '100%', padding: '10px 14px', border: '.5px solid var(--rule)', background: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: 'inherit', marginBottom: '1rem' }}
       />
 
@@ -185,14 +186,14 @@ export default function BackofficeAbonnements() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
             <tr style={{ borderBottom: '.5px solid var(--rule)' }}>
-              {['CLIENT', 'PLAN', 'STATUT', 'ÉCHÉANCE', 'FACTURES', 'ACTIONS'].map(h => (
+              {['N° ABONNÉ', 'CLIENT', 'PLAN', 'STATUT', 'ÉCHÉANCE', 'FACTURES', 'ACTIONS'].map(h => (
                 <th key={h} style={{ padding: '.5rem .75rem', textAlign: 'left', fontSize: 10, letterSpacing: '.06em', color: 'var(--inkm)', fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {!loading && filtered.length === 0 && (
-              <tr><td colSpan={6} style={{ padding: '2rem', textAlign: 'center', color: 'var(--inkm)' }}>Aucun compte ne correspond.</td></tr>
+              <tr><td colSpan={7} style={{ padding: '2rem', textAlign: 'center', color: 'var(--inkm)' }}>Aucun compte ne correspond.</td></tr>
             )}
             {filtered.map(u => {
               const s = STATUT_STYLE[u.statut] || { bg: '#eee', color: '#555', label: u.statut }
@@ -201,6 +202,7 @@ export default function BackofficeAbonnements() {
               const paid = invoices.filter(i => i.user_id === u.id && i.status === 'payee')
               return (
                 <tr key={u.id} style={{ borderBottom: '.5px solid var(--rule)', verticalAlign: 'top' }}>
+                  <td style={{ padding: '.6rem .75rem', fontFamily: 'monospace', fontSize: 12, fontWeight: 600, color: 'var(--bd)', whiteSpace: 'nowrap' }}>{u.numero_abonne}</td>
                   <td style={{ padding: '.6rem .75rem' }}>
                     <div style={{ fontWeight: 600, color: 'var(--bd)' }}>{u.societe || displayName(u)}</div>
                     <div style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--ba)' }}>{u.email}</div>
@@ -235,10 +237,11 @@ export default function BackofficeAbonnements() {
           : events.map(e => (
             <div key={e.id} style={{ display: 'flex', gap: 12, fontSize: 12, padding: '.4rem 0', borderTop: '.5px solid var(--rule)', flexWrap: 'wrap' }}>
               <span style={{ color: 'var(--inkm)', minWidth: 120 }}>{new Date(e.created_at).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })}</span>
+              <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 600, color: 'var(--bd)', minWidth: 76 }}>{e.numero_abonne || '—'}</span>
               <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--ba)', minWidth: 200 }}>{e.user_email}</span>
               <span style={{ color: 'var(--inks)' }}>
                 {EVENT_LABEL[e.type] || e.type}
-                {e.to_plan && e.type !== 'suspension' && e.type !== 'reactivation' ? ` · ${PLAN_LABEL[e.to_plan] || e.to_plan}` : ''}
+                {e.to_plan && !['suspension', 'reactivation', 'suppression'].includes(e.type) ? ` · ${PLAN_LABEL[e.to_plan] || e.to_plan}` : ''}
                 {e.amount != null ? ` · ${fmtAmount(e.amount)}` : ''}
                 {e.note ? ` — ${e.note}` : ''}
               </span>

@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { data: user, error: dbError } = await supabase
     .from('users')
-    .select('id, email, password_hash, plan, statut, trial_ends_at, plan_ends_at, login_attempts, locked_until, role, email_verified')
+    .select('id, numero_abonne, email, password_hash, plan, statut, trial_ends_at, plan_ends_at, login_attempts, locked_until, role, email_verified')
     .eq('email', email.toLowerCase())
     .single()
 
@@ -104,6 +104,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     last_login_at:       new Date().toISOString(),
     current_session_id:  sessionId,
   }).eq('id', user.id)
+
+  // ✅ Journal des connexions (2026-11-01) : chaque session est rattachée au
+  // numéro d'abonné (26IXP…). Non bloquant : un échec d'écriture du journal
+  // n'empêche jamais la connexion.
+  const fwd = req.headers['x-forwarded-for']
+  const ip = (Array.isArray(fwd) ? fwd[0] : fwd || '').split(',')[0].trim() || req.socket?.remoteAddress || null
+  const { error: sessionLogError } = await supabase.from('user_sessions').insert({
+    user_id:       user.id,
+    numero_abonne: user.numero_abonne,
+    email:         user.email,
+    session_id:    sessionId,
+    ip,
+    user_agent:    String(req.headers['user-agent'] || '').slice(0, 300) || null,
+  })
+  if (sessionLogError) console.error('[login] journal de session :', sessionLogError.message)
 
   const role: string = user.role ?? (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? 'admin' : 'user')
 
