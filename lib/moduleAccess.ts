@@ -14,9 +14,10 @@ export const TRIAL_TTL_MS = 14 * 24 * 60 * 60 * 1000 // 14 jours essai — harmo
 export const PLANS = {
   trial:      { label: 'Essai gratuit 14j', prix: 0,    duree: '14 jours' },
   free:       { label: 'Gratuit',           prix: 0,    duree: 'Illimité' },
-  pro:        { label: 'Pro',               prix: 799,  duree: '/mois'    },
-  premium:    { label: 'Premium',           prix: 1990, duree: '/mois'    },
-  enterprise: { label: 'Enterprise',        prix: 4990, duree: '/mois'    },
+  // Montants annuels — voir lib/pricing.ts (source unique). Facturation à l'année uniquement.
+  pro:        { label: 'Pro',               prix: 6000, duree: '/an'      },
+  premium:    { label: 'Premium',           prix: 9000, duree: '/an'      },
+  enterprise: { label: 'Entreprise',        prix: 0,    duree: 'Sur contrat' },
 } as const
 
 export type Plan   = keyof typeof PLANS

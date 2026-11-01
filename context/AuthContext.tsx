@@ -22,7 +22,8 @@ interface SessionUser {
   role:       'admin' | 'user'
   plan:       Plan
   statut:     Statut
-  trialEnds:  number | null   // timestamp ms — fin d'essai / prochain renouvellement
+  trialEnds:  number | null   // timestamp ms — fin d'essai
+  planEnds:   number | null   // timestamp ms — échéance de l'abonnement annuel payé
 }
 
 interface RegisterInput {
@@ -57,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return
       }
       const data = await res.json()
-      setUser({ email: data.email, role: data.role, plan: data.plan, statut: data.statut, trialEnds: data.trialEnds ?? null })
+      setUser({ email: data.email, role: data.role, plan: data.plan, statut: data.statut, trialEnds: data.trialEnds ?? null, planEnds: data.planEnds ?? null })
     } catch {
       setUser(null)
     }

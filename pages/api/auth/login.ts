@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { data: user, error: dbError } = await supabase
     .from('users')
-    .select('id, email, password_hash, plan, statut, trial_ends_at, login_attempts, locked_until, role, email_verified')
+    .select('id, email, password_hash, plan, statut, trial_ends_at, plan_ends_at, login_attempts, locked_until, role, email_verified')
     .eq('email', email.toLowerCase())
     .single()
 
@@ -71,6 +71,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   let statut = user.statut
   if (statut === 'trial' && user.trial_ends_at && new Date(user.trial_ends_at) < new Date()) {
+    statut = 'expired'
+    await supabase.from('users').update({ statut: 'expired' }).eq('id', user.id)
+  }
+  // ✅ Abonnement annuel arrivé à échéance (2026-11-01) — même logique que l'essai.
+  if (statut === 'active' && ['pro', 'premium', 'enterprise'].includes(user.plan)
+      && user.plan_ends_at && new Date(user.plan_ends_at) < new Date()) {
     statut = 'expired'
     await supabase.from('users').update({ statut: 'expired' }).eq('id', user.id)
   }

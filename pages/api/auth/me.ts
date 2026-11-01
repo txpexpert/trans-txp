@@ -1,7 +1,8 @@
 // pages/api/auth/me.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
-import { verifyUserToken, USER_COOKIE } from '../../../lib/userAuth'
+import { verifyUserToken, createUserToken, userCookieOptions, USER_COOKIE } from '../../../lib/userAuth'
+import type { Plan, Statut } from '../../../lib/userAuth'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -9,6 +10,8 @@ const supabase = createClient(
 )
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? ''
+
+const PAID_PLANS = ['pro', 'premium', 'enterprise']
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const token   = req.cookies[USER_COOKIE]
@@ -19,18 +22,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // ✅ FIX — même logique que login.ts : priorité à la colonne 'role' en base,
-  // fallback sur la comparaison ADMIN_EMAIL. Avant ce patch, me.ts ignorait
-  // totalement la colonne 'role' et un admin défini uniquement via cette
-  // colonne redevenait 'user' au premier rafraîchissement de page.
+  // fallback sur la comparaison ADMIN_EMAIL.
   //
-  // ✅ Verrouillage de session (2026-08-29) : on récupère aussi
-  // current_session_id pour la comparer au sessionId du jeton. Si elles
-  // diffèrent, une connexion plus récente a eu lieu ailleurs sur ce compte
-  // — cette session-ci est donc périmée, même si le jeton est encore
-  // valide et non expiré.
+  // ✅ Verrouillage de session (2026-08-29) : comparaison de current_session_id
+  // avec le sessionId du jeton (connexion plus récente ailleurs → rejet).
+  //
+  // ✅ Abonnements (2026-11-01) : plan, statut et échéances sont relus EN BASE
+  // à chaque appel. Avant, ils n'existaient que dans le cookie signé à la
+  // connexion : un plan activé depuis le backoffice n'était visible qu'après
+  // reconnexion du client (jusqu'à 7 jours). Si la base diffère du cookie, le
+  // cookie est réémis avec les nouvelles valeurs — le middleware Edge, qui ne
+  // lit que le cookie, voit alors aussi le nouveau plan.
   const { data: dbUser } = await supabase
     .from('users')
-    .select('role, current_session_id')
+    .select('role, current_session_id, plan, statut, trial_ends_at, plan_ends_at')
     .eq('email', payload.email.toLowerCase())
     .single()
 
@@ -41,11 +46,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const role: string =
     dbUser?.role ?? (payload.email.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? 'admin' : 'user')
 
+  let plan      = (dbUser?.plan   ?? payload.plan)   as Plan
+  let statut    = (dbUser?.statut ?? payload.statut) as Statut
+  const trialEnds = dbUser
+    ? (dbUser.trial_ends_at ? new Date(dbUser.trial_ends_at).getTime() : undefined)
+    : payload.trialEnds
+  const planEnds  = dbUser?.plan_ends_at ? new Date(dbUser.plan_ends_at).getTime() : null
+
+  // Échéance dépassée mais tâche quotidienne pas encore passée : on applique
+  // l'expiration immédiatement côté session (la base sera mise à jour par
+  // /api/cron/expire-subscriptions).
+  if (statut === 'active' && PAID_PLANS.includes(plan) && planEnds && planEnds < Date.now()) statut = 'expired'
+  if (statut === 'trial' && trialEnds && trialEnds < Date.now()) statut = 'expired'
+
+  if (dbUser && (plan !== payload.plan || statut !== payload.statut || trialEnds !== payload.trialEnds)) {
+    const fresh = createUserToken({
+      userId:    payload.userId,
+      email:     payload.email,
+      plan,
+      statut,
+      sessionId: payload.sessionId,
+      trialEnds,
+    })
+    res.setHeader('Set-Cookie', userCookieOptions(fresh))
+  }
+
   return res.status(200).json({
     role,
     email:     payload.email,
-    plan:      payload.plan,
-    statut:    payload.statut,
-    trialEnds: payload.trialEnds ?? null,
+    plan,
+    statut,
+    trialEnds: trialEnds ?? null,
+    planEnds,
   })
 }

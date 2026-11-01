@@ -17,7 +17,7 @@ const NAV = [
   ]},
   { section: 'UTILISATEURS', items: [
     { href:'/backoffice/utilisateurs',label:'Comptes utilisateurs',   icon:'◉' },
-    { href:'/backoffice/abonnements', label:'Abonnements & MRR',      icon:'◇' },
+    { href:'/backoffice/abonnements', label:'Abonnements',            icon:'◇' },
     { href:'/backoffice/equipes',     label:'Équipes entreprises',    icon:'⬡' },
   ]},
   { section: 'COMMUNICATION', items: [
