@@ -27,6 +27,9 @@ const nextConfig = {
       { source: '/abonnements', destination: '/tarifs', permanent: false },
       // Audit Express retiré (doublon du Diagnostic de conformité, nov. 2026).
       { source: '/modules/audit-express', destination: '/diagnostic', permanent: false },
+      // Index du CGI et Fiches procédures retirés (doublons, nov. 2026).
+      { source: '/modules/cgi-fiscal', destination: '/modules/cgi-search', permanent: false },
+      { source: '/modules/procedures', destination: '/modules/procedures-process', permanent: false },
       {
         source: '/modules/classificateur',
         destination: '/modules/classement',
