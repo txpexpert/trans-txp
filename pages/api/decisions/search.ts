@@ -11,6 +11,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import { checkAnyModuleAccess } from '../../../lib/apiAuth'
+import { checkRate, normalizeQuery } from '../../../lib/decisionsGuard'
 
 function getSupabase() {
   return createClient(
@@ -28,18 +29,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const access = await checkAnyModuleAccess(req, 'decisions-classement')
   if (!access.ok) return res.status(access.status).json({ error: access.error })
 
-  const { q = '' } = req.query
-  const qStr = String(q).trim()
+  // Anti-extraction : plus de liste complète sans terme de recherche,
+  // résultats plafonnés et limite de débit (voir lib/decisionsGuard.ts).
+  res.setHeader('Cache-Control', 'no-store')
+  const rate = await checkRate(req, 'suggest')
+  if (!rate.ok) return res.status(429).json({ error: 'Trop de requêtes, réessayez dans un instant.' })
+  const nq = normalizeQuery(req.query.q)
+  if (!nq) return res.status(200).json({ data: [], count: 0 })
+  const qStr = nq.q
 
   try {
     const supabase = getSupabase()
     let query = supabase.from('decisions_classement').select('designation, circulaire, code_sh, resume', { count: 'exact' })
 
-    if (qStr) {
-      query = query.or(`designation.ilike.%${qStr}%,circulaire.ilike.%${qStr}%,code_sh.ilike.%${qStr}%`)
-    }
+    query = nq.sh
+      ? query.like('code_sh', `${qStr}%`)
+      : query.or(`designation.ilike.%${qStr}%,circulaire.ilike.%${qStr}%`)
 
-    const { data, error, count } = await query.order('created_at', { ascending: false }).limit(500)
+    const { data, error, count } = await query.order('created_at', { ascending: false }).limit(20)
     if (error) throw error
 
     return res.status(200).json({ data: data ?? [], count: count ?? (data?.length ?? 0) })

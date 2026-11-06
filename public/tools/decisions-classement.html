@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr" class="ixp-theme">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Décisions de classement : recherche — IXP-Import-eXPert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;--bg:#F9F8F4;--bg2:#F2F0EA;--surface:#fff;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 8px 28px rgba(26,26,24,.12);--r:8px;--r-lg:12px;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+.page-header{background:rgba(249,248,244,.96);border-bottom:1px solid var(--border);padding:0 2rem;box-shadow:var(--sh)}
+.hdr{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:14px;height:56px}
+.logo-mark{min-width:30px;padding:0 5px;font-size:11px!important;letter-spacing:.02em;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+.logo-text{font-family:"DM Serif Display",Georgia,serif;font-size:15px;line-height:1.1}
+.logo-text span{display:block;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:28px;background:var(--border)}
+.hdr-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
+.wrap{max-width:980px;margin:0 auto;padding:0 2rem 5rem}
+.hero{padding:34px 0 20px}
+.hero h1{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:32px;line-height:1.15;margin-bottom:8px}
+.hero p{color:var(--mid);max-width:760px}
+
+.sbox{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);padding:16px}
+.modes{display:flex;gap:6px;margin-bottom:10px}
+.mode{font-size:12px;border:1px solid var(--border);background:var(--bg);border-radius:100px;padding:4px 12px;cursor:pointer;font-family:inherit}
+.mode.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.inwrap{position:relative}
+.inwrap input{width:100%;border:1px solid var(--border-mid);border-radius:var(--r);padding:13px 44px 13px 16px;font-size:16px;font-family:inherit}
+.inwrap input:focus{outline:2px solid var(--gold-bd);border-color:var(--gold)}
+.inwrap .clr{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:0;background:none;font-size:18px;color:var(--muted);cursor:pointer;display:none}
+.hint{font-size:11.5px;color:var(--muted);margin-top:6px}
+.dd{position:absolute;left:16px;right:16px;top:calc(100% - 8px);background:var(--surface);border:1px solid var(--border-mid);border-radius:var(--r);box-shadow:var(--sh-md);z-index:20;max-height:360px;overflow:auto;display:none}
+.dd.show{display:block}
+.opt{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--bg2);font-size:13.5px;align-items:center}
+.opt:last-child{border-bottom:0}
+.opt.act,.opt:hover{background:var(--gold-pale)}
+.opt mark{background:rgba(184,146,42,.25);color:inherit;border-radius:2px}
+.opt .c{font-family:var(--mono);font-size:11px;color:var(--mid);white-space:nowrap}
+.dd-h{padding:7px 14px;font-size:11px;font-family:var(--mono);color:var(--muted);background:var(--bg);border-bottom:1px solid var(--border)}
+.dd-empty{padding:14px;color:var(--muted);font-size:13px}
+
+.result{margin-top:20px}
+.empty-state{border:1px dashed var(--border-mid);border-radius:var(--r-lg);padding:34px 20px;text-align:center;color:var(--muted)}
+.empty-state b{display:block;color:var(--mid);font-size:15px;margin-bottom:4px}
+.card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;animation:pop .25s;-webkit-user-select:none;user-select:none}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card-h{padding:20px 22px 16px;border-bottom:1px solid var(--border)}
+.kicker{font-family:var(--mono);font-size:10.5px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.card-h h2{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:24px;line-height:1.25;margin-top:4px;word-break:break-word}
+.rows{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border)}
+.cell{padding:14px 22px;border-right:1px solid var(--border)}
+.cell:last-child{border-right:0}
+.cell .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cell .v{font-size:18px;font-weight:600;margin-top:2px;font-family:var(--mono)}
+.cell .v.na{font-size:14px;color:var(--red);font-family:inherit}
+.body{padding:18px 22px}
+.body h3{font-size:12px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+.body p{font-size:14.5px;line-height:1.65}
+.rgi{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.rgi span{font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:5px;background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;padding:14px 22px;border-top:1px solid var(--border);background:var(--bg)}
+.btn{border:1px solid var(--border-mid);background:var(--surface);border-radius:var(--r);padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;text-decoration:none;color:var(--ink)}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.wm{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.06;font-family:var(--mono);font-size:12px;line-height:44px;white-space:nowrap;transform:rotate(-18deg) scale(1.4);transform-origin:center;color:var(--ink)}
+.quota{margin-top:10px;font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.quota i{flex:0 0 120px;height:5px;background:var(--bg2);border-radius:5px;overflow:hidden;display:block}
+.quota i b{display:block;height:100%;background:var(--gold)}
+.lock{border:1px solid var(--red-bd);background:var(--red-bg);color:var(--red);border-radius:var(--r-lg);padding:18px 20px}
+.foot{margin-top:28px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--border);padding-top:14px}
+@media (max-width:700px){.rows{grid-template-columns:1fr}.cell{border-right:0;border-bottom:1px solid var(--border)}}
+@media print{body{display:none}}
+</style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
+</head>
+<body>
+<header class="page-header"><div class="hdr">
+  <div class="logo-mark">IXP</div>
+  <div class="logo-text">Import-eXPert<span>Qualifier</span></div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-title">Décisions de classement : recherche</div>
+</div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <h1>Décisions de classement</h1>
+    <p>Recherchez un produit par sa désignation ou par son code SH, puis sélectionnez-le dans la liste : la décision de classement correspondante s'affiche, avec son code, sa circulaire et la motivation du classement.</p>
+  </section>
+
+  <div class="sbox">
+    <div class="modes" role="radiogroup" aria-label="Type de recherche">
+      <button class="mode on" data-m="auto">Automatique</button>
+      <button class="mode" data-m="des">Désignation</button>
+      <button class="mode" data-m="sh">Code SH</button>
+    </div>
+    <div class="inwrap">
+      <input id="q" type="text" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="dd" placeholder="Ex. panneau en bois, vélo électrique, 8537…">
+      <button class="clr" id="clr" aria-label="Effacer">×</button>
+    </div>
+    <div class="hint" id="hint">Saisissez au moins 3 lettres, ou 4 chiffres pour un code SH.</div>
+    <div class="dd" id="dd" role="listbox"></div>
+    <div class="quota" id="quota" style="display:none"></div>
+  </div>
+
+  <section class="result" id="result">
+    <div class="empty-state"><b>Aucun produit sélectionné</b>La décision s'affiche ici dès que vous choisissez un produit dans la liste.</div>
+  </section>
+
+  <div class="foot">IXP-Import-eXPert · Décisions de classement tarifaire publiées par circulaire. Usage informatif — le classement d'une marchandise s'apprécie au vu de ses caractéristiques réelles ; en cas de doute, une décision anticipée peut être demandée à l'administration.</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* Données servies par Supabase via deux API protégées (session + quota) :
+   /api/decisions/suggest  → liste déroulante (8 lignes, sans motivation)
+   /api/decisions/{id}     → une seule fiche, après sélection.            */
+var mode = "auto", act = -1, sug = [], reqN = 0;
+var $ = function(s){ return document.querySelector(s); };
+var q = $("#q"), dd = $("#dd"), res = $("#result");
+var EMPTY = '<div class="empty-state"><b>Aucun produit sélectionné</b>La décision s\'affiche ici dès que vous choisissez un produit dans la liste.</div>';
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+function norm(s){ return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+function fmtSH(c){ return /^\d{10}$/.test(c) ? c.slice(0,4)+"."+c.slice(4,6)+"."+c.slice(6,8)+"."+c.slice(8) : c; }
+function cut(s,n){ s=String(s); return s.length>n ? s.slice(0,n-1)+"…" : s; }
+function isSH(v){ return mode==="sh" || (mode==="auto" && /^[\d.\s]+$/.test(v)); }
+function valid(v){ v=v.trim(); return isSH(v) ? v.replace(/\D/g,"").length>=4 : v.replace(/\s/g,"").length>=3; }
+function hl(text, v){
+  if (isSH(v)) return esc(text);
+  var words = norm(v).split(/\s+/).filter(Boolean), n = norm(text), marks = [];
+  words.forEach(function(w){ var i = n.indexOf(w); if (i>=0) marks.push([i,i+w.length]); });
+  if (!marks.length) return esc(text);
+  marks.sort(function(a,b){return a[0]-b[0];});
+  var out="", pos=0;
+  marks.forEach(function(m){ if (m[0]<pos) return; out += esc(text.slice(pos,m[0])) + "<mark>" + esc(text.slice(m[0],m[1])) + "</mark>"; pos=m[1]; });
+  return out + esc(text.slice(pos));
+}
+function msg(code){
+  if (code===401) return 'Votre session a expiré. <a href="/auth/login">Reconnectez-vous</a> pour consulter les décisions.';
+  if (code===403) return "Ce module n'est pas inclus dans votre abonnement.";
+  if (code===429) return "Trop de recherches en peu de temps : patientez un instant.";
+  return "Service momentanément indisponible. Réessayez dans quelques instants.";
+}
+function showDD(h){ dd.innerHTML = h; dd.classList.add("show"); q.setAttribute("aria-expanded","true"); }
+function hideDD(){ dd.classList.remove("show"); q.setAttribute("aria-expanded","false"); }
+
+function renderDD(){
+  var v = q.value; $("#clr").style.display = v ? "block" : "none";
+  if (!valid(v)){ hideDD(); return; }
+  var my = ++reqN, term = isSH(v) ? v.replace(/\D/g,"") : v.trim();
+  showDD('<div class="dd-h">Recherche…</div>');
+  fetch("/api/decisions/suggest?q=" + encodeURIComponent(term), {credentials:"same-origin"})
+    .then(function(r){ return r.json().then(function(j){ return {s:r.status, j:j}; }); })
+    .then(function(o){
+      if (my !== reqN) return;
+      if (o.s !== 200){ showDD('<div class="dd-empty">'+msg(o.s)+'</div>'); return; }
+      sug = o.j.data || []; act = sug.length ? 0 : -1;
+      if (!sug.length){ showDD('<div class="dd-empty">Aucune décision ne correspond à « '+esc(v)+' ».</div>'); return; }
+      var h = '<div class="dd-h">'+(o.j.more ? sug.length+" premiers résultats — précisez votre recherche" : sug.length+" résultat"+(sug.length>1?"s":""))+'</div>';
+      h += sug.map(function(d,k){ return '<div class="opt'+(k===act?" act":"")+'" role="option" data-k="'+k+'"><span>'+hl(d.designation, v)+'</span><span class="c">SH '+esc(d.sh)+'</span></div>'; }).join("");
+      showDD(h);
+      dd.querySelectorAll(".opt").forEach(function(op){ op.onmousedown = function(e){ e.preventDefault(); pick(sug[+op.dataset.k]); }; });
+    })
+    .catch(function(){ if (my === reqN) showDD('<div class="dd-empty">'+msg(0)+'</div>'); });
+}
+function moveAct(d){
+  var os = dd.querySelectorAll(".opt"); if (!os.length) return;
+  act = (act + d + os.length) % os.length;
+  os.forEach(function(o,k){ o.classList.toggle("act", k===act); if (k===act) o.scrollIntoView({block:"nearest"}); });
+}
+function renderQuota(rem, max){
+  if (rem == null || isNaN(rem)) return;
+  var el = $("#quota"); el.style.display = "flex";
+  el.innerHTML = '<i><b style="width:'+(rem*100/max)+'%"></b></i>'+rem+' consultation(s) disponible(s) sur '+max+' par tranche de 10 minutes';
+}
+
+function pick(s){
+  if (!s) return;
+  hideDD(); q.value = cut(s.designation, 80); $("#clr").style.display="block";
+  res.innerHTML = '<div class="empty-state"><b>Chargement de la décision…</b></div>';
+  fetch("/api/decisions/" + encodeURIComponent(s.id), {credentials:"same-origin"})
+    .then(function(r){
+      renderQuota(parseInt(r.headers.get("X-Quota-Remaining"),10), parseInt(r.headers.get("X-Quota-Max"),10));
+      return r.json().then(function(j){ return {s:r.status, j:j}; });
+    })
+    .then(function(o){
+      if (o.s === 429){ res.innerHTML = '<div class="lock"><b>Limite de consultation atteinte.</b> Pour protéger la base, le nombre de fiches consultables est limité par tranche de 10 minutes. Réessayez dans quelques minutes.</div>'; return; }
+      if (o.s !== 200){ res.innerHTML = '<div class="lock">'+msg(o.s)+'</div>'; return; }
+      card(o.j.data);
+    })
+    .catch(function(){ res.innerHTML = '<div class="lock">'+msg(0)+'</div>'; });
+}
+function card(d){
+  var sh = String(d.code_sh||""), ok = /^\d{10}$/.test(sh), txt = String(d.resume||"");
+  var rgi = (txt.match(/RGI[^.]*/) || [""])[0];
+  var date = d.date_circulaire ? " du " + new Date(d.date_circulaire).toLocaleDateString("fr-FR") : "";
+  var stamp = "Consultation IXP · " + new Date().toLocaleString("fr-FR");
+  var wm = ""; for (var k=0;k<40;k++) wm += stamp + "      " + stamp + "<br>";
+  res.innerHTML = '<article class="card" aria-live="polite">'
+    + '<div class="wm" aria-hidden="true">'+wm+'</div>'
+    + '<div class="card-h"><div class="kicker">Décision de classement</div><h2>'+esc(d.designation)+'</h2></div>'
+    + '<div class="rows"><div class="cell"><div class="k">Code SH</div><div class="v'+(ok?"":" na")+'">'+esc(fmtSH(sh))+'</div></div>'
+    + '<div class="cell"><div class="k">Chapitre</div><div class="v">'+(ok?sh.slice(0,2):"—")+'</div></div>'
+    + '<div class="cell"><div class="k">Circulaire</div><div class="v">n° '+esc(String(d.circulaire||"").replace(/^Circulaire\s*/i,""))+'<span style="font-size:12px;font-weight:400;font-family:inherit;color:var(--mid)">'+esc(date)+'</span></div></div></div>'
+    + '<div class="body"><h3>Motivation du classement</h3><p>'+(txt?esc(txt):'<span style="color:var(--muted)">Motivation non renseignée.</span>')+'</p>'
+    + (rgi ? '<div class="rgi"><span>'+esc(rgi.replace(/\s+$/,""))+'</span></div>' : '')
+    + '</div><div class="acts">'
+    + (ok ? '<a class="btn primary" href="/modules/documents-sh?q='+sh+'">Documents requis pour ce code →</a>' : '')
+    + '<button class="btn" id="again">Nouvelle recherche</button></div></article>';
+  $("#again").onclick = function(){ q.value=""; hideDD(); $("#clr").style.display="none"; res.innerHTML = EMPTY; q.focus(); };
+  res.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+var t;
+q.addEventListener("input", function(){ clearTimeout(t); t = setTimeout(renderDD, 300); });
+q.addEventListener("focus", function(){ if (q.value && !dd.classList.contains("show") && valid(q.value) && !res.querySelector(".card")) renderDD(); });
+q.addEventListener("blur", function(){ setTimeout(hideDD, 150); });
+q.addEventListener("keydown", function(e){
+  if (e.key==="ArrowDown"){ e.preventDefault(); if (!dd.classList.contains("show")) renderDD(); else moveAct(1); }
+  else if (e.key==="ArrowUp"){ e.preventDefault(); moveAct(-1); }
+  else if (e.key==="Enter"){ e.preventDefault(); if (act>=0 && sug[act]) pick(sug[act]); }
+  else if (e.key==="Escape"){ hideDD(); }
+});
+$("#clr").onclick = function(){ q.value=""; hideDD(); $("#clr").style.display="none"; q.focus(); };
+document.querySelectorAll(".mode").forEach(function(b){ b.onclick = function(){
+  mode = b.dataset.m; document.querySelectorAll(".mode").forEach(function(x){ x.classList.toggle("on", x===b); });
+  $("#hint").textContent = mode==="sh" ? "Saisissez au moins 4 chiffres du code SH." : mode==="des" ? "Saisissez au moins 3 lettres de la désignation." : "Saisissez au moins 3 lettres, ou 4 chiffres pour un code SH.";
+  q.placeholder = mode==="sh" ? "Ex. 8537, 2309.90…" : mode==="des" ? "Ex. panneau en bois, vélo électrique…" : "Ex. panneau en bois, vélo électrique, 8537…";
+  renderDD(); q.focus(); }; });
+res.addEventListener("copy", function(e){ e.preventDefault(); });
+res.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+})();
+</script>
+</body>
+</html>
