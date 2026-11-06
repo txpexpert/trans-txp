@@ -49,7 +49,6 @@ export const ESPACES: Espace[] = [
       { label: 'Comparateur de régimes', path: '/modules/comparateur', desc: 'Coût réel de chaque régime : droits, garantie, redevances, trésorerie', tier: 'expert' },
       { label: 'Régimes économiques', path: '/modules/regimes-economiques', desc: '12 régimes, garanties et nouveautés 2024-2026', tier: 'expert' },
       { label: 'Facilitation douanière', path: '/modules/facilitation', desc: 'Mesures de facilitation et bonnes pratiques', tier: 'expert' },
-      { label: 'Module Export', path: '/modules/export', desc: 'Guide, check-list et DDP à l’export', tier: 'operateur' },
     ],
   },
   {
@@ -81,6 +80,7 @@ export const ESPACES: Espace[] = [
       { label: 'Suivi et intelligence', path: '/modules/tracking', desc: 'Suivi des expéditions et des événements', tier: 'operateur' },
       { label: 'Surestaries et pénalités', path: '/modules/surestaries', desc: 'Délais de franchise, coûts, recours', tier: 'operateur' },
       { label: 'Bureaux et ports', path: '/modules/carte-bureauxdouaniers', desc: 'PortNet, Tanger Med, bureaux douaniers', tier: 'decouverte' },
+      { label: 'Module Export', path: '/modules/export', desc: 'Guide, check-list et DDP à l’export', tier: 'operateur' },
     ],
   },
   {
