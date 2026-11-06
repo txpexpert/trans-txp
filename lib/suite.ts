@@ -76,8 +76,8 @@ export const ESPACES: Espace[] = [
     transmet: "Historique complet de l'opération",
     tools: [
       { label: 'Dossier documentaire par procédure', path: '/modules/transit-doc-generator', desc: 'Pièces à réunir par procédure, de l’arrivée à l’apurement', tier: 'operateur' },
-      { label: 'Vérificateur DUM', path: '/modules/verificateur-dum', desc: 'Contrôle de cohérence avant dépôt sur BADR', tier: 'expert' },
-      { label: 'Suivi et intelligence', path: '/modules/tracking', desc: 'Suivi des expéditions et des événements', tier: 'operateur' },
+      { label: 'Vérifier vos documents d’import', path: '/modules/verificateur-dum', desc: 'Contrôle de cohérence avant dépôt', tier: 'expert' },
+      { label: 'Suivi et Tracking', path: '/modules/tracking', desc: 'Suivi de vos expéditions et marchandises', tier: 'operateur' },
       { label: 'Surestaries et pénalités', path: '/modules/surestaries', desc: 'Délais de franchise, coûts, recours', tier: 'operateur' },
       { label: 'Bureaux et ports', path: '/modules/carte-bureauxdouaniers', desc: 'PortNet, Tanger Med, bureaux douaniers', tier: 'decouverte' },
       { label: 'Module Export', path: '/modules/export', desc: 'Guide, check-list et DDP à l’export', tier: 'operateur' },
@@ -197,7 +197,7 @@ export const PLANS = [
   {
     id: 'premium', nom: 'Expert', prix: fmtDH(PRICING.premium.annual!), unite: `DH / an · soit ${PRICING.premium.monthlyRef} DH/mois · ${PRICING.premium.note.toLowerCase()}`, vedette: true,
     pour: 'Transitaires, commissionnaires, cabinets',
-    inclus: ['Les 5 espaces de la chaîne', 'Vérificateur DUM et suite documentaire', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients', '2 renseignements experts inclus / mois'],
+    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients', '2 renseignements experts inclus / mois'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=premium',
   },
   {
