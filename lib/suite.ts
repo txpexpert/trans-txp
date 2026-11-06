@@ -68,6 +68,7 @@ export const ESPACES: Espace[] = [
       { label: 'Simulateur fiscal douanier', path: '/modules/simulateur-fiscal', desc: 'Coût de revient détaillé, taxe par taxe', tier: 'operateur' },
       { label: 'Valeur en douane', path: '/modules/valeur-douane', desc: 'Méthodes OMC, frais à inclure, ajustements', tier: 'operateur' },
       { label: 'TIC', path: '/modules/tic-reference', desc: 'Taxes intérieures de consommation : assiette et taux', tier: 'operateur' },
+      { label: 'Recherche CGI', path: '/modules/cgi-search', desc: 'Code général des impôts 2026, recherche assistée', tier: 'decouverte' },
       { label: 'Qui paie quoi ? Incoterms', path: '/modules/incoterms-shipping', desc: 'Incoterms croisés avec les termes armateurs', tier: 'operateur' },
       { label: 'Change (IGOC 2026)', path: '/modules/regime-change', desc: 'Règles de l’Office des Changes et simulateurs', tier: 'operateur' },
       { label: 'Logistique : conteneurs et colis', path: '/modules/calc-conteneurs', desc: 'Chargement conteneur, colisage, cartons', tier: 'operateur' },
@@ -112,7 +113,6 @@ export const ESPACES: Espace[] = [
     livrable: 'Référence opposable : texte, article, circulaire',
     transmet: 'Sources citées dans chaque espace',
     tools: [
-      { label: 'Recherche CGI', path: '/modules/cgi-search', desc: 'Code général des impôts 2026, recherche assistée', tier: 'decouverte' },
       { label: 'FAQ douanière', path: '/modules/faq', desc: '173 questions, réponses sourcées', tier: 'decouverte' },
       { label: 'Glossaire FR/AR', path: '/modules/glossaire-douanier', desc: '1 081 termes douaniers', tier: 'decouverte' },
     ],
