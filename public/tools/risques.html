@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr" class="ixp-theme">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrôle et maîtrise des risques — IXP-Import-eXPert</title>
+<meta name="description" content="Signaux d’alerte, liste des actes à ne jamais faire, dispositifs de contrôle douanier, contrôles internes et sanctions encourues au Maroc, avec leurs références.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.28);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;--bg:#F9F8F4;--bg2:#F2F0EA;--surface:#fff;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 8px 28px rgba(26,26,24,.12);--r:8px;--r-lg:12px;
+  --mono:"JetBrains Mono",ui-monospace,monospace;--serif:"DM Serif Display",Georgia,serif;--sans:"DM Sans",system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}button,input{font-family:inherit}
+.page-header{position:sticky;top:0;z-index:40;background:rgba(249,248,244,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:0 2rem;box-shadow:var(--sh)}
+.hdr{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;height:56px}
+.logo-mark{min-width:30px;padding:0 5px;font-size:11px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:var(--mono)}
+.logo-text{font-family:var(--serif);font-size:15px;line-height:1.1}
+.logo-text span{display:block;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:28px;background:var(--border)}
+.hdr-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
+.hdr-links{margin-left:auto;display:flex;gap:8px}
+.hdr-links a{font-size:12px;text-decoration:none;color:var(--mid);border:1px solid var(--border);border-radius:100px;padding:5px 12px;background:var(--surface)}
+.hdr-links a.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.subnav{max-width:1080px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;height:40px;align-items:center;scrollbar-width:none}
+.subnav{gap:6px}
+.subnav a{--fc:#5A5A54;font-size:12.5px;font-weight:600;text-decoration:none;color:var(--fc);border:1px solid var(--fc);background:color-mix(in srgb,var(--fc) 10%,#fff);padding:5px 12px;border-radius:100px;white-space:nowrap;transition:all .15s}
+.subnav a:hover{background:color-mix(in srgb,var(--fc) 20%,#fff)}
+.subnav a.on{background:var(--fc);color:#fff}
+.subnav a[href="#redflags"]{--fc:#9A2A22}.subnav a[href="#negative"]{--fc:#5A1A14}.subnav a[href="#controles"]{--fc:#1A3A9A}.subnav a[href="#securite"]{--fc:#1E7A4A}.subnav a[href="#sanctions"]{--fc:#B8922A}.subnav a[href="#situations"]{--fc:#5A2AA0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 2rem 5rem}
+.hero{padding:36px 0 18px;display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:end}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.12;margin-bottom:10px}
+.hero p{color:var(--mid);max-width:640px;font-size:15px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.kpi b{display:block;font-family:var(--mono);font-size:20px;font-weight:500}
+.kpi span{font-size:11.5px;color:var(--mid);line-height:1.35;display:block;margin-top:2px}
+section{padding-top:38px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.sec-n{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.08em}
+.sec-h h2{font-family:var(--serif);font-weight:400;font-size:26px}
+.sec-lead{color:var(--mid);max-width:780px;margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.flt{--fc:#5A5A54;font-size:12.5px;font-weight:600;border:1px solid var(--fc);background:color-mix(in srgb,var(--fc) 10%,#fff);color:var(--fc);border-radius:100px;padding:6px 13px;cursor:pointer;transition:all .15s}
+.flt:hover{background:color-mix(in srgb,var(--fc) 20%,#fff)}
+.flt.on{background:var(--fc);color:#fff;box-shadow:0 3px 10px color-mix(in srgb,var(--fc) 35%,transparent)}
+.flt-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.src{font-family:var(--mono);font-size:10px;border-radius:4px;padding:2px 6px;border:1px solid var(--gold-bd);background:var(--gold-dim);color:#7a5f17;white-space:nowrap;display:inline-block}
+.tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--fc,#ccc);background:color-mix(in srgb,var(--fc,#ccc) 10%,#fff);color:var(--fc,#555)}
+/* timeline */
+.tl{display:grid;gap:10px}
+.tl-item{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);border-left:3px solid var(--fc,var(--gold));cursor:pointer}
+.tl-item:hover{box-shadow:var(--sh-md)}
+.tl-d{font-family:var(--mono);font-size:11.5px;color:var(--mid)}
+.tl-d b{display:block;font-size:13px;color:var(--ink)}
+.tl-t{font-weight:600;font-size:14.5px;margin-bottom:3px}
+.tl-x{color:var(--mid);font-size:13.5px}
+.tl-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.more{margin-top:10px;font-size:13px;background:none;border:1px dashed var(--border-mid);border-radius:var(--r);padding:8px 14px;cursor:pointer;color:var(--mid);width:100%}
+/* catalogue */
+.cat{display:grid;grid-template-columns:360px 1fr;gap:14px;align-items:start}
+.list{max-height:640px;overflow:auto}
+.search{width:100%;border:1px solid var(--border-mid);border-radius:var(--r);padding:11px 14px;font-size:14px;margin-bottom:10px}
+.search:focus{outline:2px solid var(--gold-bd);border-color:var(--gold)}
+.it{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bg2);background:none;padding:10px 14px;cursor:pointer;border-left:3px solid var(--fc)}
+.it:hover{background:var(--gold-pale)}
+.it.on{background:color-mix(in srgb,var(--fc) 10%,#fff)}
+.it b{display:block;font-size:13.5px;font-weight:600;line-height:1.3}
+.it small{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.it .nw{font-family:var(--mono);font-size:9px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);border-radius:4px;padding:0 5px;margin-left:6px}
+.count{font-size:12px;color:var(--muted);margin:0 0 8px 2px}
+.fiche{overflow:hidden;animation:pop .2s}
+@keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.f-h{padding:20px 22px 14px;border-bottom:1px solid var(--border);border-top:4px solid var(--fc)}
+.f-h .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc)}
+.f-h h3{font-family:var(--serif);font-weight:400;font-size:24px;line-height:1.2;margin:4px 0 8px}
+.f-h p{color:var(--mid);font-size:14.5px}
+.blk{padding:14px 22px;border-bottom:1px solid var(--border)}
+.blk:last-child{border-bottom:0}
+.blk h4{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.blk ul{list-style:none;display:grid;gap:6px}
+.blk li{font-size:13.5px;padding-left:16px;position:relative}
+.blk li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--fc)}
+.codes{display:flex;gap:5px;flex-wrap:wrap}
+.code{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:5px;background:var(--blue-bg);border:1px solid #B0C8F8;color:var(--blue)}
+.f-foot{padding:12px 22px;background:var(--bg);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav{margin-left:auto;display:flex;gap:6px}
+.btn{border:1px solid var(--border-mid);background:var(--surface);border-radius:var(--r);padding:7px 12px;font-size:12.5px;cursor:pointer;text-decoration:none;color:var(--ink);display:inline-block}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* statuts */
+.stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.st{padding:18px;border-top:4px solid var(--fc)}
+.st .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc)}
+.st h3{font-family:var(--serif);font-weight:400;font-size:20px;margin:3px 0 8px}
+.st ul{list-style:none;display:grid;gap:5px;margin-bottom:10px}
+.st li{font-size:13px;padding-left:14px;position:relative}
+.st li::before{content:"✓";position:absolute;left:0;color:var(--fc);font-weight:700;font-size:12px}
+.st .cond{font-size:12.5px;color:var(--mid);border-top:1px dashed var(--border);padding-top:8px;margin-bottom:8px}
+/* obligations */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);font-weight:500;padding:10px 12px;background:var(--bg);border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.am{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tool{padding:16px}
+.tool .tk{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.tool h4{font-size:16px;margin:2px 0 6px}
+.tool p{font-size:13px;color:var(--mid);margin-bottom:8px}
+.cta{margin-top:26px;padding:20px 22px;display:flex;align-items:center;gap:16px;justify-content:space-between;background:var(--ink);color:#fff;border-radius:var(--r-lg)}
+.cta h3{font-family:var(--serif);font-weight:400;font-size:21px}
+.cta p{color:#c9c6bb;font-size:13px}
+.cta .btns{display:flex;gap:8px;flex-wrap:wrap}
+.cta .btn{background:var(--gold);border-color:var(--gold);color:#fff;white-space:nowrap}
+.cta .btn.ghost{background:transparent;border-color:#6b675c;color:#fff}
+.foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;line-height:1.6}
+@media(max-width:860px){
+  .hero,.cat{grid-template-columns:1fr}.stat3,.tools{grid-template-columns:1fr}
+  .tl-item{grid-template-columns:1fr;gap:4px}.hdr-links{display:none}
+  .wrap,.page-header{padding-left:1rem;padding-right:1rem}.list{max-height:360px}
+}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pc{padding:0;overflow:hidden;border-top:4px solid var(--fc)}
+.pc-h{padding:16px 18px 10px}
+.pc-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.badge{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600}
+.badge.on{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.badge.ad{background:var(--blue-bg);color:var(--blue);border:1px solid #B0C8F8}
+.badge.soon{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.pc-d{font-family:var(--mono);font-size:11px;color:var(--mid);margin-left:auto}
+.pc h3{font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.25}
+.pc-b{padding:0 18px 12px}
+.pc-b h5{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--fc);margin:10px 0 5px}
+.pc-b ul{list-style:none;display:grid;gap:4px}
+.pc-b li{font-size:13px;padding-left:14px;position:relative}
+.pc-b li::before{content:"";position:absolute;left:1px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--fc)}
+.pc-f{padding:10px 18px;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+a.src{text-decoration:none}a.src:hover{border-color:var(--gold)}
+.verif{font-size:12px;color:var(--muted);margin-top:10px}
+@media(max-width:860px){.pgrid{grid-template-columns:1fr}}
+
+/* red flags */
+.rfgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.rf{padding:16px 18px;border-left:4px solid var(--fc);animation:pop .2s;display:flex;flex-direction:column}
+.rf-h{display:flex;gap:9px;align-items:flex-start}
+.flag{color:var(--fc);font-size:16px;line-height:1.2}
+.rf h3{font-size:15.5px;font-weight:600;line-height:1.3}
+.rf-w{color:var(--mid);font-size:13px;margin:6px 0 10px}
+.rf-b{font-size:13px;padding:8px 10px;border-radius:6px;background:var(--red-bg);margin-bottom:6px}
+.rf-b.ok{background:var(--green-bg)}
+.rf-b b{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
+.rf-b.ok b{color:var(--green)}
+.rf-f{margin-top:auto;padding-top:6px}
+/* liste négative */
+.ng{display:grid;grid-template-columns:30px 1fr 250px 200px;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);animation:pop .2s}
+.ng:last-child{border-bottom:0}
+.ng-x{width:24px;height:24px;border-radius:50%;background:var(--fc);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.ng-t{font-weight:600;font-size:14px}
+.ng-r{justify-self:end}.ng-p{font-size:12.5px;color:var(--red);font-weight:500}
+/* contrôles */
+.ctl{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cc{padding:16px 18px;border-top:4px solid var(--fc);display:flex;flex-direction:column}
+.cc-k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc)}
+.cc h3{font-family:var(--serif);font-weight:400;font-size:19px;margin:2px 0 6px}
+.cc p{font-size:13px;color:var(--mid);margin-bottom:8px}
+.cc ul{list-style:none;display:grid;gap:4px;margin-bottom:10px}
+.cc li{font-size:13px;padding-left:14px;position:relative}
+.cc li::before{content:"";position:absolute;left:1px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--fc)}
+.cc-f{margin-top:auto}
+/* sécurité */
+.secu{display:grid;grid-template-columns:1.45fr 1fr;gap:14px;align-items:start}
+.chk{padding:8px 0}
+.chk-g{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);padding:12px 18px 4px}
+.chk-i{display:grid;grid-template-columns:20px 1fr auto;gap:10px;align-items:start;padding:8px 18px;cursor:pointer;font-size:13.5px}
+.chk-i:hover{background:var(--gold-pale)}
+.chk-i.on span{color:var(--green)}
+.chk-i input{margin-top:3px;accent-color:var(--green);width:15px;height:15px}
+.score{padding:18px;position:sticky;top:120px}
+.sc-k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
+.sc-v{font-family:var(--mono);font-size:32px;font-weight:500;margin:4px 0}
+.bar{height:8px;background:var(--bg2);border-radius:100px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:100px;transition:width .3s}
+.sc-l{font-weight:700;font-size:14px;margin:8px 0 4px}
+.sc-p{font-size:13px;color:var(--mid)}
+.lv-h{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--mid);margin:16px 0 8px}
+.lv{padding:14px 16px;margin-bottom:8px}
+.lv b{font-size:14px}
+.lv p{font-size:13px;color:var(--mid);margin:4px 0 8px}
+.lv-f{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+/* sanctions */
+.sfi{border-top:4px solid var(--fc);animation:pop .2s}
+.sfi-h{padding:16px 20px 12px;border-bottom:1px solid var(--border)}
+.sfi-h .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc);margin-bottom:4px}
+.sfi-h p{font-size:14px;color:var(--mid)}
+.sfi td.am{color:var(--fc);font-weight:500;width:220px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.box{padding:16px 18px}
+.box h4{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--mid);margin-bottom:10px}
+.chg{display:grid;grid-template-columns:44px 1fr;gap:8px;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--border)}
+.chg:last-child{border-bottom:0}
+.chg .src{grid-column:2;justify-self:start}
+.yr{font-family:var(--mono);font-size:12px;color:var(--gold);font-weight:500}
+ul.plain{list-style:none;display:grid;gap:10px}
+ul.plain li{font-size:13px;color:var(--mid)}
+ul.plain b{color:var(--ink)}
+/* situations */
+.sgrid{display:grid;grid-template-columns:1fr 1fr}
+.sb{padding:14px 22px;border-bottom:1px solid var(--border)}
+.sb:nth-child(odd){border-right:1px solid var(--border)}
+.sb h4{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+.sb p{font-size:13.5px}
+.sb.bad h4{color:var(--red)}.sb.fix h4{color:var(--blue)}.sb.pre h4{color:var(--green)}
+@media(max-width:860px){.rfgrid,.ctl,.secu,.two,.sgrid{grid-template-columns:1fr}.ng{grid-template-columns:30px 1fr}.ng-p,.ng-r{grid-column:2}.score{position:static}.sb:nth-child(odd){border-right:0}}
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div class="hdr">
+    <div class="logo-mark">IXP</div>
+    <div class="logo-text">Import-eXPert<span>Intelligence douanière Maroc</span></div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-title">Contrôle et maîtrise des risques</div>
+    <div class="hdr-links"><a href="/">Accueil</a><a class="pri" href="/modules/audit">Audit des processus →</a></div>
+  </div>
+  <nav class="subnav" id="subnav">
+    <a href="#redflags">Signaux d’alerte</a><a href="#negative">À ne jamais faire</a><a href="#controles">Ce que la douane contrôle</a><a href="#securite">Votre dispositif de sécurité</a><a href="#sanctions">Sanctions encourues</a><a href="#situations">Situations pratiques</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <h1>Contrôle et maîtrise des risques</h1>
+      <p>La dématérialisation du dédouanement a déplacé une part du contrôle vers l’opérateur et son déclarant. Repérez les signaux d’alerte, évitez les erreurs qui coûtent cher et mettez en place les contrôles qui vous protègent.<br><b><i>Chaque point indique le risque, la conduite à tenir et sa référence.</i></b></p>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b>4 ans</b><span>de conservation obligatoire de vos documents douaniers</span></div>
+      <div class="kpi"><b>72 h</b><span>pour justifier un retard de transit signalé par BADR</span></div>
+      <div class="kpi"><b>20 %</b><span>d’écart sur le poids, la quantité ou la valeur : la contravention de 1<sup>re</sup> classe est encourue</span></div>
+      <div class="kpi"><b>30 jours</b><span>pour joindre les documents exigibles après signature de la DUM</span></div>
+    </div>
+  </div>
+
+  <section id="redflags">
+    <div class="sec-h"><span class="sec-n">01</span><h2>Les signaux d’alerte</h2></div>
+    <p class="sec-lead">Les situations qui doivent vous arrêter avant de déposer ou de poursuivre une opération. Choisissez un domaine.</p>
+    <div class="filters" id="rff"></div>
+    <div class="rfgrid" id="rfgrid"></div>
+  </section>
+
+  <section id="negative">
+    <div class="sec-h"><span class="sec-n">02</span><h2>À ne jamais faire</h2></div>
+    <p class="sec-lead">La liste négative : les actes qui constituent une infraction douanière, avec la sanction encourue. Choisissez une étape de l’opération.</p>
+    <div class="filters" id="ngf"></div>
+    <div class="card" id="nglist"></div>
+  </section>
+
+  <section id="controles">
+    <div class="sec-h"><span class="sec-n">03</span><h2>Ce que la douane contrôle, et comment</h2></div>
+    <p class="sec-lead">Les dispositifs de contrôle en vigueur : savoir comment votre déclaration est sélectionnée et vérifiée permet d’anticiper.</p>
+    <div class="ctl" id="ctl"></div>
+  </section>
+
+  <section id="securite">
+    <div class="sec-h"><span class="sec-n">04</span><h2>Votre dispositif de sécurité</h2></div>
+    <p class="sec-lead">Les contrôles internes à mettre en place. Cochez ce qui existe déjà chez vous : l’indicateur montre votre niveau de maîtrise et ce qu’il reste à sécuriser.</p>
+    <div class="secu">
+      <div class="card chk" id="chk"></div>
+      <div>
+        <div class="card score" id="score"></div>
+        <div class="levers" id="levers"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sanctions">
+    <div class="sec-h"><span class="sec-n">05</span><h2>Les sanctions encourues</h2></div>
+    <p class="sec-lead">Le Code des douanes classe les infractions en délits et en contraventions. Choisissez une catégorie pour voir les faits visés et les amendes.</p>
+    <div class="filters" id="sf"></div>
+    <div class="card" id="sfiche"></div>
+    <div class="two">
+      <div class="card box">
+        <h4>Ce qui a changé depuis 2024</h4>
+        <div id="chg"></div>
+      </div>
+      <div class="card box">
+        <h4>Au-delà de l’amende</h4>
+        <ul class="plain" id="beyond"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="situations">
+    <div class="sec-h"><span class="sec-n">06</span><h2>Situations pratiques</h2></div>
+    <p class="sec-lead">Des cas fréquents : ce qui se passe, ce que vous risquez, comment corriger et comment prévenir. Choisissez un thème.</p>
+    <div class="filters" id="sitf"></div>
+    <div id="sit"></div>
+  </section>
+
+  <div class="cta">
+    <div><h3>Évaluer vos processus</h3><p>L’auto-diagnostic passe en revue votre organisation douanière ; la catégorisation OEA vous ouvre les facilités réservées aux opérateurs de confiance.</p></div>
+    <div class="btns"><a class="btn ghost" href="/modules/oea">Catégorisation en OEA</a><a class="btn" href="/modules/audit">Audit des processus →</a></div>
+  </div>
+
+  <div class="foot">IXP-Import-eXPert · Information à caractère général, qui ne remplace pas l’examen de votre dossier. Les sanctions sont prononcées au cas par cas et peuvent faire l’objet d’un règlement transactionnel : consultez votre transitaire agréé ou votre conseil avant toute décision.</div>
+</main>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const S = r => `<span class="src">${esc(r)}</span>`;
+function pills(el, opts, cur, onPick){
+  el.innerHTML = Object.entries(opts).map(([k,o]) => `<button class="flt${k===cur?' on':''}" style="--fc:${o.c}" data-k="${k}">${esc(o.l)}</button>`).join('');
+  el.onclick = e => { const b = e.target.closest('.flt'); if(!b) return; el.querySelectorAll('.flt').forEach(x=>x.classList.toggle('on', x===b)); onPick(b.dataset.k); };
+}
+
+/* ---------- 01 Signaux d'alerte ---------- */
+const DOM = {
+  doc:{l:"Documents",c:"#1A3A9A"},
+  val:{l:"Valeur, poids, quantité",c:"#B8922A"},
+  ori:{l:"Origine et préférences",c:"#0E7490"},
+  red:{l:"Régimes économiques",c:"#5A2AA0"},
+  tra:{l:"Transit et logistique",c:"#9A4A1A"},
+  int:{l:"Intervenants et conformité",c:"#9A2A22"}
+};
+const RF = [
+ {d:"doc",t:"Un document ne peut pas être vérifié",w:"Facture, certificat ou autorisation sans code QR lisible, ou dont le code renvoie à des données différentes.",r:"Joindre un document non authentique engage la responsabilité personnelle du déclarant dès lors que la vérification était possible.",a:"Vérifier par tous moyens, en priorité par le code QR ; rejeter le document et le signaler à la douane s’il n’est pas authentique.",ref:"Circ. 6662/312 (24/06/2025)"},
+ {d:"doc",t:"Vous ne disposez que d’une copie",w:"Le transitaire travaille sur un scan transmis par courriel ; l’original n’a jamais été présenté.",r:"Le transitaire doit s’assurer de l’authenticité sur présentation des originaux ; la conservation des originaux partagés incombe au propriétaire de la marchandise.",a:"Présenter l’original au transitaire, puis le récupérer contre décharge et l’archiver.",ref:"Circ. 6639/312 (18/02/2025)"},
+ {d:"doc",t:"La DUM part en signature sans tous les documents annexes",w:"BADR permet de passer à la signature sans avoir joint les factures, titres de transport ou documents ouvrant un avantage.",r:"Contravention de 3e classe : 10 000 à 50 000 DH.",a:"Joindre avant signature les documents annexes ; les documents exigibles (autorisations, certificats) au plus tard 30 jours après.",ref:"Circ. 6528/312 · Code art. 297-8°"},
+ {d:"doc",t:"Les archives sont incomplètes ou dispersées",w:"Factures, correspondances ou relevés introuvables pour des opérations de moins de quatre ans.",r:"Le défaut de conservation est une contravention de 1re classe, punie d’une amende égale à la valeur des marchandises.",a:"Archiver quatre ans tous les registres et documents liés aux opérations douanières, sous forme originale.",ref:"Code art. 42-2° · 285-15° · 287 bis"},
+ {d:"val",t:"Les poids ne concordent pas",w:"Écart entre le connaissement, la liste de colisage et la DUM, ou répartition du poids entre articles qui ne reflète pas la réalité.",r:"En circuit rouge, la douane peut exiger le pesage avant la mainlevée ; un excédent de plus de 20 % est une contravention de 1re classe.",a:"Rapprocher les trois documents avant le dépôt ; faire peser en cas de doute.",ref:"Note D299/2025 · Code art. 285-13°"},
+ {d:"val",t:"La facture mélange marchandise et prestations",w:"Un prix global inclut montage, assistance technique ou transport après l’importation, sans les distinguer.",r:"Ces frais ne sont exclus de la valeur en douane que s’ils sont distincts du prix payé : à défaut, vous payez des droits sur des prestations.",a:"Demander au fournisseur une facture qui isole chaque prestation postérieure à l’importation.",ref:"Code art. 20-4°"},
+ {d:"val",t:"Le prix déclaré ne correspond pas aux paiements",w:"Paiements complémentaires au fournisseur, avoirs ou ristournes qui n’apparaissent pas sur la facture.",r:"Une fausse déclaration qui élude des droits est une contravention de 2e classe : amende d’une fois et demie les droits éludés.",a:"Rapprocher la facture des flux de paiement ; déclarer la valeur réellement payée ou à payer.",ref:"Code art. 20 · 294-4° · 294 bis"},
+ {d:"ori",t:"Vous ne pouvez pas justifier l’origine",w:"La préférence tarifaire est demandée sur la base d’une preuve d’origine dont le fournisseur ne peut documenter la régularité.",r:"En cas de contrôle a posteriori, les droits pleins sont réclamés ; celui qui savait l’irrégularité des justificatifs encourt les peines des délits de 2e classe.",a:"Obtenir du fournisseur les éléments qui fondent l’origine avant de demander la préférence.",ref:"Code art. 283 · Note D105/2026 (contrôle a posteriori EUR.1)"},
+ {d:"ori",t:"Le numéro d’exportateur agréé a un format inhabituel",w:"La déclaration d’origine sur facture porte un numéro d’autorisation qui ne suit pas le modèle du pays d’exportation.",r:"La preuve d’origine risque d’être rejetée et la préférence refusée.",a:"Comparer le numéro aux modèles officiels publiés pour l’UE, l’AELE, la Turquie, les pays d’Agadir et le Royaume-Uni.",ref:"Note D99/2026 (21/04/2026)"},
+ {d:"red",t:"Un compte arrive à échéance sans apurement",w:"Admission temporaire, entrepôt ou transformation dont le délai expire alors que les produits ne sont ni exportés ni régularisés.",r:"Contravention de 2e classe : amende d’une fois et demie les droits et taxes.",a:"Apurer ou demander la prorogation avant l’échéance ; suivre les échéances dans un tableau de bord.",ref:"Code art. 294-2° et 3° · 294 bis"},
+ {d:"red",t:"Les stocks sous régime ne sont pas présentables",w:"Écart entre la comptabilité matière et le stock physique des marchandises en suspension de droits.",r:"Toute marchandise non présentée est présumée détournée : contravention de 1re classe, amende de deux fois les droits.",a:"Inventaires réguliers et rapprochement avec les comptes sous régime.",ref:"Code art. 287 · 285-8° · 287 bis"},
+ {d:"red",t:"Le plafond de caution approche",w:"L’encours disponible de votre facilité de cautionnement diminue à chaque ouverture de compte.",r:"Au dépassement, BADR bloque la souscription de la DUM.",a:"Apurer les comptes ouverts, faire relever le plafond par avenant, ou basculer sur caution bancaire ou consignation.",ref:"Circ. 6554/313"},
+ {d:"red",t:"Les marchandises sont stockées ailleurs que prévu",w:"Le lieu de stockage ou de transformation a changé depuis la déclaration.",r:"Depuis 2026, une fausse déclaration du lieu effectif est une contravention de 3e classe : 30 000 à 60 000 DH.",a:"Déclarer le lieu effectif dans la DUM et tenir l’information à jour.",ref:"LF 2026 · Code art. 19 bis · 297-9°"},
+ {d:"tra",t:"Le transit dépasse son délai",w:"BADR envoie une alerte de dépassement par courriel au déclarant.",r:"Sans justification acceptée dans les 72 heures, des poursuites contentieuses sont engagées.",a:"Justifier le retard dans BADR (menu « Délai de transit ») ; utiliser la pré-confirmation d’arrivée hors heures d’ouverture.",ref:"Circ. 6387/412"},
+ {d:"tra",t:"Le scellé est endommagé ou manquant à l’arrivée",w:"Plomb rompu, numéro différent, conteneur ouvert.",r:"La substitution est présumée, sauf accident imprévisible et inévitable dûment établi ; l’utilisation de scellés hors des règles est un délit depuis 2025.",a:"Faire constater immédiatement l’état du scellé avant tout déchargement ; conserver photos et rapports.",ref:"Code art. 287 · 281-10° · LF 2025"},
+ {d:"tra",t:"Un envoi vers une ZAI contient des marchandises étrangères à l’activité",w:"Des articles sans rapport avec l’activité autorisée voyagent avec des marchandises en transit vers la zone.",r:"Depuis 2026, c’est un délit de contrebande de 2e classe.",a:"Contrôler le contenu des chargements groupés à destination des ZAI.",ref:"LF 2026 · Code art. 282-6°"},
+ {d:"int",t:"Un intermédiaire propose de « déclarer pour vous »",w:"Une personne non agréée comme transitaire offre de s’occuper de vos déclarations.",r:"Déclarer pour autrui sans agrément est une contravention de 3e classe : 80 000 à 100 000 DH.",a:"Vérifier l’agrément du transitaire et gérer les mandats sur PORTNET.",ref:"Code art. 297-6°"},
+ {d:"int",t:"Une marque connue à un prix anormalement bas",w:"Produits portant une marque dont le fournisseur ne peut démontrer l’autorisation du titulaire.",r:"L’importation de marchandises sous marque contrefaite est une contravention de 1re classe, avec confiscation.",a:"Exiger la preuve de la chaîne de distribution autorisée.",ref:"Code art. 285-12° · loi 17-97"},
+ {d:"int",t:"Un paiement de droits hors voie électronique",w:"Règlement des droits ou amendes par un autre moyen que le paiement électronique.",r:"Majoration de 1 % du montant dû, au minimum 1 000 DH, sauf exemptions.",a:"Passer au paiement électronique pour tous les règlements.",ref:"LF 2025 · Code art. 95-1°"}
+];
+let rfCur = "doc";
+function drawRF(){
+  const c = DOM[rfCur].c;
+  $('#rfgrid').innerHTML = RF.filter(x=>x.d===rfCur).map(x=>`
+   <div class="card rf" style="--fc:${c}">
+     <div class="rf-h"><span class="flag">⚑</span><h3>${esc(x.t)}</h3></div>
+     <p class="rf-w">${esc(x.w)}</p>
+     <div class="rf-b"><b>Le risque</b>${esc(x.r)}</div>
+     <div class="rf-b ok"><b>La conduite à tenir</b>${esc(x.a)}</div>
+     <div class="rf-f">${S(x.ref)}</div>
+   </div>`).join('');
+}
+pills($('#rff'), DOM, rfCur, k=>{rfCur=k;drawRF();});
+drawRF();
+
+/* ---------- 02 Liste négative ---------- */
+const ST = {
+  avant:{l:"Avant le dépôt",c:"#1A3A9A"},
+  decl:{l:"À la déclaration",c:"#B8922A"},
+  mlv:{l:"Mainlevée et contrôle",c:"#9A2A22"},
+  sus:{l:"Sous régime et en transit",c:"#5A2AA0"}
+};
+const NG = [
+ {s:"avant",t:"Joindre un document dont vous n’avez pas vérifié l’authenticité",p:"Responsabilité personnelle du déclarant",ref:"Circ. 6662/312"},
+ {s:"avant",t:"Confier vos déclarations à une personne non agréée",p:"80 000 à 100 000 DH",ref:"Code art. 297-6° · 297 bis"},
+ {s:"avant",t:"Importer des produits sous une marque contrefaite",p:"Deux fois les droits compromis + confiscation",ref:"Code art. 285-12° · 287 bis"},
+ {s:"avant",t:"Détenir, fournir ou utiliser des scellés douaniers sans justification",p:"Délit : 100 000 à 200 000 DH, ou la valeur de la marchandise en cas d’utilisation",ref:"Code art. 281-10° · 282 bis"},
+ {s:"decl",t:"Minorer la valeur, l’espèce ou la quantité pour réduire les droits",p:"Une fois et demie les droits éludés",ref:"Code art. 294-4° · 294 bis"},
+ {s:"decl",t:"Laisser un excédent de plus de 20 % sur le poids, la quantité ou la valeur",p:"Deux fois les droits compromis + confiscation",ref:"Code art. 285-13° · 287 bis"},
+ {s:"decl",t:"Signer la DUM sans les documents annexes",p:"10 000 à 50 000 DH",ref:"Code art. 297-8° · Circ. 6528/312"},
+ {s:"decl",t:"Déclarer un faux lieu de stockage ou de transformation",p:"30 000 à 60 000 DH",ref:"Code art. 19 bis · 297-9° (LF 2026)"},
+ {s:"decl",t:"Faire de fausses déclarations pour obtenir un avantage à l’exportation",p:"Montant des avantages indûment obtenus",ref:"Code art. 294-11° · 294 bis"},
+ {s:"decl",t:"Agir sur le système informatique pour éluder un droit ou obtenir un avantage indu",p:"Délit : 1 mois à 1 an d’emprisonnement, trois fois les droits",ref:"Code art. 281-7° · 282 bis"},
+ {s:"mlv",t:"Enlever la marchandise avant la mainlevée",p:"Deux fois les droits compromis",ref:"Code art. 285-4° · 287 bis"},
+ {s:"mlv",t:"Refuser ou retarder la communication de documents demandés",p:"30 000 à 60 000 DH",ref:"Code art. 42 · 297-4°"},
+ {s:"mlv",t:"Ne pas se soumettre aux injonctions des agents",p:"80 000 à 100 000 DH",ref:"Code art. 38-2° · 297-2°"},
+ {s:"mlv",t:"Détruire ou égarer vos archives avant quatre ans",p:"Amende égale à la valeur des marchandises",ref:"Code art. 42-2° · 285-15°"},
+ {s:"sus",t:"Vendre, céder ou substituer des marchandises sous régime sans autorisation",p:"Deux fois les droits compromis + confiscation",ref:"Code art. 285-8° · 286"},
+ {s:"sus",t:"Laisser passer le délai d’exportation ou de régularisation",p:"Une fois et demie les droits et taxes",ref:"Code art. 294-2° et 3°"},
+ {s:"sus",t:"Muter ou manipuler des marchandises en entrepôt sans autorisation",p:"Une fois et demie les droits et taxes",ref:"Code art. 294-1°"},
+ {s:"sus",t:"Altérer ou enlever un scellé douanier",p:"3 000 à 30 000 DH, et présomption de substitution en transit",ref:"Code art. 297-3° · 287"},
+ {s:"sus",t:"Ne pas présenter à réquisition les marchandises en transit ou en entrepôt",p:"Deux fois les droits compromis",ref:"Code art. 285-6° et 7°"}
+];
+let ngCur = "avant";
+function drawNG(){
+  const c = ST[ngCur].c;
+  $('#nglist').innerHTML = NG.filter(x=>x.s===ngCur).map((x,i)=>`
+    <div class="ng" style="--fc:${c}"><span class="ng-x">✕</span><div class="ng-t">${esc(x.t)}</div><div class="ng-p">${esc(x.p)}</div><div class="ng-r">${S(x.ref)}</div></div>`).join('');
+}
+pills($('#ngf'), ST, ngCur, k=>{ngCur=k;drawNG();});
+drawNG();
+
+/* ---------- 03 Contrôles ---------- */
+const CTL = [
+ {k:"Sélection",t:"Le triple circuit",c:"#1A3A9A",x:"BADR oriente chaque déclaration selon son niveau de risque. Depuis le 15 mai 2023, le transit est concerné aussi.",l:["Vert : mainlevée sans contrôle.","Orange : contrôle documentaire.","Rouge partiel : documents et visite partielle.","Rouge intégral : documents et visite complète.","L’agent peut re-sélectionner une déclaration sur doute fondé ou renseignement."],ref:"Circ. 6175/412 · 6456/412"},
+ {k:"Assiette",t:"Le pesage avant mainlevée",c:"#B8922A",x:"En circuit rouge, quand le poids déclaré ou sa répartition entre articles est douteux, le pesage est prescrit avant la mainlevée et son résultat saisi dans BADR.",l:["Vise le glissement de poids entre articles.","Le résultat conditionne la liquidation des droits."],ref:"Note D101/2023 · Note D299/2025"},
+ {k:"Documents",t:"L’authenticité des pièces jointes",c:"#0E7490",x:"Le dépôt de la DUM vaut engagement de son signataire sur l’authenticité des documents annexés.",l:["Vérification par code QR quand il existe.","Document non authentique : rejet et signalement."],ref:"Arrêté 913-15 · Circ. 6662/312"},
+ {k:"Transit",t:"Le suivi automatisé des délais",c:"#9A4A1A",x:"BADR calcule le délai entre l’autorisation d’acheminement et l’arrivée, et alerte le déclarant par courriel.",l:["Pré-confirmation d’arrivée hors heures d’ouverture.","Justification du retard sous 72 heures."],ref:"Code art. 156 · Circ. 6387/412"},
+ {k:"Garanties",t:"Les plafonds de caution en temps réel",c:"#5A2AA0",x:"L’encours disponible baisse à chaque ouverture de compte sous régime et remonte à chaque apurement.",l:["Dépassement : DUM bloquée.","OEA classe A et Sécurité-Sûreté non concernés."],ref:"Circ. 6554/313"},
+ {k:"A posteriori",t:"Le droit de communication",c:"#9A2A22",x:"Les agents habilités peuvent exiger registres, factures, correspondances et relevés auprès de toute personne intéressée à l’opération, et saisir tout document utile.",l:["Conservation de quatre ans.","Peut être exercé avant même le passage en douane."],ref:"Code art. 42"},
+ {k:"Origine",t:"Le contrôle a posteriori des preuves d’origine",c:"#1E7A4A",x:"La douane peut interroger les autorités du pays d’exportation sur l’authenticité et l’exactitude des certificats EUR.1 et des déclarations d’origine.",l:["Adresses de contrôle et cachets mis à jour en 2026.","Préférence remise en cause si l’origine n’est pas confirmée."],ref:"Note D105/2026 · Note D99/2026"},
+ {k:"Destination",t:"Le lieu effectif de stockage",c:"#8A5A10",x:"L’importateur indique dans la DUM le lieu effectif de stockage ou de transformation, pour permettre les contrôles a posteriori.",l:["Obligation en vigueur depuis la LF 2026."],ref:"Code art. 19 bis"},
+ {k:"Moyens",t:"Drones, caméras et scanners",c:"#3A3A36",x:"Les agents peuvent utiliser tout moyen de contrôle, de surveillance et de suivi des marchandises, en plus des moyens classiques.",l:["Disposition introduite par la LF 2026."],ref:"Code art. 35-1°"},
+ {k:"Visites",t:"Les visites de locaux",c:"#6A2A6A",x:"Sur indices sérieux de fraude, les locaux professionnels et domiciles peuvent être visités, sur autorisation du directeur.",l:["Consentement écrit de l’occupant ou assistance d’un officier de police judiciaire.","Ni avant 6 heures ni après 21 heures."],ref:"Code art. 41"}
+];
+$('#ctl').innerHTML = CTL.map(x=>`
+  <div class="card cc" style="--fc:${x.c}">
+    <div class="cc-k">${esc(x.k)}</div><h3>${esc(x.t)}</h3><p>${esc(x.x)}</p>
+    <ul>${x.l.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>
+    <div class="cc-f">${S(x.ref)}</div>
+  </div>`).join('');
+
+/* ---------- 04 Sécurité ---------- */
+const CHK = [
+ {g:"Documents",t:"Les documents sont vérifiés (code QR, original) avant d’être joints à la DUM",ref:"Circ. 6662/312"},
+ {g:"Documents",t:"Les originaux sont restitués au propriétaire contre décharge et archivés quatre ans",ref:"Code art. 42-2° · Circ. 6639/312"},
+ {g:"Documents",t:"Une liste des documents annexes et exigibles est contrôlée avant chaque signature",ref:"Circ. 6528/312"},
+ {g:"Déclaration",t:"Poids, quantités et valeurs sont rapprochés (facture, colisage, connaissement, paiements)",ref:"Code art. 20 · 285-13°"},
+ {g:"Déclaration",t:"Le lieu effectif de stockage ou de transformation est déclaré et tenu à jour",ref:"Code art. 19 bis"},
+ {g:"Déclaration",t:"Les classements, origines et méthodes d’évaluation sensibles sont sécurisés par une décision anticipée",ref:"Code art. 45 ter"},
+ {g:"Régimes",t:"Les échéances des comptes sous régime sont suivies dans un tableau de bord",ref:"Code art. 294-2° et 3°"},
+ {g:"Régimes",t:"La comptabilité matière est rapprochée du stock physique par inventaire",ref:"Code art. 287"},
+ {g:"Régimes",t:"L’encours de la facilité de cautionnement est surveillé",ref:"Circ. 6554/313"},
+ {g:"Transit",t:"Les délais de transit et les alertes BADR sont suivis chaque jour",ref:"Circ. 6387/412"},
+ {g:"Transit",t:"L’état des scellés est constaté à chaque arrivée, avant déchargement",ref:"Code art. 287 · 297-3°"},
+ {g:"Gouvernance",t:"Les mandats des transitaires sont revus sur PORTNET et leur agrément vérifié",ref:"Circ. 6421/411 · Code art. 297-6°"},
+ {g:"Gouvernance",t:"Une personne est responsable de la conformité douanière et des réponses aux contrôles",ref:"Code art. 42"},
+ {g:"Gouvernance",t:"Les droits et amendes sont réglés par paiement électronique",ref:"Code art. 95-1°"}
+];
+const done = new Set();
+function drawChk(){
+  let g = "", h = "";
+  CHK.forEach((x,i)=>{
+    if(x.g!==g){ g=x.g; h+=`<div class="chk-g">${esc(g)}</div>`; }
+    h+=`<label class="chk-i${done.has(i)?' on':''}"><input type="checkbox" data-i="${i}"${done.has(i)?' checked':''}><span>${esc(x.t)}</span>${S(x.ref)}</label>`;
+  });
+  $('#chk').innerHTML = h;
+  const n = done.size, p = Math.round(n/CHK.length*100);
+  const lvl = p>=85?["Maîtrise élevée","#1E7A4A"]:p>=50?["Maîtrise partielle","#B8922A"]:["Exposition forte","#9A2A22"];
+  const miss = CHK.map((x,i)=>i).filter(i=>!done.has(i));
+  $('#score').innerHTML = `<div class="sc-k">Votre niveau de maîtrise</div>
+    <div class="sc-v" style="color:${lvl[1]}">${n} / ${CHK.length}</div>
+    <div class="bar"><i style="width:${p}%;background:${lvl[1]}"></i></div>
+    <div class="sc-l" style="color:${lvl[1]}">${lvl[0]}</div>
+    <p class="sc-p">${miss.length?`À sécuriser en priorité : <b>${esc(CHK[miss[0]].t.toLowerCase())}</b>.`:"Tous les contrôles essentiels sont en place. Pensez à la catégorisation OEA."}</p>`;
+}
+$('#chk').addEventListener('change', e=>{ const i=+e.target.dataset.i; e.target.checked?done.add(i):done.delete(i); drawChk(); });
+drawChk();
+const LEV = [
+ {t:"Décision anticipée",x:"Faites trancher à l’avance le classement tarifaire (valable 5 ans), l’origine (3 ans) ou la méthode d’évaluation (1 an). Réponse sous 150 jours au plus.",ref:"Code art. 45 ter"},
+ {t:"Statut OEA",x:"Les opérateurs certifiés bénéficient notamment de facilités de cautionnement non plafonnées.",ref:"Circ. 6554/313 · 6707/313",href:"/modules/oea",l:"Catégorisation en OEA"},
+ {t:"Rectifier à temps",x:"Une sous-DUM provisionnelle peut être rectifiée sans suites contentieuses dans les 48 heures suivant la mainlevée.",ref:"Circ. 6195/312"}
+];
+$('#levers').innerHTML = `<h4 class="lv-h">Leviers de sécurisation</h4>` + LEV.map(x=>`<div class="card lv"><b>${esc(x.t)}</b><p>${esc(x.x)}</p><div class="lv-f">${S(x.ref)}${x.href?`<a class="btn" href="${x.href}">${esc(x.l)} →</a>`:''}</div></div>`).join('');
+
+/* ---------- 05 Sanctions ---------- */
+const CL = {
+  d1:{l:"Délits de 1re classe",c:"#5A1A14"},
+  d2:{l:"Délits de 2e classe",c:"#9A2A22"},
+  c1:{l:"Contraventions de 1re classe",c:"#9A4A1A"},
+  c2:{l:"Contraventions de 2e classe",c:"#B8922A"},
+  c3:{l:"Contraventions de 3e classe",c:"#1A3A9A"}
+};
+const SC = {
+  d1:{x:"Stupéfiants et substances psychotropes : importation, exportation ou détention sans autorisation ni déclaration, ou sous déclaration fausse.",rows:[["Emprisonnement","1 à 3 ans"],["Amende","Une fois la valeur des marchandises, doublée en cas de circonstances aggravantes (violence, armes, trois personnes ou plus…)"],["Confiscation","Marchandises, moyens de transport et marchandises servant à masquer la fraude"]],ref:"Code art. 279 ter · 279 quater"},
+  d2:{x:"Contrebande ; excédent de colis en entrepôt ; actes informatiques pour éluder un droit ; marchandises prohibées sans déclaration ; scellés douaniers ; marchandises étrangères à l’activité dans un transit vers une ZAI.",rows:[["Emprisonnement","1 mois à 1 an"],["Amende","Trois fois les droits et taxes (contrebande, actes informatiques…)"],["Amende","Une fois la valeur (marchandises prohibées, utilisation de scellés)"],["Amende","100 000 à 200 000 DH (détention ou fourniture de scellés)"],["Aggravation","Amendes doublées si la sécurité, la santé, la moralité ou l’environnement sont en cause"]],ref:"Code art. 281 · 282 · 282 bis"},
+  c1:{x:"Importation ou exportation sans déclaration éludant un droit ; enlèvement sans mainlevée ; non-présentation des marchandises ; abus des régimes suspensifs ; marque contrefaite ; excédent de plus de 20 % ; défaut de conservation des documents.",rows:[["Amende","Deux fois les droits et taxes compromis"],["Amende","La moitié de la valeur (exportation de marchandises prohibées)"],["Amende","La valeur des marchandises (défaut de conservation des documents)"],["Confiscation","Marchandises de fraude et, selon les cas, moyens de transport"]],ref:"Code art. 285 · 286 · 287 bis"},
+  c2:{x:"Mutation ou manipulation non autorisée en entrepôt ; défaut d’exportation ou de régularisation dans les délais ; fausse déclaration éludant un droit ; déclaration inexacte sans droit éludé ; fausses déclarations pour un avantage à l’exportation.",rows:[["Amende","Une fois et demie les droits et taxes (délais, mutations)"],["Amende","Une fois et demie les droits éludés (fausse déclaration)"],["Amende","3 000 à 30 000 DH (déclaration inexacte sans droit éludé, manifeste…)"],["Amende","Le montant des avantages à l’exportation indûment obtenus"]],ref:"Code art. 294 · 294 bis"},
+  c3:{x:"Infractions de procédure et d’obligations professionnelles.",rows:[["3 000 à 30 000 DH","Opposition aux agents ; altération ou enlèvement de scellés"],["10 000 à 50 000 DH","Défaut d’annexer les documents exigés à la DUM"],["30 000 à 60 000 DH","Refus de communication de documents ; faux lieu de stockage ou de transformation"],["80 000 à 100 000 DH","Non-soumission aux injonctions ; déclaration pour autrui sans agrément"],["200 000 à 400 000 DH","Exploitant de MEAD ne respectant pas son cahier des charges"],["Montant non déclaré","Défaut de déclaration de capitaux d’au moins 100 000 DH"]],ref:"Code art. 297 · 297 bis"}
+};
+let scCur = "c1";
+function drawSC(){
+  const o = SC[scCur], c = CL[scCur].c;
+  $('#sfiche').innerHTML = `<div class="sfi" style="--fc:${c}"><div class="sfi-h"><div class="k">${esc(CL[scCur].l)}</div><p>${esc(o.x)}</p></div>
+   <table><tbody>${o.rows.map(r=>`<tr><td class="am">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table>
+   <div class="f-foot">${S(o.ref)}</div></div>`;
+}
+pills($('#sf'), CL, scCur, k=>{scCur=k;drawSC();});
+drawSC();
+const CHG = [
+ ["2026","Faux lieu de stockage sanctionné ; contrebande en transit vers les ZAI ; drones, caméras et scanners autorisés","LF 2026"],
+ ["2026","Modèles des numéros d’exportateurs agréés et adresses de contrôle a posteriori des EUR.1 mis à jour","Notes D99 et D105/2026"],
+ ["2025","Vérification de l’authenticité des documents : responsabilité personnelle du déclarant","Circ. 6662/312"],
+ ["2025","Pesage obligatoirement avant la mainlevée en circuit rouge à risque sur le poids","Note D299/2025"],
+ ["2025","Nouveau délit sur les scellés ; amendes des délits ramenées de deux fois à une fois la valeur ; majoration du paiement non électronique","LF 2025"],
+ ["2024","Plafonds de caution contrôlés en temps réel ; DUM bloquée au dépassement","Circ. 6554/313"],
+ ["2024","Défaut d’annexer les documents à la DUM : contravention de 3e classe","LF 2024 · Circ. 6528/312"]
+];
+$('#chg').innerHTML = CHG.map(r=>`<div class="chg"><span class="yr">${r[0]}</span><span>${esc(r[1])}</span>${S(r[2])}</div>`).join('');
+const BEY = [
+ ["Mesures de sûreté","Interdiction d’accès aux bureaux et aux systèmes informatiques, retrait de l’agrément de transitaire, exclusion des régimes économiques, retrait de l’autorisation de MEAD.","Code art. 220"],
+ ["Présomptions","Marchandise sous régime non présentée : abus présumé. Scellé enlevé en transit : substitution présumée.","Code art. 287"],
+ ["Solidarité","Une amende unique est prononcée contre tous les participants à une même infraction.","Code art. 216"],
+ ["Valeur retenue","L’amende se calcule sur la valeur en douane au moment de la fraude, marchandises saisies ou non.","Code art. 219"]
+];
+$('#beyond').innerHTML = BEY.map(b=>`<li><b>${esc(b[0])}</b> — ${esc(b[1])} ${S(b[2])}</li>`).join('');
+
+/* ---------- 06 Situations ---------- */
+const TH = {
+  doc:{l:"Documents",c:"#1A3A9A"},
+  val:{l:"Valeur et poids",c:"#B8922A"},
+  red:{l:"Régimes économiques",c:"#5A2AA0"},
+  tra:{l:"Transit",c:"#9A4A1A"},
+  ori:{l:"Origine",c:"#0E7490"}
+};
+const SIT = [
+ {th:"doc",t:"Une facture falsifiée découverte après le dépôt",s:"Le fournisseur a transmis une facture dont le code QR renvoie à un autre montant. La DUM est déjà signée.",c:"Le déclarant engage sa responsabilité personnelle si la vérification était possible ; si la valeur est minorée, l’amende atteint une fois et demie les droits éludés.",a:"Signaler immédiatement le document à la douane, obtenir la facture authentique et régulariser la déclaration.",p:"Vérifier systématiquement le code QR et l’original avant de joindre un document.",ref:"Circ. 6662/312 · Code art. 294-4°"},
+ {th:"doc",t:"Un certificat sanitaire arrivé hors délai",s:"La DUM est signée ; le certificat exigé par la réglementation sanitaire n’est chargé dans BADR que 45 jours plus tard.",c:"Le défaut d’annexion est une contravention de 3e classe (10 000 à 50 000 DH).",a:"Charger le document dès réception et documenter la cause du retard : une tolérance est possible si l’organisme émetteur est en cause.",p:"Suivre les documents exigibles avec une échéance de 30 jours après signature.",ref:"Circ. 6528/312 · Code art. 297-8°"},
+ {th:"doc",t:"Un contrôle a posteriori trois ans après l’importation",s:"La douane demande les factures, les correspondances et les preuves de paiement d’une opération de 2023 ; une partie est introuvable.",c:"Le refus de communication coûte 30 000 à 60 000 DH ; le défaut de conservation, une amende égale à la valeur des marchandises.",a:"Réunir ce qui existe, retrouver les pièces chez le transitaire et la banque, répondre dans les délais.",p:"Archiver quatre ans, en un lieu unique, tous les documents de chaque opération.",ref:"Code art. 42 · 285-15° · 297-4°"},
+ {th:"val",t:"Un excédent de poids au pesage",s:"En circuit rouge, le pesage fait apparaître 25 % de poids en plus que la DUM sur un article.",c:"Au-delà de 20 %, c’est une contravention de 1re classe : deux fois les droits compromis, confiscation possible.",a:"Établir l’origine de l’écart (erreur de colisage, répartition entre articles) et le justifier avec les documents du fournisseur.",p:"Rapprocher connaissement, liste de colisage et DUM ; peser avant l’expédition en cas de doute.",ref:"Note D299/2025 · Code art. 285-13°"},
+ {th:"val",t:"Une facture globale « livré, installé »",s:"Le prix d’une machine inclut le montage et la formation en usine au Maroc, sans ventilation.",c:"Les frais postérieurs à l’importation ne sortent de la valeur en douane que s’ils sont distincts : vous payez des droits sur le montage.",a:"Obtenir une facture ventilée et, avant le dépôt, la faire joindre à la DUM.",p:"Négocier dans le contrat une facturation séparée des prestations.",ref:"Code art. 20-4°"},
+ {th:"red",t:"Un compte d’admission temporaire échu",s:"Les produits compensateurs n’ont pas été exportés dans le délai ; aucune prorogation n’a été demandée.",c:"Contravention de 2e classe : une fois et demie les droits et taxes.",a:"Régulariser sans attendre (exportation ou mise à la consommation) et préparer la justification.",p:"Tableau de bord des échéances avec alerte 60 jours avant ; demander la prorogation à temps.",ref:"Code art. 294-2° · 294 bis"},
+ {th:"red",t:"La DUM est bloquée : plafond de caution atteint",s:"BADR refuse la souscription d’une nouvelle DUM sous facilité de cautionnement.",c:"Pas d’amende, mais l’opération est arrêtée tant que l’encours n’est pas rétabli.",a:"Apurer les comptes ouverts, produire un avenant d’assurance pour relever le plafond, ou passer en caution bancaire ou consignation.",p:"Suivre l’encours disponible et anticiper les pics d’activité.",ref:"Circ. 6554/313"},
+ {th:"red",t:"Un stockage déplacé sans mise à jour",s:"Faute de place, l’importateur stocke une partie des marchandises dans un entrepôt loué, différent du lieu déclaré.",c:"Contravention de 3e classe pour fausse déclaration du lieu effectif : 30 000 à 60 000 DH.",a:"Déclarer le nouveau lieu et conserver la preuve du transfert.",p:"Intégrer la déclaration du lieu effectif dans la procédure de dédouanement.",ref:"Code art. 19 bis · 297-9°"},
+ {th:"tra",t:"Un camion arrive avec un scellé rompu",s:"À l’arrivée au bureau de destination, le scellé du conteneur en transit est rompu.",c:"La substitution est présumée, sauf accident imprévisible et inévitable dûment établi.",a:"Ne rien décharger ; faire constater par le service ; réunir rapport du transporteur, photos et constat.",p:"Consigner le numéro de scellé au départ et l’état à chaque étape.",ref:"Code art. 287 · 297-3°"},
+ {th:"tra",t:"Une alerte de dépassement du délai de transit",s:"BADR adresse au déclarant un courriel signalant que le délai de transit est dépassé.",c:"Sans justification acceptée sous 72 heures, des poursuites contentieuses sont engagées.",a:"Justifier le retard dans BADR avec les pièces (panne, attente au port…).",p:"Utiliser la pré-confirmation d’arrivée et surveiller les notifications chaque jour.",ref:"Circ. 6387/412"},
+ {th:"ori",t:"La préférence contestée après un contrôle a posteriori",s:"Les autorités du pays d’exportation ne confirment pas l’origine d’un EUR.1 accepté l’an dernier.",c:"Les droits du tarif général sont réclamés ; si l’irrégularité était connue, les peines des délits de 2e classe s’appliquent.",a:"Obtenir du fournisseur les justificatifs de l’origine et présenter vos éléments de bonne foi.",p:"Vérifier le statut du fournisseur et, pour les flux réguliers, demander une décision anticipée sur l’origine.",ref:"Code art. 283 · 45 ter · Note D105/2026"}
+];
+let thCur = "doc", sIdx = 0;
+function drawSit(){
+  const L = SIT.filter(x=>x.th===thCur), x = L[sIdx], c = TH[thCur].c;
+  $('#sit').innerHTML = `<div class="card fiche" style="--fc:${c}">
+   <div class="f-h"><div class="k">${esc(TH[thCur].l)} · cas ${sIdx+1} sur ${L.length}</div><h3>${esc(x.t)}</h3></div>
+   <div class="sgrid">
+    <div class="sb"><h4>Situation</h4><p>${esc(x.s)}</p></div>
+    <div class="sb bad"><h4>Conséquence</h4><p>${esc(x.c)}</p></div>
+    <div class="sb fix"><h4>Action corrective</h4><p>${esc(x.a)}</p></div>
+    <div class="sb pre"><h4>Prévention</h4><p>${esc(x.p)}</p></div>
+   </div>
+   <div class="f-foot">${S(x.ref)}<div class="nav"><button class="btn" id="sp"${sIdx===0?' disabled':''}>← Précédent</button><button class="btn pri" id="sn"${sIdx===L.length-1?' disabled':''}>Suivant →</button></div></div>
+  </div>`;
+  $('#sp').onclick=()=>{sIdx--;drawSit();}; $('#sn').onclick=()=>{sIdx++;drawSit();};
+}
+pills($('#sitf'), TH, thCur, k=>{thCur=k;sIdx=0;drawSit();});
+drawSit();
+
+/* subnav actif */
+const links=[...document.querySelectorAll('#subnav a')];
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('main section').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
