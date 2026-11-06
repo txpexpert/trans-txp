@@ -46,8 +46,8 @@ export const ESPACES: Espace[] = [
     transmet: 'Origine, régime et taux préférentiel',
     tools: [
       { label: 'Origine ALECA / UE', path: '/modules/origine-aleca', desc: 'Règles d’origine, preuves, cumul (PEM 2025)', tier: 'operateur' },
-      { label: 'Comparateur de régimes', path: '/modules/comparateur', desc: '9 régimes du Code des douanes comparés', tier: 'expert' },
-      { label: 'Régimes économiques', path: '/modules/regimes-economiques', desc: 'Admission temporaire, perfectionnement, entrepôt', tier: 'expert' },
+      { label: 'Comparateur de régimes', path: '/modules/comparateur', desc: 'Coût réel de chaque régime : droits, garantie, redevances, trésorerie', tier: 'expert' },
+      { label: 'Régimes économiques', path: '/modules/regimes-economiques', desc: '12 régimes, garanties et nouveautés 2024-2026', tier: 'expert' },
       { label: 'Facilitation douanière', path: '/modules/facilitation', desc: 'Mesures de facilitation et bonnes pratiques', tier: 'expert' },
       { label: 'Module Export', path: '/modules/export', desc: 'Guide, check-list et DDP à l’export', tier: 'operateur' },
     ],

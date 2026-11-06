@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr" class="ixp-theme">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparateur des régimes douaniers — IXP-Import-eXPert</title>
+<meta name="description" content="Comparez le coût réel des régimes douaniers marocains pour votre opération : droits, garantie, redevances, intérêts de retard, stockage et trésorerie mobilisée.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.28);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;--bg:#F9F8F4;--bg2:#F2F0EA;--surface:#fff;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 8px 28px rgba(26,26,24,.12);--r:8px;--r-lg:12px;
+  --mono:"JetBrains Mono",ui-monospace,monospace;--serif:"DM Serif Display",Georgia,serif;
+  --c-duty:#9A2A22;--c-int:#D9822B;--c-gar:#1A3A9A;--c-red:#7F77DD;--c-fee:#8A8A82;--c-fin:#B8922A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+button,input,select{font-family:inherit}
+.page-header{position:sticky;top:0;z-index:40;background:rgba(249,248,244,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:0 2rem;box-shadow:var(--sh)}
+.hdr{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px;height:56px}
+.logo-mark{min-width:30px;padding:0 5px;font-size:11px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:var(--mono)}
+.logo-text{font-family:var(--serif);font-size:15px;line-height:1.1}
+.logo-text span{display:block;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:28px;background:var(--border)}
+.hdr-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
+.hdr-links{margin-left:auto;display:flex;gap:8px}
+.hdr-links a{font-size:12px;text-decoration:none;color:var(--mid);border:1px solid var(--border);border-radius:100px;padding:5px 12px;background:var(--surface)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 2rem 4rem}
+.hero{padding:28px 0 18px}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.15;margin-bottom:6px}
+.hero p{color:var(--mid);max-width:820px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--mid)}
+.chip.g{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.layout{display:grid;grid-template-columns:350px 1fr;gap:20px;align-items:start}
+.panel{position:sticky;top:72px;max-height:calc(100vh - 86px);overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh)}
+.pg{padding:14px 16px;border-bottom:1px solid var(--border)}
+.pg:last-child{border-bottom:0}
+.pg-t{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg2);padding:3px;border-radius:var(--r)}
+.seg button{border:0;background:none;padding:8px 6px;border-radius:6px;cursor:pointer;font-size:12.5px;color:var(--mid);line-height:1.25}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--sh);font-weight:600}
+.f{margin-bottom:10px}
+.f:last-child{margin-bottom:0}
+.f label{display:block;font-size:11.5px;color:var(--mid);margin-bottom:4px}
+.f label small{color:var(--muted)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+input[type=number],select{width:100%;border:1px solid var(--border-mid);border-radius:6px;padding:7px 9px;font-size:13px;background:#fdfcf8;color:var(--ink)}
+input[type=number]:focus,select:focus{outline:2px solid var(--gold-bd);border-color:var(--gold)}
+.inpg{display:grid;grid-template-columns:1fr 84px;gap:6px}
+.conv{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:3px}
+.ck{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;margin-bottom:7px;cursor:pointer;line-height:1.35}
+.ck input{margin-top:2px;accent-color:var(--gold)}
+.ck small{display:block;color:var(--muted);font-size:11px}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.rv{font-family:var(--mono);font-size:12px;float:right;color:var(--ink)}
+.ex{font-size:10.5px;color:var(--amber);font-family:var(--mono)}
+.res{min-width:0}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:16px;overflow-x:auto}
+.tabs{border-bottom:0;gap:6px;padding-bottom:2px}
+.tab{--tc:#5A5A54;border:1px solid var(--tc);background:color-mix(in srgb,var(--tc) 10%,#fff);color:var(--tc);padding:9px 15px;font-size:13px;font-weight:600;cursor:pointer;border-radius:100px;white-space:nowrap;transition:all .15s}
+.tab:hover{background:color-mix(in srgb,var(--tc) 20%,#fff)}
+.tab.on{background:var(--tc);color:#fff;box-shadow:0 3px 10px color-mix(in srgb,var(--tc) 35%,transparent)}
+.tab[data-t=syn]{--tc:#B8922A}.tab[data-t=dt]{--tc:#1A3A9A}.tab[data-t=fi]{--tc:#1E7A4A}.tab[data-t=mx]{--tc:#5A2AA0}.tab[data-t=hy]{--tc:#9A2A22}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh)}
+.best{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;overflow:hidden;margin-bottom:14px}
+.best>div{padding:16px 18px;border-right:1px solid var(--border)}
+.best>div:last-child{border-right:0}
+.best .first{background:var(--ink);color:#fff}
+.k{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.first .k{color:var(--gold)}
+.best .v{font-size:22px;font-family:var(--mono);font-weight:500;margin-top:3px}
+.best .first .v{font-family:var(--serif);font-size:21px;line-height:1.2}
+.best .s{font-size:11.5px;color:var(--mid);margin-top:3px}
+.best .first .s{color:#c9c6bb}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--mid);margin:4px 0 10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.bars{padding:14px 18px}
+.bar{display:grid;grid-template-columns:180px 1fr 120px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--bg2);cursor:pointer}
+.bar:last-child{border-bottom:0}
+.bar:hover .bn{color:var(--blue)}
+.bn{font-size:13px;font-weight:600;line-height:1.25}
+.bn small{display:block;font-weight:400;color:var(--muted);font-size:11px;font-family:var(--mono)}
+.track{height:22px;background:var(--bg2);border-radius:4px;display:flex;overflow:hidden}
+.track span{height:100%}
+.bv{text-align:right;font-family:var(--mono);font-size:13px;font-weight:500}
+.bv small{display:block;font-weight:400;font-size:10.5px;color:var(--green)}
+.bv small.neg{color:var(--red)}
+.badge{font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:4px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);margin-left:6px;vertical-align:1px}
+.inel{margin-top:14px;padding:14px 18px}
+.inel h3,.sec-t{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);margin-bottom:8px;font-weight:500}
+.inel-i{display:flex;gap:10px;font-size:13px;padding:5px 0;border-bottom:1px solid var(--bg2)}
+.inel-i:last-child{border-bottom:0}
+.inel-i b{min-width:170px}
+.inel-i span{color:var(--mid)}
+.warns{margin-top:14px;display:grid;gap:8px}
+.warn{padding:10px 14px;border-radius:var(--r);background:var(--amber-bg);border:1px solid var(--amber-bd);font-size:13px;color:#5d3c08}
+.warn b{color:var(--amber)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:right;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);font-weight:500;padding:9px 10px;background:var(--bg);border-bottom:1px solid var(--border);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);white-space:nowrap}
+td:first-child{font-family:"DM Sans",system-ui,sans-serif;font-weight:600;white-space:normal}
+tr.tot td{font-weight:600;background:var(--gold-pale)}
+.mx td,.mx th{text-align:left;font-family:"DM Sans",system-ui,sans-serif;white-space:normal;font-size:12px}
+.mx th{font-family:var(--mono);font-size:9.5px}
+.mx td.ok{background:var(--green-bg);color:#14532d}
+.mx td.md{background:var(--amber-bg);color:#5d3c08}
+.mx td.ko{background:var(--red-bg);color:var(--red)}
+.mx td:first-child{background:var(--bg);font-weight:600;min-width:150px}
+.det{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.det-h{padding:18px 20px;border-bottom:1px solid var(--border);border-top:4px solid var(--c,#ccc)}
+.det-h h2{font-family:var(--serif);font-weight:400;font-size:24px}
+.det-h p{color:var(--mid);font-size:13.5px;margin-top:4px}
+.lines{padding:12px 20px}
+.line{display:grid;grid-template-columns:1fr auto;gap:12px;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.line:last-child{border-bottom:0}
+.line .fx{display:block;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+.line .am{font-family:var(--mono);font-weight:500}
+.line.t{border-top:2px solid var(--ink);border-bottom:0;font-weight:600;margin-top:4px}
+.pick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pick button{border:1px solid var(--border);background:var(--surface);border-radius:100px;padding:5px 12px;font-size:12px;cursor:pointer;border-left:3px solid var(--c)}
+.pick button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.blk{padding:14px 20px;border-top:1px solid var(--border)}
+.blk ul{list-style:none;display:grid;gap:5px}
+.blk li{font-size:13px;padding-left:14px;position:relative}
+.blk li::before{content:"";position:absolute;left:1px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--border-mid)}
+.blk.ok li::before{background:var(--green)}
+.blk.ko li::before{background:var(--red)}
+.src{font-family:var(--mono);font-size:10px;border-radius:4px;padding:2px 6px;border:1px solid var(--gold-bd);background:var(--gold-dim);color:#7a5f17;white-space:nowrap;display:inline-block;margin:2px 2px 0 0}
+.hyp{padding:16px 20px;font-size:13px}
+.hyp li{margin:0 0 6px 18px;color:var(--mid)}
+.hyp b{color:var(--ink)}
+.btn{border:1px solid var(--border-mid);background:var(--surface);border-radius:var(--r);padding:8px 14px;font-size:13px;cursor:pointer;text-decoration:none;color:var(--ink);display:inline-block}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.foot{margin-top:30px;padding-top:14px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;line-height:1.6}
+.hide{display:none!important}
+@media(max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .panel{position:static;max-height:none}
+  .best{grid-template-columns:1fr 1fr}
+  .det{grid-template-columns:1fr}
+  .bar{grid-template-columns:120px 1fr 96px}
+  .hdr-links{display:none}
+  .wrap,.page-header{padding-left:1rem;padding-right:1rem}
+}
+@media print{.page-header,.panel,.tabs,.acts{display:none}.layout{grid-template-columns:1fr}.tabp{display:block!important;margin-bottom:20px}}
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div class="hdr">
+    <div class="logo-mark">IXP</div>
+    <div class="logo-text">Import-eXPert<span>Intelligence douanière Maroc</span></div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-title">Comparateur des régimes</div>
+    <div class="hdr-links"><a href="/">Accueil</a><a href="/modules/regimes-economiques">Guide des régimes économiques</a></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <h1>Comparateur des régimes douaniers</h1>
+    <p>Décrivez votre opération : le comparateur écarte les régimes auxquels vous n’avez pas accès, puis chiffre pour chacun les droits définitifs, la garantie, les redevances, l’intérêt de retard, le stockage et la trésorerie mobilisée. Chaque montant est détaillé ligne par ligne.</p>
+    <div class="chips"><span class="chip g">Règles en vigueur au 6 novembre 2026</span><span class="chip">Majoration obligations cautionnées 2026 : 4,18 %</span><span class="chip">Intérêt de retard : 8 %/an</span><span class="chip">Facilités de cautionnement 2026</span></div>
+  </div>
+
+  <div class="layout">
+    <!-- ======= PARAMÈTRES ======= -->
+    <aside class="panel" id="panel">
+      <div class="pg">
+        <div class="pg-t">1 · Votre opération</div>
+        <div class="seg" id="sc"><button data-v="imp" class="on">Importer une marchandise étrangère</button><button data-v="exp">Faire travailler à l’étranger une marchandise marocaine</button></div>
+        <div class="f" id="usageF" style="margin-top:10px"><label>Usage prévu au Maroc</label>
+          <select id="usage">
+            <option value="trans">Transformer ou assembler, puis exporter</option>
+            <option value="stock">Stocker avant de vendre ou réexporter</option>
+            <option value="util">Utiliser temporairement, puis réexporter en l’état</option>
+            <option value="trav">Faire traverser le Maroc vers un autre pays</option>
+          </select></div>
+        <div class="f"><label id="valL">Valeur CAF de la marchandise</label>
+          <div class="inpg"><input type="number" id="val" value="1000000" min="0" step="10000"><select id="cur"><option>MAD</option><option>EUR</option><option>USD</option><option>GBP</option><option>CNY</option><option>AED</option><option>SAR</option></select></div>
+          <div class="conv" id="conv"></div></div>
+        <div class="f" id="retF"><label>Valeur au retour, après ouvraison <small>(même devise)</small></label><input type="number" id="ret" value="1400000" min="0" step="10000"></div>
+        <div class="row2">
+          <div class="f" id="durF"><label>Durée prévue (mois)</label><input type="number" id="dur" value="8" min="1" max="60"></div>
+          <div class="f" id="dayF"><label>Durée du transit (jours)</label><input type="number" id="days" value="3" min="1" max="60"></div>
+        </div>
+        <div class="f" id="qF"><label>Part vendue au Maroc <span class="rv" id="qV">10 %</span></label><input type="range" id="q" min="0" max="100" step="5" value="10"></div>
+        <label class="ck" id="identF"><input type="checkbox" id="ident"> <span>La marchandise revient à l’identique<small>Aucune transformation à l’étranger</small></span></label>
+        <label class="ck" id="machF"><input type="checkbox" id="mach"> <span>Machine, matériel ou équipement envoyé en réparation<small>Pas d’autorisation sectorielle en ETPP</small></span></label>
+      </div>
+      <div class="pg">
+        <div class="pg-t">2 · Fiscalité du produit</div>
+        <div class="row3">
+          <div class="f"><label>DI (%)</label><input type="number" id="di" value="17.5" min="0" max="200" step="0.5"></div>
+          <div class="f"><label>TIC (%)</label><input type="number" id="tic" value="0" min="0" max="300" step="1"></div>
+          <div class="f"><label>TVA (%)</label><input type="number" id="tva" value="20" min="0" max="20" step="1"></div>
+        </div>
+        <label class="ck"><input type="checkbox" id="pref"> <span>Origine préférentielle prouvée<small>Accord de libre-échange : DI préférentiel, aussi pour le calcul de la garantie</small></span></label>
+        <div class="f hide" id="dipF"><label>DI préférentiel (%)</label><input type="number" id="dip" value="0" min="0" max="200" step="0.5"></div>
+        <label class="ck"><input type="checkbox" id="tvaRec" checked> <span>TVA récupérable<small>Assujetti à la TVA : elle n’est pas comptée comme un coût</small></span></label>
+      </div>
+      <div class="pg" id="entPg">
+        <div class="pg-t">3 · Votre entreprise</div>
+        <div class="f"><label>Mode de garantie</label>
+          <select id="gar">
+            <option value="bank">Caution bancaire</option>
+            <option value="mixte">Caution mixte (20 % bancaire, 80 % engagement)</option>
+            <option value="eng">Engagement sans caution bancaire (E, F, OEA)</option>
+            <option value="consig">Consignation des droits</option>
+          </select></div>
+        <div class="row2">
+          <div class="f"><label>Coût de la caution <small>(%/an)</small></label><input type="number" id="cb" value="1.5" min="0" max="10" step="0.1"><div class="ex">exemple — taux de votre banque</div></div>
+          <div class="f"><label>Coût de financement <small>(%/an)</small></label><input type="number" id="fin" value="6" min="0" max="20" step="0.25"><div class="ex">exemple — votre coût du crédit</div></div>
+        </div>
+        <div class="f"><label>Statut</label><select id="oea"><option value="std">Standard</option><option value="sda">OEA Simplifications douanières classe A</option><option value="ss">OEA Sécurité-Sûreté</option></select></div>
+        <label class="ck" id="outF"><input type="checkbox" id="out" checked> <span>Vous disposez de l’outillage de transformation<small>Sinon : ATPA par sous-traitance, examen par le service central</small></span></label>
+        <label class="ck" id="invF"><input type="checkbox" id="inv"> <span>Investissement d’au moins 50 MDH<small>Condition d’accès à l’entrepôt industriel franc</small></span></label>
+        <label class="ck" id="zaiF"><input type="checkbox" id="zai"> <span>Implanté en zone d’accélération industrielle</span></label>
+        <label class="ck hide" id="convF"><input type="checkbox" id="conv25"> <span>Convention avec l’État : DI de 2,5 % sur les ventes locales<small>Dans la limite de 30 % du chiffre d’affaires export</small></span></label>
+      </div>
+      <div class="pg" id="specPg">
+        <div class="pg-t">4 · Paramètres spécifiques</div>
+        <div class="f" id="stoF"><label>Frais de stockage ou de magasinage (MAD/mois)</label><input type="number" id="sto" value="4000" min="0" step="500"><div class="ex">exemple — à remplacer par votre devis</div></div>
+        <div class="f" id="atF"><label>Catégorie d’admission temporaire</label>
+          <select id="atc">
+            <option value="trav">Matériel de travaux, propriété étrangère (redevance)</option>
+            <option value="prod">Matériel de production exportée à 75 % ou plus</option>
+            <option value="expo">Salons, foires, échantillons (6 mois)</option>
+            <option value="test">Essais et tests (2 ans)</option>
+          </select></div>
+        <div class="f" id="dbF"><label>Drawback : taux forfaitaire remboursé <small>(% des DI + TIC)</small></label><input type="number" id="db" value="0" min="0" max="100" step="5"><div class="ex">selon le taux moyen fixé pour votre produit ; 0 = non applicable</div></div>
+        <div class="f"><label>Frais de gestion du dossier (MAD)</label><input type="number" id="fees" value="0" min="0" step="500"><div class="ex">transitaire, comptabilité matières…</div></div>
+      </div>
+    </aside>
+
+    <!-- ======= RÉSULTATS ======= -->
+    <section class="res">
+      <div class="tabs" id="tabs">
+        <button class="tab on" data-t="syn">Synthèse</button>
+        <button class="tab" data-t="dt">Détail des coûts</button>
+        <button class="tab" data-t="fi">Fiche par régime</button>
+        <button class="tab" data-t="mx">Matrice des critères</button>
+        <button class="tab" data-t="hy">Hypothèses de calcul</button>
+      </div>
+
+      <div class="tabp" id="p-syn">
+        <div class="card best" id="best"></div>
+        <div class="card">
+          <div class="bars">
+            <div class="legend"><span><i style="background:var(--c-duty)"></i>Droits et taxes définitifs</span><span><i style="background:var(--c-int)"></i>Intérêt de retard</span><span><i style="background:var(--c-gar)"></i>Coût de la garantie</span><span><i style="background:var(--c-red)"></i>Redevance</span><span><i style="background:var(--c-fee)"></i>Stockage et frais</span><span><i style="background:var(--c-fin)"></i>Financement</span></div>
+            <div id="bars"></div>
+          </div>
+        </div>
+        <div id="warns" class="warns"></div>
+        <div class="card inel" id="inel"></div>
+        <div class="acts"><a class="btn" href="/modules/regimes-economiques">Consulter le guide des régimes</a></div>
+      </div>
+
+      <div class="tabp hide" id="p-dt">
+        <div class="card tbl-wrap"><table id="dtTbl"></table></div>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px">Trésorerie au départ : montant décaissé (ou bloqué sur votre ligne de caution) lors de la déclaration. Les montants sont arrondis au dirham.</p>
+      </div>
+
+      <div class="tabp hide" id="p-fi">
+        <div class="pick" id="pick"></div>
+        <div id="fiche"></div>
+      </div>
+
+      <div class="tabp hide" id="p-mx">
+        <div class="card tbl-wrap"><table class="mx" id="mxTbl"></table></div>
+      </div>
+
+      <div class="tabp hide" id="p-hy">
+        <div class="card hyp">
+          <div class="sec-t">Comment les montants sont calculés</div>
+          <ul>
+            <li><b>Droits et taxes (DT)</b> : DI et TIC sur la valeur CAF ; TVA sur (CAF + DI + TIC). Avec une origine préférentielle prouvée, le DI préférentiel s’applique à la mise à la consommation et au calcul de la garantie (circ. 6165/313).</li>
+            <li><b>Droits non récupérables</b> : DI + TIC, plus la TVA si vous ne la récupérez pas.</li>
+            <li><b>Garantie</b> : montant garanti = DT suspendus. Coût annuel : caution bancaire au taux saisi ; caution mixte sur 20 % du montant ; engagement sans coût bancaire ; consignation au coût de financement.</li>
+            <li><b>Intérêt de retard</b> : 8 % par an sur les droits et taxes de la part mise à la consommation, depuis l’entrée sous régime, lorsqu’ils n’ont pas été consignés (art. 93-2°, 130, 141 et 151 du Code ; art. 54 du décret).</li>
+            <li><b>Financement</b> : en mise à la consommation directe, les droits non récupérables de la part vendue au Maroc sont payés dès l’importation au lieu de la date de vente ; leur coût est calculé au taux de financement sur la durée saisie.</li>
+            <li><b>Redevance d’admission temporaire</b> (matériel de travaux) : 1/10 des droits et taxes par trimestre commencé, plafonnée au total des droits (art. 134 du décret). Le taux peut être réduit jusqu’à 1/40 par arrêté si l’amortissement dépasse 30 mois : non simulé.</li>
+            <li><b>Transit</b> : redevance informatique de 150 DH par acquit à caution (circ. 6677/312) et coût de garantie sur la durée du transit.</li>
+            <li><b>MEAD</b> : redevance de 150 DH pour la DS MEAD ; délai maximal de 45 jours ouvrables, ramené ici à 2 mois.</li>
+            <li><b>ETPP</b> : DI et TIC sur la plus-value (valeur au retour − valeur exportée, art. 152-3° du Code). La TVA est calculée sur la même base : à confirmer pour votre opération.</li>
+            <li><b>Drawback</b> : remboursement du taux forfaitaire saisi sur les DI et TIC de la part exportée, reçu environ 3 mois après la fin de l’opération (demande trimestrielle, paiement sous 30 jours ouvrables).</li>
+            <li><b>Non simulés</b> : coûts d’implantation en ZAI, pénalités, déductions des produits marocains ajoutés en ZAI, régimes de transformation sous douane et d’exportation préalable (voir le guide).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="foot">IXP-Import-eXPert · Estimation indicative. Les montants dépendent des paramètres saisis (taux de votre banque, frais de stockage, taux de drawback…). Ils ne remplacent ni la liquidation de la douane ni l’avis de votre transitaire agréé.</div>
+</main>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => Math.round(n).toLocaleString("fr-FR").replace(/ | /g," ");
+const mad = n => fmt(n) + " MAD";
+const pct = n => (Math.round(n*10)/10).toLocaleString("fr-FR") + " %";
+const S = r => `<span class="src">${esc(r)}</span>`;
+const INT_RETARD = 0.08, DS_FEE = 150;
+
+/* ---------- Taux de change ---------- */
+let FX = {MAD:1,EUR:10.85,USD:9.97,GBP:13.40,CNY:1.38,AED:2.71,SAR:2.65}, fxSrc = "taux indicatifs";
+fetch("/api/forex").then(r => r.ok ? r.json() : null).then(d => {
+  if (d && d.rates){ d.rates.forEach(x => {FX[x.pair] = x.rate}); fxSrc = d.source === "live" ? "taux du jour" : "taux indicatifs"; calc(); }
+}).catch(()=>{});
+
+/* ---------- Régimes ---------- */
+const RG = {
+  mac:{n:"Mise à la consommation",c:"010",col:"#E85D5D",fiche:null},
+  db:{n:"Mise à la consommation + drawback",c:"010 → 069",col:"#B8922A",fiche:"drawback"},
+  atpa:{n:"ATPA",c:"022 / 023",col:"#7F77DD",fiche:"atpa"},
+  eif:{n:"Entrepôt industriel franc",c:"381 / 385",col:"#7A4E10",fiche:"eif"},
+  zai:{n:"Zone d’accélération industrielle",c:"761 → 050",col:"#185FA5",fiche:"zai"},
+  ent:{n:"Entrepôt privé particulier",c:"037",col:"#BA7517",fiche:"entrepot"},
+  mead:{n:"Attente en MEAD",c:"DS MEAD",col:"#D85A30",fiche:"mead"},
+  at:{n:"Admission temporaire",c:"301 / 302 / 321 / 322",col:"#534AB7",fiche:"at"},
+  tr:{n:"Transit",c:"085 / 086",col:"#888780",fiche:"transit"},
+  etpp:{n:"ETPP",c:"077 → 051",col:"#3B6D11",fiche:"etpp"},
+  et:{n:"Exportation temporaire",c:"078 → 052",col:"#639922",fiche:"et"},
+  defi:{n:"Exportation définitive puis réimportation",c:"060 → 010",col:"#E85D5D",fiche:null}
+};
+const SETS = {trans:["mac","db","atpa","eif","zai"],stock:["mac","ent","mead"],util:["mac","at"],trav:["mac","tr"],exp:["defi","etpp","et"]};
+
+/* ---------- État ---------- */
+let scen = "imp", tab = "syn", ficheK = null, last = null;
+const num = id => { const v = parseFloat($("#"+id).value); return isFinite(v) ? v : 0; };
+const chk = id => $("#"+id).checked;
+
+function inputs(){
+  const fx = FX[$("#cur").value] || 1;
+  const p = {
+    scen, usage: $("#usage").value, cur: $("#cur").value, fx,
+    V: num("val")*fx, Rv: num("ret")*fx, m: Math.max(1, num("dur")), days: Math.max(1, num("days")),
+    q: scen==="imp" ? num("q")/100 : 0,
+    di: num("di")/100, tic: num("tic")/100, tva: num("tva")/100,
+    pref: chk("pref"), dip: num("dip")/100, tvaRec: chk("tvaRec"),
+    gar: $("#gar").value, cb: num("cb")/100, fin: num("fin")/100, oea: $("#oea").value,
+    out: chk("out"), inv: chk("inv"), zai: chk("zai"), conv25: chk("conv25"),
+    sto: num("sto"), atc: $("#atc").value, db: num("db")/100, fees: num("fees"),
+    ident: chk("ident"), mach: chk("mach")
+  };
+  if (p.usage==="util" || p.usage==="trav") p.q = (p.usage==="trav") ? 0 : p.q;
+  return p;
+}
+/* droits et taxes sur une base de valeur */
+function duties(base, p, diRate){
+  const DI = base*diRate, TIC = base*p.tic, TVA = (base+DI+TIC)*p.tva;
+  return {DI, TIC, TVA, T: DI+TIC+TVA, NR: DI+TIC+(p.tvaRec?0:TVA)};
+}
+function garCost(G, months, p){
+  const y = months/12;
+  switch(p.gar){
+    case "bank": return {c:G*p.cb*y, cash:0, line:G, lbl:`caution bancaire ${pct(p.cb*100)}/an × ${fmt(G)} × ${fmtM(months)}`};
+    case "mixte": return {c:0.2*G*p.cb*y, cash:0, line:0.2*G, lbl:`20 % de ${fmt(G)} × ${pct(p.cb*100)}/an × ${fmtM(months)}`};
+    case "eng": return {c:0, cash:0, line:0, lbl:"engagement de l’entreprise, sans coût bancaire"};
+    case "consig": return {c:G*p.fin*y, cash:G, line:0, lbl:`consignation de ${fmt(G)} × ${pct(p.fin*100)}/an × ${fmtM(months)}`};
+  }
+}
+const fmtM = m => m < 1 ? `${Math.round(m*30)} j` : `${Math.round(m*10)/10} mois`;
+const intApplies = p => p.gar !== "consig";
+
+/* ---------- Moteur ---------- */
+function compute(p){
+  const diEff = p.pref ? p.dip : p.di;
+  const D = duties(p.V, p, diEff);
+  const out = [];
+  const add = (k, o) => out.push(Object.assign({k, duty:0, int:0, gar:0, red:0, fee:0, fin:0, cash0:0, line0:0, lines:[], ok:true, why:"", notes:[]}, o));
+  const q = p.q, x = 1-q, m = p.m;
+
+  if (p.scen === "imp"){
+    const set = SETS[p.usage];
+    /* MAC */
+    if (set.includes("mac")){
+      const finC = q*D.NR*p.fin*m/12;
+      add("mac",{duty:D.NR, fin:finC, fee:p.fees, cash0:D.T,
+        lines:[["Droits et taxes non récupérables",D.NR,`DI ${fmt(D.DI)} + TIC ${fmt(D.TIC)}${p.tvaRec?"":" + TVA "+fmt(D.TVA)} — payés sur toute la marchandise, y compris la part réexportée`],
+               ["Financement des droits avancés",finC,`part vendue ${pct(q*100)} × ${fmt(D.NR)} × ${pct(p.fin*100)}/an × ${fmtM(m)}`],
+               ["Frais de gestion",p.fees,""]]});
+    }
+    /* MAC + drawback */
+    if (set.includes("db")){
+      const refund = x*(D.DI+D.TIC)*p.db, finC = q*D.NR*p.fin*m/12, finR = refund*p.fin*(m+3)/12;
+      const r = {duty:D.NR-refund, fin:finC+finR, fee:p.fees, cash0:D.T,
+        lines:[["Droits et taxes non récupérables",D.NR,"payés à l’importation"],["Remboursement drawback",-refund,`${pct(p.db*100)} × (DI + TIC) × part exportée ${pct(x*100)}`],
+               ["Financement des droits avancés",finC+finR,`droits de la part vendue sur ${fmtM(m)}, et montant remboursé jusqu’au paiement (≈ ${fmtM(m+3)})`],["Frais de gestion",p.fees,""]]};
+      if (p.db<=0){ r.ok=false; r.why="Indiquez le taux de drawback fixé pour votre produit (annexe IV bis du décret)."; }
+      else if (x<=0){ r.ok=false; r.why="Aucune part exportée : rien à rembourser."; }
+      add("db", r);
+    }
+    /* ATPA / EIF / Entrepôt : logique commune de régime suspensif */
+    const suspensive = (k, extra) => {
+      const G = D.T, g = garCost(G, m, p);
+      const macDuty = q*D.NR, intR = intApplies(p) ? q*D.T*INT_RETARD*m/12 : 0;
+      const sto = extra.sto ? p.sto*m : 0;
+      const o = {notes:[], duty:macDuty, int:intR, gar:g.c, fee:p.fees+sto, cash0:g.cash, line0:g.line,
+        lines:[["Droits et taxes de la part vendue au Maroc",macDuty,`${pct(q*100)} × ${fmt(D.NR)}, liquidés au taux en vigueur à l’entrée sous régime`],
+               ["Intérêt de retard",intR, intApplies(p)?`8 %/an × ${fmt(q*D.T)} × ${fmtM(m)} (droits non consignés)`:"non dû : droits consignés"],
+               ["Coût de la garantie",g.c,g.lbl]]};
+      if (extra.sto) o.lines.push(["Stockage",sto,`${fmt(p.sto)} MAD/mois × ${fmtM(m)}`]);
+      o.lines.push(["Frais de gestion",p.fees,""]);
+      return o;
+    };
+    if (set.includes("atpa")){
+      const o = suspensive("atpa",{});
+      if (m>24){o.ok=false;o.why="Durée supérieure à 24 mois : maximum légal de l’ATPA (6 mois + 18 mois de prorogation)."}
+      if (!p.out) o.notes.push("Sans outillage : ATPA possible pour une société de négoce livrant des sous-traitants locaux ; demande examinée par le service central.");
+      if (m>6 && m<=24) o.notes.push(`Au-delà de 6 mois, prorogation à demander (jusqu’à 18 mois supplémentaires).`);
+      if (x>0 && q/x>0.15) o.notes.push(`Ventes locales = ${pct(q/x*100)} des quantités exportées : au-delà de 15 %, la dispense d’amende ne joue plus.`);
+      if (q>=1){o.ok=false;o.why="Aucune exportation : l’ATPA suppose l’exportation des produits compensateurs."}
+      add("atpa",o);
+    }
+    if (set.includes("eif")){
+      const o = suspensive("eif",{});
+      if (!p.inv){o.ok=false;o.why="Réservé aux investissements d’au moins 50 MDH (art. 98 bis du décret)."}
+      else if (m>24){o.ok=false;o.why="Durée supérieure à 2 ans pour les intrants."}
+      o.notes.push("Autorisation de l’administration centrale ; enquête d’outillage pour un premier accès.");
+      add("eif",o);
+    }
+    if (set.includes("zai")){
+      const diZ = p.conv25 ? 0.025 : diEff, Dz = duties(p.V, p, diZ), macDuty = q*Dz.NR;
+      const o = {notes:[], duty:macDuty, fee:p.fees, lines:[["Droits et taxes de la part vendue au Maroc",macDuty, p.conv25?`DI de 2,5 % par convention + TIC${p.tvaRec?"":" + TVA"} sur ${pct(q*100)} de la valeur`:`droit commun sur ${pct(q*100)} de la valeur`],["Frais de gestion",p.fees,""]]};
+      if (!p.zai){o.ok=false;o.why="Suppose une implantation en zone d’accélération industrielle."}
+      if (q>0) o.notes.push("La vente au Maroc n’est autorisée que si l’exportation est impossible pour raisons commerciales justifiées (art. 166 quinquies).");
+      if (p.conv25 && q>0.3) o.notes.push("Le droit de 2,5 % est plafonné à 30 % du chiffre d’affaires export (art. 164 bis).");
+      o.notes.push("Coûts d’implantation dans la zone non simulés.");
+      add("zai",o);
+    }
+    if (set.includes("ent")){
+      const o = suspensive("ent",{sto:true});
+      if (m>24){o.ok=false;o.why="Durée supérieure à 24 mois : maximum de l’entrepôt (1 an + 2 × 6 mois)."}
+      else if (m>12) o.notes.push("Au-delà de 12 mois, prorogations de 6 mois à demander.");
+      o.notes.push("Agrément d’entrepôt privé particulier : directeur régional. Sinon, entrepôt public ou privé banal.");
+      add("ent",o);
+    }
+    if (set.includes("mead")){
+      const sto = p.sto*m, macDuty = q*D.NR;
+      const o = {duty:macDuty, fee:p.fees+sto+DS_FEE, cash0:0,
+        lines:[["Droits et taxes de la part vendue au Maroc",macDuty,"payés à la déclaration en détail, sans intérêt"],["Magasinage",sto,`${fmt(p.sto)} MAD/mois × ${fmtM(m)}`],["Redevance DS MEAD",DS_FEE,"circ. 6677/312"],["Frais de gestion",p.fees,""]]};
+      if (m>2){o.ok=false;o.why="Au-delà de 45 jours ouvrables (environ 2 mois), la marchandise est réputée abandonnée."}
+      add("mead",o);
+    }
+    if (set.includes("at")){
+      const G = D.T, g = garCost(G, m, p);
+      let red = 0, redTxt = "";
+      if (p.atc==="trav"){ const tri = Math.ceil(m/3); red = Math.min(D.T, D.T/10*tri); redTxt = `1/10 × ${fmt(D.T)} × ${tri} trimestre${tri>1?"s":""} commencé${tri>1?"s":""}${red>=D.T?" (plafond atteint)":""}`; }
+      const macRaw = q*D.T, macDue = Math.max(0, macRaw-red), macNR = macRaw>0 ? macDue*(D.NR/D.T) : 0;
+      const intR = (intApplies(p) && q>0) ? macRaw*INT_RETARD*m/12 : 0;
+      const o = {notes:[], duty:macNR, int:intR, gar:g.c, red, fee:p.fees, cash0:g.cash + (p.atc==="trav"?Math.min(D.T, D.T/10):0), line0:g.line,
+        lines:[["Redevance trimestrielle",red, p.atc==="trav"?redTxt:"dispense"],["Coût de la garantie",g.c,g.lbl]]};
+      if (q>0){o.lines.push(["Droits de la part mise à la consommation",macNR,`${pct(q*100)} × droits et taxes, moins les redevances déjà payées`]);o.lines.push(["Intérêt de retard",intR,"8 %/an depuis la déclaration d’AT"]);o.notes.push("Mise à la consommation en suite d’AT : sur autorisation (art. 151).")}
+      o.lines.push(["Frais de gestion",p.fees,""]);
+      const lim = {trav:null, prod:null, expo:12, test:48}[p.atc];
+      if (lim && m>lim){o.ok=false;o.why=`Durée supérieure au délai de la catégorie, même prorogé au double (${lim} mois).`}
+      if (p.atc==="trav") o.notes.push("Autorisation spéciale du ministre des Finances ; redevance réductible jusqu’à 1/40 si l’amortissement dépasse 30 mois.");
+      if (p.atc==="prod") o.notes.push("Dispense de redevance : matériel de non-résidents servant à une production exportée à 75 % au moins.");
+      if (p.atc==="expo") o.notes.push("Manifestation parrainée par un ministère, un établissement public ou une ambassade : dispense de caution possible.");
+      add("at",o);
+    }
+    if (set.includes("tr")){
+      const mm = p.days/30, g = garCost(D.T, mm, p);
+      add("tr",{gar:g.c, fee:DS_FEE+p.fees, cash0:g.cash, line0:g.line,
+        lines:[["Coût de la garantie",g.c,g.lbl],["Redevance de l’acquit à caution",DS_FEE,"circ. 6677/312"],["Frais de gestion",p.fees,""]],
+        notes:["Transport routier international : le carnet TIR tient lieu de garantie.","Délai et itinéraire fixés par la douane ; retard à justifier sous 72 heures."]});
+    }
+  } else {
+    /* Perfectionnement à l’étranger */
+    const E = p.V, Rv = p.Rv, plus = Math.max(0, Rv-E);
+    const Dfull = duties(Rv, p, diEff), Dplus = duties(plus, p, diEff);
+    add("defi",{duty:Dfull.NR, fee:p.fees, cash0:Dfull.T, lines:[["Droits et taxes à la réimportation",Dfull.NR,`sur la valeur totale au retour (${fmt(Rv)})`],["Frais de gestion",p.fees,""]],
+      notes:["Produit devenu d’origine marocaine après transformation sous régime et réimporté dans les 2 ans : droit minimum de 2,5 % (code franchise 4012)."]});
+    const o = {notes:[], duty:Dplus.NR, fee:p.fees, cash0:Dplus.T, lines:[["Droits et taxes sur la plus-value",Dplus.NR,`valeur au retour ${fmt(Rv)} − valeur exportée ${fmt(E)} = ${fmt(plus)}`],["Frais de gestion",p.fees,""]]};
+    if (p.m>24){o.ok=false;o.why="Durée supérieure à 1 an prorogé au double (24 mois)."}
+    else if (p.m>12) o.notes.push("Au-delà d’un an, prorogation à justifier.");
+    if (!p.mach) o.notes.push("Autorisation du département chargé du secteur, délivrée sous 60 jours, désormais échangée via PORTNET.");
+    if (p.ident) o.notes.push("Marchandise revenant à l’identique : l’exportation temporaire suffit.");
+    add("etpp",o);
+    const e = {duty:0, fee:p.fees, lines:[["Droits à la réimportation",0,"franchise : retour à l’identique"],["Frais de gestion",p.fees,""]]};
+    if (!p.ident){e.ok=false;e.why="La marchandise est transformée à l’étranger : c’est le régime de l’ETPP qui s’applique."}
+    if (p.m>24){e.ok=false;e.why="Durée supérieure à 1 an prorogé au double (24 mois)."}
+    add("et",e);
+  }
+  out.forEach(r => { r.total = r.duty + r.int + r.gar + r.red + r.fee + r.fin; });
+  return {D, rows:out};
+}
+
+/* ---------- Rendu ---------- */
+function calc(){
+  const p = inputs(); const res = compute(p); last = {p,res};
+  /* conversion */
+  $("#conv").textContent = p.cur==="MAD" ? "" : `= ${mad(p.V)} (${fxSrc} : 1 ${p.cur} = ${p.fx.toLocaleString("fr-FR")} MAD)`;
+  const ok = res.rows.filter(r=>r.ok).sort((a,b)=>a.total-b.total), ko = res.rows.filter(r=>!r.ok);
+  const ref = res.rows.find(r => r.k==="mac" || r.k==="defi");
+  const best = ok[0];
+  /* carte synthèse */
+  if (best){
+    const sav = ref ? ref.total - best.total : 0;
+    $("#best").innerHTML = `<div class="first"><div class="k">Régime le moins coûteux</div><div class="v">${esc(RG[best.k].n)}</div><div class="s">Code ${esc(RG[best.k].c)}</div></div>
+      <div><div class="k">Coût total estimé</div><div class="v">${mad(best.total)}</div><div class="s">sur ${p.scen==="imp"&&p.usage==="trav"?p.days+" jours":fmtM(p.m)}</div></div>
+      <div><div class="k">Économie / ${ref&&ref.k==="defi"?"export définitif":"mise à la consommation"}</div><div class="v" style="color:var(--green)">${mad(Math.max(0,sav))}</div><div class="s">${ref&&ref.total>0?pct(Math.max(0,sav)/ref.total*100)+" du coût de référence":""}</div></div>
+      <div><div class="k">Trésorerie au départ</div><div class="v">${mad(best.cash0)}</div><div class="s">${best.line0?"+ "+mad(best.line0)+" sur ligne de caution":"décaissé à la déclaration"}</div></div>`;
+  } else $("#best").innerHTML = `<div style="grid-column:1/-1;padding:18px">Aucun régime accessible avec ces paramètres.</div>`;
+  /* barres */
+  const max = Math.max(1, ...ok.map(r=>r.total));
+  const parts = [["duty","--c-duty"],["int","--c-int"],["gar","--c-gar"],["red","--c-red"],["fee","--c-fee"],["fin","--c-fin"]];
+  $("#bars").innerHTML = ok.map((r,i) => {
+    const d = ref ? ref.total - r.total : 0;
+    return `<div class="bar" data-k="${r.k}"><div class="bn">${esc(RG[r.k].n)}${i===0?`<span class="badge">OPTIMAL</span>`:""}<small>${esc(RG[r.k].c)}</small></div>
+      <div class="track">${parts.map(([f,c]) => r[f]>0?`<span style="width:${r[f]/max*100}%;background:var(${c})" title="${f}"></span>`:"").join("")}</div>
+      <div class="bv">${mad(r.total)}${ref&&r.k!==ref.k?`<small class="${d<0?"neg":""}">${d>=0?"−":"+"}${fmt(Math.abs(d))} vs réf.</small>`:"<small style='color:var(--muted)'>référence</small>"}</div></div>`;
+  }).join("");
+  $("#bars").querySelectorAll(".bar").forEach(b => b.onclick = () => {ficheK=b.dataset.k; setTab("fi");});
+  /* alertes */
+  const w = [];
+  ok.forEach(r => r.notes.forEach(n => w.push(`<div class="warn"><b>${esc(RG[r.k].n)}</b> — ${esc(n)}</div>`)));
+  if (p.scen==="imp" && p.usage!=="trav" && p.q>0 && intApplies(p) && ok.some(r=>r.int>0) && p.fin < INT_RETARD)
+    w.unshift(`<div class="warn"><b>À noter</b> — L’intérêt de retard (8 %/an) sur la part vendue au Maroc dépasse votre coût de financement (${pct(p.fin*100)}). Consigner les droits ou dédouaner directement cette part peut être plus avantageux.</div>`);
+  if (p.oea!=="std" && ["bank","mixte"].includes(p.gar)) w.unshift(`<div class="warn"><b>Statut OEA</b> — Vous pouvez demander le cautionnement sur engagement des entreprises exportatrices, avec un plafond illimité (circ. 6707/313).</div>`);
+  $("#warns").innerHTML = w.join("");
+  $("#inel").innerHTML = ko.length ? `<h3>Régimes non accessibles pour cette opération</h3>${ko.map(r=>`<div class="inel-i"><b>${esc(RG[r.k].n)}</b><span>${esc(r.why)}</span></div>`).join("")}` : "";
+  $("#inel").classList.toggle("hide", !ko.length);
+  /* détail */
+  const all = [...ok, ...ko];
+  $("#dtTbl").innerHTML = `<thead><tr><th>Régime</th><th>Droits définitifs</th><th>Intérêt</th><th>Garantie</th><th>Redevance</th><th>Stockage et frais</th><th>Financement</th><th>Total</th><th>Trésorerie au départ</th></tr></thead><tbody>`
+    + all.map(r=>`<tr style="${r.ok?"":"opacity:.45"}"><td>${esc(RG[r.k].n)}${r.ok?"":" <small style='font-weight:400'>(non accessible)</small>"}</td><td>${fmt(r.duty)}</td><td>${fmt(r.int)}</td><td>${fmt(r.gar)}</td><td>${fmt(r.red)}</td><td>${fmt(r.fee)}</td><td>${fmt(r.fin)}</td><td><b>${fmt(r.total)}</b></td><td>${fmt(r.cash0)}${r.line0?`<br><small>+ ${fmt(r.line0)} caution</small>`:""}</td></tr>`).join("")
+    + `</tbody>`;
+  /* fiche */
+  if (!ficheK || !all.find(r=>r.k===ficheK)) ficheK = best ? best.k : all[0].k;
+  renderFiche(all);
+  renderMatrix(all.map(r=>r.k));
+}
+const FICHES = {
+  mac:{d:"Droit commun : les droits et taxes sont payés à la déclaration. Simple, mais la part réexportée reste taxée.",ok:["Aucun compte à apurer","Libre disposition immédiate"],ko:["Droits payés aussi sur la part réexportée","Trésorerie mobilisée dès l’importation"],src:["Régime 010"]},
+  db:{d:"Dédouanement des intrants, puis remboursement forfaitaire du DI et des TIC à l’exportation des produits fabriqués.",ok:["Pas de garantie ni de compte suspensif","Remboursement sous 30 jours ouvrables après dossier complet","Dossiers drawback-énergie sur BADR"],ko:["Produit et taux fixés par le décret (annexes III et IV bis)","Demande trimestrielle, au plus tard 2 ans après l’export","TVA non concernée"],src:["Code art. 159-163","Arrêté 840-21","Circ. 6231/313","Circ. 6552/313"]},
+  atpa:{d:"Suspension des droits et taxes sur les intrants transformés puis exportés.",ok:["Suspension totale des droits et de la TVA","Garantie au taux préférentiel si origine prouvée","Facilités de cautionnement (mixte, engagement, dispense pour sous-traitance)"],ko:["24 mois au maximum","Enquête d’outillage pour un premier accès (2024)","Exportation à déclarer à la valeur brute","Vente locale : droits du jour d’entrée + intérêt de retard"],src:["Code art. 135-144","Décret art. 99-114","Circ. 6538/313","Circ. 6707/313"]},
+  eif:{d:"Suspension pour les équipements et les intrants d’un investissement d’au moins 50 MDH, production exportée en tout ou partie.",ok:["Couvre aussi les biens d’équipement","Vente locale dans une proportion réglementée"],ko:["Seuil de 50 MDH","Autorisation de l’administration centrale","Agrément géré sur BADR"],src:["Code art. 134 bis-quinquies","Décret art. 98 bis","Circ. 6572/313"]},
+  zai:{d:"Implantation dans une zone soustraite à la législation douanière : entrées et sorties exonérées de DI et de TVA.",ok:["Pas de compte suspensif ni de caution sur les flux de la zone","Transit couvert par l’engagement des exportateurs (caution F)"],ko:["Vente locale seulement si l’export est impossible","Droit de 2,5 % seulement par convention, dans la limite de 30 % du CA export","Nouvelle infraction de contrebande en transit vers les zones (LF 2026)"],src:["Loi 19-94","Code art. 164 bis, 166 quater-sexies","Circ. 6702/210"]},
+  ent:{d:"Stockage en suspension dans un local agréé ; les droits ne sont payés que sur la part mise à la consommation.",ok:["Jusqu’à 24 mois","Mutation entre entrepôts sans acquit à caution (2024)","Abandon ou destruction en exonération pour raisons commerciales (LF 2024)"],ko:["Vente locale : droits du jour d’entrée + intérêt de retard si non consignés","Pas de transformation","Agrément d’EPP"],src:["Code art. 119-134","Circ. 6572/313","Circ. 6600/313","Circ. 6522/210"]},
+  mead:{d:"Attente de la déclaration en détail dans un magasin agréé ; ce n’est pas un régime suspensif.",ok:["Aucune garantie à constituer par l’importateur","DS MEAD unique depuis 2025"],ko:["45 jours ouvrables au maximum, puis abandon","Frais de magasinage"],src:["Code art. 61-63","Circ. 6636/312","Circ. 6675/312"]},
+  at:{d:"Importation en suspension de matériels ou produits réexportés en l’état.",ok:["Pas de droits si réexportation à l’identique","Dispenses de redevance (production exportée à 75 %, essais, salons)"],ko:["Matériel de travaux : 1/10 des droits par trimestre commencé, non remboursable","Durée limitée selon la catégorie"],src:["Code art. 145-151 bis","Décret art. 125-137","Circ. 6348/313"]},
+  tr:{d:"Transport sous douane entre deux bureaux, en suspension des droits.",ok:["Aucun droit si la marchandise quitte le Maroc","Carnet TIR accepté"],ko:["Délai et itinéraire imposés, suivis automatiquement","Scellés obligatoires"],src:["Code art. 155-158","Circ. 6387/412","Circ. 6456/412"]},
+  etpp:{d:"Exportation provisoire pour ouvraison à l’étranger ; au retour, droits sur la seule plus-value.",ok:["Taxation limitée à la plus-value","Pas de caution si la marchandise n’est pas taxée à l’export"],ko:["Autorisation du secteur, sauf machines et équipements","1 an, prorogeable au double"],src:["Code art. 152","Décret art. 138-147","Circ. 6671/311"]},
+  et:{d:"Sortie temporaire d’une marchandise utilisée à l’étranger et réimportée à l’identique, en franchise.",ok:["Retour en franchise","Pas de caution si non taxé à l’export"],ko:["Aucune transformation possible","Non-retour = exportation définitive"],src:["Code art. 153-154","Décret art. 153-162"]},
+  defi:{d:"Exportation définitive, puis réimportation du produit travaillé sous le droit commun.",ok:["Aucune formalité de régime"],ko:["Droits sur la valeur totale du produit réimporté"],src:["Régimes 060 et 010"]}
+};
+function renderFiche(all){
+  $("#pick").innerHTML = all.map(r=>`<button style="--c:${RG[r.k].col}" class="${r.k===ficheK?"on":""}" data-k="${r.k}">${esc(RG[r.k].n)}</button>`).join("");
+  $("#pick").querySelectorAll("button").forEach(b => b.onclick = () => {ficheK=b.dataset.k; renderFiche(all);});
+  const r = all.find(x=>x.k===ficheK), g = RG[r.k], f = FICHES[r.k];
+  $("#fiche").innerHTML = `<div class="det">
+    <div class="card"><div class="det-h" style="--c:${g.col}"><div class="k">Code ${esc(g.c)}</div><h2>${esc(g.n)}</h2><p>${esc(f.d)}</p></div>
+      <div class="lines">${r.lines.map(l=>`<div class="line"><div>${esc(l[0])}${l[2]?`<span class="fx">${esc(l[2])}</span>`:""}</div><div class="am">${l[1]<0?"− ":""}${mad(Math.abs(l[1]))}</div></div>`).join("")}
+      <div class="line t"><div>Coût total estimé</div><div class="am">${mad(r.total)}</div></div></div>
+      ${r.ok?"":`<div class="blk ko"><ul><li><b>Non accessible :</b> ${esc(r.why)}</li></ul></div>`}
+    </div>
+    <div class="card">
+      <div class="blk ok" style="border-top:0"><div class="sec-t">Avantages</div><ul>${f.ok.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div class="blk ko"><div class="sec-t">Contraintes</div><ul>${f.ko.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      ${r.notes.length?`<div class="blk"><div class="sec-t">Pour votre opération</div><ul>${r.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
+      <div class="blk"><div class="sec-t">Références</div>${f.src.map(S).join("")}
+        ${g.fiche?`<div style="margin-top:10px"><a class="btn" href="/modules/regimes-economiques#${g.fiche}">Fiche complète dans le guide →</a></div>`:""}</div>
+    </div></div>`;
+}
+const MX = [
+  ["Suspension des droits et de la TVA",{mac:["ko","Non"],db:["md","Non ; remboursement du DI et des TIC"],atpa:["ok","Oui"],eif:["ok","Oui"],zai:["ok","Exonération"],ent:["ok","Oui"],mead:["md","Avant déclaration"],at:["ok","Oui (redevance si travaux)"],tr:["ok","Oui"],etpp:["ok","Droits sur la plus-value"],et:["ok","Retour en franchise"],defi:["ko","Non"]}],
+  ["Garantie",{mac:["ok","Aucune"],db:["ok","Aucune"],atpa:["md","Oui ; facilités possibles"],eif:["md","Oui"],zai:["ok","Non sur les flux ; caution F en transit"],ent:["md","Oui"],mead:["ok","Soumission de l’exploitant"],at:["md","Oui ; dispenses possibles"],tr:["md","Oui ou carnet TIR"],etpp:["ok","Non si non taxé à l’export"],et:["ok","Non si non taxé à l’export"],defi:["ok","Aucune"]}],
+  ["Durée maximale",{mac:["ok","—"],db:["md","Demande ≤ 2 ans après l’export"],atpa:["md","24 mois"],eif:["md","2 ans (intrants)"],zai:["ok","—"],ent:["md","24 mois"],mead:["ko","45 jours ouvrables"],at:["md","6 mois à 2 ans, × 2"],tr:["ko","Délai fixé par la douane"],etpp:["md","1 an, × 2"],et:["md","1 an, × 2"],defi:["ok","—"]}],
+  ["Transformation",{mac:["ok","Libre"],db:["ok","Libre"],atpa:["ok","Oui"],eif:["ok","Oui"],zai:["ok","Oui"],ent:["ko","Manipulations seulement"],mead:["ko","Non"],at:["ko","Non"],tr:["ko","Non"],etpp:["ok","À l’étranger"],et:["ko","Non"],defi:["ok","À l’étranger"]}],
+  ["Vente au Maroc",{mac:["ok","Libre"],db:["ok","Libre"],atpa:["md","Droits + intérêt ; dispense d’amende ≤ 15 %"],eif:["md","Proportion réglementée"],zai:["md","Si export impossible ; 2,5 % par convention"],ent:["ok","Droits du jour d’entrée + intérêt"],mead:["ok","Après déclaration"],at:["md","Sur autorisation"],tr:["ok","Au bureau de destination"],etpp:["ok","Au retour"],et:["ok","Au retour"],defi:["ok","Au retour"]}],
+  ["Accès",{mac:["ok","Libre"],db:["md","Domiciliation pour la 1re demande"],atpa:["md","Enquête d’outillage (nouveaux)"],eif:["ko","Autorisation centrale, 50 MDH"],zai:["ko","Autorisation d’installation"],ent:["md","Agrément d’EPP"],mead:["ok","Exploitant agréé"],at:["md","Selon catégorie"],tr:["ok","Libre"],etpp:["md","Autorisation du secteur, sauf machines"],et:["ok","Libre"],defi:["ok","Libre"]}],
+  ["Charge administrative",{mac:["ok","Faible"],db:["md","Dossier trimestriel"],atpa:["ko","Comptabilité matières, apurement"],eif:["ko","Comptabilité matières, agrément"],zai:["md","Contrôle aux accès"],ent:["md","Comptabilité matières"],mead:["ok","Faible"],at:["md","Compte à apurer"],tr:["ok","Faible"],etpp:["md","Double déclaration"],et:["ok","Faible"],defi:["ok","Faible"]}]
+];
+function renderMatrix(keys){
+  $("#mxTbl").innerHTML = `<thead><tr><th>Critère</th>${keys.map(k=>`<th>${esc(RG[k].n)}</th>`).join("")}</tr></thead><tbody>`
+    + MX.map(([l,v]) => `<tr><td>${esc(l)}</td>${keys.map(k=>`<td class="${v[k][0]}">${esc(v[k][1])}</td>`).join("")}</tr>`).join("") + `</tbody>`;
+}
+function setTab(t){
+  tab = t; document.querySelectorAll(".tab").forEach(b => b.classList.toggle("on", b.dataset.t===t));
+  document.querySelectorAll(".tabp").forEach(x => x.classList.toggle("hide", x.id!=="p-"+t));
+  if (last) calc();
+}
+function syncVis(){
+  const imp = scen==="imp", u = $("#usage").value;
+  $("#usageF").classList.toggle("hide", !imp);
+  $("#retF").classList.toggle("hide", imp);
+  $("#identF").classList.toggle("hide", imp); $("#machF").classList.toggle("hide", imp);
+  $("#valL").textContent = imp ? "Valeur CAF de la marchandise" : "Valeur de la marchandise exportée";
+  $("#qF").classList.toggle("hide", !imp || u==="trav");
+  $("#durF").classList.toggle("hide", imp && u==="trav");
+  $("#dayF").classList.toggle("hide", !(imp && u==="trav"));
+  $("#outF").classList.toggle("hide", !(imp && u==="trans"));
+  $("#invF").classList.toggle("hide", !(imp && u==="trans"));
+  $("#zaiF").classList.toggle("hide", !(imp && u==="trans"));
+  $("#convF").classList.toggle("hide", !(imp && u==="trans" && chk("zai")));
+  $("#stoF").classList.toggle("hide", !(imp && u==="stock"));
+  $("#atF").classList.toggle("hide", !(imp && u==="util"));
+  $("#dbF").classList.toggle("hide", !(imp && u==="trans"));
+  $("#dipF").classList.toggle("hide", !chk("pref"));
+  $("#entPg").querySelector("#gar").parentElement.classList.toggle("hide", !imp);
+  $("#qV").textContent = $("#q").value + " %";
+}
+$("#sc").querySelectorAll("button").forEach(b => b.onclick = () => {
+  scen = b.dataset.v; $("#sc").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); ficheK=null; syncVis(); calc();
+});
+$("#tabs").querySelectorAll(".tab").forEach(b => b.onclick = () => setTab(b.dataset.t));
+$("#panel").addEventListener("input", e => {if (e.target.id==="usage") ficheK=null; syncVis(); calc();});
+syncVis(); calc();
+</script>
+</body>
+</html>
