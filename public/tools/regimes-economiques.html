@@ -1,859 +1,680 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr" class="ixp-theme">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Régimes Économiques Douaniers — IXP-Import-eXPert</title>
+<title>Régimes économiques en douane — guide 2026 — IXP-Import-eXPert</title>
+<meta name="description" content="Régimes économiques en douane au Maroc : entrepôt, ATPA, admission temporaire, ETPP, transit, drawback, ZAI. Conditions, délais, garanties et nouveautés 2024-2026, avec références aux textes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
-  --ink:#1A1A18;--ink2:#2E2E2A;--mid:#5A5A54;--muted:#8A8A82;
-  --bg:#F9F8F4;--bg2:#F2F0EA;--surface:#FFFFFF;
+:root{
+  --gold:#B8922A;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.28);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;--bg:#F9F8F4;--bg2:#F2F0EA;--surface:#fff;
   --border:#E4E2DA;--border-mid:#D0CEC4;
   --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
   --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
   --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
   --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
   --purple:#5A2AA0;--purple-bg:#F3EEFE;--purple-bd:#C8A8F8;
-  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 4px 20px rgba(26,26,24,.1);--sh-lg:0 8px 40px rgba(26,26,24,.14);
-  --r:8px;--r-lg:12px;--r-xl:16px;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 8px 28px rgba(26,26,24,.12);--r:8px;--r-lg:12px;
+  --mono:"JetBrains Mono",ui-monospace,monospace;--serif:"DM Serif Display",Georgia,serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
-
-/* ─── HEADER ─── */
-.page-header{background:rgba(249,248,244,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
-.hdr-inner{max-width:1400px;margin:0 auto;display:flex;align-items:stretch;gap:0}
-.logo-area{display:flex;align-items:center;gap:12px;padding:14px 24px 14px 0;border-right:1px solid var(--border);margin-right:16px;flex-shrink:0}
-.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center}
-.logo-mark svg{fill:#fff}
-.logo-text{font-family:"DM Serif Display",Georgia,serif;font-size:15px;color:var(--ink);line-height:1.1}
-.logo-text span{display:block;font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
-.hdr-nav{display:flex;align-items:stretch;flex:1;gap:0}
-.nav-btn{padding:0 16px;border:none;background:transparent;color:var(--muted);font-family:"DM Sans",sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.nav-btn:hover{color:var(--ink);background:var(--bg2)}
-.nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:var(--gold-pale)}
-.hdr-badge{font-family:"JetBrains Mono",monospace;font-size:9px;padding:3px 10px;letter-spacing:.08em;text-transform:uppercase;border-radius:100px;border:1px solid var(--gold-bd);background:var(--gold-dim);color:var(--gold);margin:auto 0 auto auto}
-
-/* ─── LAYOUT ─── */
-.page-body{max-width:1400px;margin:0 auto;padding:0 2rem 5rem;display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
-@media(max-width:960px){.page-body{grid-template-columns:1fr;padding:0 1rem 4rem}}
-
-/* ─── HERO ─── */
-.page-hero{grid-column:1/-1;padding:36px 0 24px;border-bottom:1px solid var(--border);margin-bottom:4px}
-.page-hero h1{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(26px,3.5vw,42px);color:var(--ink);line-height:1.05;letter-spacing:-.01em}
-.page-hero h1 em{font-style:italic;color:var(--gold)}
-.page-hero p{color:var(--mid);font-size:13.5px;line-height:1.75;margin-top:10px;max-width:620px}
-.hero-meta{display:flex;gap:20px;margin-top:16px;flex-wrap:wrap}
-.hero-tag{font-family:"JetBrains Mono",monospace;font-size:10px;padding:4px 12px;border-radius:100px;border:1px solid;letter-spacing:.06em}
-.tag-law{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
-.tag-source{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
-.tag-updated{background:var(--bg2);border-color:var(--border-mid);color:var(--muted)}
-
-/* ─── SIDEBAR ─── */
-.sidebar{position:sticky;top:68px}
-.sidebar-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh);margin-bottom:14px}
-.sidebar-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg2)}
-.regime-nav-btn{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;cursor:pointer;text-align:left;border-bottom:1px solid var(--bg2);transition:all .15s;border-left:3px solid transparent}
-.regime-nav-btn:last-child{border-bottom:none}
-.regime-nav-btn:hover{background:var(--bg2)}
-.regime-nav-btn.active{background:var(--gold-pale);border-left-color:var(--gold)}
-.regime-code{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;width:28px;text-align:center;border-radius:4px;padding:2px 4px;flex-shrink:0}
-.regime-label{font-size:12px;font-weight:500;color:var(--ink);line-height:1.3;text-align:left}
-.regime-type{font-size:10px;color:var(--muted);font-family:"JetBrains Mono",monospace;margin-top:1px}
-
-/* Selector wizard */
-.wizard-card{background:var(--surface);border:1px solid var(--gold-bd);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh)}
-.wizard-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding:12px 16px;border-bottom:1px solid var(--gold-bd);background:var(--gold-pale);display:flex;align-items:center;gap:8px}
-.wizard-body{padding:14px}
-.wiz-question{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.4}
-.wiz-options{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.wiz-opt{padding:7px 10px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--mid);font-size:12px;cursor:pointer;transition:all .15s;text-align:left;font-family:"DM Sans",sans-serif}
-.wiz-opt:hover{border-color:var(--gold-bd);color:var(--ink);background:var(--gold-pale)}
-.wiz-opt.selected{border-color:var(--gold);background:var(--gold-pale);color:var(--ink);font-weight:600}
-.wiz-result{background:var(--green-bg);border:1px solid var(--green-bd);border-radius:var(--r);padding:10px 12px;font-size:12px;color:var(--green);font-weight:600;display:none}
-.wiz-result.show{display:block}
-.wiz-result-label{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:4px}
-.wiz-reset{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;margin-top:8px;font-family:"DM Sans",sans-serif;text-decoration:underline}
-.wiz-reset:hover{color:var(--ink)}
-
-/* ─── MAIN CONTENT ─── */
-.main-content{}
-.section{display:none}.section.active{display:block}
-
-/* Regime header */
-.regime-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px 28px;margin-bottom:16px;box-shadow:var(--sh);display:flex;align-items:flex-start;gap:20px}
-.regime-icon{width:52px;height:52px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-family:"DM Serif Display",serif;font-size:20px;font-weight:700;flex-shrink:0}
-.regime-hdr-text{}
-.regime-code-badge{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;border:1px solid;letter-spacing:.08em;display:inline-block;margin-bottom:6px}
-.regime-name{font-family:"DM Serif Display",Georgia,serif;font-size:22px;color:var(--ink);margin-bottom:6px;line-height:1.1}
-.regime-desc{font-size:13px;color:var(--mid);line-height:1.7;max-width:620px}
-.regime-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.rtag{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid}
-
-/* Grid 2 cols */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-@media(max-width:700px){.grid2{grid-template-columns:1fr}}
-
-/* Info card */
-.info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--sh)}
-.info-card-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-
-/* List items */
-.check-list{display:flex;flex-direction:column;gap:6px}
-.check-item{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--mid);line-height:1.5}
-.check-icon{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:9px}
-.check-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
-.check-req{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
-.check-warn{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
-.check-info{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
-
-/* Docs list */
-.docs-list{display:flex;flex-direction:column;gap:6px}
-.doc-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;background:var(--bg2)}
-.doc-badge{font-family:"JetBrains Mono",monospace;font-size:8.5px;padding:1px 7px;border-radius:100px;border:1px solid;white-space:nowrap;flex-shrink:0}
-.doc-oblig{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)}
-.doc-cond{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
-.doc-name{color:var(--ink);font-weight:500;flex:1}
-.doc-source{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--muted);margin-left:auto;flex-shrink:0}
-
-/* Durees & chiffres */
-.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.kpi-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;text-align:center;box-shadow:var(--sh)}
-.kpi-val{font-family:"DM Sans",sans-serif;font-size:22px;font-weight:700;color:var(--gold);line-height:1}
-.kpi-lbl{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
-
-/* Flowchart steps */
-.flow{display:flex;flex-direction:column;gap:0}
-.flow-step{display:flex;gap:12px;position:relative}
-.flow-step:not(:last-child)::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:1px;background:var(--border-mid)}
-.flow-num{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#fff;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
-.flow-body{padding:0 0 16px;flex:1}
-.flow-title{font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:3px}
-.flow-desc{font-size:12px;color:var(--mid);line-height:1.55}
-
-/* Alerte / note */
-.note{background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--amber);display:flex;gap:8px;align-items:flex-start;margin-top:4px}
-.note svg{flex-shrink:0;margin-top:1px}
-.note-info{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
-.note-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
-
-/* Comparateur */
-.comp-table{width:100%;border-collapse:collapse;font-size:12px}
-.comp-table th{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);background:var(--bg2)}
-.comp-table td{padding:9px 10px;border-bottom:1px solid var(--bg2);vertical-align:middle;color:var(--mid)}
-.comp-table td:first-child{font-weight:600;color:var(--ink)}
-.comp-table tr:last-child td{border-bottom:none}
-.comp-table tr:hover td{background:var(--bg2)}
-.val-ok{color:var(--green);font-weight:600}
-.val-warn{color:var(--amber);font-weight:600}
-.val-bad{color:var(--red);font-weight:600}
-.val-num{font-family:"JetBrains Mono",monospace;font-size:11px}
-
-/* Full-width card */
-.full-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 24px;margin-bottom:14px;box-shadow:var(--sh)}
-.full-card-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-
-/* Law ref */
-.law-ref{font-family:"JetBrains Mono",monospace;font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;color:var(--mid);line-height:1.6}
-.law-ref strong{color:var(--ink)}
-
-/* Sanctions table */
-.sanc-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px solid var(--bg2);font-size:12px;gap:12px}
-.sanc-item:last-child{border-bottom:none}
-.sanc-type{color:var(--mid);flex:1}
-.sanc-peine{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--red);font-weight:600;text-align:right;flex-shrink:0}
-
-footer{border-top:1px solid var(--border);padding:18px 2rem;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);letter-spacing:.07em;background:var(--surface);margin-top:2rem}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+button{font-family:inherit}
+.page-header{position:sticky;top:0;z-index:40;background:rgba(249,248,244,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:0 2rem;box-shadow:var(--sh)}
+.hdr{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;height:56px}
+.logo-mark{min-width:30px;padding:0 5px;font-size:11px;letter-spacing:.02em;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:var(--mono)}
+.logo-text{font-family:var(--serif);font-size:15px;line-height:1.1}
+.logo-text span{display:block;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:28px;background:var(--border)}
+.hdr-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
+.hdr-links{margin-left:auto;display:flex;gap:8px}
+.hdr-links a{font-size:12px;text-decoration:none;color:var(--mid);border:1px solid var(--border);border-radius:100px;padding:5px 12px;background:var(--surface)}
+.hdr-links a.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.subnav{max-width:1080px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;height:40px;align-items:center;scrollbar-width:none}
+.subnav a{font-size:12.5px;text-decoration:none;color:var(--mid);padding:6px 10px;border-radius:6px;white-space:nowrap}
+.subnav a:hover,.subnav a.on{background:var(--gold-pale);color:var(--ink)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 2rem 5rem}
+.hero{padding:36px 0 18px;display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:end}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:36px;line-height:1.12;margin-bottom:10px}
+.hero p{color:var(--mid);max-width:640px;font-size:15px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.chip{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--mid)}
+.chip.g{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.kpi b{display:block;font-family:var(--mono);font-size:20px;font-weight:500}
+.kpi span{font-size:11.5px;color:var(--mid);line-height:1.35;display:block;margin-top:2px}
+section{padding-top:38px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.sec-n{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.08em}
+.sec-h h2{font-family:var(--serif);font-weight:400;font-size:26px}
+.sec-lead{color:var(--mid);max-width:780px;margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.flt{--fc:#5A5A54;font-size:12.5px;font-weight:600;border:1px solid var(--fc);background:color-mix(in srgb,var(--fc) 10%,#fff);color:var(--fc);border-radius:100px;padding:6px 13px;cursor:pointer;transition:all .15s}
+.flt:hover{background:color-mix(in srgb,var(--fc) 20%,#fff)}
+.flt.on{background:var(--fc);color:#fff;box-shadow:0 3px 10px color-mix(in srgb,var(--fc) 35%,transparent)}
+.flt[data-y=all],.flt[data-t=all]{--fc:#1A1A18}.flt[data-y="2026"]{--fc:#1E7A4A}.flt[data-y="2025"]{--fc:#B8922A}.flt[data-y="2024"]{--fc:#8A5A10}
+.flt[data-t=Garanties]{--fc:#1A3A9A}.flt[data-t=Dématérialisation]{--fc:#0E7490}.flt[data-t=Simplification]{--fc:#1E7A4A}.flt[data-t=Contrôle]{--fc:#9A2A22}.flt[data-t=Fiscalité]{--fc:#5A2AA0}
+.flt-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+/* timeline */
+.tl{display:grid;gap:10px}
+.tl-item{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);border-left:3px solid var(--gold)}
+.tl-item.y2026{border-left-color:var(--green)}
+.tl-d{font-family:var(--mono);font-size:11.5px;color:var(--mid)}
+.tl-d b{display:block;font-size:13px;color:var(--ink)}
+.tl-t{font-weight:600;font-size:14.5px;margin-bottom:3px}
+.tl-x{color:var(--mid);font-size:13.5px}
+.tl-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;background:var(--bg2);color:var(--mid);border:1px solid var(--border)}
+.tag.th{background:color-mix(in srgb,var(--fc) 10%,#fff);border-color:var(--fc);color:var(--fc)}
+.src{font-family:var(--mono);font-size:10px;border-radius:4px;padding:2px 6px;border:1px solid var(--gold-bd);background:var(--gold-dim);color:#7a5f17;white-space:nowrap}
+.more{margin-top:10px;font-size:13px;background:none;border:1px dashed var(--border-mid);border-radius:var(--r);padding:8px 14px;cursor:pointer;color:var(--mid);width:100%}
+/* selector */
+.sel{display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden}
+.sel-q{padding:22px;border-right:1px solid var(--border)}
+.sel-r{padding:22px;background:var(--bg)}
+.crumbs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.crumb{font-size:11.5px;background:var(--gold-pale);border:1px solid var(--gold-bd);border-radius:100px;padding:3px 10px;cursor:pointer}
+.q-t{font-family:var(--serif);font-size:20px;margin-bottom:12px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1px solid var(--border-mid);background:var(--surface);border-radius:var(--r);padding:11px 14px;cursor:pointer;font-size:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.opt:hover{border-color:var(--gold);background:var(--gold-pale)}
+.opt small{color:var(--muted);font-size:12px;display:block}
+.opt::after{content:"→";color:var(--muted)}
+.res-k{font-family:var(--mono);font-size:10.5px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.res-t{font-family:var(--serif);font-size:24px;margin:4px 0 8px}
+.res-why{color:var(--mid);font-size:13.5px;margin-bottom:12px}
+.res-alt{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:13px}
+.res-alt b{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.btn{border:1px solid var(--border-mid);background:var(--surface);border-radius:var(--r);padding:8px 14px;font-size:13px;cursor:pointer;text-decoration:none;color:var(--ink);display:inline-block}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.placeholder{color:var(--muted);font-size:13.5px;border:1px dashed var(--border-mid);border-radius:var(--r);padding:26px;text-align:center}
+/* regimes */
+.rg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.rg{text-align:left;border:1px solid var(--border);background:var(--surface);border-radius:var(--r);padding:11px 12px;cursor:pointer;position:relative;border-top:3px solid var(--c,#ccc)}
+.rg:hover{box-shadow:var(--sh-md)}
+.rg.on{background:var(--gold-pale);border-color:var(--gold)}
+.rg .fam{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.rg .nm{font-weight:600;font-size:13.5px;line-height:1.25;margin-top:2px}
+.rg .cd{font-family:var(--mono);font-size:10px;color:var(--mid);margin-top:4px}
+.rg .new{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:9px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);border-radius:4px;padding:1px 5px}
+.fiche{overflow:hidden;animation:pop .25s;scroll-margin-top:112px}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.f-h{padding:22px 24px 16px;border-bottom:1px solid var(--border);border-top:4px solid var(--c,#ccc)}
+.f-h .kick{font-family:var(--mono);font-size:10.5px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.f-h h3{font-family:var(--serif);font-weight:400;font-size:27px;line-height:1.2;margin:4px 0 8px}
+.f-h p{color:var(--mid);font-size:14.5px;max-width:860px}
+.f-facts{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+.fact{padding:13px 18px;border-right:1px solid var(--border)}
+.fact:last-child{border-right:0}
+.fact .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fact .v{font-size:14px;font-weight:600;margin-top:3px;line-height:1.3}
+.f-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.blk{padding:16px 24px;border-bottom:1px solid var(--border)}
+.blk:nth-child(odd){border-right:1px solid var(--border)}
+.blk.full{grid-column:1/-1;border-right:0}
+.blk h4{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.blk ul{list-style:none;display:grid;gap:6px}
+.blk li{font-size:13.5px;padding-left:16px;position:relative;line-height:1.5}
+.blk li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--border-mid)}
+.blk.ok li::before{background:var(--green)}
+.blk.warn li::before{background:var(--red)}
+.blk.nw{background:linear-gradient(0deg,rgba(30,122,74,.04),rgba(30,122,74,.04))}
+.blk.nw li::before{background:var(--green);border-radius:2px}
+.blk li .src{margin-left:4px}
+.codes{display:flex;gap:5px;flex-wrap:wrap}
+.code{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:5px;background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue)}
+.code i{font-style:normal;color:var(--mid);margin-left:4px;font-family:"DM Sans",system-ui,sans-serif;font-size:11px}
+.f-foot{padding:12px 24px;background:var(--bg);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.f-foot .lbl{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-right:4px}
+/* tables */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);font-weight:500;padding:10px 12px;background:var(--bg);border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.c{font-family:var(--mono);font-weight:500;font-size:15px;color:var(--gold);text-align:center}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.num{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.num b{font-family:var(--mono);font-size:22px;font-weight:500;display:block}
+.num span{font-size:12px;color:var(--mid);display:block;line-height:1.4;margin:3px 0 6px}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.rule{padding:14px 16px}
+.rule h4{font-size:14px;margin-bottom:4px}
+.rule p{font-size:13px;color:var(--mid)}
+.rule .src{margin-top:8px;display:inline-block}
+/* steps */
+.steps{display:grid;gap:0;counter-reset:s}
+.step{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:0}
+.step-n{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px}
+.step h4{font-size:15px;margin-bottom:3px}
+.step p{font-size:13.5px;color:var(--mid)}
+.step .srcs{margin-top:6px;display:flex;gap:5px;flex-wrap:wrap}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tool{padding:16px}
+.tool .tk{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.tool h4{font-size:16px;margin:2px 0 6px}
+.tool p{font-size:13px;color:var(--mid)}
+.tool .src{display:inline-block;margin-top:8px}
+.sanc td:nth-child(3){font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.search{width:100%;border:1px solid var(--border-mid);border-radius:var(--r);padding:11px 14px;font-size:14px;font-family:inherit;margin-bottom:10px}
+.search:focus{outline:2px solid var(--gold-bd);border-color:var(--gold)}
+.grp td{background:var(--bg2);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);padding:7px 12px}
+.foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;line-height:1.6}
+.cta{margin-top:22px;padding:20px 22px;display:flex;align-items:center;gap:16px;justify-content:space-between;background:var(--ink);color:#fff;border-radius:var(--r-lg)}
+.cta h3{font-family:var(--serif);font-weight:400;font-size:21px}
+.cta p{color:#c9c6bb;font-size:13px}
+.cta .btn{background:var(--gold);border-color:var(--gold);color:#fff;white-space:nowrap}
+@media(max-width:860px){
+  .hero,.sel,.f-body,.rules{grid-template-columns:1fr}
+  .rg-grid{grid-template-columns:1fr 1fr}
+  .f-facts,.nums{grid-template-columns:1fr 1fr}
+  .tools{grid-template-columns:1fr}
+  .sel-q{border-right:0;border-bottom:1px solid var(--border)}
+  .blk:nth-child(odd){border-right:0}
+  .tl-item{grid-template-columns:1fr;gap:4px}
+  .hdr-links{display:none}
+  .wrap,.page-header{padding-left:1rem;padding-right:1rem}
+}
+@media print{.page-header,.filters,.more,.cta{display:none}section{break-inside:avoid}}
 </style>
-<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
 </head>
 <body>
-
-<!-- HEADER -->
-<div class="page-header">
-  <div class="hdr-inner">
-    <div class="logo-area">
-      <div class="logo-mark"><svg width="15" height="15" viewBox="0 0 12 12"><path d="M6 0L11 3V9L6 12L1 9V3Z"/></svg></div>
-      <div class="logo-text">Import-eXPert <span>Intelligence Douanière Maroc</span></div>
-    </div>
-    <nav class="hdr-nav">
-      <button class="nav-btn active" onclick="showSection('regimes',this)">Régimes économiques</button>
-      <button class="nav-btn" onclick="showSection('comparateur',this)">Comparateur</button>
-      <button class="nav-btn" onclick="showSection('selecteur',this)">Sélecteur guidé</button>
-    </nav>
-    <span class="hdr-badge">Code Douanes · Art. 114–180</span>
+<header class="page-header">
+  <div class="hdr">
+    <div class="logo-mark">IXP</div>
+    <div class="logo-text">Import-eXPert<span>Intelligence douanière Maroc</span></div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-title">Régimes économiques</div>
+    <div class="hdr-links"><a href="/">Accueil</a><a class="pri" href="/modules/comparateur">Comparateur de régimes →</a></div>
   </div>
-</div>
+  <nav class="subnav" id="subnav">
+    <a href="#nouveautes">Nouveautés</a><a href="#selecteur">Quel régime ?</a><a href="#regimes">Les 12 régimes</a><a href="#garanties">Garanties</a><a href="#cycle">Cycle d’un compte</a><a href="#outils">Outils numériques</a><a href="#sanctions">Sanctions</a><a href="#codes">Codes régimes</a>
+  </nav>
+</header>
 
-<div style="max-width:1400px;margin:0 auto;padding:0 2rem">
-  <!-- HERO -->
-  <div class="page-hero">
-    <h1>Régimes Douaniers <em>Économiques</em></h1>
-    <p>Guide complet des régimes douaniers marocains — conditions d'éligibilité, documents requis, délais légaux et obligations d'apurement. Basé sur le Code des Douanes (Dahir 1977) et les circulaires ADII en vigueur.</p>
-    <div class="hero-meta">
-      <span class="hero-tag tag-law">Code des Douanes 1977</span>
-      <span class="hero-tag tag-law">Circulaires ADII</span>
-      <span class="hero-tag tag-source">10 régimes couverts</span>
-      <span class="hero-tag tag-updated">Mis à jour 2025</span>
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <h1>Régimes économiques en douane</h1>
+      <p>Stocker, transformer, utiliser temporairement ou faire transiter des marchandises en suspension des droits et taxes : conditions, délais, garanties, modes d’apurement et règles de taxation, avec la référence exacte de chaque règle.</p>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b>24 mois</b><span>Durée maximale de l’ATPA et de l’entrepôt de stockage, sauf dérogation</span></div>
+      <div class="kpi"><b>30 %</b><span>Plafond des facilités de cautionnement : part de vos opérations sous régime de l’exercice précédent</span></div>
+      <div class="kpi"><b>4,18 %</b><span>Majoration des obligations cautionnées, 1er et 2e semestres 2026</span></div>
+      <div class="kpi"><b>30 jours</b><span>Délai de remboursement du drawback après dépôt d’un dossier complet (jours ouvrables)</span></div>
     </div>
   </div>
-</div>
 
-<!-- SECTIONS NAV -->
-<div id="section-regimes" class="section active">
-<div class="page-body">
+  <!-- 01 NOUVEAUTÉS -->
+  <section id="nouveautes">
+    <div class="sec-h"><span class="sec-n">01</span><h2>Ce qui a changé</h2></div>
+    <p class="sec-lead">Les mesures adoptées par la douane depuis 2020, classées par date d’effet. Chaque carte indique ce qui change concrètement pour vous et les régimes concernés.</p>
+    <div class="filters" id="tlf"></div>
+    <div class="tl" id="tl"></div>
+    <button class="more" id="tlMore">Afficher les mesures antérieures (2020-2023)</button>
+  </section>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <!-- Wizard -->
-    <div class="wizard-card" style="margin-bottom:14px">
-      <div class="wizard-title">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        Quel régime me convient ?
-      </div>
-      <div class="wizard-body" id="wizard-body">
-        <div id="wiz-step-1">
-          <div class="wiz-question">Destination finale de la marchandise ?</div>
-          <div class="wiz-options">
-            <button class="wiz-opt" onclick="wizStep(2,'conso')">Consommation locale définitive</button>
-            <button class="wiz-opt" onclick="wizStep(2,'transform')">Transformation puis réexport</button>
-            <button class="wiz-opt" onclick="wizStep(2,'stockage')">Stockage temporaire</button>
-            <button class="wiz-opt" onclick="wizStep(2,'transit')">Transit vers un autre pays</button>
-            <button class="wiz-opt" onclick="wizStep(2,'export')">Exportation de marchandises</button>
-          </div>
-        </div>
-        <div id="wiz-step-2" style="display:none">
-          <div class="wiz-question" id="wiz-q2"></div>
-          <div class="wiz-options" id="wiz-opts-2"></div>
-        </div>
-        <div class="wiz-result" id="wiz-result">
-          <div class="wiz-result-label">Régime recommandé</div>
-          <div id="wiz-result-text"></div>
-        </div>
-        <button class="wiz-reset" id="wiz-reset" style="display:none" onclick="resetWiz()">← Recommencer</button>
-      </div>
+  <!-- 02 SÉLECTEUR -->
+  <section id="selecteur">
+    <div class="sec-h"><span class="sec-n">02</span><h2>Quel régime pour votre opération ?</h2></div>
+    <p class="sec-lead">Répondez à 2 à 4 questions. Le résultat renvoie vers la fiche détaillée du régime et ses alternatives.</p>
+    <div class="card sel">
+      <div class="sel-q"><div class="crumbs" id="crumbs"></div><div id="qbox"></div></div>
+      <div class="sel-r" id="rbox"><div class="placeholder">Le régime recommandé s’affichera ici.</div></div>
     </div>
+  </section>
 
-    <!-- Nav régimes -->
-    <div class="sidebar-card">
-      <div class="sidebar-title">Tous les régimes</div>
-      <button class="regime-nav-btn active" onclick="showRegime('010',this)">
-        <span class="regime-code" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)">010</span>
-        <div><div class="regime-label">Mise à la consommation</div><div class="regime-type">Import · Standard</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('011',this)">
-        <span class="regime-code" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)">011</span>
-        <div><div class="regime-label">MàC + ristourne de droits</div><div class="regime-type">Import · Avancé</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('051',this)">
-        <span class="regime-code" style="background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-bd)">051</span>
-        <div><div class="regime-label">Admission temporaire</div><div class="regime-type">Économique · AT</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('071',this)">
-        <span class="regime-code" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)">071</span>
-        <div><div class="regime-label">Entrepôt de douane</div><div class="regime-type">Économique · Stock</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('091',this)">
-        <span class="regime-code" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)">091</span>
-        <div><div class="regime-label">Importation temporaire</div><div class="regime-type">Économique · IT</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('031',this)">
-        <span class="regime-code" style="background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-bd)">031</span>
-        <div><div class="regime-label">Transit</div><div class="regime-type">Transit · Passage</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('061',this)">
-        <span class="regime-code" style="background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-bd)">061</span>
-        <div><div class="regime-label">Zone franche</div><div class="regime-type">Spécial · ZFI</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('040',this)">
-        <span class="regime-code" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)">040</span>
-        <div><div class="regime-label">Exportation définitive</div><div class="regime-type">Export · Standard</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('042',this)">
-        <span class="regime-code" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)">042</span>
-        <div><div class="regime-label">Exportation temporaire</div><div class="regime-type">Export · Temp.</div></div>
-      </button>
-      <button class="regime-nav-btn" onclick="showRegime('021',this)">
-        <span class="regime-code" style="background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-bd)">021</span>
-        <div><div class="regime-label">Drawback</div><div class="regime-type">Économique · Remb.</div></div>
-      </button>
-    </div>
-  </aside>
+  <!-- 03 RÉGIMES -->
+  <section id="regimes">
+    <div class="sec-h"><span class="sec-n">03</span><h2>Les 12 régimes, fiche par fiche</h2></div>
+    <p class="sec-lead">Choisissez un régime : base légale, codes à déclarer, bénéficiaires, durée, garantie, apurement, taxation en cas de mise à la consommation, nouveautés et points de vigilance.</p>
+    <div class="rg-grid" id="rgGrid"></div>
+    <div id="fiche"></div>
+  </section>
 
-  <!-- MAIN -->
-  <main class="main-content">
-
-    <!-- ══ 010 MISE À LA CONSOMMATION ══ -->
-    <div id="regime-010" class="regime-panel">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--green-bg);border:1px solid var(--green-bd)">🛒</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Régime 010</span>
-          <div class="regime-name">Mise à la Consommation</div>
-          <div class="regime-desc">Régime d'importation définitif permettant la mise en libre pratique de marchandises sur le territoire marocain après acquittement de l'intégralité des droits et taxes applicables.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Import standard</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 114 Code Douanes</span>
-            <span class="rtag" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">Paiement immédiat</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">DI+TVA</div><div class="kpi-lbl">Taxes exigibles</div></div>
-        <div class="kpi-box"><div class="kpi-val">J+0</div><div class="kpi-lbl">Délai de paiement</div></div>
-        <div class="kpi-box"><div class="kpi-val">Illimité</div><div class="kpi-lbl">Séjour marchandises</div></div>
-      </div>
-
-      <div class="grid2">
-        <div class="info-card">
-          <div class="info-card-title">Documents obligatoires</div>
-          <div class="docs-list">
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Facture commerciale</span><span class="doc-source">ADII</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Packing list</span><span class="doc-source">ADII</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Connaissement (B/L) ou LTA</span><span class="doc-source">ADII</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Engagement d'importation</span><span class="doc-source">Office des Changes</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Fiche suiveuse PortNet</span><span class="doc-source">PortNet</span></div>
-            <div class="doc-item"><span class="doc-badge doc-cond">Conditionnel</span><span class="doc-name">Certificat d'origine FORM-A</span><span class="doc-source">Si préférence tarifaire</span></div>
-            <div class="doc-item"><span class="doc-badge doc-cond">Conditionnel</span><span class="doc-name">Certificat ONSSA / CoC IMANOR</span><span class="doc-source">Selon code SH</span></div>
-            <div class="doc-item"><span class="doc-badge doc-cond">Conditionnel</span><span class="doc-name">Licence d'importation</span><span class="doc-source">Produits réglementés</span></div>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-title">Calcul des taxes applicables</div>
-          <div class="check-list">
-            <div class="check-item"><span class="check-icon check-req">1</span><span><strong>DI</strong> — Droit d'importation sur valeur CAF<br><span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted)">Taux : 0% à 40% selon NC10</span></span></div>
-            <div class="check-item"><span class="check-icon check-req">2</span><span><strong>TVA</strong> — 20% sur base (CAF + DI + TIC)<br><span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted)">Art. 96 CGI — base TVA cascadante</span></span></div>
-            <div class="check-item"><span class="check-icon check-req">3</span><span><strong>TIC</strong> — Taxe intérieure de consommation<br><span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted)">Tabac, alcools, énergie — si applicable</span></span></div>
-            <div class="check-item"><span class="check-icon check-info">+</span><span><strong>PFI</strong> — Prélèvement fiscal à l'importation<br><span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted)">5% — certains produits agricoles</span></span></div>
-          </div>
-          <div class="note note-info" style="margin-top:12px">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            <span>La valeur en douane est la <strong>valeur CAF</strong> (coût + assurance + fret jusqu'au port marocain). Méthode OMC Art. 1.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="full-card">
-        <div class="full-card-title">Processus de dédouanement</div>
-        <div class="flow">
-          <div class="flow-step"><div class="flow-num">1</div><div class="flow-body"><div class="flow-title">Arrivée du navire & dépôt fiche suiveuse PortNet</div><div class="flow-desc">Le consignataire dépose la déclaration sommaire dans BADR. La fiche suiveuse est générée automatiquement par PortNet à l'arrivée du navire.</div></div></div>
-          <div class="flow-step"><div class="flow-num">2</div><div class="flow-body"><div class="flow-title">Saisie de la DUM dans BADR par le transitaire agréé</div><div class="flow-desc">Saisie des données d'identification, marchandises (code NC10, quantité, valeur), transport, documents joints. Seuls les transitaires agréés ADII ont accès à BADR.</div></div></div>
-          <div class="flow-step"><div class="flow-num">3</div><div class="flow-body"><div class="flow-title">Orientation vers circuit de contrôle</div><div class="flow-desc">BADR assigne automatiquement un circuit : <strong>Vert</strong> (main levée directe), <strong>Jaune</strong> (contrôle documentaire), <strong>Rouge</strong> (visite physique). Basé sur l'analyse de risque BADR.</div></div></div>
-          <div class="flow-step"><div class="flow-num">4</div><div class="flow-body"><div class="flow-title">Liquidation & paiement des droits et taxes</div><div class="flow-desc">BADR calcule automatiquement les droits et taxes. Paiement par virement ou chèque certifié. Le receveur des douanes émet le bon à enlever après paiement.</div></div></div>
-          <div class="flow-step"><div class="flow-num">5</div><div class="flow-body"><div class="flow-title">Bon à enlever & sortie des marchandises</div><div class="flow-desc">Le bon à enlever (BAE) autorise la sortie des marchandises du port ou de l'aéroport. La marchandise est désormais en libre pratique sur le territoire marocain.</div></div></div>
-        </div>
-      </div>
-
-      <div class="law-ref">
-        <strong>Base légale :</strong> Dahir du 9 Octobre 1977 portant Code des Douanes — Art. 114 à 128 · Circulaire n°5900 relative aux titres d'importation · Décret 2-77-862 · Note circulaire ADII n°6241
-      </div>
-    </div>
-
-    <!-- ══ 051 ADMISSION TEMPORAIRE ══ -->
-    <div id="regime-051" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--gold-pale);border:1px solid var(--gold-bd)">⚙️</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--gold-pale);border-color:var(--gold-bd);color:var(--gold)">Régime 051</span>
-          <div class="regime-name">Admission Temporaire (AT)</div>
-          <div class="regime-desc">Régime économique permettant l'importation de marchandises destinées à être transformées, complétées ou mises en œuvre au Maroc, avec obligation de réexporter les produits compensateurs dans le délai imparti.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--gold-pale);border-color:var(--gold-bd);color:var(--gold)">Suspension de droits</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 146 Code Douanes</span>
-            <span class="rtag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Industrie export</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">0%</div><div class="kpi-lbl">Droits à l'entrée</div></div>
-        <div class="kpi-box"><div class="kpi-val">6 mois</div><div class="kpi-lbl">Délai standard (prorogeable)</div></div>
-        <div class="kpi-box"><div class="kpi-val">100%</div><div class="kpi-lbl">Taux d'apurement obligatoire</div></div>
-      </div>
-
-      <div class="note" style="margin-bottom:14px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>L'AT est soumise à <strong>caution bancaire</strong> couvrant 100% des droits et taxes suspendus. En cas de non-apurement dans les délais, les droits deviennent immédiatement exigibles avec pénalités.</span>
-      </div>
-
-      <div class="grid2">
-        <div class="info-card">
-          <div class="info-card-title">Documents d'ouverture AT</div>
-          <div class="docs-list">
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Demande d'AT signée par l'opérateur</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Facture commerciale matières premières</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Caution bancaire ou dépôt de garantie</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Fiche technique produits compensateurs</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Descriptif du processus de transformation</span></div>
-            <div class="doc-item"><span class="doc-badge doc-cond">Conditionnel</span><span class="doc-name">Agrément ADII opérateur AT</span></div>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-title">Obligations d'apurement</div>
-          <div class="check-list">
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span>Exportation des produits compensateurs avant échéance</span></div>
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span>Taux de rendement déclaré respecté ± 5%</span></div>
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span>Comptabilité matières tenue par l'opérateur</span></div>
-            <div class="check-item"><span class="check-icon check-warn">!</span><span>Déchets de production : régime spécifique à déclarer</span></div>
-            <div class="check-item"><span class="check-icon check-warn">!</span><span>Prorogation à demander avant expiration (1 fois max)</span></div>
-            <div class="check-item"><span class="check-icon check-warn">!</span><span>Non-apurement → droits + pénalités de 10% à 50%</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="full-card">
-        <div class="full-card-title">Sanctions en cas de non-conformité</div>
-        <div>
-          <div class="sanc-item"><span class="sanc-type">Dépassement du délai d'AT sans prorogation</span><span class="sanc-peine">Droits + 10% pénalités</span></div>
-          <div class="sanc-item"><span class="sanc-type">Non-apurement total (marchandises introduites sur le marché local)</span><span class="sanc-peine">Droits + 50% amende</span></div>
-          <div class="sanc-item"><span class="sanc-type">Faux taux de rendement déclaré (fraude)</span><span class="sanc-peine">Droits + poursuites pénales</span></div>
-          <div class="sanc-item"><span class="sanc-type">Absence de comptabilité matières</span><span class="sanc-peine">Mise en demeure + suspension agréement</span></div>
-        </div>
-      </div>
-
-      <div class="law-ref">
-        <strong>Base légale :</strong> Art. 146 à 163 du Code des Douanes · Circulaire n°5700 relative à l'admission temporaire · Note circulaire ADII n°6100 (Taux de rendement) · Dahir portant loi 1-77-339
-      </div>
-    </div>
-
-    <!-- ══ 071 ENTREPÔT ══ -->
-    <div id="regime-071" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--blue-bg);border:1px solid var(--blue-bd)">🏭</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Régime 071</span>
-          <div class="regime-name">Entrepôt de Douane</div>
-          <div class="regime-desc">Régime permettant le stockage de marchandises dans un local agréé (entrepôt public ou privé) sous contrôle douanier, sans paiement des droits et taxes pendant la durée du séjour.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Suspension droits</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 134 Code Douanes</span>
-            <span class="rtag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Jusqu'à 3 ans</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">0%</div><div class="kpi-lbl">Taxes pendant stockage</div></div>
-        <div class="kpi-box"><div class="kpi-val">3 ans</div><div class="kpi-lbl">Durée max de séjour</div></div>
-        <div class="kpi-box"><div class="kpi-val">2 types</div><div class="kpi-lbl">Public / Privé</div></div>
-      </div>
-
-      <div class="grid2">
-        <div class="info-card">
-          <div class="info-card-title">Types d'entrepôts</div>
-          <div class="check-list">
-            <div class="check-item"><span class="check-icon check-ok">P</span><span><strong>Entrepôt public</strong> — Géré par l'État ou un organisme portuaire. Accessible à tout importateur. Pas d'agrément nécessaire.</span></div>
-            <div class="check-item"><span class="check-icon check-info">V</span><span><strong>Entrepôt privé</strong> — Locaux de l'importateur agréés par l'ADII. Nécessite un agrément préalable et une caution.</span></div>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-title">Opérations autorisées en entrepôt</div>
-          <div class="check-list">
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span>Conservation et stockage</span></div>
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span>Conditionnement et reconditionnement</span></div>
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span>Tri et triage</span></div>
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span>Echantillonnage</span></div>
-            <div class="check-item"><span class="check-icon check-warn">✗</span><span>Transformation ou ouvraison (interdit)</span></div>
-            <div class="check-item"><span class="check-icon check-warn">✗</span><span>Consommation sur place (interdit)</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="law-ref">
-        <strong>Base légale :</strong> Art. 134 à 145 du Code des Douanes · Circulaire n°5600 relative aux entrepôts · Décret d'application 2-77-862
-      </div>
-    </div>
-
-    <!-- ══ 031 TRANSIT ══ -->
-    <div id="regime-031" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--purple-bg);border:1px solid var(--purple-bd)">🚛</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)">Régime 031</span>
-          <div class="regime-name">Transit Douanier</div>
-          <div class="regime-desc">Régime permettant le transport de marchandises d'un bureau de douane à un autre sur le territoire marocain, ou en transit vers un pays tiers, sous couvert d'une déclaration de transit et avec suspension des droits et taxes.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)">Passage territoire</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 180 Code Douanes</span>
-            <span class="rtag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">TIR / CMR</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">0%</div><div class="kpi-lbl">Droits pendant transit</div></div>
-        <div class="kpi-box"><div class="kpi-val">30 j</div><div class="kpi-lbl">Délai transit standard</div></div>
-        <div class="kpi-box"><div class="kpi-val">Caution</div><div class="kpi-lbl">Garantie obligatoire</div></div>
-      </div>
-
-      <div class="note note-info" style="margin-bottom:14px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <span>Le Maroc est signataire de la Convention TIR (Transport International Routier). Le carnet TIR remplace la caution nationale pour les transports routiers internationaux.</span>
-      </div>
-
-      <div class="law-ref">
-        <strong>Base légale :</strong> Art. 180 à 195 du Code des Douanes · Convention TIR (Genève 1975) · Circulaire ADII relative au transit · Convention CMR pour transport routier
-      </div>
-    </div>
-
-    <!-- ══ 040 EXPORTATION ══ -->
-    <div id="regime-040" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--blue-bg);border:1px solid var(--blue-bd)">📤</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Régime 040</span>
-          <div class="regime-name">Exportation Définitive</div>
-          <div class="regime-desc">Régime permettant la sortie définitive de marchandises du territoire douanier marocain. Donne droit aux avantages fiscaux à l'export (exonération IS/IR sur chiffre d'affaires export).</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Export standard</span>
-            <span class="rtag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Exonération IS/IR</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 200 Code Douanes</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">0%</div><div class="kpi-lbl">Droits à l'export</div></div>
-        <div class="kpi-box"><div class="kpi-val">Avant</div><div class="kpi-lbl">DUM avant embarquement</div></div>
-        <div class="kpi-box"><div class="kpi-val">5 ans</div><div class="kpi-lbl">Exonération IS progressive</div></div>
-      </div>
-
-      <div class="grid2">
-        <div class="info-card">
-          <div class="info-card-title">Documents export obligatoires</div>
-          <div class="docs-list">
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Facture commerciale export</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Packing list</span></div>
-            <div class="doc-item"><span class="doc-badge doc-oblig">Obligatoire</span><span class="doc-name">Engagement de rapatriement (>10.000 MAD)</span></div>
-            <div class="doc-item"><span class="doc-badge doc-cond">Conditionnel</span><span class="doc-name">Certificat d'origine EUR.1 (accords préf.)</span></div>
-            <div class="doc-item"><span class="doc-badge doc-cond">Conditionnel</span><span class="doc-name">Certificat phytosanitaire ONSSA</span></div>
-            <div class="doc-item"><span class="doc-badge doc-cond">Conditionnel</span><span class="doc-name">Licence d'exportation (produits réglementés)</span></div>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-title">Avantages fiscaux export</div>
-          <div class="check-list">
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span><strong>Exonération IS 5 ans</strong> — sur CA export pour entreprises nouvellement exportatrices</span></div>
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span><strong>Taux IS réduit 17,5%</strong> — après les 5 ans d'exonération (Art. 19 CGI)</span></div>
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span><strong>Remboursement TVA</strong> — sur achats locaux incorporés dans les produits exportés</span></div>
-            <div class="check-item"><span class="check-icon check-ok">✓</span><span><strong>Drawback</strong> — Remboursement droits sur intrants importés (régime 021)</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="law-ref">
-        <strong>Base légale :</strong> Art. 200 à 215 du Code des Douanes · Art. 19 CGI (IS export) · Circulaire ADII n°6000 relative à l'exportation · Office des Changes (rapatriement devises)
-      </div>
-    </div>
-
-    <!-- ══ 021 DRAWBACK ══ -->
-    <div id="regime-021" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--gold-pale);border:1px solid var(--gold-bd)">💰</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--gold-pale);border-color:var(--gold-bd);color:var(--gold)">Régime 021</span>
-          <div class="regime-name">Drawback</div>
-          <div class="regime-desc">Régime permettant le remboursement des droits et taxes payés à l'importation sur des matières premières ou produits qui ont été incorporés dans des produits exportés définitivement.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--gold-pale);border-color:var(--gold-bd);color:var(--gold)">Remboursement droits</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 164 Code Douanes</span>
-            <span class="rtag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Industrie export</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">100%</div><div class="kpi-lbl">Droits remboursés</div></div>
-        <div class="kpi-box"><div class="kpi-val">12 mois</div><div class="kpi-lbl">Délai de demande après export</div></div>
-        <div class="kpi-box"><div class="kpi-val">3 ans</div><div class="kpi-lbl">Délai max import → export</div></div>
-      </div>
-
-      <div class="note note-green" style="margin-bottom:14px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        <span>Le drawback est <strong>cumulable avec le régime 040</strong> (exportation définitive). Il s'applique aux droits DI effectivement payés — pas à la TVA récupérable par voie fiscale.</span>
-      </div>
-
-      <div class="law-ref">
-        <strong>Base légale :</strong> Art. 164 à 179 du Code des Douanes · Circulaire ADII relative au drawback · Décret 2-77-862 Art. 120 à 135
-      </div>
-    </div>
-
-    <!-- Panneaux simples pour les autres régimes -->
-    <div id="regime-011" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--green-bg);border:1px solid var(--green-bd)">🔄</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Régime 011</span>
-          <div class="regime-name">Mise à la Consommation avec Ristourne</div>
-          <div class="regime-desc">Variante du régime 010 permettant d'obtenir une ristourne (remboursement partiel) des droits de douane acquittés, sous conditions spécifiques liées à la nature des marchandises ou aux accords commerciaux.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Remboursement partiel</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 128 Code Douanes</span>
-          </div>
-        </div>
-      </div>
-      <div class="note note-info">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <span>La ristourne s'applique notamment aux marchandises réexportées en l'état après un séjour sur le territoire marocain. La demande doit être faite dans les 12 mois suivant la mise à la consommation.</span>
-      </div>
-      <div class="law-ref" style="margin-top:14px"><strong>Base légale :</strong> Art. 128 du Code des Douanes · Circulaire ADII relative aux ristournes</div>
-    </div>
-
-    <div id="regime-091" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--amber-bg);border:1px solid var(--amber-bd)">⏱️</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">Régime 091</span>
-          <div class="regime-name">Importation Temporaire</div>
-          <div class="regime-desc">Permet l'importation temporaire de marchandises destinées à un usage déterminé (salons, foires, travaux, matériel professionnel) avec réexport obligatoire en l'état.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">Réexport en l'état</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 168 Code Douanes</span>
-          </div>
-        </div>
-      </div>
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">0%</div><div class="kpi-lbl">Droits à l'entrée</div></div>
-        <div class="kpi-box"><div class="kpi-val">6 mois</div><div class="kpi-lbl">Durée standard</div></div>
-        <div class="kpi-box"><div class="kpi-val">Caution</div><div class="kpi-lbl">Ou carnet ATA</div></div>
-      </div>
-      <div class="note note-info">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <span>Le <strong>carnet ATA</strong> (Admission Temporaire / Temporary Admission) simplifie la procédure pour le matériel de foires et expositions. Le Maroc est signataire de la Convention ATA.</span>
-      </div>
-      <div class="law-ref" style="margin-top:14px"><strong>Base légale :</strong> Art. 168 du Code des Douanes · Convention ATA · Circulaire ADII n°5500</div>
-    </div>
-
-    <div id="regime-061" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--purple-bg);border:1px solid var(--purple-bd)">🏙️</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)">Régime 061</span>
-          <div class="regime-name">Zone Franche d'Exportation (ZFE)</div>
-          <div class="regime-desc">Régime applicable aux zones industrielles d'exportation (Tanger, Kénitra, Dakhla...) où les opérations industrielles et commerciales bénéficient d'une suspension totale des droits et taxes douaniers.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)">Exonération totale</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Loi 19-94</span>
-            <span class="rtag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Tanger Med · Kénitra</span>
-          </div>
-        </div>
-      </div>
-      <div class="note note-green" style="margin-bottom:14px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        <span>Les ZFE offrent <strong>exonération IS pendant 5 ans puis taux 8,75%</strong> pendant 20 ans, exonération TVA, et libre rapatriement des bénéfices. Un agrément spécifique de l'OFPPT est requis pour les entreprises industrielles.</span>
-      </div>
-      <div class="law-ref"><strong>Base légale :</strong> Loi n°19-94 relative aux ZFE · Code des Investissements · Circulaires ADII ZFE · Loi de Finances annuelle</div>
-    </div>
-
-    <div id="regime-042" class="regime-panel" style="display:none">
-      <div class="regime-header">
-        <div class="regime-icon" style="background:var(--blue-bg);border:1px solid var(--blue-bd)">🔧</div>
-        <div class="regime-hdr-text">
-          <span class="regime-code-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Régime 042</span>
-          <div class="regime-name">Exportation Temporaire</div>
-          <div class="regime-desc">Permet l'exportation temporaire de marchandises à l'étranger pour réparation, transformation ou perfectionnement, avec réimportation dans le délai imparti sans application des droits sur la valeur ajoutée étrangère.</div>
-          <div class="regime-tags">
-            <span class="rtag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Réimportation exonérée</span>
-            <span class="rtag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Art. 215 Code Douanes</span>
-          </div>
-        </div>
-      </div>
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">0%</div><div class="kpi-lbl">DI à la réimportation</div></div>
-        <div class="kpi-box"><div class="kpi-val">12 mois</div><div class="kpi-lbl">Délai de retour</div></div>
-        <div class="kpi-box"><div class="kpi-val">V.A.</div><div class="kpi-lbl">Seule la valeur ajoutée est taxée</div></div>
-      </div>
-      <div class="law-ref" style="margin-top:14px"><strong>Base légale :</strong> Art. 215 du Code des Douanes · Circulaire ADII relative à l'exportation temporaire</div>
-    </div>
-
-  </main>
-</div>
-</div>
-
-<!-- SECTION COMPARATEUR -->
-<div id="section-comparateur" class="section" style="max-width:1400px;margin:0 auto;padding:1.5rem 2rem 4rem">
-  <div style="padding:28px 0 20px;border-bottom:1px solid var(--border);margin-bottom:24px">
-    <h2 style="font-family:DM Serif Display,serif;font-size:28px;color:var(--ink)">Comparateur des <em style="font-style:italic;color:var(--gold)">Régimes</em></h2>
-    <p style="color:var(--mid);font-size:13px;margin-top:8px">Tableau comparatif des 10 régimes douaniers sur les critères essentiels</p>
-  </div>
-  <div class="full-card">
-    <div style="overflow-x:auto">
-      <table class="comp-table">
-        <thead>
-          <tr>
-            <th>Régime</th><th>Code</th><th>Droits à l'entrée</th><th>Durée max</th><th>Caution</th><th>Apurement</th><th>Idéal pour</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Mise à la consommation</td><td><span class="val-num">010</span></td><td><span class="val-bad">DI + TVA + TIC</span></td><td class="val-ok">Illimité</td><td class="val-ok">Non</td><td>Non requis</td><td>Import définitif standard</td></tr>
-          <tr><td>MàC + ristourne</td><td><span class="val-num">011</span></td><td><span class="val-bad">DI + TVA + TIC</span></td><td class="val-ok">Illimité</td><td class="val-ok">Non</td><td>12 mois</td><td>Réexport partiel</td></tr>
-          <tr><td>Admission temporaire</td><td><span class="val-num">051</span></td><td><span class="val-ok">0%</span></td><td class="val-warn">6 mois (prorog.)</td><td class="val-warn">Obligatoire</td><td>Requis 100%</td><td>Industrie export, transformation</td></tr>
-          <tr><td>Entrepôt de douane</td><td><span class="val-num">071</span></td><td><span class="val-ok">0%</span></td><td class="val-ok">3 ans</td><td class="val-warn">Selon type</td><td>À la sortie</td><td>Stockage import</td></tr>
-          <tr><td>Importation temporaire</td><td><span class="val-num">091</span></td><td><span class="val-ok">0%</span></td><td class="val-warn">6 mois</td><td class="val-warn">Caution/ATA</td><td>Requis 100%</td><td>Foires, matériel pro</td></tr>
-          <tr><td>Transit</td><td><span class="val-num">031</span></td><td><span class="val-ok">0%</span></td><td class="val-warn">30 jours</td><td class="val-warn">TIR/Caution</td><td>Bureau dest.</td><td>Passage territoire</td></tr>
-          <tr><td>Zone franche</td><td><span class="val-num">061</span></td><td><span class="val-ok">0%</span></td><td class="val-ok">Permanent</td><td class="val-ok">Non</td><td>À la sortie ZFE</td><td>Industrie ZFE agréée</td></tr>
-          <tr><td>Exportation définitive</td><td><span class="val-num">040</span></td><td><span class="val-ok">0%</span></td><td class="val-ok">—</td><td class="val-ok">Non</td><td>Non requis</td><td>Export standard</td></tr>
-          <tr><td>Exportation temporaire</td><td><span class="val-num">042</span></td><td><span class="val-ok">0% (VA seulement)</span></td><td class="val-warn">12 mois</td><td class="val-ok">Non</td><td>12 mois retour</td><td>Réparation à l'étranger</td></tr>
-          <tr><td>Drawback</td><td><span class="val-num">021</span></td><td><span class="val-bad">DI payé puis remboursé</span></td><td class="val-ok">—</td><td class="val-ok">Non</td><td>12 mois après export</td><td>Exportateurs avec intrants importés</td></tr>
-        </tbody>
+  <!-- 04 GARANTIES -->
+  <section id="garanties">
+    <div class="sec-h"><span class="sec-n">04</span><h2>Garanties et facilités de cautionnement</h2></div>
+    <p class="sec-lead">Toute marchandise placée sous régime suspensif est couverte par un acquit à caution engageant solidairement le soumissionnaire et sa caution (art. 116 du Code). Depuis le 1er janvier 2026, un guide consolidé fixe huit facilités qui réduisent ou suppriment la caution bancaire.</p>
+    <div class="card tbl-wrap">
+      <table>
+        <thead><tr><th style="width:62px">Code</th><th>Facilité</th><th>Principe</th><th>Conditions principales</th></tr></thead>
+        <tbody id="cautTbl"></tbody>
       </table>
     </div>
-  </div>
-</div>
+    <div class="nums">
+      <div class="num"><b>30 %</b><span>Plafond accordé : 30 % de la valeur des opérations sous régime de l’exercice précédent</span><span class="src">Circ. 6707/313</span></div>
+      <div class="num"><b>20 %</b><span>Avenant de délégation d’assurance exigé : 20 % de cette même valeur</span><span class="src">Circ. 6707/313</span></div>
+      <div class="num"><b>3 mois</b><span>Sans utilisation, la facilité est suspendue automatiquement ; résiliée après 1 an de suspension</span><span class="src">Circ. 6707/313</span></div>
+      <div class="num"><b>8 %/an</b><span>Intérêt de retard dû sur les droits non consignés en cas de mise à la consommation ou de paiement tardif</span><span class="src">Art. 93-2° Code · art. 54 décret</span></div>
+    </div>
+    <div class="rules">
+      <div class="card rule"><h4>Plafond suivi en temps réel</h4><p>À chaque DUM ouvrant un compte, l’encours disponible diminue du montant des droits suspendus ; il remonte à la mainlevée de la DUM d’apurement. En cas de dépassement, la DUM est bloquée : il faut régulariser les comptes, faire relever le plafond par un nouvel avenant d’assurance ou passer par une caution bancaire ou une consignation. Les titulaires OEA Simplifications douanières classe A et OEA Sécurité-Sûreté ne sont pas plafonnés.</p><span class="src">Circ. 6554/313 du 01/04/2024</span></div>
+      <div class="card rule"><h4>Garantie calculée au taux préférentiel</h4><p>Pour toute importation sous régime suspensif couverte par un accord de libre-échange, la garantie peut être calculée au taux préférentiel. Il faut indiquer l’accord dans la déclaration et joindre la preuve d’origine, comme pour une importation simple.</p><span class="src">Circ. 6063/313 · Circ. 6165/313</span></div>
+      <div class="card rule"><h4>TVA : dispense de cautionnement</h4><p>Les importations exonérées de TVA au titre de l’article 123-22°, 23° et 24° du CGI sont dispensées du cautionnement de la TVA, avec les codes franchise 2002, 2003 ou 2004.</p><span class="src">Circ. 6165/313 du 09/02/2021</span></div>
+      <div class="card rule"><h4>Caution et décharge dématérialisées</h4><p>L’acte de cautionnement bancaire est confirmé par voie électronique. Chaque certificat de décharge, total ou partiel, est transmis en PDF à la banque, qui libère l’opérateur sans présentation physique ; il a la même valeur juridique que le papier.</p><span class="src">Circ. 5712/300 · 5724/300 · 6052/300</span></div>
+      <div class="card rule"><h4>Obligations cautionnées</h4><p>Billets à ordre à 60, 90, 120 ou 180 jours, pour 2 000 DH minimum. La majoration est payée comptant au dépôt et n’est pas remboursée en cas de paiement anticipé. Taux 2026 : 4,18 % pour chaque semestre.</p><span class="src">Art. 55 à 59 décret · Circ. 6703/522 · 6750/522</span></div>
+      <div class="card rule"><h4>Petits soldes et force majeure</h4><p>Les marchandises détruites par force majeure naturelle avant l’échéance sont exonérées. Les soldes de comptes échus de moins de 500 DH sont également exonérés.</p><span class="src">Art. 116 bis Code</span></div>
+    </div>
+  </section>
 
-<!-- SECTION SÉLECTEUR -->
-<div id="section-selecteur" class="section" style="max-width:1400px;margin:0 auto;padding:1.5rem 2rem 4rem">
-  <div style="padding:28px 0 20px;border-bottom:1px solid var(--border);margin-bottom:24px">
-    <h2 style="font-family:DM Serif Display,serif;font-size:28px;color:var(--ink)">Sélecteur <em style="font-style:italic;color:var(--gold)">Guidé</em></h2>
-    <p style="color:var(--mid);font-size:13px;margin-top:8px">Répondez aux questions pour identifier le régime adapté à votre situation</p>
-  </div>
-  <div style="max-width:640px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:28px;box-shadow:var(--sh-md)" id="main-wizard">
-    <div id="mwiz-progress" style="height:3px;background:var(--border);border-radius:3px;margin-bottom:24px"><div id="mwiz-bar" style="height:100%;background:var(--gold);border-radius:3px;width:10%;transition:width .3s"></div></div>
-    <div id="mwiz-content"></div>
-  </div>
-</div>
+  <!-- 05 CYCLE -->
+  <section id="cycle">
+    <div class="sec-h"><span class="sec-n">05</span><h2>Le cycle de vie d’un compte sous régime</h2></div>
+    <p class="sec-lead">De l’accès au régime à la libération de la caution : les étapes et les règles qui s’appliquent à chacune.</p>
+    <div class="card" style="padding:4px 22px"><div class="steps" id="steps"></div></div>
+  </section>
 
-<footer>Import-eXPert &mdash; Régimes Économiques Douaniers &middot; Code des Douanes Maroc &middot; Usage informatif uniquement — consulter un transitaire agréé ADII pour toute déclaration</footer>
+  <!-- 06 OUTILS -->
+  <section id="outils">
+    <div class="sec-h"><span class="sec-n">06</span><h2>Outils numériques</h2></div>
+    <p class="sec-lead">Où s’effectue chaque démarche aujourd’hui.</p>
+    <div class="tools" id="tools"></div>
+  </section>
+
+  <!-- 07 SANCTIONS -->
+  <section id="sanctions">
+    <div class="sec-h"><span class="sec-n">07</span><h2>Sanctions et risques à connaître</h2></div>
+    <p class="sec-lead">Les infractions les plus fréquentes en matière de régimes économiques, avec les montants issus des dernières lois de finances.</p>
+    <div class="card tbl-wrap">
+      <table class="sanc">
+        <thead><tr><th>Manquement</th><th>Qualification</th><th>Sanction</th><th>Référence</th></tr></thead>
+        <tbody id="sancTbl"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 08 CODES -->
+  <section id="codes">
+    <div class="sec-h"><span class="sec-n">08</span><h2>Codes régimes à déclarer</h2></div>
+    <p class="sec-lead">Codification en vigueur des régimes douaniers. Tapez un code ou un mot (« entrepôt », « 072 », « zones franches »…).</p>
+    <input class="search" id="codeQ" placeholder="Rechercher un code ou un libellé…" autocomplete="off">
+    <div class="card tbl-wrap"><table><thead><tr><th style="width:80px">Code</th><th>Libellé</th></tr></thead><tbody id="codeTbl"></tbody></table></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:8px">Source : <span class="src">Circ. 6047/312 du 20/05/2020 — liste de codification des régimes douaniers</span></p>
+  </section>
+
+  <div class="cta">
+    <div><h3>Chiffrer le coût de chaque régime pour votre opération</h3><p>Droits, garantie, redevances, intérêts et trésorerie mobilisée, régime par régime.</p></div>
+    <a class="btn" href="/modules/comparateur">Ouvrir le comparateur →</a>
+  </div>
+
+  <div class="foot">IXP-Import-eXPert · Information à caractère général, établie à partir du Code des douanes et impôts indirects, du décret n° 2-77-862 et des circulaires de l’ADII en vigueur au 6 novembre 2026. Elle ne remplace ni les textes officiels ni une décision de l’administration : vérifiez les conditions applicables à votre opération auprès de votre bureau de douane ou de votre transitaire agréé.</div>
+</main>
 
 <script>
-// ─── NAVIGATION ───
-function showSection(name, btn) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById('section-' + name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  if (name === 'selecteur') initMainWizard();
-}
+"use strict";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const S = r => `<span class="src">${esc(r)}</span>`;
 
-// ─── SIDEBAR RÉGIME ───
-function showRegime(code, btn) {
-  document.querySelectorAll('.regime-panel').forEach(p => p.style.display = 'none');
-  document.getElementById('regime-' + code).style.display = 'block';
-  document.querySelectorAll('.regime-nav-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+/* ============ 01. NOUVEAUTÉS ============ */
+const NEWS = [
+  {y:2026,d:"01/01/2026",t:"Guide consolidé des facilités de cautionnement",x:"Huit modes de cautionnement réunis dans un seul texte, avec leurs conditions, leurs codes BADR et un délai de traitement des dossiers de 30 jours. Plafond fixé à 30 % des opérations de l’exercice précédent ; suspension automatique après 3 mois sans utilisation.",th:"Garanties",rg:["Tous régimes"],src:"Circ. 6707/313 du 31/12/2025"},
+  {y:2026,d:"01/01/2026",t:"Déclarer le lieu effectif de stockage ou de transformation",x:"Nouvel article 19 bis : la DUM doit indiquer où les marchandises sont réellement stockées ou transformées. Une fausse déclaration est une contravention de 3e classe, punie de 30 000 à 60 000 DH.",th:"Contrôle",rg:["Entrepôt","ATPA","TSD","EIF"],src:"LF 2026 · Circ. 6702/210"},
+  {y:2026,d:"01/01/2026",t:"Plateforme blockchain pour les documents commerciaux",x:"Nouvel article 76 ter : dépôt et transmission sécurisés des factures entre fournisseur étranger et douane, avec vérification de l’identité du fournisseur. Adhésion volontaire ; les adhérents bénéficient de procédures assouplies et de délais réduits. Modalités à préciser par instruction.",th:"Dématérialisation",rg:["Tous régimes"],src:"LF 2026 · Circ. 6702/210"},
+  {y:2026,d:"01/01/2026",t:"Nouvelle infraction de contrebande liée aux ZAI",x:"Des marchandises non déclarées et incompatibles avec l’activité autorisée d’une entreprise en zone d’accélération industrielle, découvertes avec des marchandises en transit vers la zone, constituent un délit de contrebande de 2e classe (art. 282-6°).",th:"Contrôle",rg:["ZAI","Transit"],src:"LF 2026 · Circ. 6702/210"},
+  {y:2026,d:"01/01/2026",t:"Clause transitoire précisée",x:"Le régime antérieur plus favorable reste acquis si un titre de transport antérieur ou un crédit documentaire irrévocable et confirmé l’établit. Il ne s’applique qu’aux marchandises mises directement à la consommation, pas à celles passées par un entrepôt.",th:"Fiscalité",rg:["Entrepôt"],src:"LF 2026 · art. 13 Code · Circ. 6702/210"},
+  {y:2026,d:"S1 et S2 2026",t:"Majoration des obligations cautionnées : 4,18 %",x:"Faute d’adjudication de bons du Trésor à 13 semaines, le taux du 3e trimestre 2025 reste la référence pour toute l’année 2026.",th:"Garanties",rg:["Tous régimes"],src:"Circ. 6703/522 · Circ. 6750/522"},
+  {y:2025,d:"29/09/2025",t:"Produits de ZAI vendus au Maroc au droit de 2,5 %",x:"Exemple d’application par convention avec l’État : droit minimum de 2,5 % plafonné à 10 % du chiffre d’affaires à l’export, pendant 3 ans, avec le code franchise 1084.",th:"Fiscalité",rg:["ZAI"],src:"Note D232/2025/ADII/AC/100"},
+  {y:2025,d:"01/09/2025",t:"Nouveau cahier des charges des MEAD",x:"Scellés électroniques entre MEAD et bureaux, vidéosurveillance conservée 90 jours et accessible à distance, badges d’accès, responsabilité jusqu’à la sortie effective, inventaire au 31 janvier, seuils d’activité recalculés.",th:"Contrôle",rg:["MEAD","Transit"],src:"Circ. 6675/312 du 13/08/2025"},
+  {y:2025,d:"25/08/2025",t:"Redevance de la DS MEAD ramenée à 150 DH",x:"La DS MEAD valant acquit à caution, elle est alignée sur le tarif des acquits à caution de transit.",th:"Simplification",rg:["MEAD","Transit"],src:"Circ. 6677/312 du 18/08/2025"},
+  {y:2025,d:"28/07/2025",t:"Autorisations ETPP échangées par PORTNET",x:"Les autorisations des ministères de l’Industrie et de l’Agriculture pour les codes 077 et 771 circulent électroniquement. Le papier reste accepté jusqu’à nouvel ordre ; les métaux précieux gardent leur procédure propre.",th:"Dématérialisation",rg:["ETPP"],src:"Circ. 6671/311 du 28/07/2025"},
+  {y:2025,d:"10/02/2025",t:"DS MEAD : un seul document au lieu de trois",x:"La déclaration sommaire d’acheminement et d’entrée en MEAD remplace l’acquit à caution de transit, la déclaration sommaire MEAD et l’état de dépotage. Obligatoire trois mois après sa publication ; caution « S » ou « G » ; bons à délivrer émis via PORTNET.",th:"Simplification",rg:["MEAD","Transit"],src:"Circ. 6636/312 du 10/02/2025"},
+  {y:2025,d:"01/01/2025",t:"Loi de finances 2025",x:"Paiement électronique obligatoire (à défaut, majoration de 1 %, minimum 1 000 DH ; les obligations cautionnées sont exemptées). Droit au remboursement des droits indûment perçus (art. 95 bis). Délit pour usage ou détention injustifiée de scellés. Amendes des délits de 1re et 2e classe ramenées de deux fois à une fois la valeur.",th:"Fiscalité",rg:["Tous régimes","Transit"],src:"LF 2025 · Circ. 6619/210"},
+  {y:2024,d:"02/10/2024",t:"Mutation d’entrepôt sans acquit à caution",x:"Le transfert entre entrepôts de stockage se fait sous couvert de factures ou bons de livraison mentionnant les numéros d’agrément ; déclaration de mutation à l’arrivée (codes 080 ou 081) et comptabilité matières des deux côtés.",th:"Simplification",rg:["Entrepôt"],src:"Décret 2-24-295 · Circ. 6600/313"},
+  {y:2024,d:"16/08/2024",t:"Drawback-énergie étendu à la fibre d’acier",x:"Nouveaux coefficients de consommation énergétique par tonne exportée, selon le procédé (ferraille ou billette), applicables depuis le 01/07/2024.",th:"Fiscalité",rg:["Drawback"],src:"Arrêté 1286-24 · Circ. 6591/313"},
+  {y:2024,d:"04/07/2024",t:"Œuvres d’art en admission temporaire : 2 ans",x:"Les œuvres d’art, objets de collection et antiquités destinés à une exposition non commerciale peuvent rester 2 ans, prorogeables jusqu’à 4 ans.",th:"Simplification",rg:["AT"],src:"Décret 2-24-400 · Circ. 6586/313"},
+  {y:2024,d:"12/06/2024",t:"Entrepôts sur BADR, déclarations dans tout bureau",x:"Les agréments d’entrepôt privé particulier et d’entrepôt industriel franc sont gérés sur BADR. Les déclarations d’entrée et de sortie d’EPP peuvent être déposées dans tout bureau ouvert au régime (hors produits pétroliers, duty free et catering).",th:"Dématérialisation",rg:["Entrepôt","EIF"],src:"Circ. 6572/313 du 12/06/2024"},
+  {y:2024,d:"12/06/2024",t:"L’état de chargement devient une déclaration de transit",x:"Pour le groupage à l’export, l’état de chargement est une déclaration simplifiée de transit, entièrement dématérialisée, sans déclaration complémentaire.",th:"Dématérialisation",rg:["Transit"],src:"Circ. 6571/313 · LF 2024"},
+  {y:2024,d:"01/04/2024",t:"Plafonds de cautionnement contrôlés automatiquement",x:"BADR suit l’encours de chaque facilité en temps réel et bloque la DUM en cas de dépassement, après une période d’alerte de 6 mois. Les OEA classe A et Sécurité-Sûreté ne sont pas concernés.",th:"Garanties",rg:["Tous régimes"],src:"Circ. 6554/313 du 01/04/2024"},
+  {y:2024,d:"28/03/2024",t:"Drawback-énergie traité sur BADR",x:"Création, suivi et remboursement des dossiers dans BADR pour les exportations à partir du 01/01/2024. Première demande : domiciliation préalable auprès du service central.",th:"Dématérialisation",rg:["Drawback"],src:"Circ. 6552/313 du 28/03/2024"},
+  {y:2024,d:"21/02/2024",t:"Duty free : nouvelle instruction commune avec l’Office des changes",x:"Règles révisées d’entrée en entrepôt, de vente, de règlement en devises et de contrôle des magasins de vente sous douane.",th:"Contrôle",rg:["Entrepôt"],src:"Circ. 6542/313 du 20/02/2024"},
+  {y:2024,d:"15/02/2024",t:"ATPA, TSD et EIF : enquête d’outillage pour les nouveaux opérateurs",x:"Une autorisation préalable est réintroduite pour les entreprises qui opèrent pour la première fois sous ces régimes : demande unique, examinée sous huitaine, puis accès ouvert sur BADR dans tous les bureaux. Les artisans en ATPA en sont dispensés.",th:"Contrôle",rg:["ATPA","TSD","EIF"],src:"Circ. 6538/313 du 06/02/2024"},
+  {y:2024,d:"01/01/2024",t:"Loi de finances 2024",x:"Entrepôt : abandon ou destruction en exonération pour raisons commerciales justifiées (art. 130-4°). La déclaration simplifiée couvre le transit MEAD → bureau d’export sans déclaration complémentaire. Défaut de documents à la DUM : contravention de 3e classe (10 000 à 50 000 DH).",th:"Simplification",rg:["Entrepôt","Transit","MEAD"],src:"LF 2024 · Circ. 6522/210"},
+  {y:2023,d:"15/05/2023",t:"Triple circuit de contrôle étendu au transit",x:"Après signature, BADR oriente chaque déclaration de transit en circuit vert, orange, rouge partiel ou rouge intégral.",th:"Contrôle",rg:["Transit"],src:"Circ. 6456/412 du 10/05/2023"},
+  {y:2023,d:"01/01/2023",t:"Délais de transit contrôlés automatiquement",x:"Alertes par courriel au départ, à 80 % du délai et à l’expiration ; pré-confirmation d’arrivée hors heures ouvrables ; justification d’un retard sous 72 heures, à défaut poursuites.",th:"Contrôle",rg:["Transit"],src:"Circ. 6387/412 du 13/12/2022"},
+  {y:2023,d:"29/05/2023",t:"Exportations : déclarer la valeur brute",x:"Les produits compensateurs se déclarent à l’export pour leur valeur totale (intrants + transformation), y compris en suite d’EIF (751, 768) et en transit depuis les ZAI (866, 856). Déclarer la seule prestation est sanctionné.",th:"Contrôle",rg:["ATPA","EIF","ZAI"],src:"Circ. 6464/313 · Circ. 6190/313"},
+  {y:2022,d:"08/09/2022",t:"Demandes de facilités et d’agréments sur Diw@nati",x:"Caution mixte, engagement des exportateurs, dispense pour sous-traitance, ouverture d’EPP et d’EPPS carburants, statut OEA : dépôt, suivi et décision en ligne.",th:"Dématérialisation",rg:["Tous régimes"],src:"Circ. 6364/313 du 08/09/2022"},
+  {y:2022,d:"06/07/2022",t:"Nouvelle vague de suppressions d’autorisations",x:"Exportation en l’état, mise à la consommation en suite d’EPP dans la limite de 15 % pour les plateformes d’approvisionnement, dispenses de caution pour les manifestations parrainées. L’autorisation est rétablie pour la TSD à importation fractionnée (241).",th:"Simplification",rg:["ATPA","AT","Entrepôt","TSD"],src:"Circ. 6348/313 du 06/07/2022"},
+  {y:2021,d:"19/02/2021",t:"Accès aux régimes sans autorisation préalable",x:"Tous les régimes sont activés d’office sur BADR : la DUM vaut demande et la mainlevée vaut autorisation. Le déclarant s’engage sur le respect des conditions d’éligibilité.",th:"Simplification",rg:["Tous régimes"],src:"Circ. 6164/313 du 09/02/2021"},
+  {y:2021,d:"09/02/2021",t:"Garantie au taux préférentiel pour tous les régimes suspensifs",x:"Extension à tous les régimes suspensifs de la garantie calculée au taux de l’accord de libre-échange, et dispense de caution TVA pour les importations exonérées (codes 2002 à 2004).",th:"Garanties",rg:["Tous régimes"],src:"Circ. 6165/313 du 09/02/2021"},
+  {y:2021,d:"17/09/2021",t:"Drawback : dossier allégé, remboursement sous 30 jours",x:"Dossier réduit à une demande et deux justificatifs ; remboursement dans les 30 jours ouvrables suivant le dépôt d’un dossier complet ; dépôt possible via le Bureau d’ordre digital.",th:"Simplification",rg:["Drawback"],src:"Arrêté 840-21 · Circ. 6231/313"},
+  {y:2021,d:"26/08/2021",t:"Déclaration provisionnelle dématérialisée sous régime",x:"Un seul compte par dossier provisionnel, ouvert à la date de la première sous-DUM ; apurement global possible des exportations en flux tendu.",th:"Dématérialisation",rg:["ATPA","EIF","Entrepôt"],src:"Circ. 6221/313 · Circ. 6195/312"},
+  {y:2021,d:"01/01/2021",t:"Réimportation au droit de 2,5 %",x:"Les produits devenus d’origine marocaine après transformation sous régime, exportés puis réimportés dans les 2 ans, paient le droit minimum de 2,5 % (code franchise 4012), sur preuve de l’origine.",th:"Fiscalité",rg:["ATPA","ZAI"],src:"Circ. 6131/313 du 31/12/2020"},
+  {y:2020,d:"27/05/2020",t:"Certificats de décharge électroniques",x:"Chaque décharge, totale ou partielle, est notifiée en PDF à la banque caution, qui doit libérer l’opérateur sans délai.",th:"Dématérialisation",rg:["Tous régimes"],src:"Circ. 6052/300 du 27/05/2020"}
+];
+const THEMES = ["Garanties","Dématérialisation","Simplification","Contrôle","Fiscalité"];
+const TCOL = {"Garanties":"#1A3A9A","Dématérialisation":"#0E7490","Simplification":"#1E7A4A","Contrôle":"#9A2A22","Fiscalité":"#5A2AA0"};
+let tlYear = "all", tlTheme = "all", tlAll = false;
+function renderTlFilters(){
+  const yrs = [["all","Toutes"],["2026","2026"],["2025","2025"],["2024","2024"]];
+  $("#tlf").innerHTML = yrs.map(([v,l]) => `<button class="flt ${tlYear===v?"on":""}" data-y="${v}">${l}</button>`).join("")
+    + `<span class="flt-sep"></span>` + [["all","Tous thèmes"],...THEMES.map(t=>[t,t])].map(([v,l]) => `<button class="flt ${tlTheme===v?"on":""}" data-t="${v}">${l}</button>`).join("");
+  $("#tlf").querySelectorAll("[data-y]").forEach(b => b.onclick = () => {tlYear=b.dataset.y; renderTl();});
+  $("#tlf").querySelectorAll("[data-t]").forEach(b => b.onclick = () => {tlTheme=b.dataset.t; renderTl();});
 }
+function renderTl(){
+  renderTlFilters();
+  const list = NEWS.filter(n => (tlYear==="all" ? (tlAll || n.y>=2024) : String(n.y)===tlYear) && (tlTheme==="all" || n.th===tlTheme));
+  $("#tl").innerHTML = list.length ? list.map(n => `<div class="tl-item ${n.y===2026?"y2026":""}">
+      <div class="tl-d"><b>${esc(n.d)}</b>${n.y}</div>
+      <div><div class="tl-t">${esc(n.t)}</div><div class="tl-x">${esc(n.x)}</div>
+      <div class="tl-meta"><span class="tag th" style="--fc:${TCOL[n.th]}">${esc(n.th)}</span>${n.rg.map(r=>`<span class="tag">${esc(r)}</span>`).join("")}${S(n.src)}</div></div></div>`).join("")
+    : `<div class="placeholder">Aucune mesure pour ce filtre.</div>`;
+  $("#tlMore").style.display = (tlYear==="all" && !tlAll) ? "" : "none";
+}
+$("#tlMore").onclick = () => {tlAll = true; renderTl();};
 
-// ─── WIZARD SIDEBAR ───
-const wizData = {
-  conso:    { q: 'Avez-vous un préfinancement ou une ligne de crédit ?', opts: [
-    { label: 'Oui, paiement immédiat possible', result: '010 — Mise à la consommation', code: '010' },
-    { label: 'Je veux réexporter ensuite avec remboursement', result: '011 — MàC avec ristourne', code: '011' }
-  ]},
-  transform:{ q: 'Vos intrants sont-ils déjà importés ou à importer ?', opts: [
-    { label: 'À importer pour transformation puis réexport', result: '051 — Admission temporaire', code: '051' },
-    { label: 'Déjà importés et droits payés — je veux un remboursement', result: '021 — Drawback', code: '021' },
-    { label: 'Entreprise en zone franche agréée', result: '061 — Zone franche d\'exportation', code: '061' }
-  ]},
-  stockage: { q: 'Quel type de stockage ?', opts: [
-    { label: 'Stockage long terme sans taxes', result: '071 — Entrepôt de douane', code: '071' },
-    { label: 'Usage temporaire puis réexport en l\'état', result: '091 — Importation temporaire', code: '091' }
-  ]},
-  transit:  { q: 'Quel type de transit ?', opts: [
-    { label: 'Passage simple (import → export vers pays tiers)', result: '031 — Transit douanier', code: '031' }
-  ]},
-  export:   { q: 'Type d\'export ?', opts: [
-    { label: 'Export définitif standard', result: '040 — Exportation définitive', code: '040' },
-    { label: 'Envoi temporaire pour réparation/transformation', result: '042 — Exportation temporaire', code: '042' }
-  ]}
+/* ============ 03. RÉGIMES ============ */
+const R = {
+ entrepot:{n:"Entrepôt de douane (stockage)",fam:"Stockage",c:"#BA7517",codes:[["035","public"],["036","privé banal"],["037","privé particulier"],["046 / 047","MAC en suite"],["075","export en suite d’EPP"],["080 / 081","mutation, entrée en suite"]],
+  bref:"Placer des marchandises étrangères dans un local contrôlé par la douane, en suspension des droits et taxes, puis choisir leur destination : consommation, exportation ou cession.",
+  facts:[["Durée","1 an + 2 × 6 mois (24 mois max.)"],["Garantie","Acquit à caution"],["Accès","Agrément (EPP : directeur régional)"],["Transformation","Non : manipulations seulement"]],
+  base:"Code, art. 119 à 134 · Décret 2-77-862, art. 75 à 98",
+  qui:["Entrepôt public : concédé par arrêté ministériel, en priorité à une ville ou une chambre de commerce ; ouvert à tous.","Entrepôt privé banal : professionnels de l’entreposage pour compte de tiers ; ouvert à tous.","Entrepôt privé particulier (EPP) : réservé à l’entreprise autorisée, pour les marchandises désignées dans l’agrément.","Catégories spéciales : entrepôts d’exportation, produits pétroliers, magasins de vente sous douane (duty free)."],
+  duree:["Séjour initial d’un an, prorogeable deux fois six mois : 24 mois au maximum, sauf dérogation du ministre des Finances.","Les cessions successives ne prolongent pas le délai.","À l’échéance : exportation, autre destination autorisée ou paiement des droits ; en EPP, paiement immédiat."],
+  apur:["Exportation (075) ou vers une zone franche (764).","Mise à la consommation (046, 047).","Cession ou mutation vers un autre entrepôt (080, 081).","Abandon ou destruction en exonération, pour raisons commerciales justifiées."],
+  mac:["Espèce et quantités constatées à l’entrée ; valeur au jour de l’entrée en entrepôt.","Droits en vigueur à la date d’entrée, majorés de l’intérêt de retard s’ils n’ont pas été consignés.","Marchandises avariées : valeur à la date de constatation des avaries.","EPP des plateformes d’approvisionnement des exportateurs : mise à la consommation jusqu’à 15 % des quantités sans autorisation (déclarer en case 38)."],
+  nw:[["Abandon ou destruction en exonération si l’exportation ou la vente est impossible pour une raison commerciale listée : désengagement du donneur d’ordre, client étranger défaillant, fermeture de frontières, nouvelle mesure restrictive, dépréciation, non-conformité, avarie, péremption.","LF 2024 · art. 130-4° · art. 97 bis décret"],["Mutation entre entrepôts sans acquit à caution de transit.","Circ. 6600/313 (2024)"],["Agréments EPP sur BADR ; déclarations d’entrée et de sortie dans tout bureau ouvert, sauf produits pétroliers, duty free et catering.","Circ. 6572/313 (2024)"],["Lieu effectif de stockage obligatoire dans la DUM.","LF 2026 · art. 19 bis"]],
+  vig:["Manquants taxés à l’espèce, la quantité et la valeur du jour d’entrée, sans préjudice des pénalités ; seuls les manquants naturels sont admis en franchise.","EPP : manipulations interdites sauf autorisation pour la commercialisation ou la conservation.","Régularisation par mise à la consommation d’un EPP : DUM au bureau dont relève le local.","La clause transitoire de la LF 2026 ne profite pas aux marchandises passées par l’entrepôt."],
+  src:["Code art. 119-134","Décret art. 75-98","Circ. 5171/313","Circ. 6348/313","Circ. 6572/313","Circ. 6600/313","Circ. 6522/210"]},
+ eif:{n:"Entrepôt industriel franc (EIF)",fam:"Transformation",c:"#7A4E10",codes:[["381","matières premières"],["385","matériel"],["382 à 386","entrées en suite"],["048","MAC en suite"],["751","export en suite"],["768","vers zone franche"]],
+  bref:"Importer ou acquérir en suspension des droits les équipements, leurs pièces et les intrants nécessaires à une production destinée en tout ou partie à l’exportation.",
+  facts:[["Seuil","Investissement ≥ 50 MDH"],["Durée","2 ans pour les intrants"],["Accès","Autorisation de l’administration centrale"],["Export","Total ou partiel"]],
+  base:"Code, art. 134 bis à 134 quinquies · Décret, art. 98 bis à 98 decies",
+  qui:["Entreprises réalisant un investissement de création ou d’extension d’au moins 50 millions de dirhams.","Autorisation du directeur de l’administration, après avis du ministère chargé du secteur.","Liste des matériels et plan des locaux agréés ; certificat de conformité urbanistique ; comptabilité matières."],
+  duree:["Deux ans pour les marchandises à mettre en œuvre.","Les intrants et produits compensateurs suivent les règles de l’ATPA."],
+  apur:["Exportation (751) ou vers une zone franche (768).","Cession sous un autre régime.","Mise à la consommation (048) dans la proportion fixée selon le chiffre d’affaires."],
+  mac:["Produits compensateurs : proportion fixée par voie réglementaire selon le chiffre d’affaires global, le chiffre d’affaires export ou les immobilisations.","Dispense d’amende dans la limite de 15 % du chiffre d’affaires annuel à l’export.","Matériels : mise à la consommation selon l’article 151 (règles de l’admission temporaire)."],
+  nw:[["Agrément géré sur BADR, rubrique « Entrepôt » obligatoire dans la DUM.","Circ. 6572/313 (2024)"],["Enquête d’outillage pour les nouveaux opérateurs.","Circ. 6538/313 (2024)"],["Exportation à la valeur brute (intrants + valeur ajoutée).","Circ. 6464/313 (2023)"]],
+  vig:["L’autorisation reste requise : elle n’a pas été supprimée en 2021.","Le dépassement de la proportion de vente locale expose à l’amende."],
+  src:["Code art. 134 bis-quinquies","Décret art. 98 bis-decies","Circ. 6164/313","Circ. 6348/313","Circ. 6538/313"]},
+ atpa:{n:"Admission temporaire pour perfectionnement actif (ATPA)",fam:"Transformation",c:"#7F77DD",codes:[["022","avec paiement"],["023","sans paiement"],["221 / 231","en provenance de zone franche"],["082","en suite de régime"],["055","retouches"],["070 / 072","export en suite"],["040","MAC en suite"],["762","vers zone franche"]],
+  bref:"Importer en suspension des droits et taxes des intrants destinés à être transformés, ouvrés ou complétés au Maroc, puis exporter les produits compensateurs.",
+  facts:[["Durée","6 mois + 18 mois (24 mois max.)"],["Garantie","Caution, facilités possibles"],["Condition","Disposer de l’outillage"],["Accès","Enquête d’outillage (nouveaux)"]],
+  base:"Code, art. 135 à 144 · Décret, art. 99 à 114",
+  qui:["Entreprises disposant ou pouvant disposer de l’outillage nécessaire (art. 138).","Sociétés de négoce, plateformes ou représentants de donneurs d’ordre étrangers travaillant avec des sous-traitants locaux : demande examinée par le service central.","Artisans (commandes ponctuelles d’articles traditionnels) : délai de 3 mois, dispensés de l’enquête d’outillage.","Marchandises soumises à licence d’importation : autorisation réglementaire nécessaire."],
+  duree:["Séjour initial de 6 mois, prorogeable sans dépasser 18 mois supplémentaires.","Maximum légal : 2 ans à compter de l’enregistrement, sauf dérogation ministérielle.","Cession de produits compensateurs : nouveau délai d’un an si le reliquat est inférieur à 12 mois.","Prorogation au-delà du délai réglementaire : administration centrale."],
+  apur:["Exportation des produits compensateurs (070, 072) ou vers une zone franche (762).","Cession sous régime suspensif, mise en entrepôt ou en AT.","Exportation en l’état sans autorisation (motif en case 38).","Mise à la consommation (040), destruction ou abandon.","Les éléments d’apurement déclarés sont réputés admis si la douane ne les conteste pas dans les 2 mois suivant l’export."],
+  mac:["Droits applicables à la date d’enregistrement de la déclaration d’ATPA, sur l’espèce et les quantités importées, à la valeur de cette date.","Intérêt de retard si les droits n’ont pas été consignés.","Produits compensateurs autorisés à la vente locale : droits du jour de la mise à la consommation.","Dispense d’amende dans la limite de 15 % des quantités exportées ; articles de second choix textile et cuir selon décision.","Déchets : droits sur leur propre valeur, aux taux du jour de leur mise à la consommation."],
+  nw:[["Nouveaux opérateurs : demande unique d’enquête d’outillage, examinée sous huitaine, puis accès sur BADR dans tous les bureaux.","Circ. 6538/313 (15/02/2024)"],["Garantie au taux préférentiel si l’intrant est originaire d’un pays partenaire.","Circ. 6063/313 · 6165/313"],["Exportation à la valeur brute, intrants compris.","Circ. 6190/313 · 6464/313"],["Facilités de cautionnement consolidées, dont la dispense de caution pour la sous-traitance d’un donneur d’ordre étranger.","Circ. 6707/313 (2026)"]],
+  vig:["Écritures de suivi obligatoires : quantités placées, produits compensateurs, déchets, sous-traitance.","Sous-traitance : bon de livraison avec accusé de réception et inscription dans les écritures.","Certaines destinations peuvent être exclues du régime.","À l’échéance, les droits deviennent immédiatement exigibles, sauf exportation tardive autorisée (directeur provincial)."],
+  src:["Code art. 135-144","Décret art. 99-114","Circ. 6164/313","Circ. 6348/313","Circ. 6538/313","Circ. 6707/313"]},
+ tsd:{n:"Transformation sous douane (TSD)",fam:"Transformation",c:"#5A3F9E",codes:[["241","importation fractionnée"],["242","papier d’édition"],["243","autres"],["820 à 822","en suite d’ATPA, AT, EPP"],["430","MAC en suite"],["700 / 767","export en suite"]],
+  bref:"Importer en suspension des marchandises qui changent d’espèce ou d’état au Maroc, puis mettre à la consommation les produits transformés au régime qui leur est propre.",
+  facts:[["Durée","3 mois + 9 mois (1 an max.)"],["Condition","Produit transformé exonéré"],["Accès","Décision du directeur"],["Avis","Ministère du secteur"]],
+  base:"Code, art. 163 bis à 163 decies · Décret, art. 172 bis à 172 terdecies",
+  qui:["Entreprises disposant de l’outillage nécessaire.","Les produits transformés doivent bénéficier d’une exonération totale ou partielle des droits d’importation.","Le régime ne doit pas permettre de contourner une restriction quantitative ; les marchandises restent identifiables."],
+  duree:["Séjour initial de 3 mois, prorogeable sans dépasser 9 mois supplémentaires.","Maximum légal : 1 an, sauf dérogation ministérielle."],
+  apur:["Mise à la consommation des produits transformés (430).","Exportation (700, 767) ou cession sous régime.","Déchets : export, consommation, abandon ou destruction."],
+  mac:["Produits transformés : droits en vigueur à la date de la déclaration de mise à la consommation, selon leur espèce et leurs quantités, à la valeur des marchandises à l’entrée.","Marchandises en l’état ou à un stade intermédiaire : droits de la date d’entrée sous le régime, avec intérêt de retard si non consignés."],
+  nw:[["Autorisation rétablie pour l’importation fractionnée (241), en attendant la déclaration globale.","Circ. 6348/313 (2022)"],["Enquête d’outillage pour les nouveaux opérateurs.","Circ. 6538/313 (2024)"]],
+  vig:["Taux d’apurement fixés dans la décision d’octroi selon les conditions réelles de transformation.","Composition des produits contrôlable par le laboratoire désigné."],
+  src:["Code art. 163 bis-decies","Décret art. 172 bis-terdecies","Circ. 6164/313","Circ. 6348/313"]},
+ at:{n:"Admission temporaire (AT)",fam:"Utilisation",c:"#534AB7",codes:[["300","hydrocarbures"],["301","avec redevance trimestrielle"],["302","sans redevance"],["303","commerce triangulaire"],["311 / 312","emballages"],["321 / 322","marchandises 6 mois / 2 ans"],["331","véhicules"],["332","autres"],["044","MAC en suite"],["074","export en suite"]],
+  bref:"Importer en suspension des matériels ou produits qui seront réexportés en l’état après l’utilisation prévue : matériel de chantier, salons, essais, échantillons, emballages, conteneurs, œuvres d’art.",
+  facts:[["Durée","6 mois à 2 ans selon catégorie"],["Prorogation","Jusqu’au double"],["Redevance","1/10 par trimestre (matériel de travaux)"],["Sortie","Réexportation à l’identique"]],
+  base:"Code, art. 145 à 151 bis · Décret, art. 115 à 137 ter",
+  qui:["A — Matériel restant propriété étrangère pour des travaux de durée limitée (autorisation spéciale du ministre des Finances).","B — Films loués ou prêtés. C — Emballages importés vides ou pleins.","D — Échantillons, foires et congrès, essais, matériel professionnel, conteneurs, véhicules commerciaux, animaux de compétition, œuvres d’art pour expositions non commerciales.","E — Marchandises couvertes par une convention internationale (carnet ATA, par exemple)."],
+  duree:["2 ans : emballages vides (Ca), contenants (Cc), essais (D3), cadres et conteneurs (D9), œuvres d’art (D11).","1 an : emballages pleins (Cb). 6 mois : autres marchandises de la catégorie D.","Prorogation jusqu’au double par le ministre ou le directeur général. Catégorie E : durée de la convention.","Manifestations et congrès : 6 mois ; démonstrations et tests : 2 ans."],
+  apur:["Réexportation à l’identique (074) ou mise en entrepôt sur autorisation.","Mise à la consommation sur autorisation (044).","Déchets irrécupérables mis à la consommation en exonération."],
+  mac:["Droits et valeur à la date de la déclaration d’AT, avec intérêt de retard si non consignés.","Matériel resté plus de 30 mois et ayant servi à une production exportée à 75 % au moins : droits et valeur du jour de la mise à la consommation.","Les redevances déjà payées sont déduites ; l’excédent reste acquis au Trésor."],
+  nw:[["Dispense de caution pour les manifestations parrainées par un ministère, un établissement public ou une ambassade, sur engagement de réexportation.","Circ. 6348/313 (2022)"],["AT sans paiement ni redevance pour démonstrations, essais, congrès et rallyes.","Circ. 6348/313 (2022)"],["Œuvres d’art pour expositions non commerciales : 2 ans, jusqu’à 4 ans.","Circ. 6586/313 (2024)"],["Conteneurs vides admis en procédure simplifiée : plus aucune formalité de mouvement.","Circ. 6172/312 (2021)"]],
+  vig:["Redevance du matériel de travaux (catégorie A) : 1/10 par trimestre du montant des droits et taxes, réductible jusqu’à 1/40 si l’amortissement dépasse 30 mois, plafonnée au total des droits ; tout trimestre commencé est dû et non remboursable.","Dispense de redevance : matériel de non-résidents produisant à 75 % au moins pour l’export, projets conventionnés ou financés par aide non remboursable, recherche d’hydrocarbures.","Consommables et articles importés définitivement : droits dus dès l’importation.","Big bags et sacs pour revente en l’état : relèvent de l’EPP, pas de l’AT."],
+  src:["Code art. 145-151 bis","Décret art. 115-137 ter","Circ. 6164/313","Circ. 6348/313","Circ. 6586/313"]},
+ etpp:{n:"Exportation temporaire pour perfectionnement passif (ETPP)",fam:"Perfectionnement à l’étranger",c:"#3B6D11",codes:[["077","marchandises marocaines ou nationalisées"],["771","en suite d’ATPA"],["766","vers zone franche"],["770","échange standard"],["051 / 510 / 511","réimportation"]],
+  bref:"Exporter provisoirement des marchandises pour ouvraison, transformation ou réparation à l’étranger, puis les réimporter en ne payant les droits que sur la plus-value acquise.",
+  facts:[["Durée","1 an, prorogeable au double"],["Taxation","Sur la plus-value"],["Autorisation","Département du secteur (≤ 60 j)"],["Caution","Non, si non taxé à l’export"]],
+  base:"Code, art. 152 à 152 quinquies · Décret, art. 138 à 147 octies decies",
+  qui:["Marchandises d’origine marocaine, nationalisées, ou placées sous EIF, ATPA, TSD ou AT.","Autorisation du département chargé du secteur, délivrée sous 60 jours ; non exigée pour les machines, matériels, outillages et équipements.","Entreprises en ZAI conventionnées avec le ministère de l’Industrie : dispensées de cette autorisation."],
+  duree:["Durée nécessaire à l’opération, 1 an au maximum, prorogeable au double sur justification.","Retour par le bureau de sortie, sauf dérogation."],
+  apur:["Réimportation sous le régime d’origine ou mise à la consommation (051, 511).","Défaut de réimportation dans le délai : exportation définitive et nouvelle déclaration en apurement."],
+  mac:["Droits en vigueur à la date de la déclaration d’importation.","Valeur taxable : valeur des produits réimportés, moins la valeur des marchandises exportées."],
+  nw:[["Autorisations échangées électroniquement via PORTNET pour les codes 077 et 771 ; papier encore accepté jusqu’à nouvel ordre.","Circ. 6671/311 (28/07/2025)"],["Autorisation préalable supprimée pour les machines et équipements envoyés en réparation.","Circ. 6164/313"]],
+  vig:["Échange standard : remplacement gratuit sous garantie, même classement et caractéristiques, livré dans les 6 mois de la première mise à la consommation ; importation anticipée possible sous garantie, avec export du défectueux dans les 2 mois.","Échange standard : autorisation du directeur régional.","Métaux précieux : procédure spécifique (circulaire 5360/313)."],
+  src:["Code art. 152-152 quinquies","Décret art. 138-147","Circ. 6164/313","Circ. 6671/311"]},
+ et:{n:"Exportation temporaire (ET)",fam:"Utilisation",c:"#639922",codes:[["078","exportation temporaire"],["052","réimportation en suite"],["765","vers zone franche"],["800","conteneurs"],["900","véhicules commerciaux"]],
+  bref:"Sortir en suspension des matériels ou produits utilisés à l’étranger (chantier, salon, essais) et les réimporter en franchise, à l’identique.",
+  facts:[["Durée","1 an (cat. C et D)"],["Prorogation","Jusqu’au double"],["Retour","En franchise"],["Caution","Non, si non taxé à l’export"]],
+  base:"Code, art. 153 et 154 · Décret, art. 148 à 162",
+  qui:["A — Matériel restant propriété marocaine pour travaux ou usage industriel à l’étranger.","B — Films. C — Emballages et contenants.","D — Échantillons, stands, essais, matériel professionnel, conteneurs, véhicules commerciaux, animaux de compétition, tout objet identifiable au retour.","Résidents voyageant à l’étranger : effets personnels, 6 mois."],
+  duree:["Temps nécessaire, sans dépasser 1 an pour les catégories C et D.","Prorogation jusqu’au double par le ministre des Finances."],
+  apur:["Réimportation à l’identique (052), en franchise des droits.","Exportation définitive (680)."],
+  mac:["Retour en franchise si la marchandise revient à l’identique.","Si elle a été transformée : c’est le régime de l’ETPP qui s’applique."],
+  nw:[["Conteneurs : libre circulation, sans formalité de mouvement en procédure simplifiée.","Circ. 6172/312 (2021)"]],
+  vig:["Le non-retour dans le délai vaut exportation définitive.","Retour par le bureau de sortie, sauf dérogation du directeur."],
+  src:["Code art. 153-154","Décret art. 148-162","Circ. 6164/313"]},
+ transit:{n:"Transit",fam:"Circulation",c:"#888780",codes:[["085","transit à l’import"],["086","transit à l’export"],["855 / 856 / 866","zones franches"],["087","marchandises locales (TIC)"]],
+  bref:"Transporter des marchandises sous douane, en suspension des droits, d’un bureau ou d’un entrepôt à un autre, y compris pour traverser le Maroc.",
+  facts:[["Délai","Fixé par la douane"],["Document","Acquit, TIR ou déclaration simplifiée"],["Redevance","150 DH par acquit"],["Contrôle","Triple circuit, délais suivis"]],
+  base:"Code, art. 155 à 158 · Décret, art. 163 à 172",
+  qui:["Tout opérateur, sous couvert d’un acquit à caution, d’un document international (carnet TIR) ou d’une déclaration simplifiée.","Tous les bureaux, sauf ceux limités au contrôle des voyageurs."],
+  duree:["Délai et, le cas échéant, itinéraire fixés par l’administration.","Suivi automatique dans BADR depuis le 1er janvier 2023."],
+  apur:["Arrivée au bureau ou à l’entrepôt de destination, où la marchandise peut recevoir tout régime.","Mise à la consommation : droits du jour de la déclaration ; valeur au moins égale à celle à l’entrée sur le territoire."],
+  mac:["Déficits constatés : droits du jour de la constatation."],
+  nw:[["Alertes automatiques au départ, à 80 % et à l’échéance du délai ; justification d’un retard sous 72 heures.","Circ. 6387/412"],["Triple circuit de contrôle appliqué aux déclarations de transit depuis le 15/05/2023.","Circ. 6456/412"],["État de chargement du groupage à l’export : déclaration simplifiée de transit.","Circ. 6571/313 (2024)"],["DS MEAD valant acquit à caution entre bureau d’entrée et MEAD.","Circ. 6636/312 (2025)"],["Scellés : leur détention ou fourniture injustifiée est un délit (100 000 à 200 000 DH).","LF 2025"]],
+  vig:["Scellement par colis ou par unité de transport ; toute rupture doit être signalée au bureau le plus proche.","Transit vers une ZAI : marchandises non déclarées incompatibles avec l’activité = contrebande (LF 2026)."],
+  src:["Code art. 155-158","Décret art. 163-172","Circ. 6387/412","Circ. 6456/412","Circ. 6571/313","Circ. 6677/312"]},
+ drawback:{n:"Drawback",fam:"Remboursement",c:"#B8922A",codes:[["069","exportation dans le cadre du drawback"],["053","réimportation en suite"]],
+  bref:"Rembourser forfaitairement le droit d’importation et les TIC payés sur des intrants incorporés ou consommés dans des produits exportés, ou cédés sous ATPA ou EIF.",
+  facts:[["Remboursement","Taux moyens forfaitaires"],["Demande","Par trimestre"],["Délai","≤ 2 ans après l’export"],["Paiement","30 jours ouvrables"]],
+  base:"Code, art. 159 à 163 · Décret, art. 173 · Arrêté 840-21",
+  qui:["Exportateurs de produits figurant à l’annexe III du décret, aux taux de l’annexe IV bis.","Drawback-énergie : remboursement sur coefficients de consommation énergétique fixés avec les professions."],
+  duree:["Aucun remboursement pour une exportation de plus de 2 ans à la date de la demande.","Liquidation trimestrielle."],
+  apur:["Dossier : demande (références des exportations ou cessions, nature et quantités, preuve du paiement des droits), justificatif du transfert de propriété, description du procédé.","Drawback-énergie : preuve de paiement et transfert de propriété non exigés."],
+  mac:["Ne concerne pas la mise à la consommation : le drawback intervient après un paiement des droits."],
+  nw:[["Dossiers drawback-énergie sur BADR pour les exportations depuis le 01/01/2024.","Circ. 6552/313 (2024)"],["Fibre d’acier ajoutée à la liste du drawback-énergie.","Circ. 6591/313 (2024)"],["Remboursement sous 30 jours ouvrables ; dépôt possible via le Bureau d’ordre digital.","Arrêté 840-21 · Circ. 6231/313"]],
+  vig:["Première demande : domiciliation auprès du service central des régimes économiques.","Dépôt à Casa-Port (et Casablanca-MEAD pour le textile) pour le drawback-énergie."],
+  src:["Code art. 159-163","Décret art. 173","Circ. 6231/313","Circ. 6552/313","Circ. 6591/313"]},
+ prealable:{n:"Exportation préalable (compensation par équivalence)",fam:"Remboursement",c:"#9A6A1A",codes:[["079","exportation préalable"],["084","cession / export préalable"],["849","véhicules"],["020","import compensateur avec paiement"],["021","import compensateur sans paiement"]],
+  bref:"Exporter d’abord des produits fabriqués avec des intrants dédouanés, puis importer en franchise une quantité équivalente d’intrants.",
+  facts:[["Délai export","2 ans après la MAC"],["Délai import","2 ans après l’export"],["Équivalence","Identique ou similaire"],["Autorisation","Supprimée (2021)"]],
+  base:"Code, art. 142 et 150",
+  qui:["Exportateurs ayant payé les droits sur leurs intrants.","S’applique aussi aux ventes hors droits à des personnes bénéficiant d’une franchise légale."],
+  duree:["Exportation ou vente dans les 2 ans suivant la mise à la consommation initiale.","Importation compensatrice dans les 2 ans suivant l’exportation ou la vente."],
+  apur:["Importation sous les codes 020 ou 021, avec les références de la DUM initiale et de la quittance."],
+  mac:["Marchandises similaires admises pour raisons économiques, sans dépasser le montant des droits initialement acquittés, sur note explicative."],
+  nw:[["Plus d’autorisation préalable : conditions vérifiées au contrôle de la déclaration.","Circ. 6164/313 (2021)"]],
+  vig:["Indiquer les références de la déclaration d’importation initiale et de la quittance."],
+  src:["Code art. 142, 150","Circ. 6164/313"]},
+ zai:{n:"Zones d’accélération industrielle (ZAI)",fam:"Zone",c:"#185FA5",codes:[["761 à 769","exportations vers la zone"],["050","MAC en provenance"],["221 / 231","ATPA en provenance"],["855 / 856 / 866","transit"],["681 / 682","exportation via zone"]],
+  bref:"Espaces soustraits à la législation douanière et des changes pour les activités industrielles et les services liés. Les flux d’entrée et de sortie sont exonérés de droit d’importation et de TVA.",
+  facts:[["Base","Loi 19-94"],["Vente locale","Si export impossible"],["Taux réduit","DI 2,5 % (convention)"],["Transit","Caution « F » possible"]],
+  base:"Loi 19-94 · Décret 2-95-562 · Code, art. 164 bis-1°-i et 166 quater à 166 sexies",
+  qui:["Entreprises autorisées à s’installer, pour les activités fixées par arrêté pour chaque zone.","Flux territoire → zone : exportation (DUM d’export). Zone → territoire : importation. Entre zones : transit simplifié."],
+  duree:["Pas de compte suspensif à apurer : l’entrée en zone vaut exportation, la sortie vers le territoire vaut importation."],
+  apur:["Exportation ou réexportation.","Introduction sur le territoire sous un régime douanier."],
+  mac:["Mise à la consommation seulement si l’exportation est impossible pour raisons commerciales justifiées.","Espèce, valeur et taux du jour de la déclaration ; la valeur des produits marocains ajoutés est déduite.","Droit réduit de 2,5 % dans la limite de 30 % du chiffre d’affaires export, par convention.","Décision déconcentrée pour les ventes locales de biens d’équipement et produits jusqu’à 15 % du chiffre d’affaires export."],
+  nw:[["Contrebande : marchandises non déclarées incompatibles avec l’activité, découvertes en transit vers la zone.","LF 2026 · art. 282-6°"],["Convention type : 10 % du chiffre d’affaires export au droit de 2,5 %, pendant 3 ans (code franchise 1084).","Note D232/2025"],["Cautionnement sur engagement des exportateurs installés en ZAI pour le transit.","Circ. 6707/313"]],
+  vig:["Transit depuis ou entre les zones (866, 856) : exportation à la valeur brute.","Contrôle douanier permanent aux accès : les marchandises, véhicules et personnes peuvent être visités."],
+  src:["Loi 19-94","Code art. 164 bis, 166 quater-sexies","Circ. 6137/310","Circ. 6464/313","Note D232/2025","Circ. 6702/210"]},
+ mead:{n:"Magasins et aires de dédouanement (MEAD)",fam:"Mise en douane",c:"#D85A30",codes:[["DS MEAD","déclaration sommaire valant acquit"]],
+  bref:"Lieux agréés où les marchandises attendent leur déclaration en détail, à l’import comme à l’export. Ce n’est pas un régime économique : c’est l’étape avant l’affectation à un régime.",
+  facts:[["Délai","45 jours ouvrables"],["Au-delà","Marchandise abandonnée"],["Document","DS MEAD (2025)"],["Redevance","150 DH"]],
+  base:"Code, art. 61 à 63 · Cahier des charges (circ. 5655/312, mise à jour 6675/312)",
+  qui:["Exploitants : personnes morales dont l’activité principale est la logistique ou le transport international, agréées par la douane.","Ouverts à tout destinataire ou expéditeur."],
+  duree:["Marchandises non déclarées sous un régime définitif après 45 jours ouvrables, ou déclarées mais non enlevées dans le mois sans paiement : réputées abandonnées.","Les marchandises abandonnées sont remises à la douane pour cession ou destruction, aux frais de l’exploitant."],
+  apur:["Déclaration en détail sous le régime choisi (mise à la consommation, entrepôt, ATPA, réexportation…).","Apurement de la DS MEAD par les mainlevées des DUM."],
+  mac:["Régime de droit commun ou régime choisi à la sortie."],
+  nw:[["DS MEAD : un seul document remplace acquit à caution, déclaration sommaire MEAD et état de dépotage.","Circ. 6636/312 (2025)"],["Redevance de 150 DH par DS MEAD.","Circ. 6677/312 (2025)"],["Scellés électroniques, vidéosurveillance 90 jours, badges, signalement des marchandises non enlevées sous 48 h.","Circ. 6675/312 (01/09/2025)"],["OEA Sécurité-Sûreté : dépotage sans présence douanière hors heures légales.","Circ. 5991/300"]],
+  vig:["Responsabilité de l’exploitant jusqu’à la sortie effective de la marchandise dédouanée.","Seuils d’activité après 24 mois : 1 000 DUM ou 100 DS MEAD par an en centre logistique, 2 000 ou 200 pour un MEAD isolé."],
+  src:["Code art. 61-63","Circ. 5655/312","Circ. 6636/312","Circ. 6675/312","Circ. 6677/312"]}
 };
+const ORDER = ["entrepot","eif","atpa","tsd","at","etpp","et","transit","drawback","prealable","zai","mead"];
+const NEWFLAG = {entrepot:1,atpa:1,etpp:1,transit:1,mead:1,zai:1,drawback:1,at:1};
+let cur = null;
+function renderGrid(){
+  $("#rgGrid").innerHTML = ORDER.map(k => {const r=R[k]; return `<button class="rg ${cur===k?"on":""}" style="--c:${r.c}" data-k="${k}">
+    ${NEWFLAG[k]?`<span class="new">2024-26</span>`:""}<div class="fam">${esc(r.fam)}</div><div class="nm">${esc(r.n)}</div><div class="cd">${esc(r.codes.slice(0,3).map(c=>c[0]).join(" · "))}</div></button>`}).join("");
+  $("#rgGrid").querySelectorAll(".rg").forEach(b => b.onclick = () => openFiche(b.dataset.k, true));
+}
+function li(arr, withSrc){return `<ul>${arr.map(x => withSrc ? `<li>${esc(x[0])} ${S(x[1])}</li>` : `<li>${esc(x)}</li>`).join("")}</ul>`}
+function openFiche(k, scroll){
+  cur = k; renderGrid(); const r = R[k];
+  $("#fiche").innerHTML = `<div class="card fiche" id="f-${k}">
+    <div class="f-h" style="--c:${r.c}"><div class="kick">${esc(r.fam)} · ${esc(r.base)}</div><h3>${esc(r.n)}</h3><p>${esc(r.bref)}</p></div>
+    <div class="f-facts">${r.facts.map(f=>`<div class="fact"><div class="k">${esc(f[0])}</div><div class="v">${esc(f[1])}</div></div>`).join("")}</div>
+    <div class="f-body">
+      <div class="blk full"><h4>Codes à déclarer</h4><div class="codes">${r.codes.map(c=>`<span class="code">${esc(c[0])}<i>${esc(c[1])}</i></span>`).join("")}</div></div>
+      <div class="blk"><h4>Qui peut en bénéficier</h4>${li(r.qui)}</div>
+      <div class="blk"><h4>Durée</h4>${li(r.duree)}</div>
+      <div class="blk"><h4>Comment apurer</h4>${li(r.apur)}</div>
+      <div class="blk"><h4>Taxation en cas de mise à la consommation</h4>${li(r.mac)}</div>
+      <div class="blk nw full"><h4>Nouveautés récentes</h4>${li(r.nw,true)}</div>
+      <div class="blk warn full"><h4>Points de vigilance</h4>${li(r.vig)}</div>
+    </div>
+    <div class="f-foot"><span class="lbl">Références</span>${r.src.map(S).join("")}<span style="flex:1"></span><a class="btn sm pri" href="/modules/comparateur">Chiffrer ce régime →</a></div>
+  </div>`;
+  if (scroll) document.getElementById("f-"+k).scrollIntoView({behavior:"smooth",block:"start"});
+}
 
-let wiz1Choice = null;
-
-function wizStep(step, choice) {
-  if (step === 2) {
-    wiz1Choice = choice;
-    document.querySelectorAll('#wiz-step-1 .wiz-opt').forEach(b => b.classList.remove('selected'));
-    event.target.classList.add('selected');
-    const data = wizData[choice];
-    document.getElementById('wiz-q2').textContent = data.q;
-    const optsEl = document.getElementById('wiz-opts-2');
-    optsEl.innerHTML = data.opts.map((o, i) =>
-      `<button class="wiz-opt" onclick="wizResult('${o.result}','${o.code}')">${o.label}</button>`
-    ).join('');
-    document.getElementById('wiz-step-2').style.display = 'block';
+/* ============ 02. SÉLECTEUR ============ */
+const TREE = {
+  q:"D’où vient la marchandise ?",o:[
+   {l:"De l’étranger",s:"Marchandise à importer",n:{q:"Que voulez-vous en faire au Maroc ?",o:[
+     {l:"La transformer ou l’assembler",s:"Pour exporter tout ou partie de la production",n:{q:"Quelle est votre situation ?",o:[
+        {l:"Entreprise industrielle équipée",s:"Vous disposez de l’outillage",r:{k:"atpa",why:"Vous importez des intrants pour les transformer et exporter les produits compensateurs : l’ATPA suspend droits et TVA pendant 24 mois au maximum.",alt:[["drawback","si vous préférez dédouaner les intrants et vous faire rembourser à l’export"],["prealable","si vous exportez avant de réimporter des intrants équivalents"],["eif","si votre investissement atteint 50 MDH"]]}},
+        {l:"Négociant sans outillage",s:"Vous faites travailler des sous-traitants",r:{k:"atpa",why:"L’ATPA est ouverte aux sociétés de négoce et représentants de donneurs d’ordre qui livrent des sous-traitants locaux ; la demande est examinée par le service central.",alt:[["entrepot","si vous revendez les intrants en l’état à des industriels (EPP)"]]}},
+        {l:"Projet industriel d’au moins 50 MDH",s:"Équipements et intrants",r:{k:"eif",why:"L’EIF couvre à la fois les équipements et les intrants d’un investissement d’au moins 50 MDH dont la production est exportée en tout ou partie.",alt:[["atpa","pour les seuls intrants"],["zai","si vous vous implantez en zone d’accélération industrielle"]]}},
+        {l:"Implanté en zone d’accélération industrielle",s:"Ou en projet d’implantation",r:{k:"zai",why:"En ZAI, les entrées et sorties sont exonérées de droit d’importation et de TVA : l’entrée vaut exportation et la vente sur le territoire vaut importation.",alt:[["atpa","si vous restez hors zone"]]}},
+        {l:"Produit transformé vendu au Maroc en exonération",s:"Le produit fini bénéficie d’une franchise",r:{k:"tsd",why:"La TSD permet de payer les droits sur le produit transformé, exonéré en tout ou partie, plutôt que sur les marchandises importées.",alt:[]}}
+     ]}},
+     {l:"La stocker avant de décider",s:"Vente au Maroc ou réexportation",n:{q:"Combien de temps ?",o:[
+        {l:"Quelques semaines",s:"Moins de 45 jours ouvrables",r:{k:"mead",why:"En MEAD, la marchandise attend sa déclaration jusqu’à 45 jours ouvrables. Au-delà, elle est réputée abandonnée.",alt:[["entrepot","si le délai risque d’être dépassé"]]}},
+        {l:"Plusieurs mois",s:"Jusqu’à 24 mois",r:{k:"entrepot",why:"L’entrepôt suspend droits et taxes jusqu’à 24 mois ; vous ne payez qu’à la mise à la consommation, sur la part vendue au Maroc.",alt:[["mead","pour une attente courte"]]}}
+     ]}},
+     {l:"L’utiliser puis la réexporter",s:"Matériel, salon, essais, échantillons",r:{k:"at",why:"L’admission temporaire couvre les matériels et produits réexportés à l’identique. Attention : le matériel de travaux paie une redevance de 1/10 des droits par trimestre.",alt:[]}},
+     {l:"La faire traverser le Maroc",s:"Vers un pays tiers",r:{k:"transit",why:"Le transit couvre le transport sous douane, sous acquit à caution ou carnet TIR, dans un délai fixé par la douane.",alt:[]}},
+     {l:"La vendre ou l’utiliser au Maroc",s:"Importation définitive",r:{k:null,t:"Mise à la consommation (régime 010)",why:"Pour une importation définitive, les droits et taxes sont payés à la déclaration. Si la vente est différée, l’entrepôt permet de reporter le paiement.",alt:[["entrepot","pour différer le paiement des droits"],["mead","pendant l’attente des documents"]]}}
+   ]}},
+   {l:"Du Maroc",s:"Marchandise marocaine ou déjà dédouanée",n:{q:"Que se passe-t-il à l’étranger ?",o:[
+     {l:"Transformation ou réparation",s:"La marchandise revient modifiée",r:{k:"etpp",why:"L’ETPP limite la taxation au retour à la plus-value acquise à l’étranger.",alt:[]}},
+     {l:"Utilisation, puis retour à l’identique",s:"Salon, chantier, essais",r:{k:"et",why:"L’exportation temporaire permet le retour en franchise de droits si la marchandise revient à l’identique.",alt:[]}},
+     {l:"Exportation de produits fabriqués avec des intrants taxés",s:"Récupérer les droits payés",r:{k:"drawback",why:"Le drawback rembourse forfaitairement le droit d’importation et les TIC payés sur les intrants, sous 30 jours ouvrables.",alt:[["prealable","pour réimporter des intrants équivalents en franchise"]]}}
+   ]}}
+  ]};
+let path = [];
+function nodeAt(p){let n=TREE; for(const i of p){const o=n.o[i]; n=o.n||o;} return n;}
+function renderSel(){
+  const n = nodeAt(path);
+  let crumbs = [], t = TREE;
+  path.forEach((i,ix) => {const o=t.o[i]; crumbs.push(`<span class="crumb" data-i="${ix}">${esc(o.l)} ✕</span>`); t=o.n||o;});
+  $("#crumbs").innerHTML = crumbs.join("");
+  $("#crumbs").querySelectorAll(".crumb").forEach(c => c.onclick = () => {path = path.slice(0, +c.dataset.i); renderSel();});
+  if (n.r){
+    const r = n.r, rg = r.k ? R[r.k] : null;
+    $("#qbox").innerHTML = `<div class="q-t">Votre parcours</div><p style="color:var(--mid);font-size:13.5px;margin-bottom:12px">Modifiez une réponse en cliquant sur l’étiquette correspondante.</p><button class="btn" id="selReset">Recommencer</button>`;
+    $("#selReset").onclick = () => {path=[]; renderSel();};
+    $("#rbox").innerHTML = `<div class="res-k">Régime recommandé</div><div class="res-t">${esc(rg?rg.n:r.t)}</div><div class="res-why">${esc(r.why)}</div>
+      ${rg?`<button class="btn pri" id="goF">Voir la fiche complète</button>`:""} <a class="btn" href="/modules/comparateur">Comparer les coûts</a>
+      ${r.alt.length?`<div class="res-alt"><b>À étudier aussi</b>${r.alt.map(a=>`<div style="margin-bottom:5px"><a href="#regimes" data-k="${a[0]}" class="altl">${esc(R[a[0]].n)}</a> — ${esc(a[1])}</div>`).join("")}</div>`:""}`;
+    if (rg) $("#goF").onclick = () => openFiche(r.k, true);
+    $("#rbox").querySelectorAll(".altl").forEach(a => a.onclick = e => {e.preventDefault(); openFiche(a.dataset.k, true);});
+  } else {
+    $("#qbox").innerHTML = `<div class="q-t">${esc(n.q)}</div><div class="opts">${n.o.map((o,i)=>`<button class="opt" data-i="${i}"><span>${esc(o.l)}<small>${esc(o.s)}</small></span></button>`).join("")}</div>`;
+    $("#qbox").querySelectorAll(".opt").forEach(b => b.onclick = () => {path.push(+b.dataset.i); renderSel();});
+    if (!path.length) $("#rbox").innerHTML = `<div class="placeholder">Le régime recommandé s’affichera ici.</div>`;
   }
 }
 
-function wizResult(text, code) {
-  document.querySelectorAll('#wiz-opts-2 .wiz-opt').forEach(b => b.classList.remove('selected'));
-  event.target.classList.add('selected');
-  document.getElementById('wiz-result-text').textContent = text;
-  document.getElementById('wiz-result').classList.add('show');
-  document.getElementById('wiz-reset').style.display = 'block';
-}
-
-function resetWiz() {
-  document.getElementById('wiz-step-2').style.display = 'none';
-  document.getElementById('wiz-result').classList.remove('show');
-  document.getElementById('wiz-reset').style.display = 'none';
-  document.querySelectorAll('.wiz-opt').forEach(b => b.classList.remove('selected'));
-}
-
-// ─── MAIN WIZARD (page sélecteur) ───
-const mwSteps = [
-  { q: 'La marchandise restera-t-elle sur le territoire marocain ?', opts: ['Oui, définitivement', 'Non, réexport prévu', 'Passage en transit uniquement'] },
-  { q: 'Quel est l\'objectif de l\'opération ?', opts: ['Mise en vente / consommation', 'Transformation industrielle', 'Stockage temporaire', 'Réparation puis retour'] },
-  { q: 'Êtes-vous en zone franche agréée ?', opts: ['Oui', 'Non'] },
+/* ============ 04. GARANTIES ============ */
+const CAUT = [
+ ["X","Caution mixte","20 % de caution bancaire ou de consignation, 80 % d’engagement de l’entreprise.","Opérer sous régime depuis au moins 3 mois, avec au moins 10 opérations et/ou 2 MDH de valeur."],
+ ["E","Engagement des entreprises exportatrices","Engagement de l’entreprise, sans caution bancaire.","Chiffre d’affaires export ≥ 10 MDH, capital ≥ 500 000 DH, titulaire de la caution mixte depuis 6 mois. Plafond illimité pour les OEA Sécurité-Sûreté et Simplifications douanières classe A."],
+ ["O","Dispense de caution pour donneurs d’ordre étrangers","Sous-traitance en ATPA sans paiement pour un donneur d’ordre étranger.","Lettre de confort, bilan du donneur d’ordre, titulaire de la caution mixte depuis 6 mois."],
+ ["F","Engagement des exportateurs installés en ZAI","Couvre le transit depuis, vers et entre les zones.","Entreprise exportatrice implantée en zone d’accélération industrielle."],
+ ["G / K","Caution bancaire globale","Une soumission cautionnée unique couvre les opérations (G : industrie ; K : pêche).","Convention entre la douane et la banque caution."],
+ ["S","Engagement personnel","Engagement de l’opérateur.","MEAD, compagnies pétrolières, compagnies aériennes nationales, établissements publics."],
+ ["C","Caution CCM","Couvre l’admission temporaire de matériel de tournage.","Sociétés de production ou de distribution de films."],
+ ["H","ATPA des artisans couturiers","Facilité dédiée aux vêtements traditionnels exportés.","Accordée par la direction provinciale de Nouasser."]
 ];
-let mwAnswers = [];
 
-function initMainWizard() {
-  mwAnswers = [];
-  renderMwStep(0);
+/* ============ 05. CYCLE ============ */
+const STEPS = [
+ ["Accéder au régime","Les régimes sont activés d’office sur BADR depuis 2021 : la DUM vaut demande et la mainlevée vaut autorisation. Exceptions : une enquête d’outillage pour les nouveaux opérateurs en ATPA, TSD et EIF (2024), et un agrément pour l’EIF, l’entrepôt privé particulier ou banal et l’échange standard.",["Circ. 6164/313","Circ. 6348/313","Circ. 6538/313"]],
+ ["Choisir la garantie","Caution bancaire, consignation, caution mixte ou engagement de l’entreprise. Garantie calculable au taux préférentiel avec la preuve d’origine ; plafond suivi en temps réel.",["Art. 116 Code","Circ. 6165/313","Circ. 6554/313","Circ. 6707/313"]],
+ ["Ouvrir le compte","DUM sous le code régime, avec le lieu effectif de stockage ou de transformation (LF 2026). En déclaration provisionnelle, un seul compte par dossier, ouvert à la date de la première sous-DUM.",["Art. 19 bis Code","Circ. 6221/313"]],
+ ["Tenir les écritures","Écritures de suivi : quantités placées, produits compensateurs, déchets, sous-traitance. Cessions sous signature électronique, sans dépôt physique.",["Art. 116 ter Code","Circ. 5707/312","Circ. 5747/312"]],
+ ["Apurer","Exportation à la valeur brute, cession, mise en entrepôt, mise à la consommation, abandon ou destruction. En ATPA, la douane a 2 mois après l’export pour contester les éléments d’apurement.",["Art. 136 Code","Circ. 6464/313"]],
+ ["Obtenir la décharge","Le certificat de décharge, total ou partiel, est transmis électroniquement à la banque, qui libère la caution à hauteur de la valeur déchargée.",["Art. 117 Code","Circ. 6052/300"]],
+ ["Gérer un dépassement","À l’échéance, les droits deviennent exigibles avec l’intérêt de retard. L’exportation hors délai relève du directeur provincial ; la prorogation au-delà du délai réglementaire relève de l’administration centrale.",["Art. 135-2° Code","Circ. 6348/313"]]
+];
+
+/* ============ 06. OUTILS ============ */
+const TOOLS = [
+ ["Système douanier","BADR","Ouverture et apurement des comptes, agréments d’entrepôt, plafonds de cautionnement, délais de transit, dossiers drawback-énergie, triple circuit.","Circ. 6572 · 6554 · 6387 · 6552"],
+ ["Portail entreprise","Diw@nati","Demandes de caution mixte, d’engagement exportateur, de dispense pour sous-traitance, d’ouverture d’EPP, statut OEA ; suivi des demandes et tableau de bord.","Circ. 6364/313"],
+ ["Guichet unique","PORTNET","Autorisations ETPP échangées avec les ministères, bons à délivrer des DS MEAD, titres de change.","Circ. 6671/311 · 6636/312"],
+ ["Dépôt de dossiers","Bureau d’ordre digital","Dépôt en ligne des dossiers de drawback et de facilités de cautionnement.","Circ. 6231/313 · 6707/313"],
+ ["Documents commerciaux","Plateforme blockchain","Transmission sécurisée des factures du fournisseur étranger ; adhésion volontaire ; modalités à préciser.","LF 2026 · art. 76 ter"],
+ ["Signature","Signature électronique","Déclarations, acquits à caution et annexes signés conformément à la loi 43-20 sur les services de confiance.","LF 2024 · art. 203 bis"]
+];
+
+/* ============ 07. SANCTIONS ============ */
+const SANC = [
+ ["Ne pas produire les documents exigés à l’appui de la DUM","Contravention de 3e classe","10 000 à 50 000 DH","LF 2024 · art. 297, 297 bis"],
+ ["Déclarer un faux lieu de stockage ou de transformation","Contravention de 3e classe","30 000 à 60 000 DH","LF 2026 · art. 19 bis, 297-9°"],
+ ["Détenir ou fournir des scellés douaniers sans justification","Délit de 2e classe","100 000 à 200 000 DH","LF 2025 · art. 281-10°, 282 bis"],
+ ["Utiliser des scellés douaniers sans justification","Délit de 2e classe","Valeur des marchandises ou du véhicule","LF 2025 · art. 282 bis"],
+ ["Marchandises non déclarées incompatibles avec l’activité, en transit vers une ZAI","Contrebande, délit de 2e classe","Sanctions de la contrebande","LF 2026 · art. 282-6°"],
+ ["Délits de 1re et 2e classe (cas général)","Délit","1 fois la valeur (au lieu de 2)","LF 2025 · art. 279 quater, 282 bis"],
+ ["Payer autrement que par voie électronique","Majoration","1 % du montant, minimum 1 000 DH","LF 2025 · art. 95"],
+ ["Déclarer à l’export la seule valeur de la prestation","Infraction à la valeur","Selon la réglementation en vigueur","Circ. 6464/313"],
+ ["Ne pas justifier un retard de transit sous 72 heures","Poursuites contentieuses","Selon l’infraction constatée","Circ. 6387/412"],
+ ["Laisser un compte arriver à échéance sans apurement","Exigibilité des droits","Droits et taxes + intérêt de retard 8 %/an","Art. 135-2°, 151 bis Code · art. 54 décret"]
+];
+
+/* ============ 08. CODES ============ */
+const CODES = [
+ ["Régimes simples",[["010","Mise à la consommation directe"],["060","Exportation en simple sortie"],["061","Exportation dans le cadre du SGP"],["680","Exportation définitive en régularisation d’ETPP ou d’ET"],["069","Exportation dans le cadre du drawback"]]],
+ ["Importations sous régime économique",[["020","Importation en compensation d’exportation préalable avec paiement"],["021","Importation en compensation d’exportation préalable sans paiement"],["022","ATPA avec paiement"],["023","ATPA sans paiement"],["241","Transformation sous douane — importation fractionnée"],["242","Transformation sous douane — papier d’édition"],["243","Transformation sous douane — autres"],["300","AT de matériel de recherche d’hydrocarbures"],["301","AT de matériel soumis à redevances trimestrielles"],["302","AT de matériel non soumis à redevances trimestrielles"],["303","AT pour opération de commerce triangulaire"],["310","AT de films et enregistrements loués ou prêtés"],["311","AT d’emballages et contenants importés vides"],["312","AT d’emballages et contenants importés pleins"],["321","AT de marchandises (délai 6 mois)"],["322","AT de marchandises (délai 2 ans)"],["323","Importation anticipée — échange standard"],["331","AT des véhicules"],["332","Autres AT"],["035","Entrepôt public"],["036","Entrepôt privé banal"],["037","Entrepôt privé particulier"],["381","EIF — importation directe de matières premières"],["385","EIF — importation directe de matériel"]]],
+ ["Cessions et transferts",[["382","EIF en suite d’EIF"],["383","EIF en suite d’ATPA"],["384","EIF en suite d’AT"],["386","EIF en suite d’EPP"],["080","Mutation et entrée en entrepôt"],["081","Entrepôt en suite de régimes économiques"],["817","Entrée en entrepôt d’exportation en suite de régimes économiques"],["082","ATPA en suite de régimes économiques"],["820","TSD en suite d’ATPA"],["821","TSD en suite d’AT"],["822","TSD en suite d’EPP"],["083","AT en suite de régimes économiques"],["084","Cession / exportation préalable"],["849","Cession / exportation préalable des véhicules automobiles"]]],
+ ["Mises à la consommation en suite de régime",[["040","MAC en suite d’ATPA"],["430","MAC en suite de TSD"],["044","MAC en suite d’AT"],["046","MAC en suite d’entrepôt public"],["047","MAC en suite d’entrepôt privé particulier"],["048","MAC en suite d’EIF"]]],
+ ["Exportations en suite de régime",[["070","Export en suite d’ATPA avec paiement"],["072","Export en suite d’ATPA sans paiement"],["700","Export en suite de TSD"],["074","Export en suite d’AT"],["075","Export en suite d’EPP"],["751","Export en suite d’EIF"],["752","Export en suite d’entrepôt d’exportation"],["077","ETPP de marchandises marocaines ou nationalisées"],["770","ETPP avec échange standard"],["771","ETPP en suite d’ATPA"],["772","Export en suite d’importation anticipée — échange standard"],["078","Exportation temporaire"],["079","Exportation préalable"]]],
+ ["Transit",[["085","Transit à l’import"],["086","Transit à l’export"]]],
+ ["Réimportations",[["051","Réimportation en suite d’ETPP"],["510","Réimportation en suite d’ETPP avec échange standard"],["511","Réimportation dans le cadre d’ETPP en suite d’ATPA"],["052","Réimportation en suite d’ET"],["053","Réimportation en suite de drawback"],["054","Réimportation en suite d’autres exportations"],["055","ATPA de marchandises réimportées pour retouches"],["056","AT de marchandises réimportées"]]],
+ ["Régimes TIC",[["087","Transit de marchandises locales"],["090","Entrepôt de produits pétroliers"],["092","Entrepôt d’autres produits"],["093","ATPA de marchandises soumises à TIC"],["094","MAC en suite d’entrepôt de produits pétroliers"],["095","MAC en suite de sortie raffinerie"],["097","MAC en suite d’entrepôt d’autres marchandises"],["098","Essai et marquage des objets en platine, or ou argent"],["099","MAC d’autres marchandises soumises à TIC"]]],
+ ["Zones franches et ZAI",[["050","MAC de marchandises en provenance des zones franches"],["221","ATPA avec paiement en provenance des zones franches"],["231","ATPA sans paiement en provenance des zones franches"],["681","Exportation définitive en régularisation d’ETPP ou d’ET vers les zones franches"],["682","Exportation vers l’étranger en suite d’exportation via les zones franches logistiques"],["761","Exportation simple vers les zones franches"],["762","Export en suite d’ATPA vers les zones franches"],["763","Export en suite d’AT vers les zones franches"],["764","Export en suite d’entrepôt vers les zones franches"],["765","Exportation temporaire vers les zones franches"],["766","ETPP vers les zones franches"],["767","Export en suite de TSD vers les zones franches"],["768","Export en suite d’EIF vers les zones franches"],["769","Exportation via les zones franches logistiques"],["855","Transit à l’import de l’étranger vers les zones franches"],["856","Transit entre zones franches (hors portuaires et aéroportuaires)"],["866","Transit à l’export vers l’étranger à partir des zones franches"]]],
+ ["Divers",[["002","Transbordement sur l’étranger"],["003","Transport maritime intérieur"],["004","Déclaration occasionnelle import"],["005","Déclaration occasionnelle export"],["006","Déclaration provisoire import simple"],["007","Déclaration provisoire import sous régimes économiques"],["008","AT de conteneurs"],["009","AT de véhicules à usage commercial"],["800","Exportation temporaire de conteneurs (D21)"],["900","Exportation temporaire de véhicules à usage commercial (D20)"]]]
+];
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+function renderCodes(){
+  const q = norm($("#codeQ").value.trim());
+  let html = "";
+  CODES.forEach(([g,rows]) => {
+    const f = rows.filter(r => !q || r[0].includes(q) || norm(r[1]).includes(q) || norm(g).includes(q));
+    if (f.length) html += `<tr class="grp"><td colspan="2">${esc(g)}</td></tr>` + f.map(r=>`<tr><td style="font-family:var(--mono);font-weight:500">${r[0]}</td><td>${esc(r[1])}</td></tr>`).join("");
+  });
+  $("#codeTbl").innerHTML = html || `<tr><td colspan="2" style="color:var(--muted)">Aucun code ne correspond.</td></tr>`;
 }
 
-function renderMwStep(step) {
-  const s = mwSteps[step];
-  if (!s) { renderMwResult(); return; }
-  const pct = Math.round(((step) / mwSteps.length) * 100) + 10;
-  document.getElementById('mwiz-bar').style.width = pct + '%';
-  document.getElementById('mwiz-content').innerHTML = `
-    <div style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Question ${step + 1} / ${mwSteps.length}</div>
-    <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:20px;line-height:1.4">${s.q}</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      ${s.opts.map((o, i) => `<button onclick="mwAnswer(${step},${i})" style="padding:12px 16px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--mid);font-size:13px;cursor:pointer;text-align:left;font-family:DM Sans,sans-serif;transition:all .15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--mid)'">${o}</button>`).join('')}
-    </div>`;
-}
-
-function mwAnswer(step, choice) {
-  mwAnswers[step] = choice;
-  if (step < mwSteps.length - 1) renderMwStep(step + 1);
-  else renderMwResult();
-}
-
-function renderMwResult() {
-  document.getElementById('mwiz-bar').style.width = '100%';
-  let regime = '010', label = 'Mise à la consommation';
-  if (mwAnswers[0] === 1 && mwAnswers[1] === 1) { regime = '051'; label = 'Admission temporaire (AT)'; }
-  else if (mwAnswers[0] === 1 && mwAnswers[1] === 2) { regime = '071'; label = 'Entrepôt de douane'; }
-  else if (mwAnswers[0] === 1 && mwAnswers[1] === 3) { regime = '042'; label = 'Exportation temporaire'; }
-  else if (mwAnswers[0] === 2) { regime = '031'; label = 'Transit douanier'; }
-  else if (mwAnswers[2] === 0) { regime = '061'; label = 'Zone franche d\'exportation'; }
-
-  document.getElementById('mwiz-content').innerHTML = `
-    <div style="text-align:center;padding:12px 0">
-      <div style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:8px">Régime recommandé</div>
-      <div style="font-family:DM Serif Display,serif;font-size:26px;color:var(--ink);margin-bottom:6px">${label}</div>
-      <div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:16px">Code ${regime}</div>
-      <div style="background:var(--green-bg);border:1px solid var(--green-bd);border-radius:var(--r);padding:12px;font-size:12px;color:var(--green);margin-bottom:16px">
-        Sur la base de vos réponses, ce régime est le plus adapté à votre situation.
-      </div>
-      <button onclick="initMainWizard()" style="padding:10px 20px;background:var(--gold);color:#fff;border:none;border-radius:var(--r);cursor:pointer;font-family:DM Sans,sans-serif;font-size:13px;font-weight:600">Recommencer</button>
-    </div>`;
-}
-
-// Init
-document.addEventListener('DOMContentLoaded', () => {
-  // Default: show regime 010
-  showRegime('010', document.querySelector('.regime-nav-btn'));
-});
+/* ============ INIT ============ */
+renderTl();
+renderSel();
+renderGrid();
+$("#cautTbl").innerHTML = CAUT.map(c=>`<tr><td class="c">${c[0]}</td><td><b>${esc(c[1])}</b></td><td>${esc(c[2])}</td><td>${esc(c[3])}</td></tr>`).join("");
+$("#steps").innerHTML = STEPS.map((s,i)=>`<div class="step"><div class="step-n">${i+1}</div><div><h4>${esc(s[0])}</h4><p>${esc(s[1])}</p><div class="srcs">${s[2].map(S).join("")}</div></div></div>`).join("");
+$("#tools").innerHTML = TOOLS.map(t=>`<div class="card tool"><div class="tk">${esc(t[0])}</div><h4>${esc(t[1])}</h4><p>${esc(t[2])}</p>${S(t[3])}</div>`).join("");
+$("#sancTbl").innerHTML = SANC.map(s=>`<tr><td>${esc(s[0])}</td><td>${esc(s[1])}</td><td>${esc(s[2])}</td><td>${S(s[3])}</td></tr>`).join("");
+$("#codeQ").oninput = renderCodes; renderCodes();
+const h = location.hash.replace("#",""); if (R[h]) openFiche(h, true);
+/* surlignage du sous-menu */
+const secs = [...document.querySelectorAll("main section")];
+const links = [...document.querySelectorAll("#subnav a")];
+addEventListener("scroll", () => {
+  let id = secs[0].id; for (const s of secs) if (s.getBoundingClientRect().top < 140) id = s.id;
+  links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#"+id));
+}, {passive:true});
 </script>
 </body>
 </html>
-
