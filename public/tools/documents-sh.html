@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr" class="ixp-theme">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Référentiel Documents par Code SH — IXP-Import-eXPert</title>
+<title>Documents requis par code SH — IXP-Import-eXPert</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
@@ -17,732 +17,550 @@
   --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
   --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
   --purple:#5A2AA0;--purple-bg:#F3EEFE;--purple-bd:#C8A8F8;
-  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 4px 20px rgba(26,26,24,.1);
-  --r:8px;--r-lg:12px;--r-xl:16px;
+  --sh:0 1px 4px rgba(26,26,24,.06);--r:8px;--r-lg:12px;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+button{font-family:inherit;cursor:pointer}
+.demo-banner{background:var(--amber-bg);border-bottom:1px solid var(--amber-bd);color:var(--amber);font-size:12px;text-align:center;padding:6px 12px}
+.page-header{background:rgba(249,248,244,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:50;box-shadow:var(--sh)}
+.hdr{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:14px;height:56px}
+.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+.logo-text{font-family:"DM Serif Display",Georgia,serif;font-size:15px;line-height:1.1}
+.logo-text span{display:block;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:28px;background:var(--border)}
+.hdr-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
+.hdr-links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:100px;border:1px solid var(--gold-bd);background:var(--gold-dim);color:var(--gold);text-decoration:none;white-space:nowrap}
+.wrap{max-width:1300px;margin:0 auto;padding:0 2rem 5rem}
+.hero{padding:30px 0 20px;border-bottom:1px solid var(--border);margin-bottom:22px}
+.hero h1{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:32px;line-height:1.15;margin-bottom:8px}
+.hero p{color:var(--mid);max-width:880px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;font-size:12px;color:var(--mid)}
+.stat b{font-family:var(--mono);color:var(--ink);font-size:15px;margin-right:4px}
 
-/* HEADER */
-.page-header{background:rgba(249,248,244,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
-.hdr-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:16px;height:56px}
-.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo-mark svg{fill:#fff}
-.logo-text{font-family:"DM Serif Display",Georgia,serif;font-size:15px;color:var(--ink);line-height:1.1}
-.logo-text span{display:block;font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
-.hdr-sep{width:1px;height:28px;background:var(--border);flex-shrink:0}
-.hdr-title{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
-.hdr-badges{margin-left:auto;display:flex;gap:6px}
-.hdr-badge{font-family:"JetBrains Mono",monospace;font-size:9px;padding:3px 10px;letter-spacing:.07em;text-transform:uppercase;border-radius:100px;border:1px solid}
-.b-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
-.b-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
-.b-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+.search{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;box-shadow:var(--sh);margin-bottom:18px}
+.srow{display:flex;gap:10px;flex-wrap:wrap}
+.srow input{flex:1;min-width:240px;border:1px solid var(--border-mid);border-radius:var(--r);padding:11px 14px;font-size:15px;font-family:var(--mono)}
+.srow input:focus{outline:2px solid var(--gold-bd);border-color:var(--gold)}
+.btn{border:1px solid var(--border-mid);background:var(--surface);border-radius:var(--r);padding:9px 14px;font-size:13px}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hint{font-size:11.5px;color:var(--muted);margin-top:6px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.filters span.l{font-size:11.5px;color:var(--mid);margin-right:4px}
+.f{font-size:11.5px;border:1px solid var(--border);background:var(--bg);border-radius:100px;padding:4px 10px;display:inline-flex;align-items:center;gap:5px}
+.f.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.f i{width:8px;height:8px;border-radius:50%;display:inline-block}
 
-/* BODY */
-.page-body{max-width:1300px;margin:0 auto;padding:0 2rem 5rem}
+.layout{display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh)}
+.chlist{max-height:calc(100vh - 120px);overflow:auto;position:sticky;top:72px}
+.sec-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);padding:12px 14px 4px;background:var(--bg);border-top:1px solid var(--border)}
+.ch{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:center;padding:6px 14px;border-top:1px solid var(--bg2);cursor:pointer;font-size:12.5px}
+.ch:hover{background:var(--gold-pale)}
+.ch.on{background:var(--gold-pale);box-shadow:inset 3px 0 0 var(--gold)}
+.ch.dim{opacity:.32}
+.ch .n{font-family:var(--mono);font-size:11px;color:var(--mid)}
+.dots{display:flex;gap:3px}
+.dots i{width:7px;height:7px;border-radius:50%}
 
-/* HERO */
-.hero{padding:32px 0 24px;border-bottom:1px solid var(--border);margin-bottom:28px}
-.hero h1{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(24px,3.5vw,40px);color:var(--ink);line-height:1.05}
-.hero h1 em{font-style:italic;color:var(--gold)}
-.hero p{color:var(--mid);font-size:13px;line-height:1.75;margin-top:8px;max-width:640px}
-.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.htag{font-family:"JetBrains Mono",monospace;font-size:9.5px;padding:3px 10px;border-radius:100px;border:1px solid}
-
-/* SEARCH ZONE */
-.search-zone{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;margin-bottom:20px;box-shadow:var(--sh-md)}
-.search-label{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.search-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.sh-input{flex:1;min-width:180px;max-width:320px;background:var(--bg);border:1px solid var(--border-mid);color:var(--ink);font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:600;padding:10px 14px;border-radius:var(--r);letter-spacing:.06em;transition:border-color .15s;outline:none}
-.sh-input:focus{border-color:var(--gold);background:var(--surface)}
-.sh-input::placeholder{color:var(--muted);font-weight:400;font-size:13px}
-.search-btn{padding:10px 22px;background:var(--gold);color:#fff;border:none;border-radius:var(--r);font-family:"DM Sans",sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;white-space:nowrap}
-.search-btn:hover{background:var(--gold-h)}
-.search-hint{font-size:11.5px;color:var(--muted);margin-top:8px;font-family:"JetBrains Mono",monospace;letter-spacing:.03em}
-
-/* QUICK ACCESS */
-.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:24px}
-.quick-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all .15s;text-align:left;font-family:"DM Sans",sans-serif}
-.quick-btn:hover{border-color:var(--gold-bd);background:var(--gold-pale)}
-.quick-code{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;color:var(--gold);display:block;margin-bottom:2px}
-.quick-label{font-size:11px;color:var(--mid);line-height:1.3}
-
-/* RESULT ZONE */
-.result-zone{display:none}
-.result-zone.show{display:block}
-
-/* Result header */
-.result-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:20px 24px;margin-bottom:16px;box-shadow:var(--sh);display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
-.result-code-big{font-family:"JetBrains Mono",monospace;font-size:28px;font-weight:700;color:var(--gold);line-height:1;flex-shrink:0}
-.result-info{flex:1;min-width:200px}
-.result-chapter{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.result-name{font-family:"DM Serif Display",Georgia,serif;font-size:20px;color:var(--ink);margin-bottom:6px;line-height:1.15}
-.result-tags{display:flex;gap:6px;flex-wrap:wrap}
-.rtag{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid}
-
-/* Score risque */
-.risk-meter{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;margin-bottom:16px}
-.risk-label{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-.risk-bar-bg{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.risk-bar-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.16,1,.3,1)}
-.risk-val{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;white-space:nowrap;min-width:80px;text-align:right}
-
-/* Tabs */
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px}
-.tab-btn{padding:8px 18px;border:none;background:transparent;color:var(--muted);font-family:"DM Sans",sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
-.tab-btn:hover{color:var(--ink)}
-.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
-.tab-panel{display:none}.tab-panel.active{display:block}
-
-/* Docs table */
-.docs-section{margin-bottom:14px}
-.docs-section-title{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:var(--r) var(--r) 0 0;margin-bottom:0;display:flex;align-items:center;gap:6px}
-.docs-table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);border:1px solid var(--border);border-radius:0 0 var(--r) var(--r);overflow:hidden}
-.docs-table th{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 12px;border-bottom:1px solid var(--border);background:var(--bg2)}
-.docs-table td{padding:9px 12px;border-bottom:1px solid var(--bg2);vertical-align:middle}
-.docs-table tr:last-child td{border-bottom:none}
-.docs-table tr:hover td{background:var(--gold-pale)}
-
-.doc-name{font-weight:500;color:var(--ink)}
-.doc-org{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted)}
-.doc-base{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--mid)}
-.badge{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid;white-space:nowrap}
-.b-oblig{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)}
-.b-cond{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
-.b-recom{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
-
-/* Organismes */
-.orgs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.org-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh)}
-.org-name{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:4px}
-.org-role{font-size:11.5px;color:var(--mid);line-height:1.5;margin-bottom:8px}
-.org-doc{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);background:var(--bg2);padding:3px 8px;border-radius:4px;display:inline-block;margin-top:4px}
-
-/* Alerts */
-.alert{border-radius:var(--r);padding:10px 14px;font-size:12px;display:flex;gap:8px;align-items:flex-start;margin-bottom:12px}
-.alert svg{flex-shrink:0;margin-top:1px}
-.alert-warn{background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)}
-.alert-info{background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue)}
-.alert-ok{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)}
-.alert-red{background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)}
-
-/* Stats row */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;box-shadow:var(--sh)}
-.stat-val{font-family:"DM Sans",sans-serif;font-size:20px;font-weight:700;color:var(--gold);line-height:1}
-.stat-lbl{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:3px}
-
-/* Empty state */
-.empty-state{text-align:center;padding:50px 20px;color:var(--muted)}
-.empty-state svg{margin:0 auto 14px;display:block;opacity:.3}
-.empty-state p{font-size:13px;line-height:1.7}
-
-@media(max-width:700px){.stats-row{grid-template-columns:1fr 1fr}.quick-grid{grid-template-columns:repeat(3,1fr)}.search-row{flex-direction:column;align-items:stretch}.sh-input{max-width:100%}}
+.res-head{padding:20px 22px;border-bottom:1px solid var(--border)}
+.res-head .kicker{font-family:var(--mono);font-size:10.5px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.res-head h2{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:26px;line-height:1.2;margin-top:3px}
+.orgs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.org{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid;display:inline-flex;gap:5px;align-items:center}
+.alertpos{margin:14px 22px 0;border:1px solid var(--red-bd);background:var(--red-bg);border-radius:var(--r);padding:10px 12px;font-size:12.8px}
+.alertpos b{color:var(--red)}
+.tabs{display:flex;gap:2px;padding:0 22px;border-bottom:1px solid var(--border);margin-top:12px}
+.tab{border:0;background:none;padding:10px 12px;font-size:13px;color:var(--mid);border-bottom:2px solid transparent}
+.tab.on{color:var(--ink);border-bottom-color:var(--gold);font-weight:600}
+.tabc{padding:16px 22px 22px}
+.grp-t{font-size:12px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin:14px 0 8px}
+.grp-t:first-child{margin-top:0}
+.doc{border:1px solid var(--border);border-left:4px solid var(--border-mid);border-radius:var(--r);padding:10px 12px;margin-bottom:8px}
+.doc.obligatoire{border-left-color:var(--red)}
+.doc.conditionnel{border-left-color:var(--amber)}
+.doc.info{border-left-color:var(--blue)}
+.doc-top{display:flex;gap:8px;align-items:flex-start}
+.doc-t{font-weight:600;font-size:13.5px;flex:1}
+.st{font-family:var(--mono);font-size:9.5px;padding:2px 7px;border-radius:4px;white-space:nowrap;border:1px solid}
+.st.obligatoire{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.st.conditionnel{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.st.info{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}
+.doc-m{font-size:11.5px;color:var(--mid);margin-top:2px}
+.doc-m b{color:var(--ink);font-weight:600}
+.doc-d{font-size:12.5px;color:var(--mid);margin-top:4px}
+.srcs{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.src{font-family:var(--mono);font-size:10px;border-radius:4px;padding:2px 6px;border:1px solid;text-decoration:none}
+.src.rag{background:var(--gold-dim);border-color:var(--gold-bd);color:#7a5f17}
+.src.web{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.empty{border:1px dashed var(--border-mid);border-radius:var(--r);padding:12px 14px;color:var(--mid);font-size:12.8px;background:var(--bg)}
+.welcome{padding:26px 22px;color:var(--mid)}
+.welcome h3{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:22px;color:var(--ink);margin-bottom:8px}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.quick button{border:1px solid var(--border);background:var(--bg);border-radius:var(--r);padding:6px 10px;font-size:12px}
+.quick button:hover{border-color:var(--gold)}
+.doc.chk{display:grid;grid-template-columns:22px 1fr;gap:10px}
+.doc.chk>input{margin-top:3px;width:16px;height:16px;accent-color:var(--green);cursor:pointer}
+.doc.done{background:var(--green-bg);border-color:var(--green-bd)}
+.doc.done .doc-t{text-decoration:line-through;color:var(--mid)}
+@keyframes flash{0%{box-shadow:0 0 0 3px rgba(30,122,74,.45)}100%{box-shadow:none}}
+.doc.justdone{animation:flash 1s ease-out}
+.progress{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.ring{width:58px;height:58px;flex-shrink:0}
+.ring circle{fill:none;stroke-width:6}.ring .bgc{stroke:var(--bg2)}
+.ring .fg{stroke-linecap:round;transition:stroke-dashoffset .4s,stroke .4s;transform:rotate(-90deg);transform-origin:50% 50%}
+.ring text{font-family:var(--mono);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:central}
+.prog{flex:1;min-width:200px}
+.prog-bar{height:10px;background:var(--bg2);border-radius:10px;overflow:hidden}
+.prog-bar i{display:block;height:100%;border-radius:10px;transition:width .4s,background .4s}
+.prog-txt{font-size:14.5px;font-weight:600;margin-top:6px}
+.prog-help{flex-basis:100%;font-size:11.5px;color:var(--muted)}
+.pcount{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:100px;margin-left:8px;letter-spacing:0;text-transform:none}
+.done-banner{margin:12px 22px 0;border:1px solid var(--green-bd);background:var(--green-bg);color:var(--green);border-radius:var(--r);padding:10px 14px;font-weight:600;font-size:13px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 16px;border-radius:8px;font-size:12.5px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:99}
+.toast.show{opacity:1}
+@media print{.page-header,.search,.chlist,.tabs,.progress button,.doc.chk>input{display:none!important}.layout{display:block}}
+.foot{margin-top:24px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--border);padding-top:14px}
+@media (max-width:980px){.layout{grid-template-columns:1fr}.chlist{position:static;max-height:360px}}
 </style>
 <link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
 </head>
 <body>
+<header class="page-header"><div class="hdr">
+  <div class="logo-mark">IX</div>
+  <div class="logo-text">Import-eXPert<span>Qualifier</span></div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-title">Documents requis par code SH</div>
+</div></header>
 
-<div class="page-header">
-  <div class="hdr-inner">
-    <div class="logo-mark"><svg width="15" height="15" viewBox="0 0 12 12"><path d="M6 0L11 3V9L6 12L1 9V3Z"/></svg></div>
-    <div class="logo-text">Import-eXPert <span>Intelligence Douanière</span></div>
-    <div class="hdr-sep"></div>
-    <div class="hdr-title">Référentiel Documents par Code SH</div>
-    <div class="hdr-badges">
-      <span class="hdr-badge b-gold">17 881 codes NC10</span>
-      <span class="hdr-badge b-green">ONSSA · ANRT · CoC</span>
-      <span class="hdr-badge b-blue">Circulaires ADII</span>
+<div class="wrap">
+  <section class="hero">
+    <h1>Documents requis par code SH</h1>
+    <p>Saisissez un code SH (2 à 10 chiffres) pour voir les formalités propres au produit : contrôles sanitaires, conformité industrielle, licences, agréments, fiscalité intérieure. Chaque pièce indique l'organisme compétent, son statut et sa source.</p>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <div class="search">
+    <div class="srow">
+      <input id="q" placeholder="Ex. 0201, 2004102000, 8517, 87.03…" autocomplete="off" inputmode="numeric">
+      <button class="btn primary" id="go">Rechercher</button>
+      <button class="btn" id="clear">Effacer</button>
     </div>
+    <div class="hint">Les deux premiers chiffres donnent le chapitre ; au-delà, les positions qui font l'objet d'une mesure spécifique (licence, antidumping…) sont signalées.</div>
+    <div class="filters" id="filters"></div>
   </div>
+
+  <div class="layout">
+    <aside class="panel chlist" id="chlist"></aside>
+    <main class="panel" id="res"></main>
+  </div>
+
+  <div class="foot">IXP-Import-eXPert · Usage informatif. Les listes officielles évoluent (MIC, ONSSA, ANRT) : vérifier le code NC10 exact sur le portail de la douane et auprès de l'organisme avant l'importation.</div>
 </div>
-
-<div class="page-body">
-
-  <!-- HERO -->
-  <div class="hero">
-    <h1>Documents requis par <em>Code SH</em></h1>
-    <p>Identifiez instantanément tous les documents obligatoires, conditionnels et recommandés pour l'importation d'une marchandise au Maroc, selon son code SH (Système Harmonisé) ou NC10.</p>
-    <div class="hero-meta">
-      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">Tarif Intégré Marocain</span>
-      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">ONSSA · ANRT · IMANOR</span>
-      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Mise à jour 2025</span>
-      <span class="htag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Usage informatif</span>
-    </div>
-  </div>
-
-  <!-- SEARCH -->
-  <div class="search-zone">
-    <div class="search-label">Saisir un code SH, NC8 ou NC10</div>
-    <div class="search-row">
-      <input class="sh-input" type="text" id="sh-input" placeholder="Ex: 8471, 0201, 3004.10, 8471.30.00.00" maxlength="15" oninput="onShInput(this.value)" onkeydown="if(event.key==='Enter')searchDocs()"/>
-      <button class="search-btn" onclick="searchDocs()">Rechercher</button>
-      <button class="search-btn" style="background:var(--bg2);color:var(--mid);border:1px solid var(--border)" onclick="clearSearch()">Effacer</button>
-    </div>
-    <div class="search-hint" id="sh-hint">Entrez au moins 2 chiffres — chapitres SH de 01 à 97</div>
-  </div>
-
-  <!-- QUICK ACCESS -->
-  <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Accès rapide — chapitres fréquents</div>
-  <div class="quick-grid">
-    <button class="quick-btn" onclick="quickSearch('01')"><span class="quick-code">01–05</span><span class="quick-label">Animaux vivants & produits</span></button>
-    <button class="quick-btn" onclick="quickSearch('07')"><span class="quick-code">07–08</span><span class="quick-label">Légumes, fruits, plantes</span></button>
-    <button class="quick-btn" onclick="quickSearch('15')"><span class="quick-code">15</span><span class="quick-label">Graisses & huiles</span></button>
-    <button class="quick-btn" onclick="quickSearch('21')"><span class="quick-code">21–22</span><span class="quick-label">Préparations alim. & boissons</span></button>
-    <button class="quick-btn" onclick="quickSearch('27')"><span class="quick-code">27</span><span class="quick-label">Combustibles minéraux</span></button>
-    <button class="quick-btn" onclick="quickSearch('30')"><span class="quick-code">30</span><span class="quick-label">Produits pharmaceutiques</span></button>
-    <button class="quick-btn" onclick="quickSearch('38')"><span class="quick-code">38–39</span><span class="quick-label">Chimique & plastiques</span></button>
-    <button class="quick-btn" onclick="quickSearch('64')"><span class="quick-code">64</span><span class="quick-label">Chaussures</span></button>
-    <button class="quick-btn" onclick="quickSearch('72')"><span class="quick-code">72–73</span><span class="quick-label">Fonte, fer, acier</span></button>
-    <button class="quick-btn" onclick="quickSearch('84')"><span class="quick-code">84</span><span class="quick-label">Machines & appareils</span></button>
-    <button class="quick-btn" onclick="quickSearch('85')"><span class="quick-code">85</span><span class="quick-label">Électrique & électronique</span></button>
-    <button class="quick-btn" onclick="quickSearch('87')"><span class="quick-code">87</span><span class="quick-label">Véhicules automobiles</span></button>
-    <button class="quick-btn" onclick="quickSearch('90')"><span class="quick-code">90</span><span class="quick-label">Instruments de précision</span></button>
-    <button class="quick-btn" onclick="quickSearch('94')"><span class="quick-code">94</span><span class="quick-label">Meubles & luminaires</span></button>
-    <button class="quick-btn" onclick="quickSearch('95')"><span class="quick-code">95</span><span class="quick-label">Jouets & articles sport</span></button>
-  </div>
-
-  <!-- RESULTS -->
-  <div class="result-zone" id="result-zone">
-
-    <div class="result-header" id="result-header"></div>
-
-    <div class="stats-row" id="stats-row"></div>
-
-    <div id="risk-zone"></div>
-
-    <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('docs',this)">Documents requis</button>
-      <button class="tab-btn" onclick="showTab('organismes',this)">Organismes de contrôle</button>
-      <button class="tab-btn" onclick="showTab('regimes',this)">Régimes admissibles</button>
-      <button class="tab-btn" onclick="showTab('notes',this)">Notes tarifaires</button>
-    </div>
-
-    <div id="tab-docs" class="tab-panel active"></div>
-    <div id="tab-organismes" class="tab-panel"></div>
-    <div id="tab-regimes" class="tab-panel"></div>
-    <div id="tab-notes" class="tab-panel"></div>
-  </div>
-
-  <!-- EMPTY STATE -->
-  <div id="empty-state">
-    <div class="empty-state">
-      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      <p>Saisissez un code SH ou NC10 pour afficher<br>la liste complète des documents requis à l'importation.</p>
-    </div>
-  </div>
-
-</div>
-
-<footer style="border-top:1px solid var(--border);padding:16px 2rem;text-align:center;font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted);letter-spacing:.07em;background:var(--surface);margin-top:2rem">
-  Import-eXPert &mdash; Référentiel Documents · Tarif Intégré Marocain · ONSSA · ANRT · IMANOR &middot; Usage informatif — vérifier auprès d'un transitaire agréé ADII
-</footer>
 
 <script>
-/* ══════════════════════════════════════════════
-   BASE DE DONNÉES DOCUMENTS PAR SECTION SH
-   Sources: Tarif Intégré Marocain, Circulaires ADII,
-   Sites ONSSA, ANRT, IMANOR, Office des Changes
-══════════════════════════════════════════════ */
+/* ===================== SOURCES ===================== */
+const W = {
+  onssaIE:{l:"ONSSA — Contrôle import/export",u:"https://www.onssa.gov.ma/import-and-export-controls/?lang=en"},
+  onssaAnim:{l:"ONSSA — Procédures import produits animaux",u:"https://www.onssa.gov.ma/import-procedures/?lang=en"},
+  onssaVeg:{l:"ONSSA — Contrôle import produits végétaux",u:"https://www.onssa.gov.ma/vegetable-products/control-procedure/?lang=en"},
+  arr14118:{l:"Arrêté 141-18 (ONSSA)",u:"https://www.onssa.gov.ma/wp-content/uploads/2022/06/Reglementation/A.Reglementation-Transversale/5.%20Import-et-Export/ARR.141-18.FR.pdf"},
+  onssaPest:{l:"ONSSA — Code de procédures pesticides & fertilisants",u:"https://eservice.onssa.gov.ma/Docs/Code%20de%20proc%C3%A9dures%2008%20DCPV%2015-CODE%20DE%20PROCEDURES-Version%20B%20-%2022-02-2018-28-02-2018%2015-06-34.pdf"},
+  onssaAdd:{l:"ONSSA — Code procédures additifs (alimentation animale)",u:"https://www.onssa.gov.ma/wp-content/uploads/2021/11/Code-procedures-importation-additifs-melanges.pdf"},
+  onssaAcet:{l:"ONSSA — Importation d'acide acétique",u:"https://www.onssa.gov.ma/vegetable-products/importation-of-acetic-acid/?lang=en"},
+  micList:{l:"MIC — Produits contrôlés aux postes frontières",u:"https://www.mcinet.gov.ma/fr/actualites/controle-de-conformite-des-produits-industriels-nouvelles-normes-marocaines-dapplication"},
+  micAvis:{l:"MIC — Avis aux importateurs (contrôle à l'origine)",u:"https://www.mcinet.gov.ma/sites/default/files/Avis%20aux%20importateurs%20(%20externalisation%20du%20controle%20a%20l%20importation)%202019%20fr.pdf"},
+  micDocs:{l:"MIC — Listes à jour (17/05/2025) et licences",u:"https://www.mcinet.gov.ma/fr/content/liste-des-codes-sh-et-des-libell%C3%A9s-des-produits-qui-continueront-%C3%A0-%C3%AAtre-contr%C3%B4l%C3%A9s-au-maroc"},
+  micTex:{l:"MIC — Avis : tissus d'habillement contrôlés à l'origine",u:"https://www.mcinet.gov.ma/sites/default/files/documents/Avis%20aux%20importateurs%20FR%20PDF.pdf"},
+  micGuide:{l:"MIC — Guide de l'opérateur du commerce extérieur",u:"https://www.mcinet.gov.ma/sites/default/files/importateur/Guide_Fr.pdf"},
+  c6685:{l:"Circ. ADII 6685/311 — contrôle import télécom",u:"https://teknikengel.ticaret.gov.tr/sites/other/teknikengel/uploads/circulaire_96805.pdf"}
+};
+/* r(): texte de référence ; w(): site officiel */
+const r = (n,ref) => ({t:"rag",n,ref});
+const w = k => ({t:"web",k});
 
-// Documents communs à TOUS les imports
-const DOCS_COMMUNS = [
-  { nom:'Facture commerciale', org:'Vendeur', statut:'obligatoire', base:'ADII — Toutes importations', note:'Doit mentionner: prix unitaire, valeur totale, incoterm, origine' },
-  { nom:'Packing list (liste de colisage)', org:'Vendeur', statut:'obligatoire', base:'ADII — Toutes importations', note:'Poids brut/net, nombre de colis, dimensions' },
-  { nom:'Connaissement (B/L) ou LTA', org:'Transporteur', statut:'obligatoire', base:'ADII — Toutes importations', note:'B/L maritime, LTA aérien, CMR routier, CIM ferroviaire' },
-  { nom:'Engagement d\'importation', org:'Office des Changes', statut:'obligatoire', base:'Instruction OC n°02 / 2022', note:'Obligatoire pour toute importation > 0 MAD' },
-  { nom:'Fiche suiveuse PortNet', org:'PortNet / ANP', statut:'obligatoire', base:'Procédure PortNet', note:'Générée automatiquement à l\'arrivée du navire' },
-  { nom:'Assurance marchandises', org:'Assureur marocain', statut:'obligatoire', base:'Décret 2-82-331', note:'La police d\'assurance doit être souscrite au Maroc' },
+/* ===================== ORGANISMES ===================== */
+const ORG = {
+  ONSSA:["ONSSA","#1E7A4A"], MIC:["MIC (conformité)","#1A3A9A"], ANRT:["ANRT","#5A2AA0"],
+  SANTE:["Santé / AMMPS","#9A2A22"], NARSA:["NARSA","#0E7490"], DEF:["Défense nationale","#3F3F46"],
+  ENV:["Dév. durable","#4D7C0F"], LIC:["Licence (Commerce ext.)","#B45309"], TIC:["TIC (ADII)","#B8922A"],
+  CITES:["CITES (Eaux et Forêts)","#065F46"], CULT:["Culture / Communication","#7C3AED"], DEFCOM:["Défense commerciale","#BE185D"]
+};
+
+/* ===================== DOCUMENTS COMMUNS ===================== */
+const COMMUNS = [
+  {nom:"Facture commerciale",st:"obligatoire",org:"Vendeur",d:"Factures des marchandises déclarées, à joindre avant la signature de la DUM (document annexe).",s:[r("doc_declarations-autres-que-sommaires_arrete_1319-77","Art. 8"),r("circ_6528_312","Documents annexes")]},
+  {nom:"Titre de transport",st:"obligatoire",org:"Transporteur",d:"Connaissement, LTA ou lettre de voiture — document annexe chargé sur BADR avant signature.",s:[r("circulaire_74388_5746-312","Section II"),r("circ_6528_312","Documents annexes")]},
+  {nom:"Liste de colisage",st:"obligatoire",org:"Vendeur",d:"Document annexe dont le déclarant dispose avant d'initier la déclaration.",s:[r("circulaire_74388_5746-312","Section II")]},
+  {nom:"Preuve d'origine préférentielle",st:"conditionnel",org:"Exportateur / douane du pays d'export",d:"Si une préférence tarifaire est demandée : EUR.1 ou déclaration d'origine, valable 10 mois.",s:[r("circ_6528_312","Documents annexes"),r("circ_6706_233","Annexe I · art. 17 et 23")]},
+  {nom:"Autres documents commerciaux",st:"conditionnel",org:"—",d:"Lettre de cession, note de fret, assurance… lorsqu'ils attestent l'achat, la vente ou la cession.",s:[r("circ_6528_312","Documents annexes")]},
+  {nom:"Documents des contrôles du commerce extérieur et des changes",st:"conditionnel",org:"Banque domiciliataire",d:"Le titre d'importation figure dans les dossiers de contrôle ; quand il est transmis par échange de données, son chargement sur BADR n'est pas exigé.",s:[r("doc_declarations-autres-que-sommaires_arrete_1319-77","Art. 8"),r("circ_conjointe_1_controle_normatif","Section V"),r("circulaire_74388_5746-312","Section II")]},
+  {nom:"Autorisations et certificats sectoriels (si le produit y est soumis)",st:"info",org:"Organisme de contrôle",d:"Documents exigibles : chargement possible après signature, au plus tard 30 jours ; dispense de chargement si l'organisme les transmet directement à la douane. Défaut de jointure sanctionné (art. 297 bis CDII).",s:[r("circ_6528_312","Documents exigibles")]}
 ];
 
-// Base documentaire par chapitre SH
-const DB = {
-  // SECTION I — Animaux vivants
-  '01': { label:'Animaux vivants', chapter:'Chap. 01', risk:'eleve',
-    docs_spec:[
-      { nom:'Certificat sanitaire vétérinaire', org:'ONSSA', statut:'obligatoire', base:'Loi 39-12 Art. 8', note:'Délivré par autorité vétérinaire du pays d\'origine + visa ONSSA à l\'arrivée' },
-      { nom:'Permis d\'importation animaux vivants', org:'ONSSA / MAPM', statut:'obligatoire', base:'Arrêté ministériel MAPM', note:'Préalable à toute importation' },
-      { nom:'Certificat de santé pays origine', org:'Autorité vétérinaire étrangère', statut:'obligatoire', base:'Accord bilatéral sanitaire', note:'Doit être apostillé selon pays' },
-    ],
-    organismes:['ONSSA','MAPM'],
-    regimes:['010','071'],
-    notes:'Contrôle vétérinaire obligatoire aux points d\'entrée désignés. Quarantaine possible selon espèce et pays d\'origine.',
-    risk_detail:'Contrôle physique quasi-systématique. Circuit rouge probable pour animaux vivants.'
-  },
-  '02': { label:'Viandes et abats comestibles', chapter:'Chap. 02', risk:'eleve',
-    docs_spec:[
-      { nom:'Certificat sanitaire vétérinaire', org:'ONSSA', statut:'obligatoire', base:'Loi 39-12', note:'Obligatoire — contrôle à l\'entrée du territoire' },
-      { nom:'Certificat halal', org:'Organisme halal accrédité', statut:'obligatoire', base:'Note circ. ADII/ONSSA', note:'Obligatoire pour viandes bovines, ovines, volailles' },
-      { nom:'Certificat de conformité sanitaire', org:'ONSSA', statut:'obligatoire', base:'Décision du Directeur ONSSA', note:'Délivré après inspection à l\'arrivée' },
-      { nom:'Certificat d\'origine', org:'Chambre de commerce origine', statut:'obligatoire', base:'Tarif douanier marocain', note:'Exigé pour détermination du taux DI applicable' },
-    ],
-    organismes:['ONSSA','MAPM','MEFRA'],
-    regimes:['010'],
-    notes:'Viandes et abats soumis à contrôle ONSSA obligatoire. Certificat halal impératif. Certains pays d\'origine sont exclus.',
-    risk_detail:'Circuit rouge quasi-systématique. Inspection physique et prélèvements d\'échantillons fréquents.'
-  },
-  '03': { label:'Poissons, crustacés, mollusques', chapter:'Chap. 03', risk:'eleve',
-    docs_spec:[
-      { nom:'Certificat sanitaire halieutique', org:'ONSSA', statut:'obligatoire', base:'Décision ONSSA produits pêche', note:'Visa ONSSA obligatoire avant dédouanement' },
-      { nom:'Health Certificate (CE)', org:'Autorité pays origine', statut:'obligatoire', base:'Standard international', note:'Exigé pour produits de la pêche de tous pays' },
-      { nom:'Certificat d\'origine', org:'Autorité pays origine', statut:'obligatoire', base:'Tarif intégré marocain', note:'Pour bénéficier des accords préférentiels' },
-    ],
-    organismes:['ONSSA','DPMA','ANP'],
-    regimes:['010','071'],
-    notes:'Les produits de la pêche font l\'objet d\'une surveillance spéciale ONSSA. Température de transport vérifiée.',
-    risk_detail:'Inspection fréquente. Chaîne du froid contrôlée. Prélèvements analytiques possibles.'
-  },
-  '07': { label:'Légumes, plantes, racines', chapter:'Chap. 07', risk:'moyen',
-    docs_spec:[
-      { nom:'Certificat phytosanitaire', org:'ONSSA / Protection végétaux', statut:'obligatoire', base:'Loi 42-95 phytosanitaire', note:'Délivré par service phytosanitaire pays origine' },
-      { nom:'Certificat d\'origine', org:'Chambre de commerce', statut:'conditionnel', base:'Tarif intégré marocain', note:'Si préférence tarifaire demandée (ALECA, ALE Turquie...)' },
-    ],
-    organismes:['ONSSA','DPVCTRF'],
-    regimes:['010','071','091'],
-    notes:'Légumes soumis à contrôle phytosanitaire ONSSA. Certaines périodes peuvent déclencher des quotas saisonniers.',
-    risk_detail:'Contrôle phytosanitaire systématique pour légumes frais. Circuit jaune ou rouge fréquent.'
-  },
-  '08': { label:'Fruits comestibles', chapter:'Chap. 08', risk:'moyen',
-    docs_spec:[
-      { nom:'Certificat phytosanitaire', org:'ONSSA', statut:'obligatoire', base:'Loi 42-95', note:'Obligatoire pour tous les fruits frais importés' },
-      { nom:'Certificat d\'origine', org:'Chambre de commerce', statut:'conditionnel', base:'ALE applicable', note:'Pour fruits bénéficiant de préférences tarifaires' },
-    ],
-    organismes:['ONSSA'],
-    regimes:['010','071'],
-    notes:'PFI (Prélèvement Fiscal à l\'Importation) applicable sur de nombreux fruits. Droits saisonniers possibles.',
-    risk_detail:'Contrôle phytosanitaire. Valeur en douane vérifiée (risque sous-évaluation).'
-  },
-  '15': { label:'Graisses et huiles', chapter:'Chap. 15', risk:'moyen',
-    docs_spec:[
-      { nom:'Analyse de laboratoire (qualité)', org:'Laboratoire accrédité', statut:'obligatoire', base:'Norme marocaine NM', note:'Bilan analytique : acidité, teneur en eau, impuretés' },
-      { nom:'Certificat de conformité IMANOR', org:'IMANOR / CoC', statut:'conditionnel', base:'Décision MCINET', note:'Pour huiles alimentaires — marque Qualité Maroc possible' },
-      { nom:'Certificat d\'origine', org:'Chambre commerce', statut:'conditionnel', base:'ALE applicable', note:'Huile d\'olive : origine cruciale pour taux DI' },
-    ],
-    organismes:['IMANOR','ONSSA','MCINET'],
-    regimes:['010','071','051'],
-    notes:'Huiles alimentaires soumises à normes ONSSA + IMANOR. TIC applicable sur certaines huiles.',
-    risk_detail:'Contrôle analytique fréquent. Valeur en douane scrutée pour huile d\'olive.'
-  },
-  '27': { label:'Combustibles minéraux, huiles minérales', chapter:'Chap. 27', risk:'eleve',
-    docs_spec:[
-      { nom:'Certificat d\'analyse / qualité', org:'Laboratoire certifié', statut:'obligatoire', base:'Réglementation énergie', note:'Spécifications techniques obligatoires selon type produit' },
-      { nom:'Licence d\'importation hydrocarbures', org:'MCINET / ANRE', statut:'obligatoire', base:'Loi 48-17 réforme énergétique', note:'Préalable obligatoire pour carburants et gaz' },
-      { nom:'Certificat d\'origine', org:'Autorité pays origine', statut:'obligatoire', base:'Tarif intégré', note:'Origine influence fortement le taux DI' },
-    ],
-    organismes:['ANRE','ONHYM','MCINET'],
-    regimes:['010','071','031'],
-    notes:'TIC applicable sur carburants. Marquage fiscal obligatoire sur certains produits (gasoil). ANRE agréé requis.',
-    risk_detail:'Contrôle systématique. Échantillons prélevés pour conformité aux spécifications. Circuit rouge probable.'
-  },
-  '28': { label:'Produits chimiques inorganiques', chapter:'Chap. 28', risk:'eleve',
-    docs_spec:[
-      { nom:'Fiche de données de sécurité (FDS/MSDS)', org:'Fabricant', statut:'obligatoire', base:'Règlement CLP/GHS', note:'FDS en français obligatoire pour tous produits dangereux' },
-      { nom:'Autorisation d\'importation chimiques', org:'MCINET', statut:'conditionnel', base:'Décret n°2-18-..', note:'Pour substances contrôlées et précurseurs chimiques' },
-      { nom:'Certificat d\'analyse (CoA)', org:'Fabricant / Labo', statut:'obligatoire', base:'Standard industriel', note:'Pureté, composition, tests conformité' },
-    ],
-    organismes:['MCINET','ONSSA','ANRT'],
-    regimes:['010','071','051','031'],
-    notes:'Produits chimiques classés dangereux soumis à réglementation spécifique. Code IMDG pour transport maritime.',
-    risk_detail:'Contrôle documentaire systématique. FDS manquante = blocage quasi-certain.'
-  },
-  '29': { label:'Produits chimiques organiques', chapter:'Chap. 29', risk:'eleve',
-    docs_spec:[
-      { nom:'Fiche de données de sécurité (FDS/MSDS)', org:'Fabricant', statut:'obligatoire', base:'Règlement CLP/GHS', note:'En français, version à jour' },
-      { nom:'Certificat d\'analyse (CoA)', org:'Fabricant / Labo', statut:'obligatoire', base:'BPF / GMP', note:'Obligatoire pour principes actifs pharmaceutiques' },
-      { nom:'Autorisation ONSSA / Ministère Santé', org:'MS / ONSSA', statut:'conditionnel', base:'Selon destination produit', note:'Si produit à usage alimentaire ou pharmaceutique' },
-    ],
-    organismes:['MCINET','MS','ONSSA'],
-    regimes:['010','071','051'],
-    notes:'Précurseurs chimiques (tableau I et II ONU) soumis à contrôle renforcé. Notification obligatoire OIPC.',
-    risk_detail:'Contrôle systématique pour précurseurs. Circuit rouge automatique pour substances contrôlées.'
-  },
-  '30': { label:'Produits pharmaceutiques', chapter:'Chap. 30', risk:'eleve',
-    docs_spec:[
-      { nom:'Autorisation de mise sur le marché (AMM)', org:'Ministère de la Santé / DMPM', statut:'obligatoire', base:'Loi 17-04 Code du médicament', note:'AMM marocaine ou reconnaissance internationale requise' },
-      { nom:'Certificat d\'analyse lot', org:'Fabricant / Labo QC', statut:'obligatoire', base:'BPF OMS', note:'Contrôle qualité par lot avant libération' },
-      { nom:'Certificat de Bonne Pratique de Fabrication (BPF)', org:'Autorité réglementaire pays origine', statut:'obligatoire', base:'OMS / BPF', note:'Attestation de conformité aux BPF du fabricant' },
-      { nom:'Permis d\'importation médicaments', org:'DMPM / MS', statut:'obligatoire', base:'Art. 48 Code médicament', note:'Délivré par la Direction du Médicament et de la Pharmacie' },
-      { nom:'Liste de colisage détaillée (N° lots)', org:'Fabricant / Importateur', statut:'obligatoire', base:'ADII + DMPM', note:'Traçabilité lot obligatoire' },
-    ],
-    organismes:['DMPM','MS','ADII'],
-    regimes:['010','071'],
-    notes:'Import médicaments strictement réglementé. Seules les entreprises pharmaceutiques agréées peuvent importer. Contrôle systématique DMPM.',
-    risk_detail:'Circuit rouge quasi-systématique. Inspection physique et prélèvements obligatoires pour médicaments.'
-  },
-  '33': { label:'Huiles essentielles, cosmétiques', chapter:'Chap. 33', risk:'faible',
-    docs_spec:[
-      { nom:'Notification cosmétique (ONSSA)', org:'ONSSA', statut:'conditionnel', base:'Loi 12-01 cosmétiques', note:'Pour produits cosmétiques à usage humain' },
-      { nom:'Fiche technique produit', org:'Fabricant', statut:'obligatoire', base:'Standard ADII', note:'Composition, usage, précautions' },
-      { nom:'Certificat de conformité', org:'Labo accrédité', statut:'conditionnel', base:'NM ISO applicable', note:'Pour cosmétiques de grande distribution' },
-    ],
-    organismes:['ONSSA','IMANOR'],
-    regimes:['010','071','051'],
-    notes:'TIC applicable sur certains parfums et eaux de toilette. REACH européen non opposable mais fiche technique exigée.',
-    risk_detail:'Contrôle standard. Risque si absence de fiche technique.'
-  },
-  '38': { label:'Produits chimiques divers', chapter:'Chap. 38', risk:'moyen',
-    docs_spec:[
-      { nom:'Fiche de données de sécurité (FDS)', org:'Fabricant', statut:'obligatoire', base:'CLP/GHS', note:'En français, couvrant 16 rubriques réglementaires' },
-      { nom:'Certificat phytosanitaire', org:'ONSSA', statut:'conditionnel', base:'Loi 42-95', note:'Si pesticides, insecticides, herbicides (38.08)' },
-      { nom:'Homologation pesticide', org:'ONSSA / MAPM', statut:'conditionnel', base:'Loi 42-95 Art. 3', note:'Homologation préalable obligatoire pour tout pesticide' },
-    ],
-    organismes:['MCINET','ONSSA','MAPM'],
-    regimes:['010','071','051'],
-    notes:'Pesticides : homologation ONSSA préalable impérative. Répertoire officiel sur site ONSSA.',
-    risk_detail:'Pesticides : circuit rouge automatique sans homologation. Détention possible.'
-  },
-  '39': { label:'Matières plastiques', chapter:'Chap. 39', risk:'faible',
-    docs_spec:[
-      { nom:'Certificat de conformité IMANOR', org:'IMANOR', statut:'conditionnel', base:'NM applicable', note:'Pour plastiques alimentaires (contact alimentaire)' },
-      { nom:'Fiche technique matière', org:'Fabricant', statut:'obligatoire', base:'Standard ADII', note:'Grade, viscosité, spécifications techniques' },
-    ],
-    organismes:['IMANOR','ONSSA'],
-    regimes:['010','071','051','031'],
-    notes:'Plastiques de contact alimentaire soumis à certification IMANOR. TIC non applicable sur matières premières plastiques.',
-    risk_detail:'Contrôle standard. Circuit jaune possible pour plastiques alimentaires.'
-  },
-  '61': { label:'Vêtements en bonneterie', chapter:'Chap. 61', risk:'moyen',
-    docs_spec:[
-      { nom:'Certificat d\'origine EUR.1', org:'Autorité douanière UE/Turquie', statut:'conditionnel', base:'ALECA / ALE Turquie', note:'Pour bénéficier du taux préférentiel (0% vs 25%)' },
-      { nom:'Déclaration d\'origine sur facture', org:'Exportateur agréé', statut:'conditionnel', base:'Convention PEM', note:'Alternative EUR.1 pour exportateurs agréés' },
-      { nom:'Fiche technique matière/composition', org:'Fabricant', statut:'obligatoire', base:'Norme étiquetage textile', note:'Composition fibres, pays fabrication' },
-    ],
-    organismes:['ADII','AMDIE'],
-    regimes:['010','051','071'],
-    notes:'Droits élevés (25-35%) sans préférence. Vérification origine cruciale. Risque de sous-évaluation fréquent.',
-    risk_detail:'Contrôle valeur en douane fréquent. Vérification authenticité EUR.1.'
-  },
-  '62': { label:'Vêtements non en bonneterie', chapter:'Chap. 62', risk:'moyen',
-    docs_spec:[
-      { nom:'Certificat d\'origine EUR.1 ou facture déclaration', org:'Autorité douanière', statut:'conditionnel', base:'ALECA / ALE', note:'Déterminant pour taux DI applicable' },
-      { nom:'Fiche technique composition textile', org:'Fabricant', statut:'obligatoire', base:'Standard ADII', note:'Composition fibres, lavage, entretien' },
-    ],
-    organismes:['ADII'],
-    regimes:['010','051','071'],
-    notes:'Voir notes chapitre 61. Mêmes règles d\'origine et contrôles.',
-    risk_detail:'Identique chapitre 61.'
-  },
-  '64': { label:'Chaussures', chapter:'Chap. 64', risk:'moyen',
-    docs_spec:[
-      { nom:'Certificat de conformité IMANOR (CoC)', org:'IMANOR / Organisme notifié', statut:'obligatoire', base:'Décision MCINET 2019', note:'CoC obligatoire pour chaussures à destination du marché marocain' },
-      { nom:'Rapport de test laboratoire', org:'Laboratoire accrédité IMANOR', statut:'obligatoire', base:'NM EN ISO 20344', note:'Tests mécaniques, chimiques, matériaux' },
-      { nom:'Certificat d\'origine', org:'Autorité douanière', statut:'conditionnel', base:'ALE applicable', note:'Important pour taux DI (0% UE, 2,5% Turquie, 25-40% autres)' },
-    ],
-    organismes:['IMANOR','MCINET'],
-    regimes:['010','071'],
-    notes:'CoC IMANOR obligatoire depuis 2019. Sans CoC : blocage à la frontière. Programme de surveillance du marché actif.',
-    risk_detail:'Sans CoC : blocage automatique. IMANOR surveille activement ce chapitre.'
-  },
-  '72': { label:'Fonte, fer et acier', chapter:'Chap. 72', risk:'faible',
-    docs_spec:[
-      { nom:'Certificat d\'analyse / Mill Test Certificate', org:'Aciérie / Laminoir', statut:'obligatoire', base:'EN 10025 / ASTM / NM', note:'Composition chimique et caractéristiques mécaniques' },
-      { nom:'Certificat de conformité IMANOR', org:'IMANOR', statut:'conditionnel', base:'NM 01.4.003', note:'Pour ronds à béton HA et aciers de construction' },
-      { nom:'Déclaration de conformité CE', org:'Fabricant UE', statut:'conditionnel', base:'EN 1337 applicable', note:'Pour produits sidérurgiques à usage de construction' },
-    ],
-    organismes:['IMANOR','MCINET'],
-    regimes:['010','071','051','031'],
-    notes:'Ronds à béton HA soumis à certification IMANOR obligatoire. Droit antidumping possible sur aciers certains pays.',
-    risk_detail:'Contrôle standard. Risque si absence de Mill Test Certificate.'
-  },
-  '84': { label:'Réacteurs nucl., chaudières, machines', chapter:'Chap. 84', risk:'faible',
-    docs_spec:[
-      { nom:'Fiche technique / Spécifications', org:'Fabricant', statut:'obligatoire', base:'Standard ADII', note:'Description technique détaillée pour classification NC10' },
-      { nom:'Certificat de conformité CE / UL', org:'Organisme notifié', statut:'conditionnel', base:'Directives UE applicables', note:'Pour machines soumises à directive machines' },
-      { nom:'Certificat d\'origine', org:'Autorité douanière', statut:'conditionnel', base:'ALE applicable', note:'Impact important sur DI (0% UE vs 2,5-10% autres)' },
-      { nom:'Certificat ANRT (homologation)', org:'ANRT', statut:'conditionnel', base:'Loi 77-03 télécoms', note:'Si la machine intègre des composants radio/WiFi/Bluetooth' },
-    ],
-    organismes:['ANRT','IMANOR','ADII'],
-    regimes:['010','051','071','091'],
-    notes:'Machines neuves : DI souvent 2.5-10%. Machines d\'occasion : DI 25% + expertise valeur. ANRT si composants radio.',
-    risk_detail:'Contrôle valeur d\'occasion fréquent. ANRT pour tout appareil avec émetteur radio.'
-  },
-  '85': { label:'Machines, appareils électriques', chapter:'Chap. 85', risk:'moyen',
-    docs_spec:[
-      { nom:'Homologation ANRT', org:'ANRT', statut:'conditionnel', base:'Loi 77-03 + décision ANRT', note:'Obligatoire pour téléphones, routeurs, tout équipement radioélectrique' },
-      { nom:'Certificat de conformité IMANOR', org:'IMANOR', statut:'conditionnel', base:'NM applicable', note:'Pour appareils électriques basse tension, prises, câbles' },
-      { nom:'Déclaration de conformité CE', org:'Fabricant', statut:'conditionnel', base:'Dir. RED 2014/53/UE', note:'Pour appareils radioélectriques UE' },
-      { nom:'Certificat d\'origine', org:'Autorité douanière', statut:'conditionnel', base:'ALE applicable', note:'Crucial : DI 2.5% UE vs 10-17.5% autres' },
-      { nom:'Fiche technique détaillée', org:'Fabricant', statut:'obligatoire', base:'Standard ADII', note:'Puissance, tension, fréquence, fonctionnalités' },
-    ],
-    organismes:['ANRT','IMANOR','MCINET'],
-    regimes:['010','051','071','091'],
-    notes:'Chapitre très surveillé. Téléphones et équipements sans homologation ANRT seront bloqués. CoC IMANOR pour câbles.',
-    risk_detail:'ANRT obligatoire pour tout appareil radio. Circuit rouge si absence d\'homologation.'
-  },
-  '87': { label:'Voitures automobiles, tracteurs', chapter:'Chap. 87', risk:'moyen',
-    docs_spec:[
-      { nom:'Certificat de conformité véhicule (CoC)', org:'Constructeur / CMVSS', statut:'obligatoire', base:'Arrêté homologation MTPNET', note:'Homologation type obligatoire pour tous véhicules' },
-      { nom:'Titre d\'importation véhicule', org:'NARSA / MTPNET', statut:'obligatoire', base:'Décret 2-10-420', note:'Délivré par la NARSA pour véhicules neufs' },
-      { nom:'Certificat de conformité aux normes antipollution', org:'Labo agréé / Constructeur', statut:'obligatoire', base:'Norme Euro 5 minimum', note:'Norme Euro 5 minimum exigée depuis 2021' },
-      { nom:'Carnet de garantie', org:'Importateur / Concessionnaire', statut:'conditionnel', base:'Loi protection consommateur', note:'Pour véhicules neufs' },
-    ],
-    organismes:['NARSA','MTPNET','ADII'],
-    regimes:['010'],
-    notes:'Véhicules neufs : DI 2.5-10%. Véhicules d\'occasion < 5 ans seulement. DI 17.5-40% selon type. NARSA obligatoire.',
-    risk_detail:'Contrôle systématique. Norme antipollution vérifiée. Expertise valeur fréquente pour occasion.'
-  },
-  '90': { label:'Instruments de précision, médical', chapter:'Chap. 90', risk:'moyen',
-    docs_spec:[
-      { nom:'Homologation dispositif médical (DM)', org:'Ministère de la Santé / DPMED', statut:'conditionnel', base:'Loi 84-12 DM', note:'Obligatoire pour tout dispositif médical à usage humain' },
-      { nom:'Certificat CE (DM)', org:'Organisme notifié UE', statut:'conditionnel', base:'Dir. MDR 2017/745', note:'Reconnu par le Maroc pour dispositifs médicaux UE' },
-      { nom:'Fiche technique instrument', org:'Fabricant', statut:'obligatoire', base:'Standard ADII', note:'Spécifications, calibration, certifications' },
-      { nom:'Autorisation ANRT', org:'ANRT', statut:'conditionnel', base:'Loi 77-03', note:'Si l\'instrument intègre des communications sans fil' },
-    ],
-    organismes:['MS','DPMED','ANRT'],
-    regimes:['010','051','091'],
-    notes:'DM : homologation DPMED obligatoire. Instruments de mesure : étalonnage exigé. DI souvent faible (0-2.5%).',
-    risk_detail:'Dispositifs médicaux : contrôle systématique DPMED. Circuit rouge si DM sans homologation.'
-  },
-  '94': { label:'Meubles, literie, luminaires', chapter:'Chap. 94', risk:'moyen',
-    docs_spec:[
-      { nom:'Certificat de conformité IMANOR (CoC)', org:'IMANOR', statut:'obligatoire', base:'Décision MCINET meubles', note:'CoC obligatoire pour meubles et luminaires sur le marché marocain' },
-      { nom:'Rapport de test (résistance, sécurité)', org:'Laboratoire accrédité', statut:'obligatoire', base:'NM EN applicable', note:'Tests mécaniques, résistance, sécurité électrique luminaires' },
-      { nom:'Certification UL / CE pour luminaires', org:'Organisme certif.', statut:'conditionnel', base:'NM EN 60598', note:'Luminaires : certification électrique obligatoire' },
-    ],
-    organismes:['IMANOR','MCINET'],
-    regimes:['010','071'],
-    notes:'CoC IMANOR obligatoire depuis 2020 pour meubles et luminaires. Programme surveillance marché actif.',
-    risk_detail:'Blocage si absence CoC. Chapitre sous surveillance IMANOR active.'
-  },
-  '95': { label:'Jouets, jeux, articles de sport', chapter:'Chap. 95', risk:'moyen',
-    docs_spec:[
-      { nom:'Certificat de conformité IMANOR (CoC)', org:'IMANOR', statut:'obligatoire', base:'NM EN 71 (jouets)', note:'Sécurité jouets — obligatoire avant mise sur marché marocain' },
-      { nom:'Rapport de test sécurité', org:'Laboratoire accrédité', statut:'obligatoire', base:'EN 71-1/2/3', note:'Propriétés mécaniques, inflammabilité, migration chimique' },
-      { nom:'Notice en arabe + français', org:'Importateur', statut:'obligatoire', base:'Loi protection consommateur', note:'Instructions d\'utilisation bilingues obligatoires' },
-    ],
-    organismes:['IMANOR','MCINET'],
-    regimes:['010','071'],
-    notes:'Jouets très surveillés. CoC EN 71 obligatoire. Tests pour enfants < 3 ans renforcés.',
-    risk_detail:'Blocage si absence CoC. Jouets priorité programme surveillance IMANOR.'
-  },
+/* ===================== BLOCS RÉGLEMENTAIRES ===================== */
+const B = {
+  ANIM:{o:"ONSSA",docs:[
+    {nom:"Certificat sanitaire vétérinaire original du pays d'origine",st:"obligatoire",org:"Autorité compétente du pays d'export",d:"Les animaux, produits animaux et aliments pour animaux doivent être accompagnés de documents sanitaires signés par l'autorité officielle du pays d'origine.",s:[w("onssaIE"),w("onssaAnim")]},
+    {nom:"Dossier de demande de contrôle au guichet unique ONSSA",st:"obligatoire",org:"ONSSA",d:"Demande de contrôle (modèle ONSSA), certificat sanitaire original, copie du certificat d'origine, copie de la DUM, facture, liste de colisage, connaissement.",s:[w("onssaAnim")]},
+    {nom:"Certificat de contrôle à l'importation (admission)",st:"obligatoire",org:"ONSSA — poste frontière",d:"Contrôle documentaire, d'identité et physique (analyses si nécessaire) avant dédouanement ; certificat d'admission ou de non-admission délivré à l'issue.",s:[w("arr14118"),r("circ_6528_312","Documents exigibles")]},
+    {nom:"Provenance de pays contaminés",st:"info",org:"Police sanitaire vétérinaire",d:"Animaux et marchandises en provenance de pays contaminés : importation interdite dans les conditions de la législation sanitaire.",s:[r("doc_voyageurs-marocains-etranger_adii","Marchandises interdites")]}
+  ]},
+  VEG:{o:"ONSSA",docs:[
+    {nom:"Certificat phytosanitaire / sanitaire du pays d'exportation",st:"obligatoire",org:"Autorité compétente du pays d'export",d:"Atteste la conformité à la législation marocaine.",s:[w("onssaVeg"),w("onssaIE")]},
+    {nom:"Dossier de contrôle ONSSA",st:"obligatoire",org:"ONSSA",d:"Copie de la DUM ou de la déclaration occasionnelle, facture, colisage, titre de transport, certificats ; identification du lieu de stockage agréé.",s:[w("onssaVeg"),w("arr14118")]},
+    {nom:"Décision de l'inspecteur phytosanitaire",st:"info",org:"ONSSA",d:"Cachet sur la déclaration : « Admis après contrôle », « À fumiger » (traitement avant enlèvement) ou « À refouler » (réexpédition ou entrepôt pour réexportation).",s:[r("circulaire_25118","Circ. 4216/313")]}
+  ]},
+  ALIM:{o:"ONSSA",docs:[
+    {nom:"Contrôle de conformité ONSSA avant dédouanement",st:"obligatoire",org:"ONSSA — poste frontière",d:"Demande sur formulaire ONSSA + DUM, certificats sanitaires du pays d'export, facture, colisage. Certificat de contrôle à l'importation délivré à l'issue.",s:[w("arr14118"),w("onssaIE")]}
+  ]},
+  ALIMSPEC:{o:"ONSSA",docs:[
+    {nom:"Certificat halal",st:"conditionnel",org:"Organisme certificateur",d:"Pour les produits étiquetés « Halal » ; certificat d'abattage halal pour les produits susceptibles de contenir gélatine, collagène, graisse ou extraits de viande.",s:[w("onssaVeg")]},
+    {nom:"Certificat non-OGM / justificatifs de mode de production",st:"conditionnel",org:"Fournisseur",d:"Pour les mentions « NON-GMO », bio, indication géographique ou appellation d'origine.",s:[w("onssaVeg")]},
+    {nom:"Certificat d'enregistrement du ministère de la Santé",st:"conditionnel",org:"Ministère de la Santé",d:"Pour les produits destinés à une alimentation particulière.",s:[w("onssaVeg")]}
+  ]},
+  ALCOOL:{o:"ONSSA",docs:[
+    {nom:"Autorisation vins et boissons alcoolisées ; certificat d'âge ou d'origine",st:"obligatoire",org:"ONSSA",d:"Pièces exigées par la réglementation des produits alcoolisés.",s:[w("onssaVeg")]},
+    {nom:"TIC et marquage fiscal",st:"obligatoire",org:"ADII",d:"Bières, vins et alcools soumis aux taxes intérieures de consommation ; mise à la consommation dans des contenants munis des marques fiscales.",s:[r("doc_dahir-1-77-340_tic","Art. 1er"),r("loi_22-12_LF2012","Art. 5 · tableau A"),r("circ_6619_210","III.4 marquage fiscal")]}
+  ]},
+  BOISSON:{o:"TIC",docs:[
+    {nom:"TIC sur les limonades et produits sucrés",st:"conditionnel",org:"ADII",d:"Limonades et certains produits sucrés figurent dans le périmètre des TIC ; marquage fiscal des boissons.",s:[r("doc_dahir-1-77-340_tic","Art. 1er"),r("circ_6619_210","III.4 marquage fiscal")]}
+  ]},
+  SUCRE:{o:"TIC",docs:[
+    {nom:"TIC « produits sucrés » — vérifier la position",st:"conditionnel",org:"ADII",d:"Certains produits sucrés ont été ajoutés au périmètre des TIC.",s:[r("doc_dahir-1-77-340_tic","Art. 1er")]}
+  ]},
+  TABAC:{o:"TIC",docs:[
+    {nom:"TIC tabacs manufacturés et marquage fiscal",st:"obligatoire",org:"ADII",d:"Cigares, cigarettes, tabacs à fumer, à priser, à mâcher, tabac chauffé. Marquage fiscal étendu au 1er janvier 2026 aux liquides et cigarettes électroniques jetables, produits connexes et substituts nicotiniques.",s:[r("doc_dahir-1-77-340_tic","Art. 2"),r("circ_6619_210","III.4 marquage fiscal")]}
+  ]},
+  ENERGIE:{o:"TIC",docs:[
+    {nom:"TIC produits énergétiques (tableau C)",st:"obligatoire",org:"ADII",d:"Huiles de pétrole, lubrifiants, houilles, fuel, bitumes : quotités du tableau C ; codes régimes TIC spécifiques (entrepôt produits pétroliers 090, MAC 094/095).",s:[r("circ_6619_210","Art. 5 LF 2025 · tableau C"),r("loi_22-12_LF2012","Tableau C"),r("circ_6047_312_codification_regimes","Codes TIC")]}
+  ]},
+  FEED:{o:"ONSSA",docs:[
+    {nom:"Contrôle ONSSA des aliments pour animaux",st:"obligatoire",org:"ONSSA",d:"Contrôle documentaire, d'identité et physique à la frontière, avant dédouanement.",s:[w("arr14118"),w("onssaAnim")]},
+    {nom:"Autorisation des additifs, prémélanges et aliments complémentaires",st:"conditionnel",org:"ONSSA (DPIV)",d:"Dossier déposé au moins 15 jours avant la première importation pour les prémélanges composés de substances de la liste des additifs.",s:[w("onssaAdd")]}
+  ]},
+  PESTI:{o:"ONSSA",docs:[
+    {nom:"Homologation ONSSA du pesticide à usage agricole",st:"obligatoire",org:"ONSSA",d:"Tout pesticide importé doit être préalablement homologué ; copie de l'attestation d'homologation ou d'autorisation de vente jointe au dossier de contrôle.",s:[w("onssaPest")]},
+    {nom:"Liste des pesticides interdits à l'importation",st:"obligatoire",org:"ONSSA / ADII",d:"Spécialités dont l'homologation a été retirée (2018–2025) : importation interdite. Liste OCR à confronter à l'annexe officielle.",s:[r("pesticides_interdits_note_D23-2026_onssa","Note D23/2026"),r("note_D23_2026_ADII_AC_100","Note intégrale")]}
+  ]},
+  FERTI:{o:"ONSSA",docs:[
+    {nom:"Contrôle des matières fertilisantes et supports de culture",st:"obligatoire",org:"ONSSA",d:"Demande de contrôle + copie de la DUM ; contrôle documentaire, d'identité/physique et analytique ; étiquetage réglementé.",s:[w("onssaPest")]}
+  ]},
+  ACET:{o:"ONSSA",docs:[
+    {nom:"Autorisation d'importation d'acide acétique (par arrivage)",st:"conditionnel",org:"ONSSA — direction régionale",d:"Demande précisant quantité, origine, destination et lieu de dédouanement ; facture pro forma ; engagement d'importation visé par la banque ; preuve du dernier arrivage.",s:[w("onssaAcet")]}
+  ]},
+  MED:{o:"SANTE",docs:[
+    {nom:"Autorisation de l'AMMPS",st:"obligatoire",org:"AMMPS",d:"L'importation de médicaments hors usage personnel est subordonnée à l'autorisation de l'Agence marocaine des médicaments et des produits de santé.",s:[r("circ_6741_311","Annexe I.3.3")]}
+  ]},
+  DM:{o:"SANTE",docs:[
+    {nom:"Certificat d'enregistrement du dispositif médical",st:"obligatoire",org:"Direction du Médicament et de la Pharmacie",d:"Sous tout régime. Dispositif non commercialisé au Maroc prescrit à un patient : autorisation spécifique.",s:[r("doc_voyageurs-marocains-etranger_adii","Formalités spécifiques")]}
+  ]},
+  COSM:{o:"SANTE",docs:[
+    {nom:"Produits cosmétiques : contrôle du département de la Santé",st:"conditionnel",org:"Santé",d:"Le guide du MIC rattache les produits pharmaceutiques et cosmétiques au contrôle du ministère de la Santé.",s:[w("micGuide")]}
+  ]},
+  NARR:{o:"MIC",docs:[
+    {nom:"Contrôle de conformité MIC à l'arrivée (produits listés)",st:"obligatoire",org:"MIC / organisme d'inspection",d:"Dossier sur PortNet ; contrôle documentaire puis physique, prélèvement possible ; attestation de conformité. En cas de non-conformité : 8 jours pour demander une seconde analyse, sinon réexportation ou destruction.",s:[w("micList"),r("circ_conjointe_1_controle_normatif","Section V"),r("circ_conjointe_2_guergarate","Section V")]}
+  ]},
+  NORI:{o:"MIC",docs:[
+    {nom:"Certificat de conformité (CoC) — contrôle à l'origine",st:"conditionnel",org:"Organisme d'inspection agréé",d:"Pour les produits industriels de la liste « contrôle à l'origine » : CoC délivré avant expédition et présenté à l'arrivée.",s:[w("micAvis"),w("micDocs")]},
+    {nom:"Régimes économiques : contrôle suspendu",st:"info",org:"ADII",d:"Le contrôle est suspendu sous régime économique ; la mise à la consommation reste subordonnée à la formalité de conformité.",s:[r("circ_conjointe_1_controle_normatif","Section VI")]}
+  ]},
+  NCHK:{o:"MIC",docs:[
+    {nom:"Vérifier si le code figure sur les listes MIC",st:"conditionnel",org:"MIC",d:"Produits industriels soumis à une réglementation technique : listes « contrôle à l'arrivée » et « contrôle à l'origine » mises à jour le 17/05/2025.",s:[w("micDocs")]}
+  ]},
+  NTEX:{o:"MIC",docs:[
+    {nom:"Tissus d'habillement : CoC (contrôle à l'origine)",st:"conditionnel",org:"Organisme d'inspection agréé",d:"Les tissus d'habillement ont été insérés dans la liste des produits contrôlés à l'étranger.",s:[w("micTex")]}
+  ]},
+  ANRT:{o:"ANRT",docs:[
+    {nom:"Agrément ANRT ou dispense d'agrément",st:"obligatoire",org:"ANRT",d:"Listes des équipements agréés ou dispensés consultables sur BADR ; autorisations d'importation ANRT échangées via PortNet.",s:[w("c6685")]},
+    {nom:"Particulier, une unité : engagement sur l'honneur",st:"info",org:"ADII",d:"Équipements simples (modem, fax, téléphone) importés à l'unité pour usage privé ; au-delà d'une unité, homologation ANRT.",s:[r("doc_voyageurs-marocains-etranger_adii","Formalités spécifiques"),r("circ_6741_311","Annexe I.3.1")]}
+  ]},
+  TICEL:{o:"TIC",docs:[
+    {nom:"TIC sur certains appareils électroniques",st:"conditionnel",org:"ADII",d:"Les appareils électroniques ont été ajoutés au périmètre des TIC : vérifier la position concernée.",s:[r("doc_dahir-1-77-340_tic","Art. 1er")]}
+  ]},
+  TICPN:{o:"TIC",docs:[
+    {nom:"TIC sur les pneumatiques",st:"conditionnel",org:"ADII",d:"Les pneumatiques figurent dans le périmètre des TIC.",s:[r("doc_dahir-1-77-340_tic","Art. 1er")]}
+  ]},
+  METAUX:{o:"TIC",docs:[
+    {nom:"Garantie des métaux précieux : essai et poinçon",st:"obligatoire",org:"Bureau douanier de garantie",d:"Ouvrages en platine (950‰), or (920/840/750‰), argent (950/800‰) essayés puis marqués du poinçon approprié.",s:[r("doc_garantie-metaux-precieux_adii","Poinçons et titres · essai")]},
+    {nom:"TIC platine, or, argent",st:"obligatoire",org:"ADII",d:"Métaux précieux inclus dans le périmètre des TIC ; code régime 098 (essai et marquage).",s:[r("doc_dahir-1-77-340_tic","Art. 1er"),r("circ_6047_312_codification_regimes","Code 098")]}
+  ]},
+  VEH:{o:"NARSA",docs:[
+    {nom:"Homologation NARSA des véhicules de tourisme neufs",st:"obligatoire",org:"NARSA / CNEH",d:"Mandataire accrédité pour la marque : pas d'homologation à titre isolé. Autres sociétés : homologation préalable (sortie pour essais sous consignation, un véhicule par lot identique).",s:[r("note_D85_2026_ADII_AC_100","Points 1 et liste"),r("note_D212_2026_ADII_AC_100","Accord de principe")]},
+    {nom:"Facture émise dans l'UE, aux États-Unis, au Canada ou dans le CCG",st:"conditionnel",org:"NARSA",d:"Dédouanement sans homologation préalable (pays d'émission de la facture), mais homologation à titre isolé avant immatriculation.",s:[r("note_D212_2026_ADII_AC_100","Accord de principe")]},
+    {nom:"Particuliers",st:"conditionnel",org:"CNEH",d:"Résidents : accord de principe du CNEH (silence 48 h vaut accord). Non-résidents en AT : PV d'homologation à titre isolé + certificat d'identification.",s:[r("note_D85_2026_ADII_AC_100","Point 2")]}
+  ]},
+  DRONE:{o:"LIC",docs:[
+    {nom:"Licence d'importation — drones et engins volants télécommandés",st:"obligatoire",org:"Département du Commerce extérieur",d:"Importation définitive soumise à licence ; défaut de déclaration : confiscation et pénalité.",s:[r("doc_voyageurs-marocains-etranger_adii","Formalités spécifiques"),r("circ_6741_311","Annexe I.3.2")]}
+  ]},
+  ARMES:{o:"DEF",docs:[
+    {nom:"Autorisation d'importation — matériels de défense, armes et munitions (cat. A, B, C)",st:"obligatoire",org:"Administration de la Défense nationale",d:"Par les fabricants agréés, après avis du commerce extérieur ; export : autorisation valable 3 ans ; transit routier A/B : autorisation ADII, une opération, 3 mois.",s:[r("circ_6672_311_controle_defense_securite","S2 à S4 · loi 10-20")]},
+    {nom:"Armes de chasse, de tir sportif, à air comprimé (cat. C) hors fabricants",st:"conditionnel",org:"Textes antérieurs",d:"Régies notamment par le dahir n° 1-58-286 du 2/9/1958.",s:[r("circ_6672_311_controle_defense_securite","Art. 3 loi 10-20")]}
+  ]},
+  ARMBL:{o:"LIC",docs:[
+    {nom:"Armes blanches : licence d'importation",st:"conditionnel",org:"Commerce extérieur",d:"Les armes blanches de tout genre figurent parmi les produits soumis à licence.",s:[r("circ_6741_311","Annexe I.3.2")]}
+  ]},
+  DECH:{o:"ENV",docs:[
+    {nom:"Déchets : autorisation du département du développement durable",st:"conditionnel",org:"Développement durable",d:"Pour les positions de déchets et débris. Déchets dangereux : importation interdite (art. 42 loi 28-00). Non dangereux : autorisation, uniquement pour ceux de la liste de l'arrêté 1339-20. Export : autorisation dans tous les cas.",s:[r("circ_6337_311_dechets","Art. 42 à 44 loi 28-00"),r("circ_6337_311","Annexes 1 à 3")]}
+  ]},
+  CITES:{o:"CITES",docs:[
+    {nom:"Permis CITES (espèces menacées)",st:"conditionnel",org:"Département des Eaux et Forêts",d:"Si l'espèce animale ou végétale est inscrite à la CITES, à l'import comme à l'export.",s:[r("doc_voyageurs-marocains-etranger_adii","Formalités spécifiques")]}
+  ]},
+  LIVRES:{o:"CULT",docs:[
+    {nom:"Visa du ministère chargé de la communication",st:"obligatoire",org:"Ministère de la Culture et de la Communication",d:"Livres et ouvrages, sauf usage personnel justifié par une déclaration sur l'honneur.",s:[r("circ_6741_311","Annexe I.3.1"),r("doc_dons-formalites-douanieres_adii","Conditions particulières")]}
+  ]},
+  CULTEXP:{o:"CULT",docs:[
+    {nom:"Exportation de biens culturels : autorisation préalable",st:"conditionnel",org:"Département des affaires culturelles",d:"Objets d'art, de collection et d'antiquité.",s:[r("doc_voyageurs-marocains-etranger_adii","Export marchandises particulières")]}
+  ]},
+  EXPHY:{o:"ONSSA",docs:[
+    {nom:"À l'export : certificat phytosanitaire si le pays destinataire l'exige",st:"conditionnel",org:"ONSSA",d:"Délivré par les services compétents de l'ONSSA.",s:[r("doc_voyageurs-marocains-etranger_adii","Export marchandises particulières")]}
+  ]},
+  FRIP:{o:"LIC",docs:[
+    {nom:"Licence d'importation (friperie)",st:"obligatoire",org:"Commerce extérieur",d:"Articles soumis à restriction quantitative, y compris en cas de don.",s:[r("doc_dons-formalites-douanieres_adii","Conditions particulières")]}
+  ]},
+  PE:{o:"LIC",docs:[
+    {nom:"Licence d'importation de polyéthylène ou autres polymères de l'éthylène",st:"conditionnel",org:"MIC",d:"Le MIC publie des annexes dédiées à cette licence : vérifier les positions visées.",s:[w("micDocs")]}
+  ]},
+  NONTISSE:{o:"LIC",docs:[
+    {nom:"Export de non-tissés (5603.11 à 5603.14 .90.00) : plus de licence",st:"info",org:"Commerce extérieur",d:"Licence d'exportation supprimée ; annexe VII-02 de la RDII modifiée.",s:[r("circ_6330_311","Arrêté 1190-20")]}
+  ]}
 };
 
-// Mapping prefix → données
-function findByCH(code) {
-  const clean = code.replace(/[.\s-]/g,'');
-  // Try 4 digits, then 2 digits
-  for (let len = 4; len >= 2; len--) {
-    const prefix = clean.substring(0, len);
-    // Try exact match then range
-    if (DB[prefix]) return { key: prefix, data: DB[prefix] };
-    // Range check for composite keys
-    const ch = parseInt(clean.substring(0,2));
-    const found = Object.entries(DB).find(([k,v]) => {
-      if (k.includes('-')) {
-        const [a,b] = k.split('-').map(Number);
-        return ch >= a && ch <= b;
-      }
-      return false;
+/* Positions faisant l'objet d'une mesure spécifique */
+const POS = [
+  {p:"2004102000",t:"Pommes de terre découpées surgelées (frites) : licence d'importation depuis le 06/08/2026 (arrêté 1428-26), avec dispositions transitoires.",o:"LIC",s:[r("circ_6765_311","Art. 1er et 2 de l'arrêté")]},
+  {p:"3904109000",t:"PVC originaire d'Égypte : droit antidumping définitif pour 5 ans — 74,87 % (Egyptian Petrochemicals Co.) ou 92,19 % (autres). Exclu : PVC par polymérisation en émulsion avec facture visée par l'Industrie.",o:"DEFCOM",s:[r("doc_circulaire-6719-211_antidumping-pvc-egypte_adii","Annexe et droit définitif")]},
+  {p:"560311",t:"Non-tissés : licence d'exportation supprimée.",o:"LIC",s:[r("circ_6330_311","Arrêté 1190-20")]},
+  {p:"560312",t:"Non-tissés : licence d'exportation supprimée.",o:"LIC",s:[r("circ_6330_311","Arrêté 1190-20")]},
+  {p:"560313",t:"Non-tissés : licence d'exportation supprimée.",o:"LIC",s:[r("circ_6330_311","Arrêté 1190-20")]},
+  {p:"560314",t:"Non-tissés : licence d'exportation supprimée.",o:"LIC",s:[r("circ_6330_311","Arrêté 1190-20")]}
+];
+
+/* ===================== 97 CHAPITRES ===================== */
+const SEC = {I:"Animaux vivants et produits du règne animal",II:"Produits du règne végétal",III:"Graisses et huiles",IV:"Industries alimentaires, boissons, tabacs",V:"Produits minéraux",VI:"Industries chimiques",VII:"Matières plastiques et caoutchouc",VIII:"Peaux, cuirs, pelleteries",IX:"Bois, liège, sparterie",X:"Pâtes de bois, papier",XI:"Matières textiles",XII:"Chaussures, coiffures, parapluies",XIII:"Pierre, céramique, verre",XIV:"Perles, métaux précieux",XV:"Métaux communs",XVI:"Machines, appareils électriques",XVII:"Matériel de transport",XVIII:"Optique, médical, horlogerie, musique",XIX:"Armes et munitions",XX:"Marchandises diverses",XXI:"Objets d'art, antiquités"};
+/* [chapitre, libellé, section, blocs, précision affichée sur le contrôle MIC / la note] */
+const CH = [
+ ["01","Animaux vivants","I",["ANIM","CITES"]],
+ ["02","Viandes et abats comestibles","I",["ANIM","ALIMSPEC"]],
+ ["03","Poissons, crustacés, mollusques","I",["ANIM","CITES"]],
+ ["04","Lait, produits laitiers, œufs, miel","I",["ANIM","ALIMSPEC"]],
+ ["05","Autres produits d'origine animale","I",["ANIM","CITES"]],
+ ["06","Plantes vivantes, floriculture","II",["VEG","CITES","EXPHY"]],
+ ["07","Légumes, plantes, racines comestibles","II",["VEG","EXPHY"]],
+ ["08","Fruits comestibles, agrumes","II",["VEG","EXPHY"]],
+ ["09","Café, thé, maté, épices","II",["VEG","EXPHY"]],
+ ["10","Céréales","II",["VEG"]],
+ ["11","Produits de la minoterie, malt, amidons","II",["VEG"]],
+ ["12","Graines et fruits oléagineux, plantes industrielles","II",["VEG","EXPHY"]],
+ ["13","Gommes, résines, sucs et extraits végétaux","II",["VEG"]],
+ ["14","Matières à tresser, autres produits végétaux","II",["VEG"]],
+ ["15","Graisses et huiles animales ou végétales","III",["ALIM","ALIMSPEC"]],
+ ["16","Préparations de viandes, de poissons","IV",["ALIM","ANIM","ALIMSPEC"]],
+ ["17","Sucres et sucreries","IV",["ALIM","SUCRE"]],
+ ["18","Cacao et ses préparations","IV",["ALIM","ALIMSPEC"]],
+ ["19","Préparations à base de céréales, pâtisserie","IV",["ALIM","ALIMSPEC"]],
+ ["20","Préparations de légumes, de fruits","IV",["ALIM","ALIMSPEC"]],
+ ["21","Préparations alimentaires diverses","IV",["ALIM","ALIMSPEC"]],
+ ["22","Boissons, liquides alcooliques, vinaigres","IV",["ALIM","ALCOOL","BOISSON"]],
+ ["23","Résidus des industries alimentaires, aliments pour animaux","IV",["FEED"]],
+ ["24","Tabacs et succédanés","IV",["TABAC"]],
+ ["25","Sel, soufre, terres, pierres, plâtres, ciments","V",["NARR","NCHK"],"Ciment : contrôle à l'arrivée."],
+ ["26","Minerais, scories et cendres","V",["DECH"]],
+ ["27","Combustibles minéraux, huiles minérales","V",["ENERGIE","DECH"]],
+ ["28","Produits chimiques inorganiques","VI",[]],
+ ["29","Produits chimiques organiques","VI",["ACET"]],
+ ["30","Produits pharmaceutiques","VI",["MED"]],
+ ["31","Engrais","VI",["FERTI"]],
+ ["32","Extraits tannants, peintures, vernis, encres","VI",["NCHK"]],
+ ["33","Huiles essentielles, parfumerie, cosmétiques","VI",["COSM"]],
+ ["34","Savons, lessives, cires, bougies","VI",["NCHK"]],
+ ["35","Matières albuminoïdes, colles, enzymes","VI",["NCHK"]],
+ ["36","Poudres et explosifs, allumettes","VI",["NCHK"]],
+ ["37","Produits photographiques ou cinématographiques","VI",["NCHK"]],
+ ["38","Produits divers des industries chimiques","VI",["PESTI","DECH"],"Pesticides : position 38.08."],
+ ["39","Matières plastiques et ouvrages","VII",["NARR","PE","DECH","NCHK"],"Tubes en matière plastique et produits sanitaires : contrôle à l'arrivée."],
+ ["40","Caoutchouc et ouvrages","VII",["NARR","TICPN","DECH"],"Pneus et chambres à air : contrôle à l'arrivée."],
+ ["41","Peaux (autres que pelleteries) et cuirs","VIII",["CITES"]],
+ ["42","Ouvrages en cuir, maroquinerie","VIII",["NCHK"]],
+ ["43","Pelleteries et fourrures","VIII",["CITES"]],
+ ["44","Bois, charbon de bois, ouvrages en bois","IX",["NARR","CITES"],"Panneaux en bois : contrôle à l'arrivée."],
+ ["45","Liège et ouvrages","IX",["NCHK"]],
+ ["46","Ouvrages de sparterie et de vannerie","IX",["NCHK"]],
+ ["47","Pâtes de bois, papier à recycler","X",["DECH"]],
+ ["48","Papiers et cartons","X",["NCHK"]],
+ ["49","Produits de l'édition, de la presse","X",["LIVRES"]],
+ ["50","Soie","XI",["NTEX"]],
+ ["51","Laine, poils fins ou grossiers","XI",["NTEX"]],
+ ["52","Coton","XI",["NTEX"]],
+ ["53","Autres fibres textiles végétales","XI",["NTEX"]],
+ ["54","Filaments synthétiques ou artificiels","XI",["NTEX","NARR"],"Tissus d'ameublement : contrôle à l'arrivée."],
+ ["55","Fibres synthétiques ou artificielles discontinues","XI",["NTEX","NARR"],"Tissus d'ameublement : contrôle à l'arrivée."],
+ ["56","Ouates, feutres, non-tissés, ficelles","XI",["NONTISSE","NCHK"]],
+ ["57","Tapis et revêtements de sol textiles","XI",["NARR"],"Tapis et moquettes : contrôle à l'arrivée."],
+ ["58","Tissus spéciaux, dentelles, broderies","XI",["NTEX","NCHK"]],
+ ["59","Tissus imprégnés, enduits, techniques","XI",["NCHK"]],
+ ["60","Étoffes de bonneterie","XI",["NTEX"]],
+ ["61","Vêtements en bonneterie","XI",["NARR"],"Articles d'habillement autres que vêtements de travail : contrôle à l'arrivée."],
+ ["62","Vêtements autres qu'en bonneterie","XI",["NARR"],"Articles d'habillement autres que vêtements de travail : contrôle à l'arrivée."],
+ ["63","Autres articles textiles confectionnés, friperie","XI",["NARR","FRIP"],"Couvertures : contrôle à l'arrivée ; friperie : licence."],
+ ["64","Chaussures, guêtres","XII",["NARR"],"Articles chaussants : contrôle à l'arrivée."],
+ ["65","Coiffures","XII",["NCHK"]],
+ ["66","Parapluies, cannes, fouets","XII",["NCHK"]],
+ ["67","Plumes, fleurs artificielles, ouvrages en cheveux","XII",["NCHK"]],
+ ["68","Ouvrages en pierres, plâtre, ciment, amiante","XIII",["NARR","NCHK"],"Garnitures de frein et feuilles d'étanchéité : contrôle à l'arrivée."],
+ ["69","Produits céramiques","XIII",["NARR"],"Carreaux céramiques et produits sanitaires : contrôle à l'arrivée."],
+ ["70","Verre et ouvrages en verre","XIII",["NARR","NCHK"],"Vitrage automobile : contrôle à l'arrivée."],
+ ["71","Perles, pierres et métaux précieux, bijouterie","XIV",["METAUX"]],
+ ["72","Fonte, fer et acier","XV",["NARR","DECH","NCHK"],"Fil machine et fer à béton : contrôle à l'arrivée ; ferrailles : position 72.04."],
+ ["73","Ouvrages en fonte, fer ou acier","XV",["NARR","NCHK"],"Appareils de chauffage à gaz et ressorts à lames : contrôle à l'arrivée."],
+ ["74","Cuivre et ouvrages","XV",["DECH","NCHK"]],
+ ["75","Nickel et ouvrages","XV",["DECH"]],
+ ["76","Aluminium et ouvrages","XV",["DECH","NCHK"]],
+ ["77","(Réservé)","XV",[]],
+ ["78","Plomb et ouvrages","XV",["DECH"]],
+ ["79","Zinc et ouvrages","XV",["DECH"]],
+ ["80","Étain et ouvrages","XV",["DECH"]],
+ ["81","Autres métaux communs, cermets","XV",["DECH"]],
+ ["82","Outils, coutellerie, couverts","XV",["ARMBL","NCHK"]],
+ ["83","Ouvrages divers en métaux communs","XV",["NCHK"]],
+ ["84","Machines, appareils mécaniques, chaudières","XVI",["NARR","NORI"],"Éléments filtrants, robinetterie, chauffe-eau à gaz : contrôle à l'arrivée ; autres produits listés : contrôle à l'origine."],
+ ["85","Machines et appareils électriques","XVI",["NARR","NORI","ANRT","TICEL"],"Chargeurs de téléphone, disjoncteurs, batteries : contrôle à l'arrivée ; appareils électroménagers et électriques listés : contrôle à l'origine."],
+ ["86","Véhicules et matériel ferroviaires","XVII",["NCHK"]],
+ ["87","Voitures automobiles, tracteurs, cycles","XVII",["VEH","NARR"],"Pièces de rechange automobiles listées (garnitures de frein, câbles de commande…) : contrôle à l'arrivée."],
+ ["88","Navigation aérienne ou spatiale, drones","XVII",["DRONE"]],
+ ["89","Navigation maritime ou fluviale","XVII",[]],
+ ["90","Optique, photo, instruments médicaux","XVIII",["DM","NCHK"]],
+ ["91","Horlogerie","XVIII",["NCHK"]],
+ ["92","Instruments de musique","XVIII",["NCHK"]],
+ ["93","Armes, munitions et accessoires","XIX",["ARMES","ARMBL"]],
+ ["94","Meubles, literie, luminaires, constructions préfabriquées","XX",["NCHK"]],
+ ["95","Jouets, jeux, articles de sport","XX",["NORI"],"Jouets : produits industriels soumis au contrôle normatif."],
+ ["96","Ouvrages divers","XX",["NARR","NCHK"],"Couches pour bébés : contrôle à l'arrivée."],
+ ["97","Objets d'art, de collection, antiquités","XXI",["CULTEXP"]]
+];
+
+
+/* ===================== LOGIQUE ===================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let cur = null, tab = "docs", filt = null, code = "";
+const DONE = {};            /* pièces cochées, en mémoire seulement : la page s'ouvre toujours vierge */
+let justK = null;
+const col = pct => `hsl(${Math.round(pct*1.2)},62%,40%)`;
+const dkey = d => cur + "|" + d.nom;
+const isPiece = d => d.st !== "info";
+function ring(pct){ const R=24, C=2*Math.PI*R;
+  return `<svg class="ring" viewBox="0 0 58 58"><circle class="bgc" cx="29" cy="29" r="${R}"/><circle class="fg" cx="29" cy="29" r="${R}" stroke="${col(pct)}" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}"/><text x="29" y="29" fill="${col(pct)}">${pct}%</text></svg>`; }
+function cnt(list){ const ps=list.filter(isPiece); if(!ps.length) return ""; const n=ps.filter(d=>DONE[dkey(d)]).length, pp=Math.round(n*100/ps.length);
+  return `<span class="pcount" style="background:${col(pp)}1A;color:${col(pp)};border:1px solid ${col(pp)}55">${pp===100?"✓ ":""}${n}/${ps.length}</span>`; }
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("show"); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove("show"),1800); }
+
+function orgsOf(ch){ const o = new Set(ch[3].map(k=>B[k].o)); return [...o]; }
+function srcHtml(list){
+  return `<div class="srcs">${list.map(x => x.t==="rag"
+    ? `<span class="src rag" title="Texte de référence">Réf. · ${esc(x.n)} — ${esc(x.ref)}</span>`
+    : `<a class="src web" href="${W[x.k].u}" target="_blank" rel="noopener" title="Site officiel">Site officiel · ${esc(W[x.k].l)} ↗</a>`).join("")}</div>`;
+}
+function docHtml(d){
+  const lbl = {obligatoire:"Obligatoire",conditionnel:"Conditionnel",info:"À savoir"}[d.st];
+  if (isPiece(d)){ const k=dkey(d), on=!!DONE[k];
+    return `<div class="doc chk ${d.st} ${on?"done":""} ${justK===k?"justdone":""}"><input type="checkbox" data-k="${esc(k)}" ${on?"checked":""} title="Pièce réunie, ou sans objet pour mon opération"><div><div class="doc-top"><div class="doc-t">${esc(d.nom)}</div><span class="st ${d.st}">${lbl}</span></div>
+    <div class="doc-m">Organisme : <b>${esc(d.org)}</b></div><div class="doc-d">${esc(d.d)}</div>${srcHtml(d.s)}</div></div>`; }
+  return `<div class="doc ${d.st}"><div class="doc-top"><div class="doc-t">${esc(d.nom)}</div><span class="st ${d.st}">${lbl}</span></div>
+    <div class="doc-m">Organisme : <b>${esc(d.org)}</b></div><div class="doc-d">${esc(d.d)}</div>${srcHtml(d.s)}</div>`;
+}
+
+function renderStats(){
+  let nr=new Set(), nw=new Set(), nd=0;
+  Object.values(B).forEach(b=>b.docs.forEach(d=>{nd++; d.s.forEach(x=> x.t==="rag"?nr.add(x.n):nw.add(x.k));}));
+  COMMUNS.forEach(d=>d.s.forEach(x=>x.t==="rag"?nr.add(x.n):nw.add(x.k)));
+  POS.forEach(p=>p.s.forEach(x=>nr.add(x.n)));
+  $("#stats").innerHTML = `<div class="stat"><b>96</b>chapitres couverts</div><div class="stat"><b>${nd}</b>formalités sectorielles</div>`;
+}
+function renderFilters(){
+  $("#filters").innerHTML = `<span class="l">Filtrer par organisme :</span>` + Object.entries(ORG).filter(([k])=>k!=="DEFCOM").map(([k,v]) =>
+    `<button class="f ${filt===k?"on":""}" data-o="${k}"><i style="background:${v[1]}"></i>${esc(v[0])}</button>`).join("");
+  document.querySelectorAll(".f").forEach(b => b.onclick = () => { filt = filt===b.dataset.o ? null : b.dataset.o; renderFilters(); renderList(); });
+}
+function renderList(){
+  let h = "", last = "";
+  CH.forEach(ch => {
+    if (ch[2]!==last){ last = ch[2]; h += `<div class="sec-h">Section ${ch[2]} · ${esc(SEC[ch[2]])}</div>`; }
+    const os = orgsOf(ch), dim = filt && !os.includes(filt);
+    h += `<div class="ch ${cur===ch[0]?"on":""} ${dim?"dim":""}" data-c="${ch[0]}"><span class="n">${ch[0]}</span><span>${esc(ch[1])}</span><span class="dots">${os.map(o=>`<i title="${esc(ORG[o][0])}" style="background:${ORG[o][1]}"></i>`).join("")}</span></div>`;
+  });
+  $("#chlist").innerHTML = h;
+  document.querySelectorAll(".ch").forEach(e => e.onclick = () => { code = e.dataset.c; $("#q").value = code; show(code); });
+}
+
+function welcome(){
+  $("#res").innerHTML = `<div class="welcome"><h3>Commencez par un code SH</h3>
+    <p>Saisissez un code ou choisissez un chapitre dans la liste. Les points de couleur indiquent les organismes concernés.</p>
+    <div class="quick">${["0201","0702","1511","2004102000","2203","2402","3004","3808","3904109000","4011","6109","6309","7113","8517","8703","8806","9303","9503"].map(c=>`<button data-q="${c}">${c}</button>`).join("")}</div></div>`;
+  document.querySelectorAll(".quick button").forEach(b => b.onclick = () => { $("#q").value=b.dataset.q; show(b.dataset.q); });
+}
+
+function show(raw){
+  code = (raw||"").replace(/\D/g,"");
+  if (code.length < 2){ cur=null; renderList(); welcome(); return; }
+  const c2 = code.slice(0,2), ch = CH.find(x=>x[0]===c2);
+  cur = c2; renderList();
+  const el = document.querySelector(`.ch[data-c="${c2}"]`); if (el) el.scrollIntoView({block:"nearest"});
+  if (!ch){ $("#res").innerHTML = `<div class="welcome"><h3>Chapitre ${esc(c2)} inexistant</h3><p>Les chapitres vont de 01 à 97.</p></div>`; return; }
+  const os = orgsOf(ch);
+  const pos = POS.filter(p => code.startsWith(p.p) || (code.length>=6 && p.p.startsWith(code)));
+  const posCh = POS.filter(p => p.p.startsWith(c2));
+  let h = `<div class="res-head"><div class="kicker">Chapitre ${ch[0]} · Section ${ch[2]}${code.length>2?` · code saisi ${esc(code)}`:""}</div><h2>${esc(ch[1])}</h2>
+    <div class="orgs">${os.length?os.map(o=>`<span class="org" style="color:${ORG[o][1]};border-color:${ORG[o][1]}40;background:${ORG[o][1]}0F">● ${esc(ORG[o][0])}</span>`).join(""):`<span class="org" style="color:var(--mid);border-color:var(--border)">Aucun organisme sectoriel identifié</span>`}</div></div>`;
+  if (pos.length) h += pos.map(p=>`<div class="alertpos"><b>Mesure sur la position ${esc(p.p)} :</b> ${esc(p.t)}${srcHtml(p.s)}</div>`).join("");
+  else if (posCh.length && code.length<=4) h += `<div class="alertpos" style="background:var(--amber-bg);border-color:var(--amber-bd)"><b style="color:var(--amber)">Positions à mesure spécifique dans ce chapitre :</b> ${posCh.map(p=>esc(p.p)).join(", ")} — affinez le code pour voir le détail.</div>`;
+  const specDocs = ch[3].flatMap(k=>B[k].docs), allP = specDocs.concat(COMMUNS).filter(isPiece);
+  const nDone = allP.filter(d=>DONE[dkey(d)]).length, pct = allP.length?Math.round(nDone*100/allP.length):0, left = allP.length-nDone;
+  const msg = pct===100 ? "Toutes les pièces sont réunies." : pct>=67 ? `Presque prêt — encore ${left} pièce(s).` : pct>=34 ? `En cours — ${left} pièce(s) restante(s).` : `À réunir — ${left} pièce(s).`;
+  h += `<div class="tabs"><button class="tab ${tab==="docs"?"on":""}" data-t="docs">Documents requis</button><button class="tab ${tab==="org"?"on":""}" data-t="org">Par organisme</button></div>`;
+  {
+    h += `<div class="progress">${ring(pct)}<div class="prog"><div class="prog-bar"><i style="width:${pct}%;background:${col(pct)}"></i></div><div class="prog-txt" style="color:${col(pct)}">${nDone} / ${allP.length} pièces réunies · ${msg}</div></div>
+      <button class="btn" id="bReset">Réinitialiser</button>
+      <span class="prog-help">Cochez chaque pièce réunie, ou sans objet pour votre opération. Les mentions « À savoir » ne sont pas comptées.</span></div>`;
+    if (pct===100) h += `<div class="done-banner">✓ Dossier complet pour le chapitre ${ch[0]}. Vérifiez l'authenticité des pièces avant de signer la DUM.</div>`;
+  }
+  h += `<div class="tabc">`;
+  if (tab==="docs"){
+    h += `<div class="grp-t">Formalités propres au chapitre${cnt(specDocs)}</div>`;
+    if (ch[4]) h += `<div class="empty" style="margin-bottom:8px;background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">${esc(ch[4])}</div>`;
+    const docs = specDocs;
+    h += docs.length ? docs.map(docHtml).join("") : `<div class="empty">Aucune formalité sectorielle propre à ce chapitre n'a été identifiée dans les textes de référence ni sur les sites officiels consultés. Seuls les documents communs s'appliquent, sous réserve des mesures propres au code NC10 (tarif sur douane.gov.ma).</div>`;
+    h += `<div class="grp-t">Documents communs à toute importation${cnt(COMMUNS)}</div>` + COMMUNS.map(docHtml).join("");
+  } else if (tab==="org"){
+    if (!os.length) h += `<div class="empty">Aucun organisme sectoriel identifié pour ce chapitre.</div>`;
+    os.forEach(o => {
+      const ds = ch[3].filter(k=>B[k].o===o).flatMap(k=>B[k].docs);
+      h += `<div class="grp-t" style="color:${ORG[o][1]}">● ${esc(ORG[o][0])} — ${ds.length} formalité(s)${cnt(ds)}</div>` + ds.map(docHtml).join("");
     });
-    if (found) return { key: found[0], data: found[1] };
   }
-  return null;
+  h += `</div>`;
+  $("#res").innerHTML = h;
+  document.querySelectorAll(".tab").forEach(t => t.onclick = () => { tab=t.dataset.t; show(code); });
+  justK = null;
+  document.querySelectorAll(".doc.chk>input").forEach(c => c.onchange = () => {
+    const k=c.dataset.k; if (c.checked) DONE[k]=1; else delete DONE[k];
+    justK = c.checked ? k : null; const y = window.scrollY; show(code); window.scrollTo(0,y);
+    const all = allP.every(d=>DONE[dkey(d)]);
+    if (c.checked) toast(all ? "🎉 Toutes les pièces sont réunies !" : "Pièce réunie");
+  });
+  const br=$("#bReset"); if (br) br.onclick = () => { Object.keys(DONE).forEach(k=>{ if(k.startsWith(cur+"|")) delete DONE[k]; }); show(code); toast("Liste réinitialisée"); };
+
 }
 
-function getChapter(code) {
-  const clean = code.replace(/[.\s-]/g,'');
-  return clean.substring(0,2);
-}
-
-function onShInput(val) {
-  const hint = document.getElementById('sh-hint');
-  const clean = val.replace(/[.\s-]/g,'');
-  if (clean.length === 0) { hint.textContent = 'Entrez au moins 2 chiffres — chapitres SH de 01 à 97'; return; }
-  if (clean.length < 2) { hint.textContent = 'Continuer la saisie...'; return; }
-  const ch = parseInt(clean.substring(0,2));
-  if (ch < 1 || ch > 97) { hint.textContent = '⚠ Chapitre invalide — plage 01 à 97'; hint.style.color='var(--red)'; return; }
-  hint.style.color='';
-  if (clean.length >= 2 && clean.length <= 10) {
-    hint.textContent = `Chapitre ${clean.substring(0,2).padStart(2,'0')} — ${clean.length} chiffre(s) saisi(s)`;
-  }
-}
-
-function quickSearch(code) {
-  document.getElementById('sh-input').value = code;
-  searchDocs();
-}
-
-function clearSearch() {
-  document.getElementById('sh-input').value = '';
-  document.getElementById('result-zone').classList.remove('show');
-  document.getElementById('empty-state').style.display = '';
-  document.getElementById('sh-hint').textContent = 'Entrez au moins 2 chiffres — chapitres SH de 01 à 97';
-}
-
-function searchDocs() {
-  const val = document.getElementById('sh-input').value.trim();
-  if (!val) return;
-  const clean = val.replace(/[.\s-]/g,'');
-  const ch = clean.substring(0,2).padStart(2,'0');
-
-  const found = DB[ch] || DB[clean.substring(0,4)];
-  const result = found ? { data: found } : null;
-
-  document.getElementById('empty-state').style.display = 'none';
-  document.getElementById('result-zone').classList.add('show');
-
-  if (!result) {
-    renderNotFound(val, ch);
-    return;
-  }
-  renderResult(val, ch, result.data);
-}
-
-function renderNotFound(val, ch) {
-  document.getElementById('result-header').innerHTML = `
-    <div style="text-align:center;width:100%">
-      <div class="alert alert-warn" style="justify-content:center">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        Le chapitre <strong>${ch}</strong> n'est pas encore dans notre base documentaire. Documents de base applicables.
-      </div>
-    </div>`;
-  document.getElementById('stats-row').innerHTML = '';
-  document.getElementById('risk-zone').innerHTML = '';
-  document.getElementById('tab-docs').innerHTML = renderDocsSection(DOCS_COMMUNS, 'Documents communs à toutes importations', 'green');
-  document.getElementById('tab-organismes').innerHTML = `<div class="alert alert-info"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>Organismes non spécifiés pour ce chapitre. Consultez le Tarif Intégré Marocain sur le site ADII.</span></div>`;
-  document.getElementById('tab-regimes').innerHTML = `<div class="alert alert-info"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg><span>Consultez le module Régimes Économiques pour la liste des régimes admissibles.</span></div>`;
-  document.getElementById('tab-notes').innerHTML = `<div class="alert alert-info"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg><span>Notes tarifaires non disponibles pour ce chapitre dans la version actuelle.</span></div>`;
-}
-
-function renderResult(val, ch, d) {
-  // Header
-  document.getElementById('result-header').innerHTML = `
-    <div class="result-code-big">${ch}</div>
-    <div class="result-info">
-      <div class="result-chapter">${d.chapter || 'Chapitre ' + ch} · Tarif Intégré Marocain</div>
-      <div class="result-name">${d.label}</div>
-      <div class="result-tags">
-        <span class="rtag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">SH ${ch}</span>
-        ${d.organismes.map(o=>`<span class="rtag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">${o}</span>`).join('')}
-        <span class="rtag" style="background:${d.risk==='eleve'?'var(--red-bg)':d.risk==='moyen'?'var(--amber-bg)':'var(--green-bg)'};border-color:${d.risk==='eleve'?'var(--red-bd)':d.risk==='moyen'?'var(--amber-bd)':'var(--green-bd)'};color:${d.risk==='eleve'?'var(--red)':d.risk==='moyen'?'var(--amber)':'var(--green)'}">Risque ${d.risk}</span>
-      </div>
-    </div>`;
-
-  // Stats
-  const totalDocs = DOCS_COMMUNS.length + d.docs_spec.length;
-  const obligDocs = DOCS_COMMUNS.length + d.docs_spec.filter(x=>x.statut==='obligatoire').length;
-  const condDocs = d.docs_spec.filter(x=>x.statut==='conditionnel').length;
-  document.getElementById('stats-row').innerHTML = `
-    <div class="stat-box"><div class="stat-val">${totalDocs}</div><div class="stat-lbl">Total documents</div></div>
-    <div class="stat-box"><div class="stat-val" style="color:var(--red)">${obligDocs}</div><div class="stat-lbl">Obligatoires</div></div>
-    <div class="stat-box"><div class="stat-val" style="color:var(--amber)">${condDocs}</div><div class="stat-lbl">Conditionnels</div></div>
-    <div class="stat-box"><div class="stat-val">${d.organismes.length}</div><div class="stat-lbl">Organismes</div></div>`;
-
-  // Risk meter
-  const riskPct = d.risk==='eleve'?85:d.risk==='moyen'?50:20;
-  const riskColor = d.risk==='eleve'?'var(--red)':d.risk==='moyen'?'var(--gold)':'var(--green)';
-  const riskText = d.risk==='eleve'?'Élevé — Circuit rouge probable':d.risk==='moyen'?'Modéré — Circuit jaune possible':'Faible — Circuit vert probable';
-  document.getElementById('risk-zone').innerHTML = `
-    <div class="risk-meter" style="margin-bottom:16px">
-      <div class="risk-label">Risque douanier estimé</div>
-      <div class="risk-bar-bg"><div class="risk-bar-fill" style="width:${riskPct}%;background:${riskColor}"></div></div>
-      <div class="risk-val" style="color:${riskColor}">${riskText}</div>
-    </div>
-    ${d.risk_detail?`<div class="alert ${d.risk==='eleve'?'alert-red':d.risk==='moyen'?'alert-warn':'alert-ok'}" style="margin-bottom:16px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>${d.risk_detail}</span></div>`:''}`; 
-
-  // Tab docs
-  document.getElementById('tab-docs').innerHTML =
-    renderDocsSection(DOCS_COMMUNS, 'Documents communs à toutes importations', 'green') +
-    renderDocsSection(d.docs_spec, `Documents spécifiques — Chapitre ${ch} : ${d.label}`, 'gold');
-
-  // Tab organismes
-  document.getElementById('tab-organismes').innerHTML = `
-    <div class="orgs-grid">
-      ${d.organismes.map(o => orgCard(o)).join('')}
-    </div>
-    <div class="alert alert-info" style="margin-top:14px">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      <span>Les autorisations et certificats délivrés par ces organismes doivent être obtenus <strong>avant</strong> l'arrivée de la marchandise au port marocain.</span>
-    </div>`;
-
-  // Tab regimes
-  document.getElementById('tab-regimes').innerHTML = `
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
-      ${d.regimes.map(r => `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;box-shadow:var(--sh)"><div style="font-family:JetBrains Mono,monospace;font-size:14px;font-weight:700;color:var(--gold)">${r}</div><div style="font-size:11px;color:var(--mid);margin-top:2px">${regimeName(r)}</div></div>`).join('')}
-    </div>
-    <div class="alert alert-info">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-      <span>Consultez le module <strong>Régimes Économiques</strong> pour les conditions détaillées de chaque régime.</span>
-    </div>`;
-
-  // Tab notes
-  document.getElementById('tab-notes').innerHTML = `
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--sh)">
-      <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">Notes tarifaires — Chapitre ${ch}</div>
-      <div style="font-size:13px;color:var(--mid);line-height:1.75">${d.notes || 'Aucune note spéciale.'}</div>
-    </div>
-    <div class="alert alert-warn" style="margin-top:12px">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
-      <span>Ces notes sont indicatives. Pour les notes officielles de section et de chapitre, consulter le Tarif Intégré Marocain publié sur le site officiel de l'ADII.</span>
-    </div>`;
-}
-
-function renderDocsSection(docs, title, color) {
-  const colorMap = {
-    green: { bg:'var(--green-bg)', bd:'var(--green-bd)', c:'var(--green)' },
-    gold: { bg:'var(--gold-pale)', bd:'var(--gold-bd)', c:'var(--gold)' },
-  };
-  const col = colorMap[color] || colorMap.green;
-  return `
-    <div class="docs-section">
-      <div class="docs-section-title" style="background:${col.bg};border:1px solid ${col.bd};border-bottom:none;color:${col.c}">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        ${title} <span style="margin-left:auto;font-weight:400;font-size:9px">${docs.length} document(s)</span>
-      </div>
-      <table class="docs-table">
-        <thead><tr><th>Document</th><th>Organisme</th><th>Statut</th><th>Base légale</th></tr></thead>
-        <tbody>
-          ${docs.map(d=>`<tr>
-            <td><div class="doc-name">${d.nom}</div>${d.note?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${d.note}</div>`:''}</td>
-            <td><span class="doc-org">${d.org}</span></td>
-            <td><span class="badge ${d.statut==='obligatoire'?'b-oblig':d.statut==='conditionnel'?'b-cond':'b-recom'}">${d.statut}</span></td>
-            <td><span class="doc-base">${d.base}</span></td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
-    </div>`;
-}
-
-const ORGS = {
-  ONSSA:{ name:'ONSSA', role:'Office National de Sécurité Sanitaire des produits Alimentaires. Contrôle phytosanitaire, vétérinaire et des denrées alimentaires importées.', doc:'Certificat sanitaire / Phytosanitaire' },
-  ANRT:{ name:'ANRT', role:'Agence Nationale de Réglementation des Télécommunications. Homologation obligatoire des équipements radioélectriques et terminaux.', doc:'Homologation type' },
-  IMANOR:{ name:'IMANOR', role:'Institut Marocain de Normalisation. Délivre les certificats de conformité (CoC) pour les produits soumis à réglementation technique.', doc:'Certificat de conformité (CoC)' },
-  MAPM:{ name:'MAPM', role:'Ministère de l\'Agriculture, de la Pêche Maritime, du Développement Rural et des Eaux et Forêts. Autorisations phytosanitaires et vétérinaires.', doc:'Permis importation animaux/végétaux' },
-  MCINET:{ name:'MCINET', role:'Ministère chargé de l\'Industrie et du Commerce. Supervise les programmes CoC et réglementation technique des produits industriels.', doc:'Autorisation sectorielle' },
-  'MS':{ name:'Ministère Santé', role:'Autorisation et surveillance des médicaments et dispositifs médicaux. Tutelle de la DMPM.', doc:'Permis importation médicaments' },
-  DMPM:{ name:'DMPM', role:'Direction du Médicament et de la Pharmacie. Homologation des médicaments et dispositifs médicaux importés.', doc:'AMM / Permis DM' },
-  NARSA:{ name:'NARSA', role:'Agence Nationale de la Sécurité Routière. Homologation des véhicules automobiles importés.', doc:'Titre d\'importation véhicule' },
-  ANRE:{ name:'ANRE', role:'Autorité Nationale de Régulation de l\'Électricité. Supervision des importations d\'énergie et hydrocarbures.', doc:'Autorisation importation énergie' },
-  DPMA:{ name:'DPMA', role:'Direction des Pêches Maritimes et de l\'Aquaculture. Contrôle des produits de la pêche importés.', doc:'Certificat halieutique' },
-  MTPNET:{ name:'MTPNET', role:'Ministère du Transport. Réglementation des véhicules et équipements de transport importés.', doc:'Homologation véhicule' },
-  DPVCTRF:{ name:'DPVCTRF', role:'Direction de Protection des Végétaux, Contrôles Techniques et Répression des Fraudes. Contrôles phytosanitaires.', doc:'Certificat phytosanitaire' },
-  ADII:{ name:'ADII', role:'Administration des Douanes et Impôts Indirects. Organisme central du dédouanement — BADR.', doc:'DUM / BAE' },
-  AMDIE:{ name:'AMDIE', role:'Agence Marocaine de Développement des Investissements et des Exportations.', doc:'Avantages ALE' },
-  ONHYM:{ name:'ONHYM', role:'Office National des Hydrocarbures et des Mines. Supervision importations hydrocarbures.', doc:'Autorisation ONHYM' },
-};
-
-function orgCard(code) {
-  const o = ORGS[code] || { name:code, role:'Organisme de contrôle spécialisé.', doc:'Document spécifique' };
-  return `<div class="org-card">
-    <div class="org-name">${o.name}</div>
-    <div class="org-role">${o.role}</div>
-    <span class="org-doc">${o.doc}</span>
-  </div>`;
-}
-
-function regimeName(code) {
-  const r = {'010':'Mise à la consommation','011':'MàC + ristourne','051':'Admission temporaire','071':'Entrepôt','091':'Import temporaire','031':'Transit','061':'Zone franche','040':'Export définitif','042':'Export temporaire','021':'Drawback'};
-  return r[code] || code;
-}
-
-function showTab(name, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  btn.classList.add('active');
-}
+$("#go").onclick = () => show($("#q").value);
+$("#q").addEventListener("keydown", e => { if (e.key==="Enter") show($("#q").value); });
+$("#clear").onclick = () => { $("#q").value=""; show(""); };
+renderStats(); renderFilters(); renderList(); welcome();
 </script>
+<div class="toast" id="toast"></div>
 </body>
 </html>
-
