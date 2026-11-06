@@ -31,7 +31,7 @@ export const ESPACES: Espace[] = [
     transmet: 'Code SH et contraintes réglementaires',
     tools: [
       { label: 'Classement tarifaire SH', path: '/modules/classement', desc: '17 224 codes, recherche guidée et arbre RGI', tier: 'operateur' },
-      { label: 'Décisions de classement ADII', path: '/modules/decisions-classement', desc: 'Précédents officiels par produit et par code', tier: 'operateur' },
+      { label: 'Décisions de classement sur le SH', path: '/modules/decisions-classement', desc: 'Précédents officiels par produit et par code', tier: 'operateur' },
       { label: 'Documents requis par code SH', path: '/modules/documents-sh', desc: 'Formalités et pièces exigées à l’importation', tier: 'operateur' },
       { label: 'Autorisations et licences', path: '/modules/autorisations-licences', desc: 'Contrôles techniques, licences et visas préalables', tier: 'operateur' },
       { label: 'Marchandises dangereuses', path: '/modules/substances-dangereuses', desc: 'Classification des substances et obligations associées', tier: 'expert' },
