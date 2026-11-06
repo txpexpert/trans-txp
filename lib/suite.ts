@@ -48,7 +48,7 @@ export const ESPACES: Espace[] = [
       { label: 'Origine ALECA / UE', path: '/modules/origine-aleca', desc: 'Règles d’origine, preuves, cumul (PEM 2025)', tier: 'operateur' },
       { label: 'Comparateur de régimes', path: '/modules/comparateur', desc: 'Coût réel de chaque régime : droits, garantie, redevances, trésorerie', tier: 'expert' },
       { label: 'Régimes économiques', path: '/modules/regimes-economiques', desc: '12 régimes, garanties et nouveautés 2024-2026', tier: 'expert' },
-      { label: 'Facilitation douanière', path: '/modules/facilitation', desc: 'Mesures de facilitation et bonnes pratiques', tier: 'expert' },
+      { label: 'Facilitation douanière', path: '/modules/facilitation', desc: '48 mesures, nouveautés 2024-2026, OEA et exportateur agréé', tier: 'expert' },
     ],
   },
   {
