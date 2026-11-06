@@ -250,7 +250,7 @@ export default function Accueil() {
             <div className="x-eyebrow">Kits opérationnels</div>
             <h3 className="x-h3">Vos dossiers sensibles, déjà structurés</h3>
             <p className="x-sub">Origine préférentielle, régimes suspensifs, classement et contrôle a posteriori : des kits interactifs avec assistants, calculateurs, modèles générés et tableaux de suivi, chaque règle rattachée à son texte.</p>
-            <div style={{ marginTop: 20 }}><Link href="/expertise#kits" className="x-btn x-btn-line">Ouvrir les kits</Link></div>
+            <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}><a href="/kits/pratiques/IXP_Kit02_Regimes_economiques.html" target="_blank" rel="noopener" className="x-btn x-btn-dark">Kit 02 · Régimes économiques</a><Link href="/expertise#kits" className="x-btn x-btn-line">Ouvrir les kits</Link></div>
           </div>
         </div>
       </section>
