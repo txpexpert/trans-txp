@@ -49,7 +49,7 @@ const MODULES_TOOLS = [
   { num: 'AUT', label: 'Autorisations & Licences',   href: '/modules/autorisations-licences',   badge: 'NEW' },
   { num: 'MRQ', label: 'Marquage & Warnings',        href: '/modules/marquage-warnings',        badge: 'NEW' },
   { num: 'SDG', label: 'Substances Dangereuses',     href: '/modules/substances-dangereuses',   badge: 'NEW' },
-  { num: 'TDG', label: 'Générateur Doc Transit',     href: '/modules/transit-doc-generator',    badge: 'NEW' },
+  { num: 'TDG', label: 'Dossier par procédure',      href: '/modules/transit-doc-generator',    badge: 'NEW' },
   { num: 'EXP', label: 'Export', href: '/modules/export', badge: 'EXP' },
   { num: 'GMS', label: 'Global MondoScope', href: '/modules/mondoscope', badge: 'NEW' },
   { num: 'AF',  label: 'Alertes Fiscales',              href: '/modules/alertes-fiscales', badge: 'NEW' },
