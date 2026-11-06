@@ -36,7 +36,6 @@ export const ESPACES: Espace[] = [
       { label: 'Autorisations et licences', path: '/modules/autorisations-licences', desc: 'Contrôles techniques, licences et visas préalables', tier: 'operateur' },
       { label: 'Marchandises dangereuses', path: '/modules/substances-dangereuses', desc: 'Classification des substances et obligations associées', tier: 'expert' },
       { label: 'Marquage et signalisation', path: '/modules/marquage-warnings', desc: 'Étiquetage, pictogrammes et mentions obligatoires', tier: 'expert' },
-      { label: 'Procédures douanières', path: '/modules/procedures-process', desc: '22 procédures pas à pas', tier: 'operateur' },
     ],
   },
   {
@@ -82,6 +81,7 @@ export const ESPACES: Espace[] = [
     livrable: 'Dossier documentaire et DUM vérifiée',
     transmet: "Historique complet de l'opération",
     tools: [
+      { label: 'Régimes & Procédures à l’import', path: '/modules/procedures-process', desc: 'Codes de référence, parcours de dédouanement, procédures par flux', tier: 'operateur' },
       { label: 'Dossier documentaire par procédure', path: '/modules/transit-doc-generator', desc: 'Pièces à réunir par procédure, de l’arrivée à l’apurement', tier: 'operateur' },
       { label: 'Vérifier vos documents d’import', path: '/modules/verificateur-dum', desc: 'Contrôle de cohérence avant dépôt', tier: 'expert' },
       { label: 'Suivi et Tracking', path: '/modules/tracking', desc: 'Suivi de vos expéditions et marchandises', tier: 'operateur' },
