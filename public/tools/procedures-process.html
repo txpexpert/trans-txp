@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr" class="ixp-theme">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maîtriser le processus à l’import — IXP-Import-eXPert</title>
+<meta name="description" content="Le parcours de dédouanement au Maroc, les procédures par flux (import, export, transit, stockage, zones franches), les codes régimes et les nouveautés de procédure 2023-2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.28);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;--bg:#F9F8F4;--bg2:#F2F0EA;--surface:#fff;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 8px 28px rgba(26,26,24,.12);--r:8px;--r-lg:12px;
+  --mono:"JetBrains Mono",ui-monospace,monospace;--serif:"DM Serif Display",Georgia,serif;--sans:"DM Sans",system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}button,input{font-family:inherit}
+.page-header{position:sticky;top:0;z-index:40;background:rgba(249,248,244,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:0 2rem;box-shadow:var(--sh)}
+.hdr{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;height:56px}
+.logo-mark{min-width:30px;padding:0 5px;font-size:11px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:var(--mono)}
+.logo-text{font-family:var(--serif);font-size:15px;line-height:1.1}
+.logo-text span{display:block;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-sep{width:1px;height:28px;background:var(--border)}
+.hdr-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
+.hdr-links{margin-left:auto;display:flex;gap:8px}
+.hdr-links a{font-size:12px;text-decoration:none;color:var(--mid);border:1px solid var(--border);border-radius:100px;padding:5px 12px;background:var(--surface)}
+.hdr-links a.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.subnav{max-width:1080px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;height:40px;align-items:center;scrollbar-width:none}
+.subnav{gap:6px}
+.subnav a{--fc:#5A5A54;font-size:12.5px;font-weight:600;text-decoration:none;color:var(--fc);border:1px solid var(--fc);background:color-mix(in srgb,var(--fc) 10%,#fff);padding:5px 12px;border-radius:100px;white-space:nowrap;transition:all .15s}
+.subnav a:hover{background:color-mix(in srgb,var(--fc) 20%,#fff)}
+.subnav a.on{background:var(--fc);color:#fff}
+.subnav a[href="#nouveautes"]{--fc:#1E7A4A}.subnav a[href="#parcours"]{--fc:#1A3A9A}.subnav a[href="#flux"]{--fc:#9A4A1A}.subnav a[href="#codes-dum"]{--fc:#5A2AA0}.subnav a[href="#documents"]{--fc:#9A2A22}
+.wrap{max-width:1080px;margin:0 auto;padding:0 2rem 5rem}
+.hero{padding:36px 0 18px;display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:end}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.12;margin-bottom:10px}
+.hero p{color:var(--mid);max-width:640px;font-size:15px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.kpi b{display:block;font-family:var(--mono);font-size:20px;font-weight:500}
+.kpi span{font-size:11.5px;color:var(--mid);line-height:1.35;display:block;margin-top:2px}
+section{padding-top:38px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.sec-n{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.08em}
+.sec-h h2{font-family:var(--serif);font-weight:400;font-size:26px}
+.sec-lead{color:var(--mid);max-width:780px;margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.flt{--fc:#5A5A54;font-size:12.5px;font-weight:600;border:1px solid var(--fc);background:color-mix(in srgb,var(--fc) 10%,#fff);color:var(--fc);border-radius:100px;padding:6px 13px;cursor:pointer;transition:all .15s}
+.flt:hover{background:color-mix(in srgb,var(--fc) 20%,#fff)}
+.flt.on{background:var(--fc);color:#fff;box-shadow:0 3px 10px color-mix(in srgb,var(--fc) 35%,transparent)}
+.flt-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.src{font-family:var(--mono);font-size:10px;border-radius:4px;padding:2px 6px;border:1px solid var(--gold-bd);background:var(--gold-dim);color:#7a5f17;white-space:nowrap;display:inline-block}
+.tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--fc,#ccc);background:color-mix(in srgb,var(--fc,#ccc) 10%,#fff);color:var(--fc,#555)}
+/* timeline */
+.tl{display:grid;gap:10px}
+.tl-item{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);border-left:3px solid var(--fc,var(--gold));cursor:pointer}
+.tl-item:hover{box-shadow:var(--sh-md)}
+.tl-d{font-family:var(--mono);font-size:11.5px;color:var(--mid)}
+.tl-d b{display:block;font-size:13px;color:var(--ink)}
+.tl-t{font-weight:600;font-size:14.5px;margin-bottom:3px}
+.tl-x{color:var(--mid);font-size:13.5px}
+.tl-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.more{margin-top:10px;font-size:13px;background:none;border:1px dashed var(--border-mid);border-radius:var(--r);padding:8px 14px;cursor:pointer;color:var(--mid);width:100%}
+/* catalogue */
+.cat{display:grid;grid-template-columns:360px 1fr;gap:14px;align-items:start}
+.list{max-height:640px;overflow:auto}
+.search{width:100%;border:1px solid var(--border-mid);border-radius:var(--r);padding:11px 14px;font-size:14px;margin-bottom:10px}
+.search:focus{outline:2px solid var(--gold-bd);border-color:var(--gold)}
+.it{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bg2);background:none;padding:10px 14px;cursor:pointer;border-left:3px solid var(--fc)}
+.it:hover{background:var(--gold-pale)}
+.it.on{background:color-mix(in srgb,var(--fc) 10%,#fff)}
+.it b{display:block;font-size:13.5px;font-weight:600;line-height:1.3}
+.it small{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.it .nw{font-family:var(--mono);font-size:9px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);border-radius:4px;padding:0 5px;margin-left:6px}
+.count{font-size:12px;color:var(--muted);margin:0 0 8px 2px}
+.fiche{overflow:hidden;animation:pop .2s}
+@keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.f-h{padding:20px 22px 14px;border-bottom:1px solid var(--border);border-top:4px solid var(--fc)}
+.f-h .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc)}
+.f-h h3{font-family:var(--serif);font-weight:400;font-size:24px;line-height:1.2;margin:4px 0 8px}
+.f-h p{color:var(--mid);font-size:14.5px}
+.blk{padding:14px 22px;border-bottom:1px solid var(--border)}
+.blk:last-child{border-bottom:0}
+.blk h4{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.blk ul{list-style:none;display:grid;gap:6px}
+.blk li{font-size:13.5px;padding-left:16px;position:relative}
+.blk li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--fc)}
+.codes{display:flex;gap:5px;flex-wrap:wrap}
+.code{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:5px;background:var(--blue-bg);border:1px solid #B0C8F8;color:var(--blue)}
+.f-foot{padding:12px 22px;background:var(--bg);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav{margin-left:auto;display:flex;gap:6px}
+.btn{border:1px solid var(--border-mid);background:var(--surface);border-radius:var(--r);padding:7px 12px;font-size:12.5px;cursor:pointer;text-decoration:none;color:var(--ink);display:inline-block}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* statuts */
+.stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.st{padding:18px;border-top:4px solid var(--fc)}
+.st .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc)}
+.st h3{font-family:var(--serif);font-weight:400;font-size:20px;margin:3px 0 8px}
+.st ul{list-style:none;display:grid;gap:5px;margin-bottom:10px}
+.st li{font-size:13px;padding-left:14px;position:relative}
+.st li::before{content:"✓";position:absolute;left:0;color:var(--fc);font-weight:700;font-size:12px}
+.st .cond{font-size:12.5px;color:var(--mid);border-top:1px dashed var(--border);padding-top:8px;margin-bottom:8px}
+/* obligations */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);font-weight:500;padding:10px 12px;background:var(--bg);border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.am{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tool{padding:16px}
+.tool .tk{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.tool h4{font-size:16px;margin:2px 0 6px}
+.tool p{font-size:13px;color:var(--mid);margin-bottom:8px}
+.cta{margin-top:26px;padding:20px 22px;display:flex;align-items:center;gap:16px;justify-content:space-between;background:var(--ink);color:#fff;border-radius:var(--r-lg)}
+.cta h3{font-family:var(--serif);font-weight:400;font-size:21px}
+.cta p{color:#c9c6bb;font-size:13px}
+.cta .btns{display:flex;gap:8px;flex-wrap:wrap}
+.cta .btn{background:var(--gold);border-color:var(--gold);color:#fff;white-space:nowrap}
+.cta .btn.ghost{background:transparent;border-color:#6b675c;color:#fff}
+.foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;line-height:1.6}
+@media(max-width:860px){
+  .hero,.cat{grid-template-columns:1fr}.stat3,.tools{grid-template-columns:1fr}
+  .tl-item{grid-template-columns:1fr;gap:4px}.hdr-links{display:none}
+  .wrap,.page-header{padding-left:1rem;padding-right:1rem}.list{max-height:360px}
+}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pc{padding:0;overflow:hidden;border-top:4px solid var(--fc)}
+.pc-h{padding:16px 18px 10px}
+.pc-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.badge{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600}
+.badge.on{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.badge.ad{background:var(--blue-bg);color:var(--blue);border:1px solid #B0C8F8}
+.badge.soon{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.pc-d{font-family:var(--mono);font-size:11px;color:var(--mid);margin-left:auto}
+.pc h3{font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.25}
+.pc-b{padding:0 18px 12px}
+.pc-b h5{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--fc);margin:10px 0 5px}
+.pc-b ul{list-style:none;display:grid;gap:4px}
+.pc-b li{font-size:13px;padding-left:14px;position:relative}
+.pc-b li::before{content:"";position:absolute;left:1px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--fc)}
+.pc-f{padding:10px 18px;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+a.src{text-decoration:none}a.src:hover{border-color:var(--gold)}
+.verif{font-size:12px;color:var(--muted);margin-top:10px}
+@media(max-width:860px){.pgrid{grid-template-columns:1fr}}
+
+.muted{color:var(--muted);font-size:12.5px;margin-top:6px}
+.steps{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:12px}
+.stp{--fc:#555;border:1px solid var(--fc);background:color-mix(in srgb,var(--fc) 8%,#fff);color:var(--fc);border-radius:var(--r);padding:10px 6px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:inherit}
+.stp span{width:24px;height:24px;border-radius:50%;background:#fff;border:1px solid var(--fc);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px}
+.stp.on{background:var(--fc);color:#fff}.stp.on span{color:var(--fc)}
+.stc{border-top:4px solid var(--fc);animation:pop .2s}
+.stc .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc);padding:18px 22px 0}
+.stc h3{font-family:var(--serif);font-weight:400;font-size:24px;padding:2px 22px 4px}
+.stc>p{color:var(--mid);padding:0 22px 10px}
+.stc ul{list-style:none;display:grid;gap:7px;padding:0 22px 16px}
+.stc li{font-size:13.5px;padding-left:16px;position:relative}
+.stc li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--fc)}
+.cat2{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start}
+.list2{padding:6px 0}
+.it2{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--bg2);background:none;padding:10px 14px;cursor:pointer;border-left:3px solid var(--fc);font-family:inherit}
+.it2:last-child{border-bottom:0}.it2:hover{background:var(--gold-pale)}.it2.on{background:color-mix(in srgb,var(--fc) 10%,#fff)}
+.it2 b{display:block;font-size:13.5px;font-weight:600}.it2 small{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+ol.ol{padding-left:20px;display:grid;gap:6px}.blk ol.ol li{font-size:13.5px;padding-left:2px}.blk ol.ol li::before{display:none}
+.cq{padding:14px}
+.cres{display:grid;gap:4px}
+.crow{display:flex;gap:10px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--bg2);font-size:13.5px}
+.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dc{padding:16px 18px;border-top:4px solid var(--fc);display:flex;flex-direction:column}
+.dc .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc)}
+.dc h3{font-family:var(--serif);font-weight:400;font-size:19px;margin:2px 0 8px}
+.dc ul{list-style:none;display:grid;gap:5px;margin-bottom:10px}
+.dc li{font-size:13px;padding-left:14px;position:relative}
+.dc li::before{content:"";position:absolute;left:1px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--fc)}
+.dc-f{margin-top:auto}
+@media(max-width:860px){.steps{grid-template-columns:repeat(4,1fr)}.cat2,.docs{grid-template-columns:1fr}}
+
+.cdum{padding-top:22px}
+.cdum .sec-n{font-size:14px}
+.ctiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.ctile{--fc:#555;text-align:left;border:1px solid var(--fc);border-top:5px solid var(--fc);background:color-mix(in srgb,var(--fc) 9%,#fff);border-radius:var(--r-lg);padding:14px 16px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;gap:4px;transition:all .15s}
+.ctile:hover{background:color-mix(in srgb,var(--fc) 16%,#fff)}
+.ctile b{font-size:15px;color:var(--fc)}
+.ctile span{font-size:12.5px;color:var(--mid)}
+.ctile em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--fc);margin-top:4px}
+.ctile.on{background:var(--fc);box-shadow:0 6px 18px color-mix(in srgb,var(--fc) 35%,transparent)}
+.ctile.on b,.ctile.on span,.ctile.on em{color:#fff}
+.cpanel{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;padding:16px;border-left:4px solid var(--fc)}
+#cs{width:100%;border:1px solid var(--border-mid);border-radius:var(--r);padding:4px;font-family:inherit;font-size:13.5px;background:#fff}
+#cs option{padding:6px 8px;border-radius:4px}
+#cs option:checked{background:color-mix(in srgb,var(--fc) 18%,#fff)}
+.cp-r{display:flex;flex-direction:column;justify-content:center;gap:6px}
+.cp-r .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fc)}
+.cbig{font-family:var(--mono);font-size:40px;font-weight:500;color:var(--fc);line-height:1}
+.clab{font-size:16px;font-weight:600;margin-bottom:6px}
+.cp-r .btn{align-self:flex-start}
+@media(max-width:860px){.ctiles{grid-template-columns:1fr 1fr}.cpanel{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div class="hdr">
+    <div class="logo-mark">IXP</div>
+    <div class="logo-text">Import-eXPert<span>Intelligence douanière Maroc</span></div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-title">Régimes &amp; Procédures à l’import</div>
+    <div class="hdr-links"><a href="/">Accueil</a><a class="pri" href="/modules/regimes-economiques">Régimes économiques →</a></div>
+  </div>
+  <nav class="subnav" id="subnav">
+    <a href="#codes-dum">Vos codes de référence</a><a href="#nouveautes">Vos procédures</a><a href="#parcours">Le parcours de dédouanement</a><a href="#flux">Procédures par flux</a><a href="#documents">Documents</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <h1>Maîtriser le processus à l’import</h1>
+      <p>Comment une marchandise est déclarée, contrôlée et libérée au Maroc, de l’arrivée au bureau de douane jusqu’à l’enlèvement, et les procédures propres à chaque flux : importation, exportation, transit, stockage, zones franches.<br><b><i>Chaque étape renvoie au texte qui la fonde.</i></b></p>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b id="kP">—</b><span>procédures décrites pas à pas</span></div>
+      <div class="kpi"><b id="kN">—</b><span>procédures consolidées depuis 2023</span></div>
+      <div class="kpi"><b id="kC">—</b><span>codes de référence consultables : régimes, bureaux, franchises, registre de commerce</span></div>
+      <div class="kpi"><b>150 DH</b><span>de redevance informatique pour une DS MEAD</span></div>
+    </div>
+  </div>
+
+
+  <section id="codes-dum" class="cdum">
+    <div class="sec-h"><span class="sec-n">★</span><h2>Vos codes de référence</h2></div>
+    <p class="sec-lead">Les codes à renseigner dans votre déclaration. Choisissez une liste, filtrez, puis sélectionnez un code.</p>
+    <div class="ctiles" id="ctiles"></div>
+    <div class="card cpanel" id="cpanel">
+      <div class="cp-l">
+        <input class="search" id="cf" placeholder="Filtrer par code ou libellé…" autocomplete="off">
+        <select id="cs" size="9"></select>
+        <div class="muted" id="cn"></div>
+      </div>
+      <div class="cp-r" id="cres"></div>
+    </div>
+  </section>
+
+  <section id="nouveautes">
+    <div class="sec-h"><span class="sec-n">01</span><h2>Vos procédures consolidées</h2></div>
+    <p class="sec-lead">Les procédures en vigueur, consolidées avec leurs dernières évolutions et leur texte de référence. Choisissez une année.</p>
+    <div class="filters" id="yf"></div>
+    <div class="tl" id="tl"></div>
+  </section>
+
+  <section id="parcours">
+    <div class="sec-h"><span class="sec-n">02</span><h2>Le parcours de dédouanement à l’import</h2></div>
+    <p class="sec-lead">Les huit étapes d’une importation, de l’avant-arrivée au contrôle a posteriori. Cliquez sur une étape.</p>
+    <div class="steps" id="steps"></div>
+    <div id="step"></div>
+  </section>
+
+  <section id="flux">
+    <div class="sec-h"><span class="sec-n">03</span><h2>Les procédures, par flux</h2></div>
+    <p class="sec-lead">Choisissez un flux, puis une procédure. Les régimes suspensifs (admission temporaire, entrepôt industriel franc, transformation sous douane…) sont détaillés dans le guide des régimes économiques.</p>
+    <div class="filters" id="ff"></div>
+    <div class="cat2">
+      <div class="card list2" id="plist"></div>
+      <div id="pfiche"></div>
+    </div>
+  </section>
+
+
+  <section id="documents">
+    <div class="sec-h"><span class="sec-n">04</span><h2>Les documents de la DUM</h2></div>
+    <p class="sec-lead">Ce qui doit être joint avant la signature, ce qui peut suivre, et ce que vous devez garder.</p>
+    <div class="docs">
+      <div class="card dc" style="--fc:#1A3A9A"><div class="k">Avant la signature</div><h3>Documents annexes</h3><ul><li>Titres de transport et de propriété.</li><li>Documents commerciaux : facture, facture-colisage, lettre de cession, note de fret, assurance.</li><li>Documents techniques.</li><li>Documents ouvrant un avantage : bon de franchise, preuve d’origine, document fiscal de dédouanement.</li></ul><div class="dc-f"><span class="src">Circ. 6528/312</span></div></div>
+      <div class="card dc" style="--fc:#B8922A"><div class="k">Dans les 30 jours</div><h3>Documents exigibles</h3><ul><li>Autorisations sectorielles, certificats sanitaires et autres documents des réglementations particulières.</li><li>Tolérance si le retard vient de l’organisme émetteur.</li><li>Rien à charger si l’organisme transmet le document à la douane.</li></ul><div class="dc-f"><span class="src">Circ. 6528/312 · 6755/311</span></div></div>
+      <div class="card dc" style="--fc:#9A2A22"><div class="k">Toujours</div><h3>Authenticité et conservation</h3><ul><li>Signer la DUM engage le déclarant sur l’authenticité des documents joints : vérifiez-les, par le code QR quand il existe.</li><li>Le transitaire vérifie sur original puis le remet au propriétaire contre décharge.</li><li>Conservation : quatre ans.</li></ul><div class="dc-f"><span class="src">Circ. 6662/312 · 6639/312 · Code art. 42</span></div></div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <div><h3>Aller plus loin</h3><p>Les régimes suspensifs ont leur propre guide ; le contrôle des risques liste les erreurs de procédure qui coûtent cher.</p></div>
+    <div class="btns"><a class="btn ghost" href="/modules/risques">Contrôle des risques</a><a class="btn" href="/modules/regimes-economiques">Régimes économiques →</a></div>
+  </div>
+
+  <div class="foot">IXP-Import-eXPert · Information à caractère général. Les procédures évoluent par circulaire : vérifiez les conditions applicables auprès de votre bureau de douane ou de votre transitaire agréé.</div>
+</main>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const S = r => `<span class="src">${esc(r)}</span>`;
+function pills(el, opts, cur, onPick){
+  el.innerHTML = Object.entries(opts).map(([k,o]) => `<button class="flt${k===cur?' on':''}" style="--fc:${o.c}" data-k="${k}">${esc(o.l)}</button>`).join('');
+  el.onclick = e => { const b = e.target.closest('.flt'); if(!b) return; el.querySelectorAll('.flt').forEach(x=>x.classList.toggle('on', x===b)); onPick(b.dataset.k); };
+}
+
+/* ---------- 01 Nouveautés ---------- */
+const NV = [
+ {y:"2026",d:"02/09/2026",t:"Déclaration globale à l’importation",x:"Une unité fonctionnelle complète des chapitres 84, 85 ou 90 (ou des positions 9406 et 7308) peut être importée en plusieurs envois et déclarée à la position de l’article fini : une DUM initiale autorisée, puis une DUM partielle par arrivage.",ref:"Circ. 6771/312",c:"#1A3A9A"},
+ {y:"2026",d:"02/07/2026",t:"Résultats de contrôle transmis directement à BADR",x:"Les autorisations et visas de plusieurs organismes (médicaments, pesticides d’hygiène publique, publications, films) arrivent électroniquement : plus de papier à joindre.",ref:"Circ. 6755/311",c:"#0E7490"},
+ {y:"2026",d:"01/01/2026",t:"Lieu effectif de stockage à déclarer",x:"L’importateur indique dans la DUM le lieu effectif de stockage ou de transformation. Une fausse déclaration est sanctionnée de 30 000 à 60 000 DH.",ref:"LF 2026 · Code art. 19 bis",c:"#9A2A22"},
+ {y:"2026",d:"01/01/2026",t:"Plateforme de transmission des factures",x:"Une plateforme agréée permet le dépôt et la transmission automatisés et sécurisés des documents commerciaux, notamment la facture, joints à la DUM.",ref:"LF 2026 · Code art. 76 ter",c:"#5A2AA0"},
+ {y:"2025",d:"24/12/2025",t:"Pesage obligatoirement avant la mainlevée",x:"En circuit rouge, quand le poids déclaré ou sa répartition entre articles est douteux, le pesage est prescrit avant la mainlevée et son résultat saisi dans BADR.",ref:"Note D299/2025",c:"#B8922A"},
+ {y:"2025",d:"13/08/2025",t:"Cahier des charges des MEAD actualisé",x:"Traçabilité électronique des portes, vidéosurveillance des quais conservée 90 jours, badges, scellés électroniques pour l’acheminement, responsabilité de l’exploitant jusqu’à la sortie effective.",ref:"Circ. 6675/312",c:"#9A4A1A"},
+ {y:"2025",d:"28/07/2025",t:"Autorisations d’ETPP sur PORTNET",x:"Les autorisations d’exportation temporaire pour perfectionnement passif sont échangées électroniquement avec les ministères concernés.",ref:"Circ. 6671/311",c:"#0E7490"},
+ {y:"2025",d:"24/06/2025",t:"Authenticité des documents : responsabilité du déclarant",x:"Le déclarant vérifie chaque document avant de le joindre, par le code QR quand il existe ; un faux détectable engage sa responsabilité personnelle.",ref:"Circ. 6662/312",c:"#9A2A22"},
+ {y:"2025",d:"10/02/2025",t:"DS MEAD : une seule déclaration au lieu de trois",x:"La déclaration sommaire d’acheminement et d’entrée en MEAD remplace l’acquit-à-caution de transit, la déclaration sommaire MEAD et l’état de dépotage.",ref:"Circ. 6636/312 · 6677/312",c:"#1E7A4A"},
+ {y:"2024",d:"02/10/2024",t:"Mutation d’entrepôt sans acquit-à-caution",x:"Le transfert d’un entrepôt de stockage à un autre se fait sous couvert des documents commerciaux, puis d’une déclaration 080 ou 081 à l’arrivée.",ref:"Circ. 6600/313 · Décret 2-24-295",c:"#5A2AA0"},
+ {y:"2024",d:"12/06/2024",t:"État de chargement dématérialisé",x:"L’état de chargement des envois en groupage à l’export vaut déclaration simplifiée de transit ; contrôle initié automatiquement, autorisation d’acheminement notifiée par courriel.",ref:"Circ. 6571/313",c:"#1E7A4A"},
+ {y:"2024",d:"01/04/2024",t:"Plafonds de caution contrôlés en temps réel",x:"BADR bloque la DUM quand l’encours de la facilité de cautionnement est dépassé.",ref:"Circ. 6554/313",c:"#B8922A"},
+ {y:"2024",d:"15/01/2024",t:"Documents annexes et documents exigibles",x:"Les documents commerciaux et de transport sont joints avant la signature ; ceux des contrôles techniques dans les 30 jours. Le défaut de jointure est sanctionné.",ref:"Circ. 6528/312",c:"#1A3A9A"},
+ {y:"2023",d:"15/05/2023",t:"Triple circuit étendu au transit",x:"Les déclarations de transit reçoivent elles aussi une orientation automatique : vert, orange, rouge partiel ou rouge intégral.",ref:"Circ. 6456/412",c:"#9A2A22"},
+ {y:"2023",d:"01/03/2023",t:"Mandats des transitaires sur PORTNET",x:"Attribution, modification et annulation des procurations exclusivement en ligne ; annulation automatique après un an sans déclaration signée.",ref:"Circ. 6421/411",c:"#0E7490"},
+ {y:"2023",d:"01/01/2023",t:"Délais de transit suivis par BADR",x:"Calcul automatique du délai, alertes par courriel, pré-confirmation d’arrivée et justification des retards sous 72 heures.",ref:"Circ. 6387/412",c:"#9A4A1A"}
+];
+const YR = {"2026":{l:"2026",c:"#1E7A4A"},"2025":{l:"2025",c:"#1A3A9A"},"2024":{l:"2024",c:"#B8922A"},"2023":{l:"2023",c:"#5A2AA0"}};
+let yCur = "2026";
+function drawNV(){ $('#tl').innerHTML = NV.filter(x=>x.y===yCur).map(x=>`<div class="tl-item" style="--fc:${x.c}"><div class="tl-d"><b>${x.d}</b></div><div><div class="tl-t">${esc(x.t)}</div><div class="tl-x">${esc(x.x)}</div><div class="tl-meta">${S(x.ref)}</div></div></div>`).join(''); }
+pills($('#yf'), YR, yCur, k=>{yCur=k;drawNV();}); drawNV();
+$('#kN').textContent = NV.length;
+
+/* ---------- 02 Parcours ---------- */
+const ST = [
+ {t:"Préparer",c:"#1A3A9A",x:"Avant l’arrivée de la marchandise.",l:["Donner mandat au transitaire sur PORTNET (sauf opérateur sans registre de commerce).","Vérifier le classement, l’origine et les contrôles techniques exigés ; obtenir les autorisations préalables.","Pour une question de classement, d’origine ou de valeur, demander une décision anticipée (réponse sous 150 jours au plus).","Réunir les documents annexes : facture, titre de transport, documents techniques, preuve d’origine."],ref:"Circ. 6421/411 · Code art. 45 ter"},
+ {t:"Arriver",c:"#0E7490",x:"La marchandise est prise en charge par la douane.",l:["Le transporteur dépose la déclaration sommaire (manifeste) dans BADR.","Acheminement vers un MEAD : DS MEAD souscrite par l’exploitant, qui vaut acquit-à-caution et ouvre un compte de transit.","Écor au départ, contre-écor et confirmation de réception au MEAD de destination."],ref:"Code art. 46 à 59 bis · Circ. 6636/312"},
+ {t:"Déclarer",c:"#B8922A",x:"La déclaration en détail (DUM) est déposée électroniquement dans BADR.",l:["Code régime, classement, valeur, origine, lieu effectif de stockage ou de transformation.","Documents annexes joints avant la signature ; documents exigibles sous 30 jours.","La signature électronique engage le déclarant, notamment sur l’authenticité des documents."],ref:"Code art. 19 bis · 203 bis · Circ. 6528/312"},
+ {t:"Être orienté",c:"#5A2AA0",x:"BADR attribue un circuit de contrôle selon l’analyse de risque.",l:["Vert : mainlevée sans contrôle.","Orange : contrôle documentaire.","Rouge partiel ou intégral : contrôle documentaire et visite physique.","L’inspecteur peut re-sélectionner une déclaration sur doute ou renseignement."],ref:"Circ. 6175/412 · 6456/412"},
+ {t:"Être contrôlé",c:"#9A2A22",x:"Vérification des documents et, le cas échéant, de la marchandise.",l:["Visite partielle ou intégrale ; prélèvement d’échantillons si nécessaire.","Pesage avant la mainlevée quand le poids est douteux.","Contrôles techniques des autres administrations (normes, sanitaire…) selon le produit."],ref:"Note D299/2025 · Code art. 38"},
+ {t:"Payer",c:"#1E7A4A",x:"Liquidation et paiement des droits et taxes.",l:["Paiement électronique ; à défaut, majoration de 1 %, minimum 1 000 DH.","Ou garantie : caution bancaire, facilités de cautionnement, consignation.","Remboursement prévu pour les droits perçus à tort."],ref:"Code art. 95 · 95 bis · Circ. 6707/313"},
+ {t:"Enlever",c:"#9A4A1A",x:"Mainlevée puis sortie de la marchandise.",l:["Mainlevée délivrée dans BADR ; bon à délivrer géré sur PORTNET.","Enlever avant la mainlevée est une infraction.","En MEAD : les marchandises non enlevées 48 heures après la mainlevée sont signalées au service d’analyse du risque."],ref:"Code art. 285-4° · Circ. 6675/312"},
+ {t:"Après",c:"#3A3A36",x:"La douane peut contrôler pendant quatre ans.",l:["Conserver tous les documents quatre ans, sous forme originale.","Rectifier ou annuler une déclaration dans les conditions des articles 78 et 78 bis.","Répondre au droit de communication et aux contrôles a posteriori."],ref:"Code art. 42 · 78 · 78 bis"}
+];
+let sCur = 2;
+function drawST(){
+  $('#steps').innerHTML = ST.map((s,i)=>`<button class="stp${i===sCur?' on':''}" style="--fc:${s.c}" data-i="${i}"><span>${i+1}</span>${esc(s.t)}</button>`).join('');
+  const s = ST[sCur];
+  $('#step').innerHTML = `<div class="card stc" style="--fc:${s.c}"><div class="k">Étape ${sCur+1} sur ${ST.length}</div><h3>${esc(s.t)}</h3><p>${esc(s.x)}</p><ul>${s.l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="f-foot">${S(s.ref)}<div class="nav"><button class="btn" data-mv="-1"${sCur===0?' disabled':''}>← Précédente</button><button class="btn pri" data-mv="1"${sCur===ST.length-1?' disabled':''}>Suivante →</button></div></div></div>`;
+}
+$('#steps').onclick = e=>{ const b=e.target.closest('.stp'); if(b){ sCur=+b.dataset.i; drawST(); } };
+$('#step').onclick = e=>{ const b=e.target.closest('[data-mv]'); if(b){ sCur+=+b.dataset.mv; drawST(); } };
+drawST();
+
+/* ---------- 03 Procédures par flux ---------- */
+const FX = {
+ imp:{l:"Importation",c:"#1A3A9A"},
+ exp:{l:"Exportation",c:"#1E7A4A"},
+ tra:{l:"Transit et acheminement",c:"#9A4A1A"},
+ sto:{l:"Stockage",c:"#5A2AA0"},
+ zf:{l:"Zones franches et ZAI",c:"#0E7490"}
+};
+const PR = [
+ {f:"imp",t:"Mise à la consommation directe",codes:["010"],b:"Importation définitive : les droits et taxes sont payés et la marchandise circule librement.",e:["Déclaration en détail sous le code 010, documents annexes joints.","Orientation par BADR, contrôle éventuel, paiement ou garantie des droits.","Mainlevée puis enlèvement."],v:["Classement à 10 chiffres et valeur déclarée sous la responsabilité du déclarant.","Préférence tarifaire seulement avec une preuve d’origine jointe avant signature.","Lieu effectif de stockage à indiquer."],ref:"Circ. 6047/312 · 6528/312 · Code art. 19 bis"},
+ {f:"imp",t:"Déclaration globale (envois fractionnés)",codes:["010","050"],b:"Une machine ou une installation complète importée en plusieurs envois est déclarée à la position de l’article fini.",e:["DUM initiale de type « Déclaration globale » avec fiche technique, inventaire des éléments et planning des arrivages.","Autorisation du service, qui fixe le délai : un an au plus, prorogeable d’un an.","Une DUM partielle par arrivage, éventuellement dans un autre bureau ; chacune apure la DUM initiale en valeur."],v:["Réservée aux unités fonctionnelles complètes des chapitres 84, 85, 90 ou des positions 9406 et 7308.","DUM initiale annulée d’office sans DUM partielle dans les 60 jours."],ref:"Circ. 6771/312"},
+ {f:"imp",t:"Déclaration provisionnelle",codes:[],b:"Pour une série d’opérations dont les quantités définitives ne sont pas encore connues : enlèvement progressif, déclaration définitive ensuite.",e:["Déclaration provisionnelle dématérialisée, puis sous-DUM au fil des enlèvements.","Arrêt de la déclaration et régularisation globale."],v:["Ouverte aux régimes économiques avec compte depuis 2021 (hors exportation préalable).","Rectification d’une sous-DUM sans suites contentieuses dans les 48 heures suivant la mainlevée."],ref:"Code art. 76 bis · Circ. 6195/312 · 6221/313"},
+ {f:"imp",t:"Réimportation",codes:["051","052","053","054","056"],b:"Faire revenir en franchise une marchandise exportée temporairement, après perfectionnement passif ou réparation.",e:["Déclaration sous le code correspondant à l’exportation d’origine.","Apurement du compte d’exportation temporaire ou d’ETPP correspondant."],v:["Identifier les marchandises dès l’exportation (numéros de série, échantillons, photos)."],ref:"Circ. 6047/312"},
+ {f:"exp",t:"Exportation simple",codes:["060","061"],b:"Sortie définitive d’une marchandise marocaine ou dédouanée.",e:["Déclaration sous le code 060 (061 dans le cadre du système généralisé de préférences).","Contrôle, mainlevée et embarquement ; certification de l’origine si nécessaire."],v:["Déclaration simplifiée possible pour l’acheminement du MEAD au bureau d’exportation (LF 2024)."],ref:"Circ. 6047/312 · Code art. 76 bis"},
+ {f:"exp",t:"Exportation en groupage (état de chargement)",codes:[],b:"Plusieurs DUM d’exportation chargées dans le même moyen de transport sont couvertes par un état de chargement.",e:["Confirmation d’entrée de toutes les DUM de l’état : le contrôle est initié automatiquement.","Mainlevée des DUM, saisie des scellés et autorisation d’acheminement notifiée par courriel.","Écor sans exemplaire papier."],v:["L’état de chargement vaut déclaration simplifiée de transit."],ref:"Circ. 6571/313"},
+ {f:"exp",t:"Exportation temporaire et perfectionnement passif",codes:["078","077","770","771"],b:"Sortir une marchandise pour la réparer, la transformer ou l’utiliser à l’étranger, puis la réimporter.",e:["Déclaration d’exportation temporaire (078) ou d’ETPP (077, 770 avec échange standard, 771 en suite d’ATPA).","Autorisations d’ETPP échangées par PORTNET avec les ministères.","Réimportation sous le code correspondant dans les délais."],v:["Conserver les justificatifs d’identité des marchandises.","Procédure particulière pour les métaux précieux."],ref:"Circ. 6047/312 · 6671/311"},
+ {f:"tra",t:"Transit à l’import ou à l’export",codes:["085","086"],b:"Acheminer une marchandise sous douane d’un bureau à un autre, droits suspendus.",e:["Déclaration de transit garantie ; orientation automatique en quatre circuits.","Acheminement sous scellés, dans le délai fixé.","Arrivée confirmée au bureau de destination ; pré-confirmation hors heures d’ouverture."],v:["Retard non justifié sous 72 heures : poursuites contentieuses.","Scellé rompu : substitution présumée."],ref:"Code art. 156 · Circ. 6387/412 · 6456/412"},
+ {f:"tra",t:"DS MEAD : acheminement vers un MEAD",codes:[],b:"L’exploitant du MEAD déclare en une fois l’acheminement depuis le bureau d’importation et l’entrée dans son magasin.",e:["Enregistrement dans BADR avec titre de transport et manifeste détaillé par lot (expéditeur, destinataire et ICE, colis, poids, valeur).","Sélectivité automatique, contrôle, scellés, écor.","Confirmation de réception au MEAD ; apurement par les mainlevées des DUM."],v:["Garantie : caution de type S de l’exploitant, ou caution globale.","Redevance informatique : 150 DH par déclaration."],ref:"Circ. 6636/312 · 6677/312"},
+ {f:"tra",t:"Mutation d’entrepôt",codes:["080","081"],b:"Transférer des marchandises d’un entrepôt de stockage à un autre.",e:["Acheminement direct sous couvert de factures ou bons de livraison mentionnant les agréments des deux entrepôts.","À l’arrivée, déclaration de mutation ou de cession (080 ou 081) par le cessionnaire."],v:["Plus d’acquit-à-caution de transit depuis 2024.","Comptabilité matières tenue par le cédant et le cessionnaire."],ref:"Circ. 6600/313 · 6572/313"},
+ {f:"sto",t:"Magasins et aires de dédouanement (MEAD)",codes:[],b:"Stocker sous douane, en attente de dédouanement, dans un magasin agréé exploité par un logisticien.",e:["Entrée sous DS MEAD ; dédouanement par DUM au bureau de rattachement.","Sortie après mainlevée ; l’exploitant reste responsable jusqu’à la sortie effective."],v:["Marchandises non enlevées 48 heures après la mainlevée signalées au service d’analyse du risque.","Inventaire annuel avant le 31 janvier ; marchandises abandonnées suivies chaque mois."],ref:"Code art. 61 à 63 · Circ. 6675/312"},
+ {f:"sto",t:"Entrepôts de stockage",codes:["035","036","037","046","047"],b:"Stocker des marchandises en suspension de droits, puis les mettre à la consommation, les exporter ou les céder.",e:["Entrée sous le code de l’entrepôt (public 035, privé banal 036, privé particulier 037).","Sortie : mise à la consommation (046, 047), exportation ou mutation."],v:["Seules les marchandises désignées dans l’autorisation de l’entrepôt privé particulier y sont admises.","Comptabilité matières et présentation à toute réquisition."],ref:"Circ. 6047/312 · Code art. 294-8°"},
+ {f:"zf",t:"Mise à la consommation depuis une zone",codes:["050"],b:"Faire entrer sur le territoire assujetti une marchandise provenant d’une zone franche ou d’une ZAI.",e:["Déclaration sous le code 050 ; droits liquidés comme pour une importation.","Possible en déclaration globale pour les unités fonctionnelles complètes."],v:["Vérifier la règle d’origine applicable à la marchandise sortant de zone."],ref:"Circ. 6047/312 · 6771/312"},
+ {f:"zf",t:"Exportation vers une zone",codes:["761","762","763","764","765","766","767","768"],b:"Livrer une zone franche ou une ZAI depuis le territoire assujetti, en exportation simple ou en suite d’un régime économique.",e:["Code selon l’origine du flux : exportation simple (761), en suite d’ATPA (762), d’AT (763), d’entrepôt (764), de TSD (767), d’EIF (768).","Exportation temporaire (765) ou ETPP (766) vers la zone."],v:["Les matériaux de construction destinés à l’installation des usines en ZAI peuvent passer en déclaration simplifiée."],ref:"Circ. 6047/312 · 6493/312"},
+ {f:"zf",t:"Export via une zone franche logistique",codes:["769","682"],b:"Vente ferme livrée dans une zone franche logistique, puis expédiée au client final.",e:["Code 769 à l’entrée en zone : il impute, le cas échéant, les comptes de régime économique des intrants.","Code 682 à l’expédition vers l’étranger : certification de l’origine préférentielle possible dans l’année."],v:["Quand le client final n’est pas connu, passer par l’exportation temporaire (765) puis l’exportation définitive (681)."],ref:"Circ. 6047/312"},
+ {f:"zf",t:"Transit vers et entre les zones",codes:["855","856","866"],b:"Acheminer les marchandises de l’étranger vers une zone, entre zones, ou d’une zone vers l’étranger.",e:["855 : transit à l’import de l’étranger vers la zone.","856 : transit entre zones autres que portuaires et aéroportuaires.","866 : transit à l’export depuis la zone."],v:["Depuis 2026, des marchandises non déclarées et étrangères à l’activité autorisée, découvertes dans un transit vers une ZAI, constituent un délit de contrebande."],ref:"Circ. 6047/312 · LF 2026 · Code art. 282-6°"}
+];
+$('#kP').textContent = PR.length;
+let fCur = "imp", pIdx = 0;
+function drawPR(){
+  const L = PR.filter(p=>p.f===fCur), c = FX[fCur].c;
+  $('#plist').innerHTML = L.map((p,i)=>`<button class="it2${i===pIdx?' on':''}" style="--fc:${c}" data-i="${i}"><b>${esc(p.t)}</b>${p.codes.length?`<small>${p.codes.join(' · ')}</small>`:''}</button>`).join('');
+  const p = L[pIdx];
+  $('#pfiche').innerHTML = `<div class="card fiche" style="--fc:${c}">
+   <div class="f-h"><div class="k">${esc(FX[fCur].l)}</div><h3>${esc(p.t)}</h3><p>${esc(p.b)}</p>${p.codes.length?`<div class="codes" style="margin-top:10px">${p.codes.map(x=>`<span class="code">${x}</span>`).join('')}</div>`:''}</div>
+   <div class="blk"><h4>Comment faire</h4><ol class="ol">${p.e.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>
+   <div class="blk"><h4>Points de vigilance</h4><ul>${p.v.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+   <div class="f-foot">${S(p.ref)}<div class="nav"><button class="btn" data-pm="-1"${pIdx===0?' disabled':''}>←</button><button class="btn pri" data-pm="1"${pIdx===L.length-1?' disabled':''}>Suivante →</button></div></div></div>`;
+}
+$('#plist').onclick = e=>{ const b=e.target.closest('.it2'); if(b){ pIdx=+b.dataset.i; drawPR(); } };
+$('#pfiche').onclick = e=>{ const b=e.target.closest('[data-pm]'); if(b){ pIdx+=+b.dataset.pm; drawPR(); } };
+pills($('#ff'), FX, fCur, k=>{fCur=k;pIdx=0;drawPR();}); drawPR();
+
+
+/* ---------- Codes de la DUM ---------- */
+const parse = t => t.split('|').map(x=>{const i=x.indexOf('~');return {c:x.slice(0,i),l:x.slice(i+1)};});
+const LISTS = {
+ rg:{l:"Codes régimes",c:"#5A2AA0",d:"Le régime déclaré pour votre opération",data:parse("000~REGIME ANCIEN PRIMAIRE|002~TRANSBORDEMENT SUR L'ETRANGER|003~TRANSPORT MARITIME INTERIEUR|004~DECLARATION OCCASIONNELLE IMPORT|005~DECLARATION OCCASIONNELLE EXPORT|006~DECLARATION PROVISOIRE IMPORT SIMPLE|007~DECLARATION PROVISOIRE IMPORT SOUS REGIMES ECONOMIQUES|008~DECLARATION D’ADMISSION TEMPORAIRE DE CONTENEURS|009~DECLARATION D’ADMISSION TEMPORAIRE DE VEHICULES A USAGE COMMERCIAL|010~MISE A LA CONSOMMATION DIRECTE|011~EQUIPEMENT DEFENSE NATIONALE|012~INVESTISSEMENT|013~IMPORT. ACCORDS/CONVENTIONS|014~FRANCHISES DIPLOMATIQUES|015~PAPIER D'EDITION|016~MAT/PROD. AGRICOL. FRANCHISE|017~MAT/PROD. PECHE EN FRANCHISE|018~DONS|019~AUTRES FRANCHISES|020~IMPORTATION EN COMPENSATION D'EXPORTATION PREALABLE AVEC PAIEMENT|021~IMPORTATION EN COMPENSATION D'EXPORTATION PREALABLE SANS PAIEMENT|022~ADMISSION TEMPORAIRE POUR PERFECTIONNEMENT ACTIF (ATPA) AVEC PAIEMENT|023~ATPA SANS PAIEMENT|024~TRANS. SS DOUANE IMP. DIRECTE|030~IT MAT. RECHERCHE HYDROCARBURE|031~IT MAT. SOUMIS A REDEVANCES|032~IT MAT. NON SOUMIS A REDEVANCE|033~IT DES VEHICULES AUTOMOBILES|034~AUTRES IT|035~ENTREPOT PUBLIC|036~ENTREPOT PRIVE BANAL|037~ENTREPOT PRIVE PARTICULIER(EPP)|038~ENTREPOT INDUSTRIEL (IMPORT)|040~MAC EN SUITE D'ATPA|041~MAC EN SUITE D'AT/AGRICUL.|042~MAC EN SUITE D'AT/AUTRES SECT.|043~MAC EN SUITE D'AUTRES AT|044~MAC EN SUITE D'AT|045~MAC EN SUITE D'AUTRES IT|046~MAC EN SUITE D'ENTREPOT PUBLIC|047~MAC EN SUITE D'ENTREPOT PRIVE PARTICULIER|048~MAC EN SUITE D'ENTREPOT INDUSTIEL FRANC|049~MAC SUITE D'ENTR/PROD. FRANC|050~MAC DE MARCHANDISES EN PROVENANCE DES ZONES FRANCHES|051~REIMPORTATION EN SUITE D’ETPP|052~REIMPORTATION EN SUITE D'ET|053~REIMPORTATION EN SUITE DU DRAWBACK|054~REIMPORTATION EN SUITE D'AUTRES EXPORTATIONS|055~ATPA DE MARCHANDISES REIMPORTEES POUR RETOUCHES|056~AT DE MARCHANDISES REIMPORTEES|060~EXPORTATION EN SIMPLE SORTIE|061~EXP. DANS LE CADRE DU SGP|062~EXP. DANS LE CADRE DU SGPC|063~EQUIPEMENT DE LA DEFENSE NAT.|068~AUTRES EXPORTATIONS SIMPLES|069~EXPORTATION DANS LE CADRE DU DRAWBACK|070~EXPORTATION EN SUITE D’ATPA AVEC PAIEMENT|071~EXP. STE AT AVEC PAIE./AUTRES|072~EXPORTATION EN SUITE D’ATPA SANS PAIEMENT|073~EXP. STE AT SANS PAIE./AUTRES|074~EXPORTATION EN SUITE D'AT|075~EXPORTATION EN SUITE D'EPP|076~EXP. VERS ZONE FRANCHE|077~ETPP DE MARCHANDISES MAROCAINES OU NATIONALISEES|078~EXPORTATION TEMPORAIRE|079~EXPORTATION PREALABLE|080~MUTATION ET ENTREE EN ENTREPOT|081~ENTREPOT EN SUITE DE REGIMES ECONOMIQUES|082~ATPA EN SUITE DE REGIMES ECONOMIQUES|083~AT EN SUITE DE REGIMES ECONOMIQUES|084~CESSION/EXPORT PREALABLE|085~TRANSIT A L'IMPORT|086~TRANSIT A L'EXPORT|087~TRANSIT DE MARCHANDISES LOCALES|088~ENTREPOT INDUSTRIEL (CESSION)|090~ENTREPOT DE PRODUITS PETROLIERS|091~ENTREPOT SUCRE|092~ENTREPOT D'AUTRES PRODUITS|093~ATPA DE MARCHANDISES SOUMISES A TIC|094~MAC EN SUITE D’ENTREPOT PRODUITS PETROLIERS|095~MAC EN SUITE SORTIE RAFFINERIE|096~MAC/ENTREPOT SUCRE|097~MAC EN SUITE D’ENTREPOT AUTRES MARCHANDISES|098~ESSAI ET MARQUAGE DES OBJETS EN PLATINE, OR OU ARGENT|099~MAC D’AUTRES MARCHANDISES SOUMISES A TIC|101~E.MINERAIS O.C.P|111~E.AUTRES MINERAIS|121~INV ENVERGURE ORIG. UE|122~INV ENVERGURE ORIG. AELE|123~AUTRES INVEST. ENVERGURE|124~AUTRES IMP DE BIENS DE L'UE|125~AUTRES IMP DE BIENS DE L'AELE|129~AUTRES IMP BIENS D'AUTRE ORIG|131~E.PRODUITS O.C.E.|132~IMP ACC/CONV TARIF & COMM BIL.|133~IMP CONV/ECHG COMM PAYS ARABES|134~IMP MSE ORIGINAIRE DE L'UE|135~IMP MSE ORIGINAIRE DE L'AELE|136~IMP.PREF.TARIF.POUR QQ PMA AFR|137~IMP MSE ORIGINAIRE DES USA|138~IMP MSE ORIGINAIRE DE TURQUIE|139~Importation accord d'Agadir|151~IMP. COMPOS. ENGINS ECONOMIQUE|161~E.PROVISION BORD AVIT.|171~E.TISSUS|181~E.AUTRES PRODUITS|182~DONS MARCHANDISE AVEC PAIEMENT|183~DONS MARCHANDISE SANS PAIEMENT|192~FRANCHISES 1A ART 164 CODE DII|193~AUTRES FRANCHISES|201~T.P.E.|202~AT REGULARISATON EXPORT PREALABLE (MIGRE)|220~TRANSFORMATION SOUS DOUANE|221~ATPA avec paiement à partir des zones franches autres que portuaires et aéroportuaires|231~ATPA sans paiement à partir des zones franches autres que portuaires et aéroportuaires|241~TRANSFORMATION SOUS DOUANE IMPORTATION FRACTIONNEE|242~TRANSFORMATION SOUS DOUANE PAPIER D’EDITION|243~TRANSFORMATION SOUS DOUANE AUTRES|251~E.TEMPORAIRE|300~ADMISSION TEMPORAIRE (AT) MATERIEL DE RECHERCHE HYDROCARBURE|301~AT DE MATERIEL SOUMIS A REDEVANCES TRIMESTRIELLES|302~AT DE MATERIEL NON SOUMIS A REDEVANCES TRIMESTRIELLES|303~AT DE MARCHANDISES REEXPORTEES POUR OPERATION DE COMMERCE TRIANGULAIRE|310~AT DE FILMS ET ENREGISTREMENTS LOUES OU PRETES|311~AT D’EMBALLAGES ET CONTENANTS IMPORTES VIDES|312~AT D’EMBALLAGES ET CONTENANTS IMPORTES PLEINS|321~AT DE MARCHANDISES (DELAI 6 MOIS)|322~AT DE MARCHANDISES (DELAI 2 ANS)|323~Importation anticipée dans le cadre de l'échange standard|330~IT M/SE VISEE DS CONV. INT.|331~AT DES VEHICULES|332~AUTRES AT|333~IMP MAT SOUMIS REDV.TR ORG UE|334~IMP MAT SOUMIS RDV.TR ORG AELE|335~AT de matériel soumis à redevance trimestrielle originaire des USA|336~AT de matériel soumis à redevance trimestrielle originaire de la TURQUIE|341~REEXP.EN SUITE M.A.C.|351~REEXP.EN SUITE D'A.T.|356~REEXP.EN SUITE D'I.T.|371~REEXP.EN SUITE D'ENTR.PUBLIC|373~REEXP.SUITE ENTR.PRIVE BANAL|375~REEXP.SUITE ENTR.PRIVE PART.|377~REEXP.SUITE D'AUTRE ENTREPOT|381~ENTREPOT INDUSTRIEL FRANC (EIF) IMPORTATION DIRECTE DE MATIERES PREMIERES|382~EIF EN SUITE D'EIF|383~EIF EN SUITE D'ATPA|384~EIF EN SUIT D'AT|385~EIF IMPORTATION DIRECTE DE MATERIEL|386~EIF en suite d'EPP|401~M.A.C. NON COUPLEE A R.E.|411~M.A.C. COUPLEE A R.E.|421~MAC SUITE AT ENGINS ECONOMIQUE|422~CESSION PAPIER EDIT. SUITE ATPA|430~MAC EN SUITE DE TRANSFORMATION SOUS DOUANE|431~PAPIER SOUS SURVEILLANCE|451~M.A.C. EN SUITE D'A.T.|456~M.A.C. EN SUITE D'I.T.|470~MAC EN SUITE D'ENTREPOT PRIVE BANAL|471~M.A.C. EN SUITE D'ENTREPOT|481~M.A.C. EN SUITE TRANSIT|491~M.A.C. S.PROV.ZONE FRANCHE TAN|501~ADMISSION TEMPORAIRE|503~AT REGULAR. D'EXPORT. PREALAB.|510~Réimportation en suite d'ETPP avec échange standard|511~REIMPORTATION DANS CADRE ETPP EN SUITE D'ATPA|521~I.T.MATERIEL HYDROCARBURE|531~I.T. MAT.SOMIS REDEVANCE TRIM.|541~I.T. VEHICULES AUTOMOBILES|551~AUTRES I.T.|601~REIMPORT.EN SUITE DE T.P.E.|602~EXP ACC/CONV TARIF & COMM BIL.|603~EXP CONV/ECHG COMM PAYS ARABES|604~EXP MSE VERS L'UE|605~EXP MSE VERS L'AELE|606~EXP MSE VERS LES USA|607~EXP MSE VERS LA TURQUIE|608~Exportation accord Agadir|611~REIMPORT.EN SUITE D'E.T.|621~REIMPORT.EN SUITE D'EXPORT.|680~EXPORTATION DEFINITIVE EN SUITE D'ETPP OU D'ET|681~EXPORTATION DEFINITIVE EN REGULARISATION D’ETPP OU D’ET VERS LES ZONES FRANCHES|682~EXPORTATION VERS L’ETRANGER EN SUITE D’EXPORTATION VERS LES ZONES FRANCHES LOGISTIQUES|700~EXPORTATION EN SUITE DE TRANSFORMATION SOUS DOUANE|701~ENTREPOT PUBLIC|710~EXP. STE TRANSF. SS DOUAN/AUTR|711~ENTREPOT PRIVE BANAL|712~Exportation en suite d'ATPA avec paiement/Turquie|721~ENTREPOT PRIVE PARTICULIER|731~AUTRES ENTREPOTS|732~Exporation en suite d'ATPA avec paiement/Turquie|741~Exportation en suite d'AT/USA|742~Exportation en suite d'AT/Turquie|751~EXPORTATION EN SUITE D’EIF|752~EXPORTATION EN SUITE D’ENTREPOT D'EXPORTATION|753~EXPORTATION EN SUITE D'EPB|761~EXPORTATION SIMPLE VERS LES ZONES FRANCHES|762~EXPORTATION SUITE ATPA VERS LES ZONES FRANCHES|763~EXPORTATION SUITE AT VERS LES ZONES FRANCHES|764~EXPORTATION SUITE ENTRPEPOT VERS LES ZONES FRANCHES|765~EXPORTATION TEMPORAIRE (ET) VERS LES ZONES FRANCHES|766~EXPORTATION POUR PERFECTIONNEMENT PASSIF (ETPP) VERS LES ZONES FRANCHES|767~EXPORTATION EN SUITE DE TRANSFORMATION SOUS DOUANE VERS LES ZONES FRANCHES|768~EXPORTATION EN SUITE DE L’EIF VERS LES ZONES FRANCHES|769~EXPORTATION VERS LES ZONES FRANCHES LOGISTIQUES|770~ETPP avec échange standard|771~ETPP EN SUITE D'ATPA|772~Exportation en suite d'importation anticipée dans le cadre de l'échange standard|791~EXP PREALA. ENGINS ECONOMIQUES|800~EXPORTATION TEMPORAIRE DE CONTENEURS (D 21)|811~E. SOUS TRANSIT|817~ENTREPOT D'EXPORTATION EN SUITE DE REGIMES ECONOMIQUES|820~TRANSFORMATION SOUS DOUANE EN SUITE D’ATPA|821~TRANSFORMATION SOUS DOUANE EN SUITE D’AT|822~TRANSFORMATION SOUS DOUANE EN SUITE D'EPP|824~TRANSF.SS DOUANE STE TRANSF.SS DOUANE|830~TRANSF. SS DOUANE SUITE AT|841~TRANSIT|842~TRANSIT EN SORTIE D'ENTREPOT|844~TRANSIT IMP VERS MEAD MM BUR.|849~Cession exportation préalable des véhicules automobiles|855~TRANSIT A L’IMPORT DE L’ETRANGER A DESTINATION DES ZONES FRANCHES|856~Transit entre zones franches autres que portuaires et aéroportuaires|866~TRANSIT A L’EXPORT VERS L’ETRANGER A PARTIR DES ZONES FRANCHES|877~TRANSIT AU SEIN DU MÊME BUREAU|900~EXPORTATION TEMPORAIRE DE VEHICULES A USAGE COMMERCIAL (D 20)|901~ZONE FRANCHE|903~EXPORTATION PREALABLE|906~DRAWBACK O.C.E.|911~AUTRES DRAWBACK|918~DROITS DE PORT A L'IMPORT|921~DROITS DE PORT A L'EXPORT|927~DROITS DE CHANCELLERIE|931~TRANSBORDEMENT A L'ETRANGER|935~TRANSBORDEMENT AU MAROC|939~TRANSPORT MARITIME INTERIEUR|941~DEC. PROV. IMPORT SIMPLE|942~DEC. PROV. REGIMES ECONOMIQUES|945~DEC. OCCAS. IMPORT|946~DEC. OCCAS. IMPORT (AEROGARE)|947~DEC. OCC. IMP. (GARE MARITIME)|948~DEC. OCC. IMP. (GARE FERROVI.)|949~DEC. OCC. IMP. (POSTE ROUTIER)|951~DEC. OCC. EXP. (BUR. DOUAN)|952~DEC. OCCAS. EXPORT (AEROGARE)|953~DEC. OCC. EXP. (GARE MARITIME)|954~DEC. OCC. EXP. (GARE. FERROVI)|955~DEC. OCC. EXP. (POSTE ROUTIER)|956~ENTREPOT MUTUEL ET ENTR.|961~CESSION D'AT ET D'ENTREPOT|962~EXPORT PREALABLE INDIRECT|963~CESSION EN DECHARGE EXP.PREAL.|964~CESSION-COMPENSATION D.E.P.|965~CESSION D'IT ET D'ENTREPOT|971~TRIPTYQUES CONTAINERS|972~TRIPTYQUES CAMIONS|975~DEC. IMPOSITION AUX T.I.C.|981~DEC. M.A.C. SUCRE SUITE ENTR.|982~DEC. M.A.C.  VIN MARCH. INTER|985~DEC. OBJ. IMPORTES (GARANTIE)|986~DEC. OBJ. PLA.OR.ARG. GARANTIE|991~Par liquidation d'office de matières premières|992~LIQUIDATION SUITE A UNE DECISION|993~Tranche 1 Scanner|994~Tranche 2 Scanner|995~Tranche 3 Scanner|996~Pesage|999~Suite à une décision")},
+ bu:{l:"Codes bureaux",c:"#1A3A9A",d:"Le bureau de douane de dédouanement",data:parse("000~Administration Centrale|100~AGADIR|101~LAAYOUNE|102~LAAYOUNE/AEROPORT|103~LAAYOUNE/COLIS POSTAUX|104~ED-DAKHLA|105~TAN-TAN|106~AGADIR/AEROPORT AL MASSIRA|200~SAFI|201~MARRAKECH|202~ESSAOUIRA|203~OUARZAZATE|204~MARRAKECH/MENARA|300~CASABLANCA-MEAD|301~CASA/NOUACEUR-FRET|302~MOHAMMEDIA|303~EL-JADIDA|304~CASA/COLIS-POSTAUX|305~JORF LASFAR|306~CASABLANCA-EXTERIEUR|307~CASA/GARANTIE|308~NOUASSER/AEROGARE|309~CASA/PORT|310~SETTAT|311~BERRECHID|400~TANGER/PORT|401~TANGER-VILLE|402~TANGER/GARANTIE ET I.I.|403~KENITRA|404~RABAT-SALE/AEROPORT|405~RABAT|406~LARACHE|407~TETOUAN|408~BAB-SEBTA|409~RABAT-VILLE/COLIS-POSTAUX/ONCF|410~TANGER/POSTES & VEHICULES|411~TANGER-MÉDITERRANÉE|412~TANGER IBN BATOUTA|500~FES VILLE|501~AL-HOCEIMA|502~FES-SAIS/AEROPORT|503~FES/GARANTIE ET I.I.|504~TAZA|600~OUJDA|601~OUJDA/ZOUJ BEGHAL|602~NADOR|603~AHFIR|607~NADOR PORT|609~BAB MELLILIA|700~MEKNES")},
+ fr:{l:"Codes franchises",c:"#1E7A4A",d:"Le motif d’exonération ou de franchise invoqué",data:parse("1~Articles d’édition (cf. V.02.01 de la RDII)|2~Films cinématographiques documentaires ou éducatifs (cf. V.02.04)|3~Franchise UNESCO (cf.V.02.06)|6~Associations de Micro crédit|7~Agence pour la promotion et le Développement Economique et Social Nord et SUD|8~Ligue Nationale de lutte contre les maladies cardio-vasculaires|9~Fondation Hassan II pour la lutte contre le cancer|10~Matériel militaires, parties et accessoires importés par les FAR|11~Matériel spécial importé par les administrations chargées de la sécurité|12~Marchandises en retour sur le territoire assujetti|13~Franchises diplomatiques (cf. V.02.26)|14~Envois destinés aux organismes internationaux siégeant au Maroc (cf. V.02.26)|15~Dons reçus par les oeuvres de bienfaisance  (cf.V.02.27)|16~Changement de résidence|17~Héritage|18~Trousseaux élèves (cf. V.02.30)|19~Trousseaux mariage (cf. V.02.30)|20~Dons|21~Aides financières non remboursables|22~Echantillons sans valeur marchande (cf. V.02.31)|23~Objets d'art, trophées, médailles, insignes commémoratifs, obtenus par des résidents|24~Cercueil et urnes (cf. V.02.31)|25~Médicaments importés par des non résidents (cf. Note n° 19763/311 du 26/10/01)|26~Effets et objets mobiliers importés en suite d'un divorce|27~Franchise royales ( cf art 164 a code)|28~Fondation Chekh Zaid Ibn Soltan|29~Université Al Akhawayn d'Ifrane|30~Fondation Mohamed VI|31~Entraide nationale|32~Croissant rouge, hors biens d'équipement matériels et outillages|33~Croissant rouge: biens d'équipement matériels et outillages|34~Bank Al Maghreb, hors monnaies ayant cours légal et tous métaux précieux|35~Bank Al Maghreb: monnaies ayant cours légal et tous métaux précieux|36~Agence pour la promotion et le Développement Economique et Social ORIENTAL|37~Fondation Cheikh Khalifa Ibn Zaïd|1001~Pétrole brut|1002~Graines de betteraves à sucre|1003~Semences fourragères|1004~Aéronefs destinés aux travaux agricoles aériens et leurs parties et pièces détachées|1005~Billets de banque étrangers|1006~Monnaies|1007~Titres d’actions ou d’obligations et autres titres similaires|1008~Mais hybrides de semence|1009~Les graines de semences de soja et de tournesol|1010~Remoulage et autres résidus de criblage de la mouture ou autres traitements des grains de céréales et de légumineuses|1011~Les produits d’origine végétale de la nature de ceux utilisés pour la nourriture des animaux|1012~Rutabagas, les betteraves fourragères, les racines fourragères, le foin, la luzerne, le trèfle, le sainfoin, les choux fourragers, le lupin, les vesces et produits fourrages similaires, même agglomérés sous forme de pellets|1013~Bourdons pollinisateurs|1014~Peaux brutes|1015~Papiers timbrés|1016~Pulpe sèche de betteraves|1017~Luzerne déshydratée|1018~Son pellétisé|1019~Paille mélassée pellétisée|1020~Paille|1021~Timbres fiscaux|1022~Semences animales (spermes congelés)|1023~Préparations utilisées dans l’alimentation des veaux|1024~Produits, articles et appareils destinés à l’hémodialyse|1025~Passeports vierges|1026~Bandes de plastiques et de papiers imprimés destinés à la confection des cartes d’identité nationale|1027~Plants de noyers|1028~Plants d’oliviers|1029~Matériels utilisant des énergies renouvelables non destinés au secteur agricole|1030~Matériels utilisant des énergies renouvelables destinés au secteur agricole|1031~Graines de semences|1032~Appareils de protection contre les périls aérotoxiques|1033~Engrais du chapitre 31- nitrate de potassium à usage d’engrais,- phosphates de potassium à usage d’engrais,poly phosphates de potassium à usage d’engrais,salins de betterave,autres nitrates|1035~Cristallins artificiels|1036~Albums à colorier pour enfants en usage dans les établissements d’enseignements|1037~Véhicules affectés à des transports touristiques|1038~Bateaux et matériels y afférent NON soumis à l’article 126-15-a du livre d’ass. et de recouv.|1039~Bateaux et matériels y afférent soumis à l’article 126-15-a du livre d’ass. et de recouv.|1040~Les viandes de volailles, de bovins et d’ovins importées pour le compte des Forces Armées Royales (FAR)|1041~Matériels, matériaux et produits consommables destinés à la reconnaissance, à la recherche et à l’exploitation des hydrocarbures ainsi qu’aux activités annexes à celle-ci|1042~Matériels au sol et matériels d’instruction importés par certaines entreprises nationales de transport aérien|1043~Les carburants, combustibles et lubrifiants devant être consommés au cours de navigations maritimes par les vedettes et canots de sauvetage de vie humaine relevant du Ministère Chargé des Pêches Maritimes|1044~Carburants, combustibles et lubrifiants pour navigation maritime|1045~rejets d'hydrocarbures|1046~Biens d’équipement acquis par certaines entreprises qui s’engagent à réaliser un investissement d’un montant égal ou supérieur à 200 Mdhs|1047~Matériels, mobiliers et biens d’équipement nécessaires à l’exploitation normale des banques offshore et des sociétés holding offshore|1048~Matériels, outillages et biens d’équipement neufs ou d’occasion dont l’importation par l’administration, importés au profit des lauréats de la formation professionnelle|1049~Rogues de morues et appâts, filets et engins de pêche|1050~Matériels et matériaux destinés à l’irrigation et à l’installation de serres|1051~Matériels de forage et de sondage destinés à la recherche et à l’exploitation des eaux souterraines|1052~Décortiqueuse de céréales et leurs parties et pièces détachées|1053~Animaux vivants des espèces bovine, ovine, caprine et chevaline, reproducteurs de races pures|1054~Animaux vivants de l’espèce des camélidés|1055~Certains produits et matériels destinés à l’agriculture|1056~Aéronefs destinés à être utilisés pour effectuer des services publics par des entreprises de transport aérien ainsi que leurs matériels et pièces de rechange|1057~Matériels et matières premières destinés à une unité de production de farine alimentaire|1061~Matériels, articles et documents importés par les entreprise d'assistance en escale|1062~Les parties,produits, matières, accessoires et assortiments nécessaires à la fabrication des engins économiques suivants : voitures de tourisme, véhicules utilitaires légers, cyclomoteurs et vélos|1063~Les carburants, combustibles et lubrifiants utilisés par les navires et embarcations exploités par les madragues et les fermes aquacoles|1064~Les carburants, combustibles et lubrifiants, les vivres et provisions de bord nécessaires aux navigations maritimes et aériennes à destination de l’étranger|1065~Carburants, combusti. et lubrif pour la navig marit. intér. par les unités de la marine et de la gendar. royale, des douanes, de la sûr. nationale, les bat. de pêche artisanale, les eng de servitudes portuaires et les unit. de transp. maritime int.|1066~Matériels et produits destinés à la lutte anti-acridienne|1068~Matériels et autres pour entreprises étrangères de transport aérien|1069~Importations Société Phosboucraâ|1070~Huile d'olive vierge pour FAR|1071~Produits pétroliers pour provinces sahariennes|1072~Fioul lourd pour provinces sahariennes|1073~Produits et matières pour la fabrication de la voiture économique|1074~Produits et matières pour la fabrication de véhicules utilitaires légers|1075~Produits et matières pour la fabrication des cyclomoteurs économiques|1076~Aliments pour bétails|1077~Produits pétroliers|1078~Biens d'équipement acquis par certaines entreprises qui s'engagent à réaliser un investissement d'un montant égal ou supérieur à 200 Mdhs,exclus de l'exonération de la TVA|1079~Importations dans le cadre de la convention Gazoduc|1080~Carburants, combustibles et lubrifiants utilisés par les bateau de pêche côtière et hauturière|2001~Produits de la pêche maritime marocaine|2002~Biens d'investissement|2003~Biens d'équipement destinés à l'enseignement privé ou à la formation professionnelle|2004~Autocars, camions et leurs biens d'équipement importés par les entreprises TIR|2005~Biens d'équipement importés par des ABNL pour personnes handicapées|2006~Médicaments pour diabéte, cardio et sida|2007~Biens mobiliers ou immobiliers pour Agence Bayt Mal Al Qods Acharif|2008~Biens, matériels importés par la BID|2009~Véhicule utilitaire léger économique et cyclomoteur économique|2010~Matières premières et produits utilisés dans les produits pharmaceutiques|2011~Emballages pour conditionnement des produits pharmaceutiques|2012~Produits et matières entrant dans la composition des emballages pharmaceutiques|2013~Produits et matières entrant dans la composition des fournitures scolaires|2014~Voiture dite économique|3001~Combustibles (fuel oil lourd (FO n°2), houilles, coke de pétrole et gaz naturel), utilisés par l'ONE et destinés à la production de l'énergie électrique d'une puissance supérieure à 10 MW")},
+ rc:{l:"Centres du registre de commerce",c:"#B8922A",d:"Le tribunal ou centre d’immatriculation du déclarant",data:parse("01~AGADIR|03~ALHOCEIMA|611~ASILAH|05~AZILAL|471~AZROU|591~BEN AHMED|09~BEN SLIMANE|197~BENGUERIR|07~BENI MELLAL|551~BERKANE|593~BERRECHID|293~BOUARFA|411~BOUJAAD|13~BOULMANE|81~CASABLANCA|15~CHEFCHAOUEN|53~DAKHLA|17~EL JADIDA|21~ERRACHIDIA|23~ESSAOUIRA|25~ES-SMARA|27~FES|077~FKIH BEN SALEH|31~GUELMIM|693~GUERCIF|455~IMINTANOUTE|013~INZEGANE|19~KALAA-SRAGHNA|079~KASBA TADLA|35~KENITRA|37~KHEMISSET|39~KHENIFRA|41~KHOURIBGA|443~KSAR KEBIR|43~LAAYOUNE|44~LARACHE|45~MARRAKECH|47~MEKNES|395~MIDELT|83~MOHAMMEDIA|49~NADOR|51~OUARZAZATE|605~OUAZZANE|415~OUED ZEM|55~OUJDA|85~RABAT|375~ROMANI|57~SAFI|87~SALE|273~SEFROU|59~SETTAT|175~SIDI BENNOUR|60~SIDI KACEM|358~SIDI SLIMANE|359~SOUK LARB A A (sic) — correction: SOUK LARBAA|61~TANGER|63~TANTAN|65~TAOUNATE|552~TAOURIRT|66~TAROUDANTE|67~TATA|69~TAZA|89~TEMARA|71~TETOUAN|73~TIZNIT|573~YOUSSOUFIA|517~ZAGORA")}
+};
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/’/g,"'");
+let lCur = 'rg';
+function drawTiles(){
+  $('#ctiles').innerHTML = Object.entries(LISTS).map(([k,o])=>`<button class="ctile${k===lCur?' on':''}" style="--fc:${o.c}" data-k="${k}"><b>${esc(o.l)}</b><span>${esc(o.d)}</span><em>${o.data.length} codes</em></button>`).join('');
+  $('#cpanel').style.setProperty('--fc', LISTS[lCur].c);
+}
+function drawList(){
+  const q = norm($('#cf').value.trim()), L = LISTS[lCur].data.filter(x=>!q || x.c.startsWith(q) || norm(x.l).includes(q));
+  $('#cs').innerHTML = L.map(x=>`<option value="${esc(x.c)}">${esc(x.c)} — ${esc(x.l)}</option>`).join('');
+  $('#cn').textContent = `${L.length} code${L.length>1?'s':''} sur ${LISTS[lCur].data.length}`;
+  if(L.length){ $('#cs').selectedIndex = 0; } showSel();
+}
+function showSel(){
+  const v = $('#cs').value, x = LISTS[lCur].data.find(y=>y.c===v);
+  $('#cres').innerHTML = x ? `<div class="k">${esc(LISTS[lCur].l)}</div><div class="cbig">${esc(x.c)}</div><div class="clab">${esc(x.l)}</div><button class="btn" id="ccopy">Copier le code</button><p class="muted">Référentiels officiels en vigueur.</p>` : '<p class="muted">Aucun code ne correspond au filtre.</p>';
+  const b = $('#ccopy'); if(b) b.onclick = ()=>{ try{ navigator.clipboard.writeText(x.c); b.textContent='Code copié'; }catch(e){} };
+}
+$('#ctiles').onclick = e=>{ const b=e.target.closest('.ctile'); if(!b) return; lCur=b.dataset.k; $('#cf').value=''; drawTiles(); drawList();
+$('#kC').textContent = Object.values(LISTS).reduce((a,o)=>a+o.data.length,0); };
+$('#cf').addEventListener('input', drawList);
+$('#cs').addEventListener('change', showSel);
+drawTiles(); drawList();
+$('#kC').textContent = Object.values(LISTS).reduce((a,o)=>a+o.data.length,0);
+
+/* subnav actif */
+const links=[...document.querySelectorAll('#subnav a')];
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('main section').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

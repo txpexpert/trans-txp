@@ -33,7 +33,7 @@ const MODULES_TOOLS = [
   { num: 'GEN', label: 'Générateur Documents',         href: '/modules/generateur-docs',      badge: 'NEW' },
   { num: 'GLO', label: 'Glossaire Douanier FR/AR',     href: '/modules/glossaire-douanier',   badge: 'NEW' },
   { num: 'PRT', label: 'Carte des Bureaux Douaniers',         href: '/modules/carte-bureauxdouaniers',       badge: 'NEW' },
-  { num: 'RGM', label: 'Procédures & Régimes',         href: '/modules/procedures-process',   badge: 'NEW' },
+  { num: 'RGM', label: 'Régimes & Procédures à l’import', href: '/modules/procedures-process',   badge: 'NEW' },
   { num: 'ICI', label: 'Index Commerce Intl.',         href: '/modules/index-commerce',       badge: 'NEW' },
   { num: 'CFH', label: 'Facilitation Douanière', href: '/modules/facilitation', badge: 'NEW' },
   { num: 'ENG', label: 'Douane Engineering',             href: '/modules/douane-engineering' },
