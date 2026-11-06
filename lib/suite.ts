@@ -36,6 +36,7 @@ export const ESPACES: Espace[] = [
       { label: 'Autorisations et licences', path: '/modules/autorisations-licences', desc: 'Contrôles techniques, licences et visas préalables', tier: 'operateur' },
       { label: 'Marchandises dangereuses', path: '/modules/substances-dangereuses', desc: 'Classification des substances et obligations associées', tier: 'expert' },
       { label: 'Marquage et signalisation', path: '/modules/marquage-warnings', desc: 'Étiquetage, pictogrammes et mentions obligatoires', tier: 'expert' },
+      { label: 'Procédures douanières', path: '/modules/procedures-process', desc: '22 procédures pas à pas', tier: 'operateur' },
     ],
   },
   {
@@ -53,6 +54,7 @@ export const ESPACES: Espace[] = [
       { label: 'Générateur de documents', path: '/modules/generateur-docs', desc: 'Facture, pro forma, packing list, CMR, EUR.1', tier: 'operateur' },
       { label: 'Qui paie quoi ? (Incoterms)', path: '/modules/incoterms-shipping', desc: 'Incoterms croisés avec les termes armateurs', tier: 'operateur' },
       { label: 'Facilitation douanière', path: '/modules/facilitation', desc: '48 mesures, nouveautés 2024-2026, OEA et exportateur agréé', tier: 'expert' },
+      { label: 'Commerce international', path: '/modules/index-commerce', desc: 'Index des accords et institutions', tier: 'decouverte' },
     ],
   },
   {
@@ -111,12 +113,8 @@ export const ESPACES: Espace[] = [
     transmet: 'Sources citées dans chaque espace',
     tools: [
       { label: 'Recherche CGI', path: '/modules/cgi-search', desc: 'Code général des impôts 2026, recherche assistée', tier: 'decouverte' },
-      { label: 'Index du CGI', path: '/modules/cgi-fiscal', desc: 'Navigation article par article', tier: 'operateur' },
-      { label: 'Procédures douanières', path: '/modules/procedures-process', desc: '22 procédures pas à pas', tier: 'operateur' },
-      { label: 'Fiches procédures', path: '/modules/procedures', desc: 'Synthèses par procédure', tier: 'operateur' },
       { label: 'FAQ douanière', path: '/modules/faq', desc: '173 questions, réponses sourcées', tier: 'decouverte' },
       { label: 'Glossaire FR/AR', path: '/modules/glossaire-douanier', desc: '1 081 termes douaniers', tier: 'decouverte' },
-      { label: 'Commerce international', path: '/modules/index-commerce', desc: 'Index des accords et institutions', tier: 'decouverte' },
     ],
   },
   {

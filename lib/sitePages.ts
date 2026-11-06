@@ -38,7 +38,6 @@ export const SITE_PAGES: SitePage[] = [
   { slug: 'comparateur', path: '/modules/comparateur', title: 'Comparateur de régimes douaniers', description: 'Comparer les régimes douaniers (admission temporaire, entrepôt, transit…)' },
   { slug: 'regimes-economiques', path: '/modules/regimes-economiques', title: 'Régimes économiques douaniers', description: 'Admission temporaire, perfectionnement actif, entrepôt sous douane, régimes suspensifs' },
   { slug: 'procedures-process', path: '/modules/procedures-process', title: 'Régimes & procédures', description: '22 procédures douanières pas à pas, codes régimes DUM' },
-  { slug: 'procedures', path: '/modules/procedures', title: 'Procédures douanières', description: 'Procédures de dédouanement import/export' },
   { slug: 'verificateur-dum', path: '/modules/verificateur-dum', title: 'Vérifier vos documents d’import', description: 'Contrôle de cohérence avant dépôt' },
   { slug: 'export', path: '/modules/export', title: 'Module Export', description: 'Exporter depuis le Maroc : guide, checklist, DDP, formalités export' },
   { slug: 'incoterms-shipping', path: '/modules/incoterms-shipping', title: 'Qui paie quoi ? Incoterms', description: 'Incoterms, répartition des frais vendeur/acheteur, termes armateurs, THC' },
