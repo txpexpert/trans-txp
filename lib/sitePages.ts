@@ -28,7 +28,7 @@ export type SitePage = {
 
 export const SITE_PAGES: SitePage[] = [
   { slug: 'classement', path: '/modules/classement', title: 'Classement tarifaire SH', description: 'Recherche de code SH / position tarifaire parmi 17 224 codes, nomenclature, taux de droit d\'un produit' },
-  { slug: 'decisions-classement', path: '/modules/decisions-classement', title: 'Décisions de classement ADII', description: 'Décisions officielles de classement tarifaire par produit, circulaire ou code SH' },
+  { slug: 'decisions-classement', path: '/modules/decisions-classement', title: 'Décisions de classement : recherche', description: 'Décisions officielles de classement tarifaire par produit, circulaire ou code SH' },
   { slug: 'documents-sh', path: '/modules/documents-sh', title: 'Documents requis par code SH', description: 'Documents, autorisations et formalités exigés selon le code SH du produit' },
   { slug: 'simulateur', path: '/modules/simulateur', title: 'Simulateur droits & taxes', description: 'Calcul des droits de douane, TVA import, taxes à l\'importation d\'une marchandise' },
   { slug: 'simulateur-fiscal', path: '/modules/simulateur-fiscal', title: 'Simulateur fiscal douanier', description: 'Simulation fiscale douanière détaillée, coût de revient import' },
