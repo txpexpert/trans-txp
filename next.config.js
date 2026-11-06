@@ -25,6 +25,8 @@ const nextConfig = {
       // Refonte 2026 : la grille tarifaire vit désormais sur /tarifs.
       // Temporaire (302) tant que la refonte n'est pas validée.
       { source: '/abonnements', destination: '/tarifs', permanent: false },
+      // Audit Express retiré (doublon du Diagnostic de conformité, nov. 2026).
+      { source: '/modules/audit-express', destination: '/diagnostic', permanent: false },
       {
         source: '/modules/classificateur',
         destination: '/modules/classement',

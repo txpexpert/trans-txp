@@ -179,7 +179,7 @@ export default function RisquesPage() {
   return (
     <ModuleLayout
       kicker="MODULE 12"
-      title="Contrôle des Risques"
+      title="Contrôle et maîtrise des risques"
       sub="Situations pratiques douanières — identification des risques, actions correctives et stratégies de prévention">
 
       {/* Stats */}
