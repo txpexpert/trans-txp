@@ -76,7 +76,7 @@ export const ESPACES: Espace[] = [
     livrable: 'Dossier documentaire et DUM vérifiée',
     transmet: "Historique complet de l'opération",
     tools: [
-      { label: 'Suite documentaire transit', path: '/modules/transit-doc-generator', desc: 'Génération des documents de l’opération', tier: 'operateur' },
+      { label: 'Dossier documentaire par procédure', path: '/modules/transit-doc-generator', desc: 'Pièces à réunir par procédure, de l’arrivée à l’apurement', tier: 'operateur' },
       { label: 'Vérificateur DUM', path: '/modules/verificateur-dum', desc: 'Contrôle de cohérence avant dépôt sur BADR', tier: 'expert' },
       { label: 'Suivi et intelligence', path: '/modules/tracking', desc: 'Suivi des expéditions et des événements', tier: 'operateur' },
       { label: 'Surestaries et pénalités', path: '/modules/surestaries', desc: 'Délais de franchise, coûts, recours', tier: 'operateur' },

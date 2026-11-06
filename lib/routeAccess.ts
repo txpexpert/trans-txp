@@ -72,6 +72,7 @@ export const FREE_PATHS = [
   '/tools/Substances-dangereuses.html',
   '/tools/marquage-warnings.html',
   '/tools/transit-doc-generator.html',
+  '/tools/generateur-docs.html', // générateur déplacé depuis transit-doc-generator.html : accès inchangé
   '/tools/glossaire-douanier.html',
 
   '/modules/analyses',
