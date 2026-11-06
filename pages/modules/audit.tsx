@@ -457,7 +457,7 @@ export default function AuditPage() {
   return (
     <ModuleLayout
       kicker="MODULE AUDIT"
-      title="Audit Douanier"
+      title="Audit des processus : auto-diagnostic"
       sub="Évaluez votre conformité douanière sur 10 domaines clés · Checklists interactives · Conseils préventifs">
 
       {/* ── INTRO ── */}
