@@ -38,7 +38,7 @@ a{color:var(--blue)}button,input{font-family:inherit}
 .subnav a{--fc:#5A5A54;font-size:12.5px;font-weight:600;text-decoration:none;color:var(--fc);border:1px solid var(--fc);background:color-mix(in srgb,var(--fc) 10%,#fff);padding:5px 12px;border-radius:100px;white-space:nowrap;transition:all .15s}
 .subnav a:hover{background:color-mix(in srgb,var(--fc) 20%,#fff)}
 .subnav a.on{background:var(--fc);color:#fff}
-.subnav a[href="#nouveautes"]{--fc:#1E7A4A}.subnav a[href="#mesures"]{--fc:#1A3A9A}.subnav a[href="#statuts"]{--fc:#B8922A}.subnav a[href="#obligations"]{--fc:#9A2A22}.subnav a[href="#outils"]{--fc:#5A2AA0}
+.subnav a[href="#nouveautes"]{--fc:#1E7A4A}.subnav a[href="#mesures"]{--fc:#1A3A9A}.subnav a[href="#statuts"]{--fc:#B8922A}.subnav a[href="#obligations"]{--fc:#9A2A22}.subnav a[href="#outils"]{--fc:#5A2AA0}.subnav a[href="#partenaires"]{--fc:#0E7490}
 .wrap{max-width:1080px;margin:0 auto;padding:0 2rem 5rem}
 .hero{padding:36px 0 18px;display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:end}
 .hero h1{font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.12;margin-bottom:10px}
@@ -134,6 +134,25 @@ td.am{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
   .tl-item{grid-template-columns:1fr;gap:4px}.hdr-links{display:none}
   .wrap,.page-header{padding-left:1rem;padding-right:1rem}.list{max-height:360px}
 }
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pc{padding:0;overflow:hidden;border-top:4px solid var(--fc)}
+.pc-h{padding:16px 18px 10px}
+.pc-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.badge{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600}
+.badge.on{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.badge.ad{background:var(--blue-bg);color:var(--blue);border:1px solid #B0C8F8}
+.badge.soon{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.pc-d{font-family:var(--mono);font-size:11px;color:var(--mid);margin-left:auto}
+.pc h3{font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.25}
+.pc-b{padding:0 18px 12px}
+.pc-b h5{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--fc);margin:10px 0 5px}
+.pc-b ul{list-style:none;display:grid;gap:4px}
+.pc-b li{font-size:13px;padding-left:14px;position:relative}
+.pc-b li::before{content:"";position:absolute;left:1px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--fc)}
+.pc-f{padding:10px 18px;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+a.src{text-decoration:none}a.src:hover{border-color:var(--gold)}
+.verif{font-size:12px;color:var(--muted);margin-top:10px}
+@media(max-width:860px){.pgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -146,7 +165,7 @@ td.am{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
     <div class="hdr-links"><a href="/">Accueil</a><a class="pri" href="/modules/regimes-economiques">Régimes économiques →</a></div>
   </div>
   <nav class="subnav" id="subnav">
-    <a href="#nouveautes">Nouveautés</a><a href="#mesures">Toutes les mesures</a><a href="#statuts">Statuts de confiance</a><a href="#obligations">Vos obligations</a><a href="#outils">Outils numériques</a>
+    <a href="#nouveautes">Nouveautés</a><a href="#mesures">Mesures par famille</a><a href="#statuts">Statuts de confiance</a><a href="#obligations">Vos obligations</a><a href="#outils">Outils numériques</a><a href="#partenaires">Chez vos partenaires</a>
   </nav>
 </header>
 
@@ -166,15 +185,14 @@ td.am{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
 
   <section id="nouveautes">
     <div class="sec-h"><span class="sec-n">01</span><h2>Les dernières mesures</h2></div>
-    <p class="sec-lead">Les facilités adoptées par la douane depuis 2024, de la plus récente à la plus ancienne. Cliquez sur une mesure pour ouvrir sa fiche.</p>
+    <p class="sec-lead">Les facilités adoptées par la douane depuis 2024. Choisissez une année ; cliquez sur une mesure pour ouvrir sa fiche.</p>
     <div class="filters" id="tlf"></div>
     <div class="tl" id="tl"></div>
-    <button class="more" id="tlMore">Afficher toutes les mesures depuis 2024</button>
   </section>
 
   <section id="mesures">
-    <div class="sec-h"><span class="sec-n">02</span><h2>Toutes les mesures, par famille</h2></div>
-    <p class="sec-lead">Recherchez une mesure par mot-clé ou par code régime, ou filtrez par famille. La fiche détaille le bénéfice, les conditions et la référence.</p>
+    <div class="sec-h"><span class="sec-n">02</span><h2>Les mesures, par famille</h2></div>
+    <p class="sec-lead">Choisissez une famille, puis une mesure ; la recherche porte sur la famille sélectionnée. La fiche détaille le bénéfice, les conditions et la référence.</p>
     <div class="filters" id="famf"></div>
     <div class="cat">
       <div class="card" style="padding:12px">
@@ -202,6 +220,14 @@ td.am{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
     <div class="sec-h"><span class="sec-n">05</span><h2>Outils numériques</h2></div>
     <p class="sec-lead">Où s’effectue chaque démarche aujourd’hui.</p>
     <div class="tools" id="tools"></div>
+  </section>
+
+  <section id="partenaires">
+    <div class="sec-h"><span class="sec-n">06</span><h2>Chez vos partenaires</h2></div>
+    <p class="sec-lead">Les réformes adoptées par les principaux partenaires commerciaux du Maroc qui changent vos exportations ou vos importations : ce qui change, ce que cela implique pour vous et ce qu’il faut faire.</p>
+    <div class="filters" id="pf"></div>
+    <div class="pgrid" id="pgrid"></div>
+    <p class="verif">Informations vérifiées le 6 novembre 2026 auprès des sources indiquées sur chaque fiche.</p>
   </section>
 
   <div class="cta">
@@ -321,33 +347,30 @@ const M = [
 ];
 
 /* ---------- 01 : nouveautés ---------- */
-let tlYear="all", tlAll=false;
+let tlYear="2026";
 const recent = () => M.filter(m => m.d >= "2024-01-01").sort((a,b)=> b.d.localeCompare(a.d));
 function renderTl(){
-  const yrs=[["all","Depuis 2024"],["2026","2026"],["2025","2025"],["2024","2024"]];
+  const yrs=[["2026","2026"],["2025","2025"],["2024","2024"]];
   const yc={all:"#1A1A18","2026":"#1E7A4A","2025":"#B8922A","2024":"#8A5A10"};
   $("#tlf").innerHTML = yrs.map(([v,l])=>`<button class="flt ${tlYear===v?"on":""}" style="--fc:${yc[v]}" data-y="${v}">${l}</button>`).join("");
   $("#tlf").querySelectorAll("button").forEach(b=>b.onclick=()=>{tlYear=b.dataset.y;renderTl();});
-  let list = recent().filter(m => tlYear==="all" || m.d.startsWith(tlYear));
-  const cut = tlYear==="all" && !tlAll; if (cut) list = list.slice(0,8);
+  const list = recent().filter(m => m.d.startsWith(tlYear));
   $("#tl").innerHTML = list.map(m=>{const F=FAM[m.f];return `<div class="tl-item" style="--fc:${F.c}" data-i="${M.indexOf(m)}">
     <div class="tl-d"><b>${esc(m.dl)}</b>${m.d.slice(0,4)}</div>
     <div><div class="tl-t">${esc(m.t)}</div><div class="tl-x">${esc(m.b)}</div>
     <div class="tl-meta"><span class="tag" style="--fc:${F.c}">${esc(F.l)}</span>${S(m.ref)}</div></div></div>`}).join("");
-  $("#tl").querySelectorAll(".tl-item").forEach(x=>x.onclick=()=>{fam="all";$("#q").value="";sel=+x.dataset.i;renderCat();document.getElementById("mesures").scrollIntoView({behavior:"smooth"});});
-  $("#tlMore").style.display = cut && recent().length>8 ? "" : "none";
+  $("#tl").querySelectorAll(".tl-item").forEach(x=>x.onclick=()=>{fam=M[+x.dataset.i].f;$("#q").value="";sel=+x.dataset.i;renderCat();document.getElementById("mesures").scrollIntoView({behavior:"smooth"});});
 }
-$("#tlMore").onclick=()=>{tlAll=true;renderTl();};
 
 /* ---------- 02 : catalogue ---------- */
-let fam="all", sel=null;
+let fam="decl", sel=null;
 const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
 function filtered(){
   const q = norm($("#q").value.trim());
-  return M.map((m,i)=>({...m,i})).filter(m => (fam==="all"||m.f===fam) && (!q || norm(m.t+" "+m.b+" "+m.c.join(" ")+" "+m.ref).includes(q) || m.codes.some(c=>c.includes(q))));
+  return M.map((m,i)=>({...m,i})).filter(m => m.f===fam && (!q || norm(m.t+" "+m.b+" "+m.c.join(" ")+" "+m.ref).includes(q) || m.codes.some(c=>c.includes(q))));
 }
 function renderCat(){
-  $("#famf").innerHTML = [["all","Toutes","#1A1A18"],...Object.entries(FAM).map(([k,v])=>[k,v.l,v.c])].map(([k,l,c])=>`<button class="flt ${fam===k?"on":""}" style="--fc:${c}" data-f="${k}">${esc(l)}</button>`).join("");
+  $("#famf").innerHTML = Object.entries(FAM).map(([k,v])=>[k,v.l,v.c]).map(([k,l,c])=>`<button class="flt ${fam===k?"on":""}" style="--fc:${c}" data-f="${k}">${esc(l)}</button>`).join("");
   $("#famf").querySelectorAll("button").forEach(b=>b.onclick=()=>{fam=b.dataset.f;sel=null;renderCat();});
   const L = filtered();
   if (sel===null || !L.find(m=>m.i===sel)) sel = L.length ? L[0].i : null;
@@ -400,6 +423,79 @@ const TOOLS=[
  ["Documents commerciaux","Plateforme blockchain","Factures transmises par le fournisseur étranger, authentifiées ; adhésion volontaire.","LF 2026 · art. 76 ter"]
 ];
 $("#tools").innerHTML = TOOLS.map(t=>`<div class="card tool"><div class="tk">${esc(t[0])}</div><h4>${esc(t[1])}</h4><p>${esc(t[2])}</p>${S(t[3])}</div>`).join("");
+
+
+/* ---------- 06 : chez vos partenaires ---------- */
+const PART = {ue:{l:"Union européenne",c:"#1A3A9A"},uk:{l:"Royaume-Uni",c:"#9A2A22"},zl:{l:"ZLECAf",c:"#1E7A4A"},ag:{l:"Accord d’Agadir",c:"#B8922A"},tr:{l:"Turquie",c:"#5A2AA0"}};
+const L = (t,u) => ({t,u});
+const P = [
+ {p:"ue",st:"on",d:"01/01/2026",t:"Taxe carbone aux frontières (CBAM) : phase définitive",
+  ch:["Ciment, fer et acier, aluminium, engrais, hydrogène et électricité importés dans l’UE supportent un coût carbone.","Seuil d’exemption de 50 tonnes par importateur et par an (hors électricité et hydrogène).","Seul un déclarant CBAM autorisé peut importer au-delà de ce seuil.","Certificats vendus à partir du 1er février 2027 ; déclaration annuelle avant le 30 septembre de l’année suivante."],
+  im:["Exportateurs marocains d’acier, d’aluminium, de ciment ou d’engrais : vos clients européens vous demandent les émissions de chaque produit.","Sans données réelles, ce sont des valeurs par défaut, plus pénalisantes, qui s’appliquent."],
+  af:["Mesurer les émissions par produit et par installation.","Les transmettre à chaque client importateur, en anticipant le coût 2026 qui sera payé en 2027."],
+  src:[L("Règlement (UE) 2025/2083 (Omnibus CBAM)")]},
+ {p:"ue",st:"ad",d:"16/09/2026",t:"Nouveau code des douanes de l’Union et autorité douanière européenne",
+  ch:["Règlement (UE) 2026/2108 : nouveau code des douanes et création de l’Autorité douanière de l’UE, basée à Lille.","Une plateforme unique de données (EU Customs Data Hub) remplacera les systèmes nationaux.","Plateforme obligatoire pour le commerce en ligne au 1er juillet 2028, pour tous les opérateurs au 1er mars 2034."],
+  im:["Vos clients et transitaires européens déclareront progressivement via la plateforme unique, avec une gestion du risque à l’échelle de l’UE.","La qualité des données produit (désignation, origine, valeur) fournies par l’exportateur devient déterminante."],
+  af:["Fiabiliser les données de vos factures et fiches produit.","Suivre les calendriers de déploiement avec vos partenaires européens."],
+  src:[L("Conseil de l’UE — réforme douanière","https://www.consilium.europa.eu/en/policies/modernising-the-eu-customs-union/"),L("Règlement (UE) 2026/2108","https://eur-lex.europa.eu/eli/reg/2026/2108/oj/eng")]},
+ {p:"ue",st:"on",d:"01/07/2026",t:"Petits colis : fin de la franchise de 150 €",
+  ch:["Les envois de moins de 150 € ne sont plus exonérés de droits de douane.","Droit fixe transitoire de 3 € par article, jusqu’au 1er juillet 2028 ; ensuite, droits normaux.","Des frais de traitement des petits envois s’y ajoutent à partir de novembre 2026."],
+  im:["Vente en ligne directe du Maroc vers des consommateurs européens : chaque article de chaque colis est taxé."],
+  af:["Intégrer le droit de 3 € et les frais de traitement dans vos prix de vente en ligne.","Privilégier les envois groupés vers un stock dans l’UE si les volumes le justifient."],
+  src:[L("Conseil de l’UE — réforme douanière","https://www.consilium.europa.eu/en/policies/modernising-the-eu-customs-union/"),L("Règlement (UE) 2026/382 du Conseil")]},
+ {p:"ue",st:"on",d:"01/01/2026",t:"Règles d’origine pan-euro-méditerranéennes révisées",
+  ch:["Avec l’UE et la Turquie, les règles de la Convention régionale révisée s’appliquent provisoirement jusqu’au 31/12/2027 (ou jusqu’à leur publication au Bulletin officiel).","Tolérance de 15 % ; preuves d’origine valables 10 mois au lieu de 4 ; déclaration du fournisseur à long terme valable 2 ans.","Seuls subsistent le certificat EUR.1 et la déclaration d’origine : les formulaires EUR-MED disparaissent."],
+  im:["Exportations marocaines vers l’UE et la Turquie : la mention « REVISED RULES » est obligatoire sur vos preuves d’origine.","Importations depuis l’UE ou la Turquie : les preuves d’origine sans cette mention sont acceptées."],
+  af:["Mettre à jour vos modèles de déclaration d’origine.","Revoir vos calculs d’origine avec la nouvelle tolérance."],
+  src:[L("Circ. ADII 6706/233"),L("Circ. ADII 6722/233")]},
+ {p:"ue",st:"on",d:"01/10/2026",t:"Accord agricole Maroc-UE : contingents 2026-2027",
+  ch:["Taux préférentiels et contingents actualisés du 1er octobre 2026 au 30 septembre 2027 pour la liste 3 (viandes, volailles, laits, céréales, huile d’olive, pâtes, aliments du bétail…).","Hors contingent, le droit commun s’applique."],
+  im:["Importateurs de produits agricoles européens : la préférence ne joue que dans la limite des contingents."],
+  af:["Vérifier la disponibilité du contingent avant expédition.","Pour les pâtes et le couscous, préciser dans la DFD la quote-part et le taux demandés."],
+  src:[L("Circ. ADII 6777/222")]},
+ {p:"uk",st:"soon",d:"01/01/2027",t:"Taxe carbone aux frontières du Royaume-Uni (UK CBAM)",
+  ch:["Taxe carbone sur l’aluminium, le ciment, les engrais, l’hydrogène, le fer et l’acier importés au Royaume-Uni.","Payée directement par l’importateur britannique ; l’électricité n’est pas couverte, contrairement à l’UE."],
+  im:["Exportateurs marocains de ces produits vers le Royaume-Uni : vos clients vous demanderont les données d’émissions, comme dans l’UE."],
+  af:["Préparer un seul jeu de données d’émissions, utilisable pour l’UE et le Royaume-Uni."],
+  src:[L("GOV.UK — introduction d’un UK CBAM","https://www.gov.uk/government/consultations/consultation-on-the-introduction-of-a-uk-carbon-border-adjustment-mechanism")]},
+ {p:"uk",st:"on",d:"01/01/2026",t:"Accord d’association Maroc-Royaume-Uni : contingents 2026",
+  ch:["Contingents agricoles préférentiels 2026 (liste 3) ; au-delà, droit commun.","Numéros d’exportateur agréé britanniques au format GB 12345/06."],
+  im:["Importateurs de produits agricoles britanniques : la préférence ne joue que dans la limite des contingents.","Une déclaration d’origine britannique dont le numéro ne suit pas ce format part en contrôle a posteriori, avec consignation des droits."],
+  af:["Contrôler le format du numéro d’exportateur agréé avant de déposer la DUM."],
+  src:[L("Circ. ADII 6705/222"),L("Note ADII D99/2026")]},
+ {p:"zl",st:"on",d:"26/05/2026",t:"ZLECAf : certificats d’origine de 31 pays",
+  ch:["Le Maroc a ratifié l’accord le 24 février 2022.","Les spécimens de cachets et de signatures de 31 pays partenaires sont diffusés aux bureaux : Afrique du Sud, Algérie, Côte d’Ivoire, Égypte, Ghana, Kenya, Nigeria, Sénégal, Tunisie…"],
+  im:["Importations préférentielles d’origine africaine : le certificat n’est accepté que si son cachet et sa signature sont conformes aux spécimens, et si les conditions d’origine sont remplies.","Les spécimens diffusés en 2024 ne font plus foi."],
+  af:["Vérifier que le pays du fournisseur figure parmi les 31 pays.","Demander un certificat émis par l’autorité habilitée de ce pays."],
+  src:[L("Note ADII D122/2026"),L("Circ. ADII 6530/223"),L("OMC — examen de la politique commerciale du Maroc","https://www.wto.org/french/tratop_f/tpr_f/s453_f.pdf")]},
+ {p:"ag",st:"on",d:"21/04/2026",t:"Égypte, Jordanie, Tunisie : contrôle des preuves d’origine",
+  ch:["Nouveau format des numéros d’exportateur agréé égyptiens (EG/03/0002/08 ou EG/003/0002/08) ; formats jordanien et tunisien rappelés."],
+  im:["Une déclaration d’origine dont le numéro ne suit pas le modèle du pays partenaire part en contrôle a posteriori, avec consignation des droits et pénalités.","Les règles d’origine révisées de 2026 ne visent expressément que l’UE et la Turquie : vérifiez la règle applicable avec chaque pays d’Agadir."],
+  af:["Contrôler le numéro d’exportateur agréé figurant sur chaque déclaration d’origine reçue."],
+  src:[L("Note ADII D99/2026"),L("Circ. ADII 6706/233")]},
+ {p:"tr",st:"on",d:"2022 → 2027",t:"Droits rétablis à 90 % du droit commun sur une liste de produits turcs",
+  ch:["Depuis l’entrée en vigueur de l’amendement de l’accord de libre-échange en 2022, les produits de l’annexe I (textile, cuir, métallurgie, électricité, bois, automobile…) paient 90 % du droit commun.","Pour une période de 5 ans, renouvelable."],
+  im:["Importateurs de produits turcs : vérifiez si votre code SH figure à l’annexe I avant de chiffrer le coût rendu.","L’échéance de la première période (2027) peut entraîner un renouvellement ou une révision de la liste."],
+  af:["Contrôler l’annexe I pour chaque code importé.","Suivre la décision de renouvellement à l’échéance."],
+  src:[L("Circ. ADII 6319/222","https://www.douane.gov.ma/dms/loadDocument?documentId=89261&application=circulaire")]},
+ {p:"tr",st:"on",d:"03/01/2025",t:"Fours électriques turcs : droit antidumping définitif",
+  ch:["Fours électriques mobiles non encastrables de 70 litres au plus : 32,82 % pour un exportateur désigné, 62,07 % pour les autres, pendant 5 ans. Les friteuses à air (air fryers) sont exclues."],
+  im:["Ce droit s’ajoute au droit d’importation, même avec une preuve d’origine turque."],
+  af:["Intégrer le droit antidumping au prix de revient."],
+  src:[L("Circ. ADII 6625/211")]}
+];
+let pf="ue";
+function renderPart(){
+  $("#pf").innerHTML=Object.entries(PART).map(([k,v])=>[k,v.l,v.c]).map(([k,l,c])=>`<button class="flt ${pf===k?"on":""}" style="--fc:${c}" data-p="${k}">${esc(l)}</button>`).join("");
+  $("#pf").querySelectorAll("button").forEach(b=>b.onclick=()=>{pf=b.dataset.p;renderPart();});
+  const ul=a=>`<ul>${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+  $("#pgrid").innerHTML=P.filter(x=>x.p===pf).map(x=>{const F=PART[x.p];return `<div class="card pc" style="--fc:${F.c}">
+    <div class="pc-h"><div class="pc-top"><span class="tag" style="--fc:${F.c}">${esc(F.l)}</span><span class="badge ${x.st}">${({on:"En vigueur",ad:"Adopté, application progressive",soon:"À venir"})[x.st]}</span><span class="pc-d">${esc(x.d)}</span></div><h3>${esc(x.t)}</h3></div>
+    <div class="pc-b"><h5>Ce qui change</h5>${ul(x.ch)}<h5>Pour les opérateurs marocains</h5>${ul(x.im)}<h5>À faire</h5>${ul(x.af)}</div>
+    <div class="pc-f">${x.src.map(s=>s.u?`<a class="src" href="${s.u}" target="_blank" rel="noopener">${esc(s.t)} ↗</a>`:`<span class="src">${esc(s.t)}</span>`).join("")}</div></div>`}).join("");
+}
+renderPart();
 
 /* ---------- init ---------- */
 $("#kN").textContent = M.length;
