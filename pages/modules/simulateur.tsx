@@ -224,7 +224,7 @@ export default function Simulateur() {
       <div style={{ background: "var(--ink)", borderBottom: "2px solid var(--gold)", padding: "1.25rem 2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
           <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 22, fontWeight: 600, color: "#E8C97A", letterSpacing: "-.02em" }}>
-            Douane<span style={{ color: "#C9A84C" }}>.</span>ia
+            Import<span style={{ color: "#C9A84C" }}>-</span>eXPert
           </div>
           <div style={{ fontSize: 11, letterSpacing: ".12em", color: "#8A8078", marginTop: 2 }}>SIMULATEUR DE DROITS & TAXES</div>
         </div>
