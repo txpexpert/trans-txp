@@ -104,22 +104,6 @@ export default function Accueil() {
         </div>
       </section>
 
-      {/* ── PROBLÈME ── */}
-      <section className="x-sec">
-        <div className="x-wrap x-split">
-          <div>
-            <div className="x-eyebrow">Le risque</div>
-            <h2 className="x-h2">Une erreur d’importation ne se voit pas <em>le jour où la marchandise arrive</em>.</h2>
-            <p className="x-sub">Elle se révèle plus tard : lors d’un contrôle, d’un litige fournisseur, d’un écart de stock ou d’une revue comptable, quand la marchandise est vendue depuis longtemps et que l’erreur est irréversible. Les quatre fragilités concentrent toutes ces mauvaises surprises ; chacune correspond à une étape sur la plateforme.</p>
-          </div>
-          <div className="x-risks">
-            {RISQUES.map((r, i) => (
-              <div className="x-risk" key={r.t}><i>{i + 1}</i><div><b>{r.t}</b><p>{r.d}</p></div></div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── LA CHAÎNE ── */}
       <section className="x-sec x-sec-dark" id="chaine">
         <div className="x-wrap">
@@ -142,6 +126,22 @@ export default function Accueil() {
             <Link href="/espaces/bibliotheque" className="x-link-card x-c-bibliotheque"><div className="x-verb">Bibliothèque</div><p>Le socle : tarif, circulaires, CGI, IGOC, décisions, glossaire.</p></Link>
             <Link href="#assistant" className="x-link-card x-c-assistant"><div className="x-verb">IXP-Assistant</div><p>Dans chaque espace, il répond en citant le texte exact.</p></Link>
             <Link href="/espaces/piloter" className="x-link-card x-c-piloter"><div className="x-verb">Piloter</div><p>Intelligence et stratégie pour la direction générale.</p></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROBLÈME ── */}
+      <section className="x-sec">
+        <div className="x-wrap x-split">
+          <div>
+            <div className="x-eyebrow">Le risque</div>
+            <h2 className="x-h2">Une erreur d’importation ne se voit pas <em>le jour où la marchandise arrive</em>.</h2>
+            <p className="x-sub">Elle se révèle plus tard : lors d’un contrôle, d’un litige fournisseur, d’un écart de stock ou d’une revue comptable, quand la marchandise est vendue depuis longtemps et que l’erreur est irréversible. Les quatre fragilités concentrent toutes ces mauvaises surprises ; chacune correspond à une étape sur la plateforme.</p>
+          </div>
+          <div className="x-risks">
+            {RISQUES.map((r, i) => (
+              <div className="x-risk" key={r.t}><i>{i + 1}</i><div><b>{r.t}</b><p>{r.d}</p></div></div>
+            ))}
           </div>
         </div>
       </section>

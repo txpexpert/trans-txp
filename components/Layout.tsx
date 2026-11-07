@@ -22,14 +22,13 @@ const MODULES_MAIN = [
 
 const MODULES_TOOLS = [
   { num: 'TRK', label: 'Tracking & Intelligence',      href: '/modules/tracking',             badge: 'NEW' },
-  { num: 'CAL', label: 'Simulateur Droits & Taxes',    href: '/modules/simulateur',           badge: '↗'   },
+  { num: 'CAL', label: 'Coût de revient à l’import',   href: '/modules/simulateur',           badge: '↗'   },
   { num: 'CMP', label: 'Comparateur Régimes',          href: '/modules/comparateur',          badge: '↗'   },
   { num: 'ORI', label: 'Origine ALECA / UE',           href: '/modules/origine-aleca',        badge: 'NEW' },
   { num: '15',  label: 'Incoterms × Shipping Terms',   href: '/modules/incoterms-shipping',   badge: 'NEW' },
   { num: 'REC', label: 'Régimes Économiques',          href: '/modules/regimes-economiques',  badge: 'NEW' },
   { num: 'DOC', label: 'Documents par Code SH',        href: '/modules/documents-sh',         badge: 'NEW' },
   { num: 'DUM', label: 'Vérificateur DUM',             href: '/modules/verificateur-dum',     badge: 'NEW' },
-  { num: 'SIM', label: 'Simulateur Fiscal Import',     href: '/modules/simulateur-fiscal',    badge: 'NEW' },
   { num: 'GEN', label: 'Générateur Documents',         href: '/modules/generateur-docs',      badge: 'NEW' },
   { num: 'GLO', label: 'Glossaire Douanier FR/AR',     href: '/modules/glossaire-douanier',   badge: 'NEW' },
   { num: 'PRT', label: 'Carte des Bureaux Douaniers',         href: '/modules/carte-bureauxdouaniers',       badge: 'NEW' },
