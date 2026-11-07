@@ -2,17 +2,8 @@
 import Link from 'next/link'
 import SiteShell from '../components/SiteShell'
 import { PRESTATIONS } from '../lib/suite'
+import { KITS_PRATIQUES, kitHref, kitCompletHref, nbKitsEnLettres } from '../lib/kitsPratiques'
 
-const KITS = [
-  { n: 'Kit 01', t: 'Origine préférentielle et ALE', f: 'Kit01_Origine_preferentielle_ALE.html',
-    d: 'Assistant « quel accord, quelle preuve ? », calculateur d’origine (règle de valeur, 35 %, plus-value), fiche d’origine, déclarations et clauses générées, suivi des preuves, check-lists.' },
-  { n: 'Kit 02', t: 'Régimes suspensifs et économiques', f: 'Kit02_Regimes_suspensifs_economiques.html',
-    d: 'Choix du régime, calculateur d’échéance, simulateur d’apurement, tableau de bord des comptes, test d’accès aux facilités de cautionnement, modèles d’engagement et de mandat.' },
-  { n: 'Kit 03', t: 'Classement SH et contrôle a posteriori', f: 'Kit03_Classement_SH_controle_a_posteriori.html',
-    d: 'Arbre de décision RGI, fiche et registre de classement, décisions anticipées, délais du contrôle, lettre de révélation volontaire, conduite à tenir face à un contrôle.' },
-  { n: 'Kit 04', t: 'Pack conformité intégral', f: 'Kit04_Pack_conformite_integral.html',
-    d: 'Maturité de la fonction import, plan de déploiement en 90 jours, matrice des responsabilités, contrôles clés, tableau de bord, et accès aux trois kits.' },
-]
 
 export default function Expertise() {
   return (
@@ -76,16 +67,23 @@ export default function Expertise() {
         <div className="x-wrap">
           <div className="x-eyebrow">Kits opérationnels</div>
           <h2 className="x-h2">Vos dossiers les plus sensibles, <em>déjà structurés</em>.</h2>
-          <p className="x-sub" style={{ marginBottom: 8 }}>Des kits interactifs complets : menu de rubriques, outils de calcul, assistants, modèles générés et tableaux de suivi, établis à partir du Guide des procédures douanières (édition 2026, à jour au 04/10/2026). Chaque règle y est rattachée à son texte. Utilisables en ligne ou téléchargés, sans installation.</p>
+          <p className="x-sub" style={{ marginBottom: 8 }}>{nbKitsEnLettres()} kits d’expertise, édition 2026, à consulter en ligne ou à télécharger sans installation. Chaque règle y est rattachée à son texte. Pour les kits 01 à 04, une version interactive complète ajoute les outils de calcul, les assistants, les modèles générés et les tableaux de suivi.</p>
           <div className="x-plans">
-            {KITS.map(k => (
-              <div className="x-plan" key={k.n}>
-                <span className="x-num">{k.n}</span>
-                <h3 style={{ fontSize: 22, margin: '8px 0' }}>{k.t}</h3>
-                <p style={{ margin: 0, color: 'var(--x-ink2)', fontSize: 14.5, flex: 1 }}>{k.d}</p>
-                <div style={{ marginTop: 18, display: 'flex', gap: 8, flexWrap: 'wrap' }}><a href={`/kits/${k.f}`} target="_blank" rel="noreferrer" className="x-btn x-btn-dark">Ouvrir le kit</a><a href={`/kits/${k.f}`} download className="x-btn x-btn-line">Télécharger</a></div>
-              </div>
-            ))}
+            {KITS_PRATIQUES.map(k => {
+              const complet = kitCompletHref(k)
+              return (
+                <div className="x-plan" key={k.num}>
+                  <span className="x-num">Kit {k.num}</span>
+                  <h3 style={{ fontSize: 22, margin: '8px 0' }}>{k.titre}</h3>
+                  <p style={{ margin: 0, color: 'var(--x-ink2)', fontSize: 14.5, flex: 1 }}>{k.detail}</p>
+                  <div style={{ marginTop: 18, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    <a href={kitHref(k)} target="_blank" rel="noopener" className="x-btn x-btn-dark x-btn-sm">Consulter</a>
+                    <a href={kitHref(k)} download={k.fichier} className="x-btn x-btn-line x-btn-sm">Télécharger</a>
+                    {complet && <a href={complet} target="_blank" rel="noopener" className="x-btn x-btn-line x-btn-sm">Kit interactif complet</a>}
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
