@@ -310,6 +310,57 @@ export default function SubscriptionsBoard({ caps, title = 'Abonnements' }: { ca
       {avoirFor && <AvoirModal invoice={avoirFor} avoirs={avoirs.filter(a => a.invoice_id === avoirFor.id)}
         onClose={() => setAvoirFor(null)} onDone={m => { setAvoirFor(null); onDone(m) }} onError={onError} />}
 
+      {/* Journal des paiements */}
+      {paiements.length > 0 && (
+        <div style={{ background: 'var(--white)', border: '.5px solid var(--rule)', padding: '1.25rem', marginBottom: '1.5rem' }}>
+          <div style={{ fontSize: 11, letterSpacing: '.08em', color: 'var(--inkm)', marginBottom: '.75rem' }}>JOURNAL DES PAIEMENTS (VIREMENTS DÉCLARÉS, VALIDÉS, REJETÉS)</div>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead><tr>{['REÇU LE', 'ABONNÉ', 'PRO-FORMA', 'MONTANT', 'DATE VIREMENT', 'SOURCE', 'STATUT', 'JUSTIFICATIF'].map(h =>
+              <th key={h} style={{ textAlign: 'left', fontSize: 10, color: 'var(--inkm)', padding: '.4rem .5rem', borderBottom: '.5px solid var(--rule)' }}>{h}</th>)}</tr></thead>
+            <tbody>
+              {paiements.slice(0, 100).map(p => {
+                const inv = invoices.find(i => i.id === p.invoice_id)
+                const tone = p.statut === 'rapproche' ? '#1A7A40' : p.statut === 'rejete' ? '#C0392B' : '#0E7490'
+                return (
+                  <tr key={p.id} style={{ borderBottom: '.5px solid var(--rule)' }}>
+                    <td style={{ padding: '.4rem .5rem' }}>{fmtDate(p.created_at)}</td>
+                    <td style={{ padding: '.4rem .5rem', fontFamily: 'monospace' }}>{fmtAbonne(p.numero_abonne)}</td>
+                    <td style={{ padding: '.4rem .5rem', fontFamily: 'monospace', fontSize: 11 }}>{fmtDocNumber(inv?.payment_reference || inv?.proforma_number)}{inv?.invoice_number ? ` → ${inv.invoice_number}` : ''}</td>
+                    <td style={{ padding: '.4rem .5rem' }}>{seeAmounts ? fmtAmount(p.montant) : '•••'}</td>
+                    <td style={{ padding: '.4rem .5rem' }}>{fmtDate(p.date_valeur)}</td>
+                    <td style={{ padding: '.4rem .5rem' }}>{p.source === 'client' ? 'Client' : p.source === 'manuel' ? `Admin${p.declare_par && p.declare_par !== 'client' ? ' · ' + p.declare_par : ''}` : p.source}</td>
+                    <td style={{ padding: '.4rem .5rem', color: tone, fontWeight: 600 }}>
+                      {p.statut === 'declare' ? 'À vérifier' : p.statut === 'rapproche' ? `Validé${p.valide_par ? ' · ' + p.valide_par : ''}` : `Rejeté — ${p.motif_rejet || ''}`}
+                    </td>
+                    <td style={{ padding: '.4rem .5rem' }}>{p.justificatif_path ? <a href={`/api/admin/justificatif?id=${p.id}`} target="_blank" rel="noreferrer">ouvrir</a> : '—'}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Outils : export comptable, relances */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+        {seeAmounts && [new Date().getFullYear(), new Date().getFullYear() - 1].map(y => (
+          <a key={y} href={`/api/admin/export-ventes?annee=${y}`} style={{ fontSize: 12, padding: '7px 14px', border: '.5px solid var(--bd)', color: 'var(--bd)', textDecoration: 'none' }}>
+            ⬇ Journal des ventes {y} (CSV)
+          </a>
+        ))}
+        {isSuper && (
+          <button onClick={async () => {
+            const r = await fetch('/api/cron/expire-subscriptions', { credentials: 'include' })
+            const d = await r.json().catch(() => ({}))
+            if (!r.ok) return onError(d.error || 'Erreur')
+            const b = d.billing || {}
+            onDone(b.error ? `Facturation : ${b.error}` : `Tâche lancée : ${d.expired ?? 0} expiration(s), ${b.fin_essai ?? 0} fin(s) d'essai, ${b.renouvellement ?? 0} renouvellement(s), ${(b.rappel_j7 ?? 0) + (b.rappel_j0 ?? 0)} rappel(s), ${b.relance ?? 0} relance(s)${b.erreurs?.length ? ` — ${b.erreurs.length} erreur(s)` : ''}`)
+          }} style={{ fontSize: 12, padding: '7px 14px', border: '.5px solid var(--rule)', background: 'transparent', cursor: 'pointer' }}>
+            ↻ Lancer maintenant expirations, pro-formas et relances
+          </button>
+        )}
+      </div>
+
       <BillingSettingsPanel />
 
       {/* Journal */}

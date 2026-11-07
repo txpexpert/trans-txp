@@ -66,6 +66,8 @@ type ModalState =
   | { kind: 'delete' }
   | { kind: 'generaladmin'; on: boolean }
   | { kind: 'reject'; paiement: Paiement }
+  | { kind: 'profile' }
+  | { kind: 'attach'; invoice: Invoice }
 
 interface Props {
   user:      Subscriber
@@ -123,6 +125,14 @@ export default function SubscriptionActions({ user, plans, pending, paiements = 
             Voir {fmtDocNumber(inv.payment_reference || inv.proforma_number)}
           </a>
         ))}
+        {!compact && allowed('confirm_payment') && pending.map(inv => (
+          <button key={'j' + inv.id} style={S.btn('outline')} onClick={() => setModal({ kind: 'attach', invoice: inv })}>Joindre un justificatif</button>
+        ))}
+        {!compact && allowed('update_profile') && (
+          <button style={S.btn('outline')} onClick={() => setModal({ kind: 'profile' })}>
+            Profil{user.type_client ? '' : ' ⚠'}
+          </button>
+        )}
         {!compact && allowed('resend_proforma') && pending.map(inv => (
           <button key={'r' + inv.id} style={S.btn('outline')} onClick={async () => {
             const r = await postAdminAction({ action: 'resend_proforma', invoiceId: inv.id })
@@ -166,9 +176,11 @@ export default function SubscriptionActions({ user, plans, pending, paiements = 
           onClose={() => setModal(null)}
           onSubmit={async (payload, okMsg) => {
             const r = await postAdminAction(payload)
-            if (r.ok) { setModal(null); onDone(okMsg) } else onError(r.error || 'Erreur')
+            if (r.ok) { setModal(null); onDone(r.emailed === false ? `${okMsg} — ⚠ email au client NON envoyé (vérifier Resend), utiliser « Renvoyer par email »` : okMsg) }
+            else onError(r.error || 'Erreur')
             return r.ok
           }}
+          onRawDone={(m: string) => { setModal(null); onDone(m) }}
         />
       )}
     </>
@@ -176,7 +188,8 @@ export default function SubscriptionActions({ user, plans, pending, paiements = 
 }
 
 // ── Fenêtre de confirmation ──────────────────────────────────────────────────
-function ActionModal({ modal, user, plans, paiements = [], onClose, onSubmit, canActivate = true, canProforma = true }: {
+function ActionModal({ modal, user, plans, paiements = [], onClose, onSubmit, onRawDone, canActivate = true, canProforma = true }: {
+  onRawDone?: (message: string) => void
   canActivate?: boolean
   canProforma?: boolean
   modal: ModalState
@@ -198,12 +211,19 @@ function ActionModal({ modal, user, plans, paiements = [], onClose, onSubmit, ca
   const [err, setErr]       = useState('')
   const [confirmNum, setConfirmNum] = useState('')
   // Validation du paiement (rapprochement avec le relevé bancaire)
-  const invForPay = modal.kind === 'invoice' ? modal.invoice : null
+  const invForPay = modal.kind === 'invoice' || modal.kind === 'attach' ? modal.invoice : null
   const declared = invForPay ? paiements.find(p => p.invoice_id === invForPay.id && p.statut === 'declare') : undefined
   const [recu, setRecu]       = useState<string>(declared?.montant != null ? String(declared.montant) : invForPay ? String(invTTC(invForPay)) : '')
   const [dateVal, setDateVal] = useState<string>(declared?.date_valeur || new Date().toISOString().slice(0, 10))
   const [refLue, setRefLue]   = useState<string>(declared?.reference_libelle || '')
   const [motif, setMotif]     = useState('')
+  // Profil de facturation (édition par l'administrateur)
+  const [pf, setPf] = useState({
+    type_client: user.type_client || 'entreprise', raison_sociale: user.raison_sociale || user.societe || '', ice: user.ice || '',
+    if_fiscal: user.if_fiscal || '', rc: user.rc || '', adresse: user.adresse_facturation || '', code_postal: user.code_postal || '',
+    ville: user.ville || '', pays: user.pays || 'Maroc',
+  })
+  const [file, setFile] = useState<File | null>(null)
   // Le numéro d'abonné identifie le compte dans chaque fenêtre d'action.
   const name = `${fmtAbonne(user.numero_abonne)} · ${displayName(user)}`
 
@@ -330,6 +350,59 @@ function ActionModal({ modal, user, plans, paiements = [], onClose, onSubmit, ca
           { action: 'confirm_payment', invoiceId: inv.id, amount: recuN, dateValeur: dateVal, reference: refLue || undefined, paiementId: declared?.id || null, note: note || undefined },
           `${name} : paiement validé, facture émise, ${PLAN_LABEL[inv.plan_code]} activé`,
         )
+      }
+      break
+    }
+    case 'profile': {
+      title = `Profil de facturation — ${name}`
+      cta = 'Enregistrer le profil'
+      const ent = pf.type_client === 'entreprise'
+      const fld = (k: keyof typeof pf, label: string) => (
+        <div><label style={S.label}>{label}</label><input style={S.input} value={pf[k]} onChange={e => setPf(x => ({ ...x, [k]: e.target.value }))} /></div>
+      )
+      body = (
+        <>
+          <div style={{ display: 'flex', gap: 16, fontSize: 13, marginBottom: 10 }}>
+            {(['entreprise', 'particulier'] as const).map(t => (
+              <label key={t} style={{ display: 'flex', gap: 6 }}><input type="radio" checked={pf.type_client === t} onChange={() => setPf(x => ({ ...x, type_client: t }))} />{t === 'entreprise' ? 'Entreprise (ICE)' : 'Particulier'}</label>
+            ))}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            {ent && <>{fld('raison_sociale', 'RAISON SOCIALE *')}{fld('ice', 'ICE (15 CHIFFRES) *')}{fld('if_fiscal', 'IF')}{fld('rc', 'RC')}</>}
+            <div style={{ gridColumn: '1 / -1' }}>{fld('adresse', 'ADRESSE')}</div>
+            {fld('code_postal', 'CODE POSTAL')}{fld('ville', 'VILLE')}{fld('pays', 'PAYS')}
+          </div>
+          {!ent && <p style={{ fontSize: 11, color: 'var(--inkm)' }}>Particulier : la facture porte le nom et prénom du compte ({displayName(user)}).</p>}
+          <p style={{ fontSize: 11, color: 'var(--inkm)' }}>Les factures déjà émises ne changent pas ; le profil s'applique aux prochaines.</p>
+        </>
+      )
+      submit = () => onSubmit({ action: 'update_profile', userId: user.id, profile: pf as any }, `${name} : profil de facturation enregistré`)
+      break
+    }
+    case 'attach': {
+      const inv = modal.invoice
+      title = `Joindre un justificatif reçu par email — ${name}`
+      cta = 'Enregistrer le justificatif'
+      body = (
+        <>
+          <p style={{ fontSize: 12, margin: '0 0 10px' }}>Pro-forma <b>{fmtDocNumber(inv.payment_reference)}</b> · attendu {fmtAmount(invTTC(inv))} TTC. Le justificatif est rattaché à la pro-forma ; la validation se fait ensuite avec « Valider le paiement ».</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            <div><label style={S.label}>MONTANT DU VIREMENT</label><input style={S.input} value={recu} onChange={e => setRecu(e.target.value)} /></div>
+            <div><label style={S.label}>DATE DU VIREMENT</label><input style={S.input} type="date" value={dateVal} onChange={e => setDateVal(e.target.value)} /></div>
+            <div style={{ gridColumn: '1 / -1' }}><label style={S.label}>FICHIER (PDF, JPG, PNG — 5 MO)</label>
+              <input type="file" accept="application/pdf,image/jpeg,image/png" onChange={e => setFile(e.target.files?.[0] || null)} /></div>
+          </div>
+        </>
+      )
+      submit = async () => {
+        if (!file) { setErr('Choisir le fichier'); return false }
+        const fd = new FormData()
+        fd.append('invoiceId', inv.id); fd.append('montant', recu || String(invTTC(inv))); fd.append('dateValeur', dateVal); fd.append('reference', refLue || ''); fd.append('file', file)
+        const r = await fetch('/api/admin/justificatif', { method: 'POST', credentials: 'include', body: fd })
+        const d = await r.json().catch(() => ({}))
+        if (!r.ok) { setErr(d.error || 'Erreur'); return false }
+        onRawDone?.(`Justificatif joint à ${fmtDocNumber(inv.payment_reference)}`)
+        return true
       }
       break
     }
