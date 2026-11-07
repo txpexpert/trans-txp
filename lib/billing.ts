@@ -258,7 +258,7 @@ function intToWords(n: number): string {
 export function amountInWords(amount: number): string {
   const cents = Math.round(Number(amount) * 100)
   const dh = Math.floor(cents / 100), c = cents % 100
-  let s = `${intToWords(dh)} dirham${dh > 1 ? 's' : ''}`
+  let s = `${intToWords(dh)}${dh >= 1_000_000 && dh % 1_000_000 === 0 ? ' de' : ''} dirham${dh > 1 ? 's' : ''}`
   if (c) s += ` et ${intToWords(c)} centime${c > 1 ? 's' : ''}`
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
