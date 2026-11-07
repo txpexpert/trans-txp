@@ -281,8 +281,8 @@ function showOrig(k){
 }
 function renderFx(d){
   (d.rates||[]).forEach(r=>FX[r.pair]=r);
-  const order=['EUR','USD','CNY','GBP','CHF','SAR','AED','CAD','TRY'].filter(k=>FX[k]);
-  $('#fx').innerHTML=order.map(k=>{const r=FX[k];const ch=r.change||0;return '<tr><td><span class="code">'+k+'</span> '+esc(DEV_NOM[k]||k)+'</td><td style="font-family:var(--x-mono)">'+fr(r.rate,r.rate<1?4:3)+' DH</td><td style="font-family:var(--x-mono)" class="'+(ch>0?'dn':ch<0?'upg':'')+'">'+(r.source==='live'?(ch>0?'+':'')+fr(ch,2)+' %':'—')+'</td></tr>';}).join('');
+  const hasCh=(d.rates||[]).some(r=>r.change);const order=['EUR','USD','CNY','GBP','CHF','SAR','AED','CAD','TRY'].filter(k=>FX[k]);
+  $('#fx').innerHTML=order.map(k=>{const r=FX[k];const ch=r.change||0;return '<tr><td><span class="code">'+k+'</span> '+esc(DEV_NOM[k]||k)+'</td><td style="font-family:var(--x-mono)">'+fr(r.rate,r.rate<1?4:3)+' DH</td><td style="font-family:var(--x-mono)" class="'+(ch>0?'dn':ch<0?'upg':'')+'">'+(r.source==='live'&&hasCh?(ch>0?'+':'')+fr(ch,2)+' %':'—')+'</td></tr>';}).join('');
   $('#fxNote').textContent=d.source==='live'?'Cours du '+new Date(d.updatedAt).toLocaleString('fr-FR',{dateStyle:'medium',timeStyle:'short'})+'. Une hausse du cours renchérit vos achats.':'Cours de référence indicatifs : la source de marché ne répond pas pour le moment.';
   $('#cvDev').innerHTML=order.map(k=>'<option'+(k==='EUR'?' selected':'')+'>'+k+'</option>').join('');
   conv(); if(D) showOrig(($('#orig .on')||{}).dataset?.o||D.origines[0].cle);
