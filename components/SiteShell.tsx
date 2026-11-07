@@ -79,6 +79,7 @@ export default function SiteShell({ title, description, children, plain = false 
                 <li><Link href="/expertise">Expertise et services</Link></li>
                 <li><Link href="/tarifs">Tarifs</Link></li>
                 <li><Link href="/contact">Contact</Link></li>
+                <li><Link href="/a-propos">À propos</Link></li>
               </ul>
             </div>
             <div>

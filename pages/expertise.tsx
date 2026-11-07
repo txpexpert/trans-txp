@@ -40,6 +40,25 @@ export default function Expertise() {
         </div>
       </section>
 
+      <section className="x-sec-tight" id="acces-expert">
+        <div className="x-wrap">
+          <div className="x-eyebrow">Deux portes d’entrée</div>
+          <h2 className="x-h2">Un expert pour <em>votre dossier</em>.</h2>
+          <div className="x-tools" style={{ gridTemplateColumns: 'repeat(2,1fr)' }}>
+            <a className="x-tool" href="/tools/douane-engineering.html" style={{ borderTop: '3px solid var(--x-gold, #B8922A)' }}>
+              <b>Douane Engineering</b>
+              <p>Assistance et accompagnement expert : diagnostic de vos flux, structuration de vos opérations, optimisation tarifaire et sécurisation des dossiers sensibles.</p>
+              <span className="x-tier">Découvrir l’offre →</span>
+            </a>
+            <a className="x-tool" href="/modules/conseil" style={{ borderTop: '3px solid #1A3A9A' }}>
+              <b>Conseil personnalisé</b>
+              <p>Un expert douanier répond à votre question ou étudie votre cas : opérations complexes, litiges, classement, origine ou valeur.</p>
+              <span className="x-tier">Soumettre une demande →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="x-sec x-sec-dark">
         <div className="x-wrap">
           <div className="x-eyebrow">À l’acte, en complément de l’abonnement</div>
