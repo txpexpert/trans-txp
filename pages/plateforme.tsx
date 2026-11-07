@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import SiteShell from '../components/SiteShell'
 import { CHAIN, ESPACES, PROFILS, espaceBySlug } from '../lib/suite'
-import { KITS_PRATIQUES, kitHref } from '../lib/kitsPratiques'
+import { KITS_PRATIQUES, kitHref, nbKitsEnLettres } from '../lib/kitsPratiques'
 
 export default function Plateforme() {
   const couches = ESPACES.filter(e => !e.chain)
@@ -19,7 +19,7 @@ export default function Plateforme() {
           <aside className="x-kits" id="kits" aria-labelledby="kits-titre">
             <div className="x-eyebrow">Kits pratiques · 2026</div>
             <h2 className="x-kits-title" id="kits-titre">Télécharger nos kits pratiques</h2>
-            <p className="x-kits-sub">Sept kits d’expertise, à consulter en ligne ou à télécharger.</p>
+            <p className="x-kits-sub">{nbKitsEnLettres()} kits d’expertise, à consulter en ligne ou à télécharger.</p>
             <ol className="x-kits-list">
               {KITS_PRATIQUES.map(k => (
                 <li key={k.num} className="x-kit">
