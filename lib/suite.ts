@@ -30,7 +30,7 @@ export const ESPACES: Espace[] = [
     livrable: 'Fiche produit douane, sourcée et datée',
     transmet: 'Code SH et contraintes réglementaires',
     tools: [
-      { label: 'Classement tarifaire SH', path: '/modules/classement', desc: '17 224 codes, recherche guidée et arbre RGI', tier: 'operateur' },
+      { label: 'Classement tarifaire SH', path: '/modules/classement', desc: '13 354 positions tarifées (LF 2026), recherche guidée et arbre RGI', tier: 'operateur' },
       { label: 'Décisions de classement : recherche', path: '/modules/decisions-classement', desc: 'Précédents officiels par produit et par code', tier: 'operateur' },
       { label: 'Documents requis par code SH', path: '/modules/documents-sh', desc: 'Formalités et pièces exigées à l’importation', tier: 'operateur' },
       { label: 'Autorisations et licences', path: '/modules/autorisations-licences', desc: 'Contrôles techniques, licences et visas préalables', tier: 'operateur' },

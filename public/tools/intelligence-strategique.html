@@ -1,385 +1,282 @@
-﻿<!DOCTYPE html>
-<html lang="fr" class="ixp-theme">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Intelligence Commerciale & Jurisprudence — IXP-Import-eXPert</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
-  :root{
-    --bg:#F7F5F0;--surface:#FFFFFF;--card:#FDFCF9;
-    --border:#E5DDD0;--border2:#D4C9B5;
-    --gold:#B8922A;--gold-dark:#8C6B18;--gold-bg:#FBF5E6;--gold-line:rgba(184,146,42,.25);
-    --green:#1D6E40;--green-bg:#EAF5EE;
-    --red:#B83232;--red-bg:#FDF0EF;
-    --blue:#2A5E8C;--blue-bg:#EBF2FA;
-    --purple:#6B3AAA;--purple-bg:#F3EEFF;
-    --text:#1C1814;--text2:#3C3630;--muted:#7A7068;--muted2:#A09080;
-    --shadow:0 1px 4px rgba(28,24,20,.06),0 4px 16px rgba(28,24,20,.04);
-    --mono:'JetBrains Mono',monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;}
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Intelligence stratégique — Import-eXPert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>/* Code visuel de la page d'accueil (styles/site.css) appliqué aux pages Piloter */
+:root{
+  --x-ink:#14120F;--x-ink2:#3B3631;--x-ink3:#7A7168;
+  --x-paper:#FAF7F0;--x-card:#FFFFFF;--x-line:#E6DCC7;--x-line2:#D6C9AC;
+  --x-gold:#A8822F;--x-gold2:#C9A84C;--x-gold-soft:#F4EBD3;
+  --x-navy:#153E82;--x-navy2:#0E2C5E;--x-navy-soft:#E9EFF9;
+  --x-red:#A82D3C;--x-green:#1E7346;
+  --x-slate:#3D4A63;--x-slate-b:#EEF1F6;--x-slate-l:#CDD4E2;
+  --x-serif:'DM Serif Display',Georgia,serif;
+  --x-sans:'DM Sans',system-ui,sans-serif;
+  --x-mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--x-sans);color:var(--x-ink);background:var(--x-paper);line-height:1.55;font-size:16px}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+.x-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
-  .topbar{background:var(--surface);border-bottom:2px solid var(--gold);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
-  .module-badge{background:var(--gold);color:#fff;font-family:var(--mono);font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;}
-  .topbar-title{font-family:'DM Serif Display',serif;font-size:17px;margin-left:12px;}
+/* En-tête */
+.x-hdr{position:sticky;top:0;z-index:50;background:rgba(250,247,240,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--x-line)}
+.x-hdr .x-wrap{display:flex;align-items:center;gap:28px;height:68px}
+.x-logo{font-family:var(--x-serif);font-size:24px;white-space:nowrap}
+.x-logo b{font-weight:400;color:var(--x-red)}
+.x-logo sup{font-family:var(--x-mono);font-size:9px;letter-spacing:.14em;color:var(--x-ink3);margin-left:6px}
+.x-nav{display:flex;gap:8px;flex-wrap:wrap}
+.x-tile{display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;font-size:14px;font-weight:500;border:1px solid var(--tl);background:var(--tb);color:var(--tc);transition:all .15s}
+.x-tile:hover,.x-tile.on{border-color:var(--tc);box-shadow:0 0 0 2px var(--tl)}
+.t-blue{--tb:#EDF3FC;--tl:#C9DAF3;--tc:#1F4E9A}.t-green{--tb:#EBF6EF;--tl:#C3E3CF;--tc:#1E7346}
+.t-slate{--tb:#EEF1F6;--tl:#CDD4E2;--tc:#3D4A63}.t-teal{--tb:#E8F6F5;--tl:#BFE2DF;--tc:#16706B}
+.t-violet{--tb:#F2EEFB;--tl:#D8CDF1;--tc:#5B3FA0}.t-amber{--tb:#FCF4E3;--tl:#EFD9A8;--tc:#9A620C}
 
-  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-bottom:1px solid var(--border);}
-  .kpi{padding:16px 20px;text-align:center;border-right:1px solid var(--border);}
-  .kpi:last-child{border:none;}
-  .kpi-num{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--gold-dark);margin-bottom:3px;}
-  .kpi-lbl{color:var(--muted);font-size:11px;line-height:1.3;}
+/* Typo */
+.x-eyebrow{font-family:var(--x-mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--x-gold)}
+.x-h1{font-family:var(--x-serif);font-weight:400;font-size:clamp(36px,4.8vw,58px);line-height:1.05;letter-spacing:-.015em;margin:16px 0 20px}
+.x-h1 em,.x-h2 em{font-style:italic;color:var(--x-navy)}
+.x-h2{font-family:var(--x-serif);font-weight:400;font-size:clamp(28px,3.2vw,40px);line-height:1.1;margin:10px 0 12px}
+.x-h3{font-family:var(--x-serif);font-weight:400;font-size:22px;line-height:1.2;margin:0 0 6px}
+.x-lead{font-size:18px;color:var(--x-ink2);max-width:620px}
+.x-sub{font-size:16px;color:var(--x-ink2);max-width:720px}
+.x-sec{padding:72px 0}
+.x-sec-white{background:#fff;border-top:1px solid var(--x-line);border-bottom:1px solid var(--x-line)}
+.x-sec-dark{background:var(--x-ink);color:#EDE7DA}
+.x-sec-dark .x-sub{color:#BDB3A3}.x-sec-dark .x-eyebrow{color:var(--x-gold2)}.x-sec-dark .x-h2 em{color:var(--x-gold2)}
+.x-mono{font-family:var(--x-mono);font-size:11.5px;color:var(--x-ink3);letter-spacing:.04em}
 
-  .tabs{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;scrollbar-width:none;}
-  .tabs::-webkit-scrollbar{display:none;}
-  .tab{padding:12px 18px;border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;font-family:'DM Sans',sans-serif;}
-  .tab.active{color:var(--gold-dark);border-bottom-color:var(--gold);font-weight:600;}
-  .panel{display:none;padding:22px;max-width:980px;margin:0 auto;}
-  .panel.active{display:block;}
+/* Hero */
+.x-hero{padding:64px 0 48px}
+.x-hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center}
+.x-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.x-btn{display:inline-flex;align-items:center;gap:8px;font:500 14.5px var(--x-sans);border-radius:999px;padding:11px 20px;border:1px solid transparent;cursor:pointer;transition:all .18s;white-space:nowrap}
+.x-btn-dark{background:var(--x-ink);color:#fff}.x-btn-dark:hover{background:var(--x-navy2)}
+.x-btn-line{border-color:var(--x-line2);background:transparent;color:var(--x-ink)}.x-btn-line:hover{border-color:var(--x-ink)}
+.x-btn-gold{background:var(--x-gold2);color:var(--x-ink)}
 
-  .sec-head{font-family:'DM Serif Display',serif;font-size:17px;color:var(--gold-dark);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+/* Carte dossier */
+.x-dossier{background:#fff;border:1px solid var(--x-line);border-radius:20px;box-shadow:0 30px 60px -30px rgba(20,18,15,.25);overflow:hidden}
+.x-dossier-hd{padding:16px 22px;border-bottom:1px solid var(--x-line);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.x-dossier-hd strong{font-family:var(--x-serif);font-weight:400;font-size:20px}
+.x-dossier-ft{padding:11px 22px;background:var(--x-paper);border-top:1px solid var(--x-line);font-size:12px;color:var(--x-ink3)}
+.x-rows{list-style:none;margin:0;padding:6px 0}
+.x-rows li{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:baseline;padding:10px 22px}
+.x-rows li+li{border-top:1px dashed var(--x-line)}
+.x-rows b{font-weight:500;font-size:14.5px}
+.x-rows .v{font-family:var(--x-serif);font-size:20px}
+.x-pill{font-family:var(--x-mono);font-size:10.5px;letter-spacing:.04em;padding:4px 9px;border-radius:999px;background:var(--x-gold-soft);color:#7A5D1C;white-space:nowrap}
+.x-pill.up{background:#FCEEF0;color:var(--x-red)}.x-pill.ok{background:#E6F1E8;color:#1F6233}.x-pill.nav{background:var(--x-navy-soft);color:var(--x-navy)}
 
-  .mini-alert{border-radius:8px;padding:11px 14px;font-size:12px;border:1px solid;margin:8px 0;line-height:1.55;}
-  .mini-alert.green{background:var(--green-bg);border-color:rgba(29,110,64,.25);color:var(--green);}
-  .mini-alert.gold{background:var(--gold-bg);border-color:var(--gold-line);color:var(--gold-dark);}
-  .mini-alert.blue{background:var(--blue-bg);border-color:rgba(42,94,140,.25);color:var(--blue);}
+/* Barre de preuves */
+.x-proof{border-top:1px solid var(--x-line);border-bottom:1px solid var(--x-line);background:#fff}
+.x-proof .x-wrap{display:grid;grid-template-columns:repeat(5,1fr)}
+.x-proof .p{padding:20px 10px;text-align:center;border-left:1px solid var(--x-line)}
+.x-proof .p:first-child{border-left:none}
+.x-proof b{display:block;font-family:var(--x-serif);font-weight:400;font-size:28px;line-height:1.1}
+.x-proof span{font-size:12.5px;color:var(--x-ink3)}
+.x-proof i{font-style:normal;font-family:var(--x-mono);font-size:11px;display:block;margin-top:3px}
+.dn{color:var(--x-red)}.upg{color:var(--x-green)}
 
-  /* FLUX */
-  .flux-search{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
-  .flux-input{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;}
-  .flux-input:focus{border-color:var(--gold);}
-  .flux-select{padding:9px 12px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color:var(--text);}
-  .search-btn{background:var(--gold-dark);color:#fff;border:none;padding:9px 20px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+/* Cartes */
+.x-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.x-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.x-card{background:#fff;border:1px solid var(--x-line);border-radius:16px;padding:22px}
+.x-card.slate{background:var(--x-slate-b);border-color:var(--x-slate-l)}
+.x-card p{margin:6px 0 0;color:var(--x-ink2);font-size:14.5px}
+.x-k{font-family:var(--x-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--x-ink3)}
+.x-big{font-family:var(--x-serif);font-size:34px;line-height:1.05;margin:6px 0 2px}
 
-  .flux-table{width:100%;border-collapse:collapse;background:var(--surface);box-shadow:var(--shadow);border-radius:10px;overflow:hidden;}
-  .flux-table th{background:var(--gold-bg);color:var(--gold-dark);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
-  .flux-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);}
-  .flux-table tr:last-child td{border:none;}
-  .flux-table tr:hover td{background:var(--gold-bg);}
-  .import-tag{background:var(--blue-bg);color:var(--blue);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;}
-  .export-tag{background:var(--green-bg);color:var(--green);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;}
+/* Barres */
+.bars{display:grid;gap:12px;margin-top:8px}
+.bar{display:grid;grid-template-columns:210px 1fr 96px 74px;gap:14px;align-items:center;font-size:14.5px}
+.bar .tr{height:12px;background:var(--x-paper);border:1px solid var(--x-line);border-radius:999px;overflow:hidden}
+.bar .fl{height:100%;background:var(--x-slate);border-radius:999px}
+.bar .val{font-family:var(--x-mono);font-size:12.5px;text-align:right}
+.bar .var{font-family:var(--x-mono);font-size:12px;text-align:right}
+.bar small{display:block;color:var(--x-ink3);font-size:12.5px}
 
-  /* JURISPRUDENCE */
-  .juris-search{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
-  .juris-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s;}
-  .juris-card:hover{border-color:var(--gold);}
-  .juris-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;align-items:center;}
-  .juris-ref{font-family:var(--mono);font-size:11px;color:var(--gold-dark);background:var(--gold-bg);border:1px solid var(--gold-line);padding:2px 8px;border-radius:4px;}
-  .juris-date{font-size:11px;color:var(--muted);}
-  .juris-theme{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;}
-  .theme-valorisation{background:var(--blue-bg);color:var(--blue);}
-  .theme-classification{background:var(--purple-bg);color:var(--purple);}
-  .theme-origine{background:var(--green-bg);color:var(--green);}
-  .theme-penalite{background:var(--red-bg);color:var(--red);}
-  .theme-regime{background:var(--gold-bg);color:var(--gold-dark);}
-  .juris-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
-  .juris-summary{font-size:12px;color:var(--text2);line-height:1.65;}
-  .juris-decision{font-size:11px;font-weight:600;margin-top:8px;padding:4px 10px;border-radius:4px;display:inline-block;}
-  .decision-favorable{background:var(--green-bg);color:var(--green);}
-  .decision-mitige{background:var(--gold-bg);color:var(--gold-dark);}
-  .decision-defavorable{background:var(--red-bg);color:var(--red);}
+/* Filtres en pastilles */
+.flts{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.flt{font:500 13.5px var(--x-sans);padding:7px 13px;border-radius:999px;border:1px solid var(--x-line2);background:#fff;color:var(--x-ink2);cursor:pointer}
+.flt.on{background:var(--x-slate);border-color:var(--x-slate);color:#fff}
+.x-in{font:inherit;font-size:15px;padding:11px 14px;border:1px solid var(--x-line2);border-radius:10px;background:#fff;outline:none;width:100%}
+.x-in:focus{border-color:var(--x-navy)}
 
-  /* ALE */
-  .ale-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .ale-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow);}
-  .ale-flag{font-size:28px;margin-bottom:6px;}
-  .ale-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
-  .ale-date{font-size:11px;color:var(--muted);margin-bottom:8px;}
-  .ale-stat{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
-  .ale-stat:last-child{border:none;}
-  .ale-stat-val{font-family:var(--mono);font-weight:600;color:var(--gold-dark);}
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px;background:#fff;border:1px solid var(--x-line);border-radius:14px;overflow:hidden}
+.tbl th{font:500 10.5px var(--x-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--x-ink3);text-align:left;padding:12px 14px;background:var(--x-paper);border-bottom:1px solid var(--x-line)}
+.tbl td{padding:12px 14px;border-bottom:1px solid var(--x-line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.code{font-family:var(--x-mono);font-size:12.5px;background:var(--x-navy-soft);color:var(--x-navy);padding:2px 7px;border-radius:6px;white-space:nowrap}
+.note{font-size:13px;color:var(--x-ink3);margin-top:12px}
+.src{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.src span{font-family:var(--x-mono);font-size:11px;padding:4px 10px;border:1px solid var(--x-line2);border-radius:999px;color:var(--x-ink2);background:#fff}
 
-  /* STATS CHART */
-  .chart-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-  .chart-label{font-size:11px;color:var(--text2);width:140px;flex-shrink:0;}
-  .chart-bar-wrap{flex:1;background:var(--border);border-radius:4px;height:18px;overflow:hidden;}
-  .chart-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:600;color:#fff;transition:width .5s ease;}
-  .chart-val{font-family:var(--mono);font-size:11px;color:var(--muted);width:80px;text-align:right;flex-shrink:0;}
+/* Sous-navigation */
+.subnav{position:sticky;top:68px;z-index:40;background:#fff;border-bottom:1px solid var(--x-line)}
+.subnav .x-wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px}
+.subnav a{font-size:13.5px;padding:6px 12px;border-radius:999px;color:var(--x-ink2);white-space:nowrap}
+.subnav a:hover{background:var(--x-slate-b);color:var(--x-slate)}
 
-  .footer{text-align:center;padding:14px;color:var(--muted2);font-size:11px;border-top:1px solid var(--border);margin-top:40px;background:var(--surface);}
-  @media(max-width:640px){.ale-grid{grid-template-columns:1fr;}.kpi-row{grid-template-columns:1fr 1fr;}}
-</style>
-<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
-</head>
-<body>
+.ftr{padding:28px 0 40px;font-size:13px;color:var(--x-ink3);border-top:1px solid var(--x-line);background:#fff}
+@media(max-width:900px){
+  .x-hero-grid,.x-grid2,.x-grid3{grid-template-columns:1fr}
+  .x-proof .x-wrap{grid-template-columns:repeat(2,1fr)}
+  .bar{grid-template-columns:1fr 70px 60px}.bar .tr{grid-column:1/-1;order:5}
+  .x-nav{display:none}
+}
 
-<div class="topbar">
-  <div style="display:flex;align-items:center;">
-    <div class="module-badge">M-IS</div>
-    <div class="topbar-title">Intelligence Commerciale & Jurisprudence</div>
-  </div>
-  <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">Flux · Jurisprudence ADII · ALE Maroc</span>
-</div>
+/* Tuiles colorées : sous-navigation, filtres, boutons */
+.t-rose{--tb:#FCEEF0;--tl:#F0C9CF;--tc:#A82D3C}
+.t-navy{--tb:#EAF0FA;--tl:#C9D6EE;--tc:#153E82}
+.subnav a.tone{border:1px solid var(--tl);background:var(--tb);color:var(--tc);font-weight:500}
+.subnav a.tone:hover{border-color:var(--tc);box-shadow:0 0 0 2px var(--tl);background:var(--tb);color:var(--tc)}
+.flt.tone{background:var(--tb);border-color:var(--tl);color:var(--tc)}
+.flt.tone:hover{border-color:var(--tc)}
+.flt.tone.on{background:var(--tc);border-color:var(--tc);color:#fff}
+.x-btn.tone{background:var(--tb);border-color:var(--tl);color:var(--tc)}
+.x-btn.tone:hover{border-color:var(--tc);box-shadow:0 0 0 2px var(--tl)}
+.x-btn.tone-fill{background:var(--tc);border-color:var(--tc);color:#fff}
+.x-btn.tone-fill:hover{filter:brightness(1.12)}
+.rate{font-family:var(--x-mono);font-size:11.5px;padding:3px 8px;border-radius:999px;background:#E6F1E8;color:#1F6233;white-space:nowrap}
+.rate.warn{background:#FCF4E3;color:#9A620C}
+.rate.ko{background:#FCEEF0;color:var(--x-red)}
+.src span.rate{background:#E6F1E8;color:#1F6233;border-color:#C3E3CF}
+.loading{color:var(--x-ink3);font-size:14px;padding:10px 0}
+</style></head><body><header class="x-hdr"><div class="x-wrap">
+  <a class="x-logo" href="/">Import<b>-</b>eXPert<sup>MAROC</sup></a>
+  <nav class="x-nav">
+    <a class="x-tile t-blue" href="/plateforme">Accueil</a>
+    <a class="x-tile t-green" href="/plateforme#profils">Solutions</a>
+    <a class="x-tile t-slate on" href="/espaces/piloter">Piloter</a>
+    <a class="x-tile t-teal" href="/espaces/bibliotheque">Bibliothèque</a>
+    <a class="x-tile t-violet" href="/expertise">Expertise</a>
+    <a class="x-tile t-amber" href="/tarifs">Tarifs</a>
+  </nav>
+</div></header>
 
-<div class="kpi-row">
-  <div class="kpi"><div class="kpi-num">+8</div><div class="kpi-lbl">Accords de libre-échange actifs</div></div>
-  <div class="kpi"><div class="kpi-num">95%</div><div class="kpi-lbl">Lignes tarifaires ALE Maroc–USA à 0%</div></div>
-  <div class="kpi"><div class="kpi-num">TA</div><div class="kpi-lbl">Tribunal Administratif — juridiction douanière</div></div>
-  <div class="kpi"><div class="kpi-num">2025</div><div class="kpi-lbl">Données tarif douanier en vigueur</div></div>
-</div>
-
-<div class="tabs">
-  <button class="tab active" onclick="switchTab('flux')">📦 Flux Import/Export Maroc</button>
-  <button class="tab" onclick="switchTab('juris')">⚖️ Jurisprudence douanière</button>
-  <button class="tab" onclick="switchTab('ale')">🌍 Accords de Libre-Échange</button>
-  <button class="tab" onclick="switchTab('stats')">📊 Statistiques commerciales</button>
-</div>
-
-<!-- ── FLUX ── -->
-<div class="panel active" id="tab-flux">
-  <div class="sec-head">📦 Flux commerciaux Maroc — Principaux partenaires et produits</div>
-  <div class="flux-search">
-    <input class="flux-input" id="fluxSearch" type="text" placeholder="Rechercher : produit, pays, code SH…" oninput="filterFlux()">
-    <select class="flux-select" id="fluxType" onchange="filterFlux()">
-      <option value="">Tout (Import + Export)</option>
-      <option value="import">Importations uniquement</option>
-      <option value="export">Exportations uniquement</option>
-    </select>
-  </div>
-
-  <table class="flux-table" id="flux-table">
-    <thead>
-      <tr><th>Flux</th><th>Produit / Secteur</th><th>Pays partenaire</th><th>Valeur estimée 2024</th><th>Régime courant</th><th>Tendance</th></tr>
-    </thead>
-    <tbody id="flux-tbody">
-    </tbody>
-  </table>
-  <div class="mini-alert gold" style="margin-top:16px;">📌 Sources : Office des Changes · HCP RGPH 2024 · Bank Al-Maghrib · Données estimatives 2024 — Mise à jour trimestrielle.</div>
-</div>
-
-<!-- ── JURISPRUDENCE ── -->
-<div class="panel" id="tab-juris">
-  <div class="sec-head">⚖️ Base jurisprudentielle douanière — Décisions ADII & Juridictions</div>
-  <div class="juris-search">
-    <input class="flux-input" id="jurisSearch" type="text" placeholder="Rechercher : valorisation, classification, origine, pénalités…" oninput="filterJuris()" style="flex:2;">
-    <select class="flux-select" id="jurisTheme" onchange="filterJuris()">
-      <option value="">Tous les thèmes</option>
-      <option value="valorisation">Valorisation</option>
-      <option value="classification">Classification</option>
-      <option value="origine">Origine</option>
-      <option value="penalite">Pénalités</option>
-      <option value="regime">Régimes économiques</option>
-    </select>
-    <select class="flux-select" id="jurisDecision" onchange="filterJuris()">
-      <option value="">Toutes décisions</option>
-      <option value="favorable">Favorable opérateur</option>
-      <option value="mitige">Mitigé</option>
-      <option value="defavorable">Défavorable opérateur</option>
-    </select>
-  </div>
-  <div id="juris-list"></div>
-  <div class="mini-alert blue" style="margin-top:12px;">ℹ️ Base de données indicative — Les décisions citées sont des cas types représentatifs de la jurisprudence douanière marocaine. Pour tout litige, consultez un expert douanier ou un avocat spécialisé.</div>
-</div>
-
-<!-- ── ALE ── -->
-<div class="panel" id="tab-ale">
-  <div class="sec-head">🌍 Accords de Libre-Échange du Maroc en vigueur</div>
-  <div class="mini-alert green">✅ Le Maroc dispose de l'un des réseaux ALE les plus étendus d'Afrique. Ces accords couvrent plus de 55 pays et permettent des exonérations tarifaires totales ou partielles sur la majorité des produits industriels.</div>
-
-  <div class="ale-grid" style="margin-top:16px;">
-    <div class="ale-card">
-      <div class="ale-flag">🇪🇺</div>
-      <div class="ale-title">ALE Maroc — Union Européenne</div>
-      <div class="ale-date">En vigueur depuis 2000 · Accord d'Association</div>
-      <div class="ale-stat"><span>Produits industriels (taux DI)</span><span class="ale-stat-val">0%</span></div>
-      <div class="ale-stat"><span>Produits agricoles transformés</span><span class="ale-stat-val">0% à 55%</span></div>
-      <div class="ale-stat"><span>Règle d'origine principale</span><span class="ale-stat-val">Cumul diagonal Pan-Euro-Med</span></div>
-      <div class="ale-stat"><span>Document d'origine requis</span><span class="ale-stat-val">EUR.1 ou Décl. fournisseur</span></div>
-    </div>
-    <div class="ale-card">
-      <div class="ale-flag">🇺🇸</div>
-      <div class="ale-title">ALE Maroc — États-Unis (MAFTA)</div>
-      <div class="ale-date">En vigueur depuis 2006</div>
-      <div class="ale-stat"><span>Lignes tarifaires à 0%</span><span class="ale-stat-val">95%</span></div>
-      <div class="ale-stat"><span>Produits industriels</span><span class="ale-stat-val">0% immédiat</span></div>
-      <div class="ale-stat"><span>Produits agricoles sensibles</span><span class="ale-stat-val">Dégressif sur 10-15 ans</span></div>
-      <div class="ale-stat"><span>Document d'origine requis</span><span class="ale-stat-val">Certificat d'origine CO</span></div>
-    </div>
-    <div class="ale-card">
-      <div class="ale-flag">🇹🇷</div>
-      <div class="ale-title">ALE Maroc — Turquie</div>
-      <div class="ale-date">En vigueur depuis 2006</div>
-      <div class="ale-stat"><span>Produits industriels</span><span class="ale-stat-val">0%</span></div>
-      <div class="ale-stat"><span>Produits agricoles</span><span class="ale-stat-val">Taux préférentiels</span></div>
-      <div class="ale-stat"><span>Textile & habillement</span><span class="ale-stat-val">0% (règle de fabrication)</span></div>
-      <div class="ale-stat"><span>Document d'origine requis</span><span class="ale-stat-val">EUR.1 (cumul bilatéral)</span></div>
-    </div>
-    <div class="ale-card">
-      <div class="ale-flag">🌍</div>
-      <div class="ale-title">GAFTA — Grande Zone Arabe</div>
-      <div class="ale-date">En vigueur depuis 2005 (Maroc)</div>
-      <div class="ale-stat"><span>Pays membres couverts</span><span class="ale-stat-val">18 pays arabes</span></div>
-      <div class="ale-stat"><span>Taux DI entre membres</span><span class="ale-stat-val">0%</span></div>
-      <div class="ale-stat"><span>Règle d'origine</span><span class="ale-stat-val">40% VA dans la zone</span></div>
-      <div class="ale-stat"><span>Document requis</span><span class="ale-stat-val">Certificat d'origine CAOA</span></div>
-    </div>
-    <div class="ale-card">
-      <div class="ale-flag">🇸🇦</div>
-      <div class="ale-title">CCG — Conseil de Coopération du Golfe</div>
-      <div class="ale-date">Accord préférentiel en vigueur</div>
-      <div class="ale-stat"><span>Pays couverts</span><span class="ale-stat-val">Arabie S., EAU, Qatar, Koweït, Bahreïn, Oman</span></div>
-      <div class="ale-stat"><span>Produits marocains exportés</span><span class="ale-stat-val">Taux préférentiels</span></div>
-      <div class="ale-stat"><span>Phosphates & dérivés</span><span class="ale-stat-val">Accès prioritaire</span></div>
-      <div class="ale-stat"><span>Document requis</span><span class="ale-stat-val">Certificat d'origine CCIS</span></div>
-    </div>
-    <div class="ale-card">
-      <div class="ale-flag">🌐</div>
-      <div class="ale-title">ZLE Continentale Africaine (ZLECAF)</div>
-      <div class="ale-date">Phase de mise en œuvre progressive — Ratifié par le Maroc</div>
-      <div class="ale-stat"><span>Pays membres</span><span class="ale-stat-val">54 pays africains</span></div>
-      <div class="ale-stat"><span>Objectif taux à terme</span><span class="ale-stat-val">90% lignes à 0% en 5 ans</span></div>
-      <div class="ale-stat"><span>Statut actuel</span><span class="ale-stat-val">Déploiement progressif 2024-2030</span></div>
-      <div class="ale-stat"><span>Secteurs prioritaires Maroc</span><span class="ale-stat-val">Textile, agro-alimentaire, industrie</span></div>
+<section class="x-hero"><div class="x-wrap x-hero-grid">
+  <div>
+    <div class="x-eyebrow">Piloter · Intelligence stratégique</div>
+    <h1 class="x-h1">Ce qui change <em>vos conditions d’accès</em> au marché.</h1>
+    <p class="x-lead">Comment l’administration classe des produits proches des vôtres, quelles mesures de défense commerciale frappent vos origines, ce que vos accords préférentiels permettent cette année. Uniquement des textes publiés, cités avec leur référence.</p>
+    <div class="x-cta">
+      <a class="x-btn tone-fill t-navy" href="#decisions">Chercher une décision de classement</a>
+      <a class="x-btn tone t-rose" href="#defense">Mesures de défense commerciale</a>
     </div>
   </div>
-</div>
-
-<!-- ── STATS ── -->
-<div class="panel" id="tab-stats">
-  <div class="sec-head">📊 Statistiques commerciales — Maroc 2024</div>
-  <div class="mini-alert gold">📌 Données Office des Changes & Bank Al-Maghrib — Estimations 2024.</div>
-
-  <div style="margin-top:20px;">
-    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;">Principaux pays fournisseurs (importations)</div>
-    <div id="chart-import"></div>
+  <div class="x-dossier">
+    <div class="x-dossier-hd"><strong>Dernières publications</strong><span class="x-mono">ADII</span></div>
+    <ul class="x-rows" id="latest"></ul>
+    <div class="x-dossier-ft">Derniers textes intégrés à la base, mis à jour à chaque ingestion.</div>
   </div>
-  <div style="margin-top:24px;">
-    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;">Principaux pays clients (exportations)</div>
-    <div id="chart-export"></div>
-  </div>
-  <div style="margin-top:24px;">
-    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;">Secteurs d'exportation — Part du total</div>
-    <div id="chart-secteurs"></div>
-  </div>
-</div>
+</div></section>
 
-<div class="footer">Import-eXPert — Intelligence Commerciale & Jurisprudence · Sources : Office des Changes · Bank Al-Maghrib · HCP · ADII · Juridictions administratives marocaines</div>
+
+
+<nav class="subnav"><div class="x-wrap">
+  <a class="tone t-blue" href="#decisions">Décisions de classement</a><a class="tone t-rose" href="#defense">Défense commerciale</a><a class="tone t-green" href="#accords">Accords préférentiels</a><a class="tone t-violet" href="#actu">Actualité des accords</a>
+</div></nav>
+
+<section class="x-sec" id="decisions"><div class="x-wrap">
+  <div class="x-eyebrow">Classement tarifaire</div>
+  <h2 class="x-h2">Comment <em>classer</em> des produits proches des vôtres ?</h2>
+  <p class="x-sub">Cherchez par nom de produit, par mot du descriptif ou par début de code SH. Chaque décision renvoie à sa circulaire.</p>
+  <div style="display:grid;grid-template-columns:1fr 220px;gap:12px;margin-top:18px">
+    <input class="x-in" id="q" placeholder="Ex. : batterie lithium, compléments alimentaires, 8537…">
+    <select class="x-in" id="ch"></select>
+  </div>
+  <div class="flts" id="qs"></div>
+  <div id="dres" class="x-grid2" style="margin-top:6px"></div>
+  <p class="note" id="dnote"></p>
+</div></section>
+
+<section class="x-sec x-sec-white" id="defense"><div class="x-wrap">
+  <div class="x-eyebrow">Défense commerciale</div>
+  <h2 class="x-h2">Les droits qui s’ajoutent <em>au droit d’importation</em>.</h2>
+  <p class="x-sub">Droits antidumping et mesures de sauvegarde publiés par circulaire. Ils dépendent de l’origine et parfois du fabricant : à vérifier avant chaque commande.</p>
+  <div class="flts" id="df"></div>
+  <table class="tbl"><thead><tr><th>Circulaire</th><th>Date</th><th>Objet</th><th>Statut</th></tr></thead><tbody id="dt"></tbody></table>
+  <p class="note">Le statut est calculé chaque jour : « Échue » quand l’échéance indiquée par le texte est passée ; « À vérifier » quand le texte ne fixe pas d’échéance lisible. Une mesure peut avoir été prorogée par une circulaire plus récente : contrôlez sa période d’application avant de déclarer.</p>
+</div></section>
+
+<section class="x-sec" id="accords"><div class="x-wrap">
+  <div class="x-eyebrow">Accords préférentiels</div>
+  <h2 class="x-h2">Où votre origine <em>vaut un droit réduit</em>.</h2>
+  <div class="x-grid3" style="margin-top:18px" id="ale"></div>
+  <p class="note">La préférence ne s’applique que si les règles d’origine de l’accord sont respectées et prouvées au dédouanement. Les produits agricoles relèvent souvent de contingents ou de droits réduits, pas de la franchise.</p>
+</div></section>
+
+<section class="x-sec x-sec-dark" id="actu"><div class="x-wrap">
+  <div class="x-eyebrow">Veille</div>
+  <h2 class="x-h2">Actualité des <em>accords</em>.</h2>
+  <div class="x-grid2" style="margin-top:18px;color:var(--x-ink)" id="news"></div>
+  <div class="x-cta"><a class="x-btn x-btn-gold" href="/modules/veille-reglementaire">Toute la veille réglementaire</a></div>
+</div></section>
+
+<footer class="ftr"><div class="x-wrap">Import-eXPert · Piloter · Intelligence stratégique</div></footer>
 
 <script>
-const FLUX_DATA = [
-  { type:'import', produit:'Huiles brutes de pétrole', pays:'Russie / Arabie Saoudite', valeur:'~85 Mrd DH', regime:'Mise à la consommation directe', tendance:'↑ +12%' },
-  { type:'import', produit:'Blé et céréales', pays:'France / Ukraine / Russie', valeur:'~28 Mrd DH', regime:'Mise à la conso. — DI 0% (quota OMC)', tendance:'→ Stable' },
-  { type:'import', produit:'Véhicules automobiles (Ch.87)', pays:'France / Espagne / Chine', valeur:'~22 Mrd DH', regime:'Mise à la consommation (DI 25%→0% ALE)', tendance:'↑ +8%' },
-  { type:'import', produit:'Machines et équipements industriels', pays:'Chine / Allemagne / Italie', valeur:'~45 Mrd DH', regime:'Admission Temporaire / Mise à la conso.', tendance:'↑ +15%' },
-  { type:'import', produit:'Produits pharmaceutiques (Ch.30)', pays:'France / Inde / Belgique', valeur:'~16 Mrd DH', regime:'Mise à la conso. — TVA 7%', tendance:'↑ +5%' },
-  { type:'import', produit:'Acier & fer (Ch.72-73)', pays:'Espagne / Chine / Turquie', valeur:'~18 Mrd DH', regime:'Mise à la conso. — Antidumping possible', tendance:'→ -3%' },
-  { type:'import', produit:'Plastiques et ouvrages (Ch.39)', pays:'Chine / Allemagne / Italie', valeur:'~14 Mrd DH', regime:'Mise à la conso. / ATPA', tendance:'↑ +6%' },
-  { type:'export', produit:'Acide phosphorique & engrais (Ch.31)', pays:'Inde / Brésil / USA', valeur:'~120 Mrd DH', regime:'Exportation définitive', tendance:'↑ +22%' },
-  { type:'export', produit:'Automobiles & pièces (Kénitra / Tanger)', pays:'France / Espagne / Allemagne', valeur:'~85 Mrd DH', regime:'Exportation ZF — TVA 0%', tendance:'↑ +18%' },
-  { type:'export', produit:'Textiles & habillement confectionné', pays:'France / Espagne / Italie', valeur:'~42 Mrd DH', regime:'Exportation — Perfectionnement actif', tendance:'↑ +5%' },
-  { type:'export', produit:'Produits de la mer (poissons, conserves)', pays:'UE / Japon / USA', valeur:'~26 Mrd DH', regime:'Exportation définitive', tendance:'→ +2%' },
-  { type:'export', produit:'Câblage automobile & composants élec.', pays:'Espagne / Allemagne / France', valeur:'~38 Mrd DH', regime:'Exportation ZF Tanger / Kénitra', tendance:'↑ +14%' },
-  { type:'export', produit:'Agrumes, légumes & primeurs', pays:'France / Espagne / Pays-Bas', valeur:'~18 Mrd DH', regime:'Exportation — Certificat phytosanitaire', tendance:'↑ +7%' },
+// ---- Données Supabase (décisions, tarif, défense commerciale) via l'API Piloter ----
+const API='/api/piloter/intel';
+async function api(params){const r=await fetch(API+'?'+new URLSearchParams(params),{credentials:'same-origin'});if(!r.ok)throw new Error(r.status);return r.json();}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fc=c=>String(c).replace(/^(\d{4})(\d{2})(\d{2})(\d{2})$/,'$1.$2.$3.$4');
+const pct=n=>n==null?'':String(n).replace('.',',')+' %';
+const dfr=d=>{if(!d)return '';const m=String(d).match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[3]}/${m[2]}/${m[1]}`:d;};
+
+
+// Dernières publications : la décision la plus récente + circulaires des accords
+function drawLatest(list){document.getElementById('latest').innerHTML=list.map(l=>`<li><b>${esc(l.titre.length>80?l.titre.slice(0,80)+'…':l.titre)}<br><span class="x-mono">${esc(l.type_document||'')}${l.numero?' · n° '+esc(l.numero):''}</span></b><span></span><span class="x-pill nav">${esc(dfr(l.date_doc))}</span></li>`).join('');}
+api({a:'recent',n:4}).then(r=>drawLatest(r.data)).catch(()=>{});
+
+// Décisions de classement : recherche obligatoire, 12 résultats au plus
+const sel=document.getElementById('ch');
+sel.innerHTML='<option value="">Chapitre…</option>'+Array.from({length:97},(_,i)=>String(i+1).padStart(2,'0')).filter(c=>c!=='77').map(c=>`<option value="${c}">Chapitre ${c}</option>`).join('');
+const SUG=[['batterie','t-blue'],['complément alimentaire','t-green'],['engrais','t-teal'],['armoire électrique','t-amber'],['véhicule','t-violet'],['vaporisation','t-rose']];
+document.getElementById('qs').innerHTML=SUG.map(s=>`<button class="flt tone ${s[1]}" data-s="${s[0]}">${s[0]}</button>`).join('');
+document.getElementById('qs').addEventListener('click',e=>{if(e.target.dataset.s){document.getElementById('q').value=e.target.dataset.s;run();}});
+function card(d){return `<div class="x-card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><b>${esc(d.designation)}</b><span class="code">${fc(d.code_sh)}</span></div><p>${esc(d.resume)}${d.resume&&d.resume.length>=220?'…':''}</p><div class="src"><span>Circulaire ADII n° ${esc(d.circulaire)}</span>${d.taux!=null?`<span class="rate">Tarif 2026 : ${pct(d.taux)}</span>`:''}</div></div>`;}
+let tq,seq=0;
+async function run(){
+  const q=document.getElementById('q').value.trim(), c=sel.value;
+  const box=document.getElementById('dres'), note=document.getElementById('dnote');
+  const my=++seq;
+  try{
+    if(q.replace(/\s/g,'').length<3 && !c){
+      const r=await api({a:'latest'});if(my!==seq)return;
+      box.innerHTML=r.data.map(card).join('');
+      note.textContent='Les quatre décisions les plus récentes. Tapez au moins trois caractères ou choisissez un chapitre.';return;}
+    box.innerHTML='<div class="loading">Recherche…</div>';
+    const r=await api({a:'decisions',q,ch:c});if(my!==seq)return;
+    box.innerHTML=r.data.map(card).join('')||'<div class="x-card">Aucune décision publiée ne correspond. Demandez un classement à un expert.</div>';
+    note.textContent=r.count>r.data.length?`${r.count} décisions trouvées, ${r.data.length} affichées : affinez la recherche.`:`${r.count} décision(s) trouvée(s).`;
+  }catch(e){box.innerHTML='<div class="x-card">Recherche indisponible pour le moment.</div>';note.textContent='';}
+}
+document.getElementById('q').addEventListener('input',()=>{clearTimeout(tq);tq=setTimeout(run,300);});sel.addEventListener('change',run);run();
+
+// Défense commerciale (circulaires publiées)
+const stat=x=>`<span class="rate ${x.statut==='Échue'||x.statut==='Abrogée'?'ko':'warn'}">${esc(x.statut)}${x.echeance?' · '+esc(dfr(x.echeance)):''}</span>`;
+const KS=[['Antidumping','t-rose'],['Sauvegarde','t-amber'],['Sauvegarde préférentielle','t-violet']];let K='Antidumping',DF=[];
+function drawD(){document.getElementById('df').innerHTML=KS.map(k=>`<button class="flt tone ${k[1]} ${k[0]===K?'on':''}" data-k="${k[0]}">${k[0]}</button>`).join('');
+ document.getElementById('dt').innerHTML=DF.filter(x=>x.type===K).map(x=>`<tr><td><span class="code">${esc(x.numero)}</span></td><td style="white-space:nowrap">${esc(dfr(x.date))}</td><td>${esc(x.titre)}</td><td>${stat(x)}</td></tr>`).join('')||'<tr><td colspan="4" class="loading">Chargement…</td></tr>';}
+document.getElementById('df').addEventListener('click',e=>{if(e.target.dataset.k){K=e.target.dataset.k;drawD();}});drawD();
+api({a:'defense'}).then(r=>{DF=r.data.sort((a,b)=>String(b.date).localeCompare(String(a.date)));drawD();}).catch(()=>{document.getElementById('dt').innerHTML='<tr><td colspan="3">Liste indisponible pour le moment.</td></tr>';});
+
+// Accords
+const A=[
+ ['Union européenne','Accord d’association, en vigueur depuis 2000','Produits industriels en franchise. Produits agricoles : contingents et droits réduits, accord agricole actualisé en 2026.','EUR.1 ou déclaration d’origine (validité 10 mois)'],
+ ['AELE','Suisse, Norvège, Islande, Liechtenstein','Produits industriels en franchise, cumul pan-euro-méditerranéen.','EUR.1 ou déclaration d’origine (validité 10 mois)'],
+ ['Turquie','Accord de libre-échange, en vigueur depuis 2006','Produits industriels en franchise, sauf mesure de sauvegarde préférentielle sur certains textiles.','EUR.1 ou déclaration d’origine (validité 10 mois)'],
+ ['États-Unis','Accord de libre-échange, en vigueur depuis 2006','Démantèlement achevé pour l’essentiel des produits industriels. Contingents 2026 pour certains produits agricoles.','Preuve d’origine prévue par l’accord'],
+ ['Royaume-Uni','Accord d’association, en vigueur depuis 2021','Reprend l’accord avec l’UE. Contingents 2026 et décision n° 01/2026 sur les règles d’origine.','EUR.1 ou déclaration d’origine'],
+ ['Pays arabes','Accord d’Agadir et zone arabe de libre-échange','Franchise entre pays membres, sous réserve des règles d’origine de chaque accord.','Certificat d’origine'],
+ ['Émirats arabes unis','Accord de libre-échange bilatéral','Franchise pour les produits originaires.','Certificat d’origine'],
+ ['Afrique (ZLECAf)','Zone de libre-échange continentale africaine','Préférences accordées par le Maroc, notamment aux pays les moins avancés d’Afrique ; démantèlement progressif.','Certificat d’origine ZLECAf'],
 ];
+document.getElementById('ale').innerHTML=A.map(a=>`<div class="x-card"><div class="x-h3">${a[0]}</div><div class="x-mono">${a[1]}</div><p>${a[2]}</p><div class="src"><span>${a[3]}</span></div></div>`).join('');
 
-const JURIS_DATA = [
-  { ref:'TA-Cass-2022-04', date:'Mars 2022', theme:'valorisation', title:'Contestation valeur transactionnelle — Importation de textile chinois', summary:'L\'ADII avait rejeté la M1 invoquant un écart de 40% avec les valeurs de référence internes. Le TA a donné raison à l\'importateur qui avait produit les relevés SWIFT prouvant le paiement exact du montant facturé. Principe : la valeur transactionnelle prime tant que le paiement effectif est prouvé.', decision:'favorable' },
-  { ref:'CAA-Casa-2021-12', date:'Nov. 2021', theme:'classification', title:'Classement SH d\'équipements solaires — Ch.85 vs Ch.90', summary:'Litige sur le classement d\'onduleurs solaires entre le Ch.85 (appareils électriques) et Ch.90 (instruments). La Cour d\'Appel a confirmé le classement en Ch.85 sur la base des Règles Générales d\'Interprétation (RGI) et des Notes explicatives du SH. Incidence : taux DI différents de 15 points.', decision:'mitige' },
-  { ref:'TA-Rabat-2023-08', date:'Juil. 2023', theme:'origine', title:'Certificat EUR.1 refusé — produit textile transformé au Maroc', summary:'L\'ADII a refusé de valider un EUR.1 pour des vêtements finis estimant que la règle de fabrication suffisante (double transformation) n\'était pas respectée. Le TA a maintenu le refus après examen des procédés industriels. L\'exportateur a dû rembourser les avantages ALE perçus.', decision:'defavorable' },
-  { ref:'TA-Casa-2022-11', date:'Oct. 2022', theme:'penalite', title:'Réduction de pénalité — Infraction de fausse déclaration involontaire', summary:'L\'importateur avait déclaré un taux DI erroné par suite d\'une erreur de codification de son transitaire. La jurisprudence confirme que l\'absence d\'intention frauduleuse et la régularisation spontanée permettent de bénéficier de l\'article 278 CDII (transaction) avec réduction de pénalité jusqu\'à 75%.', decision:'favorable' },
-  { ref:'TA-Tanger-2023-03', date:'Fév. 2023', theme:'regime', title:'Non-respect des délais d\'apurement — Régime d\'Admission Temporaire', summary:'Une entreprise n\'avait pas apuré son AT dans le délai réglementaire (18 mois), sans demander de prorogation. L\'ADII a émis un AMR incluant droits + pénalités de retard (5% par mois). Le TA a validé la position ADII mais accordé un délai de paiement de 12 mois vu la bonne foi de l\'entreprise.', decision:'mitige' },
-  { ref:'CAA-Fes-2023-06', date:'Mai 2023', theme:'valorisation', title:'Méthode déductive appliquée — Import de véhicules d\'occasion', summary:'L\'ADII a appliqué la M4 (méthode déductive) pour valoriser des véhicules d\'occasion dont les prix facturés semblaient sous-évalués. La Cour a confirmé la légitimité du recours à la M4, mais a ordonné le recalcul en excluant les marges de distribution qui avaient été sur-évaluées par l\'ADII.', decision:'mitige' },
-  { ref:'TA-Agadir-2022-09', date:'Août 2022', theme:'origine', title:'Fraude à l\'origine — Produits asiatiques re-étiquetés comme marocains', summary:'Cas grave de fraude à l\'origine : des marchandises d\'origine tiers-monde étaient réexportées avec de faux EUR.1 marocains vers l\'UE. Condamnation pénale (Art. 281 CDII) avec confiscation et interdiction d\'exercice. Décision définitive confirmée en Cour de Cassation.', decision:'defavorable' },
-  { ref:'TA-Rabat-2024-02', date:'Jan. 2024', theme:'classification', title:'Classification de préparations alimentaires — Ch.21 vs Ch.19', summary:'Litige sur la classification d\'un produit contenant 68% de céréales entre le Ch.19 (préparations à base de céréales) et Ch.21 (autres préparations alimentaires). Le TA a retenu le Ch.19 en appliquant la RGI 3(b) : caractère essentiel déterminé par la matière constitutive principale.', decision:'favorable' },
-];
-
-function switchTab(id) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.getElementById('tab-' + id).classList.add('active');
-}
-
-function renderFlux(data) {
-  const tbody = document.getElementById('flux-tbody');
-  tbody.innerHTML = data.map(f => `
-    <tr>
-      <td><span class="${f.type === 'import' ? 'import-tag' : 'export-tag'}">${f.type.toUpperCase()}</span></td>
-      <td style="font-weight:500;">${f.produit}</td>
-      <td>${f.pays}</td>
-      <td style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--gold-dark);">${f.valeur}</td>
-      <td style="font-size:11px;color:var(--muted);">${f.regime}</td>
-      <td style="font-family:var(--mono);font-size:12px;">${f.tendance}</td>
-    </tr>`).join('');
-}
-
-function filterFlux() {
-  const q = document.getElementById('fluxSearch').value.toLowerCase();
-  const type = document.getElementById('fluxType').value;
-  const filtered = FLUX_DATA.filter(f =>
-    (type === '' || f.type === type) &&
-    (q === '' || f.produit.toLowerCase().includes(q) || f.pays.toLowerCase().includes(q))
-  );
-  renderFlux(filtered);
-}
-
-function renderJuris(data) {
-  const list = document.getElementById('juris-list');
-  if (data.length === 0) { list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);">Aucune décision ne correspond à votre recherche.</div>'; return; }
-  list.innerHTML = data.map(j => `
-    <div class="juris-card">
-      <div class="juris-meta">
-        <span class="juris-ref">${j.ref}</span>
-        <span class="juris-date">${j.date}</span>
-        <span class="juris-theme theme-${j.theme}">${j.theme.charAt(0).toUpperCase()+j.theme.slice(1)}</span>
-      </div>
-      <div class="juris-title">${j.title}</div>
-      <div class="juris-summary">${j.summary}</div>
-      <span class="juris-decision decision-${j.decision}">
-        ${j.decision === 'favorable' ? '✅ Favorable à l\'opérateur' : j.decision === 'mitige' ? '🟡 Décision mitigée' : '❌ Défavorable à l\'opérateur'}
-      </span>
-    </div>`).join('');
-}
-
-function filterJuris() {
-  const q = document.getElementById('jurisSearch').value.toLowerCase();
-  const theme = document.getElementById('jurisTheme').value;
-  const dec = document.getElementById('jurisDecision').value;
-  const filtered = JURIS_DATA.filter(j =>
-    (theme === '' || j.theme === theme) &&
-    (dec === '' || j.decision === dec) &&
-    (q === '' || j.title.toLowerCase().includes(q) || j.summary.toLowerCase().includes(q))
-  );
-  renderJuris(filtered);
-}
-
-function renderBarChart(containerId, items, color) {
-  const max = Math.max(...items.map(i => i.val));
-  document.getElementById(containerId).innerHTML = items.map(item => `
-    <div class="chart-bar-row">
-      <div class="chart-label">${item.label}</div>
-      <div class="chart-bar-wrap">
-        <div class="chart-bar-fill" style="width:${Math.round(item.val/max*100)}%;background:${color};">
-          ${Math.round(item.val/max*100) > 20 ? item.pct : ''}
-        </div>
-      </div>
-      <div class="chart-val">${item.pct}</div>
-    </div>`).join('');
-}
-
-// Init
-renderFlux(FLUX_DATA);
-renderJuris(JURIS_DATA);
-renderBarChart('chart-import', [
-  {label:'Espagne', val:62, pct:'~16%'}, {label:'France', val:55, pct:'~14%'},
-  {label:'Chine', val:50, pct:'~13%'}, {label:'USA', val:32, pct:'~8%'},
-  {label:'Allemagne', val:28, pct:'~7%'}, {label:'Italie', val:20, pct:'~5%'},
-  {label:'Russie', val:18, pct:'~5%'}, {label:'Turquie', val:15, pct:'~4%'},
-], '#2A5E8C');
-renderBarChart('chart-export', [
-  {label:'Espagne', val:75, pct:'~24%'}, {label:'France', val:65, pct:'~21%'},
-  {label:'Inde', val:40, pct:'~13%'}, {label:'Italie', val:25, pct:'~8%'},
-  {label:'USA', val:22, pct:'~7%'}, {label:'Brésil', val:18, pct:'~6%'},
-  {label:'Pays-Bas', val:14, pct:'~4%'}, {label:'Turquie', val:10, pct:'~3%'},
-], '#1D6E40');
-renderBarChart('chart-secteurs', [
-  {label:'Phosphates & dérivés', val:95, pct:'~26%'}, {label:'Automobile', val:85, pct:'~23%'},
-  {label:'Textile & habillement', val:42, pct:'~11%'}, {label:'Câblage élec.', val:38, pct:'~10%'},
-  {label:'Produits de la mer', val:26, pct:'~7%'}, {label:'Agrumes & légumes', val:18, pct:'~5%'},
-  {label:'Chimie & parachimie', val:15, pct:'~4%'}, {label:'Aéronautique', val:12, pct:'~3%'},
-], '#B8922A');
+// Actualité des accords : derniers textes « accords, origine, contingents, ZLECAf » de la base
+api({a:'recent',kind:'accords',n:8}).then(r=>{document.getElementById('news').innerHTML=r.data.map(n=>`<div class="x-card"><div class="x-k">${esc(dfr(n.date_doc))} · ${esc(n.type_document||'')}</div><p style="color:var(--x-ink)"><b>${esc(n.titre)}</b></p><p>${esc((n.extrait||'').slice(0,170))}…</p><div class="src"><span>${n.type_document==='circulaire'?'Circulaire n° ':''}${esc(n.numero)}</span></div></div>`).join('');}).catch(()=>{document.getElementById('news').innerHTML='<div class="x-card">Actualité indisponible pour le moment.</div>';});
 </script>
-</body>
-</html>
-
+</body></html>
