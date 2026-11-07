@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coût de revient à l’import — IXP-Import-eXPert</title>
+<meta name="description" content="Simulateur des droits et taxes à l’importation au Maroc et du coût de revient : plusieurs articles, origine et accords, Incoterm, TIC, TBI, TPI, mesures commerciales, frais locaux.">
+<style>
+:root{--ink:#1a1a2e;--blue:#2563eb;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--muted:#64748b;--soft:#94a3b8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px}
+.header{background:var(--ink);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:30}
+.header h1{font-size:18px;font-weight:700}
+.header .sub{font-size:11px;opacity:.7;font-weight:600}
+.h-act{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.hbtn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer;text-decoration:none}
+.hbtn:hover{background:rgba(255,255,255,.18)}
+.hbtn.pri{background:var(--blue);border-color:var(--blue)}
+.demo{background:#fefce8;border-bottom:1px solid #fde68a;color:#854d0e;font-size:12.5px;padding:8px 24px;text-align:center}
+.wrap{max-width:1240px;margin:20px auto;padding:0 16px;display:grid;grid-template-columns:1fr 420px;gap:16px;align-items:start}
+.col{display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.card-title .n{width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+.card-title .r{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600;color:var(--muted);font-size:12px}
+.form-label{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px;display:block}
+.form-input,.form-select{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;outline:none;transition:.2s;background:#fff;font-family:inherit;color:var(--ink)}
+.form-input:focus,.form-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.hint{font-size:11.5px;color:var(--soft);margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:100px;background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe}
+.pill.g{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+.pill.a{background:#fffbeb;color:#b45309;border-color:#fde68a}
+.pill.r{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+.accord{margin-top:12px;padding:12px;background:#f1f5f9;border-radius:8px;font-size:13px;display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);gap:12px}
+.toggle-row:last-child{border-bottom:none}
+.toggle-row .t{font-size:13px;font-weight:600}
+.toggle-row .t small{display:block;font-weight:400;color:var(--soft);font-size:11.5px}
+.toggle{cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;flex-shrink:0}
+.toggle input{display:none}
+.toggle-sl{width:38px;height:20px;background:#cbd5e1;border-radius:20px;position:relative;transition:.3s}
+.toggle-sl::after{content:'';width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:.3s}
+.toggle input:checked~.toggle-sl{background:var(--blue)}
+.toggle input:checked~.toggle-sl::after{left:20px}
+/* articles */
+.art{border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;position:relative;background:#fcfdff}
+.art-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.art-h b{font-size:13px}
+.art-x{margin-left:auto;background:none;border:0;color:var(--soft);cursor:pointer;font-size:18px;line-height:1}
+.art-x:hover{color:var(--red)}
+.sh-wrap{position:relative}
+.sugg{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 10px 30px rgba(15,23,42,.12);z-index:20;max-height:260px;overflow:auto;display:none}
+.sugg button{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 12px;font-size:13px;cursor:pointer;border-bottom:1px solid #f1f5f9;font-family:inherit}
+.sugg button:hover{background:#eff6ff}
+.sugg code{font-family:ui-monospace,monospace;font-size:12px;color:var(--blue);margin-right:8px}
+.sugg em{font-style:normal;color:var(--soft);float:right}
+.art-info{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12.5px}
+.art-desig{font-size:12.5px;color:var(--muted);margin-top:6px}
+.art-opts{margin-top:10px;padding:10px 12px;background:#f8fafc;border-radius:8px;display:none}
+.art-opts.on{display:block}
+.link{font-size:12px;color:var(--blue);text-decoration:none;font-weight:600}
+.link:hover{text-decoration:underline}
+.btn-add{width:100%;padding:10px;border:1px dashed #93c5fd;background:#eff6ff;color:var(--blue);border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-sm{border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--ink)}
+.btn-sm:hover{border-color:var(--blue);color:var(--blue)}
+/* résultats */
+.res{position:sticky;top:76px;display:grid;gap:16px}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px}
+.kpi-label{font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.kpi-val{font-size:20px;font-weight:800;color:var(--ink);margin:4px 0;font-variant-numeric:tabular-nums}
+.kpi-sub{font-size:11px;color:var(--soft)}
+.kpi.primary{background:var(--blue);color:#fff;border-color:transparent;grid-column:1/-1}
+.kpi.primary .kpi-label,.kpi.primary .kpi-sub{color:rgba(255,255,255,.8)}
+.kpi.primary .kpi-val{color:#fff;font-size:26px}
+.casc{width:100%;border-collapse:collapse;font-size:13px}
+.casc td{padding:7px 0;border-bottom:1px solid #f1f5f9;vertical-align:top}
+.casc td.v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.casc td small{display:block;color:var(--soft);font-size:11px;font-weight:400}
+.casc tr.tot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:800;font-size:14px;padding-top:9px}
+.casc tr.sub td{color:var(--muted)}
+.alerts{display:grid;gap:8px}
+.alert{border-radius:8px;padding:10px 12px;font-size:12.5px;border:1px solid}
+.alert b{display:block;margin-bottom:2px}
+.alert.r{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+.alert.a{background:#fffbeb;border-color:#fde68a;color:#92400e}
+.alert.b{background:#eff6ff;border-color:#bfdbfe;color:#1e40af}
+.alert a{color:inherit;font-weight:700}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:6px 6px;border-bottom:1px solid var(--border)}
+.tbl td{padding:7px 6px;border-bottom:1px solid #f1f5f9;font-variant-numeric:tabular-nums}
+.tbl td.v,.tbl th.v{text-align:right}
+.tbl tr.best td{background:#ecfdf5;font-weight:700}
+.sens{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sens div{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center}
+.sens b{display:block;font-size:15px;font-variant-numeric:tabular-nums}
+.sens span{font-size:11px;color:var(--muted)}
+.sens .mid{border-color:var(--blue);background:#eff6ff}
+.methodo{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:16px;font-size:12.5px;line-height:1.6}
+.methodo strong{color:#b45309}
+.methodo ul{padding-left:18px;margin-top:6px}
+.empty-state{text-align:center;padding:24px;color:var(--soft);font-size:13.5px}
+.bridges{display:grid;gap:8px}
+.bridge{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--ink);font-size:13px}
+.bridge:hover{border-color:var(--blue);background:#eff6ff}
+.bridge span{margin-left:auto;color:var(--blue);font-weight:700}
+.synth-section{border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden}
+.synth-section summary{padding:10px 12px;cursor:pointer;font-size:13px;font-weight:700;background:#f8fafc;list-style:none}
+.synth-body{padding:12px;font-size:13px;line-height:1.6;white-space:pre-wrap}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;display:none;z-index:50}
+@media(max-width:980px){.wrap{grid-template-columns:1fr}.res{position:static}.grid4{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid2,.grid3,.grid4{grid-template-columns:1fr}.h-act{display:none}}
+@media print{.header .h-act,.demo,.btn-add,.art-x,.no-print,.sugg{display:none!important}.wrap{grid-template-columns:1fr}.res{position:static}body{background:#fff}.card{break-inside:avoid}}
+
+.tabs{display:flex;gap:6px;padding:12px 16px 0;max-width:1240px;margin:0 auto;flex-wrap:wrap}
+.tab{border:1px solid var(--border);background:#fff;border-radius:10px 10px 0 0;padding:10px 16px;font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer;font-family:inherit;border-bottom:3px solid transparent}
+.tab:hover{color:var(--blue)}
+.tab.on{color:var(--blue);border-bottom-color:var(--blue);background:#eff6ff}
+.pane{display:none}.pane.on{display:block}
+.wrap.one{grid-template-columns:1fr 420px}
+.wrap.two{grid-template-columns:1fr 1fr;display:grid}
+.lead{font-size:13px;color:var(--muted);margin-bottom:12px}
+.subo{margin:6px 0 4px;padding:12px;background:#f1f5f9;border-radius:8px;display:none}.subo.on{display:block}
+.btn-calc{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;margin-top:12px;font-family:inherit}
+.btn-calc:hover{background:#1d4ed8}
+.rbox{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.rbox .big{font-size:22px;font-weight:800;color:var(--blue)}
+@media(max-width:980px){.wrap.one,.wrap.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="sub">Import-eXPert</div>
+    <h1>🧮 Coût de revient à l’import</h1>
+  </div>
+  <div class="h-act">
+    <button class="hbtn" id="bReset">Réinitialiser</button>
+    <button class="hbtn" id="bSave">Enregistrer dans le dossier</button>
+    <button class="hbtn" id="bXls">Exporter Excel</button>
+    <button class="hbtn pri" id="bPdf">Imprimer / PDF</button>
+  </div>
+</div>
+
+<nav class="tabs no-print" id="tabs">
+  <button class="tab on" data-tab="complet">Coût de revient complet</button>
+  <button class="tab" data-tab="rapide">Calcul rapide des droits et taxes</button>
+  <button class="tab" data-tab="maj">Majoration et taxe sur les bois</button>
+  <button class="tab" data-tab="syn">Synthèse produit</button>
+</nav>
+<div class="pane on" data-pane="complet">
+<div class="wrap">
+<div class="col">
+
+  <!-- 1. Opération -->
+  <div class="card">
+    <div class="card-title"><span class="n">1</span>L’opération</div>
+    <div class="grid3">
+      <div>
+        <label class="form-label">Pays d’origine des marchandises</label>
+        <select class="form-select" id="fOrig"></select>
+      </div>
+      <div>
+        <label class="form-label">Incoterm de la facture</label>
+        <select class="form-select" id="fInco">
+          <option>EXW</option><option>FCA</option><option selected>FOB</option><option>CFR</option><option>CIF</option><option>CPT</option><option>CIP</option><option>DAP</option><option>DPU</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Devise de la facture</label>
+        <select class="form-select" id="fDev"></select>
+      </div>
+    </div>
+    <div class="accord" id="accordBox"></div>
+    <div class="grid4" style="margin-top:12px">
+      <div><label class="form-label">Taux de change (MAD)</label><input class="form-input" type="number" id="fTx" step="0.0001" min="0"><div class="hint" id="txHint"></div></div>
+      <div id="wPre"><label class="form-label">Frais jusqu’au chargement</label><input class="form-input" type="number" id="fPre" value="0" min="0"><div class="hint">En devise</div></div>
+      <div id="wFret"><label class="form-label">Fret international</label><input class="form-input" type="number" id="fFret" value="0" min="0"><div class="hint">En devise</div></div>
+      <div id="wAss"><label class="form-label">Assurance</label><input class="form-input" type="number" id="fAss" value="0" min="0"><div class="hint"><a href="#" class="link" id="assEst">Estimer à 0,5 %</a></div></div>
+      <div id="wPost" style="display:none"><label class="form-label">Dont transport après l’arrivée</label><input class="form-input" type="number" id="fPost" value="0" min="0"><div class="hint">À déduire de la valeur</div></div>
+    </div>
+    <div class="hint" id="incoHint" style="margin-top:8px"></div>
+  </div>
+
+  <!-- 2. Articles -->
+  <div class="card">
+    <div class="card-title"><span class="n">2</span>Les articles<span class="r" id="artCount"></span></div>
+    <div id="arts"></div>
+    <button class="btn-add" id="addArt">+ Ajouter un article</button>
+    <div class="hint" style="margin-top:8px">Recherchez par code (ex. 8471, 9403600029) ou par désignation (ex. meubles, smartphones, tomate). Le fret et l’assurance sont répartis entre les articles au prorata de leur valeur.</div>
+  </div>
+
+  <!-- 3. Taxes -->
+  <div class="card">
+    <div class="card-title"><span class="n">3</span>TVA et paiement</div>
+    <div class="grid2">
+      <div>
+        <label class="form-label">Taux de TVA à l’importation</label>
+        <select class="form-select" id="fTva"><option value="20">20 % — taux normal</option><option value="10">10 % — taux réduit</option><option value="0">Exonéré</option></select>
+      </div>
+      <div>
+        <label class="form-label">Code franchise (le cas échéant)</label>
+        <input class="form-input" id="fFr" placeholder="Ex. 2002">
+      </div>
+    </div>
+    <div class="toggle-row" style="margin-top:6px"><span class="t">Entreprise assujettie à la TVA<small>La TVA payée en douane est récupérable : elle sort du coût de revient net.</small></span><label class="toggle"><input type="checkbox" id="tAss" checked><span class="toggle-sl"></span></label></div>
+    <div class="toggle-row"><span class="t">Paiement par voie électronique<small>À défaut : majoration de 1 %, au minimum 1 000 DH.</small></span><label class="toggle"><input type="checkbox" id="tElec" checked><span class="toggle-sl"></span></label></div>
+  </div>
+
+  <!-- 4. Frais locaux -->
+  <div class="card">
+    <div class="card-title"><span class="n">4</span>Frais locaux<span class="r">en dirhams, hors taxes</span></div>
+    <div class="grid4" id="frais"></div>
+  </div>
+
+</div>
+
+<!-- Résultats -->
+<div class="res">
+  <div class="card">
+    <div class="card-title">Résultat</div>
+    <div id="kpis"><div class="empty-state">Ajoutez un article avec son code et sa valeur pour lancer le calcul.</div></div>
+  </div>
+  <div class="card" id="cAlerts" style="display:none"><div class="card-title">Points d’attention</div><div class="alerts" id="alerts"></div></div>
+  <div class="card" id="cCasc" style="display:none"><div class="card-title">Détail du calcul</div><table class="casc" id="casc"></table></div>
+  <div class="card" id="cLines" style="display:none"><div class="card-title">Par article</div><table class="tbl" id="lines"></table></div>
+  <div class="card no-print" id="cComp" style="display:none">
+    <div class="card-title">Comparer les origines</div>
+    <div class="grid2" style="margin-bottom:10px"><select class="form-select" id="cmp1"></select><select class="form-select" id="cmp2"></select></div>
+    <table class="tbl" id="comp"></table>
+    <div class="hint" style="margin-top:6px">Avec preuve d’origine valable pour les pays sous accord. Même valeur, même fret.</div>
+  </div>
+  <div class="card no-print" id="cSens" style="display:none"><div class="card-title">Sensibilité au taux de change</div><div class="sens" id="sens"></div></div>
+  <div class="card no-print">
+    <div class="card-title">Aller plus loin</div>
+    <div class="bridges">
+      <a class="bridge" href="/modules/comparateur">Chiffrer la même marchandise sous un régime économique<span>Comparateur →</span></a>
+      <a class="bridge" id="brDocs" href="/modules/documents-sh">Documents et autorisations exigés pour ce code<span>Documents →</span></a>
+      <a class="bridge" id="brDec" href="/modules/decisions-classement">Décisions de classement pour ce code<span>Décisions →</span></a>
+      <a class="bridge" href="/modules/origine-aleca">Règles d’origine et preuves<span>Origine →</span></a>
+    </div>
+  </div>
+  <div class="methodo">
+    <strong>Méthode de calcul</strong>
+    <ul>
+      <li>Valeur en douane : prix facturé ramené au point d’entrée au Maroc (fret et assurance inclus, transport après l’arrivée exclu). Code des douanes, art. 20.</li>
+      <li>Droit d’importation : valeur en douane × taux du tarif, ou taux préférentiel avec preuve d’origine.</li>
+      <li>TIC : selon le produit, en pourcentage ou par unité de quantité.</li>
+      <li>Taxe sur les bois importés : 6 % pour les bois et ouvrages en bois des chapitres 44 et 94 (LF 2026).</li>
+      <li>Taxe parafiscale à l’importation : 0,25 % de la valeur, sauf exonération totale du droit et de la TVA (décret 2-94-734, circ. 5970/211).</li>
+      <li>TVA : sur la valeur en douane augmentée des droits et taxes perçus à l’importation.</li>
+      <li>Paiement non électronique : majoration de 1 %, au minimum 1 000 DH (LF 2025).</li>
+    </ul>
+    <p style="margin-top:8px;color:#92400e">Estimation indicative. Les montants dépendent des paramètres saisis et des textes en vigueur ; seule la liquidation de la douane fait foi. Faites valider votre opération par votre transitaire agréé.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Calcul rapide -->
+<div class="pane" data-pane="rapide"><div class="wrap one">
+ <div class="col">
+  <div class="card">
+   <div class="card-title">📦 Valeur en douane</div>
+   <div class="grid3">
+    <div><label class="form-label">Valeur CAF (MAD)</label><input class="form-input" type="number" id="qCaf" placeholder="Ex. 150000" min="0"></div>
+    <div><label class="form-label">Code SH (optionnel)</label><div class="sh-wrap"><input class="form-input" id="qSh" placeholder="Ex. 8501.32 ou meubles" autocomplete="off"><div class="sugg" id="qSugg"></div></div></div>
+    <div><label class="form-label">Taux du droit d’importation (%)</label><input class="form-input" type="number" id="qDi" placeholder="Ex. 2.5" min="0" step="0.5"></div>
+   </div>
+   <div class="hint" id="qShMsg" style="margin-top:6px"></div>
+  </div>
+  <div class="card">
+   <div class="card-title">📋 Droits et taxes</div>
+   <div class="grid2" style="margin-bottom:12px">
+    <div><label class="form-label">Accord commercial</label>
+     <select class="form-select" id="qAcc">
+      <option value="aucun">Aucun accord — taux du tarif</option>
+      <option value="pref0">Accord préférentiel (UE, AELE, Agadir, Turquie, États-Unis, EAU, Royaume-Uni) — droit à 0 %</option>
+      <option value="prefx">Taux préférentiel particulier — à saisir</option>
+     </select>
+     <div class="hint">Le droit à 0 % suppose une preuve d’origine valable ; certains produits agricoles ont des taux ou contingents propres.</div>
+    </div>
+    <div id="qPrefW" style="display:none"><label class="form-label">Taux préférentiel (%)</label><input class="form-input" type="number" id="qPref" min="0" step="0.5"></div>
+    <div><label class="form-label">Taux de TVA (%)</label><select class="form-select" id="qTva"><option value="20">20 % — taux normal</option><option value="10">10 % — taux réduit</option><option value="0">Exonéré</option></select></div>
+   </div>
+   <div class="toggle-row"><span class="t">TIC — Taxe intérieure de consommation</span><label class="toggle"><input type="checkbox" id="qTic"><span class="toggle-sl"></span></label></div>
+   <div class="subo" id="qTicW"><div class="grid3"><div><label class="form-label">Mode</label><select class="form-select" id="qTicM"><option value="ad_valorem">En % de la valeur</option><option value="specifique">Montant par unité (MAD)</option></select></div><div><label class="form-label">Taux ou montant</label><input class="form-input" type="number" id="qTicV" min="0"></div><div><label class="form-label">Quantité (si par unité)</label><input class="form-input" type="number" id="qTicQ" min="0"></div></div></div>
+   <div class="toggle-row"><span class="t">TPI — Taxe parafiscale à l’importation (0,25 %)<small>Anciennement présentée comme « PFI ». Exclue si le droit et la TVA sont totalement exonérés.</small></span><label class="toggle"><input type="checkbox" id="qTpi" checked><span class="toggle-sl"></span></label></div>
+   <div class="toggle-row"><span class="t">Droit antidumping</span><label class="toggle"><input type="checkbox" id="qAd"><span class="toggle-sl"></span></label></div>
+   <div class="subo" id="qAdW"><label class="form-label">Taux antidumping (%)</label><input class="form-input" type="number" id="qAdV" min="0" step="0.01"></div>
+   <button class="btn-calc" id="qGo">Calculer les droits et taxes</button>
+  </div>
+ </div>
+ <div class="res">
+  <div class="card"><div class="card-title">✅ Résultats de la simulation</div><div id="qRes"><div class="empty-state">Saisissez la valeur CAF et le taux du droit, puis lancez le calcul.</div></div></div>
+ </div>
+</div></div>
+
+<!-- Majoration et TBI -->
+<div class="pane" data-pane="maj"><div class="wrap one two">
+  <div class="card">
+   <div class="card-title">Majoration pour paiement non électronique</div>
+   <p class="lead">1 % des droits et taxes dus, au minimum 1 000 MAD par opération, lorsque le paiement n’est pas effectué par voie électronique.</p>
+   <div class="grid2"><div><label class="form-label">Droits dus par opération (MAD)</label><input class="form-input" type="number" id="mDr" min="0"></div><div><label class="form-label">Nombre d’opérations</label><input class="form-input" type="number" id="mNb" value="1" min="1"></div></div>
+   <button class="btn-calc" id="mGo">Calculer la majoration →</button>
+   <div id="mRes" style="margin-top:12px"></div>
+   <div class="hint" style="margin-top:8px">Référence : loi de finances 2025, Code des douanes art. 95. Le paiement électronique supprime la majoration.</div>
+  </div>
+  <div class="card">
+   <div class="card-title">Taxe sur les bois importés (chapitres 44 et 94)</div>
+   <p class="lead">Taux unique de 6 % en 2026 pour les bois et ouvrages en bois des chapitres 44 et 94. En 2025 : 12 % pour le chapitre 44 (6 % pour la position 44.08) et 6 % pour les ouvrages en bois du chapitre 94.</p>
+   <div class="grid3"><div><label class="form-label">Valeur CAF (MAD)</label><input class="form-input" type="number" id="bCaf" min="0"></div><div><label class="form-label">Année</label><select class="form-select" id="bAn"><option>2026</option><option>2025</option></select></div><div id="bChW" style="display:none"><label class="form-label">Produit (2025)</label><select class="form-select" id="bCh"><option value="44">Chapitre 44 (hors 44.08)</option><option value="4408">Position 44.08</option><option value="94">Ouvrages en bois du chapitre 94</option></select></div></div>
+   <button class="btn-calc" id="bGo">Calculer la taxe sur les bois →</button>
+   <div id="bRes" style="margin-top:12px"></div>
+   <div class="hint" style="margin-top:8px">Référence : lois de finances 2025 et 2026 (circulaires 6619/210 et 6702/210).</div>
+  </div>
+  <div class="methodo" style="grid-column:1/-1">Pour le détail des mesures de la loi de finances 2026 (bovins, camélidés, pâtes alimentaires, dérivés du sang…), voir le module <a href="/modules/veille-reglementaire">Veille réglementaire</a>.</div>
+</div></div>
+
+<!-- Synthèse -->
+<div class="pane" data-pane="syn"><div class="wrap one"><div class="col">
+  <!-- 5. Synthèse produit -->
+  <div class="card no-print">
+    <div class="card-title">🧠 Synthèse produit — recherche transversale</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Recherche transversale dans le tarif, les décisions de classement et la base réglementaire, avec les textes cités.</p>
+    <div style="display:flex;gap:8px"><input class="form-input" id="fSyn" placeholder="Désignation ou code SH"><button class="btn-sm" id="bSyn" style="white-space:nowrap">🔎 Générer la synthèse</button></div>
+    <div id="synMsg" class="hint" style="margin-top:8px"></div>
+    <div id="synRes" style="margin-top:10px"></div>
+  </div>
+
+</div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fr = n => isFinite(n) ? Math.round(n).toLocaleString('fr-FR') : '—';
+const pct = n => (Math.round(n*100)/100).toLocaleString('fr-FR') + ' %';
+const dfr = d => d ? d.split('-').reverse().join('/') : '';
+const toast = m => { const t=$('#toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(()=>t.style.display='none',2600); };
+const store = {get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}};
+const API = '/api/calculs/cout-revient';
+async function api(action, params){
+  const r = await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({action,params})});
+  const d = await r.json().catch(()=>({ok:false,error:'Réponse invalide'}));
+  if(!r.ok || !d.ok) throw new Error(d.error || (r.status===401?'Connectez-vous pour utiliser le simulateur.':'Calcul indisponible'));
+  return d;
+}
+
+/* ---------------- Référentiels ---------------- */
+const DEVISES = {EUR:10.85, USD:9.97, GBP:13.40, CNY:1.38, TRY:0.29, AED:2.71, CHF:11.20, MAD:1};
+/* Origines et accords */
+const ORIG = {
+ UE:{l:"Union européenne",a:"Accord d’association Maroc-UE",p:"EUR.1, EUR-MED ou déclaration d’origine d’un exportateur agréé",cur:"EUR"},
+ AELE:{l:"AELE (Suisse, Norvège, Islande, Liechtenstein)",a:"Accord Maroc-AELE",p:"EUR.1, EUR-MED ou déclaration d’origine",cur:"CHF"},
+ UK:{l:"Royaume-Uni",a:"Accord d’association Maroc-Royaume-Uni",p:"EUR.1 ou déclaration d’origine",cur:"GBP"},
+ TR:{l:"Turquie",a:"Accord de libre-échange Maroc-Turquie",p:"EUR.1 ou déclaration d’origine",cur:"EUR",tx:true},
+ US:{l:"États-Unis",a:"Accord de libre-échange Maroc-États-Unis",p:"Certificat ou déclaration d’origine selon l’accord",cur:"USD"},
+ AE:{l:"Émirats arabes unis",a:"Accord de libre-échange Maroc-EAU",p:"Certificat d’origine",cur:"AED"},
+ EG:{l:"Égypte",a:"Accord d’Agadir",p:"EUR-MED ou certificat d’origine Agadir",cur:"USD"},
+ TN:{l:"Tunisie",a:"Accord d’Agadir",p:"EUR-MED ou certificat d’origine Agadir",cur:"EUR"},
+ JO:{l:"Jordanie",a:"Accord d’Agadir",p:"EUR-MED ou certificat d’origine Agadir",cur:"USD"},
+ CN:{l:"Chine",a:null,cur:"USD"},
+ IN:{l:"Inde",a:null,cur:"USD"},
+ VN:{l:"Viêt Nam",a:null,cur:"USD"},
+ XX:{l:"Autre pays",a:null,cur:"USD"}
+};
+const TIC = { "2204": {mode:"specifique", montant:null, unite:"L", note:"TIC sur les vins : montant par litre à appliquer selon le dahir 1-77-340"} };
+/* ---------------- État ---------------- */
+let S = store.get('ixp-crimport', null) || {orig:"CN",inco:"FOB",dev:"USD",tx:DEVISES.USD,pre:0,fret:0,ass:0,post:0,tva:20,franchise:"",assuj:true,elec:true,
+  frais:{transit:1500,port:2000,scanner:400,transport:1800,magasinage:0},
+  arts:[{code:"",des:"",taux:null,unite:"",val:"",qte:"",bois:false,ticMode:"",ticVal:"",ad:""}], cmp:["UE","TR"]};
+const FRAIS = [["transit","Transit et honoraires"],["port","Frais portuaires"],["scanner","Scanner et visite"],["transport","Transport jusqu’à l’entrepôt"],["magasinage","Magasinage"]];
+
+/* ---------------- Rendu du formulaire ---------------- */
+$('#fOrig').innerHTML = Object.entries(ORIG).map(([k,o])=>`<option value="${k}">${esc(o.l)}</option>`).join('');
+$('#fDev').innerHTML = Object.keys(DEVISES).map(k=>`<option>${k}</option>`).join('');
+['#cmp1','#cmp2'].forEach((s,i)=>{ $(s).innerHTML = Object.entries(ORIG).map(([k,o])=>`<option value="${k}">${esc(o.l)}</option>`).join(''); });
+$('#frais').innerHTML = FRAIS.map(([k,l])=>`<div><label class="form-label">${l}</label><input class="form-input" type="number" min="0" data-f="${k}"></div>`).join('');
+
+function syncForm(){
+  $('#fOrig').value=S.orig; $('#fInco').value=S.inco; $('#fDev').value=S.dev; $('#fTx').value=S.tx; $('#fPre').value=S.pre; $('#fFret').value=S.fret; $('#fAss').value=S.ass; $('#fPost').value=S.post;
+  $('#fTva').value=String(S.tva); $('#fFr').value=S.franchise; $('#tAss').checked=S.assuj; $('#tElec').checked=S.elec;
+  document.querySelectorAll('[data-f]').forEach(i=>i.value=S.frais[i.dataset.f]);
+  $('#cmp1').value=S.cmp[0]; $('#cmp2').value=S.cmp[1];
+  drawArts(); incoUI(); accordUI();
+}
+function incoUI(){
+  const i=S.inco;
+  $('#wPre').style.display = ['EXW','FCA'].includes(i)?'':'none';
+  $('#wFret').style.display = ['CFR','CIF','CPT','CIP','DAP','DPU'].includes(i)?'none':'';
+  $('#wAss').style.display = ['CIF','CIP','DAP','DPU'].includes(i)?'none':'';
+  $('#wPost').style.display = ['DAP','DPU'].includes(i)?'':'none';
+  const H={EXW:"Ajoutez les frais jusqu’au chargement, le fret et l’assurance.",FCA:"Ajoutez les frais jusqu’au chargement, le fret et l’assurance.",FOB:"Ajoutez le fret et l’assurance jusqu’au port marocain.",CFR:"Le fret est inclus : ajoutez l’assurance.",CPT:"Le transport est inclus : ajoutez l’assurance.",CIF:"Fret et assurance inclus : le prix vaut valeur au point d’entrée.",CIP:"Transport et assurance inclus.",DAP:"Le prix inclut le transport jusqu’au lieu convenu : déduisez la part après l’arrivée au Maroc.",DPU:"Idem DAP, déchargement compris : déduisez la part après l’arrivée."};
+  $('#incoHint').textContent = H[i]||'';
+}
+function accordUI(){
+  const o=ORIG[S.orig];
+  $('#accordBox').innerHTML = o.a ? `<span class="pill g">✓ ${esc(o.a)}</span><span>Preuve à fournir : <b>${esc(o.p)}</b>.</span>${o.tx?'<span class="pill a">Textiles et habillement : droits additionnels possibles, à vérifier</span>':''}<span class="hint" style="width:100%">Taux préférentiel appliqué aux produits industriels (chapitres 25 à 97) ; les produits agricoles relèvent du protocole propre à chaque accord.</span>`
+    : `<span class="pill">Droit commun</span><span>Pas d’accord préférentiel avec ce pays : le taux du tarif s’applique.</span>`;
+}
+function drawArts(){
+  $('#arts').innerHTML = S.arts.map((a,i)=>{
+    const ch = (a.code||'').slice(0,2), isBois = ch==='44' || (ch==='94' && a.bois), tic = TIC[(a.code||'').slice(0,4)];
+    return `<div class="art" data-i="${i}">
+      <div class="art-h"><b>Article ${i+1}</b>${S.arts.length>1?`<button class="art-x" data-del="${i}" title="Retirer">×</button>`:''}</div>
+      <div class="grid3" style="grid-template-columns:1.5fr 1fr .8fr">
+        <div class="sh-wrap"><label class="form-label">Code SH ou désignation</label><input class="form-input" data-k="q" value="${esc(a.code)}" placeholder="Ex. 9403 ou meubles" autocomplete="off"><div class="sugg" data-sugg="${i}"></div></div>
+        <div><label class="form-label">Valeur facturée (${esc(S.dev)})</label><input class="form-input" type="number" min="0" data-k="val" value="${esc(a.val)}"></div>
+        <div><label class="form-label">Quantité${a.unite?` (${esc(a.unite)})`:''}</label><input class="form-input" type="number" min="0" data-k="qte" value="${esc(a.qte)}"></div>
+      </div>
+      ${a.des?`<div class="art-desig">${esc(a.des)}</div>`:''}
+      ${a.code&&a.taux!=null?`<div class="art-info"><span class="pill">Droit d’importation ${pct(a.taux)}</span>${a._pref?'<span class="pill g">0 % sous accord, avec preuve d’origine</span>':''}${isBois?'<span class="pill a">Taxe sur les bois 6 %</span>':''}${tic?'<span class="pill a">TIC applicable</span>':''}
+        <a class="link" href="/modules/decisions-classement?q=${a.code}">Décisions de classement</a> · <a class="link" href="/modules/documents-sh?code=${a.code}">Documents exigés</a> · <a href="#" class="link" data-opt="${i}">Options de l’article</a></div>`:''}
+      <div class="art-opts${a._opt?' on':''}" data-opts="${i}">
+        <div class="grid3">
+          <div><label class="form-label">TIC</label><select class="form-select" data-k="ticMode"><option value="">Aucune</option><option value="ad_valorem"${a.ticMode==='ad_valorem'?' selected':''}>En % de la valeur</option><option value="specifique"${a.ticMode==='specifique'?' selected':''}>Montant par unité (DH)</option></select></div>
+          <div><label class="form-label">Taux ou montant TIC</label><input class="form-input" type="number" min="0" data-k="ticVal" value="${esc(a.ticVal)}"></div>
+          <div><label class="form-label">Droit antidumping (%)</label><input class="form-input" type="number" min="0" data-k="ad" value="${esc(a.ad)}" placeholder="Si applicable"></div>
+        </div>
+        ${ch==='94'?`<label class="toggle" style="margin-top:10px"><input type="checkbox" data-k="bois"${a.bois?' checked':''}><span class="toggle-sl"></span>Ouvrage en bois (taxe sur les bois importés)</label>`:''}
+      </div>
+    </div>`;}).join('');
+  $('#artCount').textContent = `${S.arts.length} article${S.arts.length>1?'s':''}`;
+}
+
+/* ---------------- Recherche tarifaire ---------------- */
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+async function rechercher(q){
+  q = q.trim(); if(q.length<2) return [];
+  try { const d = await api('search',{q}); return d.results || []; } catch(e){ toast(e.message); return []; }
+}
+let sTimer;
+$('#arts').addEventListener('input', e=>{
+  const art = e.target.closest('.art'); if(!art) return; const i=+art.dataset.i, k=e.target.dataset.k, a=S.arts[i];
+  if(k==='q'){
+    a.code=''; a.taux=null; a.des='';
+    clearTimeout(sTimer); const v=e.target.value, box=art.querySelector('.sugg');
+    sTimer=setTimeout(async()=>{ const R=await rechercher(v); box.innerHTML = R.length? R.map(r=>`<button data-pick='${esc(JSON.stringify(r))}'><code>${r.code}</code>${esc(r.des.slice(0,80))}<em>${pct(r.taux)}</em></button>`).join('') : '<div class="hint" style="padding:10px">Aucune position trouvée.</div>'; box.style.display='block'; },200);
+    compute(); return;
+  }
+  if(k) { a[k] = e.target.type==='checkbox' ? e.target.checked : e.target.value; if(k==='bois'){ drawArts(); } compute(); }
+});
+$('#arts').addEventListener('change', e=>{ const art=e.target.closest('.art'); if(!art) return; const k=e.target.dataset.k; if(k==='ticMode'||k==='bois'){ S.arts[+art.dataset.i][k]= e.target.type==='checkbox'?e.target.checked:e.target.value; if(k==='bois') drawArts(); compute(); }});
+$('#arts').addEventListener('click', e=>{
+  const p=e.target.closest('[data-pick]');
+  if(p){ const i=+p.closest('.art').dataset.i, r=JSON.parse(p.dataset.pick); Object.assign(S.arts[i],{code:r.code,des:r.des,taux:r.taux,unite:r.unite,ad:'',ticMode:'',ticVal:'',bois:false}); const t=TIC[r.code.slice(0,4)]; if(t&&!S.arts[i].ticMode){S.arts[i].ticMode=t.mode;S.arts[i]._opt=true;} drawArts(); compute(); return; }
+  const d=e.target.closest('[data-del]'); if(d){ S.arts.splice(+d.dataset.del,1); drawArts(); compute(); return; }
+  const o=e.target.closest('[data-opt]'); if(o){ e.preventDefault(); const i=+o.dataset.opt; S.arts[i]._opt=!S.arts[i]._opt; drawArts(); }
+});
+document.addEventListener('click', e=>{ if(!e.target.closest('.sh-wrap')) document.querySelectorAll('.sugg').forEach(s=>s.style.display='none'); });
+$('#addArt').onclick = ()=>{ S.arts.push({code:"",des:"",taux:null,unite:"",val:"",qte:"",bois:false,ticMode:"",ticVal:"",ad:""}); drawArts(); };
+
+/* ---------------- Formulaire général ---------------- */
+const bind = (sel,key,num,after) => $(sel).addEventListener('input', e=>{ S[key] = num ? (parseFloat(e.target.value)||0) : e.target.value; if(after) after(); compute(); });
+bind('#fTx','tx',true); bind('#fPre','pre',true); bind('#fFret','fret',true); bind('#fAss','ass',true); bind('#fPost','post',true); bind('#fFr','franchise',false);
+$('#fOrig').addEventListener('change', e=>{ S.orig=e.target.value; accordUI(); drawArts(); compute(); });
+$('#fInco').addEventListener('change', e=>{ S.inco=e.target.value; incoUI(); compute(); });
+$('#fDev').addEventListener('change', e=>{ S.dev=e.target.value; S.tx=DEVISES[S.dev]; $('#fTx').value=S.tx; txHint(); drawArts(); compute(); });
+$('#fTva').addEventListener('change', e=>{ S.tva=+e.target.value; compute(); });
+$('#tAss').addEventListener('change', e=>{ S.assuj=e.target.checked; compute(); });
+$('#tElec').addEventListener('change', e=>{ S.elec=e.target.checked; compute(); });
+$('#frais').addEventListener('input', e=>{ const k=e.target.dataset.f; if(k){ S.frais[k]=parseFloat(e.target.value)||0; compute(); } });
+$('#cmp1').addEventListener('change', e=>{ S.cmp[0]=e.target.value; compute(); });
+$('#cmp2').addEventListener('change', e=>{ S.cmp[1]=e.target.value; compute(); });
+$('#assEst').onclick = e=>{ e.preventDefault(); const base=S.arts.reduce((s,a)=>s+(+a.val||0),0)+S.pre+S.fret; S.ass=Math.round(base*0.005*100)/100; $('#fAss').value=S.ass; compute(); };
+function txHint(){ $('#txHint').textContent = 'Cours du jour, modifiable'; }
+fetch('/api/forex').then(r=>r.json()).then(d=>{ (d.rates||[]).forEach(r=>{ if(DEVISES[r.pair]!=null) DEVISES[r.pair]=r.rate; }); if(!store.get('ixp-crimport',null)){ S.tx=DEVISES[S.dev]; $('#fTx').value=S.tx; compute(); } }).catch(()=>{});
+
+/* ---------------- Affichage des résultats ---------------- */
+let LAST=null, ALERTS=[], cT, seq=0;
+function compute(){ clearTimeout(cT); cT=setTimeout(computeNow,250); }
+async function computeNow(){
+  store.set('ixp-crimport-auto', S);
+  const my=++seq; let D;
+  try { D = await api('complet',{state:{...S, arts:S.arts.map(({_opt,_pref,...a})=>a)}}); } catch(e){ $('#kpis').innerHTML=`<div class="empty-state">${esc(e.message)}</div>`; return; }
+  if(my!==seq) return;
+  const R = D.main; LAST=R; ALERTS=D.alerts||[];
+  if(R){ R.lines.forEach(l=>{ const a=S.arts.find(x=>x.code===l.code); if(a) a._pref=l.pref; l.a=a||{code:l.code,des:l.des,unite:l.unite}; }); }
+  const show = (id,on)=>$(id).style.display=on?'':'none';
+  if(!R){ $('#kpis').innerHTML='<div class="empty-state">Ajoutez un article avec son code et sa valeur pour lancer le calcul.</div>'; ['#cCasc','#cLines','#cComp','#cSens','#cAlerts'].forEach(x=>show(x,false)); alertsUI(null); return; }
+  const unitTxt = R.lines.length===1 && R.lines[0].unit!=null ? `${fr(R.lines[0].unit)} DH / ${esc(R.lines[0].a.unite||'unité')}` : (R.lines.some(l=>l.unit!=null)?'voir par article':'renseignez la quantité');
+  $('#kpis').innerHTML = `<div class="kpi-grid">
+    <div class="kpi primary"><div class="kpi-label">Coût de revient ${S.assuj?'net (TVA récupérée)':'(TVA comprise)'}</div><div class="kpi-val">${fr(R.net)} MAD</div><div class="kpi-sub">Valeur, droits, taxes et frais locaux</div></div>
+    <div class="kpi"><div class="kpi-label">Droits et taxes</div><div class="kpi-val">${fr(R.droits+R.maj)}</div><div class="kpi-sub">dont TVA ${fr(R.tva)} MAD</div></div>
+    <div class="kpi"><div class="kpi-label">Taux effectif</div><div class="kpi-val">${pct(R.taux)}</div><div class="kpi-sub">de la valeur en douane</div></div>
+    <div class="kpi"><div class="kpi-label">Valeur en douane</div><div class="kpi-val">${fr(R.vd)}</div><div class="kpi-sub">MAD, au point d’entrée</div></div>
+    <div class="kpi"><div class="kpi-label">Coût unitaire</div><div class="kpi-val" style="font-size:16px">${unitTxt}</div><div class="kpi-sub">coût de revient / quantité</div></div>
+  </div>`;
+  const row=(l,v,s,cls='')=>`<tr class="${cls}"><td>${l}${s?`<small>${s}</small>`:''}</td><td class="v">${fr(v)} MAD</td></tr>`;
+  $('#casc').innerHTML = row('Valeur en douane', R.vd, `${S.inco} · taux ${S.tx} MAD/${S.dev}`)
+    + row('Droit d’importation', R.di, R.lines.map(l=>`${l.a.code} : ${pct(l.tDI)}${l.pref?' (préférentiel)':''}`).join(' · '))
+    + (R.tic? row('TIC', R.tic):'') + (R.tbi? row('Taxe sur les bois importés', R.tbi,'6 %'):'') + (R.ad? row('Droit antidumping', R.ad):'')
+    + row('Taxe parafiscale à l’importation', R.tpi, R.tpi? '0,25 % de la valeur':'Exclue : droit et TVA totalement exonérés')
+    + row('Base de la TVA', R.baseTva, 'Valeur + droits et taxes', 'sub')
+    + row('TVA à l’importation', R.tva, `${S.tva} %${S.assuj?' · récupérable':''}`)
+    + (R.maj? row('Majoration paiement non électronique', R.maj,'1 %, minimum 1 000 DH'):'')
+    + row('Total droits et taxes', R.droits+R.maj, '', 'tot')
+    + row('Frais locaux', R.frais, 'Transit, port, scanner, transport, magasinage')
+    + row(S.assuj?'Coût de revient net':'Coût de revient', R.net, S.assuj?'TVA déduite':'', 'tot');
+  $('#lines').innerHTML = `<thead><tr><th>Code</th><th class="v">Valeur</th><th class="v">Droits</th><th class="v">Coût net</th><th class="v">Unitaire</th></tr></thead><tbody>${R.lines.map(l=>`<tr><td>${l.a.code}</td><td class="v">${fr(l.vd)}</td><td class="v">${fr(l.di+l.tic+l.tbi+l.ad+l.tpi+l.tva)}</td><td class="v">${fr(l.net)}</td><td class="v">${l.unit!=null?fr(l.unit):'—'}</td></tr>`).join('')}</tbody>`;
+  /* comparaison */
+  const C = D.comp.map(c=>({o:c.o, r:c})); const best = Math.min(...C.map(c=>c.r.net));
+  $('#comp').innerHTML = `<thead><tr><th>Origine</th><th class="v">Droit d’import.</th><th class="v">Coût net</th><th class="v">Écart</th></tr></thead><tbody>${C.map(c=>`<tr class="${c.r.net===best?'best':''}"><td>${esc(ORIG[c.o].l)}${c.o===S.orig?' (actuelle)':''}</td><td class="v">${fr(c.r.di)}</td><td class="v">${fr(c.r.net)}</td><td class="v">${c.r.net===R.net?'—':(c.r.net>R.net?'+':'')+fr(c.r.net-R.net)}</td></tr>`).join('')}</tbody>`;
+  /* sensibilité */
+  const lo={net:D.sens.lo}, hi={net:D.sens.hi};
+  $('#sens').innerHTML = `<div><span>Devise −5 %</span><b>${fr(lo.net)}</b><span>${fr(lo.net-R.net)} MAD</span></div><div class="mid"><span>Cours saisi</span><b>${fr(R.net)}</b><span>${S.tx} MAD</span></div><div><span>Devise +5 %</span><b>${fr(hi.net)}</b><span>+${fr(hi.net-R.net)} MAD</span></div>`;
+  ['#cCasc','#cLines','#cComp','#cSens'].forEach(x=>show(x,true));
+  alertsUI(R);
+  const c0 = R.lines[0].a.code; $('#brDocs').href='/modules/documents-sh?code='+c0; $('#brDec').href='/modules/decisions-classement?q='+c0;
+}
+function alertsUI(R){
+  const L=[];
+  if(R){
+    R.lines.forEach(l=>{
+      ((ALERTS.find(x=>x.code===l.a.code)||{}).mesures||[]).forEach(m=>{
+        if(m.expiree) L.push(`<div class="alert a"><b>${m.type} : mesure expirée pour ${l.a.code}</b>Mesure provisoire du ${dfr(m.du)} au ${dfr(m.au)} (${m.ref}). Vérifiez si une mesure définitive a été instituée depuis.</div>`);
+        else L.push(`<div class="alert r"><b>${m.type} applicable à ${l.a.code} (${esc(ORIG[S.orig].l)})</b>${m.taux!=null?`Taux ${pct(m.taux)}. `:''}${esc(m.statut)} — ${m.ref}. ${m.taux!=null&&!(+l.a.ad)?`<a href="#" data-applyad="${R.lines.indexOf(l)}" data-t="${m.taux}">Appliquer au calcul</a>`:'Saisissez le taux dans les options de l’article.'}</div>`);
+      });
+      if(!l.pref && ORIG[S.orig].a && +l.a.code.slice(0,2)<25) L.push(`<div class="alert b"><b>${l.a.code} : produit agricole</b>Le taux préférentiel dépend du protocole agricole de l’accord (contingents, calendriers) : le taux du tarif est appliqué par prudence.</div>`);
+      if(l.a.unite && !l.q) L.push(`<div class="alert b"><b>${l.a.code} : quantité manquante</b>Indiquez la quantité (${esc(l.a.unite)}) pour obtenir le coût unitaire${l.a.ticMode==='specifique'?' et la TIC':''}.</div>`);
+      if(TIC[l.a.code.slice(0,4)] && !(+l.a.ticVal)) L.push(`<div class="alert a"><b>${l.a.code} : TIC à renseigner</b>${esc(TIC[l.a.code.slice(0,4)].note)}.</div>`);
+    });
+    if(['FOB','EXW','FCA'].includes(S.inco) && !S.fret) L.push(`<div class="alert a"><b>Fret non renseigné</b>En ${S.inco}, le fret jusqu’au Maroc fait partie de la valeur en douane.</div>`);
+    if(!['CIF','CIP','DAP','DPU'].includes(S.inco) && !S.ass) L.push(`<div class="alert a"><b>Assurance non renseignée</b>L’assurance fait partie de la valeur en douane, même si elle n’est pas facturée à part.</div>`);
+    if(ORIG[S.orig].a && R.lines.some(l=>l.pref)) L.push(`<div class="alert b"><b>Taux préférentiel appliqué</b>Seulement avec une preuve d’origine valable jointe à la DUM avant signature : ${esc(ORIG[S.orig].p)}.</div>`);
+  }
+  $('#alerts').innerHTML = L.join(''); $('#cAlerts').style.display = L.length?'':'none';
+}
+$('#alerts').addEventListener('click', e=>{ const a=e.target.closest('[data-applyad]'); if(!a) return; e.preventDefault(); const R=LAST; const art=R.lines[+a.dataset.applyad].a; art.ad=a.dataset.t; art._opt=true; drawArts(); compute(); toast('Droit antidumping appliqué'); });
+
+/* ---------------- Actions ---------------- */
+$("#bReset").onclick = ()=>{ S.arts=[{code:"",des:"",taux:null,unite:"",val:"",qte:"",bois:false,ticMode:"",ticVal:"",ad:""}]; S.pre=S.fret=S.ass=S.post=0; syncForm(); compute(); };
+$('#bSave').onclick = ()=>{ const ok = store.set('ixp-crimport', S); const d = store.get('ixp-dossier', {}); const a=S.arts.find(x=>x.code); store.set('ixp-dossier', {...d, sh:a?a.code:d.sh, origine:ORIG[S.orig].l, valeur: LAST?Math.round(LAST.vd):d.valeur, incoterm:S.inco}); toast(ok?'Simulation enregistrée dans votre dossier en cours':'Enregistrement impossible dans ce navigateur'); };
+$('#bPdf').onclick = ()=>window.print();
+$('#bXls').onclick = ()=>{
+  if(!LAST){ toast('Lancez d’abord un calcul'); return; }
+  const R=LAST, tr=(c)=>`<tr>${c.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`;
+  const html = `<html><head><meta charset="UTF-8"></head><body><table border="1">
+   ${tr(['Coût de revient à l’import — IXP-Import-eXPert', new Date().toLocaleDateString('fr-FR')])}
+   ${tr(['Origine',ORIG[S.orig].l])}${tr(['Incoterm',S.inco])}${tr(['Devise / taux',S.dev+' / '+S.tx])}
+   ${tr([''])}${tr(['Code','Désignation','Quantité','Valeur en douane','Taux DI','Droit d’importation','TIC','Taxe bois','Antidumping','TPI','TVA','Coût net','Coût unitaire'])}
+   ${R.lines.map(l=>tr([l.a.code,l.a.des,l.q||'',Math.round(l.vd),l.tDI,Math.round(l.di),Math.round(l.tic),Math.round(l.tbi),Math.round(l.ad),Math.round(l.tpi),Math.round(l.tva),Math.round(l.net),l.unit!=null?Math.round(l.unit):''])).join('')}
+   ${tr([''])}${tr(['Total droits et taxes',Math.round(R.droits+R.maj)])}${tr(['Frais locaux',Math.round(R.frais)])}${tr(['Coût de revient net',Math.round(R.net)])}
+   ${tr(['Estimation indicative ; seule la liquidation de la douane fait foi.'])}</table></body></html>`;
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['﻿'+html],{type:'application/vnd.ms-excel'})); a.download='cout-de-revient-import.xls'; a.click();
+};
+$('#bSyn').onclick = async ()=>{
+  const q=$('#fSyn').value.trim(); if(!q){ $('#synMsg').textContent='Saisissez une désignation ou un code.'; return; }
+  $('#synMsg').textContent='Recherche et génération de la synthèse…'; $('#synRes').innerHTML='';
+  try{ const r=await fetch('/api/synthese/produit',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({query:q})}); const d=await r.json(); if(!d.ok) throw new Error(r.status===403?'La synthèse produit est incluse dans les abonnements Opérateur et supérieurs.':(d.error||'Erreur'));
+    $('#synMsg').textContent = d.meta?`${d.meta.nbTarifs} ligne(s) tarifaire(s) · ${d.meta.nbDecisions} décision(s) · ${d.meta.nbChunks} extrait(s)`:'';
+    $('#synRes').innerHTML=(d.sections||[]).map((s,i)=>`<details class="synth-section"${i===0?' open':''}><summary>${esc(s.titre)}</summary><div class="synth-body">${esc(s.contenu)}</div></details>`).join('');
+  }catch(e){ $('#synMsg').textContent='⚠️ '+e.message; }
+};
+
+
+/* ---------------- Onglets ---------------- */
+$('#tabs').onclick = e=>{ const b=e.target.closest('.tab'); if(!b) return; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===b)); document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.dataset.pane===b.dataset.tab)); window.scrollTo({top:0}); };
+
+/* ---------------- Calcul rapide ---------------- */
+['qTic','qAd'].forEach(id=>$('#'+id).addEventListener('change',e=>$('#'+id+'W').classList.toggle('on',e.target.checked)));
+$('#qAcc').addEventListener('change',e=>$('#qPrefW').style.display=e.target.value==='prefx'?'':'none');
+let qT; $('#qSh').addEventListener('input',e=>{ clearTimeout(qT); const v=e.target.value; qT=setTimeout(async()=>{ const R=await rechercher(v); const box=$('#qSugg'); box.innerHTML=R.length?R.map(r=>`<button data-q='${esc(JSON.stringify(r))}'><code>${r.code}</code>${esc(r.des.slice(0,80))}<em>${pct(r.taux)}</em></button>`).join(''):'<div class="hint" style="padding:10px">Aucune position trouvée.</div>'; box.style.display='block'; },200); });
+$('#qSugg').addEventListener('click',e=>{ const b=e.target.closest('[data-q]'); if(!b) return; const r=JSON.parse(b.dataset.q); $('#qSh').value=r.code; $('#qDi').value=r.taux; $('#qShMsg').textContent=`Taux appliqué — ${r.code} : ${r.des} (${pct(r.taux)}). Modifiable si besoin.`; $('#qSugg').style.display='none'; qCalc(); });
+async function qCalc(){
+  const caf=+$('#qCaf').value||0; if(!caf){ $('#qRes').innerHTML='<div class="empty-state">Saisissez la valeur CAF.</div>'; return; }
+  const acc=$('#qAcc').value; let d;
+  try{ d=await api('rapide',{caf, tauxDI:+$('#qDi').value||0, accord:acc, tauxPref:+$('#qPref').value||0, tauxTVA:+$('#qTva').value, ticActif:$('#qTic').checked, ticMode:$('#qTicM').value, ticTaux:+$('#qTicV').value||0, ticQte:+$('#qTicQ').value||0, tpiActif:$('#qTpi').checked, antiActif:$('#qAd').checked, tauxAnti:+$('#qAdV').value||0}); }catch(e){ $('#qRes').innerHTML=`<div class="empty-state">${esc(e.message)}</div>`; return; }
+  const x=d.r, r=(l,v,s,c='')=>`<tr class="${c}"><td>${l}${s?`<small>${s}</small>`:''}</td><td class="v">${fr(v)} MAD</td></tr>`;
+  $('#qRes').innerHTML=`<div class="kpi-grid" style="margin-bottom:12px"><div class="kpi primary"><div class="kpi-label">Total droits et taxes</div><div class="kpi-val">${fr(x.total)} MAD</div><div class="kpi-sub">Taux effectif ${pct(x.tauxEffectif)}</div></div></div>
+   <table class="casc">${r('Valeur CAF',x.caf)}${r('Droit d’importation',x.di,`${pct(x.tDI)}${acc!=='aucun'?' — sous accord, avec preuve d’origine':''}`)}${x.tic?r('TIC',x.tic):''}${x.ad?r('Droit antidumping',x.ad):''}${r('TPI',x.tpi,x.tpi?'0,25 %':'Non appliquée')}${r('Base de la TVA',x.baseTVA,'','sub')}${r('TVA',x.TVA,pct(+$('#qTva').value))}${r('Total droits et taxes',x.total,'','tot')}</table>
+   <p class="hint" style="margin-top:8px">Pour plusieurs articles, l’Incoterm, les frais locaux et le coût unitaire, utilisez l’onglet « Coût de revient complet ».</p>`;
+}
+$('#qGo').onclick=qCalc;
+
+/* ---------------- Majoration et TBI ---------------- */
+$('#mGo').onclick=async()=>{ const d=+$('#mDr').value||0, nb=Math.max(1,+$('#mNb').value||1); if(!d){ $('#mRes').innerHTML='<div class="hint">Saisissez les droits dus.</div>'; return; }
+  try{ const x=(await api('majoration',{droits:d,nb})).r; $('#mRes').innerHTML=`<div class="rbox"><div class="kpi-label">Majoration totale</div><div class="big">${fr(x.total)} MAD</div><div class="hint">${fr(x.unite)} MAD par opération${x.minimum?' (minimum de 1 000 MAD appliqué)':' (1 % des droits)'} × ${x.nb}</div></div>`; }catch(e){ $('#mRes').innerHTML=`<div class="hint">${esc(e.message)}</div>`; } };
+$('#bAn').addEventListener('change',e=>$('#bChW').style.display=e.target.value==='2025'?'':'none');
+$('#bGo').onclick=async()=>{ const v=+$('#bCaf').value||0; if(!v){ $('#bRes').innerHTML='<div class="hint">Saisissez la valeur CAF.</div>'; return; }
+  try{ const x=(await api('tbi',{caf:v,annee:$('#bAn').value,produit:$('#bCh').value})).r; $('#bRes').innerHTML=`<div class="rbox"><div class="kpi-label">Taxe sur les bois importés</div><div class="big">${fr(x.montant)} MAD</div><div class="hint">Taux ${x.taux} % (${$('#bAn').value}). Montant intégré à la base de la TVA.</div></div>`; }catch(e){ $('#bRes').innerHTML=`<div class="hint">${esc(e.message)}</div>`; } };
+
+/* Ouverture directe d’un onglet (#rapide, #majoration-tbi, #synthese) */
+(()=>{ const h=location.hash; const t = /majoration|tbi/.test(h)?'maj': /rapide/.test(h)?'rapide': /synth/.test(h)?'syn':null; if(t) document.querySelector(`.tab[data-tab="${t}"]`).click(); })();
+/* Reprise de la dernière saisie */
+const auto = store.get('ixp-crimport-auto', null); if(auto && !store.get('ixp-crimport',null)) S = auto;
+txHint(); syncForm(); compute();
+</script>
+</body>
+</html>

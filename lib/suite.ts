@@ -63,8 +63,7 @@ export const ESPACES: Espace[] = [
     livrable: 'Prix de revient import (coût rendu)',
     transmet: 'Valeur, droits, taxes et Incoterm',
     tools: [
-      { label: 'Simulateur droits et taxes', path: '/modules/simulateur', desc: 'Calcul complet à partir du code SH et de l’origine', tier: 'decouverte' },
-      { label: 'Simulateur fiscal douanier', path: '/modules/simulateur-fiscal', desc: 'Coût de revient détaillé, taxe par taxe', tier: 'operateur' },
+      { label: 'Coût de revient à l’import', path: '/modules/simulateur', desc: 'Droits, taxes et coût rendu : plusieurs articles, origine, Incoterm, frais locaux', tier: 'decouverte' },
       { label: 'Valeur en douane', path: '/modules/valeur-douane', desc: 'Méthodes OMC, frais à inclure, ajustements', tier: 'operateur' },
       { label: 'TIC', path: '/modules/tic-reference', desc: 'Taxes intérieures de consommation : assiette et taux', tier: 'operateur' },
       { label: 'Recherche CGI', path: '/modules/cgi-search', desc: 'Code général des impôts 2026, recherche assistée', tier: 'decouverte' },
@@ -184,7 +183,7 @@ export const PLANS = [
   {
     id: 'free', nom: 'Découverte', prix: '0', unite: 'pour toujours',
     pour: 'Pour évaluer la plateforme',
-    inclus: ['Bibliothèque : FAQ, glossaire, recherche CGI', 'Simulateur droits et taxes', 'Diagnostic de conformité', 'IXP-Assistant : questions limitées'],
+    inclus: ['Bibliothèque : FAQ, glossaire, recherche CGI', 'Coût de revient à l’import', 'Diagnostic de conformité', 'IXP-Assistant : questions limitées'],
     cta: 'Créer un compte', href: '/auth/register?plan=free',
   },
   {
