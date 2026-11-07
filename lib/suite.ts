@@ -122,9 +122,9 @@ export const ESPACES: Espace[] = [
     transmet: 'Orientations de sourcing et d’investissement',
     tools: [
       { label: 'Global MondoScope', path: '/modules/mondoscope', desc: 'Veille stratégique mondiale', tier: 'entreprise' },
-      { label: 'Intelligence import', path: '/modules/intelligence-import', desc: 'Flux, concurrents, volumes', tier: 'entreprise' },
-      { label: 'Intelligence stratégique', path: '/modules/intelligence-strategique', desc: 'Intelligence commerciale et jurisprudence', tier: 'entreprise' },
-      { label: 'Analyses stratégiques', path: '/modules/analyses', desc: 'Notes d’analyse sectorielle', tier: 'expert' },
+      { label: 'Intelligence import', path: '/modules/intelligence-import', desc: 'Flux 2026, gisement préférentiel, signaux tarifaires', tier: 'entreprise' },
+      { label: 'Intelligence stratégique', path: '/modules/intelligence-strategique', desc: 'Décisions de classement, défense commerciale, accords', tier: 'entreprise' },
+      { label: 'Analyses stratégiques', path: '/modules/analyses', desc: 'Assistant sourcé et notes d’analyse mensuelles', tier: 'expert' },
     ],
   },
 ]
