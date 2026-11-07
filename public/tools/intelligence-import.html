@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Intelligence import — Import-eXPert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>/* Code visuel de la page d'accueil (styles/site.css) appliqué aux pages Piloter */
+:root{
+  --x-ink:#14120F;--x-ink2:#3B3631;--x-ink3:#7A7168;
+  --x-paper:#FAF7F0;--x-card:#FFFFFF;--x-line:#E6DCC7;--x-line2:#D6C9AC;
+  --x-gold:#A8822F;--x-gold2:#C9A84C;--x-gold-soft:#F4EBD3;
+  --x-navy:#153E82;--x-navy2:#0E2C5E;--x-navy-soft:#E9EFF9;
+  --x-red:#A82D3C;--x-green:#1E7346;
+  --x-slate:#3D4A63;--x-slate-b:#EEF1F6;--x-slate-l:#CDD4E2;
+  --x-serif:'DM Serif Display',Georgia,serif;
+  --x-sans:'DM Sans',system-ui,sans-serif;
+  --x-mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--x-sans);color:var(--x-ink);background:var(--x-paper);line-height:1.55;font-size:16px}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+.x-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* En-tête */
+.x-hdr{position:sticky;top:0;z-index:50;background:rgba(250,247,240,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--x-line)}
+.x-hdr .x-wrap{display:flex;align-items:center;gap:28px;height:68px}
+.x-logo{font-family:var(--x-serif);font-size:24px;white-space:nowrap}
+.x-logo b{font-weight:400;color:var(--x-red)}
+.x-logo sup{font-family:var(--x-mono);font-size:9px;letter-spacing:.14em;color:var(--x-ink3);margin-left:6px}
+.x-nav{display:flex;gap:8px;flex-wrap:wrap}
+.x-tile{display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;font-size:14px;font-weight:500;border:1px solid var(--tl);background:var(--tb);color:var(--tc);transition:all .15s}
+.x-tile:hover,.x-tile.on{border-color:var(--tc);box-shadow:0 0 0 2px var(--tl)}
+.t-blue{--tb:#EDF3FC;--tl:#C9DAF3;--tc:#1F4E9A}.t-green{--tb:#EBF6EF;--tl:#C3E3CF;--tc:#1E7346}
+.t-slate{--tb:#EEF1F6;--tl:#CDD4E2;--tc:#3D4A63}.t-teal{--tb:#E8F6F5;--tl:#BFE2DF;--tc:#16706B}
+.t-violet{--tb:#F2EEFB;--tl:#D8CDF1;--tc:#5B3FA0}.t-amber{--tb:#FCF4E3;--tl:#EFD9A8;--tc:#9A620C}
+
+/* Typo */
+.x-eyebrow{font-family:var(--x-mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--x-gold)}
+.x-h1{font-family:var(--x-serif);font-weight:400;font-size:clamp(36px,4.8vw,58px);line-height:1.05;letter-spacing:-.015em;margin:16px 0 20px}
+.x-h1 em,.x-h2 em{font-style:italic;color:var(--x-navy)}
+.x-h2{font-family:var(--x-serif);font-weight:400;font-size:clamp(28px,3.2vw,40px);line-height:1.1;margin:10px 0 12px}
+.x-h3{font-family:var(--x-serif);font-weight:400;font-size:22px;line-height:1.2;margin:0 0 6px}
+.x-lead{font-size:18px;color:var(--x-ink2);max-width:620px}
+.x-sub{font-size:16px;color:var(--x-ink2);max-width:720px}
+.x-sec{padding:72px 0}
+.x-sec-white{background:#fff;border-top:1px solid var(--x-line);border-bottom:1px solid var(--x-line)}
+.x-sec-dark{background:var(--x-ink);color:#EDE7DA}
+.x-sec-dark .x-sub{color:#BDB3A3}.x-sec-dark .x-eyebrow{color:var(--x-gold2)}.x-sec-dark .x-h2 em{color:var(--x-gold2)}
+.x-mono{font-family:var(--x-mono);font-size:11.5px;color:var(--x-ink3);letter-spacing:.04em}
+
+/* Hero */
+.x-hero{padding:64px 0 48px}
+.x-hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center}
+.x-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.x-btn{display:inline-flex;align-items:center;gap:8px;font:500 14.5px var(--x-sans);border-radius:999px;padding:11px 20px;border:1px solid transparent;cursor:pointer;transition:all .18s;white-space:nowrap}
+.x-btn-dark{background:var(--x-ink);color:#fff}.x-btn-dark:hover{background:var(--x-navy2)}
+.x-btn-line{border-color:var(--x-line2);background:transparent;color:var(--x-ink)}.x-btn-line:hover{border-color:var(--x-ink)}
+.x-btn-gold{background:var(--x-gold2);color:var(--x-ink)}
+
+/* Carte dossier */
+.x-dossier{background:#fff;border:1px solid var(--x-line);border-radius:20px;box-shadow:0 30px 60px -30px rgba(20,18,15,.25);overflow:hidden}
+.x-dossier-hd{padding:16px 22px;border-bottom:1px solid var(--x-line);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.x-dossier-hd strong{font-family:var(--x-serif);font-weight:400;font-size:20px}
+.x-dossier-ft{padding:11px 22px;background:var(--x-paper);border-top:1px solid var(--x-line);font-size:12px;color:var(--x-ink3)}
+.x-rows{list-style:none;margin:0;padding:6px 0}
+.x-rows li{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:baseline;padding:10px 22px}
+.x-rows li+li{border-top:1px dashed var(--x-line)}
+.x-rows b{font-weight:500;font-size:14.5px}
+.x-rows .v{font-family:var(--x-serif);font-size:20px}
+.x-pill{font-family:var(--x-mono);font-size:10.5px;letter-spacing:.04em;padding:4px 9px;border-radius:999px;background:var(--x-gold-soft);color:#7A5D1C;white-space:nowrap}
+.x-pill.up{background:#FCEEF0;color:var(--x-red)}.x-pill.ok{background:#E6F1E8;color:#1F6233}.x-pill.nav{background:var(--x-navy-soft);color:var(--x-navy)}
+
+/* Barre de preuves */
+.x-proof{border-top:1px solid var(--x-line);border-bottom:1px solid var(--x-line);background:#fff}
+.x-proof .x-wrap{display:grid;grid-template-columns:repeat(5,1fr)}
+.x-proof .p{padding:20px 10px;text-align:center;border-left:1px solid var(--x-line)}
+.x-proof .p:first-child{border-left:none}
+.x-proof b{display:block;font-family:var(--x-serif);font-weight:400;font-size:28px;line-height:1.1}
+.x-proof span{font-size:12.5px;color:var(--x-ink3)}
+.x-proof i{font-style:normal;font-family:var(--x-mono);font-size:11px;display:block;margin-top:3px}
+.dn{color:var(--x-red)}.upg{color:var(--x-green)}
+
+/* Cartes */
+.x-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.x-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.x-card{background:#fff;border:1px solid var(--x-line);border-radius:16px;padding:22px}
+.x-card.slate{background:var(--x-slate-b);border-color:var(--x-slate-l)}
+.x-card p{margin:6px 0 0;color:var(--x-ink2);font-size:14.5px}
+.x-k{font-family:var(--x-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--x-ink3)}
+.x-big{font-family:var(--x-serif);font-size:34px;line-height:1.05;margin:6px 0 2px}
+
+/* Barres */
+.bars{display:grid;gap:12px;margin-top:8px}
+.bar{display:grid;grid-template-columns:210px 1fr 96px 74px;gap:14px;align-items:center;font-size:14.5px}
+.bar .tr{height:12px;background:var(--x-paper);border:1px solid var(--x-line);border-radius:999px;overflow:hidden}
+.bar .fl{height:100%;background:var(--x-slate);border-radius:999px}
+.bar .val{font-family:var(--x-mono);font-size:12.5px;text-align:right}
+.bar .var{font-family:var(--x-mono);font-size:12px;text-align:right}
+.bar small{display:block;color:var(--x-ink3);font-size:12.5px}
+
+/* Filtres en pastilles */
+.flts{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.flt{font:500 13.5px var(--x-sans);padding:7px 13px;border-radius:999px;border:1px solid var(--x-line2);background:#fff;color:var(--x-ink2);cursor:pointer}
+.flt.on{background:var(--x-slate);border-color:var(--x-slate);color:#fff}
+.x-in{font:inherit;font-size:15px;padding:11px 14px;border:1px solid var(--x-line2);border-radius:10px;background:#fff;outline:none;width:100%}
+.x-in:focus{border-color:var(--x-navy)}
+
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px;background:#fff;border:1px solid var(--x-line);border-radius:14px;overflow:hidden}
+.tbl th{font:500 10.5px var(--x-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--x-ink3);text-align:left;padding:12px 14px;background:var(--x-paper);border-bottom:1px solid var(--x-line)}
+.tbl td{padding:12px 14px;border-bottom:1px solid var(--x-line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.code{font-family:var(--x-mono);font-size:12.5px;background:var(--x-navy-soft);color:var(--x-navy);padding:2px 7px;border-radius:6px;white-space:nowrap}
+.note{font-size:13px;color:var(--x-ink3);margin-top:12px}
+.src{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.src span{font-family:var(--x-mono);font-size:11px;padding:4px 10px;border:1px solid var(--x-line2);border-radius:999px;color:var(--x-ink2);background:#fff}
+
+/* Sous-navigation */
+.subnav{position:sticky;top:68px;z-index:40;background:#fff;border-bottom:1px solid var(--x-line)}
+.subnav .x-wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px}
+.subnav a{font-size:13.5px;padding:6px 12px;border-radius:999px;color:var(--x-ink2);white-space:nowrap}
+.subnav a:hover{background:var(--x-slate-b);color:var(--x-slate)}
+
+.ftr{padding:28px 0 40px;font-size:13px;color:var(--x-ink3);border-top:1px solid var(--x-line);background:#fff}
+@media(max-width:900px){
+  .x-hero-grid,.x-grid2,.x-grid3{grid-template-columns:1fr}
+  .x-proof .x-wrap{grid-template-columns:repeat(2,1fr)}
+  .bar{grid-template-columns:1fr 70px 60px}.bar .tr{grid-column:1/-1;order:5}
+  .x-nav{display:none}
+}
+
+/* Tuiles colorées : sous-navigation, filtres, boutons */
+.t-rose{--tb:#FCEEF0;--tl:#F0C9CF;--tc:#A82D3C}
+.t-navy{--tb:#EAF0FA;--tl:#C9D6EE;--tc:#153E82}
+.subnav a.tone{border:1px solid var(--tl);background:var(--tb);color:var(--tc);font-weight:500}
+.subnav a.tone:hover{border-color:var(--tc);box-shadow:0 0 0 2px var(--tl);background:var(--tb);color:var(--tc)}
+.flt.tone{background:var(--tb);border-color:var(--tl);color:var(--tc)}
+.flt.tone:hover{border-color:var(--tc)}
+.flt.tone.on{background:var(--tc);border-color:var(--tc);color:#fff}
+.x-btn.tone{background:var(--tb);border-color:var(--tl);color:var(--tc)}
+.x-btn.tone:hover{border-color:var(--tc);box-shadow:0 0 0 2px var(--tl)}
+.x-btn.tone-fill{background:var(--tc);border-color:var(--tc);color:#fff}
+.x-btn.tone-fill:hover{filter:brightness(1.12)}
+.rate{font-family:var(--x-mono);font-size:11.5px;padding:3px 8px;border-radius:999px;background:#E6F1E8;color:#1F6233;white-space:nowrap}
+.rate.ko{background:#FCEEF0;color:var(--x-red)}
+.src span.rate{background:#E6F1E8;color:#1F6233;border-color:#C3E3CF}
+.loading{color:var(--x-ink3);font-size:14px;padding:10px 0}
+</style></head><body><header class="x-hdr"><div class="x-wrap">
+  <a class="x-logo" href="/">Import<b>-</b>eXPert<sup>MAROC</sup></a>
+  <nav class="x-nav">
+    <a class="x-tile t-blue" href="/plateforme">Accueil</a>
+    <a class="x-tile t-green" href="/plateforme#profils">Solutions</a>
+    <a class="x-tile t-slate on" href="/espaces/piloter">Piloter</a>
+    <a class="x-tile t-teal" href="/espaces/bibliotheque">Bibliothèque</a>
+    <a class="x-tile t-violet" href="/expertise">Expertise</a>
+    <a class="x-tile t-amber" href="/tarifs">Tarifs</a>
+  </nav>
+</div></header>
+
+<section class="x-hero"><div class="x-wrap x-hero-grid">
+  <div>
+    <div class="x-eyebrow">Piloter · Intelligence import</div>
+    <h1 class="x-h1">Les flux d’import du Maroc, <em>lus pour décider</em>.</h1>
+    <p class="x-lead">Ce que le pays achète, où il l’achète, ce qui renchérit ou allège la facture, et ce que cela change pour vos approvisionnements. Chiffres officiels, mis à jour à chaque publication mensuelle.</p>
+    <div class="x-cta">
+      <a class="x-btn tone-fill t-navy" href="#gisement">Mesurer mon gisement préférentiel</a>
+      <a class="x-btn tone t-rose" href="#signaux">Signaux tarifaires 2026</a>
+    </div>
+  </div>
+  <div class="x-dossier">
+    <div class="x-dossier-hd"><strong>Neuf mois 2026</strong><span class="x-mono">janv.–sept. · MMDH</span></div>
+    <ul class="x-rows">
+      <li><b>Importations de biens</b><span class="v">708,0</span><span class="x-pill up">+17 %</span></li>
+      <li><b>Exportations de biens</b><span class="v">384,1</span><span class="x-pill ok">+10,7 %</span></li>
+      <li><b>Déficit commercial</b><span class="v">323,9</span><span class="x-pill up">+25,4 %</span></li>
+      <li><b>Facture énergétique</b><span class="v">111,6</span><span class="x-pill up">+37 %</span></li>
+      <li><b>Excédent des services</b><span class="v">135,8</span><span class="x-pill ok">+14,8 %</span></li>
+    </ul>
+    <div class="x-dossier-ft">Office des Changes, indicateurs mensuels à fin septembre 2026 (chiffres provisoires).</div>
+  </div>
+</div></section>
+
+<div class="x-proof"><div class="x-wrap">
+  <div class="p"><b>708,0</b><span>MMDH importés · janv.–sept. 2026</span><i class="dn">+17 % sur un an</i></div>
+  <div class="p"><b>54,2 %</b><span>Taux de couverture · 9 mois 2026</span><i class="dn">−3,1 pts</i></div>
+  <div class="p"><b>173,4</b><span>MMDH de biens d’équipement · 2026</span><i class="dn">+22 %</i></div>
+  <div class="p"><b>52,1</b><span>MMDH de produits bruts · 2026</span><i class="dn">+60,9 %</i></div>
+  <div class="p"><b>89,2</b><span>MMDH transférés par les MRE · fin août 2026</span><i class="upg">+9 %</i></div>
+</div></div>
+
+<nav class="subnav"><div class="x-wrap">
+  <a class="tone t-blue" href="#gisement">Gisement préférentiel</a><a class="tone t-rose" href="#signaux">Signaux tarifaires 2026</a><a class="tone t-green" href="#facture">Ce qui pèse sur la facture</a><a class="tone t-teal" href="#origines">D’où viennent les importations</a><a class="tone t-amber" href="#annee">Bilan 2025</a><a class="tone t-violet" href="#lecture">Lecture pour l’importateur</a>
+</div></nav>
+
+<section class="x-sec x-sec-dark" id="gisement"><div class="x-wrap">
+  <div class="x-eyebrow">Outil</div>
+  <h2 class="x-h2">Votre <em>gisement préférentiel</em>.</h2>
+  <p class="x-sub">Indiquez, par origine, ce que vous importez par an et votre code SH principal : le droit du tarif 2026 se remplit tout seul. Ajustez-le si vos produits sont variés, et la part déjà dédouanée avec une preuve d’origine valable. Vous voyez ce que vous laissez sur la table.</p>
+  <div class="x-card" style="margin-top:20px;color:var(--x-ink)">
+    <table class="tbl" id="gt"><thead><tr><th>Origine</th><th>Code SH principal</th><th>Imports annuels (DH)</th><th>DI moyen (%)</th><th>Part avec preuve d’origine (%)</th><th>Droits évitables (DH)</th></tr></thead><tbody></tbody></table>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:16px;flex-wrap:wrap">
+      <div><div class="x-k">Gisement total estimé</div><div class="x-big" id="gtot">0 DH</div></div>
+      <a class="x-btn x-btn-dark" href="/modules/simulateur">Vérifier code par code dans le simulateur</a>
+    </div>
+    <p class="note">Estimation : le calcul suppose un droit préférentiel nul, comme pour la plupart des produits industriels. Les produits agricoles et certains produits sensibles gardent un droit réduit ou un contingent : vérifiez-les dans le simulateur.</p>
+  </div>
+</div></section>
+
+<section class="x-sec" id="signaux"><div class="x-wrap">
+  <div class="x-eyebrow">Loi de finances 2026</div>
+  <h2 class="x-h2">Signaux tarifaires <em>2026</em>.</h2>
+  <p class="x-sub">Les changements de droit d’importation en vigueur depuis le 1er janvier 2026, déjà intégrés au tarif de la plateforme.</p>
+  <div class="flts" id="sf"></div>
+  <table class="tbl" id="st"><thead><tr><th>Produit</th><th>Position</th><th>Avant</th><th>Depuis 2026</th><th>Tarif en base</th><th>Ce que cela change</th></tr></thead><tbody></tbody></table>
+  <div class="src"><span>Loi de finances 2026</span><span>Circulaire ADII n° 6702/210</span></div>
+  <div class="x-k" style="margin:34px 0 10px">Derniers changements intégrés au tarif · mis à jour à chaque ingestion</div>
+  <table class="tbl"><thead><tr><th>Date</th><th>Position</th><th>Désignation</th><th>Avant</th><th>Après</th></tr></thead><tbody id="chg"><tr><td colspan="5" class="loading">Chargement…</td></tr></tbody></table>
+</div></section>
+
+<section class="x-sec x-sec-white" id="facture"><div class="x-wrap">
+  <div class="x-eyebrow">Neuf mois 2026</div>
+  <h2 class="x-h2">Ce qui pèse <em>sur la facture</em>.</h2>
+  <p class="x-sub">Importations de biens par groupe de produits, de janvier à septembre 2026, et leur évolution sur un an.</p>
+  <div class="bars" id="bars"></div>
+  <p class="note">Le groupe « produits alimentaires » n’est pas repris : son montant n’est pas publié dans le communiqué de fin septembre.</p>
+</div></section>
+
+<section class="x-sec" id="origines"><div class="x-wrap">
+  <div class="x-eyebrow">Géographie des achats</div>
+  <h2 class="x-h2">D’où viennent <em>les importations</em>.</h2>
+  <div class="x-grid2" style="margin-top:18px">
+    <div class="x-card">
+      <div class="x-k">Premiers fournisseurs · part des importations 2024</div>
+      <div class="bars" id="fourn" style="margin-top:14px"></div>
+    </div>
+    <div class="x-grid2" style="gap:14px">
+      <div class="x-card slate"><div class="x-k">Europe</div><div class="x-big">54,2 %</div><p>des importations 2025. L’Europe pèse 59,8 % des échanges, contre 62 % en 2024.</p></div>
+      <div class="x-card slate"><div class="x-k">Asie</div><div class="x-big">21,9 %</div><p>des échanges en 2025, contre 20,1 % en 2024 : le seul grand bloc qui progresse.</p></div>
+      <div class="x-card slate"><div class="x-k">Afrique</div><div class="x-big">3,5 %</div><p>des importations 2025 (29,1 MMDH). L’Égypte en fournit près de la moitié.</p></div>
+      <div class="x-card slate"><div class="x-k">Régime préférentiel</div><div class="x-big">68 %</div><p>des importations sous accord viennent de l’UE en 2025.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="x-sec x-sec-white" id="annee"><div class="x-wrap">
+  <div class="x-eyebrow">Rapport annuel 2025</div>
+  <h2 class="x-h2">L’année 2025 <em>en cinq chiffres</em>.</h2>
+  <div class="x-grid3" style="margin-top:18px">
+    <div class="x-card"><div class="x-k">Déficit commercial</div><div class="x-big">352,3 MMDH</div><p>+15,5 % sur un an. Il représente 22,7 % du PIB, contre 19,9 % en 2024.</p></div>
+    <div class="x-card"><div class="x-k">Biens d’équipement</div><div class="x-big">−99,4 MMDH</div><p>de déficit, en aggravation de 11,4 MMDH : l’investissement productif s’importe.</p></div>
+    <div class="x-card"><div class="x-k">Produits finis de consommation</div><div class="x-big">+30,1 MMDH</div><p>de déficit supplémentaire : la concurrence des produits finis importés se durcit.</p></div>
+    <div class="x-card"><div class="x-k">Énergie</div><div class="x-big">−102,4 MMDH</div><p>de déficit, toujours en baisse en 2025, avant la remontée de 2026 (+37 % sur neuf mois).</p></div>
+    <div class="x-card"><div class="x-k">Exportations</div><div class="x-big">470 MMDH</div><p>+3 %. L’effort d’exportation atteint 30,3 % du PIB.</p></div>
+    <div class="x-card"><div class="x-k">Taux de dépendance</div><div class="x-big">41,7 %</div><p>moyenne des importations et exportations rapportée au PIB, +2 points.</p></div>
+  </div>
+</div></section>
+
+
+
+<section class="x-sec" id="lecture"><div class="x-wrap">
+  <div class="x-eyebrow">Lecture pour l’importateur</div>
+  <h2 class="x-h2">Trois conséquences <em>pour vos achats</em>.</h2>
+  <div class="x-grid3" style="margin-top:18px">
+    <div class="x-card"><div class="x-h3">Le coût de l’énergie remonte</div><p>+37 % sur neuf mois. Le fret et les produits à forte intensité énergétique suivent : révisez vos hypothèses de coût de revient pour 2027.</p></div>
+    <div class="x-card"><div class="x-h3">L’Asie gagne des parts</div><p>Un fournisseur asiatique ne donne en général droit à aucune préférence. Comparez le prix rendu, droits compris, à une offre européenne ou turque avec EUR.1.</p></div>
+    <div class="x-card"><div class="x-h3">Les produits finis sous surveillance</div><p>Le déficit sur les produits finis se creuse. Les hausses ciblées de droits et les mesures de défense commerciale visent d’abord ces produits.</p></div>
+  </div>
+  <div class="src" style="margin-top:22px"><span>Office des Changes · indicateurs mensuels, septembre 2026</span><span>Office des Changes · rapport annuel du commerce extérieur 2025</span></div>
+  <p class="note">Prochaine mise à jour : indicateurs à fin octobre 2026, dès leur publication par l’Office des Changes.</p>
+</div></section>
+
+<footer class="ftr"><div class="x-wrap">Import-eXPert · Piloter · Intelligence import</div></footer>
+
+<script>
+const fmt=n=>n.toLocaleString('fr-FR',{maximumFractionDigits:1});
+// Importations par groupe, janv.–sept. 2026 (MMDH, variation sur un an)
+const G=[
+ ['Produits finis d’équipement',173.38,22,'Machines, véhicules utilitaires, aéronautique'],
+ ['Produits finis de consommation',162.69,9,'Voitures de tourisme, médicaments, textile'],
+ ['Énergie',111.59,37,'Gasoil, gaz, charbon'],
+ ['Demi-produits',74.65,4.3,'Chimie, plastiques, cuivre'],
+ ['Produits bruts',52.06,60.9,'Soufre, minerais, bois brut'],
+];
+const mx=Math.max(...G.map(g=>g[1]));
+document.getElementById('bars').innerHTML=G.map(g=>`<div class="bar"><div>${g[0]}<small>${g[3]}</small></div><div class="tr"><div class="fl" style="width:${g[1]/mx*100}%"></div></div><div class="val">${fmt(g[1])} MMDH</div><div class="var dn">+${fmt(g[2])} %</div></div>`).join('');
+// Fournisseurs, part des importations 2024
+const F=[['Espagne',15.7],['Chine',10.6],['France',10.6],['États-Unis',8.4],['Turquie',5.1]];
+document.getElementById('fourn').innerHTML=F.map(f=>`<div class="bar" style="grid-template-columns:110px 1fr 60px"><div>${f[0]}</div><div class="tr"><div class="fl" style="width:${f[1]/16*100}%;background:var(--x-navy)"></div></div><div class="val">${fmt(f[1])} %</div></div>`).join('');
+
+// ---- Données Supabase (tarif) via l'API Piloter ----
+const API='/api/piloter/intel';
+async function api(params){const r=await fetch(API+'?'+new URLSearchParams(params),{credentials:'same-origin'});if(!r.ok)throw new Error(r.status);return r.json();}
+const pct=n=>n==null?'—':String(n).replace('.',',')+' %';
+
+// Gisement préférentiel : le code SH remplit le droit du tarif 2026
+const O=['Union européenne','Turquie','Royaume-Uni','AELE','États-Unis','Pays arabes (Agadir, zone arabe)','Afrique (ZLECAf)'];
+const tb=document.querySelector('#gt tbody');
+tb.innerHTML=O.map((o,i)=>`<tr><td>${o}</td><td><input class="x-in" inputmode="numeric" maxlength="13" data-i="${i}" data-k="c" placeholder="10 chiffres"><small class="note" id="cl${i}" style="display:block;margin-top:4px"></small></td><td><input class="x-in" type="number" min="0" step="1000" data-i="${i}" data-k="v" placeholder="0"></td><td><input class="x-in" type="number" min="0" max="200" step="0.5" data-i="${i}" data-k="d" value="17.5"></td><td><input class="x-in" type="number" min="0" max="100" step="5" data-i="${i}" data-k="p" value="50"></td><td class="val" id="g${i}" style="font-family:var(--x-mono)">0 DH</td></tr>`).join('');
+function calc(){let t=0;O.forEach((o,i)=>{const g=k=>+(tb.querySelector(`[data-i="${i}"][data-k="${k}"]`).value||0);
+ const s=g('v')*g('d')/100*(1-Math.min(100,g('p'))/100);t+=s;document.getElementById('g'+i).textContent=Math.round(s).toLocaleString('fr-FR')+' DH';});
+ document.getElementById('gtot').textContent=Math.round(t).toLocaleString('fr-FR')+' DH';}
+let tmr;
+tb.addEventListener('input',e=>{calc();
+ if(e.target.dataset.k!=='c')return;
+ const i=e.target.dataset.i,code=e.target.value.replace(/\D/g,''),lab=document.getElementById('cl'+i);
+ clearTimeout(tmr);if(code.length<10){lab.textContent='';return;}
+ tmr=setTimeout(async()=>{lab.textContent='Lecture du tarif…';
+  try{const r=(await api({a:'taux',codes:code})).data[code]||[];
+   if(!r.length){lab.textContent='Code absent du tarif 2026.';return;}
+   tb.querySelector(`[data-i="${i}"][data-k="d"]`).value=r[0].taux;lab.textContent=`Tarif 2026 : ${pct(r[0].taux)}`+(r[0].designation?` · ${r[0].designation.slice(0,60)}`:'');calc();
+  }catch(err){lab.textContent='Tarif indisponible pour le moment.';}},350);});
+calc();
+
+// Signaux tarifaires LF 2026 : taux annoncé par la loi, comparé au tarif en base
+const S=[
+ ['Hausse','Safran','0910.20.00.10 / 90','40 %','60 %','Protection de la production nationale face aux importations massives.'],
+ ['Hausse','Dispositifs de dépistage rapide','3822.11.29.10 · 3822.12.19.10 · 3822.19.29.10','2,5 %','17,5 %','Soutien à la production locale et à la souveraineté sanitaire.'],
+ ['Hausse','Résine en PVC','3904.10.90.00','2,5 %','10 %','Protection des producteurs nationaux de résine.'],
+ ['Hausse','Monofilaments','5404.19.00.10','2,5 %','17,5 %','Protection de la filière balais et brosses.'],
+ ['Hausse','Étoffes de bonneterie jacquard','6006.31.10.10 · 6006.31.90.91 · 6006.33.10.91 · 6006.33.90.93','10 %','30 %','Protection de la bonneterie jacquard électronique nationale.'],
+ ['Hausse','Congélateurs domestiques, lave-linge semi-automatiques','8418.30.00.20 · 8450.19.90.00 · 8450.20.00.10','2,5 % ou 10 %','17,5 %','Compétitivité des fabricants nationaux d’électroménager.'],
+ ['Hausse','Pare-brise, vitres arrière et autres glaces','8708.22.00.00','2,5 %','17,5 %','Soutien aux fabricants nationaux de pare-brise.'],
+ ['Baisse','Téléphones portables','8517.13.00 · 8517.14.00 · 8517.18.00','17,5 %','2,5 %','Compétitivité du secteur formel face aux importations illégales.'],
+ ['Baisse','Smartphones en CKD ou SKD','8517.13.00.30','17,5 %','2,5 %','Encourager l’assemblage local de smartphones.'],
+ ['Baisse','Acaricides, nématicides, molluscicides','3808.99.11.00 · 3808.99.19.00 · 3808.99.90.10 / 70','30 % ou 10 %','2,5 %','Baisse du coût de protection des cultures.'],
+ ['Baisse','Intrants des machines à laver semi-automatiques','4010.39.00.10 · 4016.93.00.20 · 4016.99.98.10 · 7020.00.12.00 · 8484.90.00.10','30 %','17,5 %','Développement de l’industrie nationale de machines à laver.'],
+ ['Baisse','Panneaux de lattes de bois collées','4421.99.90.81','30 %','17,5 %','Compétitivité des industries du bois.'],
+ ['Baisse','Boîtes en fonte à sertir (canettes en fer blanc)','7310.21.99.91','30 %','17,5 %','Coût des emballages pour la fabrication d’aérosols.'],
+];
+const kinds=['Hausse','Baisse'];let cur='Hausse',LIVE={};
+const sf=document.getElementById('sf');
+const codesOf=s=>s[2].split(/[·\/]/).map(x=>x.replace(/\D/g,'')).filter(x=>x.length>=6);
+const want=s=>parseFloat(s[4].replace(',','.'));
+function liveCell(s){const cs=codesOf(s);if(!Object.keys(LIVE).length)return '<span class="loading">…</span>';
+ const rs=cs.flatMap(c=>LIVE[c]||[]);if(!rs.length)return '<span class="rate ko">non trouvé</span>';
+ const ts=[...new Set(rs.map(r=>r.taux))];const ok=ts.every(t=>t===want(s));
+ return `<span class="rate ${ok?'':'ko'}">${ts.map(pct).join(' / ')}</span>`;}
+function drawS(){sf.innerHTML=kinds.map(k=>`<button class="flt tone ${k==='Hausse'?'t-rose':'t-green'} ${k===cur?'on':''}" data-k="${k}">${k}s de droit</button>`).join('');
+ document.querySelector('#st tbody').innerHTML=S.filter(s=>s[0]===cur).map(s=>`<tr><td>${s[1]}</td><td><span class="code">${s[2]}</span></td><td>${s[3]}</td><td><b>${s[4]}</b></td><td>${liveCell(s)}</td><td>${s[5]}</td></tr>`).join('');}
+sf.addEventListener('click',e=>{if(e.target.dataset.k){cur=e.target.dataset.k;drawS();}});drawS();
+const fcode=c=>String(c).replace(/^(\d{4})(\d{2})(\d{2})(\d{2})$/,'$1.$2.$3.$4');
+api({a:'changements'}).then(r=>{document.getElementById('chg').innerHTML=r.data.slice(0,15).map(c=>`<tr><td style="white-space:nowrap">${new Date(c.created_at).toLocaleDateString('fr-FR')}</td><td><span class="code">${fcode(c.code_sh)}</span></td><td>${String(c.designation||'').replace(/[<>&]/g,'')}</td><td>${pct(c.taux_avant)}</td><td><b>${pct(c.taux_apres)}</b></td></tr>`).join('')||'<tr><td colspan="5">Aucun changement enregistré.</td></tr>';}).catch(()=>{document.getElementById('chg').innerHTML='<tr><td colspan="5">Historique indisponible pour le moment.</td></tr>';});
+api({a:'taux',codes:[...new Set(S.flatMap(codesOf))].join(',')}).then(r=>{LIVE=r.data;drawS();}).catch(()=>{LIVE={_:[]};drawS();});
+</script>
+</body></html>

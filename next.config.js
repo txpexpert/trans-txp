@@ -28,6 +28,7 @@ const nextConfig = {
       // Audit Express retiré (doublon du Diagnostic de conformité, nov. 2026).
       { source: '/modules/audit-express', destination: '/diagnostic', permanent: false },
       // Doublon de /confidentialite (nov. 2026).
+      { source: '/tools/m36-intelligence-import.html', destination: '/tools/intelligence-import.html', permanent: true },
       { source: '/politique-confidentialite', destination: '/confidentialite', permanent: true },
       // Simulateur fiscal fusionné dans le simulateur unique (nov. 2026).
       { source: '/modules/simulateur-fiscal', destination: '/modules/simulateur', permanent: false },
