@@ -11,6 +11,9 @@
 // - /api/* : exclu — chaque route API vérifie sa propre session en Node
 //   runtime (verifyUserToken de lib/userAuth.ts) et répond en JSON plutôt
 //   que par une redirection, qui n'a pas de sens pour un appel API.
+// - /mon-abonnement et /facturation/* : exclus — espace « Mon abonnement » et
+//   documents de facturation, qui vérifient eux-mêmes la session (Node) et
+//   doivent rester accessibles à un client dont l'abonnement est expiré.
 // - /app/* : exclu — espace mobile indépendant (voir lib/appAccess.ts),
 //   avec son propre contrôle d'accès en Node runtime, distinct de ce
 //   middleware et de moduleAccess.ts (décision du 2026-08-28, suite à un
@@ -59,6 +62,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|backoffice$|backoffice/|gestion-abonnements$|gestion-abonnements/|_next/static|_next/image|favicon.ico|manifest.json|icons/|brand/|sw.js|workbox-|app/|google[a-z0-9]+\\.html|robots.txt|sitemap.xml).*)',
+    '/((?!api/|backoffice$|backoffice/|gestion-abonnements$|gestion-abonnements/|mon-abonnement$|facturation/|_next/static|_next/image|favicon.ico|manifest.json|icons/|brand/|sw.js|workbox-|app/|google[a-z0-9]+\\.html|robots.txt|sitemap.xml).*)',
   ],
 }

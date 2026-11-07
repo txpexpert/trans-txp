@@ -2,7 +2,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Journaux d'activité — données réelles uniquement (2026-11-01) :
 //   • Connexions : table user_sessions, une ligne par session ouverte,
-//     identifiée par le numéro d'abonné (26IXP…).
+//     identifiée par le numéro d'abonné (ABIXP27.01AA).
 //   • Abonnements : table subscription_events (activations, paiements,
 //     suspensions, suppressions…).
 // Remplace l'ancienne liste de journaux fictifs.
@@ -77,7 +77,7 @@ export default function BackofficeLogs({ sessions = [], events = [], lots = [], 
           }}>{label}</button>
         ))}
       </div>
-      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Filtrer par n° d'abonné (26IXP…), email, adresse IP…"
+      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Filtrer par n° d'abonné (ABIXP…), email, adresse IP…"
         style={{ width: '100%', padding: '10px 14px', border: '.5px solid var(--rule)', background: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: 'inherit', marginBottom: '1rem' }} />
 
       <div style={{ background: 'var(--white)', border: '.5px solid var(--rule)', overflowX: 'auto' }}>

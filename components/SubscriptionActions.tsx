@@ -10,6 +10,12 @@
 //   • pro-forma en attente → « Valider le paiement » / « Annuler la pro-forma »
 //   • suspendu            → « Réactiver », sinon « Suspendre »
 //   • toujours            → « Prolonger » (geste commercial, en jours)
+//   • generaladmin        → aucun bouton de facturation ; « Retirer generaladmin »
+//
+// Facturation (2026-11-07) : montants saisis HT ; la validation du paiement
+// exige le montant reçu sur le compte (= TTC attendu), la date de valeur et la
+// référence lue sur le relevé. Un justificatif déposé par le client est
+// rattaché automatiquement (lien de consultation, rejet motivé possible).
 //
 // Habilitations (2026-11-01) : la prop `caps` décrit l'administrateur connecté.
 // Un administrateur de type 2 ne voit que les boutons de ses habilitations ;
@@ -20,12 +26,13 @@
 import { useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import {
-  PLAN_LABEL, PAID_PLANS, fmtAmount, fmtDate, displayName, endDate,
+  PLAN_LABEL, PAID_PLANS, GENERALADMIN, fmtAmount, fmtDate, displayName, endDate, invTTC,
   type Subscriber, type Invoice, type PlanRow, type AdminAction,
 } from '../lib/subscriptions'
+import { fmtAbonne, fmtDocNumber, normRef, VAT_DEFAULT, type Paiement } from '../lib/billing'
 import { can, type AdminCapabilities } from '../lib/adminPermissions'
 
-export async function postAdminAction(payload: AdminAction): Promise<{ ok: boolean; error?: string }> {
+export async function postAdminAction(payload: AdminAction): Promise<{ ok: boolean; error?: string; emailed?: boolean }> {
   try {
     const r = await fetch('/api/admin/subscriptions', {
       method: 'POST',
@@ -34,7 +41,7 @@ export async function postAdminAction(payload: AdminAction): Promise<{ ok: boole
       body: JSON.stringify(payload),
     })
     const d = await r.json().catch(() => ({}))
-    return r.ok ? { ok: true } : { ok: false, error: d.error || `Erreur ${r.status}` }
+    return r.ok ? { ok: true, emailed: d.emailed } : { ok: false, error: d.error || `Erreur ${r.status}` }
   } catch (e: any) {
     return { ok: false, error: e?.message || 'Erreur réseau' }
   }
@@ -57,37 +64,70 @@ type ModalState =
   | { kind: 'status'; action: 'suspend' | 'reactivate' }
   | { kind: 'invoice'; action: 'confirm_payment' | 'cancel_proforma'; invoice: Invoice }
   | { kind: 'delete' }
+  | { kind: 'generaladmin'; on: boolean }
+  | { kind: 'reject'; paiement: Paiement }
 
 interface Props {
   user:      Subscriber
   plans:     PlanRow[]
   pending:   Invoice[]            // pro-formas en attente pour cet utilisateur
+  paiements?: Paiement[]          // paiements déclarés (justificatifs) de cet utilisateur
   onDone:    (message: string) => void
   onError:   (message: string) => void
   compact?:  boolean
   caps?:     AdminCapabilities | null   // absent = tous les droits (super)
 }
 
-export default function SubscriptionActions({ user, plans, pending, onDone, onError, compact, caps }: Props) {
+export default function SubscriptionActions({ user, plans, pending, paiements = [], onDone, onError, compact, caps }: Props) {
   const [modal, setModal] = useState<ModalState | null>(null)
   const allowed = (action: string) => !caps || can(caps, action)
   const canPlan = allowed('activate_plan') || allowed('create_proforma')
   const isPaidActive = user.statut === 'active' && (PAID_PLANS as readonly string[]).includes(user.plan)
+  const isGA = user.role === GENERALADMIN
+
+  if (isGA) {
+    return (
+      <>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }} onClick={e => e.stopPropagation()}>
+          <span style={{ fontSize: 10, padding: '2px 8px', background: '#EDE7FB', color: '#5B21B6', fontWeight: 700 }}>GENERALADMIN</span>
+          {!compact && allowed('set_generaladmin') && (
+            <button style={S.btn('outline')} onClick={() => setModal({ kind: 'generaladmin', on: false })}>Retirer generaladmin</button>
+          )}
+        </div>
+        {modal && <ActionModal modal={modal} user={user} plans={plans} paiements={paiements} onClose={() => setModal(null)}
+          onSubmit={async (payload, okMsg) => { const r = await postAdminAction(payload); if (r.ok) { setModal(null); onDone(okMsg) } else onError(r.error || 'Erreur'); return r.ok }} />}
+      </>
+    )
+  }
 
   return (
     <>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }} onClick={e => e.stopPropagation()}>
-        {allowed('confirm_payment') && pending.map(inv => (
-          <span key={inv.id} style={{ display: 'contents' }}>
-            <button style={S.btn('success')} onClick={() => setModal({ kind: 'invoice', action: 'confirm_payment', invoice: inv })}>
-              ✓ Valider le paiement {PLAN_LABEL[inv.plan_code]}
-            </button>
-            {!compact && (
-              <button style={S.btn('outline')} onClick={() => setModal({ kind: 'invoice', action: 'cancel_proforma', invoice: inv })}>
-                Annuler pro-forma
+        {allowed('confirm_payment') && pending.map(inv => {
+          const decl = paiements.filter(p => p.invoice_id === inv.id && p.statut === 'declare')
+          return (
+            <span key={inv.id} style={{ display: 'contents' }}>
+              <button style={S.btn('success')} onClick={() => setModal({ kind: 'invoice', action: 'confirm_payment', invoice: inv })}>
+                ✓ Valider le paiement {PLAN_LABEL[inv.plan_code]}{decl.length ? ' 📎' : ''}
               </button>
-            )}
-          </span>
+              {!compact && (
+                <button style={S.btn('outline')} onClick={() => setModal({ kind: 'invoice', action: 'cancel_proforma', invoice: inv })}>
+                  Annuler pro-forma
+                </button>
+              )}
+            </span>
+          )
+        })}
+        {pending.map(inv => (
+          <a key={'v' + inv.id} href={`/facturation/document/${inv.id}`} target="_blank" rel="noreferrer" style={{ ...S.btn('outline'), textDecoration: 'none' }}>
+            Voir {fmtDocNumber(inv.payment_reference || inv.proforma_number)}
+          </a>
+        ))}
+        {!compact && allowed('resend_proforma') && pending.map(inv => (
+          <button key={'r' + inv.id} style={S.btn('outline')} onClick={async () => {
+            const r = await postAdminAction({ action: 'resend_proforma', invoiceId: inv.id })
+            r.ok ? onDone(`Pro-forma ${fmtDocNumber(inv.payment_reference)} renvoyée par email`) : onError(r.error || 'Erreur')
+          }}>Renvoyer par email</button>
         ))}
 
         {canPlan && PAID_PLANS.map(code => {
@@ -108,6 +148,10 @@ export default function SubscriptionActions({ user, plans, pending, onDone, onEr
           <button style={S.btn('outline')} onClick={() => setModal({ kind: 'extend' })}>Prolonger</button>
         )}
 
+        {!compact && allowed('set_generaladmin') && (
+          <button style={S.btn('outline')} onClick={() => setModal({ kind: 'generaladmin', on: true })}>Generaladmin</button>
+        )}
+
         {!compact && allowed('delete') && user.role !== 'admin' && (
           <button style={{ ...S.btn('danger'), background: '#FEE8E8' }} onClick={() => setModal({ kind: 'delete' })}>
             Supprimer
@@ -117,7 +161,7 @@ export default function SubscriptionActions({ user, plans, pending, onDone, onEr
 
       {modal && (
         <ActionModal
-          modal={modal} user={user} plans={plans}
+          modal={modal} user={user} plans={plans} paiements={paiements}
           canActivate={allowed('activate_plan')} canProforma={allowed('create_proforma')}
           onClose={() => setModal(null)}
           onSubmit={async (payload, okMsg) => {
@@ -132,12 +176,13 @@ export default function SubscriptionActions({ user, plans, pending, onDone, onEr
 }
 
 // ── Fenêtre de confirmation ──────────────────────────────────────────────────
-function ActionModal({ modal, user, plans, onClose, onSubmit, canActivate = true, canProforma = true }: {
+function ActionModal({ modal, user, plans, paiements = [], onClose, onSubmit, canActivate = true, canProforma = true }: {
   canActivate?: boolean
   canProforma?: boolean
   modal: ModalState
   user: Subscriber
   plans: PlanRow[]
+  paiements?: Paiement[]
   onClose: () => void
   onSubmit: (payload: AdminAction, okMsg: string) => Promise<boolean>
 }) {
@@ -152,8 +197,15 @@ function ActionModal({ modal, user, plans, onClose, onSubmit, canActivate = true
   const [busy, setBusy]     = useState(false)
   const [err, setErr]       = useState('')
   const [confirmNum, setConfirmNum] = useState('')
+  // Validation du paiement (rapprochement avec le relevé bancaire)
+  const invForPay = modal.kind === 'invoice' ? modal.invoice : null
+  const declared = invForPay ? paiements.find(p => p.invoice_id === invForPay.id && p.statut === 'declare') : undefined
+  const [recu, setRecu]       = useState<string>(declared?.montant != null ? String(declared.montant) : invForPay ? String(invTTC(invForPay)) : '')
+  const [dateVal, setDateVal] = useState<string>(declared?.date_valeur || new Date().toISOString().slice(0, 10))
+  const [refLue, setRefLue]   = useState<string>(declared?.reference_libelle || '')
+  const [motif, setMotif]     = useState('')
   // Le numéro d'abonné identifie le compte dans chaque fenêtre d'action.
-  const name = `${user.numero_abonne} · ${displayName(user)}`
+  const name = `${fmtAbonne(user.numero_abonne)} · ${displayName(user)}`
 
   const setYearsAndAmount = (y: number) => {
     setYears(y)
@@ -178,7 +230,7 @@ function ActionModal({ modal, user, plans, onClose, onSubmit, canActivate = true
               </select>
             </div>
             <div>
-              <label style={S.label}>MONTANT (DH){contractual ? ' — CONTRAT' : ''}</label>
+              <label style={S.label}>MONTANT HT (DH){contractual ? ' — CONTRAT' : ''}</label>
               <input style={S.input} type="number" min={0} value={amount} placeholder={contractual ? 'Montant du contrat' : ''}
                 onChange={e => setAmount(e.target.value)} />
             </div>
@@ -198,10 +250,16 @@ function ActionModal({ modal, user, plans, onClose, onSubmit, canActivate = true
               </label>
             )}
           </div>
+          {amount !== '' && Number(amount) > 0 && (
+            <p style={{ fontSize: 12, marginTop: 8 }}>
+              Soit <b>{fmtAmount(Math.round(Number(amount) * (100 + VAT_DEFAULT)) / 100)} TTC</b> (TVA {VAT_DEFAULT} %).
+              {mode === 'create_proforma' ? ' La pro-forma est envoyée au client par email.' : ' La facture est envoyée au client par email.'}
+            </p>
+          )}
           <p style={{ fontSize: 12, color: 'var(--inkm)', marginTop: 12, lineHeight: 1.5 }}>
             {modal.renew
-              ? `La nouvelle période s'ajoutera à l'échéance actuelle (${fmtDate(endDate(user))}).`
-              : 'La période démarre le jour de la validation du paiement.'}
+              ? `Les jours restants (échéance ${fmtDate(endDate(user))}) s'ajouteront à la nouvelle période de 12 mois.`
+              : 'La période de 12 mois démarre le jour de la validation du paiement.'}
           </p>
         </>
       )
@@ -218,21 +276,84 @@ function ActionModal({ modal, user, plans, onClose, onSubmit, canActivate = true
       const inv = modal.invoice
       const invAction = modal.action
       const confirm = invAction === 'confirm_payment'
+      const expected = invTTC(inv)
+      const recuN = Number(String(recu).replace(',', '.').replace(/\s/g, ''))
+      const amountOk = Number.isFinite(recuN) && Math.abs(recuN - expected) < 0.005
+      const refOk = !refLue || normRef(refLue).includes(normRef(inv.payment_reference || inv.proforma_number || ''))
       title = confirm ? `Valider le paiement — ${name}` : `Annuler la pro-forma — ${name}`
-      cta = confirm ? `Paiement reçu : activer ${PLAN_LABEL[inv.plan_code]}` : 'Annuler la pro-forma'
-      body = (
+      cta = confirm ? `Paiement reçu : émettre la facture et activer ${PLAN_LABEL[inv.plan_code]}` : 'Annuler la pro-forma'
+      body = confirm ? (
+        <>
+          <p style={{ fontSize: 13, lineHeight: 1.6, margin: '0 0 10px' }}>
+            Pro-forma <b style={{ fontFamily: 'monospace' }}>{fmtDocNumber(inv.payment_reference || inv.proforma_number)}</b> · {PLAN_LABEL[inv.plan_code]} · {inv.years} an{inv.years > 1 ? 's' : ''}<br />
+            Attendu : <b>{fmtAmount(expected)} TTC</b>{inv.amount_ht != null ? ` (${fmtAmount(inv.amount_ht)} HT)` : ''}
+          </p>
+          {declared && (
+            <div style={{ background: '#F2F8F4', border: '.5px solid #A8D5B8', padding: '8px 10px', fontSize: 12, marginBottom: 10 }}>
+              Justificatif déposé par le client le {fmtDate(declared.created_at)} : {fmtAmount(declared.montant)} · virement du {fmtDate(declared.date_valeur)}
+              {declared.justificatif_path && <> · <a href={`/api/admin/justificatif?id=${declared.id}`} target="_blank" rel="noreferrer">ouvrir le justificatif</a></>}
+            </div>
+          )}
+          <p style={{ fontSize: 12, color: '#8A5A10', margin: '0 0 10px' }}>Vérifier sur le relevé bancaire que les fonds sont bien arrivés avant de valider.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            <div>
+              <label style={S.label}>MONTANT REÇU SUR LE COMPTE (DH)</label>
+              <input style={{ ...S.input, borderColor: amountOk ? '#1A7A40' : '#C0392B' }} value={recu} onChange={e => setRecu(e.target.value)} inputMode="decimal" />
+            </div>
+            <div>
+              <label style={S.label}>DATE DE VALEUR</label>
+              <input style={S.input} type="date" value={dateVal} onChange={e => setDateVal(e.target.value)} />
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={S.label}>LIBELLÉ / RÉFÉRENCE LU SUR LE RELEVÉ</label>
+              <input style={{ ...S.input, borderColor: refOk ? 'var(--rule)' : '#D97706' }} value={refLue} onChange={e => setRefLue(e.target.value)} placeholder={fmtDocNumber(inv.payment_reference)} />
+            </div>
+          </div>
+          {!amountOk && <p style={{ fontSize: 12, color: '#C0392B', marginTop: 8 }}>Montant différent du TTC attendu : le paiement ne peut pas être accepté (fonds à retourner).</p>}
+          {amountOk && !refOk && <p style={{ fontSize: 12, color: '#D97706', marginTop: 8 }}>La référence lue ne contient pas {fmtDocNumber(inv.payment_reference)} : vérifier qu'il s'agit bien de ce client.</p>}
+          {declared && (
+            <button style={{ ...S.btn('danger'), marginTop: 10 }} onClick={() => onSubmit({ action: 'reject_payment', paiementId: declared.id, motif: motif || 'Fonds non reçus ou montant non conforme' },
+              'Justificatif rejeté')}>Rejeter ce justificatif</button>
+          )}
+          {declared && <input style={{ ...S.input, marginTop: 6 }} value={motif} onChange={e => setMotif(e.target.value)} placeholder="Motif du rejet (communiqué au client)" />}
+        </>
+      ) : (
         <p style={{ fontSize: 13, lineHeight: 1.6 }}>
-          Pro-forma <b>{inv.proforma_number}</b> · {PLAN_LABEL[inv.plan_code]} · {inv.years} an{inv.years > 1 ? 's' : ''} · <b>{fmtAmount(inv.amount)}</b>
-          <br />
-          {confirm
-            ? 'Une facture définitive sera numérotée et le plan sera activé immédiatement.'
-            : 'La pro-forma sera marquée comme annulée. Le compte n\'est pas modifié.'}
+          Pro-forma <b>{fmtDocNumber(inv.payment_reference || inv.proforma_number)}</b> · {PLAN_LABEL[inv.plan_code]} · <b>{fmtAmount(expected)} TTC</b>
+          <br />La pro-forma sera marquée comme annulée. Le compte n'est pas modifié.
         </p>
       )
-      submit = () => onSubmit(
-        { action: invAction, invoiceId: inv.id, note: note || undefined },
-        confirm ? `${name} : paiement validé, ${PLAN_LABEL[inv.plan_code]} activé` : `Pro-forma ${inv.proforma_number} annulée`,
+      submit = () => {
+        if (!confirm) return onSubmit({ action: 'cancel_proforma', invoiceId: inv.id, note: note || undefined }, `Pro-forma ${fmtDocNumber(inv.payment_reference)} annulée`)
+        if (!amountOk) { setErr('Le montant reçu doit être exactement le TTC attendu.'); return Promise.resolve(false) }
+        return onSubmit(
+          { action: 'confirm_payment', invoiceId: inv.id, amount: recuN, dateValeur: dateVal, reference: refLue || undefined, paiementId: declared?.id || null, note: note || undefined },
+          `${name} : paiement validé, facture émise, ${PLAN_LABEL[inv.plan_code]} activé`,
+        )
+      }
+      break
+    }
+    case 'generaladmin': {
+      const on = modal.on
+      title = `${on ? 'Accorder' : 'Retirer'} le rôle generaladmin — ${name}`
+      cta = on ? 'Accorder generaladmin' : 'Retirer generaladmin'
+      body = (
+        <p style={{ fontSize: 13, lineHeight: 1.6 }}>
+          {on
+            ? 'Le compte obtient tous les privilèges (accès Entreprise), sans paiement ni échéance. Il est exclu de la facturation, des relances et des statistiques. Ses pro-formas en attente sont annulées.'
+            : 'Le compte perd l’accès complet : il repasse sans abonnement (statut expiré) et devra souscrire normalement.'}
+        </p>
       )
+      submit = () => onSubmit({ action: 'set_generaladmin', userId: user.id, on, note: note || undefined },
+        `${name} : rôle generaladmin ${on ? 'accordé' : 'retiré'}`)
+      break
+    }
+    case 'reject': {
+      const p = modal.paiement
+      title = `Rejeter le justificatif — ${name}`
+      cta = 'Rejeter'
+      body = <input style={S.input} value={motif} onChange={e => setMotif(e.target.value)} placeholder="Motif (communiqué au client)" />
+      submit = () => onSubmit({ action: 'reject_payment', paiementId: p.id, motif: motif || 'Fonds non reçus' }, 'Justificatif rejeté')
       break
     }
     case 'status': {
@@ -270,7 +391,7 @@ function ActionModal({ modal, user, plans, onClose, onSubmit, canActivate = true
     case 'delete': {
       title = `Supprimer le compte — ${name}`
       cta = 'Supprimer définitivement'
-      const ok = confirmNum.trim().toUpperCase() === user.numero_abonne
+      const ok = confirmNum.trim().toUpperCase().replace(/\./g, '') === user.numero_abonne
       body = (
         <>
           <p style={{ fontSize: 13, lineHeight: 1.6, margin: 0 }}>
@@ -285,8 +406,8 @@ function ActionModal({ modal, user, plans, onClose, onSubmit, canActivate = true
         </>
       )
       submit = () => {
-        if (!ok) { setErr(`Saisir exactement ${user.numero_abonne} pour confirmer.`); return Promise.resolve(false) }
-        return onSubmit({ action: 'delete', userId: user.id, confirm: confirmNum.trim(), note: note || undefined },
+        if (!ok) { setErr(`Saisir exactement ${fmtAbonne(user.numero_abonne)} pour confirmer.`); return Promise.resolve(false) }
+        return onSubmit({ action: 'delete', userId: user.id, confirm: confirmNum.trim().replace(/\./g, ''), note: note || undefined },
           `Compte ${user.numero_abonne} supprimé`)
       }
       break

@@ -18,7 +18,7 @@ type Plan   = 'trial' | 'pro' | 'premium' | 'enterprise'
 type Statut = 'trial' | 'active' | 'expired' | 'suspended'
 
 interface SessionUser {
-  numero:     string | null   // numéro d'abonné, format 26IXP001
+  numero:     string | null   // numéro d'abonné, format ABIXP2701AA (affiché ABIXP27.01AA)
   email:      string
   role:       'admin' | 'user'
   plan:       Plan

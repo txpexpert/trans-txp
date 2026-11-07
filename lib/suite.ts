@@ -1,4 +1,4 @@
-import { PRICING, fmtDH } from './pricing'
+import { PRICING, fmtDH, priceLine } from './pricing'
 // lib/suite.ts
 // ─────────────────────────────────────────────────────────────────────────────
 // Architecture d'offre Import-eXPert (refonte 2026) — source unique de vérité
@@ -133,7 +133,7 @@ export const CHAIN = ESPACES.filter(e => e.chain)
 export const espaceBySlug = (s: string) => ESPACES.find(e => e.slug === s)
 
 export const TIER_LABEL: Record<Tool['tier'], string> = {
-  decouverte: 'Découverte', operateur: 'Opérateur', expert: 'Expert', entreprise: 'Entreprise',
+  decouverte: 'Découverte', operateur: 'Pro', expert: 'Premium', entreprise: 'Entreprise',
 }
 
 export const PROOFS = [
@@ -178,7 +178,7 @@ export const PROFILS = [
 ]
 
 // Tarification : abonnement ANNUEL + prestations expertes à l'acte.
-// Montants issus de lib/pricing.ts (source unique, grille du 2026-11-01).
+// Montants HT issus de lib/pricing.ts (source unique, grille du 2026-11-07).
 export const PLANS = [
   {
     id: 'free', nom: 'Découverte', prix: '0', unite: 'pour toujours',
@@ -187,13 +187,13 @@ export const PLANS = [
     cta: 'Créer un compte', href: '/auth/register?plan=free',
   },
   {
-    id: 'pro', nom: 'Opérateur', prix: fmtDH(PRICING.pro.annual!), unite: `DH / an · soit ${PRICING.pro.monthlyRef} DH/mois · ${PRICING.pro.note.toLowerCase()}`,
+    id: 'pro', nom: 'Pro', prix: fmtDH(PRICING.pro.annual!), unite: priceLine('pro').replace(/^DH /, ''),
     pour: 'PME importatrices',
     inclus: ['Qualifier, Chiffrer et Exécuter', 'Classement SH inclus', 'Bibliothèque complète', 'IXP-Assistant illimité', 'Support par email'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=pro',
   },
   {
-    id: 'premium', nom: 'Expert', prix: fmtDH(PRICING.premium.annual!), unite: `DH / an · soit ${PRICING.premium.monthlyRef} DH/mois · ${PRICING.premium.note.toLowerCase()}`, vedette: true,
+    id: 'premium', nom: 'Premium', prix: fmtDH(PRICING.premium.annual!), unite: priceLine('premium').replace(/^DH /, ''), vedette: true,
     pour: 'Transitaires, commissionnaires, cabinets',
     inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients', '2 renseignements experts inclus / mois'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=premium',
@@ -201,7 +201,7 @@ export const PLANS = [
   {
     id: 'enterprise', nom: 'Entreprise', prix: 'Sur contrat', unite: PRICING.enterprise.note,
     pour: 'Groupes industriels, directions financières',
-    inclus: ['Tout Expert, pour toute l’équipe', 'Espace Piloter et contentieux avancé', 'API ERP / TMS', 'Expert dédié et onboarding', 'Engagement de service (SLA)'],
+    inclus: ['Tout Premium, pour toute l’équipe', 'Espace Piloter et contentieux avancé', 'API ERP / TMS', 'Expert dédié et onboarding', 'Engagement de service (SLA)'],
     cta: 'Parler à un expert', href: '/contact?sujet=entreprise',
   },
 ]

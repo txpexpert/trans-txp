@@ -10,7 +10,7 @@ import SiteShell from '../components/SiteShell'
 // SiteShell elles-mêmes ; les autres sont enveloppées ici.
 // Hors champ : l'application mobile (/app, /mobile), qui a sa propre navigation, et le back-office.
 const OWN_SHELL = new Set(['/', '/plateforme', '/expertise', '/tarifs', '/a-propos', '/espaces/[slug]'])
-const NO_SHELL = /^\/(app|mobile|backoffice|gestion-abonnements|_error|404|500)(\/|$)/
+const NO_SHELL = /^\/(app|mobile|backoffice|gestion-abonnements|facturation|_error|404|500)(\/|$)/
 
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()

@@ -68,7 +68,7 @@ export default function BackofficeUtilisateurs() {
 
       {loadError && <div style={{ background: '#FEE8E8', color: '#C0392B', padding: '10px 14px', fontSize: 12, marginBottom: '1rem' }}>{loadError}</div>}
 
-      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher n° d'abonné (26IXP…), nom, société, email, téléphone…"
+      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher n° d'abonné (ABIXP…), nom, société, email, téléphone…"
         style={{ width: '100%', padding: '10px 14px', border: '.5px solid var(--rule)', background: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: 'inherit', marginBottom: '1rem' }} />
 
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>

@@ -5,43 +5,51 @@
 // lib/moduleAccess.ts, backoffice). Aucune dépendance Node : importable depuis
 // l'Edge Runtime.
 //
-// Décision (2026-11-01) : les abonnements sont facturés UNIQUEMENT à l'année.
-// Le montant mensuel est affiché à titre de référence (« deux mois offerts »).
-// La table Supabase public.subscription_plans reprend ces montants
-// (migration supabase/migrations/0004_subscriptions.sql) : en cas de
-// changement de prix, modifier les deux.
+// Décision (2026-11-07) : prix fixés HORS TAXES, TVA 20 % en sus, facturation
+// ANNUELLE uniquement. L'équivalent mensuel TTC est affiché à titre indicatif ;
+// aucune remise en % n'est annoncée tant qu'il n'existe pas d'abonnement
+// mensuel réellement proposé (prix de référence fictif = pratique trompeuse).
+// La table Supabase public.subscription_plans reprend ces montants HT
+// (migration 0010_facturation.sql) : en cas de changement, modifier les deux.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type PaidPlan = 'pro' | 'premium' | 'enterprise'
 
+export const VAT_RATE = 20 // %
+
 export interface PlanPricing {
-  label:          string
-  /** Montant facturé pour 12 mois, en DH. null = sur contrat. */
-  annual:         number | null
-  /** Montant mensuel de référence, en DH. null = sur contrat. */
-  monthlyRef:     number | null
+  label:      string
+  /** Montant facturé pour 12 mois, HT, en DH. null = sur contrat. */
+  annual:     number | null
+  /** Montant annuel TTC (calculé). null = sur contrat. */
+  annualTTC:  number | null
+  /** Équivalent mensuel TTC, indicatif. null = sur contrat. */
+  monthlyTTC: number | null
   /** Mention commerciale sous le prix. */
-  note:           string
+  note:       string
+}
+
+const ttc = (ht: number) => Math.round(ht * (100 + VAT_RATE)) / 100
+
+function paid(label: string, annualHT: number): PlanPricing {
+  return {
+    label,
+    annual:     annualHT,
+    annualTTC:  ttc(annualHT),
+    monthlyTTC: Math.round(ttc(annualHT) / 12),
+    note:       'Abonnement annuel',
+  }
 }
 
 export const PRICING: Record<PaidPlan, PlanPricing> = {
-  pro: {
-    label:      'Pro',
-    annual:     6000,
-    monthlyRef: 680,
-    note:       'Deux mois offerts',
-  },
-  premium: {
-    label:      'Premium',
-    annual:     9000,
-    monthlyRef: 970,
-    note:       'Deux mois offerts',
-  },
+  pro:     paid('Pro', 5000),       // 6 000 TTC · 500 TTC / mois
+  premium: paid('Premium', 9000),   // 10 800 TTC · 900 TTC / mois
   enterprise: {
     label:      'Entreprise',
     annual:     null,
-    monthlyRef: null,
-    note:       'Option contractuelle. Accès illimité aux ressources et accompagnement personnalisé par l’équipe.',
+    annualTTC:  null,
+    monthlyTTC: null,
+    note:       'Sur contrat, conditions personnalisées. Accès illimité aux ressources et accompagnement par l’équipe.',
   },
 }
 
@@ -49,5 +57,12 @@ export const BILLING_PERIOD_MONTHS = 12
 
 /** 6000 → "6 000" (espace fine insécable, format fr). */
 export function fmtDH(n: number): string {
-  return n.toLocaleString('fr-FR').replace(/ | /g, ' ')
+  return n.toLocaleString('fr-FR').replace(/ | /g, ' ')
+}
+
+/** « 5 000 DH HT / an · soit 6 000 DH TTC · équivalent 500 DH TTC / mois » */
+export function priceLine(plan: PaidPlan): string {
+  const p = PRICING[plan]
+  if (p.annual == null) return p.note
+  return `DH HT / an · soit ${fmtDH(p.annualTTC!)} DH TTC (TVA ${VAT_RATE} %) · équivalent ${fmtDH(p.monthlyTTC!)} DH TTC / mois`
 }

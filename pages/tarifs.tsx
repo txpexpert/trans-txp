@@ -6,9 +6,9 @@ import { PLANS, PRESTATIONS } from '../lib/suite'
 
 const FAQ = [
   ['Comment est calculé l’abonnement ?', 'L’abonnement est souscrit pour un an, deux mois offerts par rapport au tarif mensuel de référence. Le plan Entreprise est une option contractuelle couvrant toute une équipe.'],
-  ['Que coûte l’avis d’un expert ?', 'Les renseignements et avis sont facturés à l’opération, selon un barème communiqué avant toute intervention. Le plan Expert en inclut deux par mois.'],
-  ['L’essai gratuit donne-t-il accès à tout ?', 'Oui : 14 jours d’accès au plan Expert.'],
-  ['Comment se règle l’abonnement ?', 'Par virement bancaire, en dirhams, en une fois pour l’année. Votre plan est activé dès réception du paiement.'],
+  ['Que coûte l’avis d’un expert ?', 'Les renseignements et avis sont facturés à l’opération, selon un barème communiqué avant toute intervention. Le plan Premium en inclut deux par mois.'],
+  ['L’essai gratuit donne-t-il accès à tout ?', 'Oui : 14 jours d’accès complet, sans engagement.'],
+  ['Comment se règle l’abonnement ?', 'Par virement bancaire, en dirhams, en une fois pour l’année, avec la référence indiquée sur votre facture pro-forma. Votre plan est activé pour 12 mois à la validation du paiement, et la facture vous est envoyée par email.'],
 ]
 
 export default function Tarifs() {
@@ -35,7 +35,7 @@ export default function Tarifs() {
               </div>
             ))}
           </div>
-          <p className="x-note x-center">Abonnement annuel, payable par virement. Deux mois offerts sur les plans Opérateur et Expert.</p>
+          <p className="x-note x-center">Prix hors taxes, TVA 20 % en sus. Abonnement annuel, payable par virement bancaire ; activation à la validation du paiement.</p>
         </div>
       </section>
 

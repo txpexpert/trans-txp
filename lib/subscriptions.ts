@@ -7,7 +7,7 @@
 
 export interface Subscriber {
   id:             string
-  numero_abonne:  string        // identifiant unique, format 26IXP001
+  numero_abonne:  string        // identifiant unique, format ABIXP2701AA (affiché ABIXP27.01AA)
   email:          string
   nom:            string | null
   prenom:         string | null
@@ -22,6 +22,16 @@ export interface Subscriber {
   last_login_at:  string | null
   email_verified: boolean
   role:           string | null
+  plan_souhaite?:  string | null
+  type_client?:    'entreprise' | 'particulier' | null
+  raison_sociale?: string | null
+  ice?:            string | null
+  if_fiscal?:      string | null
+  rc?:             string | null
+  adresse_facturation?: string | null
+  code_postal?:    string | null
+  ville?:          string | null
+  pays?:           string | null
 }
 
 export interface Invoice {
@@ -36,6 +46,13 @@ export interface Invoice {
   status:          'proforma_envoyee' | 'payee' | 'annulee'
   proforma_number: string | null
   invoice_number:  string | null
+  payment_reference?: string | null
+  amount_ht?:      number | null
+  vat_amount?:     number | null
+  amount_ttc?:     number | null
+  period_end?:     string | null
+  days_carried?:   number
+  origin?:         string
   sent_at:         string | null
   paid_at:         string | null
   created_at:      string
@@ -68,7 +85,12 @@ export interface PlanRow {
 export type AdminAction =
   | { action: 'activate_plan';   userId: string; plan: string; years?: number; amount?: number | null; note?: string }
   | { action: 'create_proforma'; userId: string; plan: string; years?: number; amount?: number | null; note?: string }
-  | { action: 'confirm_payment'; invoiceId: string; note?: string }
+  | { action: 'confirm_payment'; invoiceId: string; amount: number; dateValeur?: string; reference?: string; paiementId?: string | null; note?: string }
+  | { action: 'reject_payment';  paiementId: string; motif: string }
+  | { action: 'resend_proforma'; invoiceId: string }
+  | { action: 'create_avoir';    invoiceId: string; motif: string; amountHT?: number | null; resilier?: boolean }
+  | { action: 'set_generaladmin'; userId: string; on: boolean; note?: string }
+  | { action: 'update_profile';  userId: string; profile: Record<string, string> }
   | { action: 'cancel_proforma'; invoiceId: string; note?: string }
   | { action: 'suspend';         userId: string; note?: string }
   | { action: 'reactivate';      userId: string; note?: string }
@@ -89,6 +111,8 @@ export const PLAN_LABEL: Record<string, string> = {
   trial: 'Essai', free: 'Gratuit', pro: 'Pro', premium: 'Premium', enterprise: 'Entreprise',
 }
 
+export const GENERALADMIN = 'generaladmin'
+
 export const STATUT_STYLE: Record<string, { bg: string; color: string; label: string }> = {
   active:    { bg: '#E6F7EE', color: '#1A7A40', label: 'Actif' },
   trial:     { bg: '#EEF4FE', color: '#1A3A9A', label: 'Essai' },
@@ -107,6 +131,11 @@ export const EVENT_LABEL: Record<string, string> = {
   expiration:        'Abonnement expiré',
   proforma_annulee:  'Pro-forma annulée',
   suppression:       'Compte supprimé',
+  paiement_declare:  'Justificatif de virement déposé',
+  paiement_rejete:   'Paiement non accepté',
+  avoir:             'Avoir émis',
+  generaladmin:      'Rôle generaladmin',
+  profil_facturation:'Profil de facturation mis à jour',
 }
 
 export const PAID_PLANS = ['pro', 'premium', 'enterprise'] as const
@@ -114,6 +143,11 @@ export const PAID_PLANS = ['pro', 'premium', 'enterprise'] as const
 export function fmtDate(iso: string | null | undefined): string {
   if (!iso) return '—'
   return new Date(iso).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+}
+
+/** Montant TTC d'une pro-forma / facture (colonne amount = TTC). */
+export function invTTC(i: Pick<Invoice, 'amount' | 'amount_ttc'>): number {
+  return Number(i.amount_ttc ?? i.amount)
 }
 
 export function fmtAmount(n: number | null | undefined): string {
