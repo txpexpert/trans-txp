@@ -46,6 +46,7 @@ export default function Register() {
           societe:   form.societe,
           telephone: form.telephone,
           profil:    form.profil,
+          plan:      typeof router.query.plan === 'string' ? router.query.plan : undefined,
         }),
       })
       const data = await res.json()

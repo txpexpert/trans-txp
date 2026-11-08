@@ -106,7 +106,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }).eq('id', user.id)
 
   // ✅ Journal des connexions (2026-11-01) : chaque session est rattachée au
-  // numéro d'abonné (26IXP…). Non bloquant : un échec d'écriture du journal
+  // numéro d'abonné (ABIXP27.01AA). Non bloquant : un échec d'écriture du journal
   // n'empêche jamais la connexion.
   const fwd = req.headers['x-forwarded-for']
   const ip = (Array.isArray(fwd) ? fwd[0] : fwd || '').split(',')[0].trim() || req.socket?.remoteAddress || null

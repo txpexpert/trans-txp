@@ -10,6 +10,7 @@ interface Overview {
   users_total: number; users_new_30d: number; users_unverified: number
   active_paid_by_plan: Record<string, number>; trials_running: number; expiring_30d: number
   revenue_12m: number; revenue_ytd: number; proformas_pending: number; proformas_pending_amount: number
+  paiements_declares?: number
   tarifs: number; circulaires: number; knowledge_chunks: number; decisions: number
   leads: number; leads_30d: number
 }
@@ -69,7 +70,8 @@ export default function BackofficeDashboard() {
     { label:'Comptes utilisateurs',  value: n(o?.users_total),       sub: o ? `+${o.users_new_30d} ces 30 derniers jours` : '',                                   color:'#059669', href:'/backoffice/utilisateurs' },
     { label:'Abonnés actifs',        value: o ? n(paidTotal) : '…',   sub: o ? ['pro','premium','enterprise'].map(p => `${PLAN_LABEL[p]} ${paid[p] || 0}`).join(' · ') : '', color:'#7C3AED', href:'/backoffice/abonnements' },
     { label:'Encaissé (12 mois)',    value: o ? fmtAmount(o.revenue_12m) : '…', sub: o ? `dont ${fmtAmount(o.revenue_ytd)} depuis janvier` : '',              color:'#D97706', href:'/backoffice/abonnements' },
-    { label:'Pro-formas en attente', value: n(o?.proformas_pending), sub: o ? `${fmtAmount(o.proformas_pending_amount)} à encaisser` : '',                        color:'#B45309', href:'/backoffice/abonnements' },
+    { label:'Pro-formas en attente', value: n(o?.proformas_pending), sub: o ? `${fmtAmount(o.proformas_pending_amount)} TTC à encaisser` : '',                    color:'#B45309', href:'/backoffice/abonnements' },
+    { label:'Justificatifs à vérifier', value: n(o?.paiements_declares ?? 0), sub: 'Virements déclarés par les clients', color:'#0E7490', href:'/backoffice/abonnements' },
     { label:'Échéances < 30 jours',  value: n(o?.expiring_30d),      sub: o ? `${o.trials_running} essai(s) en cours` : '',                                       color:'#DC2626', href:'/backoffice/abonnements' },
     { label:'Codes SH en base',      value: n(o?.tarifs),            sub:'Table tarifs',                                                                           color:'#2563EB', href:'/backoffice/tarifs' },
     { label:'Base documentaire',     value: n(o?.circulaires),       sub: o ? `documents · ${n(o.knowledge_chunks)} extraits · ${n(o.decisions)} décisions` : '',  color:'#0891B2', href:'/backoffice/circulaires' },

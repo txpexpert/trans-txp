@@ -10,11 +10,17 @@
 //                      Doit être un domaine vérifié dans Resend (pas gmail.com etc.)
 //   NEXT_PUBLIC_SITE_URL — URL de base du site, ex: "https://import-ia.com"
 //                      (utilisée pour construire le lien de vérification)
+//   RESEND_FROM_BILLING — expéditeur des documents de facturation (facultatif),
+//                      ex: "RIGORIS LEX — Abonnements <abonnement@rigorislex.ma>"
+//                      (domaine rigorislex.ma à vérifier dans Resend). À défaut : RESEND_FROM.
+//   BILLING_ADMIN_EMAIL — destinataire des alertes « justificatif déposé » (facultatif).
 // ─────────────────────────────────────────────────────────────────────────────
 
 const RESEND_API = 'https://api.resend.com/emails'
 
-async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
+export async function sendEmail({ to, subject, html, from, replyTo, headers }: {
+  to: string | string[]; subject: string; html: string; from?: string; replyTo?: string; headers?: Record<string, string>
+}) {
   if (!process.env.RESEND_API_KEY) {
     console.error('[email] RESEND_API_KEY manquante — email non envoyé (to:', to, ')')
     return { ok: false, error: 'Service email non configuré' }
@@ -27,10 +33,12 @@ async function sendEmail({ to, subject, html }: { to: string; subject: string; h
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: process.env.RESEND_FROM || 'Import-eXPert <no-reply@import-ia.com>',
+      from: from || process.env.RESEND_FROM || 'Import-eXPert <no-reply@import-ia.com>',
       to,
       subject,
       html,
+      ...(replyTo ? { reply_to: replyTo } : {}),
+      ...(headers ? { headers } : {}),
     }),
   })
 

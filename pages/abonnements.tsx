@@ -1,6 +1,6 @@
 ﻿import { useRouter } from 'next/router'
 import Layout from '../components/Layout'
-import { PRICING, fmtDH } from '../lib/pricing'
+import { PRICING, fmtDH, priceLine } from '../lib/pricing'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface PlanDef {
@@ -40,7 +40,7 @@ const PLANS: PlanDef[] = [
     id:       'pro',
     name:     'PRO',
     price:    fmtDH(PRICING.pro.annual!),
-    period:   `par an · soit ${PRICING.pro.monthlyRef} DH/mois · ${PRICING.pro.note}`,
+    period:   priceLine('pro').replace(/^DH /, ''),
     featured: false,
     modules:  '18 modules',
     items: [
@@ -63,7 +63,7 @@ const PLANS: PlanDef[] = [
     id:       'premium',
     name:     'PREMIUM',
     price:    fmtDH(PRICING.premium.annual!),
-    period:   `par an · soit ${PRICING.premium.monthlyRef} DH/mois · ${PRICING.premium.note}`,
+    period:   priceLine('premium').replace(/^DH /, ''),
     tag:      'RECOMMANDÉ',
     featured: true,
     modules:  '34 modules',
@@ -111,7 +111,7 @@ export default function Abonnements() {
 
   const handleCta = (plan: PlanDef) => {
     if (plan.ctaStyle === 'contact') {
-      router.push('/community#contact')
+      router.push('/contact?sujet=entreprise')
       return
     }
     router.push(`/auth/register?plan=${plan.id}`)
@@ -126,13 +126,13 @@ export default function Abonnements() {
           <h1 className="page-title">Abonnements</h1>
           <p className="page-sub">
             Choisissez le plan adapté à votre activité douanière.
-            Abonnement annuel, payable par virement Banque Populaire.
+            Prix hors taxes, TVA 20 % en sus. Abonnement annuel, payable par virement bancaire.
           </p>
         </div>
 
         {/* Essai gratuit */}
         <div className="alert alert-info" style={{ marginBottom: '1.5rem' }}>
-          14 jours d'essai gratuit sur tous les plans payants, avec accès complet.
+          14 jours d'essai gratuit avec accès complet. À la fin de l'essai, votre facture pro-forma vous est envoyée ; le plan choisi est activé pour 12 mois à la validation de votre virement.
         </div>
 
         {/* Grille des plans */}
@@ -186,16 +186,16 @@ export default function Abonnements() {
 
         {/* Note paiement */}
         <p style={{ fontSize: '12px', color: 'var(--inkm)', textAlign: 'center', marginBottom: '2rem' }}>
-          Abonnement annuel · Paiement par virement bancaire · Facturation en DH MAD · Activation dès réception du paiement
+          Prix HT · TVA 20 % · Abonnement annuel · Paiement par virement bancaire · Facturation en DH · Activation à la validation du paiement
         </p>
 
         {/* FAQ rapide */}
         <div style={{ maxWidth: 640, margin: '0 auto 2rem' }}>
           <div className="page-kicker" style={{ marginBottom: '.75rem' }}>QUESTIONS FRÉQUENTES</div>
           {[
-  [`L'essai gratuit inclut-il tous les modules ?`, `Oui — pendant 14 jours vous avez accès à l'intégralité de la plateforme, sans restriction.`],
-  [`Comment s'effectue le paiement ?`, `Par virement bancaire Banque Populaire, en une fois pour l'année. Une facture est émise à la souscription puis à chaque renouvellement annuel ; votre plan est activé dès réception du paiement.`],
-  [`Puis-je changer de plan en cours d'année ?`, `Oui — le passage à un plan supérieur est activé dès réception du complément de paiement, pour la durée restante de votre abonnement.`],
+  [`L'essai gratuit inclut-il tous les modules ?`, `Oui — pendant 14 jours vous avez accès à l'intégralité de la plateforme, sans restriction. Vous pouvez aussi régler avant la fin de l'essai : les 12 mois démarrent à la validation du paiement.`],
+  [`Comment s'effectue le paiement ?`, `Par virement bancaire, en une fois pour l'année, en indiquant la référence de votre facture pro-forma (PF-IXP…). Déposez ensuite votre justificatif dans « Mon abonnement ». À la validation du paiement, votre plan est activé pour 12 mois et la facture vous est envoyée par email.`],
+  [`Puis-je changer de plan en cours d'année ?`, `Oui — une pro-forma du nouveau plan vous est émise sur demande ; le nouveau plan démarre à la validation du paiement. Contactez-nous pour le traitement de la période restante.`],
   [`L'accès API est-il disponible sur le plan Premium ?`, `Non — l'API et l'intégration ERP sont réservées au plan Enterprise. Contactez-nous pour un devis.`],
 ].map(([q, a], i) => (
             <details key={i} style={{ borderBottom: '0.5px solid var(--brd, #ddd)', padding: '.75rem 0' }}>

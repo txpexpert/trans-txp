@@ -20,6 +20,7 @@ export default function BackofficeUtilisateurs() {
   const [users, setUsers]       = useState<Subscriber[]>([])
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [plans, setPlans]       = useState<PlanRow[]>([])
+  const [paiements, setPaiements] = useState<any[]>([])
   const [loading, setLoading]   = useState(true)
   const [loadError, setLoadError] = useState('')
   const [q, setQ]               = useState('')
@@ -33,7 +34,7 @@ export default function BackofficeUtilisateurs() {
       const r = await fetch('/api/admin/subscriptions', { credentials: 'include' })
       const d = await r.json()
       if (!r.ok) throw new Error(d.error || `Erreur ${r.status}`)
-      setUsers(d.users || []); setInvoices(d.invoices || []); setPlans(d.plans || [])
+      setUsers(d.users || []); setInvoices(d.invoices || []); setPlans(d.plans || []); setPaiements(d.paiements || [])
       setLoadError('')
     } catch (e: any) {
       setLoadError(e.message || 'Chargement impossible')
@@ -68,7 +69,7 @@ export default function BackofficeUtilisateurs() {
 
       {loadError && <div style={{ background: '#FEE8E8', color: '#C0392B', padding: '10px 14px', fontSize: 12, marginBottom: '1rem' }}>{loadError}</div>}
 
-      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher n° d'abonné (26IXP…), nom, société, email, téléphone…"
+      <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher n° d'abonné (ABIXP…), nom, société, email, téléphone…"
         style={{ width: '100%', padding: '10px 14px', border: '.5px solid var(--rule)', background: 'var(--white)', fontSize: 12, outline: 'none', fontFamily: 'inherit', marginBottom: '1rem' }} />
 
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
@@ -108,7 +109,7 @@ export default function BackofficeUtilisateurs() {
                     </td>
                     <td style={{ padding: '.55rem .75rem', color: 'var(--inkm)' }}>{fmtDate(u.created_at)}</td>
                     <td style={{ padding: '.55rem .75rem', minWidth: 260 }}>
-                      <SubscriptionActions user={u} plans={plans} pending={pendingByUser[u.id] || []} onDone={onDone} onError={onError} />
+                      <SubscriptionActions user={u} plans={plans} pending={pendingByUser[u.id] || []} paiements={paiements.filter(p => p.user_id === u.id)} onDone={onDone} onError={onError} />
                     </td>
                   </tr>
                 )
@@ -146,7 +147,7 @@ export default function BackofficeUtilisateurs() {
             ))}
 
             <div style={{ fontSize: 10, letterSpacing: '.08em', color: 'var(--inkm)', margin: '1.25rem 0 .5rem' }}>ABONNEMENT</div>
-            <SubscriptionActions user={selected} plans={plans} pending={pendingByUser[selected.id] || []} onDone={onDone} onError={onError} />
+            <SubscriptionActions user={selected} plans={plans} pending={pendingByUser[selected.id] || []} paiements={paiements.filter(p => p.user_id === selected.id)} onDone={onDone} onError={onError} />
 
             <div style={{ fontSize: 10, letterSpacing: '.08em', color: 'var(--inkm)', margin: '1.25rem 0 .5rem' }}>FACTURES</div>
             {invoices.filter(i => i.user_id === selected.id).length === 0

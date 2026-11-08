@@ -16,7 +16,10 @@ const VERIFY_TOKEN_TTL_MS = 48 * 60 * 60 * 1000 // 48h
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end()
 
-  const { email, password, nom, prenom, societe, telephone, profil } = req.body
+  const { email, password, nom, prenom, societe, telephone, profil, plan } = req.body
+  // Plan choisi sur la page Abonnements (?plan=pro|premium) : mémorisé pour la
+  // pro-forma de fin d'essai. L'accès reste l'essai de 14 jours.
+  const planSouhaite = ['pro', 'premium'].includes(plan) ? plan : null
 
   if (!email || !password) return res.status(400).json({ error: 'Email et mot de passe requis' })
   if (password.length < 8) return res.status(400).json({ error: 'Mot de passe trop court (8 caractères minimum)' })
@@ -60,6 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       statut: 'trial',
       trial_ends_at: new Date(Date.now() + TRIAL_TTL_MS).toISOString(),
       email_verified: false,
+      plan_souhaite: planSouhaite,
       verify_token: verifyToken,
       verify_token_expires: verifyTokenExpires,
     })

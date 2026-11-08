@@ -26,6 +26,12 @@ export default function AbonnementRequis({ from }: Props) {
         }}>
           Voir les abonnements
         </Link>
+        <Link href="/mon-abonnement" style={{
+          border: '1px solid #1A5C2A', padding: '10px 20px',
+          borderRadius: 6, textDecoration: 'none', color: '#1A5C2A',
+        }}>
+          Mon abonnement
+        </Link>
         <Link href={from ? `/auth/login?redirect=${encodeURIComponent(from)}` : "/auth/login"} style={{
           border: '1px solid #ccc', padding: '10px 20px',
           borderRadius: 6, textDecoration: 'none', color: '#333',
