@@ -18,8 +18,8 @@
 
 const RESEND_API = 'https://api.resend.com/emails'
 
-export async function sendEmail({ to, subject, html, from, replyTo }: {
-  to: string | string[]; subject: string; html: string; from?: string; replyTo?: string
+export async function sendEmail({ to, subject, html, from, replyTo, headers }: {
+  to: string | string[]; subject: string; html: string; from?: string; replyTo?: string; headers?: Record<string, string>
 }) {
   if (!process.env.RESEND_API_KEY) {
     console.error('[email] RESEND_API_KEY manquante — email non envoyé (to:', to, ')')
@@ -38,6 +38,7 @@ export async function sendEmail({ to, subject, html, from, replyTo }: {
       subject,
       html,
       ...(replyTo ? { reply_to: replyTo } : {}),
+      ...(headers ? { headers } : {}),
     }),
   })
 

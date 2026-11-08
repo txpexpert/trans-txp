@@ -86,6 +86,60 @@ export function esc(v: unknown): string {
   return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!))
 }
 
+// ── Repérage des dossiers dans la boîte de facturation (2026-11-08) ─────────
+// Une référence unique suit le dossier : la référence de paiement (PF-…).
+//   • objet balisé « [IXP-PF PF-…] » puis « [IXP-PAYE <n° facture>] » : la
+//     réponse du client garde la balise ;
+//   • adresse de réponse propre au dossier : facturation+pf-…@domaine (Gmail et
+//     Microsoft 365 la livrent dans la boîte principale) ;
+//   • Message-ID <pf-….ixp@domaine>, repris par la réponse du client
+//     (In-Reply-To / References) ; la facture s'affiche dans le même fil ;
+//   • en-têtes X-IXP-* et ligne « Réf. IXP » en pied de message.
+// Filtre Gmail conseillé : subject:(IXP-PF OR IXP-PAYE) → libellé IXP/Paiements.
+export const TAG_PF = 'IXP-PF'
+export const TAG_PAYE = 'IXP-PAYE'
+
+export function dossierAddress(base: string | null | undefined, ref: string): string | undefined {
+  if (!base || !base.includes('@') || !ref) return base || undefined
+  const [local, domain] = base.split('@')
+  return `${local.split('+')[0]}+${ref.toLowerCase()}@${domain}`
+}
+function msgId(s: BillingSettings, ref: string, suffix = '') {
+  const dom = (s.email_facturation || '').split('@')[1] || 'import-expert.ma'
+  return `<${ref.toLowerCase()}${suffix}.ixp@${dom}>`
+}
+function dossierHeaders(s: BillingSettings, doc: BillingDoc, user: { numero_abonne: string | null }, type: string, ownRef?: string) {
+  const pf = fmtDocNumber(doc.payment_reference)
+  const h: Record<string, string> = {
+    'X-IXP-Document': ownRef || pf, 'X-IXP-Reference': pf, 'X-IXP-Abonne': fmtAbonne(user.numero_abonne), 'X-IXP-Type': type,
+  }
+  if (ownRef) {
+    h['Message-ID'] = msgId(s, ownRef, '-' + type)
+    h['In-Reply-To'] = msgId(s, pf); h['References'] = msgId(s, pf)
+  } else if (type === 'proforma') {
+    h['Message-ID'] = msgId(s, pf)
+  } else {
+    h['Message-ID'] = msgId(s, pf, '-' + type + '-' + Date.now().toString(36))
+    h['In-Reply-To'] = msgId(s, pf); h['References'] = msgId(s, pf)
+  }
+  return h
+}
+function refLine(...parts: (string | null | undefined)[]) {
+  return `<p style="margin:18px 0 0;font-family:monospace;font-size:11px;color:#8A8078;">Réf. IXP : ${parts.filter(Boolean).map(esc).join(' · ')}<br>Merci de conserver l’objet de ce message dans vos réponses.</p>`
+}
+
+/** Reconnaît un message entrant lié à un dossier (objet, adresse « + » ou fil). Renvoie la référence PF-… ou le n° de facture. */
+export function matchDossier(m: { subject?: string; to?: string[]; inReplyTo?: string; references?: string }): string | null {
+  const t = /\[IXP-(?:PF|PAYE)\s+((?:PF-)?[A-Z]{3}\d{2}[A-Z]{2}\d{2})\]/i.exec(m.subject || '')
+  if (t) return t[1].toUpperCase()
+  for (const a of m.to || []) {
+    const p = /\+((?:pf-)?[a-z]{3}\d{2}[a-z]{2}\d{2})@/i.exec(a)
+    if (p) return p[1].toUpperCase()
+  }
+  const th = /<((?:pf-)?[a-z]{3}\d{2}[a-z]{2}\d{2})[^.>]*\.ixp@/i.exec(`${m.inReplyTo || ''} ${m.references || ''}`)
+  return th ? th[1].toUpperCase() : null
+}
+
 function bankBlock(s: BillingSettings, ref: string, amount: number) {
   const rows: [string, string][] = [
     ['Montant à virer', fmtMAD(amount) + ' TTC'],
@@ -117,11 +171,14 @@ export async function emailProforma(doc: BillingDoc, user: Pick<BillingUser, 'em
        Numéro d'abonné : <b>${fmtAbonne(user.numero_abonne)}</b>.</p>
     <p>Pour régler par virement :</p>
     ${bankBlock(s, doc.payment_reference || '', ttc)}
-    <p>Indiquez impérativement la référence <b>${fmtDocNumber(doc.payment_reference)}</b> dans le libellé du virement, puis déposez votre justificatif dans votre espace « Mon abonnement ». Le montant viré doit correspondre exactement au montant TTC.</p>
-    <p>Votre abonnement est activé pour 12 mois à la validation du paiement ; la facture définitive vous est alors envoyée.</p>`
+    <p>Indiquez impérativement la référence <b>${fmtDocNumber(doc.payment_reference)}</b> dans le libellé du virement. Le montant viré doit correspondre exactement au montant TTC.</p>
+    <p><b>Une fois le virement effectué :</b> déposez votre justificatif dans votre espace « Mon abonnement », ou répondez simplement à ce message en joignant l'avis de virement, sans modifier l'objet.</p>
+    <p>Votre abonnement est activé pour 12 mois à la validation du paiement ; la facture définitive vous est alors envoyée.</p>
+    ${refLine(fmtDocNumber(doc.payment_reference), fmtAbonne(user.numero_abonne))}`
   return sendEmail({
-    to: user.email, from: billingFrom(s), replyTo: s.email_facturation || undefined,
-    subject: `${relance ? 'Relance — ' : ''}Facture pro-forma ${fmtDocNumber(doc.payment_reference)} — ${s.site_nom} ${plan}`,
+    to: user.email, from: billingFrom(s), replyTo: dossierAddress(s.email_facturation, fmtDocNumber(doc.payment_reference)),
+    headers: dossierHeaders(s, doc, user, relance ? 'relance' : 'proforma'),
+    subject: `[${TAG_PF} ${fmtDocNumber(doc.payment_reference)}] ${relance ? 'Relance — ' : ''}Facture pro-forma — ${s.site_nom} ${plan}`,
     html: layout(s, relance ? 'Rappel de paiement' : 'Votre facture pro-forma', body, { url: docUrl(base, doc.id), label: 'VOIR LA PRO-FORMA' }),
   })
 }
@@ -135,10 +192,13 @@ export async function emailInvoice(doc: BillingDoc, user: Pick<BillingUser, 'ema
     <p>Nous avons bien reçu votre paiement de <b>${fmtMAD(docTTC(doc))} TTC</b> (référence ${fmtDocNumber(doc.payment_reference)}). Merci.</p>
     <p>Votre abonnement <b>${esc(s.site_nom)} ${plan}</b> est actif jusqu'au <b>${fmtDateLong(doc.period_end)}</b>.</p>
     ${carried}
-    <p>Votre facture <b>${esc(doc.invoice_number)}</b> est disponible dans votre espace « Mon abonnement » ; elle peut être imprimée ou enregistrée en PDF.</p>`
+    <p>Votre facture <b>${esc(doc.invoice_number)}</b> est disponible dans votre espace « Mon abonnement » ; elle peut être imprimée ou enregistrée en PDF.</p>
+    <p>Ce message vaut confirmation d'activation.</p>
+    ${refLine(doc.invoice_number, fmtDocNumber(doc.payment_reference), fmtAbonne(user.numero_abonne))}`
   return sendEmail({
-    to: user.email, from: billingFrom(s), replyTo: s.email_facturation || undefined,
-    subject: `Facture ${doc.invoice_number} — abonnement ${s.site_nom} ${plan} activé`,
+    to: user.email, from: billingFrom(s), replyTo: dossierAddress(s.email_facturation, fmtDocNumber(doc.payment_reference)),
+    headers: dossierHeaders(s, doc, user, 'facture', doc.invoice_number || undefined),
+    subject: `[${TAG_PAYE} ${doc.invoice_number}] Facture acquittée — abonnement ${s.site_nom} ${plan} activé (réf. ${fmtDocNumber(doc.payment_reference)})`,
     html: layout(s, 'Paiement reçu — abonnement activé', body, { url: docUrl(base, doc.id), label: 'VOIR LA FACTURE' }),
   })
 }
@@ -154,9 +214,12 @@ export async function emailReminder(kind: 'j30' | 'j7' | 'j0', user: Pick<Billin
     ${doc ? `<p>Votre pro-forma de renouvellement <b>${fmtDocNumber(doc.payment_reference)}</b> (${fmtMAD(docTTC(doc))} TTC) est disponible.
       En réglant avant l'échéance, les jours restants s'ajoutent à la nouvelle période.</p>
       ${bankBlock(s, doc.payment_reference || '', docTTC(doc))}` : '<p>Contactez-nous pour le renouvellement de votre contrat.</p>'}`
+  const tag = doc ? `[${TAG_PF} ${fmtDocNumber(doc.payment_reference)}] ` : ''
   return sendEmail({
-    to: user.email, from: billingFrom(s), replyTo: s.email_facturation || undefined,
-    subject: kind === 'j0' ? `Dernier jour : votre abonnement ${s.site_nom} expire` : `Renouvellement de votre abonnement ${s.site_nom}`,
+    to: user.email, from: billingFrom(s),
+    replyTo: doc ? dossierAddress(s.email_facturation, fmtDocNumber(doc.payment_reference)) : s.email_facturation || undefined,
+    ...(doc ? { headers: dossierHeaders(s, doc, { numero_abonne: null }, 'rappel-' + kind) } : {}),
+    subject: tag + (kind === 'j0' ? `Dernier jour : votre abonnement ${s.site_nom} expire` : `Renouvellement de votre abonnement ${s.site_nom}`),
     html: layout(s, 'Renouvellement de votre abonnement', body, { url: `${base}/mon-abonnement`, label: 'MON ABONNEMENT' }),
   })
 }
@@ -178,7 +241,8 @@ export async function emailAdminJustificatif(doc: BillingDoc, user: Pick<Billing
   if (!to) return { ok: false, error: 'Aucun destinataire' }
   return sendEmail({
     to, from: billingFrom(s),
-    subject: `Justificatif déposé — ${fmtDocNumber(doc.payment_reference)} — ${fmtAbonne(user.numero_abonne)}`,
+    headers: dossierHeaders(s, doc, user, 'justificatif'),
+    subject: `[${TAG_PF} ${fmtDocNumber(doc.payment_reference)}] Justificatif déposé — ${fmtAbonne(user.numero_abonne)}`,
     html: layout(s, 'Justificatif de virement à vérifier',
       `<p>${esc(user.email)} (${fmtAbonne(user.numero_abonne)}) a déposé un justificatif de <b>${fmtMAD(montant)}</b>
        pour la pro-forma <b>${fmtDocNumber(doc.payment_reference)}</b> (attendu : ${fmtMAD(docTTC(doc))} TTC).</p>
