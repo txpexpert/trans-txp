@@ -12,9 +12,13 @@
 //                      (utilisée pour construire le lien de vérification)
 // ─────────────────────────────────────────────────────────────────────────────
 
+import type { BillingMail } from './billingEmails'
+
 const RESEND_API = 'https://api.resend.com/emails'
 
-async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
+async function sendEmail({ to, subject, html, text, replyTo, headers }: {
+  to: string; subject: string; html: string; text?: string; replyTo?: string; headers?: Record<string, string>
+}) {
   if (!process.env.RESEND_API_KEY) {
     console.error('[email] RESEND_API_KEY manquante — email non envoyé (to:', to, ')')
     return { ok: false, error: 'Service email non configuré' }
@@ -31,6 +35,9 @@ async function sendEmail({ to, subject, html }: { to: string; subject: string; h
       to,
       subject,
       html,
+      ...(text ? { text } : {}),
+      ...(replyTo ? { reply_to: replyTo } : {}),
+      ...(headers ? { headers } : {}),
     }),
   })
 
@@ -117,4 +124,15 @@ export async function sendAdminResetEmail(to: string, url: string) {
       'Une réinitialisation de votre mot de passe administrateur a été demandée. Cliquez ci-dessous pour en choisir un nouveau.',
       url, 'CHOISIR UN MOT DE PASSE'),
   })
+}
+
+// ── Facturation des abonnements (2026-11-08) ─────────────────────────────────
+// Gabarits et convention d'identification : lib/billingEmails.ts
+export async function sendBillingMail(m: BillingMail) {
+  const r = await sendEmail({ to: m.to, subject: m.subject, html: m.html, text: m.text, replyTo: m.replyTo, headers: m.headers })
+  // Copie dans la boîte de facturation : le fil complet (envoi + réponse du client) y est regroupé.
+  if (r.ok && process.env.BILLING_REPLY_TO && process.env.BILLING_REPLY_TO !== m.to) {
+    await sendEmail({ to: process.env.BILLING_REPLY_TO, subject: m.subject, html: m.html, text: m.text, headers: { ...m.headers, 'Message-ID': m.headers['Message-ID'].replace('.ixp@', '.copie.ixp@') } })
+  }
+  return r
 }

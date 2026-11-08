@@ -21,6 +21,8 @@ import { getAdminSessionFromReq } from '../../../lib/adminAuth'
 import { can, ACTION_PERMISSION } from '../../../lib/adminPermissions'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import type { AdminAction } from '../../../lib/subscriptions'
+import { proformaMail, paidMail } from '../../../lib/billingEmails'
+import { sendBillingMail } from '../../../lib/email'
 
 const USER_COLUMNS =
   'id, numero_abonne, email, nom, prenom, societe, telephone, profil, plan, statut, trial_ends_at, plan_ends_at, created_at, last_login_at, email_verified, role'
@@ -113,9 +115,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Les messages levés par les fonctions SQL sont rédigés pour l'admin.
       return res.status(400).json({ error: error.message })
     }
-    return res.status(200).json({ ok: true, result: data })
+    // E-mails de facturation identifiables (lib/billingEmails.ts) : pro-forma à la
+    // création, facture acquittée + activation à la validation du paiement.
+    // Un échec d'envoi ne bloque pas l'action, il est signalé à l'administrateur.
+    let mail: { sent: boolean; error?: string } | undefined
+    if (['create_proforma', 'confirm_payment', 'activate_plan'].includes(body.action)) {
+      try { mail = await sendSubscriptionMail(sb, body, data) } catch (e: any) {
+        console.error('[admin/subscriptions] e-mail', e)
+        mail = { sent: false, error: e?.message || 'Envoi impossible' }
+      }
+    }
+    return res.status(200).json({ ok: true, result: data, mail })
   }
 
   res.setHeader('Allow', 'GET, POST')
   return res.status(405).json({ error: 'Method not allowed' })
+}
+
+async function sendSubscriptionMail(sb: ReturnType<typeof supabaseAdmin>, body: AdminAction, data: any) {
+  // create_proforma renvoie la facture ; confirm_payment et activate_plan renvoient l'utilisateur.
+  let inv: any
+  if (body.action === 'create_proforma') inv = data
+  else if (body.action === 'confirm_payment') {
+    const r = await sb.from('invoices').select('*').eq('id', body.invoiceId).single(); inv = r.data
+  } else {
+    const r = await sb.from('invoices').select('*').eq('user_id', (body as any).userId).eq('status', 'payee')
+      .order('paid_at', { ascending: false }).limit(1).single(); inv = r.data
+  }
+  if (!inv?.user_id) return { sent: false, error: 'Facture introuvable' }
+  const { data: u } = await sb.from('users').select('numero_abonne, email, prenom, nom, societe, plan_ends_at').eq('id', inv.user_id).single()
+  if (!u?.email) return { sent: false, error: 'Adresse du client introuvable' }
+  const m = body.action === 'create_proforma' ? proformaMail(u, inv) : paidMail(u, inv, u.plan_ends_at)
+  const r = await sendBillingMail(m)
+  return r.ok ? { sent: true } : { sent: false, error: String(r.error || 'Envoi impossible') }
 }
