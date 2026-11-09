@@ -2,10 +2,12 @@
 // Montants : lib/pricing.ts (source unique), via lib/suite.ts.
 import Link from 'next/link'
 import SiteShell from '../components/SiteShell'
-import { PLANS, PRESTATIONS } from '../lib/suite'
+import { PLANS, PRESTATIONS, PACKS } from '../lib/suite'
 
 const FAQ = [
-  ['Comment est calculé l’abonnement ?', 'L’abonnement est souscrit pour un an, deux mois offerts par rapport au tarif mensuel de référence. Le plan Entreprise est une option contractuelle couvrant toute une équipe.'],
+  ['Comment est calculé l’abonnement ?', 'L’abonnement est souscrit pour un an, par utilisateur. Le plan Entreprise est une option contractuelle couvrant toute une équipe.'],
+  ['Que vaut un abonnement face au risque couvert ?', 'Le plan Pro représente environ 14 DH HT par jour. À comparer avec un seul redressement, une amende ou quelques jours de surestaries.'],
+  ['Les packs experts sont-ils déductibles ?', 'Oui : le montant d’un pack est déduit de votre premier abonnement annuel s’il est souscrit dans les 30 jours qui suivent.'],
   ['Que coûte l’avis d’un expert ?', 'Les renseignements et avis sont facturés à l’opération, selon un barème communiqué avant toute intervention. Le plan Premium en inclut deux par mois.'],
   ['L’essai gratuit donne-t-il accès à tout ?', 'Oui : 14 jours d’accès complet, sans engagement.'],
   ['Comment se règle l’abonnement ?', 'Par virement bancaire, en dirhams, en une fois pour l’année, avec la référence indiquée sur votre facture pro-forma. Votre plan est activé pour 12 mois à la validation du paiement, et la facture vous est envoyée par email.'],
@@ -17,8 +19,8 @@ export default function Tarifs() {
       <section className="x-hero" style={{ paddingBottom: 24 }}>
         <div className="x-wrap x-center">
           <div className="x-eyebrow">Tarifs</div>
-          <h1 className="x-h1">Un abonnement pour la plateforme, <em>l’expert à l’acte</em>.</h1>
-          <p className="x-lead">Chaque palier couvre une portion plus longue de la chaîne. Essai gratuit de 14 jours.</p>
+          <h1 className="x-h1">Importez juste, <em>prouvez-le</em>, et faites trancher par un expert quand l’enjeu le justifie.</h1>
+          <p className="x-lead">Chaque palier correspond à un résultat : mesurer votre exposition, importer au juste coût, sécuriser et prouver vos dossiers, piloter l’exposition du groupe. Essai gratuit de 14 jours.</p>
         </div>
       </section>
 
@@ -27,6 +29,7 @@ export default function Tarifs() {
           <div className="x-plans">
             {PLANS.map(p => (
               <div key={p.id} className={`x-plan ${p.vedette ? 'vedette' : ''}`}>
+                <span className="x-eyebrow">{p.resultat}</span>
                 <h3>{p.nom}</h3>
                 <p className="pour">{p.pour}</p>
                 <div className="x-price">{p.prix === '0' ? 'Gratuit' : p.id === 'enterprise' ? p.prix : `${p.prix} DH`}<small>{p.unite}</small></div>
@@ -36,6 +39,37 @@ export default function Tarifs() {
             ))}
           </div>
           <p className="x-note x-center">Prix hors taxes, TVA 20 % en sus. Abonnement annuel, payable par virement bancaire ; activation à la validation du paiement.</p>
+        </div>
+      </section>
+
+      <section className="x-sec x-sec-white">
+        <div className="x-wrap">
+          <div className="x-eyebrow">Packs experts</div>
+          <h2 className="x-h2">Un premier diagnostic par un expert, <em>déduit de votre abonnement</em>.</h2>
+          <p className="x-sub">Forfait annoncé avant toute intervention. Le montant du pack est déduit de votre premier abonnement annuel s’il est souscrit dans les 30 jours.</p>
+          <div className="x-presta">
+            {PACKS.map(p => (
+              <div key={p.nom}><span className="x-mono">{p.pour} · {p.delai}</span><h4>{p.nom}</h4><p>{p.desc}</p></div>
+            ))}
+          </div>
+          <div style={{ marginTop: 28 }}><Link href="/contact?sujet=pack-expert" className="x-btn x-btn-dark">Demander un pack</Link></div>
+        </div>
+      </section>
+
+      <section className="x-sec">
+        <div className="x-wrap x-two">
+          <div>
+            <div className="x-eyebrow">Programme partenaires</div>
+            <h2 className="x-h2">Transitaires, experts-comptables, <em>prescripteurs</em>.</h2>
+          </div>
+          <div>
+            <ul className="x-list">
+              <li>Licence Cabinet : invitez vos clients importateurs, qui disposent d’un accès Découverte étendu à votre nom</li>
+              <li>Fiches produits partagées avec vos clients : moins d’allers-retours, des dossiers prêts avant le dépôt</li>
+              <li>Une commission récurrente sur chaque client qui passe à une offre payante</li>
+            </ul>
+            <div style={{ marginTop: 22 }}><Link href="/contact?sujet=partenaire" className="x-btn x-btn-line">Devenir partenaire</Link></div>
+          </div>
         </div>
       </section>
 
