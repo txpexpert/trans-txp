@@ -53,8 +53,8 @@ export default function Expertise() {
       <section className="x-sec x-sec-dark">
         <div className="x-wrap">
           <div className="x-eyebrow">À l’acte, en complément de l’abonnement</div>
-          <h2 className="x-h2">Trois niveaux d’intervention, <em>un prix connu d’avance</em>.</h2>
-          <p className="x-sub">L’abonnement couvre l’usage de la plateforme par utilisateur. Les demandes de renseignement et de conseil sont facturées à l’opération ; le plan Expert en inclut deux par mois.</p>
+          <h2 className="x-h2">Des interventions cadrées, <em>un prix connu d’avance</em>.</h2>
+          <p className="x-sub">L’abonnement couvre l’usage de la plateforme par utilisateur. Les demandes de renseignement et de conseil sont facturées à l’opération ; le plan Premium en inclut deux par mois.</p>
           <div className="x-presta">
             {PRESTATIONS.map(p => (
               <div key={p.nom}><span className="x-mono">{p.delai}</span><h4>{p.nom}</h4><p>{p.desc}</p></div>

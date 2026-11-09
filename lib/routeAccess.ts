@@ -30,6 +30,7 @@ export const FREE_PATHS = [
   '/espaces/bibliotheque',
   '/espaces/piloter',
   '/diagnostic',
+  '/cas-types',
   '/enquete',
   '/tools/enquete-barometre.html',
   '/tools/diagnostic-conformite.html',

@@ -8,12 +8,21 @@ import IxpIntro from '../components/IxpIntro'
 import IxpTicker from '../components/IxpTicker'
 import IxpLogo from '../components/IxpLogo'
 import { CHAIN, PROFILS, espaceBySlug } from '../lib/suite'
+import { CAS_TYPES } from '../lib/casTypes'
 
-const RISQUES = [
-  { t: 'Un code SH mal choisi', d: "Le droit payé est faux, les documents exigés aussi. L'écart peut être redressé lors d'un contrôle a posteriori, des années plus tard." },
-  { t: 'Une origine non prouvée', d: "La préférence tarifaire d'un accord de libre-échange tombe si la preuve d'origine ne tient pas. Les droits deviennent exigibles." },
-  { t: 'Un régime mal apuré', d: "Une admission temporaire ou un perfectionnement actif mal suivi transforme une suspension de droits en dette douanière." },
-  { t: 'Une valeur contestable', d: "Frais oubliés, redevances, Incoterm mal lu : la valeur déclarée devient le point faible du dossier." },
+const DOULEURS = [
+  { q: '« Votre DUM est passée. Cela ne prouve pas que votre code est juste. »', d: "Un classement repris par habitude passe le dédouanement, puis se discute lors d'un contrôle a posteriori, sur plusieurs années d'opérations.", e: 'Qualifier · fiche produit justifiée' },
+  { q: '« La douane ne contrôle pas votre facture. Elle contrôle votre valeur. »', d: "Redevances, commissions, emballage, transport jusqu'à la frontière : ce qui manque sur la facture manque aussi dans la valeur déclarée.", e: 'Chiffrer · valeur en douane' },
+  { q: '« La préférence est accordée au dédouanement. Elle se vérifie après. »', d: "Une preuve d'origine incomplète ou mal libellée fait tomber le droit préférentiel. Les droits du tarif commun redeviennent exigibles.", e: 'Optimiser · origine et accords' },
+  { q: '« Votre régime économique est une dette en sursis. »', d: "Admission temporaire, perfectionnement actif, échange standard : un délai d'apurement manqué transforme la suspension en droits à payer.", e: 'Optimiser · régimes économiques' },
+  { q: '« Votre importation coûte plus cher que votre facture. »', d: "TIC, change, magasinage, surestaries : un coût rendu sous-estimé fausse la marge de toute une gamme.", e: 'Chiffrer · coût de revient' },
+  { q: '« Si votre responsable import part demain, que reste-t-il ? »', d: "Sans dossier tracé, le savoir repose sur une personne. Au contrôle, il faut pourtant justifier chaque choix.", e: 'Sécuriser · dossier daté et sourcé' },
+]
+
+const PILIERS = [
+  { v: 'Savoir', p: "Le texte exact, à jour, pour chaque question : tarif, circulaires, code des douanes, CGI, change. IXP-Assistant cite sa source.", m: 'Bibliothèque · IXP-Assistant · glossaire FR/AR' },
+  { v: 'Chiffrer', p: "Le coût rendu réel de chaque importation, et l'argent récupérable grâce aux accords et aux régimes économiques.", m: 'Coût de revient · valeur en douane · comparateur de régimes' },
+  { v: 'Prouver', p: "Un dossier défendable, daté et sourcé, par produit et par opération. Un expert tranche quand l'enjeu le justifie.", m: 'Fiche produit · vérification DUM · avis d’expert' },
 ]
 
 type ScanQ = { q: string; o: [string, number][] }
@@ -103,6 +112,35 @@ export default function Accueil() {
         </div>
       </section>
 
+      {/* ── DOULEURS CACHÉES ── */}
+      <section className="x-sec">
+        <div className="x-wrap">
+          <div className="x-eyebrow">Le risque que vous ne voyez pas</div>
+          <h2 className="x-h2">Une erreur d’importation ne se voit pas <em>le jour où la marchandise arrive</em>.</h2>
+          <p className="x-sub">Elle se révèle plus tard : lors d’un contrôle, d’un litige fournisseur ou d’une revue de marge, quand la marchandise est vendue depuis longtemps. Les erreurs d’assiette peuvent être réparées jusqu’à l’expiration de la quatrième année (Code des douanes, art. 99 bis).</p>
+          <p className="x-sub"><b>23,5 milliards de dirhams</b> : c’est le montant des redressements opérés en 2025 au titre de la sous-facturation, en hausse de 33 % sur un an (ADII, rapport d’activité 2025). Les contrôles s’appuient désormais sur l’analyse de risque et le contrôle a posteriori.</p>
+          <div className="x-pains">
+            {DOULEURS.map(d => (
+              <div className="x-pain" key={d.q}><q>{d.q}</q><p>{d.d}</p><span className="x-mono">{d.e}</span></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PILIERS ── */}
+      <section className="x-sec x-sec-white">
+        <div className="x-wrap">
+          <div className="x-eyebrow">La réponse</div>
+          <h2 className="x-h2">Savoir, chiffrer, <em>prouver</em>.</h2>
+          <p className="x-sub">Import-eXPert redonne à l’entreprise ce que l’administration a déjà : des règles à jour, des calculs fiables et une trace de chaque décision.</p>
+          <div className="x-pillars">
+            {PILIERS.map(p => (
+              <div className="x-pillar" key={p.v}><div className="x-verb">{p.v}</div><p>{p.p}</p><span className="x-mono">{p.m}</span></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── LA CHAÎNE ── */}
       <section className="x-sec x-sec-dark" id="chaine">
         <div className="x-wrap">
@@ -125,23 +163,6 @@ export default function Accueil() {
             <Link href="/espaces/bibliotheque" className="x-link-card x-c-bibliotheque"><div className="x-verb">Bibliothèque</div><p>Le socle : tarif, circulaires, CGI, IGOC, décisions, glossaire.</p></Link>
             <Link href="#assistant" className="x-link-card x-c-assistant"><div className="x-verb">IXP-Assistant</div><p>Dans chaque espace, il répond en citant le texte exact.</p></Link>
             <Link href="/espaces/piloter" className="x-link-card x-c-piloter"><div className="x-verb">Piloter</div><p>Intelligence et stratégie pour la direction générale.</p></Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── PROBLÈME ── */}
-      <section className="x-sec">
-        <div className="x-wrap x-split">
-          <div>
-            <div className="x-eyebrow">Le risque</div>
-            <h2 className="x-h2">Une erreur d’importation ne se voit pas <em>le jour où la marchandise arrive</em>.</h2>
-            <p className="x-sub">Elle se révèle plus tard : lors d’un contrôle, d’un litige fournisseur, d’un écart de stock ou d’une revue comptable, quand la marchandise est vendue depuis longtemps et que l’erreur est irréversible. Les quatre fragilités concentrent toutes ces mauvaises surprises ; chacune correspond à une étape sur la plateforme.</p>
-            <p className="x-sub"><b>23,5 milliards de dirhams</b> : c’est le montant des redressements opérés en 2025 au titre de la sous-facturation, en hausse de 33 % sur un an (ADII, rapport d’activité 2025). Les contrôles s’appuient désormais sur l’analyse de risque et le contrôle a posteriori.</p>
-          </div>
-          <div className="x-risks">
-            {RISQUES.map((r, i) => (
-              <div className="x-risk" key={r.t}><i>{i + 1}</i><div><b>{r.t}</b><p>{r.d}</p></div></div>
-            ))}
           </div>
         </div>
       </section>
@@ -179,8 +200,28 @@ export default function Accueil() {
         </div>
       </section>
 
+      {/* ── CAS TYPES ── */}
+      <section className="x-sec x-sec-white">
+        <div className="x-wrap">
+          <div className="x-eyebrow">Cas types</div>
+          <h2 className="x-h2">Trois erreurs fréquentes, <em>expliquées par les textes</em>.</h2>
+          <p className="x-sub">La situation, le point qui coince, ce que cela coûte, et ce qu’Import-eXPert signale avant l’opération.</p>
+          <div className="x-cas-grid">
+            {CAS_TYPES.map(c => (
+              <Link href={`/cas-types#${c.slug}`} className="x-cas" key={c.slug}>
+                <span className="x-eyebrow">{c.domaine}</span>
+                <h3>{c.titre}</h3>
+                <p>{c.accroche}</p>
+                <span className="x-cas-go">Lire le cas →</span>
+              </Link>
+            ))}
+          </div>
+          <p className="x-disclaimer" style={{ marginTop: 14 }}>Cas illustratifs construits à partir des textes officiels ; les entreprises sont fictives.</p>
+        </div>
+      </section>
+
       {/* ── PROFILS ── */}
-      <section className="x-sec x-sec-white" id="profils">
+      <section className="x-sec" id="profils">
         <div className="x-wrap">
           <div className="x-eyebrow">Pour qui</div>
           <h2 className="x-h2">Conçue pour ceux qui <em>signent</em> les opérations.</h2>

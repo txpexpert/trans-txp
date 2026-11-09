@@ -183,33 +183,42 @@ export const PROFILS = [
 // Montants HT issus de lib/pricing.ts (source unique, grille du 2026-11-07).
 export const PLANS = [
   {
-    id: 'free', nom: 'Découverte', prix: '0', unite: 'pour toujours',
+    id: 'free', nom: 'Découverte', resultat: 'Mesurer mon exposition', prix: '0', unite: 'pour toujours',
     pour: 'Pour évaluer la plateforme',
-    inclus: ['Bibliothèque : FAQ, glossaire, recherche CGI', 'Coût de revient à l’import', 'Diagnostic de conformité', 'IXP-Assistant : questions limitées'],
+    inclus: ['Diagnostic de conformité et indice d’exposition', 'Coût de revient à l’import', 'Bibliothèque : FAQ, glossaire, recherche CGI', 'IXP-Assistant : questions limitées'],
     cta: 'Créer un compte', href: '/auth/register?plan=free',
   },
   {
-    id: 'pro', nom: 'Pro', prix: fmtDH(PRICING.pro.annual!), unite: priceLine('pro').replace(/^DH /, ''),
+    id: 'pro', nom: 'Pro', resultat: 'Importer juste', prix: fmtDH(PRICING.pro.annual!), unite: priceLine('pro').replace(/^DH /, ''),
     pour: 'PME importatrices',
     inclus: ['Qualifier, Chiffrer et Exécuter', 'Classement SH inclus', 'Bibliothèque complète', 'IXP-Assistant illimité', 'Support par email'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=pro',
   },
   {
-    id: 'premium', nom: 'Premium', prix: fmtDH(PRICING.premium.annual!), unite: priceLine('premium').replace(/^DH /, ''), vedette: true,
+    id: 'premium', nom: 'Premium', resultat: 'Sécuriser et prouver', prix: fmtDH(PRICING.premium.annual!), unite: priceLine('premium').replace(/^DH /, ''), vedette: true,
     pour: 'Transitaires, commissionnaires, cabinets',
-    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients', '2 renseignements experts inclus / mois'],
+    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients', '24 renseignements experts par an inclus (2 par mois)'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=premium',
   },
   {
-    id: 'enterprise', nom: 'Entreprise', prix: 'Sur contrat', unite: PRICING.enterprise.note,
+    id: 'enterprise', nom: 'Entreprise', resultat: 'Piloter l’exposition', prix: 'Sur contrat', unite: PRICING.enterprise.note,
     pour: 'Groupes industriels, directions financières',
     inclus: ['Tout Premium, pour toute l’équipe', 'Espace Piloter et contentieux avancé', 'API ERP / TMS', 'Expert dédié et onboarding', 'Engagement de service (SLA)'],
     cta: 'Parler à un expert', href: '/contact?sujet=entreprise',
   },
 ]
 
+// Interventions expertes. Les forfaits sont annoncés avant toute intervention ;
+// les packs sont déduits du premier abonnement annuel souscrit dans les 30 jours.
 export const PRESTATIONS = [
   { nom: 'Renseignement express', delai: 'Sous 48 h ouvrées', desc: 'Une question précise, une réponse écrite et sourcée par un expert : classement, origine, régime, document.' },
-  { nom: 'Avis motivé', delai: 'Sous 5 jours ouvrés', desc: 'Une analyse argumentée et opposable sur un point sensible, prête à être jointe à un dossier ou présentée à l’administration.' },
-  { nom: 'Accompagnement de dossier', delai: 'Sur devis', desc: 'Contentieux, demande de régime économique, préparation OEA, audit sur site : une mission Douane Engineering cadrée.' },
+  { nom: 'Avis motivé', delai: 'Sous 5 jours ouvrés', desc: 'Une analyse argumentée sur un point sensible, prête à être jointe à un dossier ou présentée à l’administration.' },
+  { nom: 'Accompagnement de dossier', delai: 'Sur devis', desc: 'Contentieux, demande de régime économique, audit sur site : une mission Douane Engineering cadrée.' },
+]
+
+export const PACKS = [
+  { nom: 'Audit flash du classement', delai: '20 références', pour: 'PME importatrices', desc: 'Vingt références produits revues par un expert, avec une note écrite des écarts de classement et des documents exigés.' },
+  { nom: 'Bilan origine', delai: '12 mois d’importations', pour: 'Directions financières', desc: 'Ce que vos accords de libre-échange vous font gagner, ce qu’ils pourraient vous faire gagner, et les preuves à sécuriser.' },
+  { nom: 'Préparation au contrôle a posteriori', delai: 'Avant ou pendant un contrôle', pour: 'Importateurs contrôlés', desc: 'Revue du dossier, points de fragilité et liste des pièces à réunir pour répondre à l’administration.' },
+  { nom: 'Pré-OEA', delai: 'Écart et feuille de route', pour: 'Industriels et transitaires', desc: 'Écart entre votre situation et les critères de l’Opérateur Économique Agréé, avec un plan pour y arriver.' },
 ]
