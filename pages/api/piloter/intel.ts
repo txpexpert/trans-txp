@@ -6,8 +6,7 @@
 //   - decisions_classement   → recherche de décisions (12 résultats au plus)
 //   - v_mesures_defense, v_textes_recents, v_tarif_changements (migration 0008)
 //     → mis à jour automatiquement à chaque ingestion de circulaire ou de tarif
-// Accès : module intelligence-import, intelligence-strategique ou analyses ;
-// accords-preferentiels pour la seule actualité des accords (a=recent&kind=accords).
+// Accès : module intelligence-import, intelligence-strategique ou analyses.
 // Anti-extraction : jamais de liste complète, recherche obligatoire,
 // plafonds de résultats et limite de débit (lib/decisionsGuard.ts).
 // ============================================================
@@ -62,12 +61,7 @@ async function rates(prefixes: string[]): Promise<Record<string, Rate[]>> {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Méthode non autorisée' })
-  // L'actualité des accords est aussi lue par la page /accords (module accords-preferentiels)
-  let acc = await access(req)
-  if (!acc.ok && req.query.a === 'recent' && req.query.kind === 'accords') {
-    const r = await checkAnyModuleAccess(req, 'accords-preferentiels')
-    if (r.ok) acc = r
-  }
+  const acc = await access(req)
   if (!acc.ok) return res.status(acc.status).json({ error: acc.error })
   res.setHeader('Cache-Control', 'no-store')
 

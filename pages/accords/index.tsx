@@ -1,15 +1,9 @@
 // pages/accords/index.tsx — Accords préférentiels : page d'aiguillage.
 // Une carte par partenaire (lib/accords.ts) qui ouvre la page détaillée
-// /accords/{slug}, et l'actualité des accords lue dans la base
-// (/api/piloter/intel?a=recent&kind=accords), mise à jour à chaque ingestion.
-import { useEffect, useState } from 'react'
+// /accords/{slug}.
 import Link from 'next/link'
 import SiteShell from '../../components/SiteShell'
-import { ACCORDS, MAJ_ACCORDS, type Accord } from '../../lib/accords'
-
-type News = { numero: string; titre: string; type_document: string | null; date_doc: string | null; extrait: string | null }
-
-const dfr = (d: string | null) => (d ? new Date(d).toLocaleDateString('fr-FR') : '')
+import { ACCORDS, type Accord } from '../../lib/accords'
 
 function Carte({ a }: { a: Accord }) {
   return (
@@ -34,16 +28,6 @@ function Carte({ a }: { a: Accord }) {
 }
 
 export default function AccordsPage() {
-  const [news, setNews] = useState<News[] | null>(null)
-  const [newsErr, setNewsErr] = useState(false)
-
-  useEffect(() => {
-    fetch('/api/piloter/intel?a=recent&kind=accords&n=6', { credentials: 'same-origin' })
-      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then(r => setNews(r.data ?? []))
-      .catch(() => setNewsErr(true))
-  }, [])
-
   const ale = ACCORDS.filter(a => !a.unilateral)
   const uni = ACCORDS.filter(a => a.unilateral)
 
@@ -61,7 +45,6 @@ export default function AccordsPage() {
             Quel accord s’applique à votre marchandise, quelle preuve d’origine présenter, et ce qui a changé récemment.
             Chaque fiche reprend le texte de l’accord, les règles d’origine, les contingents et les circulaires de l’ADII.
           </p>
-          <p className="x-mono" style={{ marginTop: 14 }}>Fiches mises à jour le {MAJ_ACCORDS}</p>
         </div>
       </section>
 
@@ -75,31 +58,14 @@ export default function AccordsPage() {
             Le tarif zéro chinois n’est pas un accord : la Chine l’accorde seule, pour une durée limitée, et peut le modifier sans négociation.
           </p>
           <div className="x-acc-grid">{uni.map(a => <Carte key={a.slug} a={a} />)}</div>
-        </div>
-      </section>
 
-      <section className="x-sec-tight" style={{ paddingTop: 0 }}>
-        <div className="x-wrap">
-          <div className="x-eyebrow">Actualité des accords</div>
-          <p className="x-note" style={{ marginTop: 6 }}>Derniers textes sur les accords, l’origine et les contingents intégrés à la base.</p>
-          <div className="x-acc-news">
-            {newsErr && <div className="x-acc-n">Actualité indisponible pour le moment.</div>}
-            {!newsErr && news === null && <div className="x-acc-n">Chargement…</div>}
-            {news?.map(n => (
-              <div key={n.numero + (n.date_doc ?? '')} className="x-acc-n">
-                <span className="x-mono">{dfr(n.date_doc)}{n.numero ? ` · ${n.type_document === 'circulaire' ? 'Circulaire n° ' : ''}${n.numero}` : ''}</span>
-                <b>{n.titre}</b>
-                {n.extrait && <p>{n.extrait.slice(0, 170)}…</p>}
-              </div>
-            ))}
-          </div>
-
-          <p className="x-note">
+          <p className="x-note" style={{ marginTop: 28 }}>
             Pour qualifier l’origine d’un produit précis, utilisez aussi <Link href="/modules/origine-aleca" style={{ textDecoration: 'underline' }}>Origine ALECA / UE</Link>.
             Une question ? <Link href="/#assistant" style={{ textDecoration: 'underline' }}>IXP-Assistant</Link> répond en citant la circulaire.
           </p>
         </div>
       </section>
+
     </SiteShell>
   )
 }
