@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opérateurs maritimes | IXP-Import-eXPert</title>
+<style>
+:root {
+  --green:  #1A5C2A; --green-l:#2a7a3a;
+  --gold:   #B8862A; --gold-l: #d4a043;
+  --ink:    #0f1a0f;
+  --mist:   #f4f7f4;
+  --card:   #ffffff;
+  --border: #d4e4d4;
+  --red:    #c62828; --red-bg: #fff5f5;
+  --amber:  #e65100; --amber-bg:#fff8f0;
+  --blue:   #1565c0; --blue-bg: #e8f0fe;
+  --r: 8px;
+
+  /* Couleurs des 6 onglets principaux */
+  --t1: #1A5C2A; /* Triptyque — vert */
+  --t2: #1565c0; /* DS H-24 — bleu */
+  --t3: #c62828; /* Red Flags — rouge */
+  --t4: #6a1b9a; /* Post-Écor — violet */
+  --t5: #6D4C41; /* Simulateurs — marron */
+  --t6: #2e7d32; /* Douane 4.0 — vert foncé */
+  --t7: #4a148c; /* Risk & Stratégie — violet profond */
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--mist);color:var(--ink);line-height:1.65;font-size:15px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--green) 0%,#0d3a1a 60%,#1a2a10 100%);color:#fff;padding:52px 24px 44px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(184,134,42,.18) 0%,transparent 60%);pointer-events:none;}
+.hero-inner{max-width:1060px;margin:0 auto;position:relative;}
+.hero-badge{display:inline-block;background:rgba(184,134,42,.25);border:1px solid var(--gold-l);color:var(--gold-l);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+.hero h1{font-size:clamp(1.6rem,4vw,2.5rem);font-weight:800;line-height:1.2;margin-bottom:12px;}
+.hero h1 span{color:var(--gold-l);}
+.hero-sub{color:rgba(255,255,255,.78);font-size:.95rem;max-width:680px;margin-bottom:24px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:12px;}
+.hero-stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:10px 18px;text-align:center;min-width:140px;}
+.hero-stat .val{font-size:1.4rem;font-weight:800;color:var(--gold-l);}
+.hero-stat .lbl{font-size:.7rem;color:rgba(255,255,255,.65);margin-top:2px;}
+
+/* ===== ONGLETS PRINCIPAUX ===== */
+.main-tabs{background:#fff;border-bottom:3px solid #e0e0e0;position:sticky;top:0;z-index:100;overflow-x:auto;}
+.main-tabs-list{max-width:1060px;margin:0 auto;display:flex;list-style:none;padding:0 12px;}
+.main-tabs-list li{flex-shrink:0;}
+.main-tab-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:10px 13px;
+  font-size:.75rem;font-weight:700;
+  background:none;border:none;cursor:pointer;
+  color:#7a8a7a;
+  border-bottom:4px solid transparent;
+  margin-bottom:-3px;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.main-tab-btn .tab-icon{font-size:.88rem;}
+.main-tab-btn:hover{color:#333;background:rgba(0,0,0,.03);}
+/* Couleur texte par onglet (inactif) */
+.main-tab-btn[data-tab="t1"]{color:var(--t1);}
+.main-tab-btn[data-tab="t2"]{color:var(--t2);}
+.main-tab-btn[data-tab="t3"]{color:var(--t3);}
+.main-tab-btn[data-tab="t4"]{color:var(--t4);}
+.main-tab-btn[data-tab="t5"]{color:#6D4C41;}
+.main-tab-btn[data-tab="t6"]{color:var(--t6);}
+.main-tab-btn[data-tab="t7"]{color:var(--t7);}
+
+/* Couleur active par onglet */
+.main-tab-btn[data-tab="t1"].active{color:var(--t1);border-bottom-color:var(--t1);background:rgba(26,92,42,.05);}
+.main-tab-btn[data-tab="t2"].active{color:var(--t2);border-bottom-color:var(--t2);background:rgba(21,101,192,.05);}
+.main-tab-btn[data-tab="t3"].active{color:var(--t3);border-bottom-color:var(--t3);background:rgba(198,40,40,.05);}
+.main-tab-btn[data-tab="t4"].active{color:var(--t4);border-bottom-color:var(--t4);background:rgba(106,27,154,.05);}
+.main-tab-btn[data-tab="t5"].active{color:var(--t5);border-bottom-color:var(--t5);background:rgba(109,76,65,.07);}
+.main-tab-btn[data-tab="t6"].active{color:var(--t6);border-bottom-color:var(--t6);background:rgba(46,125,50,.05);}
+.main-tab-btn[data-tab="t7"].active{color:var(--t7);border-bottom-color:var(--t7);background:rgba(74,20,140,.05);}
+
+/* Indicateur coloré à gauche du label */
+.tab-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-t1{background:var(--t1);}
+.dot-t2{background:var(--t2);}
+.dot-t3{background:var(--t3);}
+.dot-t4{background:var(--t4);}
+.dot-t5{background:var(--t5);}
+.dot-t6{background:var(--t6);}
+.dot-t7{background:var(--t7);}
+
+/* CONTENU ONGLETS */
+.main-pane{display:none;max-width:1060px;margin:0 auto;padding:32px 20px 60px;}
+.main-pane.active{display:block;}
+
+/* EN-TÊTE DE SECTION */
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;padding-bottom:16px;border-bottom:2px solid;}
+.sec-head.c1{border-color:var(--t1);} .sec-head.c2{border-color:var(--t2);} .sec-head.c3{border-color:var(--t3);}
+.sec-head.c4{border-color:var(--t4);} .sec-head.c5{border-color:var(--t5);} .sec-head.c6{border-color:var(--t6);}
+.sec-head.c7{border-color:var(--t7);}
+.sec-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0;}
+.n1{background:var(--t1);} .n2{background:var(--t2);} .n3{background:var(--t3);}
+.n4{background:var(--t4);} .n5{background:var(--t5);} .n6{background:var(--t6);}
+.n7{background:var(--t7);}
+.sec-text h2{font-size:1.2rem;font-weight:800;}
+.sec-text h2.c1{color:var(--t1);} .sec-text h2.c2{color:var(--t2);} .sec-text h2.c3{color:var(--t3);}
+.sec-text h2.c4{color:var(--t4);} .sec-text h2.c5{color:var(--t5);} .sec-text h2.c6{color:var(--t6);}
+.sec-text h2.c7{color:var(--t7);}
+.sec-text p{font-size:.8rem;color:#6a8a6a;margin-top:2px;}
+
+/* SOUS-ONGLETS (internes à une section) */
+.sub-tabs{margin:20px 0;}
+.sub-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.sub-btn{background:none;border:1px solid #d0d0d0;padding:7px 14px;font-size:.78rem;font-weight:600;color:#6a6a6a;border-radius:20px;cursor:pointer;transition:all .2s;}
+.sub-btn:hover{border-color:#aaa;color:#333;}
+.sub-btn.active{color:#fff;border-color:transparent;}
+.sub-btn.c1.active{background:var(--t1);} .sub-btn.c2.active{background:var(--t2);}
+.sub-btn.c3.active{background:var(--t3);} .sub-btn.c4.active{background:var(--t4);}
+.sub-btn.c5.active{background:var(--t5);} .sub-btn.c6.active{background:var(--t6);}
+.sub-btn.c7.active{background:var(--t7);}
+/* Sous-onglets T2 — 4 couleurs distinctes */
+.sub-btn.sub-t2a{color:#1565c0;border-color:#bbdefb;}
+.sub-btn.sub-t2b{color:#2e7d32;border-color:#c8e6c9;}
+.sub-btn.sub-t2c{color:#e65100;border-color:#ffe0b2;}
+.sub-btn.sub-t2d{color:#6a1b9a;border-color:#e1bee7;}
+.sub-btn.sub-t2a.active{background:#1565c0;color:#fff;border-color:#1565c0;}
+.sub-btn.sub-t2b.active{background:#2e7d32;color:#fff;border-color:#2e7d32;}
+.sub-btn.sub-t2c.active{background:#e65100;color:#fff;border-color:#e65100;}
+.sub-btn.sub-t2d.active{background:#6a1b9a;color:#fff;border-color:#6a1b9a;}
+
+/* Sous-onglets T7 — 6 couleurs individuelles */
+.sub-btn.t7a{color:#b8860b;border-color:#ffe082;background:#fffde7;}
+.sub-btn.t7b{color:#283593;border-color:#9fa8da;background:#e8eaf6;}
+.sub-btn.t7c{color:#b71c1c;border-color:#ef9a9a;background:#fff5f5;}
+.sub-btn.t7d{color:#1b5e20;border-color:#a5d6a7;background:#f1f8f1;}
+.sub-btn.t7e{color:#4a148c;border-color:#ce93d8;background:#f3e5f5;}
+.sub-btn.t7f{color:#37474f;border-color:#b0bec5;background:#eceff1;}
+.sub-btn.t7a.active{background:#b8860b;color:#fff;border-color:#b8860b;}
+.sub-btn.t7b.active{background:#283593;color:#fff;border-color:#283593;}
+.sub-btn.t7c.active{background:#b71c1c;color:#fff;border-color:#b71c1c;}
+.sub-btn.t7d.active{background:#1b5e20;color:#fff;border-color:#1b5e20;}
+.sub-btn.t7e.active{background:#4a148c;color:#fff;border-color:#4a148c;}
+.sub-btn.t7f.active{background:#37474f;color:#fff;border-color:#37474f;}
+
+/* Sous-onglets T6 — 4 couleurs individuelles */
+.sub-btn.t6a{color:#006064;border-color:#80deea;background:#e0f7fa;}
+.sub-btn.t6b{color:#1a237e;border-color:#90caf9;background:#e3f2fd;}
+.sub-btn.t6c{color:#bf360c;border-color:#ffab91;background:#fbe9e7;}
+.sub-btn.t6d{color:#1b5e20;border-color:#a5d6a7;background:#f1f8f1;}
+.sub-btn.t6a.active{background:#006064;color:#fff;border-color:#006064;}
+.sub-btn.t6b.active{background:#1a237e;color:#fff;border-color:#1a237e;}
+.sub-btn.t6c.active{background:#bf360c;color:#fff;border-color:#bf360c;}
+.sub-btn.t6d.active{background:#1b5e20;color:#fff;border-color:#1b5e20;}
+.sub-pane{display:none;} .sub-pane.active{display:block;}
+
+/* COMPOSANTS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;margin-bottom:14px;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+
+/* TRIPTYQUE */
+.triptyque{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;gap:0;align-items:start;margin:20px 0;}
+.triptyque-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;}
+.triptyque-card .t-icon{font-size:1.6rem;margin-bottom:7px;}
+.triptyque-card .t-title{font-size:.87rem;font-weight:800;color:var(--t1);margin-bottom:5px;}
+.triptyque-card .t-role{font-size:.77rem;color:#4a6a4a;line-height:1.55;}
+.triptyque-card .t-risk{margin-top:8px;padding:7px 9px;background:var(--amber-bg);border-left:3px solid var(--amber);border-radius:3px;font-size:.73rem;color:var(--amber);}
+.triptyque-arrow{display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--gold);padding-top:28px;}
+@media(max-width:700px){.triptyque{grid-template-columns:1fr;}.triptyque-arrow{display:none;}}
+
+/* TIMELINE */
+.tl-wrap{position:relative;padding-left:26px;margin:16px 0;}
+.tl-wrap::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:3px;background:var(--border);}
+.tl-item{position:relative;margin-bottom:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 15px;}
+.tl-item::before{content:'';position:absolute;left:-21px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 0 0 2px var(--green);}
+.tl-item.d::before{background:var(--red);box-shadow:0 0 0 2px var(--red);}
+.tl-item.w::before{background:var(--amber);box-shadow:0 0 0 2px var(--amber);}
+.tl-item.b::before{background:var(--blue);box-shadow:0 0 0 2px var(--blue);}
+.tl-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.tl-tag{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:3px;}
+.tg{background:#e8f5e9;color:var(--green);} .tr{background:var(--red-bg);color:var(--red);}
+.tw{background:var(--amber-bg);color:var(--amber);} .tb{background:var(--blue-bg);color:var(--blue);}
+.tp{background:#f3e5f5;color:#6a1b9a;}
+.tl-item strong{font-size:.87rem;} .tl-item p{font-size:.8rem;color:#4a5a4a;margin-top:3px;}
+
+/* TABLES */
+.dt{width:100%;border-collapse:collapse;font-size:.81rem;margin:14px 0;}
+.dt th{background:var(--green);color:#fff;padding:9px 11px;text-align:left;font-size:.73rem;font-weight:700;}
+.dt td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:top;}
+.dt tr:nth-child(even) td{background:#f8fbf8;}
+.dt tr:hover td{background:#eef5ee;}
+.dt.c2 th{background:var(--t2);}
+.dt.c3 th{background:var(--t3);}
+.dt.c4 th{background:var(--t4);}
+.dt.c5 th{background:var(--t5);}
+
+/* ALERTS */
+.al{border-radius:var(--r);padding:13px 15px;margin:14px 0;font-size:.83rem;}
+.al strong{display:block;margin-bottom:3px;font-size:.79rem;text-transform:uppercase;letter-spacing:.04em;}
+.al-red{background:var(--red-bg);border-left:4px solid var(--red);}
+.al-amb{background:var(--amber-bg);border-left:4px solid var(--amber);}
+.al-grn{background:#e8f5e9;border-left:4px solid var(--green);}
+.al-blu{background:var(--blue-bg);border-left:4px solid var(--blue);}
+.al-gld{background:#fffde7;border-left:4px solid var(--gold);}
+.al-pur{background:#f3e5f5;border-left:4px solid #6a1b9a;}
+.nouv-wrap{max-width:1180px;margin:18px auto 6px;padding:0 18px;}
+.nouv-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px;font-size:.92rem;color:#1b3a1b}
+.nouv-head span{font-size:.74rem;color:#6a7a6a}
+.nouv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.nouv-card{background:#fff;border:1px solid #dfe8df;border-top:3px solid #c9a227;border-radius:8px;padding:11px 13px;font-size:.79rem;line-height:1.55;color:#2f4a2f}
+.nouv-card b{display:block;font-size:.84rem;color:#1b3a1b;margin-bottom:4px}
+.nouv-card p{margin:0 0 6px}
+.nouv-card em{display:block;font-style:normal;font-size:.71rem;color:#7a6a2a}
+.al-tel{background:#e0f7fa;border-left:4px solid var(--t5);}
+
+/* RED FLAGS */
+.flags-grid{display:grid;gap:10px;margin:14px 0;}
+.flag-row{display:flex;align-items:flex-start;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;cursor:pointer;transition:background .15s;}
+.flag-row:hover{background:#fafcfa;}
+.flag-row.checked{border-color:var(--red);background:var(--red-bg);}
+.flag-chk{margin-top:3px;width:15px;height:15px;flex-shrink:0;cursor:pointer;}
+.flag-body{flex:1;}
+.badge{display:inline-block;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:3px;margin-bottom:5px;}
+.bc{background:var(--red-bg);color:var(--red);border:1px solid var(--red);}
+.bw{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber);}
+.flag-body h4{font-size:.86rem;font-weight:700;margin-bottom:3px;}
+.flag-body p{font-size:.78rem;color:#5a6a5a;}
+.flag-body .fix{font-size:.77rem;color:var(--t5);margin-top:5px;font-style:italic;}
+.score-box{display:none;border-radius:var(--r);padding:18px 22px;margin-top:14px;font-weight:700;font-size:.95rem;text-align:center;}
+.score-box p{font-weight:400;font-size:.82rem;margin-top:6px;line-height:1.55;}
+.score-box a{display:inline-block;margin-top:10px;background:var(--amber);color:#fff;padding:9px 18px;border-radius:6px;font-size:.8rem;text-decoration:none;font-weight:700;}
+.sg{background:#e8f5e9;color:var(--green);border:1px solid #a5d6a7;}
+.sa{background:var(--amber-bg);color:var(--amber);border:1px solid #ffb74d;}
+.sr{background:var(--red-bg);color:var(--red);border:1px solid #ef9a9a;}
+
+/* ÉCOR PATHS */
+.ecor-paths{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0;}
+@media(max-width:640px){.ecor-paths{grid-template-columns:1fr;}}
+.ecor-path{border-radius:var(--r);padding:18px;border:2px solid transparent;}
+.ep-ex{background:var(--red-bg);border-color:#ef9a9a;}
+.ep-df{background:var(--amber-bg);border-color:#ffb74d;}
+.ecor-path h3{font-size:.95rem;font-weight:800;margin-bottom:12px;}
+.ep-ex h3{color:var(--red);} .ep-df h3{color:var(--amber);}
+.step-list{list-style:none;}
+.step-list li{display:flex;gap:9px;margin-bottom:10px;font-size:.81rem;}
+.sn{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;margin-top:1px;}
+.sn-r{background:var(--red);color:#fff;} .sn-a{background:var(--amber);color:#fff;}
+
+/* CHECKLIST */
+.chk{list-style:none;display:grid;gap:7px;margin:10px 0;}
+.chk li{display:flex;gap:9px;align-items:flex-start;font-size:.82rem;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 11px;}
+.chk li::before{content:'✓';color:var(--green);font-weight:800;flex-shrink:0;margin-top:1px;}
+
+/* CALCULATEUR */
+.calc-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px;}
+.fr{margin-bottom:16px;}
+.fr label{display:block;font-weight:700;font-size:.81rem;color:var(--t5);margin-bottom:5px;}
+.fr select,.fr input[type=datetime-local]{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:6px;font-size:.88rem;background:var(--mist);}
+.fr select:focus,.fr input:focus{outline:2px solid var(--t5);}
+.btn{border:none;padding:11px 22px;font-size:.86rem;font-weight:700;border-radius:6px;cursor:pointer;width:100%;transition:background .2s;color:#fff;}
+.btn-green{background:var(--green);} .btn-green:hover{background:var(--green-l);}
+.btn-blue{background:var(--t2);} .btn-blue:hover{background:#1976d2;}
+.btn-red{background:var(--t3);}
+.btn-teal{background:var(--t5);} .btn-teal:hover{background:#00acc1;}
+#calc-results{display:none;margin-top:18px;}
+
+/* SIMULATEUR SELECTOR */
+.sim-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0;}
+@media(max-width:700px){.sim-selector{grid-template-columns:repeat(2,1fr);}}
+.sim-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .2s;text-align:center;}
+.sim-card:hover{border-color:#aaa;transform:translateY(-2px);}
+.sim-card.active{border-color:var(--t5);background:#e0f7fa;}
+.sim-card .si{font-size:1.8rem;margin-bottom:8px;}
+.sim-card strong{display:block;font-size:.85rem;font-weight:800;color:var(--ink);margin-bottom:4px;}
+.sim-card span{font-size:.74rem;color:#6a8a6a;}
+.sim-content{display:none !important;} .sim-content.active{display:block !important;}
+#t5 .sim-content:not(.active){display:none !important;visibility:hidden !important;}
+
+/* AI BLOCK */
+.ai-block{background:linear-gradient(135deg,#0d3a1a 0%,#1a2a10 100%);border-radius:var(--r);padding:28px;color:#fff;margin-top:20px;}
+.ai-block h3{font-size:1.05rem;color:var(--gold-l);margin-bottom:10px;}
+.ai-block p{font-size:.83rem;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:8px;}
+.ai-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:18px;}
+.ai-feat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:13px;}
+.ai-feat .icon{font-size:1.2rem;margin-bottom:5px;}
+.ai-feat strong{font-size:.83rem;color:var(--gold-l);display:block;margin-bottom:3px;}
+.ai-feat p{font-size:.76rem;color:rgba(255,255,255,.7);margin:0;}
+
+/* FOOTER */
+.site-footer{background:var(--green);color:rgba(255,255,255,.8);padding:22px;text-align:center;font-size:.76rem;margin-top:40px;}
+.site-footer strong{color:var(--gold-l);}
+
+/* scrollbar tabs */
+.main-tabs::-webkit-scrollbar{height:0;}
+
+/* ===== Onglets en tuiles colorées ===== */
+.main-tabs{background:#f6f8f6;border-bottom:1px solid #e0e6e0;padding:10px 0;}
+.main-tabs-list{gap:8px;flex-wrap:wrap;justify-content:center;max-width:1180px;}
+.main-tab-btn{border:none;border-radius:8px;margin:0;padding:10px 16px;font-size:.8rem;color:#fff !important;opacity:.82;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+.main-tab-btn:hover{opacity:1;transform:translateY(-1px);}
+.main-tab-btn.active{opacity:1;box-shadow:0 0 0 3px rgba(201,162,39,.55),0 2px 6px rgba(0,0,0,.15);}
+.main-tab-btn[data-tab="t1"],.main-tab-btn[data-tab="t1"].active{background:var(--t1);}
+.main-tab-btn[data-tab="t2"],.main-tab-btn[data-tab="t2"].active{background:var(--t2);}
+.main-tab-btn[data-tab="t3"],.main-tab-btn[data-tab="t3"].active{background:var(--t3);}
+.main-tab-btn[data-tab="t4"],.main-tab-btn[data-tab="t4"].active{background:var(--t4);}
+.main-tab-btn[data-tab="t5"],.main-tab-btn[data-tab="t5"].active{background:var(--t5);}
+.main-tab-btn[data-tab="t6"],.main-tab-btn[data-tab="t6"].active{background:#00796b;}
+.main-tab-btn[data-tab="t7"],.main-tab-btn[data-tab="t7"].active{background:var(--t7);}
+@media(max-width:700px){.main-tabs-list{flex-wrap:nowrap;justify-content:flex-start}}
+</style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Opérateurs Maritimes,<br><span>Concessionnaires & Douane</span></h1>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">11,1M</div><div class="lbl">EVP Tanger Med 2025</div></div>
+      <div class="hero-stat"><div class="val">+8,4%</div><div class="lbl">Croissance vs 2024</div></div>
+      <div class="hero-stat"><div class="val">262,6 Mt</div><div class="lbl">Trafic portuaire national 2025</div></div>
+      <div class="hero-stat"><div class="val">H-24</div><div class="lbl">Dépôt DS avant arrivée navire</div></div>
+      <div class="hero-stat"><div class="val">45 j</div><div class="lbl">Délai de dépôt de la DUM après arrivée</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ONGLETS PRINCIPAUX -->
+<nav class="main-tabs">
+  <ul class="main-tabs-list">
+    <li><button class="main-tab-btn active" data-tab="t1" onclick="mainTab('t1',this)">Triptyque Portuaire</button></li>
+    <li><button class="main-tab-btn" data-tab="t2" onclick="mainTab('t2',this)">Déclaration Sommaire</button></li>
+    <li><button class="main-tab-btn" data-tab="t3" onclick="mainTab('t3',this)"><span class="tab-icon">🚨</span>Red Flags</button></li>
+    <li><button class="main-tab-btn" data-tab="t4" onclick="mainTab('t4',this)">Gestion Post-Écor</button></li>
+    <li><button class="main-tab-btn" data-tab="t5" onclick="mainTab('t5',this)">Simulateurs</button></li>
+    <li><button class="main-tab-btn" data-tab="t6" onclick="mainTab('t6',this)">Douane 4.0 & IA</button></li>
+    <li><button class="main-tab-btn" data-tab="t7" onclick="mainTab('t7',this)">Risk & Stratégie</button></li>
+  </ul>
+</nav>
+
+<!-- NOUVEAUTES -->
+<div class="nouv-wrap">
+  <div class="nouv-head"><strong>🆕 Ce qui a changé pour les opérateurs maritimes (2025 – 2026)</strong><span>Mise à jour : 9 novembre 2026</span></div>
+  <div class="nouv-grid">
+    <div class="nouv-card"><b>DS MEAD unique</b><p>Une seule déclaration sommaire d'acheminement et d'entrée en MEAD remplace l'acquit à caution de transit, la DS MEAD et l'état de dépotage. Souscrite par l'exploitant du MEAD sur BADR, couverte par sa caution, obligatoire depuis mai 2025. Redevance ramenée à 150 DH.</p><em>Circulaires 6636/312 du 10/02/2025 et 6677/312 du 18/08/2025 · art. 63 CDII</em></div>
+    <div class="nouv-card"><b>Cahier des charges MEAD révisé</b><p>Scellés électroniques obligatoires entre le bureau d'importation et le MEAD, traçabilité électronique des portes, vidéosurveillance des quais conservée 90 jours, badges d'accès, responsabilité de l'exploitant jusqu'à la sortie effective, signalement des lots non enlevés 48 h après mainlevée.</p><em>Circulaire 6675/312 du 13/08/2025, en vigueur au 1er/09/2025</em></div>
+    <div class="nouv-card"><b>Scellés douaniers : nouveau délit</b><p>Détenir, fournir ou utiliser sans justification des scellés douaniers devient un délit de 2e classe. Amende égale à la valeur de la marchandise ou du moyen de transport pour l'utilisation ; 100 000 à 200 000 DH pour la détention ou la fourniture.</p><em>LF 2025 · art. 281 et 282 bis CDII</em></div>
+    <div class="nouv-card"><b>Drones, caméras, scanners</b><p>Les agents peuvent utiliser tout moyen de contrôle, de surveillance et de suivi des marchandises, notamment drones, caméras et scanners, dans les enceintes portuaires.</p><em>LF 2026 · art. 35-1° CDII</em></div>
+    <div class="nouv-card"><b>Plateforme blockchain des factures</b><p>Plateforme agréée pour la transmission sécurisée des documents commerciaux (facture) annexés à la DUM, avec vérification de l'identité du fournisseur étranger. Adhésion volontaire ; modalités fixées par instruction.</p><em>LF 2026 · nouvel art. 76 ter CDII</em></div>
+    <div class="nouv-card"><b>Pesage avant mainlevée</b><p>En circuit rouge avec doute sur le poids ou risque de glissement entre articles, le pesage doit être fait avant la mainlevée, pas après. Le déficit non justifié est taxé sur la valeur déclarée, dans tous les bureaux.</p><em>Circulaire D299/2025 du 24/12/2025 · note D251/2025 du 24/10/2025 · art. 14-2° CDII</em></div>
+    <div class="nouv-card"><b>Authenticité des documents</b><p>Le déclarant doit vérifier l'authenticité de chaque document joint à la DUM (QR code s'il existe) et signaler tout faux. Sa responsabilité est engagée si le faux était détectable.</p><em>Circulaire 6662/312 du 24/06/2025 · art. 203 bis CDII</em></div>
+    <div class="nouv-card"><b>Déclaration globale</b><p>Import fractionné d'une unité fonctionnelle complète (ligne de production, ensemble industriel) classée au tarif de l'article fini : DUM initiale autorisée pour un an maximum, puis DUM partielles par arrivage, dans n'importe quel bureau.</p><em>Circulaire 6771/312 du 02/09/2026 · art. 76 bis-4 CDII</em></div>
+  </div>
+</div>
+
+
+<!-- ===== T1 : TRIPTYQUE ===== -->
+<div id="t1" class="main-pane active">
+  <div class="sec-head c1">
+    <div class="sec-num n1">01</div>
+    <div class="sec-text"><h2 class="c1">Le Triptyque Portuaire & le Passage de la Garde Juridique</h2><p>Interpénétration des responsabilités entre Armateur, Acconier et ADII</p></div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:.86rem;color:#3a5a3a;line-height:1.7">Le passage portuaire d'une marchandise à l'importation au Maroc repose sur un équilibre juridique strict entre trois acteurs. Toute rupture de coordination se traduit immédiatement par des frais de stationnement exorbitants (<strong>surestaries ou magasinage</strong>) ou par un blocage douanier pouvant mener à l'abandon en douane puis à la cession de la marchandise (art. 106 et 107 CDII).</p>
+  </div>
+
+  <div class="triptyque">
+    <div class="triptyque-card">
+      <div class="t-icon">🚢</div>
+      <div class="t-title">Opérateur Maritime</div>
+      <div class="t-role">Armateur ou Consignataire — responsable sous le <strong>Bill of Lading</strong> jusqu'au déchargement sous palan. Obligations : dépôt de la déclaration sommaire par voie électronique au moins 24 h avant l'arrivée du navire, ou au départ du dernier port si la traversée dure moins de 24 h (art. 49 CDII, arrêté 3414-12). Énonciations obligatoires : destinataire et code SH à 4 chiffres par ligne.</div>
+      <div class="t-risk">⚠ Risque : pénalité pour dépôt hors délai ; manquements aux art. 46-2° et 49-3° = contravention de 2e classe (art. 294-5° CDII) ; infraction au manifeste = délit (art. 281-5°)</div>
+    </div>
+    <div class="triptyque-arrow">→</div>
+    <div class="triptyque-card">
+      <div class="t-icon">🏗</div>
+      <div class="t-title">Concessionnaire Terminal</div>
+      <div class="t-role">Acconier (APM Terminals, Marsa Maroc, Eurogate…) — garde physique en <strong>ZST/MEAD</strong> dès validation de l'écor. Aucune sortie sans mainlevée BADR.</div>
+      <div class="t-risk">⚠ Risque : l'exploitant MEAD répond des marchandises de l'enregistrement de la DS jusqu'à leur sortie effective et paie les droits sur les manquants (art. 61 CDII, cahier des charges MEAD) ; non-présentation = contravention de 1re classe (art. 285)</div>
+    </div>
+    <div class="triptyque-arrow">→</div>
+    <div class="triptyque-card">
+      <div class="t-icon">🏛</div>
+      <div class="t-title">ADII — Services Douaniers</div>
+      <div class="t-role">Autorité de contrôle et de régulation. Droit de suite, ciblage, liquidation des droits. Autorisation de mainlevée via BADR. Circuits Vert / Orange / Rouge selon analyse de risque.</div>
+      <div class="t-risk">⚠ Risque : infraction douanière si écart non régularisé dans les délais légaux</div>
+    </div>
+  </div>
+
+  <div class="al al-blu">
+    <strong>🔑 Pivot Juridique — L'Écor</strong>
+    Le pointage contradictoire acconier/représentant navire marque le transfert officiel de la garde juridique. Dès la signature électronique du PV d'écor transmis à l'ADII, la responsabilité bascule de l'armateur vers le concessionnaire. Si l'acconier constate une anomalie physique, des <strong>réserves formelles doivent être émises immédiatement</strong> dans PortNet.
+  </div>
+
+  <!-- Sous-onglets T1 -->
+  <div class="sub-tabs">
+    <div class="sub-nav">
+      <button class="sub-btn c1 active" onclick="subTab('t1','st1a',this)">Chronologie de transfert</button>
+      <button class="sub-btn c1" onclick="subTab('t1','st1b',this)">Acteurs 2025</button>
+      <button class="sub-btn c1" onclick="subTab('t1','st1c',this)">Frais & Double tarification</button>
+    </div>
+    <div id="st1a" class="sub-pane active">
+      <div class="tl-wrap">
+        <div class="tl-item b">
+          <div class="tl-head"><span class="tl-tag tb">Phase 1</span><strong>Navire en mer — Garde exclusive de l'Armateur</strong></div>
+          <p>Marchandise sous couverture B/L. L'agent maritime doit injecter le manifeste dans PortNet pour anticiper la DS. Si l'escale est mal planifiée, le délai de franchise commence à courir à blanc.</p>
+        </div>
+        <div class="tl-item d">
+          <div class="tl-head"><span class="tl-tag tr">Phase 2 — PIVOT</span><strong>Déchargement & Écor — Transfert de Garde</strong></div>
+          <p>L'acconier décharge et pointe physiquement (nombre, marques, scellés, poids). La validation électronique du PV d'écor transfère officiellement la garde juridique. Toute anomalie physique doit faire l'objet de réserves formelles immédiates dans PortNet.</p>
+        </div>
+        <div class="tl-item w">
+          <div class="tl-head"><span class="tl-tag tw">Phase 3</span><strong>Séjour en ZST/MEAD — Double tarification active</strong></div>
+          <p>Deux compteurs tournent simultanément : <strong>Surestaries</strong> (à l'Armateur, pour détention prolongée du conteneur) + <strong>Magasinage</strong> (à l'Acconier, pour occupation du terminal). La garde ne cesse qu'après obtention de la Mainlevée BADR et émission du Bon à Délivrer (BAD).</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-head"><span class="tl-tag tg">Phase 4</span><strong>Mainlevée & Sortie — Fin de garde</strong></div>
+          <p>Sur présentation du BAD et de la mainlevée électronique BADR, la marchandise quitte le périmètre portuaire. Chaînage DS/ICE/DUM parfait + écor conforme = Circuit Vert + mainlevée quasi-immédiate.</p>
+        </div>
+      </div>
+    </div>
+    <div id="st1b" class="sub-pane">
+      <div style="overflow-x:auto">
+      <table class="dt">
+        <thead><tr><th>Terminal / Concessionnaire</th><th>Gouvernance</th><th>Opérateurs principaux</th><th>Performance 2025</th></tr></thead>
+        <tbody>
+          <tr><td>Tanger Med TC1, TC2, TC4</td><td>TMSA (Zone Spéciale)</td><td>APM Terminals (Maersk) · Eurogate · Hapag-Lloyd</td><td>Dernière extension TC4 (APM Terminals) mise en exploitation ; 4 terminaux : <strong>11 106 164 EVP</strong> (+8,4 %)</td></tr>
+          <tr><td>Tanger Med TM2</td><td>TMSA</td><td>APM Terminals MedPort Tangier (Alliance Gemini)</td><td>Inclus dans le total du complexe : 161 Mt toutes activités (+13,3 %)</td></tr>
+          <tr><td>Casablanca · Agadir · Nador · Tanger Med II</td><td>ANP</td><td>Marsa Maroc · Somaport (CMA CGM)</td><td>Ports gérés par l'ANP : 102,4 Mt en 2025 (+2,5 %)</td></tr>
+          <tr><td>MEDHUB (logistique Tanger Med)</td><td>TMSA</td><td>Bolloré / Terminal Link (CMA CGM)</td><td>Trafic TIR : 535 203 camions (+3,6%)</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div id="st1c" class="sub-pane">
+      <div style="overflow-x:auto">
+      <table class="dt">
+        <thead><tr><th>Type de frais</th><th>Débiteur</th><th>Créancier</th><th>Déclencheur</th><th>Risque financier</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Surestaries</strong></td><td>Importateur / Consignataire</td><td>Armateur (compagnie maritime)</td><td>Dépassement des jours franchisés (free time) après arrivée navire</td><td>Plusieurs centaines de $ / jour / conteneur — croissance exponentielle</td></tr>
+          <tr><td><strong>Magasinage</strong></td><td>Importateur / Transitaire</td><td>Concessionnaire (Marsa Maroc, APM…)</td><td>Séjour sur terminal au-delà de la franchise gratuite</td><td>Tarification progressive — risque de dépassement valeur marchandise</td></tr>
+          <tr><td><strong>Abandon en douane</strong></td><td>Importateur</td><td>ADII (État)</td><td>Pas de DUM dans les 45 jours suivant l'arrivée (jours fériés non comptés), ou DUM enregistrée mais marchandise non enlevée dans le mois</td><td>Marchandise réputée abandonnée (art. 106) puis cédée ou détruite (art. 107)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="al al-gld" style="margin-top:14px">
+        <strong>💡 Conseil Expert — Point de Rupture Financière</strong>
+        Le "point de rupture" est le moment où les frais cumulés (surestaries + magasinage) dépassent la valeur de la marchandise. Toujours calculer ce seuil dès l'avis d'arrivée pour décider si un abandon commercial est préférable à une poursuite de dédouanement sur un lot bloqué en contentieux.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== T2 : DÉCLARATION SOMMAIRE ===== -->
+<div id="t2" class="main-pane">
+  <div class="sec-head c2">
+    <div class="sec-num n2">02</div>
+    <div class="sec-text"><h2 class="c2">Déclaration Sommaire & Règle des H-24</h2><p>Maîtriser le chronogramme documentaire pour anticiper le dédouanement BADR/PortNet</p></div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:.86rem;color:#3a5a3a;line-height:1.7">Dans le modèle <strong>Douane 4.0</strong>, l'anticipation documentaire est la clé de voûte de la fluidité portuaire. La Déclaration Sommaire n'est plus une procédure de constat à l'arrivée mais un outil de <strong>pré-dédouanement</strong>. Tout retard dans l'injection bloque le numéro de voyage dans BADR, paralyse le transitaire et expose la marchandise à des frais évitables.</p>
+  </div>
+
+  <div class="sub-tabs">
+    <div class="sub-nav">
+      <button class="sub-btn sub-t2a active" onclick="subTab('t2','st2a',this)">Définitions & Cadre légal</button>
+      <button class="sub-btn sub-t2b" onclick="subTab('t2','st2b',this)">Chronogramme inversé</button>
+      <button class="sub-btn sub-t2c" onclick="subTab('t2','st2c',this)">Navires en POOL / VSA</button>
+      <button class="sub-btn sub-t2d" onclick="subTab('t2','st2d',this)">Apurement & Chaînage</button>
+    </div>
+
+    <div id="st2a" class="sub-pane active">
+      <div style="overflow-x:auto">
+      <table class="dt c2">
+        <thead><tr><th>Document</th><th>Nature juridique</th><th>Auteur</th><th>Périmètre</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Manifeste Maritime</strong></td><td>Document commercial</td><td>Armateur / Consignataire</td><td>Toutes marchandises chargées pour le voyage entier</td></tr>
+          <tr><td><strong>Déclaration Sommaire (DS)</strong></td><td>Acte douanier initial (CDII)</td><td>Capitaine ou Consignataire</td><td>Uniquement les marchandises à débarquer dans le port d'escale</td></tr>
+          <tr><td><strong>DUM</strong> (Décl. Unique Marchandise)</td><td>Déclaration douanière finale</td><td>Transitaire agréé ADII uniquement</td><td>Marchandise spécifique soumise aux droits & taxes</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="al al-gld" style="margin-top:14px">
+        <strong>🔑 Règle d'or — L'ICE</strong>
+        L'ICE (Identifiant Commun de l'Entreprise) du destinataire réel est la clé de voûte du chaînage automatique BADR. Un ICE absent ou erroné brise la chaîne — l'importateur ne peut pas déposer sa DUM finale. Exiger l'ICE exact dès l'émission du booking.
+      </div>
+      <div style="overflow-x:auto;margin-top:14px">
+      <table class="dt c2">
+        <thead><tr><th>Type de ligne</th><th>Délai légal</th><th>Référence</th></tr></thead>
+        <tbody>
+          <tr><td>Lignes long-courrier (Asie, Amériques)</td><td><strong>Au moins 24 h avant l'arrivée du navire</strong></td><td>Art. 49-1° CDII · arrêté 3414-12 du 02/10/2012 · circ. 5353/312</td></tr>
+          <tr><td>Short Sea Shipping (Espagne, Algérie, France Sud)</td><td><strong>Au plus tard au départ du navire du dernier port desservi</strong> (traversée &lt; 24 h)</td><td>Arrêté 3414-12 · circ. 5353/312</td></tr>
+          <tr><td>Marchandises IMDG (dangereuses)</td><td><strong>H-24 obligatoire + DMD croisée ANP/TMSA</strong></td><td>Règlement IMDG + Instructions ANP</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="al al-blu" style="margin-top:14px"><strong>Énonciations à ne pas oublier</strong> Nom du destinataire et code SH à 4 chiffres pour chaque ligne du titre de transport (obligatoire depuis le 1er octobre 2019). Le code générique 9999 n'est admis que si le partenaire étranger ne fournit pas l'information, ou pour un déménagement. En cas de panne de BADR, dépôt papier dès l'arrivée puis saisie au rétablissement. <em style="display:block;font-size:.74rem;margin-top:4px">Circulaires 5354/312 et 5959/312</em></div>
+    </div>
+
+    <div id="st2b" class="sub-pane">
+      <div class="tl-wrap">
+        <div class="tl-item d">
+          <div class="tl-head"><span class="tl-tag tr">T-24h / Départ navire</span><strong>Injection Manifeste initial dans PortNet (EDIFACT CUSCAR)</strong></div>
+          <p>L'armateur ou son agent valide le manifeste et l'injecte via PortNet. <strong>L'ICE du destinataire doit être correct à ce stade.</strong> PortNet bascule automatiquement vers BADR.</p>
+        </div>
+        <div class="tl-item w">
+          <div class="tl-head"><span class="tl-tag tw">Génération N° Voyage BADR</span><strong>Feu vert pour le transitaire — dépôt DUM anticipée possible</strong></div>
+          <p>Après vérification syntaxique, l'ADII valide la DS et génère un numéro officiel (format : Année/Bureau/Numéro, ex: 2026/024/14520). Ce numéro est le pivot de toutes les opérations ultérieures.</p>
+        </div>
+        <div class="tl-item b">
+          <div class="tl-head"><span class="tl-tag tb">Phase d'Anticipation</span><strong>Dépôt anticipé DUM — avant l'arrivée physique du navire</strong></div>
+          <p>Depuis 2022, la DUM peut être enregistrée avant l'arrivée <strong>sans autorisation préalable</strong>, en pré-apurant un lot de DS (case « Par anticipation » dans BADR). Le circuit et l'inspecteur sont connus dès l'enregistrement. La déclaration ne prend effet qu'à l'accostage : ce sont les droits en vigueur à cette date qui s'appliquent (tarif plus favorable sur demande). Rectifiable sans suite contentieuse tant que la marchandise n'est pas arrivée ; annulée d'office sans suite au bout de 60 jours. <em style="display:block;font-size:.74rem;margin-top:4px">Arrêté 1640-22 du 20/06/2022 · circ. 6369/312 · art. 66, 78 ter, 79-1° et 90 CDII</em></p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-head"><span class="tl-tag tg">ETA — Arrivée & Mainlevée</span><strong>Résultat : Circuit Vert si chaînage parfait</strong></div>
+          <p>Chaînage DS / ICE / DUM parfait + écor conforme = mainlevée accordée d'office. La marchandise quitte le terminal en quelques heures, sans surestaries ni magasinage.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="st2c" class="sub-pane">
+      <div class="al al-blu" style="margin-bottom:14px">
+        <strong>Qu'est-ce qu'un navire en POOL / VSA ?</strong>
+        Un navire affrété conjointement par plusieurs armateurs (ex: Alliance Gemini Maersk/Hapag-Lloyd à Tanger Med). Le B/L est émis par l'armateur A, mais le navire est exploité par l'armateur B. Cela impose une hiérarchie documentaire stricte dans BADR.
+      </div>
+      <div style="overflow-x:auto">
+      <table class="dt c2">
+        <thead><tr><th>Étape</th><th>Acteur</th><th>Action dans BADR/PortNet</th><th>Condition de blocage</th></tr></thead>
+        <tbody>
+          <tr><td>1. Fiche Escale</td><td>Consignataire principal (Leader)</td><td>Création escale + numéro unique + codes co-chargeurs autorisés</td><td>Aucune — initialisation</td></tr>
+          <tr><td>2. DS globale</td><td>Leader (armateur physique)</td><td>Dépôt DS globale + validation + référencement co-chargeurs</td><td>Doit précéder tout dépôt des co-partageurs</td></tr>
+          <tr><td>3. Sous-manifestes</td><td>Co-chargeurs (Spotiers)</td><td>Rattachement de leurs propres B/L à l'escale ouverte</td><td><strong>BADR bloque si escale non ouverte par le leader</strong></td></tr>
+          <tr><td>4. Rectification post-écor</td><td>Tout consignataire concerné</td><td>Demande de correction électronique avec justificatifs</td><td>Justificatifs port étranger obligatoires</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div id="st2d" class="sub-pane">
+      <p style="font-size:.84rem;color:#3a5a3a;margin-bottom:14px">La DS est <strong>apurée</strong> par les DUM qui y font référence. La DUM doit être déposée dans les <strong>45 jours</strong> suivant l'arrivée au bureau (jour d'arrivée et jour d'échéance compris, jours fériés légaux non comptés, samedi compté). Passé ce délai, la marchandise est réputée abandonnée en douane. Un dépôt tardif reste possible, dans des cas justifiés, tant qu'elle n'a pas été cédée. <em style="display:block;font-size:.74rem;margin-top:4px">Arrêté 1318-77 (art. 2 et 2 bis) · art. 106 et 107 CDII</em></p>
+      <div style="overflow-x:auto">
+      <table class="dt c2">
+        <thead><tr><th>Type d'apurement</th><th>Mécanisme BADR</th><th>Statut DS</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Apurement normal</strong></td><td>Chaque DUM déposée référence le numéro DS + numéro B/L. BADR décompte automatiquement les quantités.</td><td>Clôturée après épuisement total</td></tr>
+          <tr><td><strong>Apurement partiel</strong></td><td>Pour les lots dédouanés en plusieurs fois. La ligne reste en statut "partiellement apuré" jusqu'à épuisement.</td><td>Partiellement apurée — active</td></tr>
+          <tr><td><strong>Non-apurement (J+45)</strong></td><td>Marchandise réputée abandonnée en douane ; en MEAD, l'exploitant la garde en zone dédiée et l'inscrit dans une rubrique spécifique de sa comptabilité matières, communiquée chaque mois.</td><td>Cession ou destruction (art. 107), frais à la charge de l'exploitant MEAD</td></tr>
+          <tr><td><strong>DS MEAD</strong></td><td>Apurée par les mainlevées des DUM, ou par une autre DS MEAD (groupage vers un second MEAD), ou exceptionnellement (ATA, TIR).</td><td>Infraction avant décharge du compte transit = régime du transit ; après réception au MEAD = mise en douane (art. 284 s.)</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== T3 : RED FLAGS ===== -->
+<div id="t3" class="main-pane">
+  <div class="sec-head c3">
+    <div class="sec-num n3">03</div>
+    <div class="sec-text"><h2 class="c3">Dashboard de Vigilance & Red Flags</h2><p>Diagnostic de conformité avant validation du manifeste et de la Déclaration Sommaire</p></div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:.86rem;color:#3a5a3a;line-height:1.7">Dans l'environnement douanier numérisé (BADR), la Déclaration Sommaire est le premier filtre de l'analyse de risque automatisée de l'ADII. Une seule anomalie peut bloquer l'intégralité d'un lot, déclencher un ciblage au scanner, ou engager la responsabilité contentieuse du transitaire. <strong>Cochez les anomalies détectées puis lancez l'analyse.</strong></p>
+  </div>
+
+  <h3 style="margin:18px 0 10px;color:var(--red);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em">🔴 Alertes Critiques — Risque de blocage immédiat</h3>
+  <div class="flags-grid">
+    <label class="flag-row">
+      <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="40" data-sev="crit">
+      <div class="flag-body"><span class="badge bc">Critique</span><h4>Double Blading (Double Manifeste)</h4>
+      <p>Discordance entre manifeste commercial transmis à l'importateur et manifeste douanier injecté dans PortNet (poids, valeur ou nature modifiés). Indicateur direct de fraude organisée.</p>
+      <p class="fix">→ Arrêt immédiat. Audit des documents sources. Aucune DUM ne peut être déposée sur cette base.</p></div>
+    </label>
+    <label class="flag-row">
+      <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="30" data-sev="crit">
+      <div class="flag-body"><span class="badge bc">Critique</span><h4>Désignation Commerciale Générique (Libellé interdit)</h4>
+      <p>Termes vagues : "General Cargo", "Chemicals", "Appareils", "Variétés", "STC". BADR rejette automatiquement via ses filtres syntaxiques.</p>
+      <p class="fix">→ Exiger un Manifest Correction officiel avec désignation précise conforme au SH (ex: "Granulés de polyéthylène basse densité").</p></div>
+    </label>
+    <label class="flag-row">
+      <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="35" data-sev="crit">
+      <div class="flag-body"><span class="badge bc">Critique</span><h4>Refus de Manifest Correction à l'origine</h4>
+      <p>Le port de chargement étranger refuse de certifier l'attestation officielle de correction. Sans ce document, l'ADII rejette toute demande de régularisation.</p>
+      <p class="fix">→ Marchandise bloquée en ZST. Engager une procédure de conciliation ou consigner les droits sur la base initiale.</p></div>
+    </label>
+    <label class="flag-row">
+      <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="30" data-sev="crit">
+      <div class="flag-body"><span class="badge bc">Critique</span><h4>Discordance Numéro de Scellé / Plomb</h4>
+      <p>Numéro de plomb physique ≠ numéro inscrit sur la DS. Suspicion immédiate de substitution de marchandise — consignation par la douane.</p>
+      <p class="fix">→ Vérification avant envoi EDIFACT : concordance stricte B/L ↔ manifeste ↔ réalité physique.</p></div>
+    </label>
+  </div>
+
+  <h3 style="margin:18px 0 10px;color:var(--amber);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em">🟡 Alertes de Vigilance — Risques opérationnels et retards</h3>
+  <div class="flags-grid">
+    <label class="flag-row">
+      <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="15" data-sev="watch">
+      <div class="flag-body"><span class="badge bw">Vigilance</span><h4>Navire en POOL / Partage de Flotte (VSA)</h4>
+      <p>Risque d'incohérence sur le code de l'exploitant du navire ou le numéro d'escale ANP/PortNet. B/L émis par l'armateur A, navire exploité par l'armateur B.</p>
+      <p class="fix">→ Double vérification : concordance numéro d'escale PortNet ↔ identifiant armateur émetteur du titre de transport.</p></div>
+    </label>
+    <label class="flag-row">
+      <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="20" data-sev="watch">
+      <div class="flag-body"><span class="badge bw">Vigilance</span><h4>Mention "To Order" non résolue à l'arrivée</h4>
+      <p>Connaissement émis "À l'ordre de [banque]" sans indication de l'acheteur final. Impossible de lier l'ICE de l'importateur réel dans BADR.</p>
+      <p class="fix">→ S'assurer que le B/L original soit dûment endossé et que l'ICE du réceptionnaire soit identifié avant le traitement douanier.</p></div>
+    </label>
+    <label class="flag-row">
+      <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="15" data-sev="watch">
+      <div class="flag-body"><span class="badge bw">Vigilance</span><h4>Incohérence Masse Globale / Volume</h4>
+      <p>Ratio poids/volume anormalement hors-normes (conteneur textile à 150 kg, ou poids dépassant l'homologation). Circuit Rouge quasi-certain.</p>
+      <p class="fix">→ Comparer Packing List avec données VGM (Verified Gross Mass) et rectifier avant clôture de l'escale.</p></div>
+    </label>
+    <label class="flag-row">
+      <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="15" data-sev="watch">
+      <div class="flag-body"><span class="badge bw">Vigilance</span><h4>ICE absent ou erroné dans le manifeste</h4>
+      <p>ICE du destinataire manquant, erroné, ou remplacé par celui du transitaire. Le chaînage automatique BADR sera impossible.</p>
+      <p class="fix">→ Exiger l'ICE exact depuis le RC numérique dès l'émission du booking. Ne jamais substituer avec l'ICE du transitaire.</p></div>
+    </label>
+  </div>
+
+  <div style="margin-top:18px">
+    <button class="btn btn-red" onclick="evalRisk()">🔍 Analyser le Niveau de Risque BADR</button>
+    <div id="score-result" class="score-box"></div>
+  </div>
+</div>
+
+<!-- ===== T4 : POST-ÉCOR ===== -->
+<div id="t4" class="main-pane">
+  <div class="sec-head c4">
+    <div class="sec-num n4">04</div>
+    <div class="sec-text"><h2 class="c4">Gestion Post-Écor — Logigramme des Écarts</h2><p>Guide de régularisation des Excédents et Déficits dans le système BADR</p></div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:.86rem;color:#3a5a3a;line-height:1.7">L'écor fait foi devant l'ADII. Dès que le concessionnaire valide l'écor dans PortNet, le système compare automatiquement les données physiques avec la DS. Tout écart bloque instantanément le chaînage documentaire et empêche le dépôt de la DUM.</p>
+  </div>
+
+  <div class="ecor-paths">
+    <div class="ecor-path ep-ex">
+      <h3>🛑 EXCÉDENT à l'Écor</h3>
+      <p style="font-size:.79rem;color:var(--red);margin-bottom:12px"><strong>Risque :</strong> Tentative d'introduction de marchandises sans déclaration — saisie + amende douanière</p>
+      <ul class="step-list">
+        <li><div class="sn sn-r">A1</div><div>Ne pas tenter de déposer une DUM sur la base du manifeste erroné.</div></li>
+        <li><div class="sn sn-r">A2</div><div>Obtenir immédiatement le <strong>Manifest Correction (M.C)</strong> officiel certifié du port de chargement justifiant l'erreur matérielle.</div></li>
+        <li><div class="sn sn-r">A3</div><div>Introduire la demande de rectification électronique dans BADR en annexant le M.C + Packing List d'origine.</div></li>
+        <li><div class="sn sn-r">A4</div><div>Arbitrage ADII : bonne foi acceptée → mise à jour du manifeste → calcul droits sur totalité physique → levée du blocage.</div></li>
+      </ul>
+    </div>
+    <div class="ecor-path ep-df">
+      <h3>⚠️ DÉFICIT à l'Écor</h3>
+      <p style="font-size:.79rem;color:var(--amber);margin-bottom:12px"><strong>Risque :</strong> Présomption de détournement frauduleux — droits & taxes indus + pénalités</p>
+      <ul class="step-list">
+        <li><div class="sn sn-a">B1</div><div>Vérifier si la marchandise est restée à quai (<strong>Short-Shipped</strong>) ou déchargée par erreur ailleurs (Over-Carried).</div></li>
+        <li><div class="sn sn-a">B2</div><div>Demander la rectification de la DS dans les conditions de l'art. 59 ter CDII et de son arrêté d'application, avec la preuve de non-embarquement à l'origine. À défaut de justificatif prouvant que le manquant est antérieur à l'arrivée, les droits sont dus sur la <strong>valeur déclarée</strong> (art. 14-2°, note D251/2025).</div></li>
+        <li><div class="sn sn-a">B3</div><div>Produire l'<strong>Attestation de Non-Embarquement</strong> certifiée par les douanes du port de départ étranger.</div></li>
+        <li><div class="sn sn-a">B4</div><div>Validation ADII dans BADR → rectification à la baisse → annulation droits indus → alignement DS / DUM finale.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="al al-gld">
+    <strong>⚖ Règle d'Or — Le Mandat de Gestion du Transitaire</strong>
+    Avant d'engager une procédure de rectification auprès de l'ADII, le transitaire doit impérativement vérifier que son <strong>Ordre de Transit (O.T)</strong> comporte une clause l'autorisant explicitement à effectuer des rectifications au nom du client. Sans ce mandat exprès, il porte l'entière responsabilité financière et juridique des litiges post-douaniers.
+  </div>
+
+  <div class="al al-red" style="margin-top:12px">
+    <strong>🔑 Règle Jurisprudentielle Marocaine</strong>
+    Le justificatif (Short-Shipment Certificate ou Manifest Correction) doit être certifié <strong>AVANT</strong> que la douane marocaine n'ait formellement notifié l'infraction ou sélectionné le conteneur pour contrôle. L'horodatage de soumission dans BADR est un élément juridique déterminant.
+  </div>
+
+  <h3 style="margin:22px 0 10px;color:var(--t4);font-size:.88rem">Check-list Post-Déchargement</h3>
+  <ul class="chk">
+    <li>Récupérer immédiatement le statut d'écor dès fin déchargement — avant toute notification officielle ADII</li>
+    <li>Analyser le PV d'écor transmis par le concessionnaire — identifier tout écart avant qu'il soit signalé</li>
+    <li>En cas d'écart : dépôt immédiat de demande de rectification dans BADR avec justificatifs certifiés</li>
+    <li>Suivi du délai de dépôt de la DUM : 45 jours après l'arrivée (jours fériés non comptés) avant abandon en douane (arrêté 1318-77, art. 106 CDII)</li>
+    <li>Excédent non déclaré supérieur à 20 % du poids, de la quantité ou de la valeur : contravention de 1re classe (art. 285-13° CDII)</li>
+    <li>Édition prioritaire du Bon à Délivrer (BAD) armateur pour les lots à fort risque de surestaries</li>
+    <li>Pour transit vers ZAI : vérifier que le certificat d'introduction est renvoyé au port de déchargement dans les délais</li>
+  </ul>
+</div>
+
+<!-- ===== T5 : SIMULATEURS ===== -->
+<div id="t5" class="main-pane">
+  <div class="sec-head c5">
+    <div class="sec-num n5">05</div>
+    <div class="sec-text"><h2 class="c5">Simulateurs — Outils d'Aide à la Décision</h2><p>Calculateurs interactifs pour le marché marocain — BADR · PortNet · ADII</p></div>
+  </div>
+
+  <div class="al al-tel">
+    <strong>🧮 5 Simulateurs disponibles — Sélectionnez celui dont vous avez besoin</strong>
+    Chaque outil est autonome. Renseignez vos données et obtenez immédiatement un résultat actionnable conforme à la réglementation marocaine en vigueur (CDII consolidé LF 2026 · circulaires ADII en vigueur au 9 novembre 2026). Pour le diagnostic multi-juridictions et la gestion des litiges internationaux, consultez l'onglet <strong>🏦 Risk & Stratégie</strong>.
+  </div>
+
+  <!-- Sélecteur de simulateurs -->
+  <div class="sim-selector">
+    <div class="sim-card active" onclick="selectSim('sim-h24',this)">
+      <div class="si">⏱</div>
+      <strong>Calculateur H-24</strong>
+      <span>Deadlines documentaires PortNet / BADR selon l'ETA</span>
+    </div>
+    <div class="sim-card" onclick="selectSim('sim-risk',this)">
+      <div class="si">🚨</div>
+      <strong>Diagnostic Risque BADR</strong>
+      <span>Score de risque de blocage sur votre manifeste</span>
+    </div>
+    <div class="sim-card" onclick="selectSim('sim-ecor',this)">
+      <div class="si">🔀</div>
+      <strong>Guide Écor Interactif</strong>
+      <span>Procédure de régularisation Excédent / Déficit</span>
+    </div>
+    <div class="sim-card" onclick="selectSim('sim-bench',this)">
+      <div class="si">📊</div>
+      <strong>Benchmark International</strong>
+      <span>Comparatif pratiques USA / UE / Singapour / Maroc</span>
+    </div>
+    <div class="sim-card" onclick="selectSim('sim-intl-litige',this)">
+      <div class="si">🌐⚖️</div>
+      <strong>Red Flags & Litiges Internationaux</strong>
+      <span>Diagnostic multi-juridictions · Procédure de défense par pays</span>
+    </div>
+  </div>
+
+  <!-- SIM 1 : H-24 -->
+  <div id="sim-h24" class="sim-content active">
+    <div class="calc-panel">
+      <h3 style="font-size:.92rem;color:var(--t5);margin-bottom:14px">⏱ Calculateur de Deadlines Documentaires</h3>
+      <p style="font-size:.8rem;color:#5a7a5a;margin-bottom:18px">Déterminez vos jalons réglementaires impératifs pour l'injection du manifeste et le dépôt de la DUM.</p>
+      <div class="fr">
+        <label for="route-type">Type de Ligne Maritime</label>
+        <select id="route-type" onchange="toggleLabel()">
+          <option value="long">Ligne Long-Courrier (Asie, Amériques, Afrique de l'Ouest)</option>
+          <option value="short">Short Sea Shipping — Court-Courrier (Espagne, France, Méditerranée)</option>
+        </select>
+      </div>
+      <div class="fr">
+        <label id="dt-label" for="eta-date">Date & Heure estimées d'Arrivée au Maroc (ETA)</label>
+        <input type="datetime-local" id="eta-date">
+      </div>
+      <button class="btn btn-teal" onclick="calcTimeline()">Générer le Chronogramme Documentaire</button>
+      <div id="calc-results">
+        <h4 style="font-size:.86rem;color:var(--t5);margin:18px 0 10px">📌 Feuille de Route Documentaire Impérative</h4>
+        <div class="tl-wrap" id="calc-output"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIM 2 : RISK DIAGNOSTIC -->
+  <div id="sim-risk" class="sim-content">
+    <div class="calc-panel">
+      <h3 style="font-size:.92rem;color:var(--t3);margin-bottom:14px">🚨 Diagnostic Risque BADR — Simulateur de Conformité</h3>
+      <p style="font-size:.8rem;color:#5a7a5a;margin-bottom:16px">Cochez les anomalies ou spécificités détectées sur vos documents sources pour évaluer le risque de blocage par le système de ciblage de l'ADII.</p>
+      <div class="flags-grid">
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="40" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique</span><h4>Double Blading (Double Manifeste)</h4>
+          <p>Écarts entre manifeste commercial client et manifeste de fret injecté (poids, valeur ou nature).</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="30" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique</span><h4>Désignation Commerciale Générique</h4>
+          <p>Libellés interdits par l'ADII ("General Cargo", "Chemicals", "Variétés").</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="30" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique</span><h4>Discordance Numéros de Scellés</h4>
+          <p>Numéro de plomb physique ≠ numéro inscrit sur la DS. Suspicion de substitution de marchandise.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="15" data-sev="watch">
+          <div class="flag-body"><span class="badge bw">Vigilance</span><h4>Navire en POOL / VSA</h4>
+          <p>Risque d'incohérence sur le code de l'exploitant du navire ou numéro d'escale ANP.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="20" data-sev="watch">
+          <div class="flag-body"><span class="badge bw">Vigilance</span><h4>Mention "To Order" non résolue</h4>
+          <p>Absence de l'ICE de l'importateur réel final à l'approche du navire.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="15" data-sev="watch">
+          <div class="flag-body"><span class="badge bw">Vigilance</span><h4>Incohérence Masse / Volume</h4>
+          <p>Ratio poids/volume anormalement hors-normes par rapport à la nomenclature standard.</p></div>
+        </label>
+      </div>
+      <button class="btn btn-red" style="margin-top:12px" onclick="evalRisk2()">🔍 Lancer l'Analyse de Risque</button>
+      <div id="score-result2" class="score-box"></div>
+    </div>
+  </div>
+
+  <!-- SIM 3 : ÉCOR GUIDE -->
+  <div id="sim-ecor" class="sim-content">
+    <div class="calc-panel">
+      <h3 style="font-size:.92rem;color:var(--t4);margin-bottom:14px">🔀 Guide Écor Interactif — Choisissez votre situation</h3>
+      <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+        <button class="btn btn-red" style="width:auto;padding:10px 22px" onclick="showEcorPath('excedent')">🛑 J'ai un EXCÉDENT</button>
+        <button class="btn" style="width:auto;padding:10px 22px;background:var(--amber)" onclick="showEcorPath('deficit')">⚠️ J'ai un DÉFICIT</button>
+      </div>
+      <div id="ecor-excedent" style="display:none">
+        <div class="al al-red"><strong>EXCÉDENT — Marchandises non manifestées</strong>Qualification CDII : tentative d'introduction clandestine. Risque : saisie immédiate + amende douanière lourde.</div>
+        <ul class="chk" style="margin-top:12px">
+          <li><strong>Étape A1 :</strong> Arrêt immédiat — Ne pas déposer de DUM sur base du manifeste erroné</li>
+          <li><strong>Étape A2 :</strong> Obtenir le Manifest Correction (M.C) officiel certifié du port de chargement étranger justifiant l'erreur matérielle</li>
+          <li><strong>Étape A3 :</strong> Introduire la demande de rectification électronique dans BADR + annexer M.C + Packing List d'origine</li>
+          <li><strong>Étape A4 :</strong> Arbitrage ADII → bonne foi acceptée → mise à jour manifeste → calcul droits sur totalité physique → levée blocage</li>
+        </ul>
+      </div>
+      <div id="ecor-deficit" style="display:none">
+        <div class="al al-amb"><strong>DÉFICIT — Marchandises manquantes</strong>Qualification CDII : présomption de détournement frauduleux vers le marché local. Risque : droits & taxes indus + pénalités.</div>
+        <ul class="chk" style="margin-top:12px">
+          <li><strong>Étape B1 :</strong> Vérifier auprès du port de chargement si marchandise restée à quai (Short-Shipped) ou déchargée par erreur ailleurs (Over-Carried)</li>
+          <li><strong>Étape B2 :</strong> Rectification de la DS (art. 59 ter CDII) avec la preuve de non-embarquement ; sinon taxation du manquant sur la valeur déclarée (art. 14-2°)</li>
+          <li><strong>Étape B3 :</strong> Produire l'Attestation de Non-Embarquement certifiée par les douanes du port de départ étranger</li>
+          <li><strong>Étape B4 :</strong> Validation ADII dans BADR → rectification à la baisse → annulation droits indus → alignement DS / DUM finale</li>
+        </ul>
+      </div>
+      <div class="al al-pur" style="margin-top:14px">
+        <strong>⚖ Règle d'Or — Mandat de Gestion</strong>
+        Vérifier que l'Ordre de Transit comporte une clause autorisant explicitement le transitaire à effectuer des rectifications au nom du client. Sans mandat exprès : responsabilité financière et juridique entière du transitaire.
+      </div>
+    </div>
+  </div>
+
+  <!-- SIM 4 : BENCHMARK -->
+  <div id="sim-bench" class="sim-content">
+    <div style="overflow-x:auto">
+    <table class="dt c5">
+      <thead><tr><th>Critère</th><th>🇺🇸 USA (CBP)</th><th>🇪🇺 Union Européenne (ICS2)</th><th>🇸🇬 Singapour</th><th>🇲🇦 Maroc (ADII 2026)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Moment du dépôt</strong></td><td>H-24 avant CHARGEMENT à l'origine (règle "10+2")</td><td>Pré-arrivée variable selon trajet</td><td>Pré-arrivée via PCS TradeNet</td><td>H-24 avant ARRIVÉE au port marocain</td></tr>
+        <tr><td><strong>Responsabilité</strong></td><td>Partagée : Importateur (10 éléments ISF) + Armateur (2 AMS)</td><td>Multiple Filing : armateur Master B/L + transitaire House B/L séparés</td><td>Centralisée — OEA prioritaires</td><td>Consignataire maritime (déclarant initial unique)</td></tr>
+        <tr><td><strong>Contrôle à l'écor</strong></td><td>Ciblage sécurité en amont au port d'origine</td><td>DS de dépôt temporaire standard</td><td>Automatisation IoT (capteurs sur grues)</td><td>Pointage contradictoire acconier / agent maritime</td></tr>
+        <tr><td><strong>Innovation phare</strong></td><td>Blocage au port d'origine — zéro surprise à l'arrivée</td><td>Responsabilités juridiques séparées armateur/transitaire</td><td>Mainlevée OEA automatique en quelques minutes</td><td>Plateforme blockchain des factures (art. 76 ter CDII, LF 2026) + sélectivité automatique BADR</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="card-grid" style="margin-top:18px">
+      <div class="card"><h4 style="color:var(--t2);margin-bottom:8px;font-size:.87rem">🇺🇸 Leçon USA — Règle "10+2"</h4><p style="font-size:.8rem;color:#4a6a4a;line-height:1.6">Le blocage se fait au port d'origine — éliminant l'encombrement des terminaux américains. Le Maroc devrait envisager d'avancer la deadline de dépôt.</p></div>
+      <div class="card"><h4 style="color:var(--t2);margin-bottom:8px;font-size:.87rem">🇪🇺 Leçon UE — Multiple Filing ICS2</h4><p style="font-size:.8rem;color:#4a6a4a;line-height:1.6">L'armateur n'est plus pénalisé par les erreurs de description des clients du transitaire. Responsabilités juridiques clairement séparées. À adopter pour le Maroc.</p></div>
+      <div class="card"><h4 style="color:var(--t2);margin-bottom:8px;font-size:.87rem">🇸🇬 Leçon Singapour — IoT Temps Réel</h4><p style="font-size:.8rem;color:#4a6a4a;line-height:1.6">Capteurs sur les grues croisent les données avec la DS en temps réel. Mainlevée automatique pour OEA dans la minute du déchargement.</p></div>
+    </div>
+  </div>
+
+  <!-- SIM 5 : RED FLAGS & LITIGES INTERNATIONAUX (fusionné) -->
+  <div id="sim-intl-litige" class="sim-content">
+    <div class="calc-panel">
+
+      <!-- PARTIE A : RED FLAGS -->
+      <h3 style="font-size:.92rem;color:#4a148c;margin-bottom:4px">🌐 Diagnostic Red Flags — Multi-Juridictions (USA · UE · Chine)</h3>
+      <p style="font-size:.79rem;color:#5a7a5a;margin-bottom:16px">Cochez les situations détectées sur votre dossier. Le diagnostic identifie les risques par juridiction et propose les actions correctives prioritaires.</p>
+
+      <h4 style="font-size:.82rem;color:var(--red);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.04em">🔴 Risques de Valeur en Douane (Audit Financier)</h4>
+      <div class="flags-grid">
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="45" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique · Universel</span><h4>Assists non déclarés (Moules, outillage, R&D)</h4>
+          <p>L'acheteur fournit des moules, outillages, études d'ingénierie au fournisseur étranger gratuitement ou à coût réduit. Ces coûts doivent être ajoutés à la valeur en douane.</p>
+          <p class="fix">→ Ventiler la valeur des assists sur les shipments concernés et amender les entrées. Risque USA/UE : redressement + pénalités pour négligence grave.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="40" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique · USA / UE</span><h4>Royalties et licences non incluses dans la valeur</h4>
+          <p>Paiement de royalties à un tiers comme condition de la vente des marchandises importées. Ces paiements doivent être ajoutés à la valeur en douane.</p>
+          <p class="fix">→ Analyser tous les contrats de licence. Si le paiement est conditionnel à la vente, il est dutiable. Refiler des amendements post-dédouanement.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="35" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique · Parties Liées</span><h4>Prix interentreprises sans étude Transfer Pricing douanier</h4>
+          <p>Transactions acheteur/vendeur liés (parent/filiale) sans preuve que le prix n'est pas influencé par la relation. Les autorités douanières peuvent rejeter la valeur transactionnelle.</p>
+          <p class="fix">→ Documenter le test "Circumstances of Sale". L'étude Transfer Pricing fiscale ne suffit pas — une analyse douanière séparée est requise.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="30" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique · Universel</span><h4>Ajustements de prix rétroactifs non déclarés</h4>
+          <p>Bonus de volume ou "true-up" payés en fin d'année augmentant la valeur déclarée, ou rabais réduisant la valeur sans amendements post-dédouanement.</p>
+          <p class="fix">→ Mettre en place un processus de réconciliation automatique des entrées provisoires dans le délai légal (12 mois USA/UE).</p></div>
+        </label>
+      </div>
+
+      <h4 style="font-size:.82rem;color:var(--amber);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.04em">🟡 Risques d'Origine &amp; Classification</h4>
+      <div class="flags-grid">
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="40" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique · USA / UE</span><h4>Opération "Tournevis" (Screwdriver) — Origine factice</h4>
+          <p>Assemblage minimal dans un pays tiers (vis/empotage) pour déclarer une origine préférentielle et contourner les droits antidumping, sans transformation substantielle.</p>
+          <p class="fix">→ Documenter le "tariff shift" ou le test de valeur ajoutée selon les règles d'origine applicables (CPTPP, USMCA, Accord Agadir…).</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="25" data-sev="watch">
+          <div class="flag-body"><span class="badge bw">Vigilance · Universel</span><h4>Code SH non mis à jour après modification produit</h4>
+          <p>Utilisation du même code HS depuis des années sans révision, même après modification du design ou après la révision quinquennale du Système Harmonisé (HS 2022/2027).</p>
+          <p class="fix">→ Conduire une revue annuelle des classifications. Utiliser des outils NLP pour détecter les codes obsolètes ou les sous-positions plus précises.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="30" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique · USA</span><h4>Exposition UFLPA — Chaîne d'approvisionnement région Xinjiang</h4>
+          <p>Importations provenant (même indirectement) de fournisseurs de la région du Xinjiang. Présomption légale de travail forcé — charge de la preuve à 100% sur l'importateur.</p>
+          <p class="fix">→ Cartographier la chaîne jusqu'au Tier N (matières premières). Exiger des certificats de traçabilité et envisager la blockchain comme preuve irréfutable.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="30" data-sev="crit">
+          <div class="flag-body"><span class="badge bc">Critique · UE</span><h4>Exposition CBAM — Émissions carbone non documentées</h4>
+          <p>Importation de produits CBAM (acier, ciment, aluminium, engrais, électricité, hydrogène) sans données d'émissions réelles des fournisseurs. Utilisation des "valeurs par défaut" pénalisante.</p>
+          <p class="fix">→ Intégrer la collecte de données carbone dans le processus d'achat. Travailler avec les fournisseurs sur la décarbonation — transformer le CBAM en avantage concurrentiel.</p></div>
+        </label>
+      </div>
+
+      <h4 style="font-size:.82rem;color:var(--blue);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.04em">🔵 Risques Spécifiques Chine (GACC)</h4>
+      <div class="flags-grid">
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="35" data-sev="crit">
+          <div class="flag-body"><span class="badge" style="background:#e3f2fd;color:var(--blue);border:1px solid var(--blue)">Critique · Chine Export</span><h4>Contrôles export — Biens à double usage non licenciés</h4>
+          <p>Export depuis la Chine de minéraux critiques (gallium, germanium, antimoine) ou technologies avancées sans licence GACC. Contrôles récemment renforcés sur les puces avancées.</p>
+          <p class="fix">→ Vérifier les listes de contrôle à l'export GACC avant chaque expédition. Obtenir les End-User Certificates appropriés.</p></div>
+        </label>
+        <label class="flag-row">
+          <input type="checkbox" class="flag-chk" onchange="handleFlag(this)" value="25" data-sev="watch">
+          <div class="flag-body"><span class="badge bw">Vigilance · Chine Import</span><h4>Écart Déclaration Douanière / Rapatriement Devises</h4>
+          <p>Discordance entre la valeur déclarée en douane et les flux de rapatriement de devises ou les remboursements TVA. Le GACC croise automatiquement ces données avec les régulateurs financiers.</p>
+          <p class="fix">→ S'assurer que les systèmes ERP synchronisent parfaitement les données douanières, comptables et bancaires. Toute divergence déclenche un audit automatique.</p></div>
+        </label>
+      </div>
+
+      <button class="btn" style="background:#4a148c;margin-top:16px" onclick="evalRiskIntl()">🌐 Analyser les Risques Multi-Juridictions</button>
+      <div id="score-intl" class="score-box"></div>
+
+      <!-- SÉPARATEUR -->
+      <div style="border-top:2px solid #e0d0f0;margin:28px 0 20px;padding-top:20px">
+        <h3 style="font-size:.92rem;color:#4a148c;margin-bottom:4px">⚖️ Guide de Gestion des Litiges Douaniers</h3>
+        <p style="font-size:.79rem;color:#5a7a5a;margin-bottom:18px">Sélectionnez la juridiction et la nature du litige. L'outil génère la procédure de défense avec documents requis et conseil stratégique.</p>
+      </div>
+
+      <!-- PARTIE B : GUIDE LITIGES -->
+      <div class="fr">
+        <label>Juridiction du litige</label>
+        <select id="litige-pays" onchange="resetLitige()">
+          <option value="">— Sélectionnez la juridiction —</option>
+          <option value="ma">🇲🇦 Maroc (ADII / CDII)</option>
+          <option value="us">🇺🇸 États-Unis (CBP / CIT)</option>
+          <option value="eu">🇪🇺 Union Européenne (DG TAXUD)</option>
+          <option value="cn">🇨🇳 Chine (GACC)</option>
+        </select>
+      </div>
+      <div class="fr">
+        <label>Nature du litige</label>
+        <select id="litige-type" onchange="resetLitige()">
+          <option value="">— Sélectionnez le type —</option>
+          <option value="classification">Contestation de Classification (code SH)</option>
+          <option value="valeur">Redressement de Valeur en Douane</option>
+          <option value="origine">Rejet du Certificat d'Origine / Préférence tarifaire</option>
+          <option value="saisie">Saisie / Blocage de Marchandises</option>
+          <option value="amende">Pénalité / Amende douanière</option>
+        </select>
+      </div>
+      <button class="btn btn-teal" style="margin-bottom:18px" onclick="showLitige()">⚖️ Générer la Procédure de Défense</button>
+      <div id="litige-result" style="display:none"></div>
+
+    </div>
+  </div>
+
+</div><!-- /T5 -->
+
+<!-- ===== T7 : RISK & STRATÉGIE ===== -->
+<div id="t7" class="main-pane">
+  <div class="sec-head c7">
+    <div class="sec-num n7">07</div>
+    <div class="sec-text"><h2 class="c7">Risk & Stratégie — Gestion du Risque d'Entreprise</h2><p>Cadre ERM pour dirigeants · C-Suite · Compliance Directors · Supply Chain VPs</p></div>
+  </div>
+
+  <div class="al" style="background:#f3e5f5;border-left:4px solid #4a148c;margin-bottom:20px;font-size:.84rem">
+    <strong style="color:#4a148c">📋 Audience : Dirigeants et managers de haut niveau</strong>
+    Ce module élève la conformité douanière du statut de tâche administrative à celui de <strong>pilier stratégique de l'entreprise</strong>. Les quatre piliers ERM couvrent les risques financiers, opérationnels, juridiques et géopolitiques liés aux déclarations douanières internationales.
+  </div>
+
+  <!-- Sous-onglets T7 -->
+  <div class="sub-tabs">
+    <div class="sub-nav">
+      <button class="sub-btn t7a active" onclick="subTab('t7','st7a',this)">💰 Pilier I — Risque Financier</button>
+      <button class="sub-btn t7b" onclick="subTab('t7','st7b',this)">🔗 Pilier II — Résilience Opérationnelle</button>
+      <button class="sub-btn t7c" onclick="subTab('t7','st7c',this)">⚖️ Pilier III — Responsabilité Juridique</button>
+      <button class="sub-btn t7d" onclick="subTab('t7','st7d',this)">🌍 Pilier IV — Risque Géopolitique & ESG</button>
+      <button class="sub-btn t7e" onclick="subTab('t7','st7e',this)">🛡 Gestion des Litiges</button>
+      <button class="sub-btn t7f" onclick="subTab('t7','st7f',this)">🏢 Gouvernance & Stress Test</button>
+    </div>
+
+    <!-- PILIER I : FINANCIER -->
+    <div id="st7a" class="sub-pane active">
+      <div class="al al-red">
+        <strong>Exposition Financière — Chiffres Clés</strong>
+        USA : redressements jusqu'à 5 ans en arrière · Pénalités négligence grave = 4× droits dus · Fraude = 8× droits (ou valeur marchande) · UE : audits jusqu'à 3 ans · Chine : confiscation + amendes administratives lourdes
+      </div>
+      <div class="card-grid" style="margin-top:16px">
+        <div class="card">
+          <h4 style="color:#4a148c;font-size:.87rem;margin-bottom:10px">⚠️ Redressements Rétroactifs</h4>
+          <p style="font-size:.81rem;color:#4a5a4a;line-height:1.6">Les autorités peuvent auditer des entrées remontant jusqu'à 5 ans (USA) ou 3 ans (UE). Une erreur systématique de classification ou de valorisation = une facture de droits rétroactive non budgétée potentiellement de plusieurs millions.</p>
+          <div class="al al-pur" style="margin-top:10px;padding:9px 12px">
+            <strong>Action :</strong> Constituer une réserve "Trade Contingency" sur le bilan pour les expositions identifiées. Utiliser les programmes de réconciliation CBP (USA) ou déclarations simplifiées UE pour financer les ajustements.
+          </div>
+        </div>
+        <div class="card">
+          <h4 style="color:#4a148c;font-size:.87rem;margin-bottom:10px">💰 Optimisation — "First Sale for Export"</h4>
+          <p style="font-size:.81rem;color:#4a5a4a;line-height:1.6">Dans une chaîne multi-niveaux (Usine → Intermédiaire → Importateur), la règle "First Sale" permet de déclarer la valeur de la première transaction (usine→intermédiaire), plus basse de <strong>15 à 30%</strong>, au lieu du prix final payé par l'importateur.</p>
+          <div class="al al-grn" style="margin-top:10px;padding:9px 12px">
+            <strong>Condition :</strong> La marchandise doit être clairement destinée à l'export au moment de la "première vente". Requiert une structuration contractuelle précise avec l'intermédiaire.
+          </div>
+        </div>
+        <div class="card">
+          <h4 style="color:#4a148c;font-size:.87rem;margin-bottom:10px">🏭 FTZ / ZAI — "Tarif Inversé"</h4>
+          <p style="font-size:.81rem;color:#4a5a4a;line-height:1.6">Si les composants importés sont taxés à 6% mais le produit fini à 2% : importer les composants en ZAI/FTZ, assembler, puis entrer le produit fini sur le marché national au taux réduit. Économies massives + différé de trésorerie illimité.</p>
+          <div class="al al-grn" style="margin-top:10px;padding:9px 12px">
+            <strong>Applicable au Maroc :</strong> ZAI Tanger, Kenitra, Midparc. Applicable en combinaison avec le régime ATPA pour les exportateurs.
+          </div>
+        </div>
+        <div class="card">
+          <h4 style="color:#4a148c;font-size:.87rem;margin-bottom:10px">🔄 Duty Drawback & Retours</h4>
+          <p style="font-size:.81rem;color:#4a5a4a;line-height:1.6">Les entreprises perdent des millions en ne réclamant pas le remboursement de 99% des droits sur les matières importées incorporées dans des produits exportés. L'économie circulaire crée aussi des doubles paiements sur les retours.</p>
+          <div class="al al-gld" style="margin-top:10px;padding:9px 12px">
+            <strong>Action :</strong> Implémenter un module "Drawback Management" dans le GTM. Tracker chaque export pour déclencher automatiquement la demande de remboursement dans les délais légaux.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILIER II : OPÉRATIONNEL -->
+    <div id="st7b" class="sub-pane">
+      <div style="overflow-x:auto">
+      <table class="dt" style="--th-bg:#4a148c">
+        <thead style="background:#4a148c"><tr>
+          <th style="background:#4a148c">Risque Opérationnel</th>
+          <th style="background:#4a148c">Impact</th>
+          <th style="background:#4a148c">Stratégie de Mitigation</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>Blocage en douane</strong> — examen intensif ou blocage documentaire</td><td>Rupture de stock · Pénalités contractuelles clients · Surcoûts fret aérien de remplacement</td><td>Stock de sécurité stratégique pour les SKUs à fort risque douanier (chimie, mécanique, électronique). Buffer <em>inside</em> le pays de destination.</td></tr>
+          <tr><td><strong>Perte du statut OEA/C-TPAT</strong></td><td>Retour au traitement standard — ralentissement immédiat et durable de toute la chaîne logistique</td><td>Programme de maintien OEA proactif. Audit interne annuel "OEA Fitness Check" avant le renouvellement. Traiter les auditeurs OEA comme des alliés.</td></tr>
+          <tr><td><strong>Point unique de défaillance</strong> — un seul port/courtier/route</td><td>Paralysie totale si le point unique est bloqué (grève, crise, surtarification soudaine)</td><td>Diversifier les ports d'entrée. Maintenir deux courtiers en douane agréés par trade lane majeure. Plans de routage alternatifs pré-validés.</td></tr>
+          <tr><td><strong>Dépendance technologique du courtier</strong></td><td>Si le courtier n'a pas de plan de continuité (BCP), ses pannes IT arrêtent vos dédouanements</td><td>Exiger un BCP annuel auditable du courtier principal. Inclure une clause de reprise d'activité sous 4h dans le contrat de service.</td></tr>
+          <tr><td><strong>Silos de données</strong> (transporteur / transitaire / courtier)</td><td>Le courtier reçoit des données incomplètes → erreurs manuelles → blocages douaniers</td><td>Implémenter une "Control Tower" digitale. Standardiser les Shipping Instructions (SI) comme document source unique pour le transport ET la douane.</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="al al-pur" style="margin-top:16px">
+        <strong>📐 Règle de partage des données par Milestone</strong>
+        À la réservation : transitaire partage codes SH + valeurs avec le courtier. · À la mise en entrepôt (Gate-In) : transporteur partage poids exacts + numéros de scellés. · Avant départ : toutes les données sont figées et déposées. Aucun changement post-dépôt sans procédure formelle.
+      </div>
+    </div>
+
+    <!-- PILIER III : JURIDIQUE -->
+    <div id="st7c" class="sub-pane">
+      <div class="al al-red">
+        <strong>Avertissement C-Suite — Responsabilité Pénale Personnelle</strong>
+        Dans certaines juridictions (USA notamment), les schémas de négligence intentionnelle ou de fraude douanière peuvent entraîner des poursuites pénales contre les directeurs supply chain, les CFOs, voire les CEOs. La conformité douanière est un sujet de Board, pas seulement de logistique.
+      </div>
+      <div class="card-grid" style="margin-top:14px">
+        <div class="card">
+          <h4 style="color:#4a148c;font-size:.87rem;margin-bottom:8px">🛡 Modèle "3 Lignes de Défense"</h4>
+          <ul class="chk">
+            <li><strong>1ère ligne (Opérations) :</strong> Équipes logistique et achats exécutent des processus quotidiens conformes</li>
+            <li><strong>2ème ligne (Compliance) :</strong> Équipe indépendante Global Trade Compliance fixe les politiques et surveille les risques</li>
+            <li><strong>3ème ligne (Audit Interne) :</strong> Teste l'efficacité du programme et rapporte directement au Comité d'Audit du CA</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="color:#4a148c;font-size:.87rem;margin-bottom:8px">🔍 Due Diligence M&A — Passifs Douaniers</h4>
+          <p style="font-size:.81rem;color:#4a5a4a;line-height:1.6">L'acquéreur hérite des passifs douaniers de la cible (droits impayés des 5 dernières années + pénalités). Avant toute acquisition, déployer un audit douanier "mock-CBP" sur 50 entrées aléatoires des 3 dernières années. Quantifier l'exposition et ajuster le prix d'acquisition ou exiger un escrow holdback.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:#4a148c;font-size:.87rem;margin-bottom:8px">🗣 Lanceurs d'Alerte (Whistleblower)</h4>
+          <p style="font-size:.81rem;color:#4a5a4a;line-height:1.6">USA — False Claims Act : un employé mécontent peut déposer un <em>qui tam</em> pour fraude douanière. En cas de succès : triples dommages + une part des pénalités pour le plaignant. Établir une hotline anonyme interne et investiguer toute alerte immédiatement — mieux vaut découvrir le problème en interne.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:#4a148c;font-size:.87rem;margin-bottom:8px">📋 "Legal Hold" — Ne jamais détruire</h4>
+          <p style="font-size:.81rem;color:#4a5a4a;line-height:1.6">Dès qu'un litige est anticipé : émettre un "Legal Hold" strict sur tous les emails, logs ERP et communications liés aux marchandises concernées. La suppression d'un email démontrant une connaissance interne d'une erreur douanière entraîne des sanctions fatales en procédure judiciaire (spoliation of evidence).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILIER IV : GÉOPOLITIQUE & ESG -->
+    <div id="st7d" class="sub-pane">
+      <div style="overflow-x:auto">
+      <table class="dt" style="">
+        <thead style="background:#4a148c"><tr>
+          <th style="background:#4a148c">Risque</th>
+          <th style="background:#4a148c">Juridiction</th>
+          <th style="background:#4a148c">Mécanisme d'Enforcement</th>
+          <th style="background:#4a148c">Stratégie de Réponse</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>UFLPA — Travail Forcé Xinjiang</strong></td><td>🇺🇸 USA</td><td>Présomption légale inversée — charge de preuve 100% sur l'importateur</td><td>Blockchain pour traçabilité jusqu'aux matières premières. Consortiums sectoriels (textile, minerais). Diversification sourcing.</td></tr>
+          <tr><td><strong>EU Forced Labor Regulation</strong></td><td>🇪🇺 UE</td><td>Interdiction d'importation + destruction des marchandises</td><td>Cartographie Tier-N obligatoire. Audit contractuel des sous-traitants. Digital passport des produits.</td></tr>
+          <tr><td><strong>CBAM — Taxe Carbone Frontière</strong></td><td>🇪🇺 UE</td><td>Achat de certificats CBAM proportionnels aux émissions intégrées</td><td>Collecter les données d'émissions réelles (pas les valeurs par défaut, pénalisantes). Travailler avec les fournisseurs sur la décarbonation = avantage concurrentiel.</td></tr>
+          <tr><td><strong>Contrôles Export Chine</strong></td><td>🇨🇳 Chine</td><td>Licences GACC obligatoires pour minéraux critiques et technologies avancées</td><td>Screening pré-expédition sur les listes de contrôle GACC. End-User Certificates. Diversification des sources de minéraux critiques.</td></tr>
+          <tr><td><strong>Sanctions OFAC / BIS</strong></td><td>🌐 USA (portée mondiale)</td><td>Amendes massives + débarment. S'applique même aux transactions en dehors des USA si USD utilisé</td><td>Screening automatisé DPS (Denied Party Screening) intégré à l'ERP. Chaque partenaire commercial screenné avant chaque transaction.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- GESTION DES LITIGES -->
+    <div id="st7e" class="sub-pane">
+      <div class="al al-pur" style="margin-bottom:16px">
+        <strong>⚖️ Stratégie de Défense — Les 4 Phases</strong>
+        Un litige douanier suit une progression irréversible. Chaque phase a ses propres règles, délais et tactiques. Agir au bon moment dans la bonne phase est déterminant pour l'issue.
+      </div>
+
+      <h4 style="font-size:.85rem;color:#4a148c;margin:16px 0 10px">Phase 1 — Pré-Litige : Audit & Enquête</h4>
+      <ul class="chk">
+        <li><strong>Établir le privilège avocat-client immédiatement :</strong> Dès réception d'un avis d'audit, impliquer un avocat spécialisé en droit commercial. Diriger toutes les communications d'interprétation juridique par son canal — protège l'analyse interne de la découverte.</li>
+        <li><strong>Contrôler strictement la production de documents :</strong> Ne fournir que ce qui est explicitement demandé dans l'avis d'audit. Constituer un "Document Review Committee" (Juridique + Compliance + IT) avant chaque remise.</li>
+        <li><strong>Déclaration Volontaire (Prior Disclosure) :</strong> Si l'audit interne révèle une erreur (sous-paiement de droits), déposer une déclaration volontaire AVANT que la douane ne notifie formellement la violation. USA : plafonne les pénalités civiles. UE/Chine : élimine les majorations.</li>
+      </ul>
+
+      <h4 style="font-size:.85rem;color:#4a148c;margin:16px 0 10px">Phase 2 — Recours Administratif</h4>
+      <div style="overflow-x:auto">
+      <table class="dt">
+        <thead style="background:#4a148c"><tr>
+          <th style="background:#4a148c">Juridiction</th>
+          <th style="background:#4a148c">Mécanisme</th>
+          <th style="background:#4a148c">Délai</th>
+          <th style="background:#4a148c">Conseil Tactique</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>🇲🇦 Maroc</td><td>Lettre de Correction dans BADR + recours gracieux auprès du Receveur</td><td>Avant notification formelle d'infraction</td><td>Horodatage BADR est déterminant. Agir avant la notification officielle.</td></tr>
+          <tr><td>🇺🇸 USA</td><td>Protest (CBP Form 19)</td><td>180 jours après liquidation de l'entrée</td><td>"Payment Under Protest" : payer les droits contestés pour libérer la marchandise tout en préservant le droit au remboursement.</td></tr>
+          <tr><td>🇪🇺 UE</td><td>Demande de remboursement ou appel auprès de l'autorité nationale</td><td>Variable par État membre (généralement 3 ans)</td><td>Demander simultanément un BTI (Binding Tariff Information) pour verrouiller la position future pendant le litige.</td></tr>
+          <tr><td>🇨🇳 Chine</td><td>Reconsidération Administrative (行政复议) auprès de l'autorité supérieure GACC</td><td>60 jours après la décision</td><td>Coordonner avec les associations professionnelles sectorielles — la force du nombre est déterminante face au GACC.</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h4 style="font-size:.85rem;color:#4a148c;margin:16px 0 10px">Phase 3 — Contentieux Judiciaire</h4>
+      <div class="card-grid">
+        <div class="card"><h4 style="color:#4a148c;font-size:.84rem;margin-bottom:8px">🇺🇸 Court of International Trade (CIT)</h4><p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">Tribunal spécialisé exclusivement en droit commercial international, New York. Requiert un cautionnement du montant disputé. Procédures longues (2-5 ans) mais jurisprudence contraignante nationale.</p></div>
+        <div class="card"><h4 style="color:#4a148c;font-size:.84rem;margin-bottom:8px">🇪🇺 Juridictions Nationales + CJUE</h4><p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">Tribunaux financiers/douaniers nationaux spécialisés (Finanzgericht en Allemagne, tribunaux administratifs en France). Questions de droit UE renvoyées à la CJUE par "question préjudicielle". Former une coalition industrielle pour partager les coûts.</p></div>
+        <div class="card"><h4 style="color:#4a148c;font-size:.84rem;margin-bottom:8px">Règle d'Or : Séparer Opérations et Juridique</h4><p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">Ne jamais laisser l'équipe logistique faire des concessions informelles aux agents douaniers pour "accélérer les choses" sans validation juridique. Ces concessions peuvent être utilisées comme aveux en procédure judiciaire.</p></div>
+      </div>
+    </div>
+
+    <!-- GOUVERNANCE & STRESS TEST -->
+    <div id="st7f" class="sub-pane">
+      <div class="al al-pur" style="margin-bottom:16px">
+        <strong>🏢 Impératifs de Gouvernance pour le C-Suite</strong>
+        La conformité douanière doit être élevée au rang de fonction stratégique indépendante — pas un sous-département de la supply chain. Ces décisions relèvent directement du Board et du CLO/CRO.
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h4 style="color:var(--t7);font-size:.87rem;margin-bottom:8px">🏢 Nommer un Global Head of Trade Compliance</h4>
+          <p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">Reporting direct au CLO ou CRO — <strong>jamais</strong> au VP Supply Chain. La compliance doit avoir l'autorité d'arrêter les opérations en cas de risque grave détecté. Rapport semestriel obligatoire au Comité d'Audit du Conseil d'Administration.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t7);font-size:.87rem;margin-bottom:8px">📊 KPIs Broker Redéfinis</h4>
+          <p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">Arrêter de payer les courtiers sur une base purement transactionnelle "par entrée". Passer à des contrats value-based avec : pénalités pour taux d'erreur élevé + bonus pour consulting compliance proactif et défense lors des audits. Mesurer : taux d'acceptation première soumission, fréquence d'amendements post-dédouanement, délai de réponse aux RFI douanières.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t7);font-size:.87rem;margin-bottom:8px">🧪 Stress Test Annuel — Simulation de Crise</h4>
+          <p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">Une fois par an : tabletop exercise simulant une crise douanière majeure (saisie UFLPA sur le produit phare, tarif soudain de 25%, audit rétroactif 5 ans). Tester la réponse du COMEX, du juridique, des RP et de la supply chain. Identifier les failles de coordination avant qu'elles ne soient exploitées.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t7);font-size:.87rem;margin-bottom:8px">🛡 D&O Insurance — Couverture Trade Compliance</h4>
+          <p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">S'assurer que les polices d'assurance Responsabilité des Dirigeants et Mandataires (D&O) couvrent explicitement les investigations réglementaires douanières et de contrôle des exportations. Vérifier l'exclusion ou l'inclusion des actes intentionnels dans la politique de la compagnie.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t7);font-size:.87rem;margin-bottom:8px">💼 Financer la Technologie GTM</h4>
+          <p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">Approuver le budget pour un système de Global Trade Management (GTM) robuste. Les processus manuels, feuilles Excel et communications email avec les courtiers sont inacceptables pour gérer un risque d'entreprise en 2026. Le ROI se mesure en litiges évités, pas en licences logicielles.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t7);font-size:.87rem;margin-bottom:8px">🔔 Hotline Lanceurs d'Alerte</h4>
+          <p style="font-size:.8rem;color:#4a5a4a;line-height:1.6">Établir une hotline anonyme interne et investiguer immédiatement toute alerte de non-conformité douanière. Une issue découverte en interne est un risque gérable. Une issue révélée par un whistleblower externe (False Claims Act USA) se transforme en crise : triples dommages + presse + enquête fédérale.</p>
+        </div>
+      </div>
+    </div>
+  </div><!-- /sub-tabs T7 -->
+</div><!-- /T7 -->
+<div id="t6" class="main-pane">
+  <div class="sec-head c6">
+    <div class="sec-num n6">06</div>
+    <div class="sec-text"><h2 class="c6">Douane 4.0 & Intelligence Artificielle</h2><p>La vision du smart-dédouanement et les garde-fous opérationnels</p></div>
+  </div>
+
+  <div class="ai-block">
+    <h3>Vers le Smart-Dédouanement — La vision Import-eXPert</h3>
+    <p>L'analyse manuelle des manifestes et la vérification des Red Flags documentaires sont chronophages et sources d'erreurs. En 2026, PortNet intègre déjà des briques blockchain pour sécuriser les e-B/L et de l'IA pour le scoring de risque. La prochaine étape : automatiser la couche de conformité.</p>
+    <div class="ai-features">
+      <div class="ai-feat"><div class="icon">🔤</div><strong>NLP — Ingestion Automatique</strong><p>Extraction des données des e-B/L et Packing Lists (poids, scellés, désignations) dès leur émission. Confrontation instantanée avec les filtres syntaxiques ADII.</p></div>
+      <div class="ai-feat"><div class="icon">🔗</div><strong>Blockchain e-B/L</strong><p>Données d'origine infalsifiables injectées directement dans PortNet → BADR. L'écart entre DS et réalité physique tend vers zéro.</p></div>
+      <div class="ai-feat"><div class="icon">🎯</div><strong>Prédiction Circuit Douanier</strong><p>En croisant HS Code + origine + historique ICE + type de conteneur : probabilité d'orientation Circuit Rouge calculée à l'avance.</p></div>
+      <div class="ai-feat"><div class="icon">📡</div><strong>IoT E-Seal (Scellés électroniques)</strong><p>Alerte en cas d'ouverture suspecte pendant le voyage. Régularisation ADII préparée avant le déchargement.</p></div>
+    </div>
+  </div>
+
+  <div class="al al-red" style="margin-top:18px">
+    <strong>⚠ Garde-fou critique — "Garbage In, Garbage Out"</strong>
+    Automatiser sans filtre de qualité expose à un effet multiplicateur d'erreurs. Une IA entraînée sur des manifestes mal codifiés reproduira ces anomalies à grande échelle, augmentant drastiquement le taux de ciblage Circuit Rouge. La data-souveraineté et le nettoyage des données sources sont les piliers d'une transition réussie. <strong>Le contrôle humain final (Human-in-the-loop) est non-négociable.</strong>
+  </div>
+
+  <div class="al al-grn" style="margin-top:12px">
+    <strong>✅ Programme OEA — Le multiplicateur de bénéfices</strong>
+    Le triptyque OEA complet (Armateur + Concessionnaire + Transitaire) génère les gains maximaux : réduction du taux de passage au scanner, dispense de garanties financières, mainlevée quasi-automatique en Circuit Vert. <strong>Effet maillon faible :</strong> si un seul acteur de la chaîne n'est pas OEA, l'intégralité des avantages est perdue.
+  </div>
+
+  <div class="al al-blu" style="margin-top:12px">
+    <strong>🗓 Plan d'investissement TMSA 2026–2028 : ~700 M EUR</strong>
+    Extension terminal passagers Tanger Med, nouveaux ports secs, et <strong>digitalisation des opérations portuaires</strong> au cœur des priorités. L'IA et la blockchain ne sont plus des options mais des composantes structurelles du prochain cycle d'investissement portuaire marocain.
+  </div>
+
+  <div class="sub-tabs" style="margin-top:28px">
+    <div class="sub-nav">
+      <button class="sub-btn t6a active" onclick="subTab('t6','st6a',this)">📡 Technologies Déployées</button>
+      <button class="sub-btn t6b" onclick="subTab('t6','st6b',this)">🔭 Digital Twin & NLP</button>
+      <button class="sub-btn t6c" onclick="subTab('t6','st6c',this)">📦 E-Commerce & De Minimis</button>
+      <button class="sub-btn t6d" onclick="subTab('t6','st6d',this)">📋 Capital Humain & Audit-Ready</button>
+    </div>
+
+    <div id="st6a" class="sub-pane active">
+      <div style="overflow-x:auto;margin-top:4px">
+      <table class="dt">
+        <thead style="background:var(--t6)"><tr>
+          <th style="background:var(--t6)">Technologie</th>
+          <th style="background:var(--t6)">Application concrète Maroc 2026</th>
+          <th style="background:var(--t6)">Bénéfice opérationnel</th>
+          <th style="background:var(--t6)">État de déploiement</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>Blockchain e-B/L</strong></td><td>Données B/L infalsifiables injectées directement dans PortNet → BADR. Suppression ressaisie manuelle.</td><td>Écart DS/réalité réduit à zéro. Zéro manipulation documentaire possible.</td><td>🟢 Base légale : art. 76 ter CDII (LF 2026) — plateforme volontaire, modalités par instruction</td></tr>
+          <tr><td><strong>IA Scoring de risque BADR</strong></td><td>Algorithme croise HS Code + origine + historique ICE + type conteneur → probabilité Circuit Rouge calculée avant accostage.</td><td>Anticipation des coûts de contrôle. Optimisation dossiers à risque avant injection.</td><td>🟢 Sélectivité automatique BADR (triple circuit étendu au transit depuis le 15/05/2023, circ. 6456/412)</td></tr>
+          <tr><td><strong>IoT E-Seal</strong></td><td>Scellés électroniques géolocalisés — alerte si ouverture suspecte en transit. Régularisation ADII préparée avant déchargement.</td><td>Prévention contentieux plomb/scellé. Zéro surprise à l'écor.</td><td>🟢 Obligatoire sur l'acheminement bureau ↔ MEAD (circ. 6675/312, 1er/09/2025)</td></tr>
+          <tr><td><strong>EDIFACT CUSCAR automatisé</strong></td><td>Injection manifeste depuis l'ERP de l'armateur directement dans PortNet via API — sans ressaisie humaine.</td><td>Zéro erreur de transcription. Délai H-24 respecté structurellement.</td><td>🟢 Opérationnel — standard OMD</td></tr>
+          <tr><td><strong>NLP Classification HS</strong></td><td>Outil NLP lit les descriptions produits et propose un code SH avec score de confiance. Humains ne traitent que les cas ambigus.</td><td>+80% rapidité. Réduction erreurs systématiques de code SH.</td><td>🟡 Disponible via solutions GTM</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div id="st6b" class="sub-pane">
+      <div class="card-grid" style="margin-top:4px">
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">🔭 Digital Twin — Jumeau Numérique Supply Chain</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.65">Avant tout déplacement de production (ex: Chine → Vietnam), le jumeau numérique simule l'impact douanier exact : qualification d'origine CPTPP ? Coût CBP ? Risque antidumping ? Le CFO prend des décisions réseau avec une certitude financière totale.</p>
+          <div class="al al-grn" style="margin-top:10px;padding:9px 12px;font-size:.79rem">
+            <strong>Application Maroc :</strong> Simuler l'impact ZAI vs marché classique, le différentiel tarifaire ALE USA/UE/ZLECAF, ou le coût réel d'un changement de régime douanier (ATPA → DUM classique) avant d'engager les flux.
+          </div>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">🤖 NLP & IA — Classification HS Automatique</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.65">Les outils NLP lisent les descriptions produits, spécifications techniques et précédents de classements douaniers pour suggérer un code SH avec score de confiance. Les humains ne traitent que les cas ambigus.</p>
+          <div class="al al-blu" style="margin-top:10px;padding:9px 12px;font-size:.79rem">
+            <strong>Gain mesurable :</strong> +80% rapidité. Réduction des erreurs systématiques. Interfaçable avec BADR via GTM (Descartes, MIC, Amber Road).
+          </div>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">🔗 Blockchain Provenance — UFLPA & CBAM</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.65">Consortiums blockchain sectoriels (textiles, minerais) où chaque transaction — de la matière première au conteneur — est cryptographiquement enregistrée. Crée un "passeport numérique" des marchandises présentable instantanément aux douanes.</p>
+          <div class="al al-gld" style="margin-top:10px;padding:9px 12px;font-size:.79rem">
+            <strong>Impératif 2026 :</strong> Sous l'UFLPA (USA) et l'EU Forced Labor Regulation (2027), les preuves papier ne suffisent plus. La blockchain est désormais acceptée par CBP comme preuve de traçabilité irréfutable.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="st6c" class="sub-pane">
+      <div class="al al-amb" style="margin-bottom:14px">
+        <strong>⚠️ Ne pas construire un modèle permanent sur le seuil de De Minimis</strong>
+        Le seuil américain ($800) fait l'objet de pressions législatives intenses liées à l'explosion des flux Shein/Temu. Une modification peut survenir sans préavis et déstabiliser tout un modèle de distribution.
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">🇺🇸 USA — Section 321 & Stratégie Hybride</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.6">De minimis pour le test marché et les SKUs haute marge / faible volume. Entrepôts sous douane ou FTZ pour les volumes élevés en parallèle — transition vers entrée formelle avant la réglementation.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">🇪🇺 UE — IOSS (Import One-Stop Shop)</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.6">Le numéro IOSS de la plateforme doit être synchronisé avec l'ERP. Si absent ou invalide sur l'entrée douanière, l'acheteur reçoit une facture TVA surprise à la porte — destruction de l'expérience client et taux de retour massif.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">🇲🇦 Maroc — E-Commerce Transfrontalier</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.6">Un conteneur LCL peut contenir des milliers de colis pour des centaines de destinataires. Chaque colis doit avoir son House B/L intégré électroniquement dans PortNet. L'ICE de l'agent de groupage est la clé de voûte — sans lui, l'accès aux sous-lignes est impossible.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="st6d" class="sub-pane">
+      <div class="card-grid" style="margin-top:4px">
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">👷 Pénurie de Courtiers — Le Risque Humain Ignoré</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.6">Le stock mondial de courtiers en douane licenciés se réduit (retraites, déficit d'attractivité). Fort turnover chez votre courtier = clercs inexpérimentés sur vos dossiers complexes. Consolider le spend sur des courtiers Tier-1. Inclure des clauses de notification de changement de gestionnaire.</p>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">📋 "Customs Entry Packet" Numérique</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.6">Pour chaque entrée : créer un packet numérique incluant une "Compliance Justification Memo" expliquant le choix du code SH et de la méthode de valorisation. En cas d'audit, le mémo est remis à l'auditeur — la charge de la preuve se déplace vers la douane.</p>
+          <div class="al al-grn" style="margin-top:8px;padding:8px 11px;font-size:.79rem">
+            <strong>Règle 5 ans :</strong> Retention documentaire automatisée dans l'ERP. Chaque numéro d'entrée hyperlié à la facture, packing list, B/L et preuve de paiement.
+          </div>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--t6);font-size:.87rem;margin-bottom:8px">🔴 Mock Audit "Red Team" Annuel</h4>
+          <p style="font-size:.81rem;color:#3a5a3a;line-height:1.6">Mandater un avocat spécialisé pour jouer le rôle d'un auditeur CBP/DG TAXUD agressif. Sélectionner 50 entrées aléatoires des 3 dernières années, exiger documentation complète et justification de valorisation/classification. Expose les failles dans un environnement contrôlé avant le vrai audit.</p>
+        </div>
+      </div>
+    </div>
+  </div><!-- /sub-tabs T6 -->
+</div>
+
+<footer class="site-footer">
+  <strong>Import-eXPert</strong> — Guide Opérationnel Opérateurs Maritimes & Douane Maroc 2026<br>
+  Sources : Code des douanes et impôts indirects (dahir 1-77-339, version LF 2026) · arrêtés 1318-77, 3413-12, 3414-12, 1640-22 · circulaires ADII 5353/312, 5354/312, 5655/312, 5959/312, 6369/312, 6387/412, 6456/412, 6636/312, 6662/312, 6675/312, 6677/312, 6771/312, D251/2025, D299/2025 · Tanger Med Port Authority (bilan 2025, 02/02/2026) · ministère de l'Équipement et de l'Eau (trafic portuaire 2025) · ANP<br>Mise à jour : 9 novembre 2026
+</footer>
+
+<script>
+// ===== INIT AU CHARGEMENT =====
+document.addEventListener('DOMContentLoaded', function() {
+  // Forcer l'état initial : seul sim-h24 visible dans T5
+  const t5 = document.getElementById('t5');
+  if (t5) {
+    t5.querySelectorAll('.sim-content').forEach(c => {
+      c.classList.remove('active');
+      c.style.display = 'none';
+    });
+    const h24 = document.getElementById('sim-h24');
+    if (h24) { h24.classList.add('active'); h24.style.display = 'block'; }
+    // Seule la 1ère sim-card active
+    t5.querySelectorAll('.sim-card').forEach((c,i) => c.classList.toggle('active', i===0));
+  }
+});
+
+// ===== NAVIGATION PRINCIPALE =====
+function mainTab(id, btn) {
+  document.querySelectorAll('.main-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  document.querySelectorAll('.score-box').forEach(el => { el.style.display='none'; el.innerHTML=''; el.className='score-box'; });
+  const cr = document.getElementById('calc-results'); if(cr) cr.style.display='none';
+  const lr = document.getElementById('litige-result'); if(lr){ lr.style.display='none'; lr.innerHTML=''; }
+  document.querySelectorAll('#ecor-excedent,#ecor-deficit').forEach(el => el.style.display='none');
+  document.querySelectorAll('.flag-chk').forEach(cb => { cb.checked=false; cb.closest('.flag-row')?.classList.remove('checked'); });
+  // Reset sim-content state when leaving T5
+  const t5 = document.getElementById('t5');
+  if(t5) {
+    t5.querySelectorAll('.sim-content').forEach(c => { c.classList.remove('active'); c.style.display='none'; });
+    const h24 = document.getElementById('sim-h24');
+    if(h24){ h24.classList.add('active'); h24.style.display=''; }
+    t5.querySelectorAll('.sim-card').forEach((c,i) => c.classList.toggle('active', i===0));
+  }
+}
+
+// ===== SOUS-ONGLETS =====
+function subTab(section, paneId, btn) {
+  const pane = document.getElementById(paneId);
+  // trouve tous les sub-panes dans le même main-pane
+  const parent = pane.closest('.main-pane');
+  parent.querySelectorAll('.sub-pane').forEach(p => p.classList.remove('active'));
+  parent.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  pane.classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== SIMULATEURS =====
+function selectSim(id, card) {
+  const t5 = document.getElementById('t5');
+  // Masquer tous les sim-content avec style inline (surpasse tout CSS)
+  t5.querySelectorAll('.sim-content').forEach(c => {
+    c.classList.remove('active');
+    c.style.display = 'none';
+  });
+  t5.querySelectorAll('.sim-card').forEach(c => c.classList.remove('active'));
+  // Afficher uniquement le sim sélectionné
+  card.classList.add('active');
+  const target = document.getElementById(id);
+  if (target) { target.classList.add('active'); target.style.display = 'block'; }
+}
+
+// ===== FLAG HANDLER — event-driven (no double-toggle) =====
+function handleFlag(checkbox) {
+  const row = checkbox.closest('.flag-row');
+  row.classList.toggle('checked', checkbox.checked);
+}
+
+// ===== RISK EVALUATOR (T3) =====
+function evalRisk() {
+  const boxes = document.querySelectorAll('#t3 .flag-chk');
+  let score = 0, hasCrit = false;
+  boxes.forEach(b => {
+    if (b.checked) { score += parseInt(b.value); if (b.dataset.sev === 'crit') hasCrit = true; }
+  });
+  renderScore('score-result', score, hasCrit);
+}
+
+// ===== RISK EVALUATOR (Simulateur T5) =====
+function evalRisk2() {
+  const boxes = document.querySelectorAll('#sim-risk .flag-chk');
+  let score = 0, hasCrit = false;
+  boxes.forEach(b => {
+    if (b.checked) { score += parseInt(b.value); if (b.dataset.sev === 'crit') hasCrit = true; }
+  });
+  renderScore('score-result2', score, hasCrit);
+}
+
+function renderScore(elId, score, hasCrit) {
+  const el = document.getElementById(elId);
+  el.style.display = 'block';
+  if (score === 0) {
+    el.className = 'score-box sg';
+    el.innerHTML = '✅ CONFORMITÉ DOCUMENTAIRE — 0 point de risque<p>Aucun signal d\'alarme détecté. Le dossier respecte les filtres structuraux de la douane marocaine. Sous réserve d\'un écor physique strictement conforme, le traitement sera fluide.</p>';
+  } else if (score < 40 && !hasCrit) {
+    el.className = 'score-box sa';
+    el.innerHTML = `⚠️ VIGILANCE CONFORMITÉ — ${score} points<p>Anomalies mineures détectées. Des retards de chaînage ou des demandes d'explications post-écor sont probables. Procédez à une double vérification des ICE et numéros d'escale ANP avant validation.</p>`;
+  } else {
+    el.className = 'score-box sr';
+    el.innerHTML = `❌ RISQUE CRITIQUE — ${score} points<p>Signal d'alarme bloquant détecté. BADR orientera presque automatiquement vers le <strong>Circuit Rouge (Scanner / Visite Physique)</strong>. Arrêtez la procédure et mettez les documents en conformité avant toute injection dans PortNet.</p><a href="#">→ Contacter un Expert Transit-IA</a>`;
+  }
+}
+
+// ===== H-24 CALCULATOR =====
+function toggleLabel() {
+  const t = document.getElementById('route-type').value;
+  document.getElementById('dt-label').textContent = t === 'short'
+    ? 'Date & Heure de Départ du Port Étranger (ETD d\'origine)'
+    : 'Date & Heure estimées d\'Arrivée au Maroc (ETA)';
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function calcTimeline() {
+  const t = document.getElementById('route-type').value;
+  const v = document.getElementById('eta-date').value;
+  if (!v) { alert('Veuillez saisir une date et une heure.'); return; }
+  const base = new Date(v);
+  const out = document.getElementById('calc-output');
+  let html = '';
+  if (t === 'long') {
+    const dM = new Date(base.getTime() - 48*3600000);
+    const dD = new Date(base.getTime() - 24*3600000);
+    const dDpt = new Date(base.getTime() + 44*24*3600000);
+    html = `
+      <div class="tl-item d"><div class="tl-head"><span class="tl-tag tr">⏰ DEADLINE CRITIQUE</span><strong>Injection Manifeste PortNet (EDIFACT CUSCAR)</strong></div>
+      <p>Date limite : <strong>${fmtDate(dD)}</strong> — au moins 24 h avant l'arrivée (arrêté 3414-12). Viser <strong>${fmtDate(dM)}</strong> pour garder une marge. Destinataire et SH4 obligatoires.</p></div>
+      <div class="tl-item w"><div class="tl-head"><span class="tl-tag tw">N° VOYAGE BADR</span><strong>Feu vert — Dépôt DUM anticipée possible</strong></div>
+      <p>Dès l'enregistrement de la DS, la DUM peut être déposée par anticipation sans autorisation préalable (circ. 6369/312). Le circuit de contrôle est connu avant l'accostage.</p></div>
+      <div class="tl-item b"><div class="tl-head"><span class="tl-tag tb">ETA MAROC</span><strong>Arrivée & Écor réglementaire</strong></div>
+      <p>Le <strong>${fmtDate(base)}</strong>. Chaînage parfait = Circuit Vert + mainlevée immédiate sous palan.</p></div>
+      <div class="tl-item d"><div class="tl-head"><span class="tl-tag tr">J+45 — LIMITE</span><strong>Abandon en douane si aucune DUM</strong></div>
+      <p>Au plus tôt le <strong>${fmtDate(dDpt)}</strong> (45 jours, jour d'arrivée compris ; les jours fériés légaux repoussent l'échéance). Sans DUM : marchandise réputée abandonnée (art. 106), puis cédée (art. 107).</p></div>`;
+  } else {
+    const dS = new Date(base.getTime());
+    const dDpt = new Date(base.getTime() + 44*24*3600000);
+    html = `
+      <div class="tl-item d"><div class="tl-head"><span class="tl-tag tr">⚡ SHORT SEA — IMMÉDIAT</span><strong>Injection Manifeste dès le départ du port étranger</strong></div>
+      <p>Traversée de moins de 24 h : la DS doit être déposée <strong>au plus tard au départ</strong> du dernier port, soit le <strong>${fmtDate(dS)}</strong> (arrêté 3414-12).</p></div>
+      <div class="tl-item w"><div class="tl-head"><span class="tl-tag tw">EN MER</span><strong>Pré-chaînage express — Fenêtre ultra-réduite</strong></div>
+      <p>Durant la traversée : lier l'ICE importateur et préparer la DUM. Quelques heures pour les lignes Algésiras / Tanger Med.</p></div>
+      <div class="tl-item b"><div class="tl-head"><span class="tl-tag tb">ARRIVÉE</span><strong>Traitement prioritaire si préparation complète</strong></div>
+      <p>Le <strong>${fmtDate(base)}</strong>. L'écor valide le statut douanier instantanément.</p></div>
+      <div class="tl-item d"><div class="tl-head"><span class="tl-tag tr">J+45 — LIMITE</span><strong>Abandon en douane si aucune DUM</strong></div>
+      <p>Au plus tôt le <strong>${fmtDate(dDpt)}</strong> (jours fériés légaux non comptés) : marchandise réputée abandonnée en douane (art. 106).</p></div>`;
+  }
+  out.innerHTML = html;
+  document.getElementById('calc-results').style.display = 'block';
+}
+
+// ===== ÉCOR GUIDE =====
+function showEcorPath(type) {
+  document.getElementById('ecor-excedent').style.display = type === 'excedent' ? 'block' : 'none';
+  document.getElementById('ecor-deficit').style.display = type === 'deficit' ? 'block' : 'none';
+}
+
+
+// ===== RISK INTERNATIONAL =====
+function evalRiskIntl() {
+  const boxes = document.querySelectorAll('#sim-intl-litige .flag-chk');
+  let score = 0, hasCrit = false;
+  boxes.forEach(b => {
+    if (b.checked) { score += parseInt(b.value); if (b.dataset.sev === 'crit') hasCrit = true; }
+  });
+  const el = document.getElementById('score-intl');
+  el.style.display = 'block';
+  if (score === 0) {
+    el.className = 'score-box sg';
+    el.innerHTML = '✅ AUCUN RISQUE INTERNATIONAL DÉTECTÉ<p>Votre dossier ne présente pas de signaux d\'alarme sur les 3 principales juridictions analysées. Maintenir une revue annuelle des classifications et une veille réglementaire active (UFLPA, CBAM, contrôles export GACC).</p>';
+  } else if (score < 50 && !hasCrit) {
+    el.className = 'score-box sa';
+    el.innerHTML = `⚠️ VIGILANCE MULTI-JURIDICTIONS — ${score} points<p>Des risques modérés ont été identifiés nécessitant une attention professionnelle. Consulter un spécialiste en droit commercial international pour les points cochés avant votre prochain cycle d\'importation.</p>`;
+  } else {
+    el.className = 'score-box sr';
+    el.innerHTML = `❌ EXPOSITION CRITIQUE — ${score} points<p>Votre dossier présente des risques majeurs dans au moins une juridiction. Une ou plusieurs situations cochées peuvent entraîner des <strong>redressements rétroactifs, des saisies ou des poursuites</strong>. Engager immédiatement un avocat spécialisé en droit douanier international.</p><a href="#">→ Accéder au Guide Litiges</a>`;
+  }
+}
+
+// ===== GUIDE LITIGES =====
+function resetLitige() { document.getElementById('litige-result').style.display = 'none'; }
+
+function showLitige() {
+  const pays = document.getElementById('litige-pays').value;
+  const type = document.getElementById('litige-type').value;
+  if (!pays || !type) { alert('Veuillez sélectionner la juridiction et le type de litige.'); return; }
+
+  const db = {
+    ma: {
+      classification: { phase:'Recours Gracieux ADII', delai:'Avant notification formelle', doc:['Lettre de contestation motivée','Classification ruling request','Avis technique indépendant (expert en SH)'], conseil:'Déposer une demande de Renseignement Tarifaire Contraignant (RTC) à l\'ADII pour verrouiller la position future pendant le litige. Payer les droits "sous réserve" pour libérer la marchandise.', couleur:'al-grn' },
+      valeur: { phase:'Lettre de Correction + Recours BADR', delai:'Avant notification officielle d\'infraction', doc:['Factures commerciales originales','Preuve de paiement (bank statement)','Transfer Pricing study si parties liées','Contracts de vente'], conseil:'L\'horodatage de soumission dans BADR est déterminant. Agir avant que l\'ADII ne notifie formellement l\'infraction. Après notification, les marges de manœuvre sont réduites.', couleur:'al-amb' },
+      origine: { phase:'Rectification DS + Recours auprès du Receveur', delai:'Avant toute notification ou sélection au contrôle — rectification art. 59 ter CDII', doc:['Certificat d\'origine original (EUR.1, Form A)','Bill of Materials (BOM) du fournisseur','Preuve de transformation substantielle','Manifest Correction si nécessaire'], conseil:'Si le certificat d\'origine est rejeté, payer les droits au taux plein "sous réserve" pour libérer la marchandise, puis contester le rejet et demander un remboursement.', couleur:'al-amb' },
+      saisie: { phase:'Recours conservatoire urgent + Cautionnement', delai:'Immédiatement', doc:['Lettre de mainlevée sous caution','Justificatifs de bonne foi','Manifest Correction certifié port d\'origine'], conseil:'URGENCE : constituer immédiatement une caution bancaire couvrant les droits potentiels pour obtenir la mainlevée conservatoire. Chaque jour de saisie génère des frais de magasinage et des ruptures logistiques.', couleur:'al-red' },
+      amende: { phase:'Recours gracieux + Transaction', delai:'Avant prescription (5 ans)', doc:['Demande de transaction gracieuse','Preuve d\'erreur non intentionnelle','Historique de conformité de l\'entreprise'], conseil:'L\'ADII dispose d\'un pouvoir de transaction. Démontrer la bonne foi, l\'erreur matérielle (non-intentionnelle) et l\'historique de conformité. Une transaction bien préparée peut réduire les pénalités de 50 à 80%.', couleur:'al-grn' },
+    },
+    us: {
+      classification: { phase:'Protest (CBP Form 19) + Ruling Request', delai:'180 jours après liquidation', doc:['CBP Form 19 dûment rempli','Technical product literature','Binding Ruling request (Form 19 + product samples)','Legal brief on HS classification'], conseil:'"Payment Under Protest" : payer les droits réclamés pour libérer la marchandise, tout en preservant le droit au remboursement si le protest est accepté. Ne jamais laisser la marchandise en attente — les frais s\'accumulent.', couleur:'al-blu' },
+      valeur: { phase:'Prior Disclosure + Protest', delai:'Prior Disclosure AVANT audit formel', doc:['Prior Disclosure letter (19 USC 1592)','Entry summary corrections','Transfer Pricing study','Proof of assists value'], conseil:'La Prior Disclosure est la stratégie la plus puissante : elle plafonne les pénalités civiles aux seuls droits + intérêts, éliminant les pénalités multiplicatrices (4x ou 8x). Ne l\'utiliser qu\'avant la notification formelle de CBP.', couleur:'al-blu' },
+      origine: { phase:'Protest + Country of Origin Ruling Request', delai:'180 jours après liquidation', doc:['Substantial transformation analysis','Bill of Materials (BOM) complet','Manufacturing process documentation','UFLPA rebuttable presumption evidence (si applicable)'], conseil:'UFLPA spécifiquement : constituer un dossier de preuve irréfutable avec transactions traçables jusqu\'aux matières premières. La blockchain est désormais acceptée par CBP comme preuve de traçabilité.', couleur:'al-red' },
+      saisie: { phase:'Seizure Response + Offer in Compromise', delai:'30 jours après notice de saisie', doc:['Petition for relief (mitigation)','Proof of innocent ownership','Offer in Compromise documentation'], conseil:'Engager immédiatement un avocat spécialisé en trade enforcement. Distinguer la saisie pénale (goods seized, ne jamais récupérables) de la saisie administrative (rachetable). Le délai de 30 jours est impératif.', couleur:'al-red' },
+      amende: { phase:'Prior Disclosure / Petition for Mitigation', delai:'Avant notification formelle (Prior) ou 30 jours après (Petition)', doc:['Voluntary prior disclosure letter','Evidence of reasonable care','Corrective action plan'], conseil:'Le standard "reasonable care" de CBP est la clé : démontrer que l\'entreprise a fait ce qu\'un opérateur prudent et compétent aurait fait. Un programme de compliance documenté est la meilleure défense.', couleur:'al-blu' },
+    },
+    eu: {
+      classification: { phase:'Recours administratif national + Demande BTI', delai:'Variable par État membre (3 ans max en général)', doc:['Décision de classement contestée','Technical specifications du produit','Binding Tariff Information (BTI) request','Legal brief EU Nomenclature'], conseil:'Demander immédiatement un BTI (Binding Tariff Information) auprès de l\'autorité douanière nationale. Un BTI valide 3 ans et lie la douane pour toutes les importations futures du même produit — résout l\'incertitude opérationnelle pendant le litige.', couleur:'al-blu' },
+      valeur: { phase:'Remboursement / Remise de droits', delai:'3 ans en général (UCC Art. 121)', doc:['Demande de remboursement UCC','Factures, proof of payment','Transfer pricing documentation','Circumstances of Sale analysis'], conseil:'L\'Union Douanière UE permet la "centralised clearance" — dédouaner en un seul État membre pour tout l\'EU. Vérifier si recours possible dans un État membre plus favorable à votre type de litige.', couleur:'al-blu' },
+      origine: { phase:'Recours + Demande d\'Inf. Contraignante sur l\'Origine', delai:'3 ans', doc:['Certificat EUR.1 ou ATR contesté','Proof of substantial transformation','Bill of Materials Tier-N'], conseil:'L\'UE Forced Labor Regulation (en vigueur 2027) va changer fondamentalement la charge de la preuve sur l\'origine. Anticiper dès maintenant avec une cartographie Tier-N documentée.', couleur:'al-amb' },
+      saisie: { phase:'Mainlevée sous garantie + Recours', delai:'Immédiatement', doc:['Guarantee/surety bond','Technical documentation','Legal representation mandate'], conseil:'Déposer une garantie financière couvrant les droits potentiels pour obtenir la mainlevée immédiate des marchandises. Les cours européennes permettent généralement la mainlevée sous garantie pendant la procédure de recours.', couleur:'al-red' },
+      amende: { phase:'Recours administratif + Voluntary Disclosure', delai:'Avant constatation formelle', doc:['Voluntary disclosure letter','Corrective action plan','Evidence of non-intentional error'], conseil:'La "Voluntary Disclosure" européenne fonctionne similairement au Prior Disclosure américain. La déclarer avant que la douane ne constate la violation formellement limite significativement les majorations et pénalités.', couleur:'al-grn' },
+    },
+    cn: {
+      classification: { phase:'Reconsidération Administrative (行政复议)', delai:'60 jours après la décision GACC', doc:['行政复议申请书 (Demande de reconsidération)','Technical product specifications en chinois','Classification precedents GACC','Legal brief en droit douanier chinois'], conseil:'Coordonner avec les associations professionnelles sectorielles (Chambre de Commerce en Chine, associations industrielles). La force du nombre est déterminante face au GACC — les décisions de reconsidération sont souvent influencées par le contexte industriel.', couleur:'al-amb' },
+      valeur: { phase:'Reconsidération Administrative GACC', delai:'60 jours', doc:['Contrats de vente originaux','Preuve de paiement (bank swift)','Transfer pricing study adapté droit chinois','Foreign exchange records concordants'], conseil:'CRITICAL : Le GACC croise automatiquement les déclarations douanières avec les données de rapatriement de devises (SAFE) et les remboursements TVA (SAT). Toute discordance déclenche un audit automatique tri-agences.', couleur:'al-red' },
+      origine: { phase:'Reconsidération + Certificat d\'Origine GACC', delai:'60 jours', doc:['Certificate of Origin original','Manufacturing attestation','Supply chain traceability documents'], conseil:'Les contrôles biosécurité GACC pour les produits agro-alimentaires sont les plus stricts du monde. Pour les importateurs de produits alimentaires, anticiper les enregistrements GACC des établissements étrangers — sans numéro d\'enregistrement GACC valide, le produit ne peut pas entrer.', couleur:'al-amb' },
+      saisie: { phase:'Libération sous cautionnement + Reconsidération', delai:'Immédiatement / 60 jours', doc:['Customs guarantee/bond','Legal representation (avocat agréé Chine)','Technical documentation en chinois'], conseil:'Engager immédiatement un avocat local agréé en droit douanier chinois. Les procédures GACC sont entièrement conduites en mandarin. La représentation locale par un cabinet ayant des relations institutionnelles avec le GACC est déterminante.', couleur:'al-red' },
+      amende: { phase:'Reconsidération Administrative', delai:'60 jours', doc:['申诉书 (Lettre d\'appel)','Preuve de bonne foi','Corrective action plan'], conseil:'Démontrer la coopération active avec les autorités GACC et un plan d\'action corrective détaillé. En Chine, l\'attitude coopérative lors de la procédure administrative est explicitement prise en compte dans la décision finale.', couleur:'al-grn' },
+    }
+  };
+
+  const rec = db[pays] && db[pays][type] ? db[pays][type] : null;
+  const el = document.getElementById('litige-result');
+  el.style.display = 'block';
+
+  if (!rec) {
+    el.innerHTML = '<div class="al al-amb"><strong>Combinaison en cours de documentation</strong>Cette situation spécifique sera ajoutée prochainement. Consultez l\'onglet Triptyque ou Post-Écor pour les procédures Maroc.</div>';
+    return;
+  }
+
+  const flagColors = { 'al-red':'#c62828','al-amb':'#e65100','al-grn':'#2e7d32','al-blu':'#1565c0' };
+  const fc = flagColors[rec.couleur] || '#1A5C2A';
+
+  el.innerHTML = `
+    <div class="al ${rec.couleur}">
+      <strong>Phase de Recours : ${rec.phase}</strong>
+      Délai impératif : ${rec.delai}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+      <div class="card">
+        <h4 style="color:${fc};font-size:.85rem;margin-bottom:10px">📎 Documents à Préparer</h4>
+        <ul style="list-style:none;display:grid;gap:6px">
+          ${rec.doc.map(d => `<li style="display:flex;gap:8px;font-size:.8rem;align-items:flex-start"><span style="color:${fc};font-weight:800;flex-shrink:0">→</span>${d}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="color:${fc};font-size:.85rem;margin-bottom:10px">💡 Conseil Stratégique</h4>
+        <p style="font-size:.82rem;color:#3a4a3a;line-height:1.65">${rec.conseil}</p>
+      </div>
+    </div>`;
+}
+</script>
+</body>
+</html>

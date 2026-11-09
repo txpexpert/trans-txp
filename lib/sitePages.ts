@@ -41,6 +41,7 @@ export const SITE_PAGES: SitePage[] = [
   { slug: 'export', path: '/modules/export', title: 'Module Export', description: 'Exporter depuis le Maroc : guide, checklist, DDP, formalités export' },
   { slug: 'incoterms-shipping', path: '/modules/incoterms-shipping', title: 'Qui paie quoi ? Incoterms', description: 'Incoterms, répartition des frais vendeur/acheteur, termes armateurs, THC' },
   { slug: 'surestaries', path: '/modules/surestaries', title: 'Surestaries & pénalités', description: 'Surestaries, détention de conteneurs, magasinage, pénalités de retard' },
+  { slug: 'operateurs-maritimes', path: '/modules/operateurs-maritimes', title: 'Opérateurs maritimes', description: 'De la déclaration sommaire à la mainlevée : délais, écarts et nouveautés 2025-2026' },
   { slug: 'calc-conteneurs', path: '/modules/calc-conteneurs', title: 'Calculateur de chargement conteneurs', description: 'Calcul du chargement d\'un conteneur 20/40 pieds, volume, nombre de colis' },
   { slug: 'calc-colis-sre', path: '/modules/calc-colis-sre', title: 'Calculateur colis & cartons', description: 'Dimensions, poids volumétrique, colisage' },
   { slug: 'tracking', path: '/modules/tracking', title: 'Tracking & intelligence logistique', description: 'Suivi d\'envois aériens et maritimes, fret, assurance' },
