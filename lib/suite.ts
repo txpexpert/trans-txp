@@ -84,6 +84,7 @@ export const ESPACES: Espace[] = [
       { label: 'Vérifier vos documents d’import', path: '/modules/verificateur-dum', desc: 'Contrôle de cohérence avant dépôt', tier: 'expert' },
       { label: 'Suivi et Tracking', path: '/modules/tracking', desc: 'Suivi de vos expéditions et marchandises', tier: 'operateur' },
       { label: 'Surestaries et pénalités', path: '/modules/surestaries', desc: 'Délais de franchise, coûts, recours', tier: 'operateur' },
+      { label: 'Opérateurs maritimes', path: '/modules/operateurs-maritimes', desc: 'De la déclaration sommaire à la mainlevée : délais, écarts et nouveautés 2025-2026', tier: 'operateur' },
       { label: 'Bureaux et ports', path: '/modules/carte-bureauxdouaniers', desc: 'PortNet, Tanger Med, bureaux douaniers', tier: 'decouverte' },
       { label: 'Module Export', path: '/modules/export', desc: 'Guide, check-list et DDP à l’export', tier: 'operateur' },
     ],
