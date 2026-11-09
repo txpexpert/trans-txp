@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المنازعات الجمركية بالمغرب — الباب التاسع من مدونة الجمارك والمذكرة العامة ADII</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #B8862A;
+    --gold-light: #D4A94A;
+    --gold-pale: #FDF5E6;
+    --ink: #1C1C1C;
+    --ink-soft: #2D2D2D;
+    --forest: #1A5C2A;
+    --forest-light: #2E7D40;
+    --red-alert: #C0392B;
+    --red-pale: #FDEDEC;
+    --blue-ref: #1A4A7A;
+    --blue-pale: #EBF3FC;
+    --paper: #F9F8F4;
+    --white: #FFFFFF;
+    --border: #E5D8C0;
+    --shadow: rgba(184,134,42,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Cairo', 'Amiri', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.85;
+    font-size: 15px;
+  }
+
+  /* ══════ HEADER ══════ */
+  .site-header {
+    background: linear-gradient(135deg, var(--forest) 0%, #0D3D1A 100%);
+    color: #fff;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 3px 20px rgba(0,0,0,0.35);
+  }
+  .header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 32px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-logo {
+    width: 44px; height: 44px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 900; color: var(--forest);
+  }
+  .header-title { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.3; }
+  .header-subtitle { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 400; }
+  .header-badge {
+    background: var(--gold);
+    color: var(--forest);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  /* ══════ HERO ══════ */
+  .hero {
+    background: linear-gradient(180deg, #0D3D1A 0%, var(--forest) 60%, #1E6B30 100%);
+    padding: 56px 32px 48px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Amiri', serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 14px;
+    color: #fff;
+  }
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.82);
+    max-width: 720px;
+    margin: 0 auto 28px;
+    line-height: 1.9;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .hero-tag {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+    display: flex; align-items: center; gap: 7px;
+  }
+  .hero-tag span { color: var(--gold-light); font-size: 14px; }
+
+  /* ══════ BREADCRUMB NAV ══════ */
+  .toc-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    position: sticky;
+    top: 68px;
+    z-index: 90;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .toc-nav ul {
+    list-style: none;
+    display: inline-flex;
+    gap: 0;
+  }
+  .toc-nav ul li a {
+    display: block;
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    transition: all .2s;
+  }
+  .toc-nav ul li a:hover {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    background: var(--gold-pale);
+  }
+
+  /* ══════ LAYOUT ══════ */
+  .page-wrapper {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  /* ══════ SECTIONS ══════ */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .section-header {
+    background: linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+  }
+  .section-number {
+    width: 38px; height: 38px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900;
+    color: var(--forest);
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'Amiri', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    flex: 1;
+  }
+  .section-header .section-ref {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .section-body {
+    padding: 28px;
+  }
+
+  /* Gold header variant */
+  .section-header.gold {
+    background: linear-gradient(135deg, #7A5200 0%, var(--gold) 100%);
+  }
+  .section-header.gold .section-number { background: var(--forest); color: var(--gold); }
+
+  /* Red header variant */
+  .section-header.red {
+    background: linear-gradient(135deg, #7B1010 0%, var(--red-alert) 100%);
+  }
+  .section-header.red .section-number { background: #fff; color: var(--red-alert); }
+
+  /* Blue header variant */
+  .section-header.blue {
+    background: linear-gradient(135deg, #0D2D52 0%, var(--blue-ref) 100%);
+  }
+  .section-header.blue .section-number { background: var(--gold); color: var(--blue-ref); }
+
+  /* ══════ ARTICLE CARDS ══════ */
+  .article-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .article-card-header {
+    background: var(--gold-pale);
+    border-bottom: 1px solid var(--border);
+    padding: 11px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+  .art-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    background: rgba(184,134,42,0.12);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+  .article-card-header h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+  }
+  .article-card-body {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.9;
+  }
+  .article-card-body p { margin-bottom: 10px; }
+  .article-card-body p:last-child { margin-bottom: 0; }
+
+  /* ══════ INFO BOXES ══════ */
+  .infobox {
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 18px 0;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .infobox-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .infobox-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 7px; }
+  .infobox-content p, .infobox-content ul { font-size: 13.5px; line-height: 1.85; }
+  .infobox.warning { background: #FEF9E7; border: 1px solid #F9C74F; }
+  .infobox.warning h4 { color: #7D6000; }
+  .infobox.danger { background: var(--red-pale); border: 1px solid #E74C3C; }
+  .infobox.danger h4 { color: var(--red-alert); }
+  .infobox.info { background: var(--blue-pale); border: 1px solid #2980B9; }
+  .infobox.info h4 { color: var(--blue-ref); }
+  .infobox.success { background: #EAFAF1; border: 1px solid #27AE60; }
+  .infobox.success h4 { color: #1A6B3A; }
+  .infobox.expert { background: var(--gold-pale); border: 1px solid var(--gold); }
+  .infobox.expert h4 { color: #7A5200; }
+
+  /* ══════ TABLES ══════ */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 16px 0;
+  }
+  .data-table th {
+    background: var(--forest);
+    color: #fff;
+    padding: 11px 14px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.75;
+  }
+  .data-table tr:nth-child(even) td { background: var(--gold-pale); }
+  .data-table tr:hover td { background: #E8F5E9; }
+
+  .data-table.gold-head th { background: #7A5200; }
+  .data-table.red-head th { background: var(--red-alert); }
+  .data-table.blue-head th { background: var(--blue-ref); }
+
+  /* ══════ LISTS ══════ */
+  .styled-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+  }
+  .styled-list li {
+    padding: 8px 14px 8px 8px;
+    border-right: 3px solid var(--gold);
+    margin-bottom: 8px;
+    background: var(--gold-pale);
+    border-radius: 0 6px 6px 0;
+    font-size: 13.5px;
+    line-height: 1.75;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .styled-list li::before { content: '◈'; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+  .styled-list.green-list li { border-right-color: var(--forest); background: #EAFAF1; }
+  .styled-list.green-list li::before { color: var(--forest); }
+  .styled-list.red-list li { border-right-color: var(--red-alert); background: var(--red-pale); }
+  .styled-list.red-list li::before { color: var(--red-alert); }
+
+  /* ══════ PENALTY CARDS ══════ */
+  .penalty-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) { .penalty-grid { grid-template-columns: 1fr; } }
+  .penalty-card {
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    border: 2px solid;
+  }
+  .penalty-card.type1 { background: #FDF5E6; border-color: #B8862A; }
+  .penalty-card.type2 { background: #FDEDEC; border-color: #E74C3C; }
+  .penalty-card.type3 { background: #EBF3FC; border-color: #2980B9; }
+  .penalty-card.type4 { background: #EAFAF1; border-color: #27AE60; }
+  .penalty-card .p-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .penalty-card.type1 .p-label { color: #7A5200; }
+  .penalty-card.type2 .p-label { color: #922B21; }
+  .penalty-card.type3 .p-label { color: var(--blue-ref); }
+  .penalty-card.type4 .p-label { color: #1A6B3A; }
+  .penalty-card .p-amount {
+    font-family: 'Amiri', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 8px 0 4px;
+  }
+  .penalty-card.type1 .p-amount { color: #7A5200; }
+  .penalty-card.type2 .p-amount { color: #922B21; }
+  .penalty-card.type3 .p-amount { color: var(--blue-ref); }
+  .penalty-card.type4 .p-amount { color: #1A6B3A; }
+  .penalty-card .p-desc { font-size: 12px; color: #555; line-height: 1.6; }
+
+  /* ══════ PROCESS FLOW ══════ */
+  .process-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 16px 0;
+  }
+  .process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+  }
+  .process-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 22px;
+    top: 50px;
+    width: 2px;
+    height: calc(100% - 10px);
+    background: var(--gold);
+    opacity: 0.4;
+  }
+  .step-num {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--forest);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-content {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    flex: 1;
+    margin-bottom: 16px;
+  }
+  .step-content h4 { font-size: 14px; font-weight: 700; color: var(--forest); margin-bottom: 6px; }
+  .step-content p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.8; }
+
+  /* ══════ SIDEBAR ══════ */
+  .sidebar { display: flex; flex-direction: column; gap: 24px; }
+  .sidebar-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sidebar-box-header {
+    background: var(--forest);
+    padding: 13px 18px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .sidebar-box-header.gold-bg { background: #7A5200; }
+  .sidebar-box-body { padding: 16px 18px; }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13px;
+    transition: color .2s;
+  }
+  .sidebar-link:last-child { border-bottom: none; }
+  .sidebar-link:hover { color: var(--forest); }
+  .sidebar-link-icon { color: var(--gold); font-size: 14px; flex-shrink: 0; }
+
+  .ref-code {
+    font-family: monospace;
+    font-size: 12px;
+    background: var(--gold-pale);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 7px;
+    color: #7A5200;
+  }
+
+  /* ══════ DEADLINE TABLE ══════ */
+  .deadline-pill {
+    display: inline-block;
+    background: var(--red-alert);
+    color: #fff;
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .deadline-pill.green { background: var(--forest); }
+  .deadline-pill.gold { background: var(--gold); color: var(--forest); }
+  .deadline-pill.blue { background: var(--blue-ref); }
+
+  /* ══════ TRANSACTION TABLE ══════ */
+  .discount-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+  }
+  .discount-track {
+    flex: 1;
+    height: 10px;
+    background: #E8E8E8;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .discount-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: var(--forest);
+  }
+  .discount-label { font-size: 13px; font-weight: 700; color: var(--forest); width: 50px; }
+
+  /* ══════ FOOTER ══════ */
+  .page-footer {
+    background: var(--forest);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    padding: 28px;
+    font-size: 12.5px;
+    margin-top: 48px;
+  }
+  .page-footer strong { color: var(--gold-light); }
+  .page-footer .footer-refs {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .footer-ref {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    padding: 4px 14px;
+    font-size: 11.5px;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--forest);
+    margin: 20px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  h3::before { content: '▶'; color: var(--gold); font-size: 12px; }
+
+  p { margin-bottom: 12px; }
+  strong { color: var(--ink); }
+  em { color: var(--gold); font-style: normal; font-weight: 600; }
+
+  .text-gold { color: var(--gold); }
+  .text-forest { color: var(--forest); }
+  .text-red { color: var(--red-alert); }
+  .text-small { font-size: 12px; color: #666; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 28px 0; }
+
+  /* Quote block */
+  .legal-quote {
+    background: var(--gold-pale);
+    border-right: 5px solid var(--gold);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    font-style: italic;
+    color: var(--ink-soft);
+    border-radius: 0 8px 8px 0;
+    line-height: 1.85;
+  }
+  .legal-quote cite {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* Collapsible */
+  details summary { cursor: pointer; user-select: none; list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  details[open] .section-header::after { content: ' ▲'; font-size: 12px; }
+  details .section-header::after { content: ' ▼'; font-size: 12px; }
+
+  /* ══════ INTRO BANNER ══════ */
+  .intro-banner {
+    background: linear-gradient(135deg, var(--gold-pale) 0%, #FFF8E7 100%);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .intro-banner-icon { font-size: 42px; flex-shrink: 0; }
+  .intro-banner h2 { font-family: 'Amiri', serif; font-size: 20px; color: #7A5200; margin-bottom: 10px; }
+  .intro-banner p { font-size: 14px; color: var(--ink-soft); line-height: 1.9; margin: 0; }
+
+  /* ══════ NOUVEAUTÉS ══════ */
+  .new-badge {
+    display:inline-block; background:var(--red-alert); color:#fff; font-size:10.5px; font-weight:700;
+    border-radius:10px; padding:1px 9px; margin-inline-start:8px; vertical-align:middle;
+  }
+  .new-badge.gold { background:var(--gold); color:var(--forest); }
+  .timeline { position:relative; margin:16px 0; padding-right:22px; border-right:3px solid var(--gold-light); }
+  .tl-item { position:relative; margin-bottom:18px; background:var(--white); border:1px solid var(--border); border-radius:10px; padding:12px 16px; }
+  .tl-item::before { content:''; position:absolute; right:-32px; top:16px; width:15px; height:15px; border-radius:50%; background:var(--forest); border:3px solid var(--gold-pale); }
+  .tl-date { font-size:12px; font-weight:700; color:var(--gold); }
+  .tl-title { font-size:14px; font-weight:700; color:var(--forest); margin:2px 0 4px; }
+  .tl-text { font-size:13.5px; color:var(--ink-soft); line-height:1.8; margin:0; }
+  .tl-ref { margin-top:6px; }
+  .tl-ref .ref-code { font-size:11px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:14px 0; }
+  @media (max-width:700px){ .two-col { grid-template-columns:1fr; } }
+  .do-box, .dont-box { border-radius:10px; padding:14px 18px; }
+  .do-box { background:#EAFAF1; border:1px solid #27AE60; }
+  .dont-box { background:var(--red-pale); border:1px solid #E74C3C; }
+  .do-box h4 { color:#1A6B3A; font-size:14px; margin-bottom:8px; }
+  .dont-box h4 { color:var(--red-alert); font-size:14px; margin-bottom:8px; }
+  .do-box ul, .dont-box ul { padding-right:18px; font-size:13.3px; line-height:1.85; }
+  .state-flow { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:12px 0; font-size:12.5px; }
+  .state { background:var(--blue-pale); border:1px solid #2980B9; color:var(--blue-ref); border-radius:6px; padding:4px 10px; font-weight:700; }
+  .state.end { background:#EAFAF1; border-color:#27AE60; color:#1A6B3A; }
+  .state.bad { background:var(--red-pale); border-color:#E74C3C; color:var(--red-alert); }
+  .state-arrow { color:var(--gold); font-weight:900; }
+  .update-strip { background:var(--gold); color:var(--forest); text-align:center; font-size:12.5px; font-weight:700; padding:7px 16px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header class="site-header">
+  <div class="header-bar">
+    <div class="header-brand">
+      <div class="header-logo">⚖</div>
+      <div>
+        <div class="header-title">المنازعات الجمركية بالمغرب</div>
+      </div>
+    </div>
+    <div class="header-badge">📋 مرجع احترافي · محيَّن نونبر 2026</div>
+  </div>
+</header>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav class="toc-nav">
+  <ul>
+    <li><a href="#intro">📌 مدخل</a></li>
+    <li><a href="#s0">🆕 مستجدات 2024–2026</a></li>
+    <li><a href="#s1">1. أحكام عامة</a></li>
+    <li><a href="#s2">2. المسؤوليات</a></li>
+    <li><a href="#s3">3. التدابير الاحترازية</a></li>
+    <li><a href="#s4">4. الصلح</a></li>
+    <li><a href="#s5">5. المتابعات</a></li>
+    <li><a href="#s6">6. التحصيل</a></li>
+    <li><a href="#s7">7. العقوبات</a></li>
+    <li><a href="#s8">8. الإجراءات</a></li>
+    <li><a href="#s9">9. انقضاء الالتزامات</a></li>
+    <li><a href="#s10">10. دليل المتعامل</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">مدونة الجمارك · المذكرة العامة D50/2021 · قانون المسطرة المدنية 58.25</div>
+  <h1>المنازعات الجمركية</h1>
+  <p>دليل مرجعي شامل للمنازعات والتحصيل للمهنيين، محيَّن على ضوء قوانين المالية 2024 و2025 و2026، وقانون المسطرة المدنية الجديد، ورقمنة المساطر التنازعية في نظام BADR.</p>
+  <div class="hero-meta">
+    <div class="hero-tag"><span>⚖</span> المواد 204–305 م.ج</div>
+    <div class="hero-tag"><span>📅</span> 24/08/2026: دخول ق.م.م الجديد حيز التنفيذ</div>
+    <div class="hero-tag"><span>💻</span> رقمنة المذكرات الزجرية في BADR</div>
+  </div>
+</div>
+<div class="update-strip">🆕 جديد هذا التحيين: مستجدات 2024–2026 · العقوبات وفق النص الموحد · الآجال الجديدة للطعون · الحجز التحفظي وقاضي التنفيذ · ما يجب فعله وما يجب تجنبه</div>
+
+<!-- ══════════════════ MAIN CONTENT ══════════════════ -->
+<div class="page-wrapper">
+<div class="content-grid">
+
+<!-- ═══ MAIN ═══ -->
+<main>
+
+<!-- INTRO BANNER -->
+<div class="intro-banner" id="intro">
+  <div class="intro-banner-icon">⚖️</div>
+  <div>
+    <h2>هيكل المادة التنازعية الجمركية — نظرة عامة</h2>
+    <p>
+      يبدأ مسار الملف التنازعي بإنجاز المحضر أو تصفية الديون، وينتهي في الغالب بالصلح أو الأداء التلقائي، 
+      وقد يمتد ليشمل المتابعات القضائية ومساطر التحصيل الجبري. تنقسم المادة التنازعية إلى ثلاثة محاور كبرى 
+      متكاملة ومتداخلة: <strong>الصلح</strong> (الوسيلة الفضلى)، <strong>المتابعة القضائية</strong>، 
+      و<strong>التحصيل</strong> — كل ذلك في إطار من الحزم والنزاهة وصون الخزينة العامة.
+    </p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION 0 — NOUVEAUTÉS 2024-2026
+════════════════════════════════════════════════════ -->
+<div class="section" id="s0">
+  <div class="section-header red">
+    <div class="section-number">🆕</div>
+    <div>
+      <h2>مستجدات المادة التنازعية 2024–2026</h2>
+      <div class="section-ref">قوانين المالية 2024 و2025 و2026 · القانون 58.25 · مذكرات ودوريات الإدارة</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <p>تغيّر الإطار التنازعي بعمق منذ آخر تعديل للمذكرة العامة (02/02/2024). هذه أهم المستجدات مرتبة زمنياً، مع إحالة إلى الأقسام المعنية في هذا الدليل.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">01/01/2024 · قانون المالية 2024</div>
+        <div class="tl-title">تليين الصلح في ملفات المراقبة البعدية والأنظمة الخاصة (المادة 275)</div>
+        <p class="tl-text">في حالات الغش المعاينة في إطار المادتين 86 مكرر و166 ثالثاً، أصبحت الرسوم والمكوس تُحتسب على البضائع المحجوزة فعلياً فقط، لا على مجموع البضائع المصرَّح بها في الاعترافات. الهدف: تيسير إبرام الصلح وتحصيل الديون.</p>
+        <div class="tl-ref"><span class="ref-code">دورية 6522/210</span> → القسم 4</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">01/01/2024 · قانون المالية 2024</div>
+        <div class="tl-title">التصريح ووثائقه وثيقة واحدة غير قابلة للتجزئة</div>
+        <p class="tl-text">عدم إرفاق الوثائق المطلوبة بالتصريح المفصل انتقل من مخالفة من الدرجة الرابعة (500–2,500 درهم) إلى مخالفة من الدرجة الثالثة: غرامة من <strong>10,000 إلى 50,000 درهم</strong> (المادة 297-8°). وأصبح تغيير أو تزوير المعرِّفات التقنية لوسائل النقل جنحة تهريب (المادة 282-5°).</p>
+        <div class="tl-ref"><span class="ref-code">دورية 6522/210</span> → القسم 7</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">01/01/2025 · قانون المالية 2025</div>
+        <div class="tl-title">تخفيف غرامات الجنح لتحسين التحصيل</div>
+        <p class="tl-text">خُفِّضت غرامة الجنح من الدرجة الأولى (المادة 279 رابعاً) ومن الدرجة الثانية (المادة 282 مكرر-2°-ب) من ضعفي قيمة البضائع إلى <strong>مرة واحدة</strong> قيمتها، قصد تشجيع التسوية الودية وتقليص الباقي استخلاصه.</p>
+        <div class="tl-ref"><span class="ref-code">دورية 6619/210</span> → القسم 7</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">01/01/2025 · قانون المالية 2025</div>
+        <div class="tl-title">جنحة جديدة: الأختام الجمركية</div>
+        <p class="tl-text">حيازة الأختام الجمركية أو توفيرها دون مبرر: غرامة من 100,000 إلى 200,000 درهم. استعمالها دون مبرر: غرامة تعادل قيمة البضائع أو وسيلة النقل موضوع الغش (المادتان 281-10° و282 مكرر).</p>
+        <div class="tl-ref"><span class="ref-code">دورية 6619/210</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">01/01/2025 · قانون المالية 2025</div>
+        <div class="tl-title">الأداء الإلكتروني إلزامي، والاسترداد مؤطر قانوناً</div>
+        <p class="tl-text">يشمل الأداء الإلكتروني الإلزامي الرسوم والغرامات وسائر المبالغ المستحقة (المادة 95-1°)، وإلا طُبقت زيادة <strong>1% بحد أدنى 1,000 درهم</strong>. ويؤسس الفصل 95 مكرر الجديد حق استرداد الرسوم المستخلصة بغير حق.</p>
+        <div class="tl-ref"><span class="ref-code">دورية 6619/210</span> → القسم 10</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">18/02/2025 و24/06/2025</div>
+        <div class="tl-title">مسؤولية المصرح عن صحة الوثائق وحفظها</div>
+        <p class="tl-text">يلتزم المصرح بالتحقق من صحة كل وثيقة قبل إرفاقها (رمز QR عند وجوده)، ويتحمل مسؤوليته الشخصية عن كل وثيقة غير صحيحة كان بالإمكان كشفها. ويتحمل مالك البضاعة حفظ الأصول المشتركة بين عدة عمليات طيلة مدة التقادم.</p>
+        <div class="tl-ref"><span class="ref-code">دورية 6662/312</span> <span class="ref-code">دورية 6639/312</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">01/01/2026 · قانون المالية 2026</div>
+        <div class="tl-title">مكان التخزين أو التحويل، ومناطق التسريع الصناعي</div>
+        <p class="tl-text">يجب التصريح بالمكان الفعلي لتخزين أو تحويل البضائع المستوردة (المادة 19 مكرر). التصريح الكاذب به مخالفة من الدرجة الثالثة: غرامة من <strong>30,000 إلى 60,000 درهم</strong> (المادة 297-9°). ويُعد تهريباً وجود بضائع غير مصرح بها ولا تتلاءم مع النشاط المرخص، ضمن بضائع عابرة نحو منطقة تسريع صناعي (المادة 282-6°). وسُمح للأعوان باستعمال الطائرات المسيرة وكاميرات المراقبة والماسحات (المادة 35-1°).</p>
+        <div class="tl-ref"><span class="ref-code">دورية 6702/210</span> → القسم 7</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">26/05/2026</div>
+        <div class="tl-title">مسطرة موحدة لتدبير إشعارات الغش (الأشخاص والمركبات)</div>
+        <p class="tl-text">إنذارات مانعة أو غير مانعة أو للمراقبة في BADR (القبول المؤقت، الوضع للاستهلاك، شهادة الجمركة، D17، D20)، مع إمكانية منع سائقي النقل الدولي بقرار إداري أو قضائي على أساس المادة 220.</p>
+        <div class="tl-ref"><span class="ref-code">مذكرة D123/2026</span> → القسم 1</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">24/08/2026 · القانون 58.25</div>
+        <div class="tl-title">قانون المسطرة المدنية الجديد</div>
+        <p class="tl-text">تبليغ عبر الموطن المختار وقاعدة البطاقة الوطنية الإلكترونية، أجل نقض 30 يوماً، ذكر العنوان الإلكتروني في المقالات، حجز تحفظي مشروط بدعوى في الموضوع خلال 10 أيام، وإحداث <strong>قاضي التنفيذ</strong>.</p>
+        <div class="tl-ref"><span class="ref-code">مذكرة D196/2026</span> → القسمان 3 و5</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">02/09/2026</div>
+        <div class="tl-title">رقمنة المذكرات الموجهة للقضاء الزجري</div>
+        <p class="tl-text">مذكرات الدفاع والتعرض والنقض والتنازل عن الطعن تُنجز وتُوقَّع وتُودَع عبر وحدة «Document contentieux» في BADR، مع ربط كل قضية بالرسوم والمكوس المتملَّص منها.</p>
+        <div class="tl-ref"><span class="ref-code">مذكرة D200/2026</span> → القسم 8</div>
+      </div>
+    </div>
+
+    <div class="infobox expert">
+      <div class="infobox-icon">🎯</div>
+      <div class="infobox-content">
+        <h4>الاتجاه العام</h4>
+        <p>تخفيف الغرامات لتحسين التحصيل والتشجيع على الصلح، وفي المقابل تشديد المسؤولية التصريحية (الوثائق، مكان التخزين، الأختام) وتعميم الرقمنة والتتبع. المتعامل الذي يوثق عملياته جيداً يستفيد من الإطار الجديد، والذي يهمل التوثيق يتعرض لغرامات ثابتة أثقل.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SECTION 1 — DÉFINITIONS & CLASSIFICATION
+════════════════════════════════════════════════════ -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <div>
+      <h2>الأحكام العامة — تعريف المخالفة وتصنيف القضايا</h2>
+      <div class="section-ref">المواد 204–219 من مدونة الجمارك · الفصل 2 من المذكرة العامة</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3>تعريف المخالفة الجمركية</h3>
+    <div class="legal-quote">
+      «المخالفة الجمركية هي كل فعل أو امتناع عن فعل مخالف للقوانين والأنظمة الجمركية والمعاقَب عليه بموجبها.»
+      <cite>المادة 204 من مدونة الجمارك</cite>
+    </div>
+    <p>
+      كل محاولة ارتكاب مخالفة جمركية تُعدَّل مثل المخالفة ذاتها وتُعاقَب عليها، ولو وقعت أفعال الشروع خارج المنطقة الخاضعة للرقابة 
+      <em>(المادة 206)</em>.
+    </p>
+
+    <h3>تصنيف الملفات التنازعية (المذكرة العامة)</h3>
+    <p>تُصنَّف الملفات التنازعية إلى ثلاثة أنواع رئيسية:</p>
+
+    <table class="data-table">
+      <thead><tr>
+        <th>نوع الملف</th><th>المحتوى</th><th>الإجراءات المتخذة</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>ملف زجري صرف</strong></td>
+          <td>يُؤسَّس فقط لحق المطالبة بالعقوبات المالية (جنح المخدرات، الصرف، التهريب دون بضائع معترف بها)</td>
+          <td>التدابير الاحترازية + المتابعات القضائية + مساعي الصلح</td>
+        </tr>
+        <tr>
+          <td><strong>ملف زجري مزدوج</strong></td>
+          <td>يجمع بين العقوبات المالية والرسوم والمكوس (مخالفات المراقبة البعدية، أنظمة الإعفاء)</td>
+          <td>التصفية الفورية + التحصيل الجبري + الحجوزات + المتابعة القضائية + الصلح</td>
+        </tr>
+        <tr>
+          <td><strong>ملف تحصيل جبري</strong></td>
+          <td>الرسوم الحالّة الأداء والعقوبات المالية المحكوم بها نهائياً (غير المُسوَّاة بالصلح أو الأداء الرضائي)</td>
+          <td>التصفية + الحجوزات + التحصيل الجبري</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>العقوبات والتدابير الأمنية العينية</h3>
+    <p>تنص المادة 208 على أن العقوبات المطبَّقة في مجال المخالفات الجمركية هي:</p>
+    <ul class="styled-list">
+      <li>السجن</li>
+      <li>المصادرة — للبضائع المهرَّبة وبضائع التمويه ووسائل النقل</li>
+      <li>الغرامة الجبائية</li>
+    </ul>
+
+    <div class="infobox info">
+      <div class="infobox-icon">📌</div>
+      <div class="infobox-content">
+        <h4>قيمة تقدير الغرامات (المادة 219)</h4>
+        <p>
+          عندما تُحدَّد الغرامة بحسب قيمة موضوع الغش، يُعتمَد على القيمة الجمركية للأشياء بحالتها وقت ارتكاب الغش، 
+          سواء تعلق الأمر بالأشياء المحجوزة أو غير المحجوزة. وللمحكمة صلاحية الاستناد إلى ثمن أعلى من ثمن السوق 
+          إذا أثبتت وجود اتفاقيات بأسعار أعلى.
+        </p>
+      </div>
+    </div>
+
+    <h3>التدابير الأمنية الشخصية (المادة 220)</h3>
+    <ul class="styled-list red-list">
+      <li>الحظر من الولوج إلى مكاتب ومستودعات الجمارك</li>
+      <li>سحب الاعتماد من المعشِّر أو إلغاء إذن التعشير</li>
+      <li>الإقصاء من الاستفادة من الأنظمة الاقتصادية الجمركية</li>
+      <li>الحظر من الوصول إلى الأنظمة المعلوماتية للإدارة</li>
+      <li>سحب رخصة استغلال المستودع أو ساحة الاستخلاص الجمركي</li>
+    </ul>
+
+    <div class="infobox info">
+      <div class="infobox-icon">🚨</div>
+      <div class="infobox-content">
+        <h4>إشعارات الغش وتطبيق المادة 220 <span class="new-badge">2026</span></h4>
+        <p>
+          تُحال إشعارات الغش المتعلقة بالأشخاص والمركبات ووسائل النقل الدولي على مصلحة تحليل المخاطر، التي تتحقق منها ثم تُنشئ في BADR أحد ثلاثة أنواع من الإنذارات:
+          <strong>إنذار مانع</strong> يوقف تلقائياً كل عملية على الوحدات المعنية، و<strong>إنذار غير مانع</strong> يحدد السلوك الواجب اتباعه، و<strong>مراقبة</strong> بإشعار إلكتروني فقط.
+          يُعد الحجز المؤقت المرتبط بالإنذار تدبيراً تحفظياً ووقائياً (المادة 38)، ويُمنح القبول المؤقت أو الجمركة إذا كانت المراقبة سلبية.
+          أما منع سائق للنقل الدولي فيستلزم قراراً إدارياً موقعاً من المدير الجهوي أو مدير الميناء أو المدير المختص ترابياً، أو أمراً قضائياً مرفقاً بمحضر.
+          وكل إنذار يُصفّى بعد المراقبة بتقرير (رفع أو إبقاء أو تعديل).
+        </p>
+        <p class="text-small">مذكرة D123/2026/ADII/AC/100 بتاريخ 26/05/2026 — المسطرة ADII/011/00</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 2 — RESPONSABILITÉS
+════════════════════════════════════════════ -->
+<div class="section" id="s2">
+  <div class="section-header gold">
+    <div class="section-number">2</div>
+    <div>
+      <h2>المسؤولية في المادة الجمركية</h2>
+      <div class="section-ref">المواد 221–232 من مدونة الجمارك · الفصل 3 من المذكرة العامة</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="infobox expert">
+      <div class="infobox-icon">🎓</div>
+      <div class="infobox-content">
+        <h4>خاصية المسؤولية الجمركية</h4>
+        <p>
+          تتميز المسؤولية الجمركية بطابع <strong>مزدوج</strong>: جنائي يشمل الفاعل الأصلي والشركاء والمتواطئين 
+          ومن لهم مصلحة في الغش، ومدني واسع المفهوم يشمل الغير الأجنبي عن الغش على سبيل التضامن أو الحلول.
+        </p>
+      </div>
+    </div>
+
+    <h3>المسؤولية الجنائية — الأشخاص المسؤولون</h3>
+    <table class="data-table gold-head">
+      <thead><tr>
+        <th>الفئة</th><th>أساس المسؤولية</th><th>الاستثناءات</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>الفاعل الأصلي + الشركاء + المتواطئون + من لهم مصلحة في الغش</strong></td>
+          <td>المادة 221 — مسؤولية متساوية، على وجه التضامن</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><strong>الموقِّعون على التصريحات</strong></td>
+          <td>المادة 222 — عن الإغفالات والأخطاء في تصريحاتهم</td>
+          <td>عقوبة السجن: فقط في حالة الخطأ الشخصي والمتعمَّد. المعشِّرون: مستثنون إن أثبتوا اقتصارهم على نقل المعلومات المزودة</td>
+        </tr>
+        <tr>
+          <td><strong>المشغِّلون عن مستخدميهم</strong></td>
+          <td>المادة 222 — عن عمليات الجمارك المنجزة بتعليماتهم</td>
+          <td>السجن: حالة الخطأ الشخصي والمتعمَّد فقط</td>
+        </tr>
+        <tr>
+          <td><strong>الحائزون والناقلون</strong></td>
+          <td>المادة 223 — المسؤولية مفترضة</td>
+          <td>الإعفاء: إذا أثبتوا الوفاء بالالتزامات المهنية أو أن البضائع أُخفيت في أماكن تفوق نطاق رقابتهم</td>
+        </tr>
+        <tr>
+          <td><strong>الأشخاص المعنوية</strong></td>
+          <td>المادة 227 — قابلة للمتابعة وتطبيق العقوبات المالية وتدابير الأمن</td>
+          <td>تُطبَّق عند ارتكاب مديريها أو مسيريها للمخالفة باسمها ولحسابها</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>مسؤولية الناقلين — تفاصيل الحالات</h3>
+    <table class="data-table">
+      <thead><tr>
+        <th>الحالة</th><th>شروط تطبيق المسؤولية</th><th>إجراء الحجز</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>شركات كراء السيارات</td>
+          <td>إثبات التواطؤ أو سبقية الاستعمال لنفس المخالف أو وجود مخابئ أو اقتران بجريمة الحق العام</td>
+          <td>حجز السيارة مع إمكانية المطالبة باحتجاز أموال المكتري</td>
+        </tr>
+        <tr>
+          <td>مالكو حافلات نقل المسافرين</td>
+          <td>تعذر التعرف على مالكي البضائع أو وجود مخابئ أو قيمة ≥ 250,000 درهم</td>
+          <td>المسؤولية تضامنية: المالك + السائق + مساعدوه + صاحب البضاعة</td>
+        </tr>
+        <tr>
+          <td>مالكو وسيلة النقل الدولي الطرقي</td>
+          <td>كمية أو قيمة كبيرة، أو البضائع في ملكية الناقل، أو وجود مخابئ</td>
+          <td>إرجاع الوسيلة عند انتفاء الشروط وعدم وجود سوابق</td>
+        </tr>
+        <tr>
+          <td>مالكو الصناديق الحديدية</td>
+          <td>ضبط مخدرات أو بضائع مهرَّبة بداخلها</td>
+          <td>إرجاع الصندوق إلا في حال إثبات التورط، مع إتلاف المخابئ عند الإرجاع</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>مسؤولية شركة التعشير (م.ج: المادة 88)</h3>
+    <p>
+      <strong>القاعدة:</strong> لا يمكن إثارة مسؤوليتها الجنائية والمدنية عن ديون المراقبة البعدية أو عدم وفاء الملزم بالتزاماته 
+      في الأنظمة الخاصة — <em>إلا في حالة إثبات التواطؤ أو المشاركة بمحضر قانوني</em>.
+    </p>
+    <p>
+      <strong>الشرط القبلي للتحصيل:</strong> لا تُباشَر إجراءات التحصيل ضد شركة التعشير إلا بعد استنفاذ جميع طرق التحصيل 
+      ضد المدين الأصلي وبقائها دون نتيجة، وداخل أجل أقصاه <em>سنة من تاريخ التصفية</em>.
+    </p>
+
+    <h3>التضامن في المادة الجمركية</h3>
+    <div class="penalty-grid">
+      <div class="penalty-card type1">
+        <div class="p-label">التضامن في العقوبات المالية</div>
+        <div class="p-amount">تضامن سلبي</div>
+        <div class="p-desc">إلزام أي متضامن بالأداء الكامل دون التمسك بحق التجزئة أو التجريد</div>
+      </div>
+      <div class="penalty-card type2">
+        <div class="p-label">التضامن في الرسوم والمكوس</div>
+        <div class="p-amount">إجراءات فردية</div>
+        <div class="p-desc">على القباضة اتخاذ إجراءات مستقلة ضد كل مدين على حدة مع حق الاختيار</div>
+      </div>
+      <div class="penalty-card type3">
+        <div class="p-label">الضريبة على القيمة المضافة</div>
+        <div class="p-amount">التضامن الكامل</div>
+        <div class="p-desc">المسير المالي أو الإداري وكل مستفيد فعلي من الضريبة غير المدفوعة — ملزم بالتضامن (ابتداءً من 01/01/2024)</div>
+      </div>
+      <div class="penalty-card type4">
+        <div class="p-label">الكفلاء</div>
+        <div class="p-amount">التزام قانوني</div>
+        <div class="p-desc">مسؤولون مدنياً بالتضامن عن كافة الديون مع تساوي المدين الأصلي والكفيل في الآجال</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 3 — MESURES CONSERVATOIRES
+════════════════════════════════════════════ -->
+<div class="section" id="s3">
+  <div class="section-header blue">
+    <div class="section-number">3</div>
+    <div>
+      <h2>التدابير الاحترازية</h2>
+      <div class="section-ref">المواد 266–271 من مدونة الجمارك · الفصل 4 من المذكرة العامة</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <p>
+      التدابير الاحترازية هي مجموعة إجراءات قانونية وامتيازات يخولها القانون للإدارة لضمان استخلاص الديون ومنع تبديد الضمانات.
+      وتبدأ بحق الاطلاع وتمر بالحجز التحفظي والرهن الرسمي وصولاً إلى البيع المسبق.
+    </p>
+
+    <h3>أولاً: إجراء التحريات (حق الاطلاع)</h3>
+    <table class="data-table">
+      <thead><tr>
+        <th>جهة التحري</th><th>عتبة الدين</th><th>القناة</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>البنوك</td>
+          <td>كيفما كان المبلغ</td>
+          <td>Droitdecommunication@douane.gov.ma</td>
+        </tr>
+        <tr>
+          <td>المحافظة العقارية</td>
+          <td>أكثر من 50,000 درهم</td>
+          <td>نفس البريد الإلكتروني</td>
+        </tr>
+        <tr>
+          <td>الإدارات العمومية</td>
+          <td>كيفما كان المبلغ</td>
+          <td>مباشرةً (دون قسم المنازعات)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="text-small">* غرامة تهديدية: <strong>500 درهم/يوم</strong> (في حدود 50,000 درهم) عند عدم الإدلاء بالمعلومات خلال 15 يوماً. المادة 130 م.ت.د.ع</p>
+
+    <h3>ثانياً: الحجز التحفظي (المادة 268)</h3>
+    <div class="infobox info">
+      <div class="infobox-icon">🔒</div>
+      <div class="infobox-content">
+        <h4>تعريف وآلية الحجز التحفظي</h4>
+        <p>
+          آلية قانونية لمنع الملزم أو المدين من التصرف في أمواله بشكل يضر بدائنيه، يترتب عنه وضع يد القضاء 
+          على المال المحجوز إلى حين رفعه أو تحويله إلى حجز تنفيذي.
+        </p>
+      </div>
+    </div>
+
+    <p><strong>الشروط القبلية للحجز التحفظي:</strong></p>
+    <ul class="styled-list">
+      <li>قيام الدين بناءً على بيان التصفية الناتج عن محضر أو حكم قضائي</li>
+      <li>إجراء الحجز في حدود الديون المستحقة</li>
+      <li>ألا يكون الشخص المعنوي الملزم معروفاً بملاءة ذمته (الأبناك وشركات التأمين مستثناة)</li>
+      <li>تجاوز مبلغ الدين لـ <em>50,000 درهم</em></li>
+      <li>أن يكون المال قابلاً للحجز — يُستثنى المسكن الرئيسي الذي لا تتعدى قيمته <em>500,000 درهم</em></li>
+      <li>الرجوع إلى قسم المنازعات قبل الحجز على السفن أو الطائرات</li>
+    </ul>
+
+    <p><strong>آجال تقديم الطلب:</strong> <span class="deadline-pill gold">10 أيام</span> من تاريخ التوصل بالمعلومات المتعلقة بممتلكات الملزم.</p>
+
+    <div class="infobox danger">
+      <div class="infobox-icon">⚠️</div>
+      <div class="infobox-content">
+        <h4>شرط جديد: الدعوى في الموضوع خلال 10 أيام <span class="new-badge">ق.م.م 58.25</span></h4>
+        <p>
+          منذ 24/08/2026، يفترض الحجز التحفظي وجود دعوى في الموضوع أو رفعها داخل <strong>10 أيام</strong> من تاريخ الأمر الذي أذن به، وإلا أمر رئيس المحكمة بالتشطيب عليه (المادة 496).
+          ورغم أن المادة 268 من مدونة الجمارك نص خاص، يجب إدراج الشكاية في ملف الحجز لإثبات قيام الدعوى في الموضوع وتفادي أي تأويل غير مستحب.
+          كما يجب تنفيذ الأمر بناء على طلب داخل <strong>30 يوماً</strong> من تاريخه وإلا سقط، ويقبل الأمر الرافض الاستئناف داخل <strong>7 أيام</strong> (المادة 225).
+        </p>
+      </div>
+    </div>
+
+    <h3>ثالثاً: الرهن الرسمي (م.ت.د.ع: المواد 113–116)</h3>
+    <p>
+      حق عيني تبعي على العقار لضمان الدين، يباشره القابض بموجب طلب إلى المحافظ على الأملاك العقارية، 
+      بعد الحصول على إذن من المدير الجهوي، في حال كان الدين يتجاوز <em>50,000 درهم</em>. 
+      يترتب عنه حق الأولوية وحق التتبع في استيفاء الدين.
+    </p>
+
+    <h3>رابعاً: البيع المسبق (المادة 266)</h3>
+    <p>
+      يلجأ إليه الآمر بالصرف بموازاة مع المتابعة القضائية لتجنب تلف البضائع أو تراجع قيمتها طوال مدة التقاضي.
+      يُودَع الطلب لدى رئيس المحكمة في أجل <span class="deadline-pill gold">شهر واحد</span> من إحالة الملف.
+    </p>
+
+    <h3>خامساً: قاضي التنفيذ <span class="new-badge">ق.م.م 58.25</span></h3>
+    <p>
+      أحدث القانون 58.25 مؤسسة <strong>قاضي التنفيذ</strong> الذي يصدر الأوامر المتعلقة بالتنفيذ ويشرف عليه ويراقب سيره (المادة 476).
+      أصبح المخاطَب المركزي في تنفيذ الأحكام الصادرة لفائدة الإدارة أو ضدها: الطلبات والصعوبات المتعلقة بالتنفيذ الجبري للأحكام في المادة الجمركية تُرفع إليه.
+    </p>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 4 — TRANSACTION
+════════════════════════════════════════════ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <div>
+      <h2>التسوية عن طريق الصلح</h2>
+      <div class="section-ref">المواد 273–277 من مدونة الجمارك · الفصل 5 من المذكرة العامة</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="infobox success">
+      <div class="infobox-icon">🤝</div>
+      <div class="infobox-content">
+        <h4>مبدأ الصلح كأداة فضلى</h4>
+        <p>
+          يتيح الصلح تحصيل حقوق الخزينة بطريقة أكثر فعالية مقارنةً بالطرق القضائية.
+          وتبقى إمكانية الصلح واردة في جميع مراحل التقاضي، بما فيها الملفات التي تم حفظها.
+          <strong>عروض الصلح لا توقف المتابعات القضائية ولا إجراءات التحصيل.</strong>
+        </p>
+      </div>
+    </div>
+
+    <h3>مسطرة التسوية بالصلح</h3>
+    <div class="process-flow">
+      <div class="process-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>تقديم طلب الصلح</h4>
+          <p>
+            يتقدم المعني بالأمر بطلب صلح للمصلحة المختصة. في غياب الطلب، تبادر المصلحة بالتواصل مع المخالفين 
+            لحثهم على التسوية الودية. الرد على الطلبات: أجل أقصاه <span class="deadline-pill gold">15 يوماً</span>.
+          </p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>احتساب الغرامة الصلحية</h4>
+          <p>
+            تُحدَّد الغرامة الصلحية وفق جدول الصلح مع تطبيق الزيادات والتخفيضات:
+            <br>• الزيادة +20%: في حالة المناورة
+            <br>• الزيادة +10%: في حالة العود أو صدور حكم ابتدائي
+            <br>• التخفيض 25-75%: في حالات الإكراه البدني
+            <br>• التجاوز عن الجنحة: إذا كانت الغرامة دون 500 درهم
+          </p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>صدور قرار الصلح</h4>
+          <p>
+            يحدد شروط الصلح تفصيلياً: الرسوم والمكوس، الغرامة التصالحية، فوائد التأخر، مآل البضائع والمبالغ ووسائل النقل. 
+            تحديد أجل أقصى للتنفيذ مع اعتبار القرار لاغياً عند عدم التنفيذ.
+          </p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>المصادقة على الصلح</h4>
+          <p>
+            <strong>المدير الجهوي:</strong> إذا تجاوزت الغرامة التصالحية 1,000,000 درهم
+            <br><strong>المدير الإقليمي:</strong> إذا كانت ≤ 1,000,000 درهم
+            <br>مهلة المصادقة: أسبوع — وبانقرامها تتم المصادقة أوتوماتيكياً.
+          </p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>آثار الصلح النهائي (قبل الحكم النهائي)</h4>
+          <p>
+            يُسقط دعوى الإدارة والنيابة العامة + التخلي الفوري عن الإكراه البدني + تسليم قرار رفع اليد عن الحجوزات 
+            والرهون. الصلح <strong>لا يُسقط عقوبة الحبس</strong> إذا وقع بعد الحكم النهائي.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3>صلاحيات التفويض — نسب التخفيض المسموح بها</h3>
+    <table class="data-table">
+      <thead><tr>
+        <th>المسؤول المفوَّض</th><th>حالات الغش التجاري والصرف</th><th>حالات التهريب والمخدرات</th><th>تسهيلات الأداء</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>المديرون الجهويون</td>
+          <td>40% (أو 50% إذا ≤ 400,000 درهم)</td>
+          <td>60%</td>
+          <td>حتى 6 أشهر</td>
+        </tr>
+        <tr>
+          <td>المديرون الإقليميون</td>
+          <td>20%</td>
+          <td>30%</td>
+          <td>حتى 6 أشهر</td>
+        </tr>
+        <tr>
+          <td>قسم المنازعات</td>
+          <td colspan="3">الملفات التي تتجاوز صلاحيات المديريات الجهوية أو ذات الإكراهات المالية الكبرى</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="infobox warning">
+      <div class="infobox-icon">⚠️</div>
+      <div class="infobox-content">
+        <h4>حالات عدم جواز منح تخفيضات الصلح</h4>
+        <p>القضايا المتعلقة بالمؤثرات العقلية مطلقاً. وفي باقي الحالات: تُراعى ملاءة الذمة المالية للمعني — إذ لا تُمنح التخفيضات لمن ثبتت ملاءته.</p>
+      </div>
+    </div>
+
+    <h3>ما يجوز وما لا يجوز في الصلح (المواد 274–276)</h3>
+    <table class="data-table">
+      <thead><tr><th>العنصر</th><th>القاعدة</th></tr></thead>
+      <tbody>
+        <tr><td><strong>الغرامات والمصادرة</strong></td><td>يجوز الإعفاء الجزئي أو الكلي منها</td></tr>
+        <tr><td><strong>الرسوم والمكوس</strong></td><td>لا يجوز الإعفاء منها، إلا إذا تضمن الصلح التخلي عن البضائع لفائدة الإدارة، فلا تكون الرسوم مستحقة</td></tr>
+        <tr><td><strong>المراقبة البعدية والأنظمة الخاصة</strong> <span class="new-badge">2024</span></td><td>في إطار المادتين 86 مكرر و166 ثالثاً: الرسوم تُحتسب على البضائع المحجوزة فعلياً فقط</td></tr>
+        <tr><td><strong>الصيرورة نهائية</strong></td><td>بعد مصادقة الوزير المكلف بالمالية أو مدير الإدارة؛ يلزم الطرفين بصفة لا رجعة فيها ولا يقبل أي طعن</td></tr>
+        <tr><td><strong>الشكل</strong></td><td>كتابة على ورق متنبر، بعدد النظائر بقدر الأطراف ذوي المصالح المتميزة</td></tr>
+        <tr><td><strong>الصوائر القضائية</strong></td><td>لا يمكن تحميلها للإدارة في حالة الصلح (المادة 277)</td></tr>
+        <tr><td><strong>الأداء</strong> <span class="new-badge">2025</span></td><td>الأداء الإلكتروني إلزامي للغرامة الصلحية، وإلا زيادة 1% (حد أدنى 1,000 درهم)، باستثناء الأداءات الجزئية</td></tr>
+      </tbody>
+    </table>
+
+    <h3>مبدأ عدم تعدية الصلح</h3>
+    <p>
+      ينتج الصلح المُبرَم مع الملزم أو المدين الأصلي إنهاءَ النزاع في مواجهة شركة التعشير المتضامنة أو الكفلاء.
+      ويُعمَّم الصلح المُبرَم من طرف أحد المخالفين على باقي المتضامنين إذا أدى الغرامة الصلحية كاملة.
+    </p>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 5 — POURSUITES JUDICIAIRES
+════════════════════════════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-header red">
+    <div class="section-number">5</div>
+    <div>
+      <h2>المتابعات القضائية والطعون</h2>
+      <div class="section-ref">المواد 248–265 من مدونة الجمارك · الفصل 6 من المذكرة العامة</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3>الشكاية — المحتوى والإجراءات</h3>
+    <p>
+      تُودَع الشكاية في أجل <span class="deadline-pill">10 أيام</span> من التوصل بالملف
+      (الحراسة النظرية: فورياً). تُحرَّك المتابعة بمجرد توصل المصلحة بالمحضر.
+    </p>
+    <p><strong>المحتوى الإلزامي للشكاية:</strong></p>
+    <ul class="styled-list">
+      <li>الهوية الكاملة لجميع المخالفين (فاعل أصلي، شريك، كفيل، المسؤول المدني)</li>
+      <li>العناصر الواقعية والقانونية مع سرد النصوص كاملةً — لا يكفي ذكر أرقامها فقط</li>
+      <li>التكييف القانوني للأفعال المرتكبة وفق المحضر</li>
+      <li>النسخة الأصلية + نسختان مشهود بمطابقتهما من المحاضر والوثائق المثبِتة</li>
+    </ul>
+
+    <h3>الملتمسات — ما تتضمنه المطالبة</h3>
+    <ul class="styled-list">
+      <li>غرامة عن كل جنحة أو مخالفة (مبدأ التراكم) عند تعدد الجنح المستقلة</li>
+      <li>الغرامة الأشد عند وحدة جسم الجنح والمخالفات</li>
+      <li>الغرامات على وجه التضامن من طرف جميع المخالفين المشتركين</li>
+      <li>مضاعفة الغرامة عند اقتران البضائع بتأثير على الأمن أو الصحة العامة أو البيئة</li>
+      <li>المصادرة أو ما يقوم مقامها من دفع مبلغ معادل لقيمة البضائع غير المحجوزة</li>
+      <li>تحديد مدة الإكراه البدني في الحد الأقصى</li>
+    </ul>
+
+    <h3>حالات عدم المتابعة القضائية</h3>
+    <div class="infobox warning">
+      <div class="infobox-icon">🚫</div>
+      <div class="infobox-content">
+        <h4>الحد الأدنى للمتابعة — البضائع التافهة (إلا عند حجز وسيلة النقل)</h4>
+        <p>لا تتم المتابعة أو الاسترسال فيها في الحالات التالية:</p>
+      </div>
+    </div>
+    <table class="data-table red-head">
+      <thead><tr>
+        <th>نوع البضاعة / المخالف</th><th>الحد الأقصى</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>البضائع التجارية وغير التجارية (المحظورة أو لا)</td><td>قيمة ≤ 40,000 درهم</td></tr>
+        <tr><td>ماء الحياة (المحجوز)</td><td>≤ 5,000 درهم</td></tr>
+        <tr><td>ماء الحياة (الاعترافات)</td><td>≤ 10,000 درهم</td></tr>
+        <tr><td>مخدر الشيرا / الكيف</td><td>≤ 5,000 درهم (محجوز) / ≤ 20,000 درهم (اعترافات)</td></tr>
+        <tr><td>الأقراص المهلوسة</td><td>≤ 1,000 درهم أو ≤ 20 قرصاً (محجوز)</td></tr>
+        <tr><td>المخدرات القوية (كوكايين، هيروين)</td><td>≤ 2,000 درهم (محجوز)</td></tr>
+        <tr><td>التقادم</td><td>انصرام 4 سنوات على ارتكاب الجنحة (مع الرجوع لقسم المنازعات)</td></tr>
+        <tr><td>توقف المقاولة عن النشاط</td><td>أكثر من سنتين دون استيراد/تصدير مع إثبات عدم التواجد بالعنوان المصرح به</td></tr>
+      </tbody>
+    </table>
+
+    <h3>طرق الطعن في الأحكام والقرارات</h3>
+    <table class="data-table">
+      <thead><tr>
+        <th>الطريق</th><th>المادة الجنحية</th><th>المادة الإدارية والتجارية والمدنية</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>التعرض</strong></td>
+          <td colspan="2">إيقاف التنفيذ — داخل الأجل القانوني</td>
+        </tr>
+        <tr>
+          <td><strong>الاستئناف</strong></td>
+          <td>محكمة الاستئناف — أجل شهر (المادة 256 م.ج)</td>
+          <td>محاكم الاستئناف الإدارية والتجارية — داخل الأجل القانوني</td>
+        </tr>
+        <tr>
+          <td><strong>النقض</strong></td>
+          <td colspan="2">محكمة النقض — قسم المنازعات مختص حصراً بقضايا النقض</td>
+        </tr>
+        <tr>
+          <td><strong>إعادة النظر</strong></td>
+          <td colspan="2">طريق غير عادي — حالات محددة قانوناً</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>آجال وقواعد الطعن في المادة المدنية والإدارية والتجارية <span class="new-badge">ق.م.م 58.25 · منذ 24/08/2026</span></h3>
+    <table class="data-table blue-head">
+      <thead><tr><th>الإجراء</th><th>القاعدة الجديدة</th><th>المادة</th></tr></thead>
+      <tbody>
+        <tr><td>التعرض على حكم غيابي ابتدائي غير قابل للاستئناف</td><td><span class="deadline-pill">15 يوماً</span></td><td>200</td></tr>
+        <tr><td>إيداع مقال الاستئناف</td><td>بكتابة ضبط المحكمة مصدرة الحكم مقابل وصل، أو بشباك أي محكمة تحيله على المحكمة المختصة</td><td>214</td></tr>
+        <tr><td>مقال الاستئناف ومذكرة النقض</td><td>وجوب ذكر العنوان الإلكتروني للإدارة إضافة إلى البيانات المعتادة</td><td>216 و377</td></tr>
+        <tr><td>الطعن بالنقض</td><td><span class="deadline-pill">30 يوماً</span> من تبليغ الحكم بالموطن الحقيقي أو المختار؛ يوقف التنفيذ تجاه الإدارة في أحكام المحاكم الإدارية</td><td>383</td></tr>
+        <tr><td>إعادة النظر في قرارات محكمة النقض</td><td>سنة من النطق بالقرار؛ 30 يوماً من ثبوت الزور أو اكتشاف وثائق جديدة</td><td>403</td></tr>
+        <tr><td>الحكم في الاختصاص النوعي</td><td>استئناف داخل <span class="deadline-pill">10 أيام</span> من التبليغ؛ قرار الاستئناف لا يقبل أي طعن؛ لا يُثار الدفع لأول مرة أمام محكمة النقض</td><td>27</td></tr>
+        <tr><td>الاختصاص المكاني</td><td>يُثار قبل كل دفع أو دفاع؛ الحكم فيه لا يقبل أي طعن. المنازعات الجبائية: المحكمة الإدارية لمكان استحقاق الضريبة (تنسجم مع المادة 141 م.ت.د.ع)</td><td>71</td></tr>
+      </tbody>
+    </table>
+
+    <h3>التبليغ والموطن المختار <span class="new-badge">ق.م.م 58.25</span></h3>
+    <ul class="styled-list">
+      <li>وجوب اختيار موطن للمخابرة داخل دائرة المحكمة المرفوع إليها النزاع؛ وإلا اعتُبر التبليغ بكتابة الضبط صحيحاً (المادتان 78 و353)</li>
+      <li>كل تغيير في العنوان أو الموطن المختار يجب إشعار المحكمة به، وإلا صح التبليغ بآخر موطن مصرح به</li>
+      <li>مكتب المحامي موطن مختار تُبلَّغ إليه الإجراءات، باستثناء الأحكام التمهيدية المتضمنة لتكاليف مالية والأحكام النهائية (المادتان 77 و78)</li>
+      <li>عند تعذر التبليغ أو جهالة العنوان: اللجوء إلى معطيات قاعدة البطاقة الوطنية الإلكترونية (المادتان 86 و610)</li>
+    </ul>
+
+    <div class="infobox warning">
+      <div class="infobox-icon">⏳</div>
+      <div class="infobox-content">
+        <h4>الأحكام الانتقالية (المادة 643)</h4>
+        <p>الآجال التي بدأ سريانها قبل 24/08/2026 تبقى خاضعة للقواعد السابقة، ولا تطبق المقتضيات الجديدة على الأحكام الصادرة قبل هذا التاريخ: يبقى الطعن فيها وتنفيذها خاضعين للنصوص السارية يوم النطق بها.</p>
+      </div>
+    </div>
+
+    <h3>اللجان الاستشارية الجمركية — قبل التقاضي</h3>
+    <p>في المنازعات المتعلقة بنوع البضاعة أو منشئها أو قيمتها، يمكن للمتعامل عرض النزاع على اللجنة الاستشارية المحلية ثم الوطنية:</p>
+    <table class="data-table">
+      <thead><tr><th>المرحلة</th><th>الأجل</th></tr></thead>
+      <tbody>
+        <tr><td>عرض النزاع على اللجنة المحلية (المختصة ابتدائياً بحسب مكتب الملف، ولو صدر القرار عن المصالح المركزية)</td><td><span class="deadline-pill">60 يوماً</span> من تسجيل التصريح أو تاريخ القضية التنازعية أو قرار الإدارة إثر تظلم</td></tr>
+        <tr><td>قرار الإدارة بعد رأي اللجنة المحلية (المادة 22 مكرر)</td><td><span class="deadline-pill gold">15 يوماً</span> من تاريخ الاجتماع</td></tr>
+        <tr><td>الطعن أمام اللجنة الوطنية</td><td><span class="deadline-pill">30 يوماً</span> من تبليغ القرار؛ وعند سكوت الإدارة، من اليوم السادس عشر الموالي للاجتماع</td></tr>
+      </tbody>
+    </table>
+    <p class="text-small">غياب المتعامل غير المبرر عن الاجتماع يُعد تنازلاً عن استشارة اللجنة. رأي اللجنة لا يلزم الإدارة. — دورية 4942/212 والقرار 863-04</p>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 6 — RECOUVREMENT
+════════════════════════════════════════════ -->
+<div class="section" id="s6">
+  <div class="section-header gold">
+    <div class="section-number">6</div>
+    <div>
+      <h2>تحصيل الديون الجمركية</h2>
+      <div class="section-ref">م.ت.د.ع · الفصل 8 من المذكرة العامة</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3>مساطر التحصيل الجبري الإدارية</h3>
+    <div class="process-flow">
+      <div class="process-step">
+        <div class="step-num">①</div>
+        <div class="step-content">
+          <h4>الإنذار</h4>
+          <p>أول إجراء تحصيلي رسمي يوجَّه إلى المدين مع منحه مهلة الوفاء. يُعدّ سنداً تنفيذياً.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">②</div>
+        <div class="step-content">
+          <h4>حجز المنقولات</h4>
+          <p>
+            تباشره القباضة على أموال المدين المنقولة. يُستثنى المسكن الرئيسي (≤ 500,000 درهم) 
+            والمنقولات المرتبطة بالمعيش اليومي.
+          </p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">③</div>
+        <div class="step-content">
+          <h4>الإشعار للغير الحائز (IGH)</h4>
+          <p>
+            آلية استرداد الأموال السائلة من جهات ثالثة تحوزها للمدين (البنوك خاصةً).
+            يُنفَّذ فوراً عند التوصل بشهادة الملكية البنكية.
+          </p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">④</div>
+        <div class="step-content">
+          <h4>مساطر خاصة + التنفيذ على المركبات</h4>
+          <p>حجز وبيع المركبات المسجلة لاسم المدين.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>مساطر التحصيل الجبري القضائية</h3>
+    <table class="data-table">
+      <thead><tr>
+        <th>المسطرة</th><th>الشروط</th><th>الجهة المختصة</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>بيع الأصل التجاري</td>
+          <td>دين مستحق + إذن قضائي + إعلان بالجرائد</td>
+          <td>المحكمة التجارية</td>
+        </tr>
+        <tr>
+          <td>بيع السفن والطائرات</td>
+          <td>الرجوع الوجوبي لقسم المنازعات</td>
+          <td>قسم المنازعات + المحكمة المختصة</td>
+        </tr>
+        <tr>
+          <td>بيع العقار</td>
+          <td>دين > 50,000 درهم + رهن رسمي أو حجز</td>
+          <td>المحكمة الابتدائية دائرة العقار</td>
+        </tr>
+        <tr>
+          <td>الإكراه البدني (المادة 262 bis)</td>
+          <td>بعد الحكم النهائي + عدم الوفاء</td>
+          <td>1–2 سنة للجنح / 6 أشهر–سنة للمخالفات 1 و2 / 1–6 أشهر للمخالفات 3 و4</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>فوائد التأخر وصوائر التحصيل الجبري</h3>
+    <p>
+      تحتسب فوائد التأخر وصوائر التحصيل الجبري على أساس محدد، مع إمكانية
+      <strong>الإعفاء الجزئي أو الكلي</strong> (المرفق رقم 14 من المذكرة العامة)، وذلك في حدود 
+      الصلاحيات الممنوحة للمسؤولين مع مراعاة معطيات كل ملف.
+    </p>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 7 — INFRACTIONS ET PEINES
+════════════════════════════════════════════ -->
+<div class="section" id="s7">
+  <div class="section-header red">
+    <div class="section-number">7</div>
+    <div>
+      <h2>تصنيف المخالفات والعقوبات</h2>
+      <div class="section-ref">المواد 279–305 من مدونة الجمارك — الفصل الثالث</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3>هيكل تصنيف المخالفات الجمركية</h3>
+    <p>تنقسم المخالفات الجمركية إلى <strong>صنفين</strong>: الجنح الجمركية (درجتان) والمخالفات الجمركية (أربع درجات).</p>
+
+    <div class="article-card">
+      <div class="article-card-header">
+        <span class="art-num">م. 279 ter — 279 quater</span>
+        <h3>الجنح الجمركية من الدرجة الأولى (جسيمة)</h3>
+      </div>
+      <div class="article-card-body">
+        <p><strong>المخالفات:</strong> استيراد/تصدير/حيازة المخدرات والمؤثرات العقلية بدون إذن أو تصريح، أو تحت غطاء تصريح كاذب؛ وجودها في المستودعات أو مواقع الاستخلاص الجمركي.</p>
+        <p><strong>العقوبات:</strong></p>
+        <ul class="styled-list red-list">
+          <li>السجن من <em>1 إلى 3 سنوات</em></li>
+          <li>غرامة تعادل <em>مرة واحدة قيمة البضائع</em> موضوع الغش <span class="new-badge gold">خُفِّضت من الضعفين — ق.م 2025</span></li>
+          <li>تُضاعَف الغرامات عند الظروف المشددة: العنف، الأسلحة، التعدد (3 أشخاص فأكثر)</li>
+          <li>مصادرة البضائع ووسائل النقل وبضائع التمويه</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="article-card">
+      <div class="article-card-header">
+        <span class="art-num">م. 281 — 282 bis</span>
+        <h3>الجنح الجمركية من الدرجة الثانية</h3>
+      </div>
+      <div class="article-card-body">
+        <p><strong>صور جديدة للتهريب (المادة 282):</strong> تغيير أو تزوير الخصائص التقنية ومعرِّفات وسائل النقل لإخفاء تتبعها (5°) <span class="new-badge">2024</span>؛ بضائع غير مصرح بها وغير متلائمة مع النشاط المرخص، مكتشفة مع بضائع عابرة نحو منطقة تسريع صناعي (6°) <span class="new-badge">2026</span>.</p>
+        <p><strong>المخالفات الرئيسية:</strong> التهريب بمختلف صوره، الفائض في الطرود غير المبرر، المخالفات الضريبية (الباب الثامن)، التلاعب بالمعطيات المعلوماتية للإدارة، استيراد/تصدير البضائع المحظورة بتصريح كاذب، استعمال الأختام الجمركية بصورة مخالفة.</p>
+        <p><strong>العقوبات:</strong></p>
+        <ul class="styled-list red-list">
+          <li>السجن من <em>1 شهر إلى سنة</em></li>
+          <li>غرامة = 3 أضعاف الرسوم والمكوس (المخالفات 1–7 من م.281)</li>
+          <li>غرامة = مرة واحدة قيمة البضاعة (المخالفات 8 و9) — <em>بدل الضعفين قبل 2025</em></li>
+          <li>غرامة = مرة قيمة البضائع أو وسيلة النقل (استعمال الأختام الجمركية دون مبرر) <span class="new-badge">2025</span></li>
+          <li>من 100,000 إلى 200,000 درهم (حيازة الأختام أو توفيرها دون مبرر) <span class="new-badge">2025</span></li>
+          <li>مصادرة + مضاعفة عند الظروف المشددة أو البضائع ذات الأثر الصحي/الأمني</li>
+        </ul>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead><tr>
+        <th>درجة المخالفة</th><th>الأمثلة الرئيسية</th><th>العقوبة المالية</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>المخالفة من الدرجة الأولى</strong> (م.285)</td>
+          <td>استيراد/تصدير بدون تصريح تفصيلي مع تهرب من رسوم؛ إساءة استخدام الأنظمة الاقتصادية؛ بضائع مقلَّدة (م. 17-97)</td>
+          <td>ضعفا مبلغ الرسوم والمكوس المتهرَّب منها + مصادرة</td>
+        </tr>
+        <tr>
+          <td><strong>المخالفة من الدرجة الثانية</strong> (م.294)</td>
+          <td>تحويلات المستودعات غير المرخصة؛ تصريح كاذب مع تهرب من رسوم؛ إغفالات وإخلالات متعددة</td>
+          <td>1.5 ضعف الرسوم أو من 3,000 إلى 30,000 درهم حسب الحالة</td>
+        </tr>
+        <tr>
+          <td><strong>المخالفة من الدرجة الثالثة</strong> (م.297)</td>
+          <td>مقاومة عمل أعوان الجمارك؛ رفض تقديم الوثائق؛ ممارسة التعشير بدون اعتماد؛ عدم إرفاق الوثائق بالتصريح؛ التصريح الكاذب بمكان التخزين أو التحويل</td>
+          <td>من 3,000 إلى 400,000 درهم حسب طبيعة المخالفة (التفصيل أدناه)</td>
+        </tr>
+        <tr>
+          <td><strong>المخالفة من الدرجة الرابعة</strong> (م.299)</td>
+          <td>الإغفالات والأخطاء في التصريحات دون أثر على الرسوم؛ عدم التقييد في السجلات الإلزامية؛ عدم تنفيذ التزامات وثيقة جمركية؛ التسجيل المتأخر للتصريح التكميلي (م.76 مكرر-3°)</td>
+          <td>من <em>500 إلى 2,500 درهم</em></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>تفصيل غرامات المخالفات من الدرجة الثالثة (المادة 297 مكرر)</h3>
+    <table class="data-table red-head">
+      <thead><tr><th>الفقرة</th><th>المخالفة</th><th>الغرامة</th></tr></thead>
+      <tbody>
+        <tr><td>1° و3°</td><td>معارضة الأعوان؛ إتلاف أو نزع الأختام (م.40 مكرر)</td><td>3,000 – 30,000 درهم</td></tr>
+        <tr><td>2° و6°</td><td>عدم الامتثال للأوامر (م.38-2°)؛ ممارسة التعشير دون اعتماد أو التصريح للغير دون إذن</td><td>80,000 – 100,000 درهم</td></tr>
+        <tr><td>4°</td><td>رفض تقديم الوثائق (م.42)</td><td>30,000 – 60,000 درهم</td></tr>
+        <tr><td>5°</td><td>عدم تنفيذ مستغل مخزن وساحة الاستخلاص لالتزامات دفتر التحملات (م.63-1°)</td><td>200,000 – 400,000 درهم</td></tr>
+        <tr><td>7°</td><td>عدم التصريح بالرساميل ≥ 100,000 درهم (م.66 مكرر)</td><td>المبلغ غير المصرح به</td></tr>
+        <tr><td>8° <span class="new-badge">2024</span></td><td>عدم إرفاق الوثائق المطلوبة بالتصريح المفصل</td><td>10,000 – 50,000 درهم</td></tr>
+        <tr><td>9° <span class="new-badge">2026</span></td><td>التصريح الكاذب بالمكان الفعلي للتخزين أو التحويل (م.19 مكرر)</td><td>30,000 – 60,000 درهم</td></tr>
+      </tbody>
+    </table>
+
+    <div class="infobox warning">
+      <div class="infobox-icon">⛽</div>
+      <div class="infobox-content">
+        <h4>الوسم الجبائي للمحروقات — أجل مؤجل</h4>
+        <p>مخالفة عدم احترام الوسم الجبائي للغازوال والبنزين الممتاز (المادة 287 مكرر من الظهير 1-77-340) أُجِّل نفاذها إلى <strong>01/01/2028</strong>، مع توسيع الوسم إلى الكيروزين والفيول والبروبان والبوتان.</p>
+      </div>
+    </div>
+
+    <div class="infobox info">
+      <div class="infobox-icon">📋</div>
+      <div class="infobox-content">
+        <h4>الظروف المشددة المضاعِفة للعقوبات</h4>
+        <p>تُضاعَف العقوبات المالية عند اقتران الجنح بـ: استخدام العنف والإكراه، استعمال الأسلحة، استعمال وسائل نقل أو معدات خاصة، ارتكاب الجنحة من طرف 3 أشخاص فأكثر، البضائع ذات التأثير على الأمن أو الأخلاق أو الصحة العامة أو البيئة.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 8 — PROCÉDURE CONTENTIEUSE
+════════════════════════════════════════════ -->
+<div class="section" id="s8">
+  <div class="section-header blue">
+    <div class="section-number">8</div>
+    <div>
+      <h2>مسطرة إنجاز المحاضر وإثبات المخالفات</h2>
+      <div class="section-ref">المواد 233–247 من مدونة الجمارك · الفصلان 1 و2 من المذكرة العامة</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3>إثبات المخالفات الجمركية</h3>
+    <p>
+      تُثبَت الجنح والمخالفات الجمركية بمحاضر يُشترط في محرريها: <strong>توفر وكالة العمل وأداء اليمين القانونية</strong>.
+      تُعدَّ المحاضر المُحرَّرة من طرف عونين اثنين فأكثر <em>حجةً حتى تُثبت صحتها</em> في المعاينات المادية.
+    </p>
+
+    <h3>الشروط الإلزامية لصحة المحضر الجمركي</h3>
+    <ul class="styled-list">
+      <li>تحديد هوية المخالفين والأشخاص المستمع إليهم والمترجمين والتصريحات المُدلى بها</li>
+      <li>وجوب حمل الشارة الرسمية أثناء تحرير المحضر</li>
+      <li>الاستفسار عن الحالة الصحية للشخص المستمع إليه قبل الاستماع</li>
+      <li>الاستعانة بمترجم إذا كان المستمع إليه لا يجيد العربية</li>
+      <li>إلزامية الحضور الشخصي للمخالف الذاتي (لا يُنوَّب عنه إلا بوكالة للشخص المعنوي)</li>
+      <li>الاستماع للأفراد قبل إسناد الأفعال إليهم (إلا بقرار المدير الجهوي أو بعد استدعاءين بفاصل 15 يوماً)</li>
+      <li>إنجاز المحضر من طرف عونين على الأقل — بالاستثناء: عون واحد للمحاضر المبسطة في BADR</li>
+      <li>تسليم نسخة من المحضر للمستمع إليه حتى لو رفض التوقيع</li>
+      <li>احترام الآجال: الإحالة على المصلحة الجهوية للمنازعات أو الآمرية بالصرف بعد 15 يوماً قصوى من عدم التسوية</li>
+    </ul>
+
+    <div class="infobox expert">
+      <div class="infobox-icon">💡</div>
+      <div class="infobox-content">
+        <h4>نقطة دقيقة — احتساب مبالغ الغرامات عند الاعتراف</h4>
+        <p>
+          تُحتسب الغرامات على أسس يقينية ومعقولة آخذةً بعين الاعتبار الاعترافات الصريحة والدقيقة فقط 
+          — مع استبعاد التقدير والاستنتاج. وفي حالة الاعتراف بكمية بين حدين، يُؤخذ بالحد الأدنى.
+        </p>
+      </div>
+    </div>
+
+    <h3>قوة الإثبات للمحاضر الجمركية (المادة 242)</h3>
+    <table class="data-table">
+      <thead><tr>
+        <th>نوع المحضر</th><th>قوة الإثبات</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>محاضر عونَين فأكثر (المعاينات المادية)</td><td>حجة حتى يُطعَن فيها بالتزوير</td></tr>
+        <tr><td>محاضر عونَين فأكثر (الاعترافات والتصريحات)</td><td>حجة حتى يُدحَض بالدليل المعاكس</td></tr>
+        <tr><td>محاضر عون واحد</td><td>حجة حتى يُدحَض بالدليل المعاكس</td></tr>
+        <tr><td>محاضر باقي الأعوان الموظفين</td><td>حجة حتى يُدحَض بالدليل المعاكس (إلا إذا نصت مقتضيات خاصة)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>الأنظمة المعلوماتية — نظام BADR</h3>
+    <p>
+      تلتزم المصالح بـ<strong>اعتماد نظام BADR حصرياً وفورياً</strong> لإنجاز أو تسجيل جميع الإجراءات.
+      يُتضمَّن الملف الإلكتروني جميع الوثائق الورقية: المحاضر، قرارات الصلح، الملتمسات، الأحكام والقرارات القضائية، 
+      أوامر الحجز التحفظي، المقالات الافتتاحية، المذكرات الجوابية والدفاعية.
+    </p>
+
+    <h3>رقمنة المذكرات الموجهة للقضاء الزجري <span class="new-badge">D200/2026</span></h3>
+    <p>
+      في إطار المشروع الاستراتيجي للمنازعات 2024–2028، أُضيفت إلى BADR وحدة <strong>«Document contentieux»</strong>
+      (قائمة CONTENTIEUX ← المتابعة القضائية / الإجراءات الزجرية) لإنجاز أربعة أنواع من الوثائق:
+      مذكرات الدفاع، مقالات التعرض، مذكرات النقض (لدى محكمة الاستئناف، لدى محكمة النقض، الجوابية)، وطلبات التنازل عن الطعن.
+    </p>
+    <p><strong>دورة حياة المذكرة:</strong></p>
+    <div class="state-flow">
+      <span class="state">محفوظة (مرجع مؤقت — قابلة للحذف)</span><span class="state-arrow">←</span>
+      <span class="state">مسجلة (مرجع نهائي — قابلة للتعديل والإلغاء)</span><span class="state-arrow">←</span>
+      <span class="state">موقعة (مع إرفاق النسخة الموقعة يدوياً)</span><span class="state-arrow">←</span>
+      <span class="state end">مودعة</span>
+      <span class="state bad">ملغاة (بتعليل إلزامي)</span>
+    </div>
+    <ul class="styled-list">
+      <li>يرفض النظام إنشاء المذكرة إذا كانت الشكاية غير موجودة أو المتابعة متخلى عنها، أو الملف الزجري غير موجود، أو جدول الجلسات فارغاً (مذكرة الدفاع)، أو غياب حكم في الملف (التعرض)</li>
+      <li>لا يمكن تعديل مذكرة موقعة أو مودعة أو ملغاة، ولا إلغاء مذكرة موقعة أو مودعة</li>
+      <li>عند الإيداع خارج الجلسة: إرفاق وثيقة «مذكرة مودعة» إلزامياً</li>
+      <li>نماذج النقض والتنازل مؤسسة على المادتين 528 و534 من قانون المسطرة الجنائية</li>
+      <li>تبويب جديد <strong>«Droit et Taxe Compromis»</strong> يربط كل قضية تنازعية بتصفية الرسوم والمكوس المتملَّص منها لقياس الرهان المالي</li>
+      <li>الصعوبات تُرفع عبر منصة المساعدة الإلكترونية «دعم»</li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 9 — EXTINCTION & PRESCRIPTION
+════════════════════════════════════════════ -->
+<div class="section" id="s9">
+  <div class="section-header">
+    <div class="section-number">9</div>
+    <div>
+      <h2>عوارض المادة التنازعية — التقادم وانقضاء الالتزامات</h2>
+      <div class="section-ref">المادة 239 bis + 261 bis م.ج · الفصل 9 من المذكرة العامة</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3>أجال التقادم</h3>
+    <table class="data-table">
+      <thead><tr>
+        <th>الموضوع</th><th>مدة التقادم</th><th>المرجع القانوني</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>المخالفات الجمركية (جنح ومخالفات)</td>
+          <td><span class="deadline-pill">4 سنوات</span> من يوم ارتكاب المخالفة</td>
+          <td>المادة 239 bis م.ج</td>
+        </tr>
+        <tr>
+          <td>الأحكام الجنائية المكتسبة لقوة الشيء المقضي به</td>
+          <td><span class="deadline-pill">4 سنوات</span> من اكتساب الحكم لقوة الشيء المقضي به</td>
+          <td>المادة 261 bis م.ج</td>
+        </tr>
+        <tr>
+          <td>التحصيل</td>
+          <td>قواعد م.ت.د.ع</td>
+          <td>مدونة تحصيل الديون العمومية</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>قطع التقادم ووقفه</h3>
+    <ul class="styled-list green-list">
+      <li>يُقطع التقادم بكل إجراء من إجراءات المتابعة أو التحصيل (محاضر، أحكام، إجراءات تنفيذية)</li>
+      <li>يُوقف التقادم بحالات القوة القاهرة أو الظروف المانعة من المتابعة</li>
+      <li>الحرص على تفادي التقادم في جميع الحالات هو التزام مطلق على المصلحة</li>
+      <li>يلتزم الموقع على التصريح (أو مالك البضاعة بالنسبة للوثائق المشتركة) بحفظ أصول الوثائق طيلة مدة التقادم وتقديمها عند كل طلب (دوريتا 5885/312 و6639/312)</li>
+    </ul>
+
+    <h3>أسباب انقضاء الالتزامات الجمركية</h3>
+    <div class="penalty-grid">
+      <div class="penalty-card type1">
+        <div class="p-label">الصلح</div>
+        <div class="p-amount">🤝</div>
+        <div class="p-desc">الصلح المبرَم قبل الحكم النهائي يُسقط دعوى الإدارة والنيابة العامة معاً (م.273 م.ج)</div>
+      </div>
+      <div class="penalty-card type2">
+        <div class="p-label">وفاة المخالف</div>
+        <div class="p-amount">⚖️</div>
+        <div class="p-desc">الوفاة قبل الشكاية أو الحكم النهائي تُسقط المتابعة، لكن التحصيل يُستمر ضد التركة (م.265)</div>
+      </div>
+      <div class="penalty-card type3">
+        <div class="p-label">العفو</div>
+        <div class="p-amount">🔓</div>
+        <div class="p-desc">العفو الملكي يُسقط عقوبة السجن لكن لا يُسقط الغرامات والرسوم إلا بنص صريح</div>
+      </div>
+      <div class="penalty-card type4">
+        <div class="p-label">قبول إلغاء الدين</div>
+        <div class="p-amount">📋</div>
+        <div class="p-desc">مسطرة قبول إلغاء الدين المتعذر تحصيله — وفق شروط وصلاحيات محددة بالمذكرة العامة</div>
+      </div>
+    </div>
+
+    <h3>صعوبة المقاولة وتوقفها عن النشاط</h3>
+    <div class="infobox warning">
+      <div class="infobox-icon">🏢</div>
+      <div class="infobox-content">
+        <h4>التعامل مع المقاولات في وضعية صعوبة</h4>
+        <p>
+          تُعلَّق المتابعة القضائية في عدة حالات من مساطر صعوبة المقاولة (التصفية القضائية، تخلي المحكمة عن تحقيق الديون لعدم الكفاية)، 
+          مع التنبه إلى وجوب <strong>التصريح بالديون داخل الآجال</strong> وتقديم دعوى رفع السقوط عند الاقتضاء.
+          تبقى المتابعة قائمة في مواجهة الأشخاص الشركاء والمتواطئين.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 10 — GUIDE DE L'OPÉRATEUR
+════════════════════════════════════════════ -->
+<div class="section" id="s10">
+  <div class="section-header gold">
+    <div class="section-number">10</div>
+    <div>
+      <h2>دليل المتعامل: الوقاية من النزاع وتدبيره</h2>
+      <div class="section-ref">خلاصة عملية للمستوردين والمصدرين والمعشرين</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="two-col">
+      <div class="do-box">
+        <h4>✅ ما يجب فعله</h4>
+        <ul>
+          <li>التحقق من صحة كل وثيقة قبل إرفاقها (رمز QR عند وجوده) ورفض أي وثيقة مشكوك فيها مع إشعار الإدارة</li>
+          <li>إرفاق جميع الوثائق المطلوبة بالتصريح المفصل: التصريح ووثائقه وثيقة واحدة</li>
+          <li>التصريح بالمكان الفعلي للتخزين أو التحويل، وتحيينه عند كل تغيير</li>
+          <li>حفظ الأصول طيلة مدة التقادم، وتسليم الأصول المشتركة للمالك مقابل إبراء</li>
+          <li>الأداء إلكترونياً لتفادي زيادة 1% (حد أدنى 1,000 درهم)</li>
+          <li>اختيار موطن للمخابرة داخل دائرة المحكمة، والإشعار بكل تغيير عنوان</li>
+          <li>تقديم طلب الصلح مبكراً: يبقى ممكناً في جميع المراحل، ويُسقط الدعوى إذا أُبرم قبل الحكم النهائي</li>
+          <li>عرض نزاعات النوع والمنشأ والقيمة على اللجنة الاستشارية داخل 60 يوماً</li>
+          <li>طلب استرداد الرسوم المستخلصة بغير حق على أساس المادة 95 مكرر</li>
+        </ul>
+      </div>
+      <div class="dont-box">
+        <h4>⛔ ما يجب تجنبه</h4>
+        <ul>
+          <li>الاكتفاء بنسخة وثيقة دون التحقق من الأصل: المسؤولية الشخصية للمصرح قائمة</li>
+          <li>الاعتماد على أن الصلح يوقف المتابعة أو التحصيل: عروض الصلح لا توقفهما</li>
+          <li>ترك أجل يمر: نقض 30 يوماً، تعرض 15 يوماً، استئناف الاختصاص 10 أيام، اللجنة الوطنية 30 يوماً</li>
+          <li>الغياب غير المبرر عن اجتماع اللجنة الاستشارية: يُعد تنازلاً</li>
+          <li>حيازة أختام جمركية أو استعمالها دون مبرر</li>
+          <li>نقل بضائع غير متلائمة مع النشاط المرخص ضمن عبور نحو منطقة تسريع صناعي</li>
+          <li>إهمال التصريح بالديون داخل الآجال في مساطر صعوبة المقاولة</li>
+          <li>الاعتقاد بأن الصلح يُعفي من الرسوم: الإعفاء يشمل الغرامات والمصادرة فقط</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>إشارات إنذار تستدعي التدخل الفوري</h3>
+    <ul class="styled-list red-list">
+      <li>توصل بإنذار أو إشعار للغير الحائز على الحساب البنكي: الدين في مرحلة التحصيل الجبري</li>
+      <li>توقف عملية في BADR بسبب إنذار مانع (قبول مؤقت، وضع للاستهلاك، D17، D20)</li>
+      <li>استدعاء للاستماع في محضر: الحضور شخصياً، مع الحق في مترجم وفي نسخة من المحضر</li>
+      <li>أمر بحجز تحفظي أو رهن رسمي على عقار يتجاوز الدين فيه 50,000 درهم</li>
+      <li>حكم ابتدائي صادر: الصلح بعده يستتبع زيادة +10% في الغرامة الصلحية</li>
+    </ul>
+
+    <div class="infobox success">
+      <div class="infobox-icon">🤝</div>
+      <div class="infobox-content">
+        <h4>هل تحتاج إلى مرافقة؟</h4>
+        <p>لملفات الصلح المعقدة، والطعون، والمراقبة البعدية، يمكنكم طلب <a href="/modules/conseil" style="color:var(--forest);font-weight:700;">استشارة شخصية</a> مع خبرائنا في المادة الجمركية.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="divider"></div>
+
+<!-- ════════ RÉFÉRENCES LÉGALES ════════ -->
+<div class="section">
+  <div class="section-header gold">
+    <div class="section-number">📚</div>
+    <div>
+      <h2>المراجع القانونية والتنظيمية</h2>
+      <div class="section-ref">الإطار القانوني الكامل المؤطِّر للمادة التنازعية الجمركية</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <table class="data-table">
+      <thead><tr>
+        <th>الرمز</th><th>النص القانوني</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="ref-code">م.ج</span></td><td>مدونة الجمارك والضرائب غير المباشرة — ظهير 1977 وتعديلاته</td></tr>
+        <tr><td><span class="ref-code">م.ت.د.ع</span></td><td>مدونة تحصيل الديون العمومية</td></tr>
+        <tr><td><span class="ref-code">ق.ل.ع</span></td><td>قانون الالتزامات والعقود</td></tr>
+        <tr><td><span class="ref-code">ق.م.م</span></td><td>قانون المسطرة المدنية</td></tr>
+        <tr><td><span class="ref-code">ق.م.ج</span></td><td>قانون المسطرة الجنائية</td></tr>
+        <tr><td><span class="ref-code">م.ت</span></td><td>مدونة التجارة</td></tr>
+        <tr><td><span class="ref-code">ق.م.ت</span></td><td>قانون المحاكم التجارية</td></tr>
+        <tr><td><span class="ref-code">ق.م.إ</span></td><td>قانون المحاكم الإدارية</td></tr>
+        <tr><td><span class="ref-code">م.ع.ض</span></td><td>المدونة العامة للضرائب</td></tr>
+        <tr><td><span class="ref-code">م.ح.ع</span></td><td>مدونة الحقوق العينية</td></tr>
+        <tr><td><span class="ref-code">المذكرة العامة</span></td><td>D50/2021/ADII/AC/100 بتاريخ 23 ديسمبر 2021 وتعديلاتها حتى 02/02/2024 (32 تعديلاً)</td></tr>
+        <tr><td><span class="ref-code">ق.م.م 58.25</span></td><td>القانون رقم 58.25 المتعلق بالمسطرة المدنية (11/02/2026، نافذ منذ 24/08/2026) — مذكرة D196/2026/ADII/AC/100 بتاريخ 28/08/2026</td></tr>
+        <tr><td><span class="ref-code">ق.م 2024</span></td><td>قانون المالية 55-23 — دورية 6522/210 بتاريخ 29/12/2023 (المواد 275، 282، 297، 297 مكرر)</td></tr>
+        <tr><td><span class="ref-code">ق.م 2025</span></td><td>قانون المالية 60-24 — دورية 6619/210 بتاريخ 26/12/2024 (المواد 95، 95 مكرر، 279 رابعاً، 281، 282 مكرر)</td></tr>
+        <tr><td><span class="ref-code">ق.م 2026</span></td><td>قانون المالية 50-25 — دورية 6702/210 بتاريخ 26/12/2025 (المواد 19 مكرر، 35، 282، 297، 297 مكرر)</td></tr>
+        <tr><td><span class="ref-code">D200/2026</span></td><td>التدبير الآلي للمنازعات — رقمنة المذكرات الموجهة للقضاء الزجري (02/09/2026)</td></tr>
+        <tr><td><span class="ref-code">D123/2026</span></td><td>مسطرة تدبير إشعارات الغش المتعلقة بالمركبات والأشخاص (26/05/2026)</td></tr>
+        <tr><td><span class="ref-code">6662/312 · 6639/312</span></td><td>التحقق من صحة الوثائق المرفقة بالتصريح (24/06/2025) · حفظ الوثائق الأصلية (18/02/2025)</td></tr>
+        <tr><td><span class="ref-code">4942/212</span></td><td>شروط عرض النزاعات على اللجان الاستشارية الجمركية وسيرها (القرار 863-04)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</main>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar">
+
+  <!-- Quick Nav -->
+  <div class="sidebar-box">
+    <div class="sidebar-box-header">🧭 التنقل السريع</div>
+    <div class="sidebar-box-body">
+      <a href="#s0" class="sidebar-link"><span class="sidebar-link-icon">🆕</span>مستجدات 2024–2026</a>
+      <a href="#s1" class="sidebar-link"><span class="sidebar-link-icon">📋</span>الأحكام العامة</a>
+      <a href="#s2" class="sidebar-link"><span class="sidebar-link-icon">👤</span>المسؤوليات</a>
+      <a href="#s3" class="sidebar-link"><span class="sidebar-link-icon">🔒</span>التدابير الاحترازية</a>
+      <a href="#s4" class="sidebar-link"><span class="sidebar-link-icon">🤝</span>الصلح</a>
+      <a href="#s5" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>المتابعات القضائية</a>
+      <a href="#s6" class="sidebar-link"><span class="sidebar-link-icon">💰</span>التحصيل</a>
+      <a href="#s7" class="sidebar-link"><span class="sidebar-link-icon">🚨</span>العقوبات</a>
+      <a href="#s8" class="sidebar-link"><span class="sidebar-link-icon">📝</span>المحاضر</a>
+      <a href="#s9" class="sidebar-link"><span class="sidebar-link-icon">⏱</span>التقادم</a>
+      <a href="#s10" class="sidebar-link"><span class="sidebar-link-icon">🧭</span>دليل المتعامل</a>
+    </div>
+  </div>
+
+  <!-- Key Deadlines -->
+  <div class="sidebar-box">
+    <div class="sidebar-box-header gold-bg">⏰ الآجال الجوهرية</div>
+    <div class="sidebar-box-body">
+      <div style="font-size:13px;">
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>إيداع الشكاية</span>
+          <span class="deadline-pill">10 أيام</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>طلب الحجز التحفظي</span>
+          <span class="deadline-pill">10 أيام</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>طلب البيع المسبق</span>
+          <span class="deadline-pill gold">شهر</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>الرد على طلبات الصلح</span>
+          <span class="deadline-pill gold">15 يوماً</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>حق الاطلاع (إدلاء الحائز)</span>
+          <span class="deadline-pill">15 يوماً</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>مصادقة المدير على الصلح</span>
+          <span class="deadline-pill green">أسبوع</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>التقادم الجنحي</span>
+          <span class="deadline-pill">4 سنوات</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>الرهن الرسمي (تأكيد التقييد)</span>
+          <span class="deadline-pill green">شهر</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>دعوى الموضوع بعد الحجز التحفظي 🆕</span>
+          <span class="deadline-pill">10 أيام</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>الطعن بالنقض (مدني/إداري) 🆕</span>
+          <span class="deadline-pill">30 يوماً</span>
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span>التعرض على حكم غيابي 🆕</span>
+          <span class="deadline-pill">15 يوماً</span>
+        </div>
+        <div style="padding:8px 0; display:flex; justify-content:space-between; align-items:center;">
+          <span>عرض النزاع على اللجنة المحلية</span>
+          <span class="deadline-pill blue">60 يوماً</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Thresholds -->
+  <div class="sidebar-box">
+    <div class="sidebar-box-header gold-bg">💎 العتبات المالية الرئيسية</div>
+    <div class="sidebar-box-body">
+      <div style="font-size:12.5px;">
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong style="color:var(--forest);">50,000 درهم</strong>
+          <div style="color:#555; margin-top:3px;">حد الحجز التحفظي + الرهن الرسمي + حق الاطلاع لدى المحافظة العقارية</div>
+        </div>
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong style="color:var(--forest);">500,000 درهم</strong>
+          <div style="color:#555; margin-top:3px;">سقف إعفاء المسكن الرئيسي من الحجز</div>
+        </div>
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong style="color:var(--forest);">250,000 درهم</strong>
+          <div style="color:#555; margin-top:3px;">عتبة مسؤولية مالك حافلة نقل المسافرين</div>
+        </div>
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong style="color:var(--forest);">1,000,000 درهم</strong>
+          <div style="color:#555; margin-top:3px;">حد تدخل المدير الجهوي في المصادقة على الصلح</div>
+        </div>
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong style="color:var(--gold);">400,000 درهم</strong>
+          <div style="color:#555; margin-top:3px;">سقف التخفيض 50% من طرف المديرين الجهويين</div>
+        </div>
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong style="color:var(--red-alert);">1% · حد أدنى 1,000 درهم</strong>
+          <div style="color:#555; margin-top:3px;">زيادة عدم الأداء الإلكتروني (منذ 2025)</div>
+        </div>
+        <div style="padding:7px 0;">
+          <strong style="color:var(--red-alert);">500 درهم</strong>
+          <div style="color:#555; margin-top:3px;">الحد الأدنى للغرامة الصلحية — أقل منه يتم التجاوز عن المخالفة</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entities -->
+  <div class="sidebar-box">
+    <div class="sidebar-box-header">🏛 الجهات والمراجع</div>
+    <div class="sidebar-box-body">
+      <div style="font-size:12.5px; color: var(--ink-soft);">
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong>قسم المنازعات (المركزي)</strong><br>
+          <span style="color:#555;">الملفات المبدئية · النقض · الإلغاءات الكبرى · التوحيد</span>
+        </div>
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong>المصلحة الجهوية للمنازعات</strong><br>
+          <span style="color:#555;">الحجز التحفظي · الشكايات · الملتمسات · الصلح الجهوي</span>
+        </div>
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <strong>الآمرية بالصرف</strong><br>
+          <span style="color:#555;">تصفية الرسوم · البيع المسبق · الشكاية عند التلبس</span>
+        </div>
+        <div style="padding:7px 0;">
+          <strong>القباضة</strong><br>
+          <span style="color:#555;">التحصيل الجبري · الإشعار للغير الحائز · الرهن الرسمي</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</aside>
+
+</div><!-- /content-grid -->
+</div><!-- /page-wrapper -->
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="page-footer">
+  <div>
+    <strong>المنازعات الجمركية بالمغرب</strong> — مرجع احترافي شامل
+  </div>
+  <div style="margin-top:8px; color:rgba(255,255,255,0.65); font-size:12px;">
+    مستند إلى: مدونة الجمارك والضرائب غير المباشرة (الباب التاسع، المواد 204–305) 
+    | المذكرة العامة للمنازعات والتحصيل رقم D50/2021/ADII/AC/100 (آخر تعديل: 02/02/2024)
+    | قوانين المالية 2024–2026 | القانون 58.25 | آخر تحيين: نونبر 2026
+  </div>
+  <div class="footer-refs">
+    <span class="footer-ref">ADII — إدارة الجمارك</span>
+    <span class="footer-ref">نظام BADR الآلي</span>
+    <span class="footer-ref">محكمة النقض</span>
+    <span class="footer-ref">م.ت.د.ع</span>
+    <span class="footer-ref">ق.م.ج</span>
+  </div>
+</footer>
+
+</body>
+</html>
