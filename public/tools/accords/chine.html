@@ -155,6 +155,22 @@
  .ixp-back{bottom:16px}
 }
 </style>
+<style id="ixp-accords-2">
+.ixp-back-top{flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;color:#14120F!important;font:600 12.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;white-space:nowrap;border:1px solid rgba(255,255,255,.6)}
+.ixp-back-top:hover{background:#C9A84C;color:#fff!important}
+:is(.tab-btn,.rh-tab-btn){border-radius:6px 6px 0 0!important;border-bottom:3px solid transparent!important;transition:color .18s,background .18s,border-color .18s,transform .12s}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+1){--tc:#1E5FA8;--tb:#DBEAFE;--tbc:#1E5FA8}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+2){--tc:#276527;--tb:#EAF3DE;--tbc:#276527}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+3){--tc:#854F0B;--tb:#FAEEDA;--tbc:#854F0B}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+4){--tc:#5B21B6;--tb:#EDE9FE;--tbc:#5B21B6}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+5){--tc:#A32D2D;--tb:#FCEBEB;--tbc:#A32D2D}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+6){--tc:#0F7B6C;--tb:#E0F4F1;--tbc:#0F7B6C}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+7){--tc:#003399;--tb:#E8EEFF;--tbc:#003399}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+8){--tc:#9D174D;--tb:#FCE7F3;--tbc:#9D174D}
+:is(.tab-btn,.rh-tab-btn):not(.active):hover{color:var(--tc)!important;background:var(--tb)!important;transform:translateY(-1px)}
+:is(.tab-btn,.rh-tab-btn).active{color:var(--tc)!important;background:var(--tb)!important;border-bottom-color:var(--tbc)!important;font-weight:700}
+@media (max-width:900px){.ixp-back-top{padding:7px 11px;font-size:12px}}
+</style>
 </head>
 <body>
 
@@ -163,14 +179,10 @@
   <div class="brand">
         <div>
       <div class="title">Tarif Zéro Maroc – République Populaire de Chine · Guide opérationnel Import-eXPert</div>
-      <div class="subtitle">Sources : GACC, MOFCOM, ADII · En vigueur depuis le 1<sup>er</sup> mai 2026 · Mesure unilatérale chinoise · Régime transitoire 2026–2028</div>
+      
     </div>
   </div>
-  <div class="header-badges">
-    <span class="hbadge hb-gold">Annonce Xi Jinping · 14 fév. 2026</span>
-    <span class="hbadge hb-green">En vigueur · 1<sup>er</sup> mai 2026</span>
-    <span class="hbadge hb-red">⚠ Pas d'ALE signé</span>
-  </div>
+  <a class="ixp-back-top" href="/accords">← Accords préférentiels</a>
 </header>
 
 <!-- ══ KPI STRIP ══ -->
@@ -832,6 +844,5 @@ function filterProds(query) {
   });
 }
 </script>
-<a class="ixp-back" href="/accords" aria-label="Retour aux accords préférentiels">← Accords préférentiels</a>
 </body>
 </html>

@@ -42,8 +42,8 @@ export default function AccordsPage() {
           <div className="x-eyebrow">Origine et préférences tarifaires</div>
           <h1 className="x-h1" style={{ fontSize: 'clamp(34px,4.4vw,54px)' }}>Accords préférentiels</h1>
           <p className="x-lead">
-            Quel accord s’applique à votre marchandise, quelle preuve d’origine présenter, et ce qui a changé récemment.
-            Chaque fiche reprend le texte de l’accord, les règles d’origine, les contingents et les circulaires de l’ADII.
+            Quel accord s’applique à votre marchandise, quelle preuve d’origine présenter, et ce qui a changé récemment ?
+            Chaque fiche reprend le texte de l’accord, les règles d’origine et les contingents.
           </p>
         </div>
       </section>
