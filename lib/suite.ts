@@ -36,6 +36,7 @@ export const ESPACES: Espace[] = [
       { label: 'Autorisations et licences', path: '/modules/autorisations-licences', desc: 'Contrôles techniques, licences et visas préalables', tier: 'operateur' },
       { label: 'Marchandises dangereuses', path: '/modules/substances-dangereuses', desc: 'Classification des substances et obligations associées', tier: 'expert' },
       { label: 'Marquage et signalisation', path: '/modules/marquage-warnings', desc: 'Étiquetage, pictogrammes et mentions obligatoires', tier: 'expert' },
+      { label: 'Accords préférentiels', path: '/accords', desc: 'UE, Royaume-Uni, États-Unis, Türkiye et Chine : régime, règles d’origine, preuves et contingents', tier: 'operateur' },
     ],
   },
   {

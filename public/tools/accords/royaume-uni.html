@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Accord d'association Maroc – Royaume-Uni · Import-eXPert</title>
+<style>
+:root{
+  --navy:#0B2545;--navy-mid:#163566;--blue:#1E5FA8;--blue-lt:#3B82C4;
+  --teal:#0F7B6C;--teal-lt:#E0F4F1;--green:#276527;--green-lt:#EAF3DE;
+  --amber:#854F0B;--amber-lt:#FAEEDA;--red:#A32D2D;--red-lt:#FCEBEB;
+  --gray-50:#F7F8FA;--gray-100:#ECEEF2;--gray-800:#252A37;--border:#DDE0E8;
+  --uk-red:#CF142B;--uk-blue:#012169;--ma-red:#C1272D;--ma-green:#006233;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;color:var(--gray-800);background:#fff;overflow:hidden}
+/* HEADER */
+header{
+  position:fixed;top:0;left:0;right:0;height:54px;z-index:100;
+  background:var(--navy);display:flex;align-items:center;
+  border-bottom:3px solid var(--blue-lt);
+}
+.hdr-flag-ma{width:12px;height:54px;background:linear-gradient(to bottom,var(--ma-red) 50%,var(--ma-green) 50%)}
+.hdr-flag-uk{width:12px;height:54px;background:linear-gradient(to bottom,var(--uk-blue) 33%,var(--uk-red) 33%,var(--uk-red) 66%,var(--uk-blue) 66%)}
+.hdr-center{flex:1;display:flex;align-items:center;gap:12px;padding:0 16px}
+.hdr-title{font-size:14px;font-weight:700;color:#fff;letter-spacing:.3px;white-space:nowrap}
+.hdr-sub{font-size:11px;color:#a0b4d0;white-space:nowrap}
+.hdr-badges{display:flex;gap:6px;margin-left:auto}
+.badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.badge-base{background:var(--navy-mid);color:#90b4e0;border:1px solid #2a4a80}
+.badge-update{background:#12284a;color:#7ec8e3;border:1px solid #1a4060}
+.badge-uk{background:var(--uk-blue);color:#fff}
+/* TWO COLUMNS */
+.layout{display:grid;grid-template-columns:42% 58%;position:fixed;top:54px;left:0;right:0;bottom:28px}
+/* LEFT COL */
+.col-l{overflow-y:auto;border-right:1px solid var(--border);background:#fff}
+.col-r{overflow-y:auto;background:var(--gray-50)}
+/* TABS */
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;overflow-x:auto}
+.tab-bar::-webkit-scrollbar{height:3px}.tab-bar::-webkit-scrollbar-thumb{background:var(--border)}
+.tab-btn{flex-shrink:0;padding:8px 12px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7a99;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-btn:hover:not(.active){color:var(--navy);background:var(--gray-50)}
+.tab-content{display:none;padding:0}
+.tab-content.active{display:block}
+/* INFO BLOCKS */
+.info-block{padding:12px 14px;border-bottom:1px solid var(--border)}
+.info-h{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:7px}
+.info-icon{width:18px;height:18px;background:var(--teal-lt);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.info-body{padding-left:25px;line-height:1.6;color:#44506a;font-size:12px}
+.info-body p{margin-bottom:5px}
+.formula-box{background:#EFF6FF;border:1px solid #B8D4F5;border-radius:5px;padding:8px 10px;margin:4px 0;font-size:11.5px;color:var(--navy-mid)}
+.kv-row{display:flex;gap:6px;margin-bottom:3px;font-size:12px}
+.kv-label{color:#6b7a99;min-width:150px;flex-shrink:0}
+.kv-val{color:var(--navy);font-weight:600}
+.step-list{counter-reset:steps;padding-left:0}
+.step{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
+.step-num{width:20px;height:20px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
+.rule-list{margin:4px 0}
+.rule-item{display:flex;gap:6px;margin-bottom:4px}
+.rule-dot{width:7px;height:7px;background:var(--blue);border-radius:50%;margin-top:5px;flex-shrink:0}
+/* CIRCULAIRE CARDS */
+.circ-card{border:1px solid var(--border);border-radius:6px;margin:10px 14px;overflow:hidden}
+.circ-card-top{padding:9px 12px;color:#fff;font-size:12px;font-weight:700}
+.circ-card-top.c1{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%)}
+.circ-card-top.c2{background:linear-gradient(135deg,#1a3f6f 0%,#2254a0 100%)}
+.circ-card-top.c3{background:linear-gradient(135deg,var(--teal) 0%,#1a9e8a 100%)}
+.circ-card-top.c4{background:linear-gradient(135deg,#6b2f02 0%,var(--amber) 100%)}
+.circ-body{padding:9px 12px;font-size:11.5px;line-height:1.6;color:#44506a}
+.circ-body strong{color:var(--navy)}
+/* SECTION LABELS (right col) */
+.sec-label{position:sticky;top:0;background:var(--gray-100);color:var(--navy-mid);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:5px 12px;border-bottom:1px solid var(--border);z-index:40}
+/* SH ROWS */
+.sh-row{display:grid;grid-template-columns:115px 1fr 80px;gap:4px;padding:5px 10px;border-bottom:1px solid #f0f2f6;align-items:center;min-height:32px}
+.sh-row:hover{background:#f5f7fa}
+.sh-code-group{display:flex;flex-wrap:wrap;gap:3px}
+.sh-code{font-family:'Courier New',monospace;font-size:10.5px;color:var(--navy-mid);background:#EFF6FF;padding:1px 4px;border-radius:3px;white-space:nowrap}
+.sh-code.ex-code{background:#FFF3E0;color:#8B4513}
+.sh-desc{font-size:11.5px;color:var(--gray-800);line-height:1.4}
+.sh-desc small{font-size:10px;color:#8892a8;display:block}
+.sh-meta{text-align:right;font-size:11px}
+.sh-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 5px;border-radius:9px;white-space:nowrap}
+.tag-zero{background:var(--green-lt);color:var(--green)}
+.tag-free{background:var(--green-lt);color:var(--green)}
+.tag-pref{background:#EFF6FF;color:var(--blue)}
+.tag-amber{background:var(--amber-lt);color:var(--amber)}
+.tag-red{background:var(--red-lt);color:var(--red)}
+.sh-vol{font-size:10.5px;color:#6b7a99;white-space:nowrap}
+.sub-lbl{font-size:9px;color:#8892a8;text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+/* ANNEXE BANNER */
+.annexe-banner{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--blue) 100%);color:#fff;padding:10px 14px;margin-bottom:0}
+.annexe-banner h3{font-size:13px;font-weight:700;margin-bottom:3px}
+.annexe-banner p{font-size:11px;opacity:.85}
+.annexe-banner .meta{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap}
+.annexe-banner .meta span{font-size:10px;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:10px}
+/* YEAR DIVIDER */
+.year-divider{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;text-align:center;letter-spacing:1px;position:sticky;top:0;z-index:39}
+/* NOTES DE BAS */
+.notes-box{background:var(--gray-50);border-top:2px solid var(--border);padding:10px 14px;font-size:10.5px;color:#5a6476;line-height:1.7}
+.notes-box p{margin-bottom:3px}
+/* SEARCH BAR */
+.search-bar{padding:8px 10px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:60}
+.search-input{width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:5px;font-size:12px;outline:none;color:var(--gray-800)}
+.search-input:focus{border-color:var(--blue)}
+/* DATA TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:11.5px;margin:6px 0}
+.data-table th{background:var(--navy-mid);color:#fff;padding:5px 8px;text-align:left;font-size:11px}
+.data-table td{padding:4px 8px;border-bottom:1px solid #f0f2f6;vertical-align:top}
+.data-table tr:nth-child(even) td{background:#f7f9fc}
+/* WARNING BOX */
+.warn-box{background:var(--red-lt);border-left:4px solid var(--red);padding:8px 10px;margin:8px 14px;border-radius:0 5px 5px 0;font-size:11.5px;color:#7a1e1e}
+.note-box{background:var(--amber-lt);border-left:4px solid var(--amber);padding:8px 10px;margin:8px 14px;border-radius:0 5px 5px 0;font-size:11.5px;color:#6a3e08}
+/* FOOTER */
+footer{position:fixed;bottom:0;left:0;right:0;height:28px;background:var(--navy);color:#7090b0;font-size:10px;display:flex;align-items:center;padding:0 14px;gap:12px;border-top:1px solid var(--navy-mid)}
+footer span{white-space:nowrap}
+/* RIGHT COL SPECIFIC */
+.rh-tab-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:55;display:flex;overflow-x:auto}
+.rh-tab-bar::-webkit-scrollbar{height:3px}.rh-tab-bar::-webkit-scrollbar-thumb{background:var(--teal)}
+.rh-tab-btn{flex-shrink:0;padding:8px 11px;font-size:10.5px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7a99;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.rh-tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+.rh-tab-btn:hover:not(.active){color:var(--navy);background:var(--gray-50)}
+.hidden-row{display:none!important}
+.col-r .tab-bar{top:40px}
+/* MODS NOTE */
+.mod-badge{font-size:9.5px;background:#FFF8E1;color:#7B5300;border:1px solid #F5D060;padding:1px 5px;border-radius:8px;margin-left:4px}
+</style>
+<style id="ixp-accords">
+.ixp-back{position:fixed;left:16px;bottom:40px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:#14120F;color:#fff!important;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;box-shadow:0 8px 22px -8px rgba(0,0,0,.45)}
+.ixp-back:hover{background:#A8822F}
+@media (max-width:900px){
+ html,body{height:auto!important;overflow:auto!important}
+ body>header,header,.hdr,.header{position:static!important}
+ .layout,#body{display:block!important;position:static!important;height:auto!important;overflow:visible!important}
+ .layout>*,#body>*{width:auto!important;max-width:none!important;height:auto!important;overflow:visible!important}
+ .kpi-strip{grid-template-columns:1fr 1fr!important}
+ .tabs,.tab-bar,[class*="tab-bar"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+ .header-badges,.hdr-badges,.h-badges{display:none!important}
+ footer,.site-footer{position:static!important}
+ .ixp-back{bottom:16px}
+}
+</style>
+<style id="ixp-accords-2">
+.ixp-back-top{flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;color:#14120F!important;font:600 12.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;white-space:nowrap;border:1px solid rgba(255,255,255,.6)}
+.ixp-back-top:hover{background:#C9A84C;color:#fff!important}
+:is(.tab-btn,.rh-tab-btn){border-radius:6px 6px 0 0!important;border-bottom:3px solid transparent!important;transition:color .18s,background .18s,border-color .18s,transform .12s}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+1){--tc:#1E5FA8;--tb:#DBEAFE;--tbc:#1E5FA8}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+2){--tc:#276527;--tb:#EAF3DE;--tbc:#276527}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+3){--tc:#854F0B;--tb:#FAEEDA;--tbc:#854F0B}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+4){--tc:#5B21B6;--tb:#EDE9FE;--tbc:#5B21B6}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+5){--tc:#A32D2D;--tb:#FCEBEB;--tbc:#A32D2D}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+6){--tc:#0F7B6C;--tb:#E0F4F1;--tbc:#0F7B6C}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+7){--tc:#003399;--tb:#E8EEFF;--tbc:#003399}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+8){--tc:#9D174D;--tb:#FCE7F3;--tbc:#9D174D}
+.tab-btn,.rh-tab-btn{margin-right:3px}
+:is(.tab-btn,.rh-tab-btn):not(.active){color:var(--tc)!important;background:var(--tb)!important;opacity:.85}
+:is(.tab-btn,.rh-tab-btn):not(.active):hover{opacity:1;transform:translateY(-1px)}
+:is(.tab-btn,.rh-tab-btn).active{color:var(--tc)!important;background:var(--tb)!important;border-bottom-color:var(--tbc)!important;font-weight:700;opacity:1;box-shadow:inset 0 0 0 1px var(--tbc)}
+@media (max-width:900px){.ixp-back-top{padding:7px 11px;font-size:12px}}
+</style>
+</head>
+<body>
+<header>
+        <div class="hdr-center">
+    <div>
+      <div class="hdr-title">Accord d'Association · Maroc / Royaume-Uni</div>
+      
+    </div>
+    <a class="ixp-back-top" href="/accords">← Accords préférentiels</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ============================================================ LEFT COLUMN ============================================================ -->
+<div class="col-l">
+  <div class="tab-bar" id="ltabs">
+    <button class="tab-btn active" onclick="switchTab('l','l1')">📋 Accord &amp; Régime</button>
+    <button class="tab-btn" onclick="switchTab('l','l2')">🔍 Règles d'origine</button>
+    <button class="tab-btn" onclick="switchTab('l','l3')">📦 Produits spéciaux</button>
+    <button class="tab-btn" onclick="switchTab('l','l4')">⚙️ Procédures</button>
+    <button class="tab-btn" onclick="switchTab('l','l5')">📄 Références</button>
+  </div>
+
+  <!-- TAB L1: Accord & Régime -->
+  <div class="tab-content active" id="l1"><div class="ixp-maj" style="border:1px solid #D9C48A;border-left:4px solid #B8922A;background:#FBF5E6;padding:14px 16px;margin:0 0 16px;border-radius:6px;font-size:13px;line-height:1.55;color:#1A1A18"><div style="font-weight:700;font-size:13.5px;margin-bottom:6px">Mise à jour du 9 novembre 2026</div><ul style="margin:4px 0 0 18px;padding:0"><li style="margin:3px 0"><strong>Règles d’origine modifiées</strong> (circ. 6758/233 du 07/07/2026) : la décision n° 01/2026 du Conseil d’association, signée à Rabat le 16 mars 2026, modifie le Protocole n° 4. Selon la circulaire, elle s’applique depuis le 28 mars 2022.</li><li style="margin:3px 0"><strong>Cumul</strong> : matières originaires de l’UE, de l’AELE (Suisse-Liechtenstein, Islande, Norvège), de la Turquie et des pays de la déclaration de Barcelone, dont les pays d’Agadir ; cumul total avec l’UE, l’Algérie et la Tunisie.</li><li style="margin:3px 0"><strong>Transport direct assoupli</strong> : fractionnement des envois et étiquetage pour le marché importateur admis sous surveillance douanière du pays de transit.</li><li style="margin:3px 0"><strong>Preuves</strong> : le Royaume-Uni n’applique pas la convention PEM révisée ; l’EUR.1, l’EUR-MED (mention « CUMULATION APPLIED WITH… » ou « NO CUMULATION APPLIED ») et la déclaration sur facture restent en usage. Tout exportateur peut établir une déclaration sur facture jusqu’à 6 000 € par envoi ; au-delà, exportateur agréé (numéro au format GB 12345/06, note D99/2026).</li><li style="margin:3px 0"><strong>Contingents 2026</strong> : circ. 6705/222 ; consignation possible des droits en attente de quote-part (circ. 6720/222).</li><li style="margin:3px 0"><strong>À suivre</strong> : le Royaume-Uni a ouvert le 24 août 2026 une consultation sur un chapitre « marchés publics » à ajouter à l’accord.</li><li style="margin:3px 0"><strong>Défense commerciale</strong> : antidumping de 5,5 % sur le PVC (3904.10.90.00) originaire du Royaume-Uni, jusqu’au 3 août 2027 (circ. 6489/211).</li></ul><div style="margin-top:8px;font-size:11.5px;color:#5A5A54">Sources : circulaires ADII 6758/233, 6705/222, 6720/222, 6489/211 ; note D99/2026 ; gov.uk (décision n° 1/2026 ; consultation du 24/08/2026).</div></div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📌</div> Dispositions générales</div>
+      <div class="info-body">
+        <div class="kv-row"><span class="kv-label">Accord signé à</span><span class="kv-val">Londres, le 26 octobre 2019</span></div>
+        <div class="kv-row"><span class="kv-label">Notes Verbales (échange)</span><span class="kv-val">24 décembre 2020</span></div>
+        <div class="kv-row"><span class="kv-label">Application provisoire</span><span class="kv-val">1er janvier 2021</span></div>
+        <div class="kv-row"><span class="kv-label">Circulaire de base ADII</span><span class="kv-val">n° 6139/222 du 31-12-2020</span></div>
+        <div class="kv-row"><span class="kv-label">Dernière mise à jour</span><span class="kv-val">n° 6705/222 du 31-12-2025 (contingents 2026)</span></div>
+        <div class="kv-row"><span class="kv-label">Code BADR</span><span class="kv-val">« UK »</span></div>
+        <div class="kv-row"><span class="kv-label">Nomenclature initiale</span><span class="kv-val">SH 2017 (version nationale 2021)</span></div>
+        <div class="kv-row"><span class="kv-label">Nomenclature 2026</span><span class="kv-val">SH 2022</span></div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🏛️</div> Fondement &amp; portée de l'Accord</div>
+      <div class="info-body">
+        <p>L'Accord établissant une Association entre le Royaume du Maroc et le Royaume-Uni de Grande-Bretagne et d'Irlande du Nord (<strong>Accord</strong>) a pour socle la préservation des conditions préférentielles résultant de l'Accord d'Association <strong>UE–Maroc</strong> signé à Bruxelles le 26 février 1996.</p>
+        <p>En vertu de l'Accord, il incorpore <em>mutatis mutandis</em>, et sauf mention contraire, les dispositions de l'Accord d'Association Maroc-UE, en vigueur immédiatement avant que celui-ci ne cesse de s'appliquer au Royaume-Uni.</p>
+        <p>L'Accord constitue également une plateforme pour la <strong>poursuite de la libéralisation</strong> des échanges commerciaux bilatéraux.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📊</div> Schémas de démantèlement — Annexe I (Importation au Maroc)</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Catégorie</th><th>Régime</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Liste 2 – Groupe A</strong></td><td>Produits libéralisés dès l'entrée en vigueur (taux 0%)</td></tr>
+            <tr><td><strong>Liste 2 – Groupe B</strong></td><td>Démantèlement tarifaire progressif sans contingent tarifaire jusqu'à libéralisation totale</td></tr>
+            <tr><td><strong>Liste 2 – Groupe C</strong></td><td>Contingents tarifaires (CT) avec taux préférentiels dans CT ; taux hors CT jusqu'à libéralisation totale</td></tr>
+            <tr><td><strong>Liste 3</strong></td><td>Produits <em>non soumis</em> à démantèlement. Réductions tarifaires dans le cadre de contingents uniquement. <strong>Hors CT : droit NPF en vigueur.</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🚢</div> Exportations marocaines vers le RU — Annexe II</div>
+      <div class="info-body">
+        <div class="rule-list">
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Liste 1 :</strong> Produits bénéficiant de réductions ou d'exonérations tarifaires dans la limite d'un CT ou hors CT</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Liste 2 :</strong> Produits non libéralisés « sous contingent » — les prix d'entrée conventionnels <u>ne sont plus appliqués</u></div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Liste 3 :</strong> Produits libéralisés — les prix d'entrée conventionnels <u>ne sont plus appliqués</u></div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Liste 4 :</strong> Produits avec saccharose ou isoglucose ≥ 70% — mécanisme spécial de surveillance. <em>Au-delà de 82 tonnes, le traitement préférentiel est suspendu.</em></div></div>
+        </div>
+        <div class="note-box">⚠️ <strong>Abandon du système « Prix d'entrée » :</strong> Le Nouveau Régime Tarifaire commun britannique (<em>UK Global Tariff</em>) a remplacé le système des prix d'entrée pour fruits et légumes frais. Ce système est désormais remplacé par une <strong>variation saisonnière</strong> du tarif britannique.</div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📅</div> Contingents annuels export (Annexe II – Liste 1)</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Code RU</th><th>Produit</th><th>Période</th><th>CT (t)</th><th>Réd. NPF</th></tr></thead>
+          <tbody>
+            <tr><td><code>0702000000</code></td><td>Tomates fraîches/réfrigérées</td><td>Oct → Mai</td><td><strong>47 510</strong> (base 42 842 + add. 4 668)</td><td>100%</td></tr>
+            <tr><td><code>0702000000</code></td><td>Tomates fraîches/réfrigérées</td><td>Juin → Sept</td><td>Illimité</td><td>60%</td></tr>
+            <tr><td><code>0703200000</code></td><td>Aulx frais/réfrigérés</td><td>Toute l'année</td><td>204</td><td>100%</td></tr>
+            <tr><td><code>0707000500</code></td><td>Concombres frais/réfrigérés</td><td>Nov → Mai</td><td>2 288</td><td>100%</td></tr>
+            <tr><td><code>0707000500</code></td><td>Concombres frais/réfrigérés</td><td>Juin → Oct</td><td>Illimité</td><td>100%</td></tr>
+            <tr><td><code>0709907000</code></td><td>Courgettes fraîches/réfrigérées</td><td>Oct → 20 avr</td><td>7 627</td><td>100%</td></tr>
+            <tr><td><code>0709907000</code></td><td>Courgettes fraîches/réfrigérées</td><td>21 avr → Mai</td><td>Illimité</td><td>60%</td></tr>
+            <tr><td><code>0805201000</code></td><td>Clémentines fraîches</td><td>Nov → Fév</td><td>29 173</td><td>100% (80% hors CT)</td></tr>
+            <tr><td><code>0805201000</code></td><td>Clémentines fraîches</td><td>Mar → Oct</td><td>Illimité</td><td>100%</td></tr>
+            <tr><td><code>0810100000</code></td><td>Fraises fraîches</td><td>Nov → Mars</td><td>Illimité</td><td>100%</td></tr>
+            <tr><td><code>0810100000</code></td><td>Fraises fraîches</td><td>Avril</td><td>490</td><td>100%</td></tr>
+            <tr><td><code>0810100000</code></td><td>Fraises fraîches</td><td>Mai</td><td>136</td><td>50%</td></tr>
+            <tr><td><code>1702500000</code></td><td>Fructose chimiquement pur</td><td>Toute l'année</td><td>82</td><td>100% (+ réd. EA³ sur 3 ans : 10%/an)</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:6px;font-size:10.5px;color:#8892a8">Les contingents à la première année d'application ont été calculés au prorata. Le contingent « de base » et le contingent « additionnel » pour les tomates (oct-mai) ne font pas l'objet d'une répartition mensuelle.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB L2: Règles d'origine -->
+  <div class="tab-content" id="l2">
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📜</div> Fondement des règles d'origine</div>
+      <div class="info-body">
+        <p>Les règles d'origine des marchandises échangées entre le Maroc et le Royaume-Uni sont régies par l'<strong>Annexe II à l'Accord</strong>, relative à la définition de la notion de « produits originaires » et aux méthodes de coopération administrative.</p>
+        <p>Ces dispositions se fondent sur les règles d'origine découlant des accords conclus dans le cadre de la <strong>zone Paneuro-méditerranéenne</strong>.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🔗</div> Cumul de l'origine</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Type de cumul</th><th>Pays partenaires éligibles</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Cumul bilatéral</strong></td><td>Union Européenne, Norvège, Islande</td></tr>
+            <tr><td><strong>Cumul diagonal</strong></td><td>Suisse (y compris Liechtenstein), Turquie, Égypte, Tunisie, Jordanie</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:6px">Les conditions d'application du cumul sont énoncées aux articles <strong>3.5 et 4.5</strong> de l'Annexe II à l'Accord.</p>
+        <div class="note-box">À la date d'entrée en vigueur de l'Accord, les conditions précitées avaient été remplies par l'UE, les États membres de l'AELE (Suisse, Liechtenstein, Norvège et Islande), la Turquie, la Tunisie, l'Égypte et la Jordanie.</div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📋</div> Preuves de l'origine</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Cumul avec</th><th>Preuve d'origine requise</th></tr></thead>
+          <tbody>
+            <tr><td>UE, Norvège ou Islande</td><td><strong>Certificat EUR.1</strong> ou <strong>déclaration sur facture</strong></td></tr>
+            <tr><td>Suisse (y c. Liechtenstein), Turquie, Égypte, Tunisie ou Jordanie</td><td><strong>Certificat EUR-MED</strong> ou <strong>déclaration sur facture EUR-MED</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:8px">Les sociétés marocaines bénéficiant déjà du <strong>statut d'exportateur agréé</strong> dans le cadre de l'Accord d'Association Maroc-UE continuent d'établir des déclarations sur facture ou des déclarations sur facture EUR-MED, dans les <strong>mêmes conditions</strong>, pour couvrir leurs exportations réalisées dans le cadre du présent Accord.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🚫</div> Règle du No-Drawback</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Cumul avec</th><th>Application no-drawback</th></tr></thead>
+          <tbody>
+            <tr><td>UE, Norvège ou Islande</td><td style="color:var(--green);font-weight:700">❌ NON applicable (no-drawback ne s'applique PAS)</td></tr>
+            <tr><td>Suisse, Liechtenstein, Turquie, Égypte, Tunisie ou Jordanie</td><td style="color:var(--red);font-weight:700">✔ OUI applicable (no-drawback S'APPLIQUE)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">⚓</div> Conditions navires &amp; navires-usines</div>
+      <div class="info-body">
+        <p>Les conditions relatives aux « navires » et « navires usines » citées aux points <strong>(f)</strong> et <strong>(g)</strong> de l'article 5 de l'Annexe II à l'Accord autorisent, également, la participation des <strong>ressortissants des États membres de l'UE</strong> dans le capital ainsi que dans la composition de l'état-major et de l'équipage.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB L3: Produits spéciaux -->
+  <div class="tab-content" id="l3">
+    <div class="warn-box">⚠️ <strong>Restriction sanitaire — Viandes bovines :</strong> Les produits bovins (note (2) des circulaires) ne font pas l'objet d'importations au Maroc en provenance du Royaume-Uni en raison du statut sanitaire de ce pays (<strong>maladie de la vache folle</strong>). Cette restriction couvre les taureaux, les viandes bovines, les saucisses/préparations bovines et les préparations homogénéisées bovines.</div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🌾</div> Modification tarifaire — Blé tendre et ses dérivés (Circ. 6196/222)</div>
+      <div class="info-body">
+        <p>Par <strong>décret n° 2-21-328 du 7 mai 2021</strong>, un droit d'importation de <strong>135 %</strong> a été appliqué au blé tendre et à ses dérivés à partir du 15 mai 2021.</p>
+        <p>En conséquence, le <strong>nouveau taux préférentiel</strong> dans le cadre du contingent est :</p>
+        <div class="formula-box">
+          <strong>Positions 1001.99.00.19 et 1001.99.00.90 :</strong><br>
+          · Tranche de valeur <strong>≤ 1 000 DH/tonne</strong> → taux préférentiel : <strong>83,7 %</strong><br>
+          · Tranche de valeur <strong>&gt; 1 000 DH/tonne</strong> → taux préférentiel : <strong>2,5 %</strong>
+        </div>
+        <p>La Liste 3 de l'Annexe I a été modifiée en conséquence par la Circ. 6196/222 du 20 mai 2021.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🍝</div> Pâtes alimentaires et couscous (Ex 19.02) — Double quota</div>
+      <div class="info-body">
+        <p>Les pâtes alimentaires et couscous relevant de la position <strong>Ex 19.02</strong> sont soumis à <strong>deux traitements de quota</strong> distincts :</p>
+        <div class="formula-box">
+          <strong>Quota principal :</strong> 204 T → taux préférentiel : <strong>0 %</strong><br>
+          <strong>Quota secondaire :</strong> 415 T → taux préférentiel : <strong>35 % à 50 %</strong> (selon position SH)<br>
+          <em>→ La DFD doit préciser la quote-part attribuée ainsi que le droit préférentiel applicable.</em>
+        </div>
+        <p>Les codes avec taux à <strong>50 %</strong> hors quota principal sont : Ex 1902401110, Ex 1902401191, Ex 1902401199, Ex 1902409110, Ex 1902409191, Ex 1902409199. Tous les autres relevant de cette position sont à <strong>35 %</strong>.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🥛</div> Lait en poudre (0402.21) — Quota DFD</div>
+      <div class="info-body">
+        <p>Pour les produits de lait en poudre relevant du code 0402.21 et soumis à deux traitements de quota (quota principal 533 T à 81,4% et quota en emballages &gt; 5 kg — 33 T à 30,6%), la <strong>DFD doit préciser la quote-part attribuée ainsi que le droit préférentiel y afférent.</strong></p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🍬</div> Produits saccharose/isoglucose ≥ 70 % — Liste 4 export</div>
+      <div class="info-body">
+        <p>Ces produits sont soumis à un <strong>mécanisme spécial de surveillance</strong> basé sur le contrôle de l'évolution des importations d'origine marocaine au Royaume-Uni.</p>
+        <div class="formula-box"><strong>Seuil de déclenchement : 82 tonnes par an</strong><br>Au-delà de ce seuil, le traitement préférentiel pour ces produits est <strong>SUSPENDU</strong>.</div>
+        <p>Sont concernés notamment : sucreries sans cacao ≥ 70% saccharose, poudre de cacao avec sucre ≥ 80%, préparations alimentaires diverses à base de café/thé/malt ≥ 70%, sirops de sucre aromatisés, mélanges de substances odoriférantes (boissons) ≥ 70%.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🐑</div> Produits ovins — Régime particulier</div>
+      <div class="info-body">
+        <p>Les viandes d'agneau (<strong>carcasses et demi-carcasses</strong>) bénéficient d'un contingent <strong>illimité</strong> mais assorti d'un tarif préférentiel de <strong>200 %</strong>, conformément au cahier des charges spécifique concernant les catégories de viandes et les dispositions zootechniques d'importation agréées par les Parties à la signature de l'Accord.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🌿</div> Suspensions de droits applicables (2026)</div>
+      <div class="info-body">
+        <div class="rule-list">
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Note (2) :</strong> Animaux vivants bovins — Suspension perçue jusqu'au 31 décembre 2026 dans la limite des contingents (LDF 2026)</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Note (4) :</strong> Fèves/féveroles — Suspension en vigueur depuis le 1er avril 2020 (Décret n° 2-20-299 du 27 mars 2020)</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Note (5) :</strong> Blé tendre (1001.99.00.11/19/90) — Suspension en vigueur depuis le 1er novembre 2021 (Décrets n°s 2-21-851 et 2-21-852 du 28 octobre 2021)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB L4: Procédures -->
+  <div class="tab-content" id="l4">
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">⚖️</div> Gestion des contingents tarifaires</div>
+      <div class="info-body">
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div><strong>Principe général :</strong> Les importations dans le cadre des contingents sont gérées selon le principe <strong>« Premier venu – Premier servi »</strong> (PVPS). Ce principe s'applique à l'ensemble des produits de la Liste 3, sauf indication contraire.</div></div>
+          <div class="step"><div class="step-num">2</div><div><strong>Lait en poudre (0402.21) :</strong> La <strong>Division des Franchises Douanières (DFD)</strong> doit préciser la quote-part attribuée ainsi que le droit préférentiel y afférent — deux sous-quotas distincts (533 T à 81,4% et 33 T à 30,6%).</div></div>
+          <div class="step"><div class="step-num">3</div><div><strong>Pâtes alimentaires et couscous (Ex 19.02) :</strong> Double quota (204 T à 0% + 415 T à 35-50%). La <strong>DFD</strong> doit préciser la quote-part et le droit préférentiel applicable pour chaque importateur.</div></div>
+          <div class="step"><div class="step-num">4</div><div><strong>Dépassement des contingents :</strong> Les importations réalisées en dépassement des CT sont soumises au paiement du <strong>droit d'importation commun (droit NPF en vigueur)</strong>, sans bénéfice du tarif préférentiel.</div></div>
+          <div class="step"><div class="step-num">5</div><div><strong>Veaux, bovins (note (2)) :</strong> Produits concernés par la suspension de la perception du droit d'importation prévue jusqu'au 31 décembre 2026 dans la limite des contingents (LDF 2026). Attention : importation de viandes bovines pratiquement non applicable en raison du statut sanitaire (ESB).</div></div>
+          <div class="step"><div class="step-num">6</div><div><strong>Blé tendre :</strong> Les importations de blé tendre (positions 1001.99) sont soumises à la suspension des droits depuis le 1er novembre 2021. La quantité à allouer est déterminée en fonction de la production nationale annuelle.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🖥️</div> Référencement dans le système BADR</div>
+      <div class="info-body">
+        <div class="formula-box">L'Accord est référencé dans le système de dédouanement <strong>BADR</strong> sous le code : <strong style="font-size:16px;color:var(--blue)">« UK »</strong></div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📬</div> Communication à l'Administration Centrale</div>
+      <div class="info-body">
+        <p>Toute difficulté d'application de la circulaire en vigueur doit être communiquée à l'<strong>Administration Centrale</strong> sous le timbre de ladite circulaire.</p>
+        <p>Les valeurs des contingents tarifaires sont communiquées annuellement par le <strong>Département de l'Agriculture</strong> à l'ADII (Lettres n° 2403 et 2404 du 18 décembre 2025 pour les contingents 2026).</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🐄</div> Cahier des charges sanitaire</div>
+      <div class="info-body">
+        <p>Les importations des animaux vivants (*) et des viandes de volailles (*) sont réalisées conformément au <strong>cahier des charges spécifique</strong> concernant les catégories de viandes et les dispositions zootechniques d'importation agréées par les Parties au moment de la signature de l'Accord.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB L5: Circulaires -->
+  <div class="tab-content" id="l5"><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Circulaire n° 6758/233 <span style="font-weight:400;opacity:.8">· 7 juillet 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Règles d’origine — décision n° 01/2026 du Conseil d’association Maroc-Royaume-Uni</p><p style="margin:0">Modifie les articles 3 et 4 (cumul), 13 (transport direct), 17 (EUR.1 et EUR-MED), 22 (déclarations sur facture), 27a (déclaration du fournisseur) et 28 (documents probants) du Protocole n° 4. Version anglaise faisant foi. Modifie la circulaire de base 6139/222. Considérée en vigueur depuis le 28 mars 2022.</p></div></div><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Note D99/2026/ADII/AC/100 <span style="font-weight:400;opacity:.8">· 21 avril 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Modèles des numéros d’autorisation des exportateurs agréés (UE, AELE, Turquie, Agadir, Royaume-Uni)</p><p style="margin:0">Liste actualisée des formats de numéros ; une déclaration d’origine dont le numéro ne correspond pas au modèle du pays partenaire est soumise au contrôle a posteriori, avec consignation des droits, taxes et pénalités (sauf erreur formelle manifeste). Pour l’UE, la demande de contrôle est adressée au pays dont le code ISO figure en tête du numéro, pas au pays d’expédition. Abroge les notes D55/2024 et D7318/21.</p></div></div><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Circulaire n° 6720/222 <span style="font-weight:400;opacity:.8">· 6 février 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Contingents tarifaires — consignation des droits et taxes</p><p style="margin:0">Lorsque la quote-part demandée au Ministère de l’Industrie et du Commerce n’est pas encore attribuée au moment du dédouanement, l’importateur peut demander à consigner les droits et taxes de la DUM au lieu de les payer au taux de droit commun. Modèle unique de demande ; autorisation de l’ordonnateur du bureau ; demande et RIB téléversés dans BADR (« Demande de consignation Contingent » et « RIB »).</p></div></div>
+    <div class="circ-card">
+      <div class="circ-card-top c1">📌 Circulaire n° 6139/222 — 31 décembre 2020 — Circulaire de BASE</div>
+      <div class="circ-body">
+        <p><strong>Objet :</strong> Entrée en vigueur de l'Accord établissant une Association entre le Royaume du Maroc et le Royaume-Uni de Grande-Bretagne et d'Irlande du Nord.</p>
+        <p><strong>Signataire :</strong> Nabyl LAKHDAR, Directeur Général de l'Administration des Douanes et Impôts Indirects</p>
+        <p><strong>Références :</strong> Lettre MAE n° 8560 du 29-12-2020 — Lettre Agriculture n° 3030 DSS/DDM/SME du 29-12-2020</p>
+        <p><strong>Contenu principal :</strong> Définition des régimes applicables à l'importation au Maroc (Annexe I — Listes 2 et 3) et à l'exportation vers le RU (Annexe II — Listes 1, 2, 3, 4). Présentation des règles d'origine (Annexe II à l'Accord, cadre Paneuro-méditerranéen). Modalités de cumul bilatéral (UE/Norvège/Islande) et diagonal (Suisse/Turquie/Égypte/Tunisie/Jordanie). Attribution du code BADR « UK ».</p>
+        <p><strong>Nomenclature :</strong> SH 2017</p>
+      </div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c2">✎ Circulaire n° 6147/222 — 18 janvier 2021 — Mise à jour codes</div>
+      <div class="circ-body">
+        <p><strong>Objet :</strong> Modification des codifications douanières figurant sur les listes annexées à la circulaire de base suite à la modification de la nomenclature du tarif des droits de douane.</p>
+        <p><strong>Signataire :</strong> Nabyl LAKHDAR</p>
+        <p><strong>Références :</strong> Arrêté du Ministre de l'Économie, des Finances et de la Réforme de l'Administration n° 3280.20 du 29 décembre 2020 — Circulaire n° 6135/211 du 31 décembre 2020 (application de l'arrêté précité), modifiant la nomenclature du tarif des droits de douane (entrée en vigueur : 1er janvier 2021).</p>
+        <p><strong>Contenu :</strong> Les listes 2A, 2B, 2C et 3 de l'Annexe I ont été entièrement recodifiées en <strong>SH 2017 version nationale 2021</strong>. Modifications notables : Fromages (0406.20), champignons (2003.90), babeurre/laits fermentés (0403.90), haricots (0713.33), raisins secs (0806.20), olives (2005.70), confitures (2007), lait concentré avec sucre (0402.99), préparations bovines (1602.50).</p>
+      </div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c3">⚡ Circulaire n° 6196/222 — 20 mai 2021 — Blé tendre</div>
+      <div class="circ-body">
+        <p><strong>Objet :</strong> Modification du droit d'importation préférentiel applicable au blé tendre et à ses dérivés.</p>
+        <p><strong>Signataire :</strong> Nabyl LAKHDAR</p>
+        <p><strong>Fondement :</strong> Décret n° 2-21-328 du 7 mai 2021 — application d'un droit de 135 % au blé tendre (positions 1001.99.00.19 et 1001.99.00.90) à partir du 15 mai 2021.</p>
+        <p><strong>Nouveau taux préférentiel CT :</strong> 83,7 % pour la tranche de valeur ≤ 1 000 DH/tonne ; 2,5 % pour la tranche &gt; 1 000 DH/tonne. La Liste 3 de l'Annexe I est modifiée en conséquence.</p>
+      </div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c4">📅 Circulaire n° 6705/222 — 31 décembre 2025 — Contingents 2026</div>
+      <div class="circ-body">
+        <p><strong>Objet :</strong> ALE Maroc/USA et Accord d'Association Maroc/Royaume-Uni — Contingents tarifaires (mise à jour annuelle).</p>
+        <p><strong>Signataire :</strong> Abdellatif AMRANI, Directeur Général de l'Administration des Douanes et Impôts Indirects</p>
+        <p><strong>Référence Agriculture :</strong> Lettres du Département de l'Agriculture n° 2403 et n° 2404 du 18 décembre 2025.</p>
+        <p><strong>Contenu pour l'Accord Maroc/RU :</strong> Actualisation de l'<strong>Annexe I agricole – Liste 3</strong> pour la période du 1er janvier au 31 décembre 2026, avec passage à la nomenclature <strong>SH 2022</strong>. Changements notables : taux poultry (passage de 11,6% à 0,0%), viande bovine ordinaire (passage de 25,4% à 0,0%), aliments pour animaux (passage de 2,7% à 0,0%).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ RIGHT COLUMN ============================================================ -->
+<div class="col-r">
+  <div class="search-bar" style="position:sticky;top:0;z-index:70">
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍  Rechercher un code SH ou une désignation..." oninput="filterRows(this.value)">
+  </div>
+  <div class="rh-tab-bar" id="rtabs">
+    <button class="rh-tab-btn active" onclick="switchTab('r','r_2a')">📗 Liste 2A · Libéralisée</button>
+    <button class="rh-tab-btn" onclick="switchTab('r','r_2b')">📘 Liste 2B · Démantèlement</button>
+    <button class="rh-tab-btn" onclick="switchTab('r','r_2c')">📙 Liste 2C · CT Libéral.</button>
+    <button class="rh-tab-btn" onclick="switchTab('r','r_l3_2021')">📕 Liste 3 · 2021</button>
+    <button class="rh-tab-btn" onclick="switchTab('r','r_l3_2026')">📔 Liste 3 · 2026</button>
+    <button class="rh-tab-btn" onclick="switchTab('r','r_export')">🚢 Annexe II · Export</button>
+  </div>
+
+  <!-- R_2A: Liste 2A -->
+  <div class="tab-content active" id="r_2a">
+    <div class="annexe-banner">
+      <h3>Annexe I — Liste 2, Groupe A : Produits libéralisés dès l'entrée en vigueur</h3>
+      <p>Taux préférentiel : 0 % — Sans contingent — Pas de restriction quantitative</p>
+      <div class="meta">
+        <span>Circ. 6139/222 · 31-12-2020 (mis à jour 6147/222 · 18-01-2021)</span>
+        <span>SH 2017 (version nationale 2021)</span>
+        <span>Valable dès le 1er janvier 2021</span>
+      </div>
+    </div>
+    <div class="sec-label" id="sl-2a-1">Volailles</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0105119000</span></div><div class="sh-desc">Coqs et poules d'un poids n'excédant pas 185 g, autres que reproducteurs</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-2a-2">Produits laitiers</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0401400011</span><span class="sh-code">0401500011</span><span class="sh-code ex-code">Ex 0401500020</span><span class="sh-code ex-code">Ex 0401500030</span><span class="sh-code ex-code">Ex 0401500040</span><span class="sh-code ex-code">Ex 0401400020</span><span class="sh-code ex-code">Ex 0401400091</span><span class="sh-code ex-code">Ex 0401500091</span><span class="sh-code ex-code">Ex 0401400099</span><span class="sh-code ex-code">Ex 0401500099</span></div><div class="sh-desc">Crème de lait d'une teneur en poids de matière grasse supérieure à 6 %</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0405100010</span><span class="sh-code">0405100090</span></div><div class="sh-desc">Beurre</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0405200000</span></div><div class="sh-desc">Pâtes à tartiner laitières</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0406200010</span><span class="sh-code">0406200070</span><span class="sh-code">0406200080</span></div><div class="sh-desc">Fromages fondus / autres fromages <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0406400000</span></div><div class="sh-desc">Fromages à pâte persillée</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0406901910</span><span class="sh-code ex-code">Ex 0406901998</span><span class="sh-code">0406909010</span><span class="sh-code">0406909093</span><span class="sh-code">0406909098</span><span class="sh-code">0406901992</span><span class="sh-code">0406909092</span></div><div class="sh-desc">Fromages râpés ou en poudre, de tous types / Autres fromages</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-2a-3">Légumes</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0712909900</span></div><div class="sh-desc">Autres légumes secs (carottes, mélanges) coupés/broyés/pulvérisés, non autrement préparés</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0713609090</span><span class="sh-code">0713908090</span></div><div class="sh-desc">Légumes à cosse secs, écossés — hors semence et hors grains</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-2a-4">Fruits &amp; fruits à coques</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0802220010</span><span class="sh-code">0802220090</span></div><div class="sh-desc">Noisettes (<em>Corylus spp.</em>), fraîches ou sèches, sans coques</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0804400000</span></div><div class="sh-desc">Avocats</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0808301910</span></div><div class="sh-desc">Poires fraîches — du 1er février au 30 avril</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-2a-5">Céréales &amp; amidons</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1005900000</span></div><div class="sh-desc">Maïs (autre que de semence)</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1108120000</span></div><div class="sh-desc">Amidon de maïs</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-2a-6">Huiles végétales</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1507900000</span></div><div class="sh-desc">Huile de soja — autres que brutes, non chimiquement modifiées, emballages ≤ 10 litres</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1514190000</span></div><div class="sh-desc">Huile de navette ou de colza (faible teneur acide érucique) — autres que brutes, emballages ≤ 10 litres</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-2a-7">Préparations de légumes &amp; fruits</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2003101000</span><span class="sh-code">2003109010</span><span class="sh-code">2003109090</span><span class="sh-code ex-code">Ex 2003900000</span></div><div class="sh-desc">Champignons préparés ou conservés autrement qu'au vinaigre <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2004102000</span></div><div class="sh-desc">Pommes de terre, simplement cuites, congelées</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2008700005</span><span class="sh-code ex-code">Ex 2008700095</span></div><div class="sh-desc">Pêches, brugnons et nectarines — autrement préparées ou conservées, sans alcool, avec sucre</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-2a-8">Tabacs</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2401100000</span></div><div class="sh-desc">Tabacs « sun cured » du type oriental, non écôtés</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2401200000</span></div><div class="sh-desc">Tabacs « dark air cured », non écôtés — Tabacs partiellement ou totalement écotés, mais non autrement travaillés</div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+  </div>
+
+  <!-- R_2B: Liste 2B -->
+  <div class="tab-content" id="r_2b">
+    <div class="annexe-banner">
+      <h3>Annexe I — Liste 2, Groupe B : Démantèlement tarifaire sans contingent</h3>
+      <p>Produits avec taux préférentiel progressif jusqu'à libéralisation totale — Pas de restriction quantitative</p>
+      <div class="meta">
+        <span>Circ. 6139/222 · 31-12-2020 (mis à jour 6147/222 · 18-01-2021)</span>
+        <span>SH 2017 (version nationale 2021)</span>
+      </div>
+    </div>
+    <div class="sec-label" id="sl-2b-1">Lait &amp; produits laitiers</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0402101110</span><span class="sh-code">0402101190</span><span class="sh-code">0402101800</span><span class="sh-code">0402102010</span><span class="sh-code">0402102091</span><span class="sh-code">0402102099</span></div><div class="sh-desc">Lait et crème concentrés en poudre — MG ≤ 1,5%, sans addition de sucre</div><div class="sh-meta"><span class="sh-tag tag-pref">10,2 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0402101200</span></div><div class="sh-desc">Lait et crème concentrés en poudre — teneur spécifique</div><div class="sh-meta"><span class="sh-tag tag-pref">6,0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0402910000</span></div><div class="sh-desc">Lait et crème concentrés sans sucre — autres formes, MG &gt; 8% <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">10,2 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0403904000</span><span class="sh-code">0403905500</span><span class="sh-code">0403907000</span><span class="sh-code">0403908000</span><span class="sh-code">0403909000</span></div><div class="sh-desc">Babeurre, lait et crème caillés, képhir et autres laits/crèmes fermentés non aromatisés — hors yoghourt et boissons <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">10,2 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0406300000</span></div><div class="sh-desc">Fromages fondus, autres que râpés ou en poudre</div><div class="sh-meta"><span class="sh-tag tag-pref">5,0 %</span></div></div>
+    <div class="sec-label" id="sl-2b-2">Œufs &amp; miel</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0408990010</span></div><div class="sh-desc">Œufs d'oiseaux dépourvus de coquilles (frais, cuits, congelés, conservés) — usage alimentaire hors œufs séchés et jaunes</div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0409000010</span><span class="sh-code">0409000090</span></div><div class="sh-desc">Miel naturel</div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sec-label" id="sl-2b-3">Légumineuses</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0713109910</span><span class="sh-code">0713109920</span><span class="sh-code">0713109990</span></div><div class="sh-desc">Pois (<em>Pisum sativum</em>) secs, écossés — hors fourragers et de semence</div><div class="sh-meta"><span class="sh-tag tag-pref">2,5 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0713339000</span></div><div class="sh-desc">Haricots communs (<em>Phaseolus vulgaris</em>) secs, écossés — hors semence <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sec-label" id="sl-2b-4">Fruits secs &amp; raisins</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0806200000</span></div><div class="sh-desc">Raisins secs <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">3,3 %</span></div></div>
+    <div class="sec-label" id="sl-2b-5">Légumes en conserve</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2005401000</span><span class="sh-code">2005408000</span></div><div class="sh-desc">Pois (<em>Pisum sativum</em>) et haricots en grains — préparés/conservés hors vinaigre, non congelés <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2005510000</span></div><div class="sh-desc">Pois (<em>Pisum sativum</em>) en grains — préparés/conservés hors vinaigre <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2005700000</span></div><div class="sh-desc">Olives préparées ou conservées hors vinaigre, non congelées <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sec-label" id="sl-2b-6">Confitures &amp; marmelades</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2007100000</span></div><div class="sh-desc">Confitures, gelées, marmelades, purées et pâtes de fruits — hors agrumes, fraises et abricots <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2007991000</span><span class="sh-code ex-code">Ex 2007999000</span></div><div class="sh-desc">Confitures et purées de fruits — autres types <span class="mod-badge">✎ modifié 6147</span></div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sec-label" id="sl-2b-7">Fruits à coques en conserve</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2008192110</span><span class="sh-code">2008192190</span><span class="sh-code ex-code">Ex 2008199010</span><span class="sh-code ex-code">Ex 2008199090</span></div><div class="sh-desc">Amandes, pistaches, fruits à coques préparés/conservés — emballages immédiats &gt; 1 kg</div><div class="sh-meta"><span class="sh-tag tag-pref">4,9% / 2,5%</span></div></div>
+    <div class="sec-label" id="sl-2b-8">Vins</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2204100000</span></div><div class="sh-desc">Vins mousseux</div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2204210010</span><span class="sh-code">2204210020</span><span class="sh-code">2204210031</span><span class="sh-code">2204210039</span><span class="sh-code">2204210041</span><span class="sh-code">2204210049</span><span class="sh-code">2204210051</span><span class="sh-code">2204210059</span><span class="sh-code">2204210070</span><span class="sh-code">2204210091</span><span class="sh-code">2204210099</span></div><div class="sh-desc">Vins de raisins frais / moûts dont fermentation empêchée par alcool — récipients ≤ 2 litres</div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2204220010</span><span class="sh-code">2204220020</span><span class="sh-code">2204220031</span><span class="sh-code">2204220039</span><span class="sh-code">2204220041</span><span class="sh-code">2204220049</span><span class="sh-code">2204220051</span><span class="sh-code">2204220059</span><span class="sh-code">2204220070</span><span class="sh-code">2204220091</span><span class="sh-code">2204220099</span><span class="sh-code">2204290015</span><span class="sh-code">2204290025</span><span class="sh-code">2204290033</span><span class="sh-code">2204290037</span><span class="sh-code">2204290043</span><span class="sh-code">2204290047</span><span class="sh-code">2204290053</span><span class="sh-code">2204290057</span><span class="sh-code">2204290075</span><span class="sh-code">2204290093</span><span class="sh-code">2204290097</span></div><div class="sh-desc">Vins de raisins frais / moûts — récipients &gt; 2 litres</div><div class="sh-meta"><span class="sh-tag tag-pref">4,9 %</span></div></div>
+  </div>
+
+  <!-- R_2C: Liste 2C -->
+  <div class="tab-content" id="r_2c">
+    <div class="annexe-banner">
+      <h3>Annexe I — Liste 2, Groupe C : Contingents tarifaires jusqu'à libéralisation totale</h3>
+      <p>Taux préférentiel dans le CT · Taux hors CT jusqu'à libéralisation totale · Gestion : Premier venu – Premier servi</p>
+      <div class="meta">
+        <span>Circ. 6139/222 · 31-12-2020 (mis à jour 6147/222 · 18-01-2021)</span>
+        <span>SH 2017 (version nationale 2021)</span>
+      </div>
+    </div>
+    <div class="sec-label" id="sl-2c-1">Lait &amp; produits laitiers</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0402990000</span></div><div class="sh-desc">Lait et crème concentrés, additionnés de sucre — hors poudre/granulés <span class="mod-badge">✎ modifié 6147</span><small>CT : 136 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">4,55 %</span><br><span class="sh-vol">HC : 5,0 %</span></div></div>
+    <div class="sec-label" id="sl-2c-2">Œufs</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0407111000</span><span class="sh-code ex-code">Ex 0407119010</span><span class="sh-code ex-code">Ex 0407191000</span><span class="sh-code ex-code">Ex 0407199011</span><span class="sh-code ex-code">Ex 0407199019</span></div><div class="sh-desc">Œufs de volailles de basse cour à couver — hors dindes et oies<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span><br><span class="sh-vol">HC : 4,9 %</span></div></div>
+    <div class="sec-label" id="sl-2c-3">Fruits secs</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0813200000</span></div><div class="sh-desc">Pruneaux, séchés<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span><br><span class="sh-vol">HC : 3,3 %</span></div></div>
+    <div class="sec-label" id="sl-2c-4">Riz</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1006301000</span></div><div class="sh-desc">Riz semi-blanchi ou blanchi, même poli ou glacé (type 1)<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span><br><span class="sh-vol">HC : 14,00 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1006309000</span></div><div class="sh-desc">Riz semi-blanchi ou blanchi, même poli ou glacé (type 2)<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span><br><span class="sh-vol">HC : 17,20 %</span></div></div>
+    <div class="sec-label" id="sl-2c-5">Jus de fruits</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2009890010</span></div><div class="sh-desc">Jus de tous autres fruits ou légumes (hors poires), valeur Brix &gt; 20 — valeur haute<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span><br><span class="sh-vol">HC : 4,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2009890098</span><span class="sh-code ex-code">Ex 2009810090</span></div><div class="sh-desc">Jus de tous autres fruits ou légumes — valeur basse<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span><br><span class="sh-vol">HC : 2,5 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2009900099</span></div><div class="sh-desc">Mélanges de jus de fruits/légumes (hors pommes, poires, agrumes, ananas, fruits tropicaux) non fermentés, sans alcool ni sucre<small>CT : 41 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span><br><span class="sh-vol">HC : 4,9 %</span></div></div>
+  </div>
+
+  <!-- R_L3_2021: Liste 3 - 2021 -->
+  <div class="tab-content" id="r_l3_2021">
+    <div class="annexe-banner">
+      <h3>Annexe I — Liste 3 : Produits agricoles non libéralisés avec contingents (2021)</h3>
+      <p>Hors CT : droit NPF commun en vigueur · Gestion : Premier venu – Premier servi</p>
+      <div class="meta">
+        <span>Circ. de base 6139/222 · 31-12-2020 | Mise à jour 6147/222 · 18-01-2021 | Modification 6196/222 · 20-05-2021</span>
+        <span>SH 2017 (version nationale 2021)</span>
+        <span>Valable 1er janvier → 31 décembre 2021</span>
+      </div>
+    </div>
+    <div class="warn-box">⚠️ <strong>Note (2) — Restriction bovins :</strong> Les produits bovins repérés (2) ne font pas l'objet d'importation au Maroc depuis le Royaume-Uni en raison du statut sanitaire ESB (maladie de la vache folle). Les codes concernés sont indiqués ci-dessous.</div>
+    <div class="sec-label" id="sl-l3a-1">Animaux vivants</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0102291000</span></div><div class="sh-desc">Veaux des espèces domestiques à l'exception des veaux de lait, poids vif &lt; 150 kg (*) (2)<small>CT : 5 448 têtes</small></div><div class="sh-meta"><span class="sh-tag tag-pref">2,5 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0102293900</span></div><div class="sh-desc">Taureaux des espèces domestiques, hors taurillons et hors taureaux de combat (*) (2)<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-red">140,1 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0104109010</span></div><div class="sh-desc">Ovins des espèces domestiques, autres que reproducteurs de race pure (*)<small>CT : 7 T</small></div><div class="sh-meta"><span class="sh-tag tag-red">182,4 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0104209010</span></div><div class="sh-desc">Caprins de l'espèce domestique, autres que reproducteurs de race pure (*)<small>CT : 7 T</small></div><div class="sh-meta"><span class="sh-tag tag-red">182,4 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-2">Viandes bovines (2) — sous restriction sanitaire</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0201201110</span><span class="sh-code">0201201910</span><span class="sh-code">0201301110</span><span class="sh-code">0201301910</span><span class="sh-code">0202201010</span><span class="sh-code">0202301910</span></div><div class="sh-desc">Viande bovine de haute qualité destinée aux hôtels et restaurants classés (*) (2)<small>CT : 545 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0201100011</span><span class="sh-code">0201100019</span><span class="sh-code">0201201190</span><span class="sh-code">0201201990</span><span class="sh-code">0201301190</span><span class="sh-code">0201301990</span><span class="sh-code">0202100010</span><span class="sh-code">0202201090</span><span class="sh-code">0202301990</span></div><div class="sh-desc">Viande bovine des espèces domestiques, hors viande désossée gros bovin fraîche/réfrigérée (2)<small>CT : 204 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">25,4 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-3">Viandes d'agneau</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0204100010</span><span class="sh-code">0204300010</span></div><div class="sh-desc">Viandes d'agneau des espèces domestiques en carcasses ou demi-carcasses — fraîches, réfrigérées ou congelées<small>CT : Illimité</small></div><div class="sh-meta"><span class="sh-tag tag-red">200,0 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-4">Volailles entières</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0207110000</span><span class="sh-code">0207120000</span><span class="sh-code ex-code">Ex 0207240000</span><span class="sh-code">0207250000</span></div><div class="sh-desc">Poulets, coqs et dindes, entiers, réfrigérés ou congelés (*)<small>CT : 54 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">11,6 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207130029</span><span class="sh-code">0207149291</span></div><div class="sh-desc">Cuisses et ailes de poulets et de coqs, en morceaux non désossés — frais, réfrigérés ou congelés (*)<small>CT : 54 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">11,6 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207149212</span></div><div class="sh-desc">Viandes de cuisses de poulets et de coqs entières sans peau, désossées, non broyées — congelées (*)<small>CT : 68 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">11,6 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207149219</span></div><div class="sh-desc">Autres morceaux de poulets et de coqs désossés (hors bréchet, escalope, cuisse entière) — non broyés, congelés (*)<small>CT : 95 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">11,6 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207141000</span></div><div class="sh-desc">Viande de coqs et poules désossée, broyée, congelée (*)<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">34,8 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207271000</span></div><div class="sh-desc">Viande de dinde désossée, broyée, congelée (*)<small>CT : 191 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">30,0 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-5">Lait &amp; produits laitiers</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0401100091</span><span class="sh-code ex-code">Ex 0401200091</span><span class="sh-code ex-code">Ex 0401400091</span><span class="sh-code ex-code">Ex 0401500091</span></div><div class="sh-desc">Laits conservés autrement conditionnés (UHT)<small>CT : 204 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0402211100</span><span class="sh-code">0402211900</span><span class="sh-code">0402219010</span><span class="sh-code">0402219091</span><span class="sh-code">0402219099</span></div><div class="sh-desc">Lait et crème en poudre, granulés ou formes solides, MG &gt; 1,5%, sans sucre<small>CT : 533 T</small></div><div class="sh-meta"><span class="sh-tag tag-red">81,4 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0402211900</span><span class="sh-code ex-code">Ex 0402219099</span></div><div class="sh-desc">Lait en poudre, MG &gt; 1,5%, sans sucre — emballages &gt; 5 kg, non conditionnés pour la vente au détail<small>CT : 33 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">30,6 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-6">Légumineuses &amp; fruits à coques</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0713509010</span><span class="sh-code">0713509090</span></div><div class="sh-desc">Fèves/féveroles sèches, sauf de semence<small>CT : 272 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">24,5 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0802110091</span><span class="sh-code">0802110099</span><span class="sh-code">0802120091</span><span class="sh-code">0802120099</span></div><div class="sh-desc">Amandes douces, fraîches ou sèches<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-7">Fruits frais</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0808109020</span><span class="sh-code ex-code">Ex 0808109090</span></div><div class="sh-desc">Pommes fraîches, catégorie extra — du 1er février au 31 mai<small>CT : 545 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-8">Céréales</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1001190090</span></div><div class="sh-desc">Blé dur — du 1er août au 31 mai<small>CT : 6 810 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">2,5 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1001990011</span><span class="sh-code">1001990019</span><span class="sh-code">1001990090</span></div><div class="sh-desc">Épeautre, froment (blé) tendre et méteil — hors produits de semence (**)<small>CT : selon production</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span><br><span style="font-size:9px;color:var(--amber)">⚠ 83,7%(*) mai 2021+</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1101009000</span></div><div class="sh-desc">Farines, gruaux et semoules du blé tendre<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">40,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1103110020</span><span class="sh-code">1103110050</span></div><div class="sh-desc">Gruaux et semoules de blé dur (y compris régime au gluten)<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">45,3 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1101001000</span><span class="sh-code">1103110001</span><span class="sh-code">1103110009</span><span class="sh-code">1103110041</span><span class="sh-code">1103110049</span></div><div class="sh-desc">Farines, gruaux et semoules de blé dur — autres<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-9">Huiles d'olive</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1509100010</span><span class="sh-code ex-code">Ex 1509100090</span></div><div class="sh-desc">Huile d'olive extra vierge<small>CT : 204 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1509100010</span><span class="sh-code ex-code">Ex 1509100090</span></div><div class="sh-desc">Huile d'olive vierge<small>CT : 68 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-10">Charcuterie &amp; préparations de viandes</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1601001000</span><span class="sh-code">1601009910</span><span class="sh-code">1601009990</span><span class="sh-code">1602200021</span><span class="sh-code">1602200023</span><span class="sh-code">1602200029</span><span class="sh-code">1602200091</span><span class="sh-code">1602200099</span></div><div class="sh-desc">Saucisses, saucissons et produits similaires de viandes/abats (hors secs, non cuits) et préparations (*) (2)<small>CT : 136 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">10,0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1602310091</span><span class="sh-code">1602310099</span><span class="sh-code">1602321000</span><span class="sh-code">1602329000</span></div><div class="sh-desc">Autres préparations alimentaires à base de coqs et de poules, dinde (*)</div><div class="sh-meta"><span class="sh-tag tag-pref">Variable</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1602100000</span></div><div class="sh-desc">Préparations homogénéisées à base de volailles (hors coqs, poules et dinde) (*)</div><div class="sh-meta"><span class="sh-tag tag-pref">Variable</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1602500000</span></div><div class="sh-desc">Autres préparations alimentaires à base de bovins (hors saucisses, hors homogénéisées) (2) (*)</div><div class="sh-meta"><span class="sh-tag tag-pref">Variable</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1602900091</span><span class="sh-code">1602900092</span><span class="sh-code">1602900099</span></div><div class="sh-desc">Autres préparations alimentaires à base d'ovins, de gibier ou de lapin, de foie — hors homogénéisées (*) (2)</div><div class="sh-meta"><span class="sh-tag tag-pref">Variable</span></div></div>
+    <div class="sec-label" id="sl-l3a-11">Pâtes alimentaires &amp; couscous (Ex 19.02) — Double quota</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1902110010</span><span class="sh-code ex-code">Ex 1902110090</span><span class="sh-code ex-code">Ex 1902190019</span><span class="sh-code ex-code">Ex 1902190099</span><span class="sh-code ex-code">Ex 1902209010</span><span class="sh-code ex-code">Ex 1902209020</span><span class="sh-code ex-code">Ex 1902209030</span><span class="sh-code ex-code">Ex 1902209091</span><span class="sh-code ex-code">Ex 1902209099</span><span class="sh-code ex-code">Ex 1902309000</span><span class="sh-code ex-code">Ex 1902401110</span><span class="sh-code ex-code">Ex 1902401191</span><span class="sh-code ex-code">Ex 1902401199</span><span class="sh-code ex-code">Ex 1902401900</span><span class="sh-code ex-code">Ex 1902409110</span><span class="sh-code ex-code">Ex 1902409191</span><span class="sh-code ex-code">Ex 1902409199</span><span class="sh-code ex-code">Ex 1902409900</span></div><div class="sh-desc">Pâtes alimentaires et couscous (hors régime gluten et vermicelle de riz) — quota principal (3)<small>CT : 204 T · Taux 0%</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1902110010</span><span class="sh-code ex-code">Ex 1902110090</span><span class="sh-code ex-code">Ex 1902190019</span><span class="sh-code ex-code">Ex 1902190099</span><span class="sh-code ex-code">Ex 1902209010</span><span class="sh-code ex-code">Ex 1902209020</span><span class="sh-code ex-code">Ex 1902209030</span><span class="sh-code ex-code">Ex 1902209091</span><span class="sh-code ex-code">Ex 1902209099</span><span class="sh-code ex-code">Ex 1902309000</span><span class="sh-code ex-code">Ex 1902401110</span><span class="sh-code ex-code">Ex 1902401191</span><span class="sh-code ex-code">Ex 1902401199</span><span class="sh-code ex-code">Ex 1902401900</span><span class="sh-code ex-code">Ex 1902409110</span><span class="sh-code ex-code">Ex 1902409191</span><span class="sh-code ex-code">Ex 1902409199</span><span class="sh-code ex-code">Ex 1902409900</span></div><div class="sh-desc">Pâtes alimentaires et couscous — quota secondaire (3)<small>CT : 415 T · DFD doit préciser quote-part et taux</small></div><div class="sh-meta"><span class="sh-tag tag-amber">35 – 50 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1902112000</span><span class="sh-code">1902113000</span><span class="sh-code">1902190011</span><span class="sh-code">1902190091</span><span class="sh-code">1902201000</span><span class="sh-code">1902301000</span></div><div class="sh-desc">Pâtes de régime au gluten / Vermicelles de riz / Pâtes non cuites ni farcies<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-12">Tomates préparées</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2002901000</span><span class="sh-code ex-code">Ex 2002909011</span><span class="sh-code ex-code">Ex 2002909019</span><span class="sh-code ex-code">Ex 2002909091</span><span class="sh-code ex-code">Ex 2002909099</span></div><div class="sh-desc">Tomates préparées/conservées (hors vinaigre) à l'exclusion des tomates entières ou en morceaux — emballages nets &gt; 25 kg<small>CT : 136 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3a-13">Aliments pour animaux</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2309909082</span><span class="sh-code">2309909088</span></div><div class="sh-desc">Aliments composés pour animaux<small>CT : 5 001 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">2,7 %</span></div></div>
+    <div class="notes-box">
+      <p><strong>(*)</strong> Conformément au cahier de charge spécifique concernant les animaux et les catégories de viandes et les dispositions zootechniques d'importation agréées par les Parties au moment de la signature de l'Accord.</p>
+      <p><strong>(**)</strong> À l'exclusion des mois de juin et de juillet.</p>
+      <p><strong>(2)</strong> Ces produits ne feront pas l'objet d'importation au Maroc en provenance du Royaume-Uni de Grande Bretagne et d'Irlande du Nord en raison du statut sanitaire de ce pays pour les bovins (maladie de la vache folle).</p>
+      <p><strong>(3)</strong> Pour les pâtes alimentaires et couscous relevant de la position Ex 19.02, qui sont soumis à deux traitements de quota et de taux préférentiels, la DFD doit préciser la quote-part attribuée ainsi que le droit préférentiel y afférent.</p>
+      <p><strong>(**)</strong> Les importations en dépassement des CT seront soumises au paiement du droit d'importation commun (droit NPF en vigueur).</p>
+    </div>
+  </div>
+
+  <!-- R_L3_2026: Liste 3 - 2026 -->
+  <div class="tab-content" id="r_l3_2026">
+    <div class="annexe-banner" style="background:linear-gradient(135deg,#6b2f02 0%,var(--amber) 100%)">
+      <h3>Annexe I agricole — Liste 3 : Produits agricoles non libéralisés (2026)</h3>
+      <p>Hors CT : droit NPF commun en vigueur (tarif national 2026) · Gestion : Premier venu – Premier servi</p>
+      <div class="meta">
+        <span>Circ. 6705/222 · 31-12-2025</span>
+        <span>SH 2022</span>
+        <span>Valable 1er janvier → 31 décembre 2026</span>
+      </div>
+    </div>
+    <div class="warn-box">⚠️ <strong>Note (2) — Restriction bovins :</strong> Les produits bovins désignés (2) sont concernés par la suspension de la perception du droit d'importation prévue jusqu'au 31 décembre 2026 dans la limite des contingents (LDF 2026). Toutefois, l'importation au Maroc des viandes bovines depuis le RU reste sous restriction sanitaire ESB.</div>
+    <div class="sec-label" id="sl-l3b-1">Animaux vivants</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0102291000</span></div><div class="sh-desc">Veaux des espèces domestiques, à l'exception des veaux de lait, poids vif &lt; 150 kg (*) (2)<small>CT : 5 448 têtes</small></div><div class="sh-meta"><span class="sh-tag tag-pref">2,5 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0102293900</span></div><div class="sh-desc">Taureaux des espèces domestiques, hors taurillons, hors taureaux de combat (*) (2)<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-red">140,1 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0104109010</span></div><div class="sh-desc">Ovins des espèces domestiques, autres que reproducteurs de race pure (*)<small>CT : 7 T</small></div><div class="sh-meta"><span class="sh-tag tag-red">182,4 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0104209010</span></div><div class="sh-desc">Caprins de l'espèce domestique, autres que reproducteurs de race pure (*)<small>CT : 7 T</small></div><div class="sh-meta"><span class="sh-tag tag-red">182,4 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-2">Viandes bovines (2) — sous restriction sanitaire</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0201201110</span><span class="sh-code">0201201910</span><span class="sh-code">0201301110</span><span class="sh-code">0201301910</span><span class="sh-code">0202201010</span><span class="sh-code">0202301910</span></div><div class="sh-desc">Viande bovine de haute qualité destinée aux hôtels et restaurants classés (*) (2)<small>CT : 545 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0201100011</span><span class="sh-code">0201100019</span><span class="sh-code">0201201190</span><span class="sh-code">0201201990</span><span class="sh-code">0201301190</span><span class="sh-code">0201301990</span><span class="sh-code">0202100010</span><span class="sh-code">0202201090</span><span class="sh-code">0202301990</span></div><div class="sh-desc">Viande bovine des espèces domestiques, hors viande désossée gros bovin fraîche/réfrigérée (2)<small>CT : 204 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 % ↓</span><small class="mod-badge">était 25,4%</small></div></div>
+    <div class="sec-label" id="sl-l3b-3">Viandes d'agneau</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0204100010</span><span class="sh-code">0204300010</span></div><div class="sh-desc">Viandes d'agneau des espèces domestiques fraîches, réfrigérées ou congelées (*)<small>CT : Illimité</small></div><div class="sh-meta"><span class="sh-tag tag-red">200,0 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-4">Volailles entières &amp; pièces</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0207110000</span><span class="sh-code">0207120000</span><span class="sh-code ex-code">Ex 0207240000</span><span class="sh-code">0207250000</span></div><div class="sh-desc">Poulet, coqs et dinde, entiers, réfrigérés ou congelés (*)<small>CT : 54 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 % ↓</span><small class="mod-badge">était 11,6%</small></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207130029</span><span class="sh-code">0207149291</span></div><div class="sh-desc">Cuisses et ailes de poulets et de coqs, morceaux non désossés — frais, réfrigérés ou congelés (*)<small>CT : 54 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 % ↓</span><small class="mod-badge">était 11,6%</small></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207149212</span></div><div class="sh-desc">Cuisses de poulets et coqs entières sans peau, désossées, non broyées — congelées (*)<small>CT : 68 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 % ↓</span><small class="mod-badge">était 11,6%</small></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207149219</span></div><div class="sh-desc">Autres morceaux poulets/coqs désossés (hors bréchet, escalope, cuisse entière) — non broyés, congelés (*)<small>CT : 95 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 % ↓</span><small class="mod-badge">était 11,6%</small></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207141000</span></div><div class="sh-desc">Viande de coqs et poules désossée, broyée, congelée (*)<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">34,8 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0207271000</span></div><div class="sh-desc">Viande de dinde désossée, broyée, congelée (*)<small>CT : 191 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">30,0 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-5">Lait &amp; produits laitiers</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0401100091</span><span class="sh-code ex-code">Ex 0401200091</span><span class="sh-code ex-code">Ex 0401400091</span><span class="sh-code ex-code">Ex 0401500091</span></div><div class="sh-desc">Laits conservés autrement conditionnés (UHT)<small>CT : 204 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0402211100</span><span class="sh-code">0402211900</span><span class="sh-code">0402219010</span><span class="sh-code">0402219091</span><span class="sh-code">0402219099</span></div><div class="sh-desc">Lait et crème en poudre, granulés ou formes solides, MG &gt; 1,5%, sans sucre (3)<small>CT : 533 T</small></div><div class="sh-meta"><span class="sh-tag tag-red">81,4 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0402211900</span><span class="sh-code ex-code">Ex 0402219099</span></div><div class="sh-desc">Lait en poudre MG &gt; 1,5%, sans sucre — emballages &gt; 5 kg, non conditionnés détail (3)<small>CT : 33 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">30,6 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-6">Légumineuses &amp; fruits à coques</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0713509010</span><span class="sh-code">0713509090</span></div><div class="sh-desc">Fèves/féveroles sèches, sauf de semence (4)<small>CT : 272 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">24,5 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0802110091</span><span class="sh-code">0802110099</span><span class="sh-code">0802120091</span><span class="sh-code">0802120099</span></div><div class="sh-desc">Amandes douces, fraîches ou sèches<small>CT : 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-7">Fruits frais</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 0808109020</span><span class="sh-code ex-code">Ex 0808109090</span></div><div class="sh-desc">Pommes fraîches, catégorie extra — du 1er février au 31 mai<small>CT : 545 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-8">Céréales</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1001190090</span></div><div class="sh-desc">Blé dur — du 1er août au 31 mai<small>CT : 6 810 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">2,5 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1001990011</span><span class="sh-code">1001990019</span><span class="sh-code">1001990090</span></div><div class="sh-desc">Épeautre, froment (blé) tendre et méteil — hors semence (**) (5)<small>CT : selon production · HC : 12,1%</small></div><div class="sh-meta"><span class="sh-tag tag-pref">0,6 %</span><br><span style="font-size:9px;color:var(--red)">HC : 12,1 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1101009000</span></div><div class="sh-desc">Farines, gruaux et semoules du blé tendre<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">40,9 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1103110020</span><span class="sh-code">1103110050</span></div><div class="sh-desc">Gruaux et semoules de blé dur (y compris régime au gluten)<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-amber">45,3 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1101001000</span><span class="sh-code">1103110001</span><span class="sh-code">1103110009</span><span class="sh-code">1103110041</span><span class="sh-code">1103110049</span></div><div class="sh-desc">Farines, gruaux et semoules de blé dur — régime au gluten inclus<small>CT : 14 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-9">Huiles d'olive</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1509200000</span></div><div class="sh-desc">Huile d'olive extra vierge<small>CT : 204 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1509300000</span></div><div class="sh-desc">Huile d'olive vierge<small>CT : 68 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-10">Charcuterie &amp; préparations de viandes</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1601001000</span><span class="sh-code">1601009910</span><span class="sh-code">1601009980</span><span class="sh-code">1602200021</span><span class="sh-code">1602200023</span><span class="sh-code">1602200029</span><span class="sh-code">1602200091</span><span class="sh-code">1602200099</span></div><div class="sh-desc">Saucisses, saucissons et produits similaires de viandes/abats (hors secs, non cuits) et préparations (*)<small>CT : 136 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">10,0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1602310091</span><span class="sh-code">1602310099</span><span class="sh-code">1602321000</span><span class="sh-code">1602329000</span></div><div class="sh-desc">Autres préparations alimentaires à base de coqs et de poules, dinde (*)</div><div class="sh-meta"><span class="sh-tag tag-pref">Variable</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1602100090</span></div><div class="sh-desc">Préparations homogénéisées à base de volailles (hors coqs, poules et dinde) (*)</div><div class="sh-meta"><span class="sh-tag tag-pref">Variable</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1602500000</span></div><div class="sh-desc">Autres préparations alimentaires à base de bovins (hors saucisses, hors homogénéisées) (*)</div><div class="sh-meta"><span class="sh-tag tag-pref">Variable</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1602900091</span><span class="sh-code">1602900092</span><span class="sh-code">1602900099</span></div><div class="sh-desc">Autres préparations alimentaires à base d'ovins, de gibier ou de lapin, de foie — hors homogénéisées (*)</div><div class="sh-meta"><span class="sh-tag tag-pref">Variable</span></div></div>
+    <div class="sec-label" id="sl-l3b-11">Pâtes alimentaires &amp; couscous — Double quota (Ex 19.02)</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1902119010</span><span class="sh-code ex-code">Ex 1902119090</span><span class="sh-code ex-code">Ex 1902111000</span><span class="sh-code ex-code">Ex 1902199019</span><span class="sh-code ex-code">Ex 1902199099</span><span class="sh-code ex-code">Ex 1902191000</span><span class="sh-code ex-code">Ex 1902208010</span><span class="sh-code ex-code">Ex 1902208020</span><span class="sh-code ex-code">Ex 1902208030</span><span class="sh-code ex-code">Ex 1902208091</span><span class="sh-code ex-code">Ex 1902208099</span><span class="sh-code ex-code">Ex 1902200500</span><span class="sh-code ex-code">Ex 1902300099</span><span class="sh-code ex-code">Ex 1902300010</span><span class="sh-code ex-code">Ex 1902401110</span><span class="sh-code ex-code">Ex 1902401191</span><span class="sh-code ex-code">Ex 1902401199</span><span class="sh-code ex-code">Ex 1902401900</span><span class="sh-code ex-code">Ex 1902409110</span><span class="sh-code ex-code">Ex 1902409191</span><span class="sh-code ex-code">Ex 1902409199</span><span class="sh-code ex-code">Ex 1902409900</span></div><div class="sh-desc">Pâtes alimentaires et couscous (hors régime gluten et vermicelle de riz) — quota 0% (6)<small>CT : 204 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1902119010</span><span class="sh-code ex-code">Ex 1902119090</span><span class="sh-code ex-code">Ex 1902111000</span><span class="sh-code ex-code">Ex 1902199019</span><span class="sh-code ex-code">Ex 1902199099</span><span class="sh-code ex-code">Ex 1902191000</span><span class="sh-code ex-code">Ex 1902208010</span><span class="sh-code ex-code">Ex 1902208020</span><span class="sh-code ex-code">Ex 1902208030</span><span class="sh-code ex-code">Ex 1902208091</span><span class="sh-code ex-code">Ex 1902208099</span><span class="sh-code ex-code">Ex 1902200500</span><span class="sh-code ex-code">Ex 1902300099</span><span class="sh-code ex-code">Ex 1902300010</span><span class="sh-code ex-code">Ex 1902401110</span><span class="sh-code ex-code">Ex 1902401191</span><span class="sh-code ex-code">Ex 1902401199</span><span class="sh-code ex-code">Ex 1902401900</span><span class="sh-code ex-code">Ex 1902409110</span><span class="sh-code ex-code">Ex 1902409191</span><span class="sh-code ex-code">Ex 1902409199</span><span class="sh-code ex-code">Ex 1902409900</span></div><div class="sh-desc">Pâtes alimentaires et couscous — hors quota principal (6)<small>CT secondaire : 415 T · Taux : 35 à 50 % selon position (DFD)</small></div><div class="sh-meta"><span class="sh-tag tag-amber">35–50 %</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1902119020</span><span class="sh-code">1902119030</span><span class="sh-code">1902199011</span><span class="sh-code">1902199091</span><span class="sh-code">1902202000</span><span class="sh-code">1902300091</span></div><div class="sh-desc">Vermicelles de riz non cuites, pâtes de régime au gluten<small>CT : 14 T / 27 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-12">Tomates préparées</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2002901000</span><span class="sh-code ex-code">Ex 2002909011</span><span class="sh-code ex-code">Ex 2002909019</span><span class="sh-code ex-code">Ex 2002909091</span><span class="sh-code ex-code">Ex 2002909099</span></div><div class="sh-desc">Tomates préparées/conservées (hors vinaigre) à l'exclusion des tomates entières ou en morceaux — emballages nets &gt; 25 kg<small>CT : 136 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 %</span></div></div>
+    <div class="sec-label" id="sl-l3b-13">Aliments pour animaux</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">2309908092</span><span class="sh-code">2309908099</span><span class="sh-code ex-code">Ex 2309900500</span></div><div class="sh-desc">Aliments composés pour animaux<small>CT : 5 001 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">0 % ↓</span><small class="mod-badge">était 2,7%</small></div></div>
+    <div class="notes-box">
+      <p><strong>(1)</strong> Sans préjudice des règles pour la mise en œuvre de la nomenclature combinée, le libellé est considéré comme n'ayant qu'une valeur indicative. Lorsqu'un « ex » figure devant le code SH, le régime préférentiel est déterminé à la fois par la portée du code et par celle de la description.</p>
+      <p><strong>(2)</strong> Produits concernés par la suspension de la perception du droit d'importation prévue jusqu'au 31 décembre 2026 dans la limite des contingents (LDF 2026).</p>
+      <p><strong>(3)</strong> Pour les produits de lait en poudre, la DFD doit préciser la quote-part attribuée ainsi que le droit préférentiel y afférent.</p>
+      <p><strong>(4)</strong> Produits concernés par la suspension de la perception du droit d'importation qui a pris effet à partir du 1er avril 2020 (décret n° 2-20-299 du 27 mars 2020).</p>
+      <p><strong>(5)</strong> Produits concernés par la suspension de la perception du droit d'importation qui a pris effet à partir du 1er novembre 2021 (décrets n°s 2-21-851 et 2-21-852 du 28 octobre 2021).</p>
+      <p><strong>(6)</strong> Pour les pâtes alimentaires et couscous relevant de la position Ex 19.02, soumis à deux traitements de quota et de taux préférentiels, la DFD doit préciser la quote-part attribuée ainsi que le droit préférentiel y afférent.</p>
+      <p><strong>(*)</strong> Conformément au cahier des charges spécifique concernant les catégories de viandes et les dispositions zootechniques d'importation agréées par les Parties.</p>
+      <p><strong>(**)</strong> À l'exclusion des mois de juin et de juillet.</p>
+      <p><strong>(***)</strong> Les importations en dépassement des CT seront soumises au paiement du droit d'importation commun (droit NPF en vigueur).</p>
+    </div>
+  </div>
+
+  <!-- R_EXPORT: Annexe II Export -->
+  <div class="tab-content" id="r_export">
+    <div class="annexe-banner" style="background:linear-gradient(135deg,#0F5C2A 0%,#1E8A4A 100%)">
+      <h3>Annexe II — Exportations marocaines vers le Royaume-Uni</h3>
+      <p>Listes 1, 2, 3, 4 — Régimes tarifaires applicables à l'exportation depuis le Maroc</p>
+      <div class="meta">
+        <span>Circ. de base 6139/222 · 31-12-2020</span>
+        <span>Codes RU (nomenclature britannique)</span>
+      </div>
+    </div>
+    <div class="year-divider">LISTE 1 — Exonérations/réductions dans CT ou hors CT</div>
+    <div class="sec-label">Légumes frais</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0702000000</span></div><div class="sh-desc">Tomates fraîches/réfrigérées — Oct au Mai<small>CT : 47 510 T (base 42 842 + addit. 4 668 T)</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0702000000</span></div><div class="sh-desc">Tomates fraîches/réfrigérées — Juin au Septembre<small>CT : Illimité</small></div><div class="sh-meta"><span class="sh-tag tag-pref">60% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0703200000</span></div><div class="sh-desc">Aulx à l'état frais ou réfrigéré<small>CT : 204 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0707000500</span></div><div class="sh-desc">Concombres frais/réfrigérés — Nov au Mai<small>CT : 2 288 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0707000500</span></div><div class="sh-desc">Concombres frais/réfrigérés — Juin au Oct<small>CT : Illimité</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0709907000</span></div><div class="sh-desc">Courgettes fraîches/réfrigérées — Oct au 20 avr<small>CT : 7 627 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0709907000</span></div><div class="sh-desc">Courgettes fraîches/réfrigérées — 21 avr au Mai<small>CT : Illimité</small></div><div class="sh-meta"><span class="sh-tag tag-pref">60% réd.</span></div></div>
+    <div class="sec-label">Fruits frais</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0805201000</span></div><div class="sh-desc">Clémentines fraîches — Nov au Fév<small>CT : 29 173 T (80% réd. hors CT)</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0805201000</span></div><div class="sh-desc">Clémentines fraîches — Mar au Oct<small>CT : Illimité</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0810100000</span></div><div class="sh-desc">Fraises fraîches — Nov au Mars<small>CT : Illimité</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0810100000</span></div><div class="sh-desc">Fraises fraîches — Avril<small>CT : 490 T</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0810100000</span></div><div class="sh-desc">Fraises fraîches — Mai<small>CT : 136 T</small></div><div class="sh-meta"><span class="sh-tag tag-pref">50% réd.</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0810100000</span></div><div class="sh-desc">Fraises fraîches — Juin au Octobre<small>CT : —</small></div><div class="sh-meta"><span class="sh-tag tag-red">0% réd.</span></div></div>
+    <div class="sec-label">Sucres</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1702500000</span></div><div class="sh-desc">Fructose chimiquement pur<small>CT : 82 T · Réd. progressive EA³ sur 3 ans (10%/an)</small></div><div class="sh-meta"><span class="sh-tag tag-zero">100% réd.</span></div></div>
+    <div class="year-divider">LISTE 2 — Produits non libéralisés (sous CT, prix d'entrée annulés)</div>
+    <div class="sec-label">Légumes &amp; fruits (prix d'entrée abandonnés)</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0702000000</span></div><div class="sh-desc">Tomates fraîches ou réfrigérées</div><div class="sh-meta"><span class="sh-tag tag-pref">Sous CT</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0707000500</span></div><div class="sh-desc">Concombres frais ou réfrigérés</div><div class="sh-meta"><span class="sh-tag tag-pref">Sous CT</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0709907000</span></div><div class="sh-desc">Courgettes fraîches ou réfrigérées</div><div class="sh-meta"><span class="sh-tag tag-pref">Sous CT</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0805201000</span></div><div class="sh-desc">Clémentines fraîches</div><div class="sh-meta"><span class="sh-tag tag-pref">Sous CT</span></div></div>
+    <div class="year-divider">LISTE 3 — Produits libéralisés (prix d'entrée abandonnés)</div>
+    <div class="sec-label">Produits libéralisés à l'export</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0709908000</span></div><div class="sh-desc">Artichauts frais ou réfrigérés</div><div class="sh-meta"><span class="sh-tag tag-zero">Libéralisé</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0805102000</span></div><div class="sh-desc">Oranges douces fraîches</div><div class="sh-meta"><span class="sh-tag tag-zero">Libéralisé</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0806101000</span></div><div class="sh-desc">Raisins de table frais</div><div class="sh-meta"><span class="sh-tag tag-zero">Libéralisé</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0809100000</span></div><div class="sh-desc">Abricots frais</div><div class="sh-meta"><span class="sh-tag tag-zero">Libéralisé</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">0809300000</span></div><div class="sh-desc">Pêches fraîches y compris brugnons et nectarines</div><div class="sh-meta"><span class="sh-tag tag-zero">Libéralisé</span></div></div>
+    <div class="year-divider">LISTE 4 — Produits saccharose/isoglucose ≥ 70 % · Mécanisme surveillance (seuil : 82 T)</div>
+    <div class="sec-label">Produits soumis à surveillance (suspension si &gt; 82 T/an)</div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1704909900</span></div><div class="sh-desc">Autres sucreries sans cacao, saccharose ou isoglucose ≥ 70%</div><div class="sh-meta"><span class="sh-tag tag-red">≤ 82 T</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code">1806109000</span><span class="sh-code ex-code">Ex 1806103000</span></div><div class="sh-desc">Poudre de cacao avec sucre — saccharose ou isoglucose ≥ 70% (resp. ≥ 80%)</div><div class="sh-meta"><span class="sh-tag tag-red">≤ 82 T</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1806209500</span></div><div class="sh-desc">Préparations alimentaires contenant cacao — blocs/barres &gt; 2 kg ou liquide/pâteux &gt; 2 kg, saccharose ou isoglucose ≥ 70%</div><div class="sh-meta"><span class="sh-tag tag-red">≤ 82 T</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 1901909900</span></div><div class="sh-desc">Préparations alimentaires de farines/gruaux/semoules/amidons/extraits de malt, saccharose ou isoglucose ≥ 70%</div><div class="sh-meta"><span class="sh-tag tag-red">≤ 82 T</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2101129800</span><span class="sh-code ex-code">Ex 2101209800</span></div><div class="sh-desc">Préparations à base de café ou de thé/maté, saccharose ou isoglucose ≥ 70%</div><div class="sh-meta"><span class="sh-tag tag-red">≤ 82 T</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 2106905900</span><span class="sh-code ex-code">Ex 2106909800</span></div><div class="sh-desc">Sirops de sucre aromatisés/colorés et préparations alimentaires NCA, saccharose ou isoglucose ≥ 70%</div><div class="sh-meta"><span class="sh-tag tag-red">≤ 82 T</span></div></div>
+    <div class="sh-row"><div class="sh-code-group"><span class="sh-code ex-code">Ex 3302102900</span></div><div class="sh-desc">Mélanges de substances odoriférantes pour l'industrie des boissons, saccharose ou isoglucose ≥ 70%</div><div class="sh-meta"><span class="sh-tag tag-red">≤ 82 T</span></div></div>
+    <div class="notes-box">
+      <p><strong>Note générale Annexe II :</strong> L'Accord maintient les mêmes tarifs préférentiels pour le Maroc que ceux prévus par le Protocole 1 à l'Accord d'Association Maroc-UE.</p>
+      <p><strong>Contingents à la première année :</strong> Calculés au prorata.</p>
+      <p><strong>Contingents tomates :</strong> Les contingents « de base » et « additionnel » pour les tomates (oct-mai) sont applicables sans répartition mensuelle.</p>
+      <p><strong>Codes RU :</strong> Codes correspondant au règlement (CE) n° 1031/2008 (JO L 291 du 31 octobre 2008, p. 1) pour la Liste 4.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer>
+  <span>📋 Import-eXPert · Sources : circulaires ADII</span>
+  <span>|</span>
+  <span>Accord d'Association Maroc / Royaume-Uni · Signé à Londres le 26 octobre 2019</span>
+  <span>|</span>
+  <span>Circulaires : 6139/222 · 6147/222 · 6196/222 · 6705/222</span>
+  <span>|</span>
+  <span>🌐 www.douane.gov.ma</span>
+</footer>
+
+<script>
+function switchTab(side, id){
+  if(side==='l'){
+    document.querySelectorAll('#ltabs .tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.col-l .tab-content').forEach(c=>c.classList.remove('active'));
+    const btn=document.querySelector(`#ltabs .tab-btn[onclick*="${id}"]`);
+    if(btn)btn.classList.add('active');
+  } else {
+    document.querySelectorAll('#rtabs .rh-tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.col-r .tab-content').forEach(c=>c.classList.remove('active'));
+    const btn=document.querySelector(`#rtabs .rh-tab-btn[onclick*="${id}"]`);
+    if(btn)btn.classList.add('active');
+  }
+  const el=document.getElementById(id);
+  if(el){el.classList.add('active');if(side==='r')el.scrollTop=0;}
+}
+
+function filterRows(q){
+  const query=q.toLowerCase().trim();
+  document.querySelectorAll('.col-r .tab-content.active').forEach(tab=>{
+    const rows=tab.querySelectorAll('.sh-row');
+    const secLabels=tab.querySelectorAll('.sec-label');
+    const secMap={};
+    // Build map of sec-label -> following rows
+    let currentSec=null;
+    tab.childNodes.forEach(node=>{
+      if(node.classList&&node.classList.contains('sec-label')){currentSec=node;secMap[currentSec]=[];}
+      else if(node.classList&&node.classList.contains('sh-row')&&currentSec){secMap[currentSec].push(node);}
+    });
+    if(!query){
+      rows.forEach(r=>r.classList.remove('hidden-row'));
+      secLabels.forEach(s=>s.classList.remove('hidden-row'));
+      return;
+    }
+    rows.forEach(r=>{
+      const text=r.innerText.toLowerCase();
+      r.classList.toggle('hidden-row',!text.includes(query));
+    });
+    secLabels.forEach(sec=>{
+      const linked=secMap[sec]||[];
+      const anyVisible=linked.some(r=>!r.classList.contains('hidden-row'));
+      sec.classList.toggle('hidden-row',!anyVisible);
+    });
+  });
+}
+// Init first tab
+document.querySelectorAll('.col-r .tab-content:not(.active)').forEach(c=>c.style.display='none');
+// Override display logic
+document.querySelectorAll('.col-r .tab-content').forEach(c=>{
+  if(!c.classList.contains('active'))c.style.display='none';
+  else c.style.display='block';
+});
+// Patch switchTab to handle display
+const origSwitch=switchTab;
+window.switchTab=function(side,id){
+  origSwitch(side,id);
+  if(side==='r'){
+    document.querySelectorAll('.col-r .tab-content').forEach(c=>{
+      c.style.display=c.classList.contains('active')?'block':'none';
+    });
+  }
+  document.getElementById('searchInput').value='';
+  filterRows('');
+};
+</script>
+</body>
+</html>

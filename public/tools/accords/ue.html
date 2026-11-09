@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALE Maroc – UE · Import-eXPert</title>
+<style>
+:root{
+  --navy:#0B2545;--navy-mid:#163566;--blue:#1E5FA8;--blue-lt:#3B82C4;
+  --teal:#0F7B6C;--teal-lt:#E0F4F1;--gold:#B07D2A;--gold-lt:#FDF3E0;
+  --red:#A32D2D;--red-lt:#FCEBEB;--green:#276527;--green-lt:#EAF3DE;
+  --amber:#854F0B;--amber-lt:#FAEEDA;
+  --gray-50:#F7F8FA;--gray-100:#ECEEF2;--gray-200:#D8DBE3;
+  --gray-400:#8D92A0;--gray-600:#505669;--gray-800:#252A37;
+  --border:#DDE0E8;--radius:6px;--radius-lg:10px;
+  --eu:#003399;--eu-gold:#FFCC00;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:13px;color:var(--gray-800);background:var(--gray-50)}
+
+/* HEADER */
+.site-header{background:var(--navy);color:#fff;padding:0 22px;display:flex;align-items:center;justify-content:space-between;height:52px;flex-shrink:0;border-bottom:3px solid var(--eu)}
+.brand{display:flex;align-items:center;gap:11px}
+.flag-sep{width:1px;height:22px;background:rgba(255,255,255,.2);margin:0 5px}
+.title{font-size:13.5px;font-weight:700;letter-spacing:.01em;line-height:1.3}
+.subtitle{font-size:10.5px;opacity:.6;margin-top:1px}
+.header-badges{display:flex;gap:5px;flex-wrap:wrap}
+.hbadge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.04em}
+.hb-blue{background:rgba(59,130,196,.22);color:#A8CFEE;border:1px solid rgba(59,130,196,.35)}
+.hb-green{background:rgba(39,101,39,.22);color:#98D898;border:1px solid rgba(39,101,39,.35)}
+.hb-amber{background:rgba(176,125,42,.22);color:#F5C87A;border:1px solid rgba(176,125,42,.35)}
+.hb-eu{background:rgba(0,51,153,.4);color:var(--eu-gold);border:1px solid rgba(255,204,0,.4)}
+.hb-red{background:rgba(163,45,45,.25);color:#FFAAAA;border:1px solid rgba(163,45,45,.4)}
+
+/* LAYOUT */
+.layout{display:flex;height:calc(100vh - 52px);overflow:hidden}
+.col{display:flex;flex-direction:column;overflow:hidden;background:#fff}
+.col-left{width:50%;border-right:1px solid var(--border)}
+.col-right{flex:1}
+.col-head{padding:9px 15px;background:var(--gray-50);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.col-head-icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.icon-blue{background:#DBEAFE;color:var(--blue)}
+.icon-eu{background:#E8EEFF;color:var(--eu)}
+.col-head-label{font-size:11.5px;font-weight:700;color:var(--gray-800)}
+.col-head-sub{font-size:9.5px;color:var(--gray-400);margin-top:1px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--gray-50);padding:4px 5px 0;flex-shrink:0;overflow-x:auto;scrollbar-width:none;gap:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{
+  padding:6px 11px;font-size:10.5px;font-weight:600;cursor:pointer;border:none;
+  border-radius:6px 6px 0 0;white-space:nowrap;
+  border-bottom:3px solid transparent;
+  position:relative;overflow:hidden;
+  transition:color .18s,background .18s,border-color .18s,transform .12s;
+  color:var(--gray-500,#6B7280);background:transparent;
+}
+.tab-btn::after{
+  content:'';position:absolute;inset:0;opacity:0;
+  transition:opacity .18s;pointer-events:none;
+}
+/* LEFT tabs — each gets its own hue */
+#left-tabs .tab-btn:nth-child(1){--tc:#1E5FA8;--tb:#DBEAFE;--tbc:#1E5FA8}
+#left-tabs .tab-btn:nth-child(2){--tc:#276527;--tb:#EAF3DE;--tbc:#276527}
+#left-tabs .tab-btn:nth-child(3){--tc:#854F0B;--tb:#FAEEDA;--tbc:#854F0B}
+#left-tabs .tab-btn:nth-child(4){--tc:#5B21B6;--tb:#EDE9FE;--tbc:#5B21B6}
+#left-tabs .tab-btn:nth-child(5){--tc:#A32D2D;--tb:#FCEBEB;--tbc:#A32D2D}
+#left-tabs .tab-btn:nth-child(6){--tc:#0F7B6C;--tb:#E0F4F1;--tbc:#0F7B6C}
+/* RIGHT tabs */
+#right-tabs .tab-btn:nth-child(1){--tc:#003399;--tb:#E8EEFF;--tbc:#003399}
+#right-tabs .tab-btn:nth-child(2){--tc:#854F0B;--tb:#FAEEDA;--tbc:#854F0B}
+#right-tabs .tab-btn:nth-child(3){--tc:#276527;--tb:#EAF3DE;--tbc:#276527}
+/* Hover state — colorshift */
+.tab-btn:not(.active):hover{
+  color:var(--tc,var(--blue));
+  background:var(--tb,#DBEAFE);
+  transform:translateY(-1px);
+}
+/* Active state */
+.tab-btn.active{
+  color:var(--tc,var(--blue));
+  background:var(--tb,#DBEAFE);
+  border-bottom-color:var(--tbc,var(--blue));
+  font-weight:700;
+}
+.col-body{flex:1;overflow-y:auto;scroll-behavior:smooth}
+
+/* SEARCH */
+.search-wrap{padding:7px 11px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0}
+.search-wrap input{width:100%;padding:5px 10px 5px 27px;font-size:11.5px;border:1px solid var(--border);border-radius:var(--radius);background:var(--gray-50);color:var(--gray-800);outline:none;transition:border-color .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' fill='none' stroke='%238D92A0' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:8px center}
+.search-wrap input:focus{border-color:var(--blue);background-color:#fff}
+
+.panel{display:none}.panel.active{display:block}
+
+/* SEC LABELS */
+.sec-label{position:sticky;top:0;z-index:2;padding:6px 13px;background:var(--gray-100);border-bottom:1px solid var(--border);font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-600)}
+
+/* ANNEXE BANNER */
+.annexe-banner{padding:9px 13px;background:linear-gradient(135deg,#EBF3FC,#F7F9FF);border-bottom:1px solid #C5D8F0}
+.annexe-banner h4{font-size:11px;font-weight:700;color:var(--navy-mid);margin-bottom:3px}
+.annexe-banner p{font-size:10px;color:var(--gray-600);line-height:1.5}
+
+/* INFO BLOCKS */
+.info-block{padding:11px 15px;border-bottom:1px solid var(--gray-100);transition:background .1s}
+.info-block:hover{background:var(--gray-50)}
+.info-h{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--navy-mid);margin-bottom:5px}
+.info-icon{width:21px;height:21px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.ii-blue{background:#DBEAFE;color:var(--blue)}
+.ii-teal{background:var(--teal-lt);color:var(--teal)}
+.ii-green{background:var(--green-lt);color:var(--green)}
+.ii-amber{background:var(--amber-lt);color:var(--amber)}
+.ii-red{background:var(--red-lt);color:var(--red)}
+.ii-navy{background:#D8E6F3;color:var(--navy)}
+.ii-gold{background:var(--gold-lt);color:var(--gold)}
+.ii-purple{background:#EDE9FE;color:#5B21B6}
+.ii-eu{background:#E8EEFF;color:var(--eu)}
+.ii-gray{background:var(--gray-100);color:var(--gray-600)}
+.info-body{font-size:11.5px;color:var(--gray-600);line-height:1.6;padding-left:28px}
+.info-body strong{color:var(--gray-800);font-weight:600}
+.rule-list{margin-top:4px}
+.rule-item{display:flex;gap:6px;align-items:start;padding:2px 0}
+.rule-dot{width:5px;height:5px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.rd-blue{background:var(--blue)}.rd-green{background:var(--teal)}
+.rd-amber{background:var(--amber)}.rd-navy{background:var(--navy-mid)}
+.rd-red{background:var(--red)}.rd-eu{background:var(--eu)}
+.rule-item span{font-size:11px;color:var(--gray-600);line-height:1.55}
+.rule-item span strong{color:var(--gray-800)}
+
+/* FORMULA */
+.formula-box{margin:7px 0;padding:9px 13px;background:#F0F4FF;border:1px solid #C5D0F0;border-radius:var(--radius);text-align:center}
+.formula{font-family:'Courier New',monospace;font-size:12px;font-weight:700;color:var(--navy-mid)}
+.formula-note{font-size:10px;color:var(--gray-600);margin-top:4px;line-height:1.5}
+
+/* TABLES */
+.leg-table{width:100%;border-collapse:collapse;margin-top:5px;font-size:11px}
+.leg-table td{padding:4px 7px;border:1px solid var(--border);color:var(--gray-600);line-height:1.4}
+.leg-table td:first-child{font-family:'Courier New',monospace;font-weight:700;color:var(--navy-mid);white-space:nowrap;background:var(--gray-50);width:140px}
+.data-table{width:100%;border-collapse:collapse;margin-top:5px;font-size:11px}
+.data-table th{background:var(--navy-mid);color:#fff;padding:5px 8px;font-weight:600;font-size:9.5px;text-align:left}
+.data-table td{padding:4px 8px;border-bottom:1px solid var(--gray-100);color:var(--gray-600);vertical-align:top;line-height:1.4}
+.data-table tr:nth-child(even) td{background:var(--gray-50)}
+.data-table td:first-child{font-family:'Courier New',monospace;font-weight:700;color:var(--navy-mid);white-space:nowrap}
+
+/* OUVRAISONS TABLE */
+.ouv-wrap{padding:10px 13px}
+.ouv-table{width:100%;border-collapse:collapse;font-size:10.5px}
+.ouv-table th{background:var(--navy-mid);color:#fff;padding:5px 8px;font-weight:600;font-size:9.5px;text-align:left;position:sticky;top:0;z-index:3}
+.ouv-table th:first-child{width:100px}
+.ouv-table th:nth-child(3){width:35%}
+.ouv-table th:nth-child(4){width:28%}
+.ouv-table td{padding:5px 8px;border-bottom:1px solid var(--gray-100);color:var(--gray-600);vertical-align:top;line-height:1.45}
+.ouv-table tr:nth-child(even) td{background:#FAFBFD}
+.ouv-table tr:hover td{background:#EEF3FF}
+.ouv-table td:first-child{font-family:'Courier New',monospace;font-weight:700;color:var(--navy-mid);font-size:10px}
+.ouv-table td:nth-child(3){color:var(--green);font-size:10px}
+.ouv-table td:nth-child(4){color:var(--amber);font-size:10px}
+.ouv-sep td{background:linear-gradient(90deg,var(--navy),var(--navy-mid))!important;color:#fff!important;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 8px}
+.ouv-row.hidden{display:none}
+
+/* CTG */
+.ctg-head{display:grid;grid-template-columns:115px 1fr 75px 145px;gap:6px;padding:6px 13px;border-bottom:1px solid var(--border);background:var(--gray-50)}
+.ctg-head span{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400)}
+.ctg-row{display:grid;grid-template-columns:115px 1fr 75px 145px;gap:6px;padding:8px 13px;border-bottom:1px solid var(--gray-100);align-items:start;transition:background .1s}
+.ctg-row:hover{background:#F4F7FF}
+.ctg-row.hidden{display:none}
+.sh-code{font-family:'Courier New',monospace;font-size:10px;color:var(--navy-mid);font-weight:700;line-height:1.5;display:block}
+.sh-desc{font-size:11px;color:var(--gray-800);line-height:1.5}
+.sh-vol{font-family:'Courier New',monospace;font-weight:700;color:var(--navy-mid);font-size:11px;text-align:right;padding-top:2px}
+.sh-rule{font-size:10px;color:var(--gray-600);line-height:1.5}
+.sh-tag{display:inline-block;margin-top:3px;font-size:9px;font-weight:600;padding:1px 5px;border-radius:3px}
+.tag-ctg{background:#DBEAFE;color:var(--navy-mid)}
+.tag-red{background:var(--red-lt);color:var(--red)}
+.tag-amber{background:var(--amber-lt);color:var(--amber)}
+
+/* CIRC CARDS */
+.circ-card{margin:9px 13px;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.circ-top{padding:8px 13px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.c-base{background:linear-gradient(90deg,#EBF3FC,var(--gray-50))}
+.c-2025{background:linear-gradient(90deg,var(--amber-lt),var(--gray-50))}
+.c-note{background:linear-gradient(90deg,#EDE9FE,var(--gray-50))}
+.c-abr{background:linear-gradient(90deg,var(--red-lt),var(--gray-50))}
+.circ-num{font-size:11.5px;font-weight:700}
+.c-base .circ-num{color:var(--navy-mid)}
+.c-2025 .circ-num{color:var(--amber)}
+.c-note .circ-num{color:#5B21B6}
+.c-abr .circ-num{color:var(--red)}
+.circ-date{font-size:9.5px;color:var(--gray-400)}
+.circ-body{padding:9px 13px}
+.circ-body p{font-size:11px;color:var(--gray-600);line-height:1.6;margin-bottom:4px}
+.circ-body strong{color:var(--gray-800)}
+
+/* BOXES */
+.note-box{margin:9px 13px;padding:8px 11px;background:var(--gray-50);border:1px solid var(--border);border-left:3px solid var(--blue-lt);border-radius:var(--radius);font-size:10.5px;color:var(--gray-600);line-height:1.6}
+.note-box strong{color:var(--gray-800)}
+.alert-box{margin:9px 13px;padding:8px 11px;background:var(--amber-lt);border:1px solid #E8C170;border-left:3px solid var(--amber);border-radius:var(--radius);font-size:10.5px;color:var(--amber);line-height:1.6}
+.alert-box strong{color:var(--gray-800)}
+.refs-box{margin:9px 13px;padding:9px 13px;background:var(--gray-50);border:1px solid var(--border);border-radius:var(--radius)}
+.refs-box h5{font-size:9.5px;font-weight:800;color:var(--gray-800);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em}
+.refs-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}
+.refs-item{font-size:10px;color:var(--gray-600);line-height:1.5}
+.refs-item strong{color:var(--gray-800);display:block}
+
+/* STEPS */
+.step-list{margin-top:4px;padding-left:28px}
+.step{display:flex;gap:6px;margin-bottom:5px}
+.step-num{width:16px;height:16px;border-radius:50%;background:var(--navy-mid);color:#fff;font-size:8.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step span{font-size:11px;color:var(--gray-600);line-height:1.55}
+.step span strong{color:var(--gray-800)}
+
+/* BADGES */
+.badge-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.badge-item{font-size:9.5px;padding:2px 7px;border-radius:4px;font-weight:600}
+.bi-blue{background:#DBEAFE;color:var(--navy-mid)}
+.bi-green{background:var(--green-lt);color:var(--green)}
+.bi-amber{background:var(--amber-lt);color:var(--amber)}
+.bi-red{background:var(--red-lt);color:var(--red)}
+.bi-eu{background:#E8EEFF;color:var(--eu)}
+
+/* FOOTER */
+.site-footer{flex-shrink:0;padding:6px 18px;background:var(--gray-100);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.site-footer span{font-size:9.5px;color:var(--gray-400)}
+.site-footer strong{color:var(--gray-600)}
+</style>
+<style id="ixp-accords">
+.ixp-back{position:fixed;left:16px;bottom:40px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:#14120F;color:#fff!important;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;box-shadow:0 8px 22px -8px rgba(0,0,0,.45)}
+.ixp-back:hover{background:#A8822F}
+@media (max-width:900px){
+ html,body{height:auto!important;overflow:auto!important}
+ body>header,header,.hdr,.header{position:static!important}
+ .layout,#body{display:block!important;position:static!important;height:auto!important;overflow:visible!important}
+ .layout>*,#body>*{width:auto!important;max-width:none!important;height:auto!important;overflow:visible!important}
+ .kpi-strip{grid-template-columns:1fr 1fr!important}
+ .tabs,.tab-bar,[class*="tab-bar"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+ .header-badges,.hdr-badges,.h-badges{display:none!important}
+ footer,.site-footer{position:static!important}
+ .ixp-back{bottom:16px}
+}
+</style>
+<style id="ixp-accords-2">
+.ixp-back-top{flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;color:#14120F!important;font:600 12.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;white-space:nowrap;border:1px solid rgba(255,255,255,.6)}
+.ixp-back-top:hover{background:#C9A84C;color:#fff!important}
+:is(.tab-btn,.rh-tab-btn){border-radius:6px 6px 0 0!important;border-bottom:3px solid transparent!important;transition:color .18s,background .18s,border-color .18s,transform .12s}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+1){--tc:#1E5FA8;--tb:#DBEAFE;--tbc:#1E5FA8}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+2){--tc:#276527;--tb:#EAF3DE;--tbc:#276527}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+3){--tc:#854F0B;--tb:#FAEEDA;--tbc:#854F0B}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+4){--tc:#5B21B6;--tb:#EDE9FE;--tbc:#5B21B6}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+5){--tc:#A32D2D;--tb:#FCEBEB;--tbc:#A32D2D}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+6){--tc:#0F7B6C;--tb:#E0F4F1;--tbc:#0F7B6C}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+7){--tc:#003399;--tb:#E8EEFF;--tbc:#003399}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+8){--tc:#9D174D;--tb:#FCE7F3;--tbc:#9D174D}
+.tab-btn,.rh-tab-btn{margin-right:3px}
+:is(.tab-btn,.rh-tab-btn):not(.active){color:var(--tc)!important;background:var(--tb)!important;opacity:.85}
+:is(.tab-btn,.rh-tab-btn):not(.active):hover{opacity:1;transform:translateY(-1px)}
+:is(.tab-btn,.rh-tab-btn).active{color:var(--tc)!important;background:var(--tb)!important;border-bottom-color:var(--tbc)!important;font-weight:700;opacity:1;box-shadow:inset 0 0 0 1px var(--tbc)}
+@media (max-width:900px){.ixp-back-top{padding:7px 11px;font-size:12px}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+        <div>
+      <div class="title">Accord d'Association Maroc – Union Européenne &amp; AELE · Import-eXPert</div>
+      
+    </div>
+  </div>
+  <a class="ixp-back-top" href="/accords">← Accords préférentiels</a>
+</header>
+
+<div class="layout">
+<!-- ═══════════════════ COLONNE GAUCHE ═══════════════════ -->
+<div class="col col-left">
+  <div class="col-head">
+    <div class="col-head-icon icon-blue">⚖</div>
+    <div>
+      <div class="col-head-label">Réglementation · Règles d'origine · Procédures douanières</div>
+      <div class="col-head-sub">Protocole 4 (2005) · CRR (2026) · Cumul pan-euro-med · Preuves d'origine · No-drawback · Circulaires ADII</div>
+    </div>
+  </div>
+  <div class="tabs" id="left-tabs">
+    <button class="tab-btn active" onclick="switchTab('left','accord',this)">Accord &amp; CRR</button>
+    <button class="tab-btn"        onclick="switchTab('left','origine',this)">Règles d'origine</button>
+    <button class="tab-btn"        onclick="switchTab('left','cumul',this)">Cumul diagonal</button>
+    <button class="tab-btn"        onclick="switchTab('left','preuves',this)">Preuves &amp; Procédures</button>
+    <button class="tab-btn"        onclick="switchTab('left','nodrawback',this)">No-Drawback</button>
+    <button class="tab-btn"        onclick="switchTab('left','circs',this)">Références</button>
+  </div>
+  <div class="col-body">
+
+<!-- ══ ONGLET ACCORD & CRR ══ -->
+<div id="panel-accord" class="panel active"><div class="ixp-maj" style="border:1px solid #D9C48A;border-left:4px solid #B8922A;background:#FBF5E6;padding:14px 16px;margin:0 0 16px;border-radius:6px;font-size:13px;line-height:1.55;color:#1A1A18"><div style="font-weight:700;font-size:13.5px;margin-bottom:6px">Mise à jour du 9 novembre 2026</div><ul style="margin:4px 0 0 18px;padding:0"><li style="margin:3px 0"><strong>Contingents agricoles 1<sup>er</sup> octobre 2026 – 30 septembre 2027</strong> (circ. 6777/222 du 29/09/2026, Liste 3 de l’annexe agricole) : blé dur 2,5 % dans la limite de 50 000 t (1<sup>er</sup> août – 31 mai) ; huile d’olive extra vierge 1 500 t et vierge 500 t ; veaux de moins de 150 kg 2,5 % pour 40 000 têtes ; pommes extra 0 % pour 4 000 t (1<sup>er</sup> février – 31 mai) ; tomates préparées 0 % pour 1 000 t ; aliments composés pour animaux 0 % pour 30 000 t. Hors contingent : droit commun.</li><li style="margin:3px 0"><strong>Preuves d’origine</strong> (circ. 6722/233 du 10/02/2026) : les EUR.1 et déclarations d’origine émises dans l’UE <em>sans</em> la mention « REVISED RULES » sont recevables. La mention n’est exigée que sur les preuves marocaines à l’export vers l’UE et la Türkiye.</li><li style="margin:3px 0"><strong>Contrôle des certificats</strong> : nouveaux spécimens de cachets EUR.1 et adresses de contrôle a posteriori pour l’Estonie, la République tchèque et la Slovaquie (note D105/2026 du 30/04/2026) ; nouveaux formats de numéros d’exportateurs agréés (note D99/2026 du 21/04/2026).</li><li style="margin:3px 0"><strong>Contingents en attente de quote-part</strong> : consignation possible des droits et taxes (circ. 6720/222 du 06/02/2026).</li><li style="margin:3px 0"><strong>Accord agricole amendé</strong> par échange de lettres signé le 3 octobre 2025 : les préférences s’appliquent aux produits des provinces du Sud. Le Conseil de gouvernement a pris connaissance, le 19 mars 2026, d’un échange de lettres modifiant les protocoles n° 1 et n° 4 ; la circulaire d’application n’est pas encore intégrée ici.</li><li style="margin:3px 0"><strong>Défense commerciale</strong> : droit antidumping de 5,5 % sur le PVC (3904.10.90.00) originaire de l’UE, jusqu’au 3 août 2027 (circ. 6489/211).</li></ul><div style="margin-top:8px;font-size:11.5px;color:#5A5A54">Sources : circulaires ADII 6777/222, 6722/233, 6720/222, 6489/211 ; notes D99 et D105/2026 ; presse marocaine (Hespress, TelQuel) pour l’échange de lettres.</div></div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-eu">⚖</div>Base juridique — Accord d'Association Maroc–UE</div>
+  <div class="info-body">Signé à Bruxelles le <strong>26 février 1996</strong>, entré en vigueur le <strong>1<sup>er</sup> mars 2000</strong>. Règles d'origine : <strong>Protocole 4</strong> de l'accord, circulaire de base ADII : Circ. n° <strong>4978/233 du 30/12/2005</strong> (remplaçant la Circ. 4617/222 du 15/02/2000).<br><br>
+  Depuis le <strong>1<sup>er</sup> janvier 2026</strong>, les règles d'origine pour les échanges avec l'<strong>UE et la Turquie</strong> sont celles de la <strong>Convention Régionale Révisée (CRR)</strong>, en application provisoire jusqu'au <strong>31 décembre 2027</strong> ou publication au BO marocain (Circ. 6706/233 du 31/12/2025).</div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-amber">📊</div>Tableau comparatif exhaustif — Protocole 4 (2005) vs CRR (2026)</div>
+  <div class="info-body" style="padding-left:0">
+  <table class="data-table" style="margin-top:4px">
+    <thead><tr><th>Paramètre</th><th>Protocole 4 — Circ. 4978/233 (2005)</th><th>CRR — Circ. 6706/233 (2026)</th></tr></thead>
+    <tbody>
+      <tr><td>Tolérance — autres produits (hors ch. 50–63)</td><td>10 % prix départ usine</td><td><strong style="color:var(--green)">15 % prix départ usine</strong></td></tr>
+      <tr><td>Tolérance — produits agricoles (ch. 2–24, hors ch. 16)</td><td>10 % valeur</td><td><strong style="color:var(--green)">15 % du poids net</strong></td></tr>
+      <tr><td>Tolérance — textiles ch. 50–63</td><td>Notes intro. 5 et 6</td><td>Points 6 et 7 des notes intro. (si règle y réfère)</td></tr>
+      <tr><td>Navires — état-major</td><td>100 % ressortissants Parties</td><td><strong style="color:var(--green)">Supprimé</strong></td></tr>
+      <tr><td>Navires — équipage</td><td>75 % ressortissants Parties</td><td><strong style="color:var(--green)">Supprimé</strong></td></tr>
+      <tr><td>Navires — propriété</td><td>≥ 50 % ressortissants + conditions siège social</td><td>≥ 50 % ressortissants ou sociétés (conditions siège allégées)</td></tr>
+      <tr><td>Aquaculture</td><td>Non définie</td><td><strong style="color:var(--green)">Définition spécifique ajoutée</strong></td></tr>
+      <tr><td>Matières fongibles</td><td>Non défini</td><td><strong style="color:var(--green)">Définition ajoutée</strong></td></tr>
+      <tr><td>Validité preuve d'origine</td><td>4 mois</td><td><strong style="color:var(--green)">10 mois</strong></td></tr>
+      <tr><td>Déclaration fournisseur long terme</td><td>1 an max</td><td><strong style="color:var(--green)">2 ans max</strong></td></tr>
+      <tr><td>No-drawback</td><td>Tous produits (si cumul élargi + EUR-MED)</td><td><strong style="color:var(--green)">Chapitres 50–63 uniquement</strong></td></tr>
+      <tr><td>Preuves admises</td><td>EUR.1 · EUR-MED · Décl. sur facture · Décl. sur facture EUR-MED</td><td><strong style="color:var(--green)">EUR.1 + Déclaration d'origine</strong> (EUR-MED supprimé)</td></tr>
+      <tr><td>Mention cumul sur preuve</td><td>CUMULATION APPLIED WITH… / NO CUMULATION APPLIED</td><td>CUMULATION APPLIED WITH… (NO CUMULATION supprimé)</td></tr>
+      <tr><td>Non-modification (transport direct)</td><td>Transport direct strict</td><td><strong style="color:var(--green)">Fractionnement autorisé</strong> sous surveillance douanière</td></tr>
+      <tr><td>Cumul des ouvraisons</td><td>Bilatéral ou diagonal selon cas</td><td><strong style="color:var(--green)">Généralisé</strong> à toutes Parties (sauf ch. 50–63 : bilatéral)</td></tr>
+      <tr><td>Calcul sur valeurs moyennes</td><td>Non prévu</td><td><strong style="color:var(--green)">Autorisé</strong> sur demande au bureau d'exportation</td></tr>
+      <tr><td>Riz — blanchiment partiel</td><td>Transformation insuffisante</td><td><strong style="color:var(--green)">Retiré</strong> de la liste insuffisante</td></tr>
+      <tr><td>Certificats EUR-MED</td><td>Prévus et admis</td><td><strong style="color:var(--red)">Supprimés</strong></td></tr>
+      <tr><td>Décl. sur facture EUR-MED</td><td>Prévue et admise</td><td><strong style="color:var(--red)">Supprimée</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-red">⛔</div>Transformations insuffisantes ajoutées par la CRR (Art. 6)</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>Décorticage et <strong>mouture partielle ou totale du riz</strong></span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>Lissage et glaçage des <strong>céréales ou du riz</strong></span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>Coloration ou aromatisation du <strong>sucre</strong>, moulage en morceaux, mouture totale ou partielle du sucre cristallisé</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>Simple addition d'eau, <strong>dilution, déshydratation ou dénaturation</strong> des produits</span></div>
+  </div>
+  <br><em>Le blanchiment partiel ou complet du riz a été retiré de la liste des transformations insuffisantes.</em>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-purple">🔢</div>Calcul sur valeurs moyennes (CRR — nouveau)</div>
+  <div class="info-body">Lorsque la règle de liste prévoit une proportion maximale de matières non originaires, l'exportateur peut demander au <strong>bureau de douane d'exportation</strong> d'utiliser une <strong>base de calcul moyenne</strong> pour le prix départ usine et la valeur des matières non originaires, afin de tenir compte des fluctuations de coûts et de taux de change. L'opérateur présente la méthode de calcul.</div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-blue">📋</div>Périmètre accordé UE / AELE / Turquie / Agadir — Statut 2026</div>
+  <div class="info-body">
+  <table class="data-table" style="margin-top:4px">
+    <thead><tr><th>Accord</th><th>Circulaire applicable depuis 01/01/2026</th><th>Cumul diagonal</th></tr></thead>
+    <tbody>
+      <tr><td>Maroc–UE</td><td>Circ. 6706/233 (CRR)</td><td><strong style="color:var(--green)">Maintenu</strong></td></tr>
+      <tr><td>Maroc–Turquie</td><td>Circ. 6706/233 (CRR)</td><td><strong style="color:var(--green)">Maintenu</strong></td></tr>
+      <tr><td>Maroc–AELE (CH, NO, IS, LI)</td><td>Circ. 4980/233 du 30/12/2005 (inchangée)</td><td>Selon circ. 4980</td></tr>
+      <tr><td>Accord d'Agadir (TN, EG, JO)</td><td>Circ. 5047/223 du 27/03/2007 (inchangée)</td><td>Selon circ. 5047</td></tr>
+    </tbody>
+  </table>
+  <br><em>AELE et Agadir : règles maintenues en attendant la signature des décisions modifiant les protocoles sur les règles d'origine les concernant.</em>
+  </div>
+</div>
+
+</div><!-- /panel-accord -->
+
+<!-- ══ ONGLET RÈGLES D'ORIGINE ══ -->
+<div id="panel-origine" class="panel">
+
+<div class="sec-label">§ I — CRITÈRES D'ACQUISITION DE L'ORIGINE (ART. 2 PROTOCOLE)</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-navy">🏷</div>Produits originaires du Maroc et de la Communauté</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(a)</strong> Les produits <em>entièrement obtenus</em> au Maroc ou dans la Communauté</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>(b)</strong> Les produits obtenus contenant des matières non entièrement obtenues, à condition que ces matières aient fait l'objet d'<em>ouvraisons ou transformations suffisantes</em></span></div>
+    <div class="rule-item"><div class="rule-dot rd-eu"></div><span><strong>(c)</strong> Sont également originaires de la CE les marchandises originaires de l'<strong>Espace économique européen</strong> (Islande, Liechtenstein, Norvège + États CE)</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-green">🌱</div>Produits entièrement obtenus — 11 catégories (Art. 4 Protocole)</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(a)</strong> Produits minéraux extraits du sol ou fond de mers/océans</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(b)</strong> Produits du règne végétal récoltés sur le territoire</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(c)</strong> Animaux vivants nés et élevés sur le territoire</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(d)</strong> Produits provenant d'animaux élevés (lait, œufs, laine, miel…) — les animaux doivent être élevés sur place</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(e)</strong> Produits de la chasse ou de la pêche pratiquées sur le territoire (y compris eaux territoriales)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(f)</strong> Produits de la pêche maritime hors eaux territoriales, par les navires des Parties — conditions CRR : immatriculation + pavillon d'une Partie + propriété ≥ 50 % (état-major/équipage supprimés)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(g)</strong> Produits fabriqués à bord des navires-usines des Parties à partir des produits (f)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(h)</strong> Articles usagés ne pouvant servir qu'à la récupération de matières premières (y compris pneumatiques usagés pour rechapage ou déchets)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(i)</strong> Déchets provenant d'opérations manufacturières effectuées sur le territoire</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(j)</strong> Produits extraits du sol/sous-sol marin hors eaux territoriales, si la Partie en a les droits exclusifs d'exploitation</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(k)</strong> Marchandises fabriquées exclusivement à partir de produits (a) à (j)</span></div>
+  </div>
+  <br><strong>[CRR 2026 :]</strong> Définition spécifique ajoutée pour les produits de l'<strong>aquaculture</strong>. Assouplissement conditions navires : suppression exigences d'état-major et d'équipage.
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-amber">📏</div>Règle de tolérance — Tableau comparatif (Art. 6 §2)</div>
+  <div class="info-body" style="padding-left:0">
+  <table class="data-table" style="margin-top:4px">
+    <thead><tr><th>Catégorie de produit</th><th>Tolérance Protocole 4</th><th>Tolérance CRR 2026</th></tr></thead>
+    <tbody>
+      <tr><td>Produits agricoles ch. 2–24 (hors ch. 16 poissons transformés)</td><td>10 % valeur prix départ usine</td><td><strong>15 % du poids net</strong></td></tr>
+      <tr><td>Autres produits (hors ch. 50–63)</td><td>10 % prix départ usine</td><td><strong>15 % prix départ usine</strong></td></tr>
+      <tr><td>Textiles ch. 50–63</td><td>Notes intro. 5 et 6-1 (8 % morceaux de tissus)</td><td>Points 6 et 7 des notes introductives (si règle y réfère)</td></tr>
+    </tbody>
+  </table>
+  <br><strong>Limites de la tolérance :</strong>
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>Ne s'applique pas si elle entraîne un dépassement du % max de matières non originaires fixé dans la liste</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>Ne s'applique pas aux produits issus d'opérations insuffisantes (ex. miel obtenu par simple mélange)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>Deux pourcentages dans une même règle ne s'additionnent pas — le plus élevé prévaut</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-red">🚫</div>Liste complète des ouvraisons insuffisantes (Art. 7 / Chap. I-C Circ. 4978)</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(a)</strong> Manipulations destinées à assurer la conservation en l'état des produits pendant leur transport et stockage</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(b)</strong> Divisions et réunions de colis</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(c)</strong> Lavage, nettoyage, dépoussiérage, enlèvement d'oxyde, d'huile, de peinture ou d'autres revêtements</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(d)</strong> Repassage et pressage des textiles</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(e)</strong> Simples opérations de peinture et de polissage</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(f)</strong> Dépanouillage, blanchiment partiel ou complet, lissage et glaçage des céréales ou du riz <em>(blanchiment du riz retiré par CRR)</em></span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(g)</strong> Opérations consistant dans l'addition de colorants au sucre ou dans la formation de morceaux de sucre</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(h)</strong> Épluchage, dénoyautage ou écorçage des fruits ou des légumes</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(i)</strong> Aiguisage, simple broyage ou simple coupage</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(j)</strong> Criblage, tamisage, triage, classement, rangement par classe, assortiment</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(k)</strong> Simple mise en bouteilles, canettes, flacons, sacs, étuis, boîtes, sur cartes ou planchettes — tout conditionnement simple</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(l)</strong> Apposition ou impression de marques, étiquettes, logos et signes distinctifs similaires sur produits ou leurs emballages</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(m)</strong> Simple mélange de produits, même d'espèces différentes</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(n)</strong> Simple réunion de parties en vue de constituer un produit complet ou démontage de produits en parties</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(o)</strong> Cumul de deux ou plusieurs opérations (a) à (n)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>(p)</strong> Abattage des animaux</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>[CRR] (q)</strong> Décorticage et mouture partielle ou totale du riz</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>[CRR] (r)</strong> Lissage et glaçage des céréales ou du riz</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>[CRR] (s)</strong> Coloration/aromatisation du sucre, moulage en morceaux, mouture du sucre cristallisé</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>[CRR] (t)</strong> Simple addition d'eau, dilution, déshydratation ou dénaturation des produits</span></div>
+  </div>
+  <br><em>Toutes les opérations effectuées au Maroc ou dans la CE sur un produit sont considérées conjointement pour apprécier si l'ouvraison est insuffisante.</em>
+  </div>
+</div>
+
+<div class="sec-label">§ II — ÉLÉMENTS COMPLÉMENTAIRES</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-gray">🔧</div>Éléments neutres — Non pris en compte pour l'origine</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Énergie et combustibles</span></div>
+    <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Installations, équipements, machines et outils</span></div>
+    <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Marchandises n'entrant pas et non destinées à entrer dans la composition finale du produit</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-gold">🎁</div>Assortiments (RG 3 du SH)</div>
+  <div class="info-body">Un assortiment est originaire si tous les produits le composant sont originaires. Un assortiment mixte est considéré comme originaire si la valeur des articles non originaires <strong>n'excède pas 15 % du prix départ usine</strong> de l'assortiment. Accessoires, pièces de rechange et outillages livrés avec un équipement et compris dans son prix normal sont considérés comme formant un tout avec lui.</div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-teal">🔀</div>Non-modification — Règle du transport direct (Art. 14 CRR / Chap. III-C Circ. 4978)</div>
+  <div class="info-body">Les produits doivent être transportés directement entre les territoires du Maroc et de la CE, ou en empruntant les territoires de la zone euro-med avec lesquels le cumul est applicable.<br><br>
+  <strong>Tolérance de transit (inchangée) :</strong> transit avec transbordement ou entreposage temporaire en pays tiers, sous réserve que les produits restent sous surveillance douanière et n'y subissent que des opérations de conservation.<br><br>
+  <strong>[CRR 2026] Assouplissement :</strong> le <strong>fractionnement des envois</strong> est désormais autorisé dans le(s) pays tiers sous surveillance douanière.<br><br>
+  <strong>Preuve du transport direct :</strong> (1) document de transport unique couvrant la traversée du pays de transit ; (2) attestation douanière du pays de transit (description des produits, dates de déchargement/rechargement, conditions de séjour) ; (3) tout document probant.</div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-navy">🏪</div>Expositions (Chap. III-D Circ. 4978)</div>
+  <div class="info-body">Les produits originaires envoyés pour exposition dans un pays non zone et vendus à la fin de l'exposition pour importation au Maroc ou dans la CE bénéficient du régime préférentiel, sous réserve de preuve : (a) que l'exportateur a expédié les produits depuis le Maroc ou la CE vers le pays d'exposition ; (b) qu'il les a vendus ou cédés à un destinataire au Maroc ou dans la CE ; (c) que les produits ont été expédiés durant ou immédiatement après l'exposition dans l'état où ils ont été exportés ; (d) qu'ils n'ont pas été utilisés à d'autres fins que la présentation à cette exposition.</div>
+</div>
+
+</div><!-- /panel-origine -->
+
+<!-- ══ ONGLET CUMUL DIAGONAL ══ -->
+<div id="panel-cumul" class="panel">
+
+<div class="sec-label">ZONE PAN EURO-MÉDITERRANÉENNE — PARTENAIRES DU CUMUL</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-eu">🌐</div>Zone pan euro-med et état du cumul en 2026</div>
+  <div class="info-body">
+  <div class="badge-row">
+    <span class="badge-item bi-eu">UE (27 États membres)</span>
+    <span class="badge-item bi-blue">Islande</span>
+    <span class="badge-item bi-blue">Norvège</span>
+    <span class="badge-item bi-blue">Suisse (+ Liechtenstein)</span>
+    <span class="badge-item bi-blue">Turquie</span>
+    <span class="badge-item bi-green">Maroc</span>
+    <span class="badge-item bi-amber">Tunisie *</span>
+    <span class="badge-item bi-amber">Algérie *</span>
+    <span class="badge-item bi-amber">Égypte *</span>
+    <span class="badge-item bi-amber">Jordanie *</span>
+    <span class="badge-item bi-amber">Îles Féroé</span>
+  </div>
+  <br>* Algérie et Tunisie : conditions d'application du cumul non encore remplies → traités comme pays tiers jusqu'à nouvel ordre.<br>
+  <strong>Cumul effectif 2026 :</strong> Maroc ↔ UE ↔ AELE ↔ Turquie.
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-blue">📜</div>Conditions d'application du cumul (Art. 3 et 4 Protocole)</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-eu"></div><span>Un <strong>accord commercial préférentiel</strong> existe entre les pays participants et le pays de destination</span></div>
+    <div class="rule-item"><div class="rule-dot rd-eu"></div><span>Les matières ont acquis leur caractère originaire par application de <strong>règles d'origine identiques</strong> à celles du protocole</span></div>
+    <div class="rule-item"><div class="rule-dot rd-eu"></div><span>Des avis précisant les exigences ont été publiés au <strong>Bulletin Officiel marocain</strong> et au <strong>Journal Officiel de l'UE</strong></span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-teal">⚙</div>Mécanismes du cumul diagonal — 4 cas pratiques</div>
+  <div class="info-body">
+  <strong>CAS A — Standard :</strong> La transformation suffisante ne s'applique qu'aux matières <em>non originaires de la zone</em>. Les intrants zonaux doivent seulement subir une opération allant <em>au-delà des opérations insuffisantes</em>. Origine attribuée : pays où a eu lieu la <strong>dernière transformation suffisante</strong>.<br><br>
+  <strong>Exemple :</strong> Salopettes coton (SH 6203) au Maroc à partir de tissus CE (originaires) + boutons Indonésie (non originaires). Les boutons satisfont à la règle de transformation suffisante (note 6-2 : matières hors ch. 50–63 utilisées librement). Les tissus CE ne subissent pas d'obligation de transformation suffisante (cumul). → Produit <strong>originaire du Maroc</strong>.<br><br>
+  <strong>CAS B — Ouvraison insuffisante au Maroc :</strong>
+  <div class="formula-box">
+    <div class="formula">VA Maroc = Prix départ usine − Σ (valeurs matières originaires de la zone)</div>
+    <div class="formula-note">Si VA Maroc &lt; valeur d'un pays de la zone → origine = pays de la zone ayant apporté la plus forte valeur</div>
+  </div>
+  <strong>Exemple :</strong> Ensemble pantalon-veste emballé au Maroc. Pantalon + jupe Islande (180 €) + veste Turquie (100 €). Conditionnement Maroc : 2 €. Prix départ usine : 330 €. VA Maroc = 330 − 280 = 50 €. 50 &lt; 180 → <strong>Origine Islande</strong>.<br><br>
+  <strong>CAS C — Conservation de l'origine initiale :</strong> Produits zonaux sans transformation au Maroc → conservent leur <strong>origine initiale</strong> lors de la réexportation.<br>
+  <em>Ex : un tapis marocain séjournant 2 ans dans la CE sans transformation, puis réexporté vers l'AELE, reste <strong>originaire du Maroc</strong>.</em><br><br>
+  <strong>CAS D — Cumul des ouvraisons :</strong> Les ouvraisons effectuées en CE, Algérie ou Tunisie sont considérées comme effectuées au Maroc si les produits subissent des <strong>ouvraisons ultérieures au Maroc allant au-delà des opérations insuffisantes</strong>. <strong>[CRR 2026] :</strong> généralisé à toutes les Parties (sauf ch. 50–63 : bilatéral uniquement).
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-purple">🌍</div>Conditions territoriales — Dérogations (Art. 12 Protocole / Chap. III-B Circ. 4978)</div>
+  <div class="info-body">
+  <strong>Principe :</strong> Les conditions d'origine doivent être remplies sans interruption au Maroc ou dans la CE.<br><br>
+  <strong>Dérogation §3 :</strong> Ouvraisons en pays tiers sur matières originaires exportées par le Maroc ou la CE → réimportables si la <strong>valeur ajoutée acquise en pays tiers n'excède pas 10 %</strong> du prix départ usine du produit final, et si les ouvraisons sont réalisées sous <strong>régime de perfectionnement passif ou régime similaire</strong>.<br><br>
+  <strong>Dérogation §4 :</strong> La valeur acquise en dehors des Parties + valeur des matières tierces ≤ pourcentage max prévu dans la liste.<br><br>
+  <strong>Exceptions :</strong> Ne s'applique pas aux produits ne satisfaisant aux conditions que par la tolérance de 10 % (ni 15 % CRR), ni aux textiles ch. 50–63.
+  </div>
+</div>
+
+</div><!-- /panel-cumul -->
+
+<!-- ══ ONGLET PREUVES & PROCÉDURES ══ -->
+<div id="panel-preuves" class="panel">
+
+<div class="sec-label">PREUVES D'ORIGINE — DISPOSITIONS GÉNÉRALES (CHAP. V CIRC. 4978 / ART. 17–30 CRR)</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-navy">📄</div>Types de preuves admises — Comparatif</div>
+  <div class="info-body" style="padding-left:0">
+  <table class="data-table" style="margin-top:4px">
+    <thead><tr><th>Preuve</th><th>Qui établit</th><th>Montant max</th><th>Protocole 4</th><th>CRR 2026</th></tr></thead>
+    <tbody>
+      <tr><td>EUR.1</td><td>Autorités douanières du pays d'exportation</td><td>Aucun</td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅ Maintenu</td></tr>
+      <tr><td>Déclaration d'origine <em>(ex décl. sur facture)</em></td><td>Tout exportateur (≤ 6 000 €) ou exportateur agréé (sans limite)</td><td>6 000 € si non agréé</td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅ Maintenu (renommé)</td></tr>
+      <tr><td>EUR-MED</td><td>Autorités douanières</td><td>Aucun</td><td style="color:var(--green)">✅</td><td style="color:var(--red)">❌ Supprimé</td></tr>
+      <tr><td>Décl. sur facture EUR-MED</td><td>Exportateur agréé / tout exportateur</td><td>6 000 € si non agréé</td><td style="color:var(--green)">✅</td><td style="color:var(--red)">❌ Supprimée</td></tr>
+    </tbody>
+  </table>
+  <br><strong>Exemptions de preuve (Art. 27 CRR / Chap. V-M Circ. 4978) — sans caractère commercial :</strong>
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Petits envois de <strong>particulier à particulier : ≤ 500 €</strong></span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Bagages personnels des voyageurs : <strong>≤ 1 200 €</strong></span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-green">⏱</div>Validité des preuves d'origine</div>
+  <div class="info-body">
+  <table class="leg-table">
+    <tr><td>EUR.1 / Décl. d'origine</td><td><strong>10 mois</strong> à compter de la date de délivrance dans le pays d'exportation (Protocole 4 : 4 mois). Délai dépassé pour circonstances exceptionnelles ou présentation des produits avant expiration.</td></tr>
+    <tr><td>Décl. fournisseur ponctuelle</td><td>Par envoi — pas de durée propre.</td></tr>
+    <tr><td>Décl. fournisseur long terme</td><td><strong>2 ans max</strong> à compter de l'établissement (Protocole 4 : 1 an). Fournisseur doit informer immédiatement si elle cesse d'être valable.</td></tr>
+  </table>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-blue">🔏</div>Procédure de délivrance du EUR.1 (Chap. V-B Circ. 4978)</div>
+  <div class="info-body">
+  <div class="step-list">
+    <div class="step"><div class="step-num">1</div><span>L'exportateur ou son représentant remplit le <strong>formulaire EUR.1</strong> + formulaire de demande, dans l'une des langues officielles de l'accord</span></div>
+    <div class="step"><div class="step-num">2</div><span>La douane d'exportation contrôle le caractère originaire et le respect du protocole (peut exiger tous documents, contrôle comptabilité de l'exportateur)</span></div>
+    <div class="step"><div class="step-num">3</div><span>EUR.1 délivré dès que l'exportation réelle est effectuée ou assurée — date de délivrance inscrite en <strong>case 11</strong></span></div>
+    <div class="step"><div class="step-num">4</div><span>Si cumul appliqué : <strong>CUMULATION APPLIED WITH [NOM PARTIE]</strong> — case 7 (EUR.1) ou fin de texte (déclaration d'origine)</span></div>
+  </div>
+  <br><strong>Cas particuliers :</strong>
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>EUR.1 a posteriori :</strong> admis si non délivré au moment de l'exportation (erreurs, omissions, circonstances particulières) → mention <em>ISSUED RETROSPECTIVELY</em> en case 7</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Duplicata :</strong> vol/perte/destruction → mention <em>DUPLICATE</em> en case 7, reprend la date du document original</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>EUR.1 de remplacement :</strong> délivrable si les produits originaires sont placés sous contrôle d'un bureau douanier et envoyés ailleurs</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Preuves rétroactives 2025 (CRR) :</strong> établissables pour exportations 2025, base règles CRR → mention <em>REVISED RULES</em> en case 7 ou fin de texte</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-teal">🏢</div>Exportateur agréé (Chap. V-G Circ. 4978)</div>
+  <div class="info-body">Statut accordé par les autorités douanières du pays d'exportation aux exportateurs effectuant fréquemment des exportations et offrant toutes garanties de contrôle.<br><br>
+  <strong>Avantage :</strong> établit des déclarations d'origine quelle que soit la valeur (sans limite des 6 000 €), et sans obligation de signature manuscrite (engagement écrit présenté à la douane). Pas de numéro d'autorisation à apposer en cas de déclaration EUR-MED (supprimée par CRR).
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-navy">📋</div>Déclaration du fournisseur (Chap. V-H Circ. 4978 / Art. 29 CRR)</div>
+  <div class="info-body">Permet de prouver les ouvraisons subies au Maroc, en CE, Algérie ou Tunisie par des matières n'ayant pas acquis l'origine.<br><br>
+  <strong>Déclaration ponctuelle :</strong> par envoi, sur feuille annexée à la facture ou au bon de livraison.<br>
+  <strong>Déclaration long terme :</strong> pour livraisons régulières à un même client, validité <strong>2 ans max</strong> (CRR — Protocole 4 : 1 an).<br><br>
+  <strong>Conservation des preuves et documents (Chap. V-O Circ. 4978) :</strong>
+  <table class="leg-table" style="margin-top:6px">
+    <tr><td>Exportateur (EUR.1)</td><td>3 ans minimum</td></tr>
+    <tr><td>Exportateur (décl. d'origine)</td><td>3 ans minimum (copie + justificatifs)</td></tr>
+    <tr><td>Fournisseur (décl. long terme)</td><td>3 ans à compter de l'expiration de la validité de la déclaration</td></tr>
+    <tr><td>Autorités douanières exportation</td><td>3 ans (formulaire de demande EUR.1)</td></tr>
+    <tr><td>Autorités douanières importation</td><td>3 ans (EUR.1 et déclarations d'origine présentés)</td></tr>
+  </table>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-red">🔍</div>Contrôle a posteriori des preuves (Chap. VI Circ. 4978 / Art. 34 CRR)</div>
+  <div class="info-body">
+  <div class="step-list">
+    <div class="step"><div class="step-num">1</div><span>Contrôle par <strong>sondage</strong> ou sur <strong>doutes fondés</strong> sur l'authenticité ou le caractère originaire</span></div>
+    <div class="step"><div class="step-num">2</div><span>Le service adresse aux autorités douanières de la CE le certificat + facture si présentée (ou copie), avec motifs de fond ou de forme</span></div>
+    <div class="step"><div class="step-num">3</div><span><strong>Mainlevée possible</strong> sur mesures conservatoires pendant l'attente des résultats</span></div>
+    <div class="step"><div class="step-num">4</div><span>Résultats communiqués dans les meilleurs délais — doivent indiquer si les documents sont authentiques et si les produits sont originaires</span></div>
+    <div class="step"><div class="step-num">5</div><span>En l'absence de réponse dans un délai de <strong>10 mois</strong> ou réponse insuffisante → <strong>refus du régime préférentiel</strong> (sauf circonstances exceptionnelles)</span></div>
+  </div>
+  <br><strong>Discordances formelles :</strong> légères discordances ou fautes de frappe n'entraînent pas ipso facto la non-validité si le document correspond au produit présenté.
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-purple">🏦</div>Séparation comptable (Chap. V-R Circ. 4978)</div>
+  <div class="info-body">Pour les intrants originaires et non originaires <strong>interchangeables à des fins commerciales</strong> (mêmes propriétés), l'accord autorise la méthode de <strong>séparation comptable</strong> à la place de la séparation physique des stocks, sous <strong>autorisation préalable</strong> des autorités douanières.
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-gold">💶</div>Montants exprimés en euros (Chap. V-Q Circ. 4978)</div>
+  <div class="info-body">Les montants en devises nationales équivalents aux seuils en euros (6 000 €, 500 €, 1 200 €) sont fixés <strong>annuellement</strong> par chaque pays. L'envoi bénéficie des dispositions sur la base de la monnaie de facturation. Les montants en vigueur dans les pays CE et AELE diffusés pour les anciens protocoles restent d'application jusqu'à nouvel avis.
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-teal">🏗</div>Zones franches (Chap. VI-E Circ. 4978)</div>
+  <div class="info-body">Les produits en transit dans une zone franche ne doivent pas y faire l'objet de substitutions ou de manipulations autres que celles destinées à assurer leur conservation en l'état. Par dérogation, si des produits originaires importés dans une zone franche subissent un traitement ou une transformation conformes aux dispositions du protocole, la douane compétente délivre un nouveau certificat EUR.1 à la demande de l'exportateur.
+  </div>
+</div>
+
+</div><!-- /panel-preuves -->
+
+<!-- ══ ONGLET NO-DRAWBACK ══ -->
+<div id="panel-nodrawback" class="panel">
+
+<div class="sec-label">RÈGLE DU NO-DRAWBACK — CHAP. IV CIRC. 4978 / ART. 16 CRR</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-red">🔒</div>Champ d'application — Évolution Protocole 4 → CRR</div>
+  <div class="info-body" style="padding-left:0">
+  <table class="data-table" style="margin-top:4px">
+    <thead><tr><th>Aspect</th><th>Protocole 4 (Circ. 4978)</th><th>CRR 2026 (Circ. 6706)</th></tr></thead>
+    <tbody>
+      <tr><td>Portée des produits</td><td>Tous produits originaires, si cumul élargi + EUR-MED</td><td><strong style="color:var(--green)">Chapitres 50 à 63 uniquement</strong></td></tr>
+      <tr><td>Échanges bilatéraux</td><td>Non soumis</td><td>Non soumis (inchangé)</td></tr>
+      <tr><td>Certificat déclencheur</td><td>EUR-MED ou décl. sur facture EUR-MED</td><td>N/A — EUR-MED supprimé par CRR</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-amber">⚠</div>Principe général — Interdiction des ristournes (Art. 15 §1 Protocole 4)</div>
+  <div class="info-body">Les matières <strong>non originaires de la zone pan-euro-med</strong> incorporées dans des produits originaires exportés sous couvert d'un EUR-MED (Protocole 4) <strong>ne doivent pas bénéficier</strong> au Maroc ou dans la CE :
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>D'une <strong>ristourne ou exonération</strong> des droits de douane, sous quelque forme que ce soit</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>D'un <strong>remboursement, remise ou non-paiement partiel ou total</strong> du droit d'importation</span></div>
+    <div class="rule-item"><div class="rule-dot rd-red"></div><span>De toute <strong>suspension</strong> subordonnant le non-paiement à l'exportation des produits compensateurs</span></div>
+  </div>
+  <br>L'interdiction couvre tous les intrants non originaires, y compris <strong>emballages, accessoires, pièces de rechange, outillages et produits d'assortiments</strong> (Art. 15 §3).<br><br>
+  <strong>Obligation de justification (Art. 15 §4) :</strong> L'exportateur doit pouvoir produire à tout moment tous les documents établissant qu'aucune ristourne n'a été obtenue pour les matières non originaires incorporées dans les produits.
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-teal">✅</div>Ce qui n'est PAS soumis au no-drawback — Dérogations (§§ IV-B Circ. 4978)</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Matières <strong>originaires</strong> du Maroc, CE, AELE ou Turquie (et ultérieurement autres pays de la zone)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Produits ayant acquis l'origine <strong>sans application du cumul</strong> (entière obtention ou transformation suffisante avec matières tierces uniquement)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Produits ayant acquis l'origine par <strong>cumul bilatéral</strong> Maroc–CE uniquement, sans EUR-MED (ex. vestes au Maroc à partir de tissus communautaires + boutons tiers)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Exonérations ou réductions accordées également aux marchandises mises à la consommation (nature générale — non liées à l'exportation)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Restitutions à l'exportation</strong> sur produits agricoles (Art. 15 §5)</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-gold">📉</div>Drawback partiel transitoire accordé au Maroc (jusqu'au 31/12/2009)</div>
+  <div class="info-body">Par dérogation (Art. 15 §2 Protocole 4), le Maroc pouvait appliquer un drawback partiel jusqu'au 31/12/2009 pour les produits autres que ch. 1–24 :
+  <table class="leg-table" style="margin-top:6px">
+    <tr><td>Ch. 25–49 et 64–97</td><td>Taxation à <strong>5 %</strong> ou taux plus bas si en vigueur au Maroc</td></tr>
+    <tr><td>Ch. 50–63 (textiles/habillement)</td><td>Taxation à <strong>10 %</strong> ou taux plus bas si en vigueur au Maroc</td></tr>
+  </table>
+  <br><em>Ce dispositif transitoire est échu. La règle actuelle (CRR 2026) limite le no-drawback aux seuls chapitres 50–63.</em>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-navy">🏛</div>Modalités de certification — Procédure du service (Chap. V-I Circ. 4978)</div>
+  <div class="info-body">Le service douanier ne procède au <strong>visa des certificats EUR-MED</strong> qu'après s'être assuré de la <strong>perception du droit d'importation</strong> sur les intrants concernés.<br><br>
+  <strong>Preuve du paiement :</strong> quittance de perception des droits de douane. Les marchandises importées sous régime suspensif (ATPA) doivent faire l'objet d'une <strong>DUM de mise à la consommation</strong> reprenant espèce, quantité et valeur des intrants non originaires incorporés dans le produit exporté. La TVA n'est pas acquittée pour ces intrants incorporés à l'exportation.<br><br>
+  <em>Nota : l'EUR-MED étant supprimé par la CRR 2026, cette procédure s'applique désormais uniquement pour les produits textiles ch. 50–63 relevant du no-drawback résiduel.</em>
+  </div>
+</div>
+
+</div><!-- /panel-nodrawback -->
+
+<!-- ══ ONGLET CIRCULAIRES ══ -->
+<div id="panel-circs" class="panel"><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Circulaire n° 6777/222 <span style="font-weight:400;opacity:.8">· 29 septembre 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Accord agricole Maroc-UE — taux préférentiels et contingents du 01/10/2026 au 30/09/2027</p><p style="margin:0">Actualise la Liste 3 de l’annexe I agricole (produits non libéralisés, réductions dans la limite de contingents ; hors contingent, droit commun). Codes en SH 2022. Pour les pâtes et le couscous (ex 19.02), soumis à deux contingents (0 % et 35 %/50 %), la DFD précise la quote-part et le taux. Rappel des suspensions de droit en cours (bovins, ovins, blé dur, blé tendre, fèves). Circulaire de base : 5342/222 du 28/09/2012.</p></div></div><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Circulaire n° 6722/233 <span style="font-weight:400;opacity:.8">· 10 février 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Recevabilité des preuves d’origine sans la mention « REVISED RULES »</p><p style="margin:0">L’UE et la Türkiye ayant ratifié la CRR, leurs preuves d’origine sans la mention « REVISED RULES » sont acceptées. L’obligation ne vise que les preuves établies au Maroc pour l’export vers l’UE et la Türkiye.</p></div></div><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Note D105/2026/ADII/AC/100 <span style="font-weight:400;opacity:.8">· 30 avril 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Cachets EUR.1 et adresses de contrôle a posteriori : Estonie, République tchèque, Slovaquie</p><p style="margin:0">Spécimens actualisés ; les services vérifient la conformité des empreintes. Abroge la note 15031/233 du 03/12/2013 et modifie les notes D4104/18 et D50/2025.</p></div></div><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Note D99/2026/ADII/AC/100 <span style="font-weight:400;opacity:.8">· 21 avril 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Modèles des numéros d’autorisation des exportateurs agréés (UE, AELE, Turquie, Agadir, Royaume-Uni)</p><p style="margin:0">Liste actualisée des formats de numéros ; une déclaration d’origine dont le numéro ne correspond pas au modèle du pays partenaire est soumise au contrôle a posteriori, avec consignation des droits, taxes et pénalités (sauf erreur formelle manifeste). Pour l’UE, la demande de contrôle est adressée au pays dont le code ISO figure en tête du numéro, pas au pays d’expédition. Abroge les notes D55/2024 et D7318/21.</p></div></div><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Circulaire n° 6720/222 <span style="font-weight:400;opacity:.8">· 6 février 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Contingents tarifaires — consignation des droits et taxes</p><p style="margin:0">Lorsque la quote-part demandée au Ministère de l’Industrie et du Commerce n’est pas encore attribuée au moment du dédouanement, l’importateur peut demander à consigner les droits et taxes de la DUM au lieu de les payer au taux de droit commun. Modèle unique de demande ; autorisation de l’ordonnateur du bureau ; demande et RIB téléversés dans BADR (« Demande de consignation Contingent » et « RIB »).</p></div></div>
+
+<div class="circ-card">
+  <div class="circ-top c-base">
+    <div><div class="circ-num">Circulaire n° 4978/233</div><div class="circ-date">30 décembre 2005 — Protocole Pan-Euro-Med initial</div></div>
+    <span class="badge-item bi-blue">Base ALE Maroc–CE</span>
+  </div>
+  <div class="circ-body">
+    <p>Accord d'association Maroc–CE : entrée en vigueur du protocole pan euro-méditerranéen remplaçant le Protocole 4 initial. Réf. : Correspondance n° 3055 du 27/12/2005 du Ministère du Commerce Extérieur.</p>
+    <p><strong>Structure :</strong> Chap. I (règles générales : critères, tolérance 10 %, insuffisances, unité, assortiments, éléments neutres) · Chap. II (cumul diagonal) · Chap. III (conditions territoriales, transport direct, expositions) · Chap. IV (no-drawback) · Chap. V (preuves d'origine : EUR.1, EUR-MED, déclarations sur facture, exportateur agréé, déclaration fournisseur, validité 4 mois, conservation 3 ans, contrôle a posteriori 10 mois) · Chap. VI (coopération administrative).</p>
+    <p><strong>Annexe I :</strong> Définitions (Doc. 1) · Notes introductives (Doc. 2) · Liste des ouvraisons par position SH (Doc. 3) · Formulaires EUR.1, EUR-MED, déclarations (Doc. 4 à 9).</p>
+    <p><strong>Statut :</strong> <span style="color:var(--red);font-weight:700">Abrogée par Circ. 6706/233 pour les échanges UE et Turquie à compter du 01/01/2026. Maintenue pour AELE (Circ. 4980/233) et Agadir (Circ. 5047/223).</span></p>
+  </div>
+</div>
+
+<div class="circ-card">
+  <div class="circ-top c-2025">
+    <div><div class="circ-num">Circulaire n° 6706/233</div><div class="circ-date">31 décembre 2025 — Convention Régionale Révisée</div></div>
+    <span class="badge-item bi-amber">CRR · Applicable 01/01/2026</span>
+  </div>
+  <div class="circ-body">
+    <p>Nouvelle circulaire maîtresse applicable depuis le <strong>1<sup>er</sup> janvier 2026</strong> pour les échanges avec l'UE et la Turquie (application provisoire jusqu'au 31/12/2027 ou publication au BO). Réf. : DGC/DRCI/DRCEU/500/2025 (26/12/2025) et DGC/DRCI/DRCEU/504/2025 (30/12/2025).</p>
+    <p><strong>Titre I :</strong> Principales modifications CRR (tolérance 15 %, navires allégés, aquaculture, matières fongibles, valeurs moyennes, transformations insuffisantes ajoutées, cumul des ouvraisons généralisé, non-modification, no-drawback limité ch. 50–63, preuves EUR.1 + déclaration d'origine, EUR-MED supprimé, validité 10 mois, déclaration fournisseur 2 ans).</p>
+    <p><strong>Titre II :</strong> Preuves délivrées rétroactivement pour exportations 2025 (mention REVISED RULES case 7 EUR.1 ou fin déclaration d'origine).</p>
+    <p><strong>Titre III :</strong> Dérogations — contingents annuels 5 ans (huiles végétales et tabacs). Mention obligatoire : <em>Derogation – Appendix B to Protocol 4</em>.</p>
+    <p><strong>Annexe I :</strong> Règles d'origine de substitution (Art. 1–41, Annexes I à VII). <strong>Annexe II :</strong> Appendice B — contingents.</p>
+  </div>
+</div>
+
+<div class="circ-card">
+  <div class="circ-top c-note">
+    <div><div class="circ-num">Note n° D308/2025/ADII/AC/100</div><div class="circ-date">31 décembre 2025 — Procédure contingents</div></div>
+    <span class="badge-item" style="background:#EDE9FE;color:#5B21B6;font-size:9.5px;padding:2px 7px;border-radius:4px;font-weight:600">Procédure opérationnelle</span>
+  </div>
+  <div class="circ-body">
+    <p>Procédure de gestion des contingents annuels (5 ans à compter du 02/10/2025) sur certaines huiles végétales et produits du tabac originaires de l'UE. Réf. : Circ. 6706/233.</p>
+    <p><strong>Gestion centrale :</strong> Division des Bases de Taxation — principe du « premier venu, premier servi ».</p>
+    <p><strong>Procédure :</strong> Dès enregistrement de la DUM et chargement de la preuve d'origine conventionnelle dans le système, communiquer sans délai à <strong>origine@douane.gov.ma</strong> : N° et date de la DUM · Nature des produits · Quantités et espèces reconnues.</p>
+    <p><strong>Signataire :</strong> Abdellatif AMRANI, Directeur Général de l'Administration des Douanes et Impôts Indirects.</p>
+  </div>
+</div>
+
+<div class="circ-card">
+  <div class="circ-top c-abr">
+    <div><div class="circ-num">Circulaires annulées par la 6706/233</div><div class="circ-date">Effet au 01/01/2026</div></div>
+    <span class="badge-item bi-red">Abrogées pour UE + Turquie</span>
+  </div>
+  <div class="circ-body">
+    <p>Les prescriptions relatives aux règles d'origine de la <strong>Circ. n° 4976/222 du 30/12/2005</strong> (telle que modifiée) sont <strong>annulées et remplacées</strong>.</p>
+    <p>La <strong>Circ. n° 4978/233 du 30/12/2005</strong> (telle que modifiée) est <strong>abrogée</strong> pour les échanges UE et Turquie à compter du 01/01/2026.</p>
+    <p>Les Circ. <strong>4980/233</strong> (AELE) et <strong>5047/223</strong> (Agadir) sont <strong>maintenues en vigueur</strong>.</p>
+  </div>
+</div>
+
+<div class="refs-box">
+  <h5>Références &amp; Contacts officiels</h5>
+  <div class="refs-grid">
+    <div class="refs-item"><strong>DGC/DRCI/DRCEU/500/2025</strong>26/12/2025 — Décision Maroc–UE</div>
+    <div class="refs-item"><strong>DGC/DRCI/DRCEU/504/2025</strong>30/12/2025 — Décision Maroc–Turquie</div>
+    <div class="refs-item"><strong>Division des Bases de Taxation</strong>Gestion centrale des contingents</div>
+    <div class="refs-item"><strong>origine@douane.gov.ma</strong>Contact pour octroi contingents</div>
+    <div class="refs-item"><strong>douane.gov.ma</strong>Site officiel ADII</div>
+    <div class="refs-item"><strong>Abdellatif AMRANI</strong>Directeur Général ADII</div>
+  </div>
+</div>
+
+</div><!-- /panel-circs -->
+
+  </div><!-- /col-body gauche -->
+</div><!-- /col-left -->
+
+<!-- ═══════════════════ COLONNE DROITE ═══════════════════ -->
+<div class="col col-right">
+  <div class="col-head">
+    <div class="col-head-icon icon-eu">📋</div>
+    <div>
+      <div class="col-head-label">Liste d'ouvraisons · Contingents CRR · Notes introductives</div>
+      <div class="col-head-sub">Annexe I Doc. 3 (Circ. 4978/233) · Appendice B Circ. 6706/233 · Recherche par position SH, description ou règle</div>
+    </div>
+  </div>
+  <div class="tabs" id="right-tabs">
+    <button class="tab-btn active" onclick="switchTab('right','ouv',this)">Liste d'ouvraisons SH</button>
+    <button class="tab-btn"        onclick="switchTab('right','ctg',this)">Contingents (App. B)</button>
+    <button class="tab-btn"        onclick="switchTab('right','notes',this)">Notes introductives</button>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="right-search" placeholder="Rechercher par position SH, description, fabrication à partir de…" oninput="filterRight(this.value)">
+  </div>
+  <div class="col-body">
+
+<!-- ══ PANEL LISTE D'OUVRAISONS ══ -->
+<div id="panel-ouv" class="panel active">
+<div class="annexe-banner">
+  <h4>📋 Annexe I — Document 3 · Circ. 4978/233 · Liste des ouvraisons ou transformations conférant le caractère originaire (SH chapitres 01–97)</h4>
+  <p>Col. (3) = Règle principale obligatoire. Col. (4) = Règle alternative (si prévue) — l'exportateur choisit l'une ou l'autre. La liste fixe le <em>degré minimal</em> d'ouvraison ; toute transformation plus poussée confère aussi l'origine.</p>
+</div>
+<div class="ouv-wrap">
+<table class="ouv-table" id="ouv-table">
+<thead>
+  <tr>
+    <th>Position SH</th>
+    <th>Description du produit obtenu</th>
+    <th>Règle col. (3) — Ouvraison ou transformation requise</th>
+    <th>Règle col. (4) — Alternative (si prévue)</th>
+  </tr>
+</thead>
+<tbody id="ouv-body">
+
+<tr class="ouv-sep"><td colspan="4">SECTION I-II — ANIMAUX VIVANTS &amp; PRODUITS DU RÈGNE VÉGÉTAL (Ch. 01–14)</td></tr>
+<tr class="ouv-row"><td>Ch. 01–05</td><td>Animaux vivants ; produits du règne animal (hors exceptions)</td><td>Fabrication dans laquelle toutes les matières des ch. 01–05 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 03</td><td>Poissons, crustacés, mollusques (hors huîtres perlières)</td><td>Fabrication dans laquelle toutes les matières du ch. 3 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 06–14</td><td>Produits du règne végétal (hors exceptions)</td><td>Fabrication dans laquelle toutes les matières des ch. 06–14 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>0901</td><td>Café, même torréfié ou décaféiné ; coques et pellicules de café ; succédanés contenant du café</td><td>Fabrication à partir de matières de toute position</td><td></td></tr>
+<tr class="ouv-row"><td>0902</td><td>Thé, même aromatisé</td><td>Fabrication à partir de matières de toute position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 0910</td><td>Mélanges d'épices</td><td>Fabrication à partir de matières de toute position</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 10</td><td>Céréales</td><td>Fabrication dans laquelle toutes les matières du ch. 10 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 11</td><td>Produits de la minoterie ; malt ; amidons et fécules ; inuline ; gluten de froment (hors ex 1106)</td><td>Fabrication dans laquelle tous les légumes, céréales, tubercules, racines (n° 0714) ou fruits utilisés doivent être entièrement obtenus</td><td></td></tr>
+<tr class="ouv-row"><td>ex 1106</td><td>Farines, semoules et poudres des légumes à cosse secs du n° 0713, écossés</td><td>Séchage et mouture de légumes à cosse du n° 0708</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 12</td><td>Graines et fruits oléagineux ; graines, semences et fruits divers ; plantes industrielles ou médicinales ; pailles et fourrages</td><td>Fabrication dans laquelle toutes les matières du ch. 12 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>1301</td><td>Gomme laque ; gommes, résines, gommes-résines et oléorésines naturelles</td><td>Fabrication dans laquelle la valeur de toutes les matières du n° 1301 utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>1302 — Mucilages et épaississants modifiés</td><td>Mucilages et épaississants dérivés de végétaux, modifiés</td><td>Fabrication à partir de mucilages et d'épaississants non modifiés</td><td></td></tr>
+<tr class="ouv-row"><td>1302 — autres</td><td>Sucs et extraits végétaux ; matières pectiques, pectinates et pectates ; agar-agar — autres</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 14</td><td>Matières à tresser et autres produits d'origine végétale, non dénommés ni compris ailleurs</td><td>Fabrication dans laquelle toutes les matières du ch. 14 utilisées doivent être entièrement obtenues</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION III — GRAISSES ET HUILES ANIMALES OU VÉGÉTALES (Ch. 15)</td></tr>
+<tr class="ouv-row"><td>ex Ch. 15</td><td>Graisses et huiles animales ou végétales (hors exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières de la même position que le produit</td><td></td></tr>
+<tr class="ouv-row"><td>1501 — graisses d'os/déchets</td><td>Graisses de porc et volailles — fractions d'os ou déchets</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 0203, 0206, 0207 ou des os du n° 0506</td><td></td></tr>
+<tr class="ouv-row"><td>1501 — autres</td><td>Graisses de porc et volailles — autres</td><td>Fabrication à partir des viandes/abats porcins des n°s 0203 ou 0206, ou des volailles du n° 0207</td><td></td></tr>
+<tr class="ouv-row"><td>1502 — graisses d'os/déchets</td><td>Graisses bovines, ovines, caprines — fractions d'os ou déchets</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 0201, 0202, 0204, 0206 ou des os du n° 0506</td><td></td></tr>
+<tr class="ouv-row"><td>1502 — autres</td><td>Graisses bovines, ovines, caprines — autres</td><td>Fabrication dans laquelle toutes les matières du ch. 2 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>1504 — fractions solides</td><td>Graisses et huiles de poissons ou de mammifères marins — fractions solides</td><td>Fabrication à partir de matières de toute position, y compris à partir des autres matières du n° 1504</td><td></td></tr>
+<tr class="ouv-row"><td>1504 — autres</td><td>Graisses et huiles de poissons ou de mammifères marins — autres</td><td>Fabrication dans laquelle toutes les matières des ch. 2 et 3 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>ex 1505</td><td>Lanoline raffinée</td><td>Fabrication à partir de graisse de suint du n° 1505</td><td></td></tr>
+<tr class="ouv-row"><td>1506 — fractions solides</td><td>Autres graisses et huiles animales — fractions solides</td><td>Fabrication à partir de matières de toute position, y compris à partir des autres matières du n° 1506</td><td></td></tr>
+<tr class="ouv-row"><td>1506 — autres</td><td>Autres graisses et huiles animales — autres</td><td>Fabrication dans laquelle toutes les matières du ch. 2 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>1507–1515 — usages techniques</td><td>Huiles de soja, arachide, palme, coco, palmiste, tung, oléococca, oïticica, cire de myrica, cire du Japon, jojoba — usages techniques/industriels (hors alimentation humaine)</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières de la même position que le produit</td><td></td></tr>
+<tr class="ouv-row"><td>1507–1515 — fractions solides</td><td>Huiles végétales — fractions solides (hors jojoba)</td><td>Fabrication à partir des autres matières des n°s 1507 à 1515</td><td></td></tr>
+<tr class="ouv-row"><td>1507–1515 — autres</td><td>Huiles végétales et leurs fractions — autres</td><td>Fabrication dans laquelle toutes les matières végétales utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>1516</td><td>Graisses et huiles animales ou végétales partiellement ou totalement hydrogénées, interestérifiées, réestérifiées ou élaïdinisées</td><td>Fabrication dans laquelle toutes les matières du ch. 2 ET toutes les matières végétales utilisées doivent être entièrement obtenues (des matières des n°s 1507, 1508, 1511 et 1513 peuvent être utilisées)</td><td></td></tr>
+<tr class="ouv-row"><td>1517</td><td>Margarine ; mélanges ou préparations alimentaires de graisses ou d'huiles</td><td>Fabrication dans laquelle toutes les matières des ch. 2 et 4 ET toutes les matières végétales utilisées doivent être entièrement obtenues (des matières des n°s 1507, 1508, 1511 et 1513 peuvent être utilisées)</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION IV — PRODUITS DES INDUSTRIES ALIMENTAIRES ; TABACS (Ch. 16–24)</td></tr>
+<tr class="ouv-row"><td>Ch. 16</td><td>Préparations de viande, poissons ou crustacés, mollusques ou autres invertébrés aquatiques</td><td>Fabrication à partir des animaux du ch. 1, et/ou dans laquelle toutes les matières du ch. 3 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 17</td><td>Sucres et sucreries (hors exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières de la même position que le produit</td><td></td></tr>
+<tr class="ouv-row"><td>ex 1701</td><td>Sucres de canne ou de betterave ; saccharose chimiquement pur, additionnés d'aromatisants ou de colorants</td><td>Fabrication dans laquelle la valeur de toutes les matières du ch. 17 utilisées ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>1702 — maltose/fructose chim. purs</td><td>Maltose ou fructose chimiquement purs</td><td>Fabrication à partir de matières de toute position, y compris à partir des autres matières du n° 1702</td><td></td></tr>
+<tr class="ouv-row"><td>1702 — autres solides + arômes/couleurs</td><td>Autres sucres, à l'état solide, additionnés d'aromatisants ou de colorants</td><td>Fabrication dans laquelle la valeur de toutes les matières du ch. 17 utilisées ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>1702 — autres</td><td>Autres sucres (sirops, succédanés miel, caramélisés…)</td><td>Fabrication dans laquelle toutes les matières utilisées doivent être déjà originaires</td><td></td></tr>
+<tr class="ouv-row"><td>ex 1703</td><td>Mélasses résultant de l'extraction ou du raffinage du sucre, additionnées d'aromatisants ou de colorants</td><td>Fabrication dans laquelle la valeur de toutes les matières du ch. 17 utilisées ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>1704</td><td>Sucreries sans cacao (y compris le chocolat blanc)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières du ch. 17 utilisées ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 18</td><td>Cacao et ses préparations</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières du ch. 17 utilisées ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>1901 — extraits de malt</td><td>Extraits de malt</td><td>Fabrication à partir des céréales du ch. 10</td><td></td></tr>
+<tr class="ouv-row"><td>1901 — autres</td><td>Préparations alimentaires de farines, gruaux, semoules, amidons ou extraits de malt ; autres préparations alimentaires (hors cacao)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières du ch. 17 utilisées ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>1902 — ≤ 20 % viandes</td><td>Pâtes alimentaires, couscous — contenant ≤ 20 % en poids de viandes, abats, poissons, crustacés ou mollusques</td><td>Fabrication dans laquelle tous les céréales et leurs dérivés utilisés (à l'exclusion du blé dur et ses dérivés) doivent être entièrement obtenus</td><td></td></tr>
+<tr class="ouv-row"><td>1902 — &gt; 20 % viandes</td><td>Pâtes alimentaires, couscous — contenant &gt; 20 % en poids de viandes/abats/poissons/crustacés/mollusques</td><td>Fabrication dans laquelle tous les céréales et leurs dérivés (hors blé dur) doivent être entièrement obtenus ET toutes les matières des ch. 2 et 3 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>1903</td><td>Tapioca et succédanés préparés à partir de fécules</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la fécule de pommes de terre du n° 1108</td><td></td></tr>
+<tr class="ouv-row"><td>1904</td><td>Produits à base de céréales obtenus par soufflage ou grillage (corn flakes, etc.) ; céréales en grains ou sous forme de flocons travaillés, précuites ou préparées</td><td>Fabrication à partir de matières de toute position, hors n° 1806, dans laquelle toutes les céréales et la farine (hors blé dur et maïs Zea indurata) doivent être entièrement obtenus ET valeur de toutes les matières du ch. 17 ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>1905</td><td>Produits de la boulangerie, pâtisserie ou biscuiterie, même additionnés de cacao ; hosties, cachets, pains à cacheter, pâtes séchées</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières du ch. 11</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 20</td><td>Préparations de légumes, fruits ou autres parties de plantes (hors ex 2001 et ex 2004/2005)</td><td>Fabrication dans laquelle les fruits et les légumes utilisés doivent être entièrement obtenus</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2001</td><td>Ignames, patates douces et parties comestibles similaires (teneur ≥ 5 % amidon/fécule), préparées au vinaigre ou acide acétique</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2004 / ex 2005</td><td>Pommes de terre sous forme de farines, semoules ou flocons, préparées ou conservées (hors vinaigre)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>2006</td><td>Légumes, fruits, écorces de fruits et autres parties de plantes, confits au sucre (égouttés, glacés ou cristallisés)</td><td>Fabrication dans laquelle la valeur de toutes les matières du ch. 17 utilisées ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>2007</td><td>Confitures, gelées, marmelades, purées et pâtes de fruits, obtenues par cuisson</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières du ch. 17 ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2008 — fruits à coques</td><td>Fruits à coques, sans addition de sucre ou d'alcool</td><td>Fabrication dans laquelle la valeur de tous les fruits à coques et graines oléagineuses originaires des n°s 0801, 0802 et 1202 à 1207 utilisés doit excéder 60 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2008 — beurre d'arachide, mélanges céréales, cœurs de palmier, maïs</td><td>Beurre d'arachide ; mélanges à base de céréales ; cœurs de palmier ; maïs</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2008 — autres</td><td>Autres (hors fruits cuits autrement qu'à l'eau/vapeur, sans sucre, congelés)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières du ch. 17 ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>2009</td><td>Jus de fruits (y compris moûts de raisins) ou de légumes, non fermentés, sans addition d'alcool</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières du ch. 17 ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 21</td><td>Préparations alimentaires diverses (hors exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>2101</td><td>Extraits, essences et concentrés de café, thé ou maté et préparations à base de ces produits ; chicorée torréfiée et succédanés torréfiés du café</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET toute la chicorée utilisée doit être entièrement obtenue</td><td></td></tr>
+<tr class="ouv-row"><td>2103 — sauces et condiments</td><td>Préparations pour sauces et sauces préparées ; condiments et assaisonnements composés</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (la farine de moutarde ou moutarde préparée peut être utilisée)</td><td></td></tr>
+<tr class="ouv-row"><td>2103 — farine de moutarde et moutarde préparée</td><td>Farine de moutarde et moutarde préparée</td><td>Fabrication à partir de matières de toute position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2104</td><td>Préparations pour soupes, potages ou bouillons ; soupes, potages ou bouillons préparés</td><td>Fabrication à partir de matières de toute position, à l'exclusion des légumes préparés ou conservés des n°s 2002 à 2005</td><td></td></tr>
+<tr class="ouv-row"><td>2106</td><td>Préparations alimentaires non dénommées ni comprises ailleurs</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières du ch. 17 ≤ 30 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 22</td><td>Boissons, liquides alcooliques et vinaigres (hors exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET tous le raisin ou matières dérivées du raisin utilisés doivent être entièrement obtenus</td><td></td></tr>
+<tr class="ouv-row"><td>2202</td><td>Eaux minérales et gazéifiées additionnées de sucre/édulcorants ou aromatisées ; autres boissons non alcooliques (hors jus n° 2009)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position ; valeur ch. 17 ≤ 30 % ; tous les jus de fruits utilisés (hors ananas, limes, limettes, pamplemousse) doivent être déjà originaires</td><td></td></tr>
+<tr class="ouv-row"><td>2207</td><td>Alcool éthylique non dénaturé ≥ 80 % vol ; alcool éthylique et eaux-de-vie dénaturés de tous titres</td><td>Fabrication à partir de matières de toute position, à l'exclusion des n°s 2207 ou 2208 ; tout raisin ou matières dérivées du raisin entièrement obtenus (ou arak ≤ 5 % en volume si toutes autres matières originaires)</td><td></td></tr>
+<tr class="ouv-row"><td>2208</td><td>Alcool éthylique non dénaturé &lt; 80 % vol ; eaux-de-vie, liqueurs et autres boissons spiritueuses</td><td>Fabrication à partir de matières de toute position, à l'exclusion des n°s 2207 ou 2208 ; tout raisin ou matières dérivées du raisin entièrement obtenus (ou arak ≤ 5 % en volume si toutes autres matières originaires)</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 23</td><td>Résidus et déchets des industries alimentaires ; aliments préparés pour animaux (hors ex 2301, ex 2303, ex 2306, 2309)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2301</td><td>Farines de baleine ; farines, poudres et agglomérés en pellets de poissons, crustacés, mollusques ou autres invertébrés aquatiques, impropres à l'alimentation humaine</td><td>Fabrication dans laquelle toutes les matières des ch. 2 et 3 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2303</td><td>Résidus de l'amidonnerie du maïs (hors eaux de trempe concentrées), teneur en protéines &gt; 40 % en poids sur matière sèche</td><td>Fabrication dans laquelle tout le maïs utilisé doit être entièrement obtenu</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2306</td><td>Tourteaux et autres résidus solides de l'extraction de l'huile d'olive, contenant plus de 3 % d'huile d'olive</td><td>Fabrication dans laquelle toutes les olives utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>2309</td><td>Préparations des types utilisés pour l'alimentation des animaux</td><td>Fabrication dans laquelle tous les céréales, le sucre, les mélasses, la viande ou le lait utilisés doivent être déjà originaires, ET toutes les matières du ch. 3 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 24</td><td>Tabacs et succédanés de tabac fabriqués (hors 2402, ex 2403)</td><td>Fabrication dans laquelle toutes les matières du ch. 24 utilisées doivent être entièrement obtenues</td><td></td></tr>
+<tr class="ouv-row"><td>2402</td><td>Cigares (y compris à bouts coupés), cigarillos et cigarettes, en tabac ou en succédanés de tabac</td><td>Fabrication dans laquelle 70 % au moins en poids des tabacs non fabriqués ou des déchets de tabac du n° 2401 utilisés doivent être déjà originaires</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2403</td><td>Tabac à fumer</td><td>Fabrication dans laquelle 70 % au moins en poids des tabacs non fabriqués ou des déchets de tabac du n° 2401 utilisés doivent être déjà originaires</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION V — PRODUITS MINÉRAUX (Ch. 25–27)</td></tr>
+<tr class="ouv-row"><td>ex Ch. 25</td><td>Sel ; soufre ; terres et pierres ; plâtres, chaux et ciments (hors exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2504</td><td>Graphite naturel cristallin, enrichi de carbone, purifié et broyé</td><td>Enrichissement de la teneur en carbone, purification et broyage du graphite brut cristallin</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2515</td><td>Marbres, simplement débités par sciage ou autrement en blocs ou plaques ≤ 25 cm épaisseur</td><td>Débitage, par sciage ou autrement, de marbres (même si déjà sciés) d'une épaisseur excédant 25 cm</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2516</td><td>Granite, porphyre, basalte, grès et autres pierres de taille ou de construction simplement débités en blocs ou plaques ≤ 25 cm épaisseur</td><td>Débitage, par sciage ou autrement, de pierres (même si déjà sciées) d'une épaisseur excédant 25 cm</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2518</td><td>Dolomie calcinée</td><td>Calcination de dolomie non calcinée</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2519</td><td>Carbonate de magnésium naturel (magnésite) broyé en récipients hermétiques et oxyde de magnésium (hors magnésie électrofondue et calcinée à mort)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (le carbonate de magnésium naturel peut être utilisé)</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2520</td><td>Plâtres spécialement préparés pour l'art dentaire</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2524</td><td>Fibres d'amiante</td><td>Fabrication à partir de minerai d'amiante (concentré d'asbeste)</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2525</td><td>Mica en poudre</td><td>Moulage de mica ou de déchets de mica</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2530</td><td>Terres colorantes, calcinées ou pulvérisées</td><td>Calcination ou moulage de terres colorantes</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 26</td><td>Minerais, scories et cendres</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 27</td><td>Combustibles minéraux, huiles minérales et produits de leur distillation ; matières bitumineuses ; cires minérales (hors ex 2707, ex 2709, 2710–2715)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2707 / ex 2709 / 2710–2715</td><td>Huiles à dominante aromatique (distillées de goudrons de houille) / Huiles brutes de minéraux bitumineux / Huiles de pétrole, gaz de pétrole, vaseline, paraffine, coke, bitume, asphaltes, mélanges bitumineux</td><td>Opérations de raffinage et/ou un ou plusieurs traitements spécifiques (Notes 7.1 à 7.3) — OU — Autres opérations dans lesquelles toutes les matières utilisées doivent être classées dans une position différente ; matières de la même position tolérées si valeur totale ≤ 50 % du prix départ usine</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION VI — PRODUITS DES INDUSTRIES CHIMIQUES (Ch. 28–38)</td></tr>
+<tr class="ouv-row"><td>ex Ch. 28</td><td>Produits chimiques inorganiques ; composés inorganiques ou organiques de métaux précieux, éléments radioactifs, métaux des terres rares ou isotopes (hors exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées si valeur totale ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 2805</td><td>Mischmetall</td><td>Fabrication par traitement électrolytique ou thermique dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2811</td><td>Trioxyde de soufre</td><td>Fabrication à partir de dioxyde de soufre</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 2833</td><td>Sulfate d'aluminium</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2840</td><td>Perborate de sodium</td><td>Fabrication à partir de tétraborate de disodium pentahydrate</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 29</td><td>Produits chimiques organiques (hors exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées si valeur totale ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 2901 / ex 2902</td><td>Hydrocarbures acycliques / Cyclanes, cyclènes, benzène, toluène, xylènes — utilisés comme carburants ou combustibles</td><td>Opérations de raffinage et/ou traitements spécifiques (Notes 7.1 et 7.3) — OU — Autres opérations : toutes matières en position différente ; matières de la même position tolérées si valeur totale ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 2905</td><td>Alcoolates métalliques des alcools de la présente position et de l'éthanol</td><td>Fabrication à partir de matières de toute position, y compris autres matières du n° 2905 (alcoolates de la même position tolérés si valeur totale ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>2915</td><td>Acides monocarboxyliques acycliques saturés et leurs anhydrides, halogénures, peroxydes et peroxyacides ; dérivés halogénés, sulfonés, nitrés ou nitrosés</td><td>Fabrication à partir de matières de toute position ; valeur de toutes les matières des n°s 2915 et 2916 ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 2932 — éthers internes</td><td>Éthers internes et leurs dérivés halogénés, sulfonés, nitrés ou nitrosés</td><td>Fabrication à partir de matières de toute position ; valeur de toutes les matières du n° 2909 ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 2932 — acétals cycliques</td><td>Acétals cycliques et hémi-acétals internes et leurs dérivés halogénés, sulfonés, nitrés ou nitrosés</td><td>Fabrication à partir de matières de toute position</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>2933</td><td>Composés hétérocycliques à hétéroatome(s) d'azote exclusivement</td><td>Fabrication à partir de matières de toute position ; valeur de toutes les matières des n°s 2932 et 2933 ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>2934</td><td>Acides nucléiques et leurs sels ; autres composés hétérocycliques</td><td>Fabrication à partir de matières de toute position ; valeur de toutes les matières des n°s 2932, 2933 et 2934 ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 2939</td><td>Concentrés de paille de pavot contenant au moins 50 % en poids d'alcaloïdes</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 30</td><td>Produits pharmaceutiques (hors 3002, 3003/3004, ex 3006)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées si valeur totale ≤ 20 % du prix départ usine)</td><td></td></tr>
+<tr class="ouv-row"><td>3002</td><td>Sang humain/animal préparé ; antisérums, fractions du sang, produits immunologiques, vaccins, toxines, cultures de micro-organismes</td><td>Fabrication à partir de matières de toute position, y compris à partir des autres matières du n° 3002 (matières du n° 3002 tolérées si valeur totale ≤ 20 % du prix départ usine)</td><td></td></tr>
+<tr class="ouv-row"><td>3003/3004 — à partir d'amicacin n° 2941</td><td>Médicaments — obtenus à partir d'amicacin du n° 2941</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières des n°s 3003 et 3004 tolérées si valeur totale ≤ 20 % du prix départ usine)</td><td></td></tr>
+<tr class="ouv-row"><td>3003/3004 — autres</td><td>Médicaments — autres</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières 3003 ou 3004 tolérées ≤ 20 %) ET valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 3006</td><td>Déchets pharmaceutiques visés à la note 4 k) du ch. 30</td><td>L'origine du produit dans son classement initial doit être retenue</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 31</td><td>Engrais (hors ex 3105)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3105</td><td>Engrais minéraux ou chimiques contenant deux ou trois des éléments fertilisants (azote, phosphore, potassium) ; autres engrais en tablettes ou formes similaires ou emballages ≤ 10 kg brut (hors nitrate de sodium, cyanamide calcique, sulfate de potassium, sulfate de magnésium et de potassium)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 %) ET valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 32</td><td>Extraits tannants ou tinctoriaux ; tanins et leurs dérivés ; pigments et autres matières colorantes ; peintures et vernis ; mastics ; encres (hors ex 3201, 3205)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3201</td><td>Tanins et leurs sels, éthers, esters et autres dérivés</td><td>Fabrication à partir d'extraits tannants d'origine végétale</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3205</td><td>Laques colorantes ; préparations à base de laques colorantes</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 3203, 3204 et 3205 (matières du n° 3205 tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 33</td><td>Huiles essentielles et résinoïdes ; produits de parfumerie ou de toilette préparés et préparations cosmétiques (hors 3301)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3301</td><td>Huiles essentielles (déterpénées ou non) y compris concrètes ou absolues ; résinoïdes ; oléorésines d'extraction ; solutions concentrées d'huiles essentielles</td><td>Fabrication à partir de matières de toute position, y compris à partir de matières d'un autre « groupe » de la présente position (matières du même groupe tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 34</td><td>Savons, agents de surface organiques, préparations pour lessives, préparations lubrifiantes, cires artificielles, produits d'entretien, bougies et articles similaires, pâtes à modeler (hors ex 3403, 3404)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3403</td><td>Préparations lubrifiantes contenant moins de 70 % d'huiles de pétrole ou d'huiles obtenues à partir de minéraux bitumineux</td><td>Opérations de raffinage et/ou traitements spécifiques (Notes 7.1 et 7.3) — OU — Autres opérations : toutes matières en position différente ; matières de la même position tolérées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>3404 — base paraffines/cires de pétrole/résidus paraffineux</td><td>Cires artificielles et cires préparées — à base de paraffines, cires de pétrole ou de minéraux bitumineux, résidus paraffineux</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 50 % du prix départ usine)</td><td></td></tr>
+<tr class="ouv-row"><td>3404 — autres</td><td>Cires artificielles et cires préparées — autres</td><td>Fabrication à partir de matières de toute position, à l'exclusion des huiles hydrogénées ayant le caractère des cires du n° 1516, des acides gras et alcools gras industriels du n° 3823, et des matières du n° 3404 (ces matières tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 35</td><td>Matières albuminoïdes ; produits à base d'amidons ou de fécules modifiés ; colles, enzymes (hors 3505, ex 3507)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3505 — éthers et esters d'amidons ou de fécules</td><td>Éthers et esters d'amidons ou de fécules</td><td>Fabrication à partir de matières de toute position, y compris à partir des autres matières du n° 3505</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3505 — autres</td><td>Dextrine et autres amidons et fécules modifiés ; colles à base d'amidons ou de fécules — autres</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières du n° 1108</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3507</td><td>Enzymes préparées, non dénommées ni comprises ailleurs</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 36</td><td>Poudres et explosifs ; articles de pyrotechnie ; allumettes ; alliages pyrophoriques ; matières inflammables</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 37</td><td>Produits photographiques ou cinématographiques (hors 3701, 3702, 3704)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3701 — films couleur développement instantané en chargeurs</td><td>Films couleur pour appareils photographiques à développement instantané, en chargeurs</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 3701 et 3702 (matières du n° 3702 tolérées ≤ 30 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3701 — autres</td><td>Plaques et films plans photographiques, sensibilisés, non impressionnés — autres</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 3701 et 3702 (matières des n°s 3701 et 3702 tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3702</td><td>Pellicules photographiques sensibilisées non impressionnées, en rouleaux</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 3701 et 3702</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3704</td><td>Plaques, pellicules, films, papiers, cartons et textiles, photographiques, impressionnés mais non développés</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 3701 à 3704</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 38</td><td>Produits divers des industries chimiques (hors ex 3801, ex 3803, ex 3805, ex 3806, ex 3807, 3808–3814, 3818–3820, 3822, 3823, 3824)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3801 — graphite colloïdal et semi-colloïdal</td><td>Graphite colloïdal en suspension dans l'huile et graphite semi-colloïdal ; pâtes carbonées pour électrodes</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 3801 — graphite en pâte</td><td>Graphite en pâte consistant en un mélange de graphite (proportion &gt; 30 % en poids) et d'huiles minérales</td><td>Fabrication dans laquelle la valeur de toutes les matières du n° 3403 utilisées ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3803</td><td>Tall oil raffiné</td><td>Raffinage du tall oil brut</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3805</td><td>Essence de papeterie au sulfate, épurée</td><td>Épuration comportant la distillation ou le raffinage d'essence de papeterie au sulfate brute</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3806</td><td>Gommes esters</td><td>Fabrication à partir d'acides résiniques</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3807</td><td>Poix noire (brai ou poix de goudron végétal)</td><td>Distillation de goudron de bois</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3808–3814, 3818–3820, 3822</td><td>Insecticides, antirongeurs, fongicides, herbicides, inhibiteurs de germination et régulateurs de croissance, désinfectants et produits similaires ; agents d'apprêt ou de finissage ; préparations pour le décapage des métaux ; solvants et diluants organiques composites ; éléments chimiques dopés en vue de leur utilisation en électronique ; liquides pour freins hydrauliques ; préparations antigel et liquides préparés pour dégivrage ; réactifs de diagnostic ou de laboratoire</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine du produit</td><td></td></tr>
+<tr class="ouv-row"><td>3823 — acides gras monocarboxyliques industriels ; huiles acides de raffinage</td><td>Acides gras monocarboxyliques industriels ; huiles acides de raffinage</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>3823 — alcools gras industriels</td><td>Alcools gras industriels</td><td>Fabrication à partir de matières de toute position, y compris à partir des autres matières du n° 3823</td><td></td></tr>
+<tr class="ouv-row"><td>3824 — produits spécifiques listés</td><td>Liants préparés pour moules ou noyaux de fonderie à base de produits résineux naturels ; acides naphténiques et leurs sels/esters ; sorbitol (hors n° 2905) ; sulfonates de pétrole ; échangeurs d'ions ; compositions absorbantes ; oxydes de fer alcalinisés ; eaux ammoniacales et crude ammoniac ; acides sulfonaphténiques et leurs sels/esters ; huiles de fusel et huile de Dippel ; mélanges de sels ayant différents anions ; pâtes à base de gélatine pour reproductions graphiques</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 20 % du prix départ usine)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3824 — autres</td><td>Produits chimiques et préparations des industries chimiques ou connexes — autres</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION VII — MATIÈRES PLASTIQUES ET CAOUTCHOUC (Ch. 39–40)</td></tr>
+<tr class="ouv-row"><td>3901–3915 — homopolymérisation (&gt; 99 % monomère)</td><td>Matières plastiques sous formes primaires ; déchets, rognures et débris — Produits d'homopolymérisation d'addition dans lesquels la part d'un monomère représente plus de 99 % en poids</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine ET la valeur de toutes les matières du ch. 39 utilisées ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3901–3915 — autres</td><td>Matières plastiques sous formes primaires — autres</td><td>Fabrication dans laquelle la valeur de toutes les matières du ch. 39 utilisées ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3907 — copolymères ABS/polycarbonate</td><td>Copolymères obtenus à partir de copolymères polycarbonates et copolymères acrylonitrile-butadiène-styrène (ABS)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (matières de la même position tolérées ≤ 50 % du prix départ usine)</td><td></td></tr>
+<tr class="ouv-row"><td>ex 3907 — polyester</td><td>Polyester</td><td>Fabrication dans laquelle la valeur de toutes les matières du ch. 39 utilisées ≤ 20 % du prix départ usine et/ou fabrication à partir de polycarbonate de tétrabromo(bisphénol A)</td><td></td></tr>
+<tr class="ouv-row"><td>3912</td><td>Cellulose et ses dérivés chimiques, sous formes primaires</td><td>Fabrication dans laquelle la valeur de toutes les matières de la même position utilisées ≤ 20 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>3916–3921 — produits plats travaillés autrement qu'en surface</td><td>Demi-produits et ouvrages en matières plastiques — Produits plats travaillés autrement qu'en surface ou découpés sous une forme autre que carrée ou rectangulaire ; autres produits travaillés autrement qu'en surface</td><td>Fabrication dans laquelle la valeur de toutes les matières du ch. 39 utilisées ≤ 50 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3916–3921 — homopolymérisation (&gt; 99 %) autres</td><td>Demi-produits et ouvrages en matières plastiques — autres (homopolymérisation &gt; 99 %)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % ET la valeur de toutes les matières du ch. 39 ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3916–3921 — autres</td><td>Demi-produits et ouvrages en matières plastiques — autres</td><td>Fabrication dans laquelle la valeur de toutes les matières du ch. 39 utilisées ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3916 / ex 3917</td><td>Profilés et tubes en matières plastiques</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % ET la valeur de toutes les matières de la même position ≤ 20 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3920 — feuilles d'ionomères</td><td>Feuilles ou pellicules d'ionomères</td><td>Fabrication à partir d'un sel partiel de thermoplastique qui est un copolymère d'éthylène et de l'acide métacrylique partiellement neutralisé avec des ions métalliques, principalement de zinc et de sodium</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 3920 — feuilles en cellulose régénérée, polyamides ou polyéthylène</td><td>Feuilles en cellulose régénérée, en polyamides ou en polyéthylène</td><td>Fabrication dans laquelle la valeur de toutes les matières de la même position utilisées ≤ 20 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 3921</td><td>Bandes métallisées en matières plastiques</td><td>Fabrication à partir de bandes hautement transparentes en polyester d'une épaisseur inférieure à 23 microns</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>3922–3926</td><td>Ouvrages en matières plastiques</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 40</td><td>Caoutchouc et ouvrages en caoutchouc (hors ex 4001, 4005, 4012, ex 4017)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4001</td><td>Plaques de crêpe de caoutchouc pour semelles</td><td>Laminage de feuilles de crêpe de caoutchouc naturel</td><td></td></tr>
+<tr class="ouv-row"><td>4005</td><td>Caoutchouc mélangé non vulcanisé sous formes primaires ou en plaques, feuilles ou bandes</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées, à l'exclusion du caoutchouc naturel, ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>4012 — pneumatiques rechapés</td><td>Pneumatiques et bandages (pleins ou creux), rechapés en caoutchouc</td><td>Rechapage de pneumatiques ou de bandages (pleins ou creux) usagés</td><td></td></tr>
+<tr class="ouv-row"><td>4012 — autres</td><td>Pneumatiques rechapés ou usagés ; bandages, bandes de roulement pour pneumatiques et flaps — autres</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 4011 et 4012</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4017</td><td>Ouvrages en caoutchouc durci</td><td>Fabrication à partir de caoutchouc durci</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION VIII-IX — PEAUX, CUIRS, PELLETERIES ; BOIS, LIÈGE, SPARTERIE (Ch. 41–46)</td></tr>
+<tr class="ouv-row"><td>ex Ch. 41</td><td>Peaux (autres que les pelleteries) et cuirs (hors ex 4102, 4104–4107, 4112–4114)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4102</td><td>Peaux brutes d'ovins, délainées</td><td>Délainage des peaux d'ovins</td><td></td></tr>
+<tr class="ouv-row"><td>4104–4106</td><td>Cuirs et peaux épilés et peaux d'animaux dépourvus de poils, tannés ou en croûte</td><td>Retannage de peaux ou de cuirs tannés — OU — Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>4107, 4112, 4113</td><td>Cuirs préparés après tannage ou après dessèchement ; cuirs et peaux parcheminés, épilés</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 4104 à 4113</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4114</td><td>Cuirs et peaux vernis ou plaqués ; cuirs et peaux métallisés</td><td>Fabrication à partir des cuirs ou des peaux des n°s 4104 à 4107, 4112 ou 4113, à condition que leur valeur totale ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 42</td><td>Ouvrages en cuir ; articles de bourrellerie ou de sellerie ; articles de voyage, sacs à main et contenants similaires ; ouvrages en boyaux</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 43</td><td>Pelleteries et fourrures ; pelleteries factices (hors ex 4302 nappes/sacs/croix/carrés et 4303 vêtements)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4302 — nappes, sacs, croix, carrés</td><td>Pelleteries tannées ou apprêtées, assemblées — nappes, sacs, croix, carrés et présentations similaires</td><td>Blanchiment ou teinture, avec coupe et assemblage de peaux tannées ou apprêtées, non assemblées</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4302 — autres</td><td>Pelleteries tannées ou apprêtées, assemblées — autres</td><td>Fabrication à partir de peaux tannées ou apprêtées, non assemblées</td><td></td></tr>
+<tr class="ouv-row"><td>4303</td><td>Vêtements, accessoires du vêtement et autres articles en pelleteries</td><td>Fabrication à partir de peaux tannées ou apprêtées, non assemblées du n° 4302</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 44</td><td>Bois, charbon de bois et ouvrages en bois (hors ex 4403, ex 4407, ex 4408)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4403</td><td>Bois simplement équarris</td><td>Fabrication à partir de bois bruts, même écorcés ou simplement dégrossis</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4407</td><td>Bois sciés ou dédossés longitudinalement, tranchés ou déroulés, d'une épaisseur excédant 6 mm, rabotés, poncés ou collés par assemblage en bout</td><td>Rabotage, ponçage ou collage par assemblage en bout</td><td></td></tr>
+<tr class="ouv-row"><td>ex 4408</td><td>Feuilles pour placage (y compris obtenues par tranchage de bois stratifié) et feuilles pour contreplaqués, d'une épaisseur n'excédant pas 6 mm, tranchées et autres bois sciés longitudinalement</td><td>Tranchage, rabotage, ponçage ou collage par assemblage en bout</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 45, 46</td><td>Liège naturel, ouvrages en liège ; ouvrages de sparterie ou de vannerie</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION X — PÂTES À PAPIER, PAPIER ET CARTON ; OUVRAGES DE LIBRAIRIE (Ch. 47–49)</td></tr>
+<tr class="ouv-row"><td>Ch. 47–49</td><td>Pâtes de bois ou d'autres matières fibreuses cellulosiques ; papier et carton ; ouvrages de librairie et de la presse</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION XI — MATIÈRES TEXTILES ET OUVRAGES EN CES MATIÈRES (Ch. 50–63) — Règle fondamentale : fabrication à partir de fils ou de fibres</td></tr>
+<tr class="ouv-row"><td>Ch. 50–60 (général)</td><td>Soie, laine, coton, fibres synthétiques/artificielles, fils, tissus et étoffes — règle générale</td><td>Fabrication à partir de fibres naturelles, ou de matières chimiques ou de pâtes textiles, ou de fibres synthétiques ou artificielles discontinues non cardées ni peignées — selon les sous-règles spécifiques à chaque position. Voir Notes introductives 4, 5, 6, 7.</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 57 — feutre aiguilleté</td><td>Tapis et autres revêtements de sol en matières textiles — En feutre aiguilleté</td><td>Fabrication à partir de fibres naturelles, ou de matières chimiques ou de pâtes textiles. Fils de filaments de polypropylène (n° 5402), fibres discontinues de polypropylène (n°s 5503 ou 5506), ou câbles de filaments de polypropylène (n° 5501), dont le titre de chaque fibre ou filament est dans tous les cas &lt; 9 décitex, tolérés si valeur totale ≤ 40 % du prix départ usine. Tissu de jute peut être utilisé en tant que support.</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 57 — autres feutres</td><td>Tapis en autres feutres</td><td>Fabrication à partir de fibres naturelles non cardées ni peignées, ou de matières chimiques ou de pâtes textiles</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 57 — autres tapis</td><td>Autres tapis et revêtements de sol en matières textiles</td><td>Fabrication à partir de fils de coco ou de jute, de fils de filaments synthétiques ou artificiels, de fibres naturelles, ou de fibres synthétiques ou artificielles discontinues non cardées ni peignées. Tissu de jute peut être utilisé en tant que support.</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 58 — incorporant fils de caoutchouc</td><td>Tissus spéciaux ; surfaces textiles touffetées ; dentelles ; tapisseries ; passementeries ; broderies — incorporant des fils de caoutchouc</td><td>Fabrication à partir de fils simples</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 58 — autres</td><td>Tissus spéciaux ; dentelles ; tapisseries ; passementeries ; broderies — autres</td><td>Fabrication à partir de fibres naturelles, de fibres synthétiques ou artificielles discontinues non cardées ni peignées, ou de matières chimiques ou de pâtes textiles — OU — Impression accompagnée d'au moins deux opérations de préparation ou de finissage (lavage, blanchiment, mercerisage, thermofixage, lainage, calandrage, rétrécissement, fini permanent, décatissage, imprégnation, stoppage et épincetage), à condition que la valeur des tissus non imprimés utilisés ≤ 47,5 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>5805</td><td>Tapisseries tissées à la main (genre Gobelins, Flandres, Aubusson, Beauvais et similaires) et tapisseries à l'aiguille</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>5810</td><td>Broderies en pièces, en bandes ou en motifs</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 61 — bonneterie assemblée (2 pièces découpées ou directement en forme)</td><td>Vêtements et accessoires du vêtement, en bonneterie — obtenus par assemblage par couture ou autrement de deux ou plusieurs pièces de bonneterie qui ont été découpées en forme ou obtenues directement en forme</td><td>Fabrication à partir de fils</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 61 — autres</td><td>Vêtements et accessoires du vêtement, en bonneterie — autres</td><td>Fabrication à partir de fibres naturelles, de fibres synthétiques ou artificielles discontinues non cardées ni peignées, ou de matières chimiques ou de pâtes textiles</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 62 (général)</td><td>Vêtements et accessoires du vêtement, autres qu'en bonneterie (hors exceptions listées ci-dessous)</td><td>Fabrication à partir de fils</td><td></td></tr>
+<tr class="ouv-row"><td>ex 6202, ex 6204, ex 6206, ex 6209, ex 6211</td><td>Vêtements pour femmes, fillettes et bébés, et autres accessoires confectionnés du vêtement pour bébés, brodés</td><td>Fabrication à partir de fils — OU — Fabrication à partir de tissus non brodés dont la valeur ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 6210, ex 6216</td><td>Équipements antifeu en tissus recouverts d'une feuille de polyester aluminisée</td><td>Fabrication à partir de fils — OU — Fabrication à partir de tissus non recouverts dont la valeur ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>6213, 6214 — brodés</td><td>Mouchoirs, pochettes, châles, écharpes, foulards, cache-nez, mantilles, voiles et voilettes — brodés</td><td>Fabrication à partir de fils simples écrus — OU — Fabrication à partir de tissus non brodés dont la valeur ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>6213, 6214 — autres</td><td>Mouchoirs, pochettes, châles, écharpes, foulards, cache-nez, mantilles, voiles et voilettes — autres</td><td>Fabrication à partir de fils simples écrus</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 63</td><td>Autres articles textiles confectionnés ; assortiments ; friperie et chiffons</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTIONS XII-XV — CHAUSSURES, CHAPEAUX, PIERRES, MÉTAUX (Ch. 64–83)</td></tr>
+<tr class="ouv-row"><td>Ch. 64</td><td>Chaussures, guêtres et articles analogues ; parties de ces objets</td><td>Fabrication à partir de matières de toute position, à l'exclusion des assemblages de dessus de chaussures fixés aux semelles premières ou à d'autres parties inférieures du n° 6406</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 65</td><td>Coiffures et leurs parties</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 66, 67</td><td>Parapluies, parasols ; plumes et duvet apprêtés ; fleurs artificielles ; ouvrages en cheveux</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 68</td><td>Ouvrages en pierres, plâtre, ciment, amiante, mica ou matières analogues</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 69</td><td>Produits céramiques</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 70</td><td>Verre et ouvrages en verre</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 71</td><td>Pierres gemmes et similaires, métaux précieux, plaqués ou doublés ; bijouterie ; monnaies (hors ex 7102, ex 7103, ex 7106, ex 7107, ex 7113–7115)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 7102, ex 7103</td><td>Diamants taillés et autres pierres gemmes, taillées</td><td>Fabrication à partir de pierres gemmes ou industrielles brutes</td><td></td></tr>
+<tr class="ouv-row"><td>ex 7106, ex 7107</td><td>Argent et plaqués ou doublés d'argent, demi-ouvrés</td><td>Fabrication par affinage électrolytique, thermique ou chimique d'argent et d'alliages d'argent bruts — OU — Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex 7113–7115</td><td>Articles de bijouterie ou de joaillerie et leurs parties</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, dans laquelle la valeur de toutes les matières du ch. 71 utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 72</td><td>Fonte, fer et acier</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 73</td><td>Ouvrages en fonte, fer ou acier</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 74</td><td>Cuivre et ouvrages en cuivre</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 75</td><td>Nickel et ouvrages en nickel</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 76</td><td>Aluminium et ouvrages en aluminium</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 78</td><td>Plomb et ouvrages en plomb</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 79</td><td>Zinc et ouvrages en zinc</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 80</td><td>Étain et ouvrages en étain</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 82</td><td>Outils et outillage, articles de coutellerie et couverts de table, en métaux communs (hors ex 8206, ex 8207)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 83</td><td>Ouvrages divers en métaux communs</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION XVI — MACHINES ET APPAREILS MÉCANIQUES ET ÉLECTRIQUES (Ch. 84–85)</td></tr>
+<tr class="ouv-row"><td>ex Ch. 84 (général)</td><td>Réacteurs nucléaires, chaudières, machines, appareils et engins mécaniques (hors exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 8401</td><td>Éléments de combustible nucléaire</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8402</td><td>Chaudières à vapeur (générateurs de vapeur), autres que les chaudières pour le chauffage central conçues pour produire à la fois eau chaude et vapeur à basse pression ; chaudières à eau surchauffée</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8403 / ex 8404</td><td>Chaudières pour le chauffage central (hors n° 8402) et appareils auxiliaires pour chaudières pour le chauffage central</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières des n°s 8403 et 8404</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8406</td><td>Turbines à vapeur</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>8407</td><td>Moteurs à piston alternatif ou rotatif, à allumage par étincelles (moteurs à explosion)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>8408</td><td>Moteurs à piston, à allumage par compression (moteur diesel ou semi-diesel)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>8409</td><td>Parties reconnaissables comme étant exclusivement ou principalement destinées aux moteurs des n°s 8407 ou 8408</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>8411</td><td>Turboréacteurs, turbopropulseurs et autres turbines à gaz</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8412</td><td>Autres moteurs et machines motrices</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 8413</td><td>Pompes volumétriques rotatives</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 8414</td><td>Ventilateurs industriels et similaires</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8415</td><td>Machines et appareils pour le conditionnement de l'air comprenant un ventilateur à moteur et des dispositifs propres à modifier la température et l'humidité</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>8418</td><td>Réfrigérateurs, congélateurs-conservateurs et autres matériels, machines et appareils pour la production du froid ; pompes à chaleur</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine, ET valeur de toutes les matières non originaires ≤ valeur de toutes les matières originaires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8423</td><td>Appareils et instruments de pesage, y compris bascules et balances à vérifier les pièces usinées (hors balances sensibles ≤ 5 cg) ; poids pour toutes balances</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8425–8428</td><td>Machines et appareils de levage, de chargement, de déchargement ou de manutention</td><td>Fabrication dans laquelle valeur de toutes les matières utilisées ≤ 40 % du prix départ usine ET valeur de toutes les matières du n° 8431 utilisées ≤ 10 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8429 — rouleaux compresseurs</td><td>Bouteurs, bouteurs biais, niveleuses, décapeuses, pelles mécaniques, excavateurs, chargeuses — Rouleaux compresseurs</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>8429 — autres</td><td>Bouteurs, bouteurs biais, niveleuses, décapeuses, pelles mécaniques, excavateurs, chargeuses — autres</td><td>Fabrication dans laquelle valeur de toutes les matières utilisées ≤ 40 % du prix départ usine ET valeur de toutes les matières du n° 8431 ≤ 10 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8430</td><td>Autres machines et appareils de terrassement, nivellement, décapage, excavation, compactage, extraction ou forage de la terre, des minéraux ou des minerais ; sonnettes de battage ; chasse-neige</td><td>Fabrication dans laquelle valeur de toutes les matières utilisées ≤ 40 % du prix départ usine ET valeur de toutes les matières du n° 8431 ≤ 10 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 85 (général)</td><td>Machines, appareils et matériels électriques ; parties (hors 8501 et autres exceptions)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8501</td><td>Moteurs et machines génératrices, électriques, à l'exclusion des groupes électrogènes</td><td>Fabrication dans laquelle valeur de toutes les matières utilisées ≤ 40 % du prix départ usine ET valeur de toutes les matières des n°s 8501 et 8503 utilisées ≤ 10 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION XVII — VÉHICULES, AÉRONEFS, NAVIRES (Ch. 86–89)</td></tr>
+<tr class="ouv-row"><td>ex Ch. 86</td><td>Véhicules et matériel pour voies ferrées ou similaires ; leurs parties et accessoires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 87 (général)</td><td>Voitures automobiles, tracteurs, cycles et autres véhicules terrestres, leurs parties et accessoires (hors 8709, 8710, 8711, ex 8712, 8715, 8716)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>8709</td><td>Chariots automobiles non munis d'un dispositif de levage ; chariots-tracteurs des types utilisés dans les gares ; leurs parties</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8710</td><td>Chars et automobiles blindées de combat, armés ou non ; leurs parties</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8711 — ≤ 50 cm³</td><td>Motocycles (y compris cyclomoteurs) et cycles avec moteur auxiliaire — moteur à piston alternatif, cylindrée ≤ 50 cm³</td><td>Fabrication dans laquelle valeur de toutes les matières utilisées ≤ 40 % ET valeur de toutes les matières non originaires ≤ valeur de toutes les matières originaires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 20 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8711 — &gt; 50 cm³</td><td>Motocycles — moteur à piston alternatif, cylindrée &gt; 50 cm³</td><td>Fabrication dans laquelle valeur de toutes les matières utilisées ≤ 40 % ET valeur de toutes les matières non originaires ≤ valeur de toutes les matières originaires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 25 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8711 — autres</td><td>Motocycles — autres (électriques, etc.)</td><td>Fabrication dans laquelle valeur de toutes les matières utilisées ≤ 40 % ET valeur de toutes les matières non originaires ≤ valeur de toutes les matières originaires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 8712</td><td>Bicyclettes qui ne comportent pas de roulement à billes</td><td>Fabrication à partir de matières de toute position, à l'exclusion des matières du n° 8714</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8715</td><td>Landaus, poussettes et voitures similaires pour le transport des enfants, et leurs parties</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8716</td><td>Remorques et semi-remorques pour tous véhicules ; autres véhicules non automobiles ; leurs parties</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 88</td><td>Navigation aérienne ou spatiale (hors ex 8804, 8805)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>8805</td><td>Appareils et dispositifs pour le lancement de véhicules aériens ; appareils et dispositifs pour l'appontage</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>Ch. 89</td><td>Navigation maritime ou fluviale</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position (les coques du n° 8906 ne peuvent pas être utilisées)</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td></tr>
+
+<tr class="ouv-sep"><td colspan="4">SECTION XVIII-XX — INSTRUMENTS D'OPTIQUE, HORLOGERIE, ARMES, DIVERS (Ch. 90–97)</td></tr>
+<tr class="ouv-row"><td>ex Ch. 90 (général)</td><td>Instruments et appareils d'optique, de photographie ou de cinématographie, de mesure, de contrôle ou de précision ; instruments médico-chirurgicaux (hors 9001, 9002, 9004, ex 9005, ex 9006, 9007)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>9001</td><td>Fibres optiques et faisceaux de fibres optiques ; câbles de fibres optiques ; matières polarisantes ; lentilles, prismes, miroirs et autres éléments d'optique, non montés</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>9002</td><td>Lentilles, prismes, miroirs et autres éléments d'optique, montés, pour instruments ou appareils</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>9004</td><td>Lunettes (correctrices, protectrices ou autres) et articles similaires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex 9005</td><td>Jumelles, longues-vues, télescopes optiques et leurs bâtis</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 %, ET valeur de toutes les matières non originaires ≤ valeur de toutes les matières originaires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex 9006</td><td>Appareils photographiques ; appareils et dispositifs pour la production de la lumière-éclair (hors lampes et tubes à allumage électrique)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 %, ET valeur de toutes les matières non originaires ≤ valeur de toutes les matières originaires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>9007</td><td>Caméras et projecteurs cinématographiques, même incorporant des appareils d'enregistrement ou de reproduction du son</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position, ET valeur de toutes les matières utilisées ≤ 40 %, ET valeur de toutes les matières non originaires ≤ valeur de toutes les matières originaires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 30 % du prix départ usine</td></tr>
+<tr class="ouv-row"><td>ex Ch. 91</td><td>Horlogerie</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 40 % du prix départ usine, ET la valeur de toutes les matières non originaires ≤ la valeur de toutes les matières originaires</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 92</td><td>Instruments de musique ; parties et accessoires de ces instruments</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 93</td><td>Armes, munitions et leurs parties et accessoires</td><td>Fabrication dans laquelle la valeur de toutes les matières utilisées ≤ 50 % du prix départ usine</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 94</td><td>Meubles ; mobilier médico-chirurgical ; articles de literie et similaires ; luminaires et appareils d'éclairage non dénommés ni compris ailleurs ; appareils de signalisation lumineux ; constructions préfabriquées</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 95</td><td>Jouets, jeux et articles pour divertissements ou pour sports ; leurs parties et accessoires</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>ex Ch. 96</td><td>Ouvrages divers (hors ex 9601, ex 9602, ex 9603, ex 9605, ex 9606)</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+<tr class="ouv-row"><td>Ch. 97</td><td>Objets d'art, de collection ou d'antiquité</td><td>Fabrication à partir de matières de toute position, à l'exclusion de la même position</td><td></td></tr>
+
+</tbody>
+</table>
+</div><!-- /ouv-wrap -->
+
+<div class="note-box" style="margin-top:8px;margin-bottom:10px">
+  <strong>Note :</strong> La liste ci-dessus couvre exhaustivement les principales positions SH (ch. 01–97) de l'Annexe I Document 3 de la Circ. 4978/233. Les positions non détaillées (ex. certains ch. 44–49, 64–70, 72–83, 91–97) sont couvertes par la règle générale de section. Pour les positions spécifiques dans ces chapitres généraux, se référer au texte intégral de la Circ. 4978/233, Annexe I Document 3. Source : ADII / douane.gov.ma.
+</div>
+
+</div><!-- /panel-ouv -->
+
+<!-- ══ PANEL CONTINGENTS ══ -->
+<div id="panel-ctg" class="panel">
+
+<div class="annexe-banner">
+  <h4>📋 Appendice B — Circ. 6706/233 · Règles d'origine soumises à contingents pour certains produits originaires de l'UE (exportations UE → Maroc)</h4>
+  <p>5 ans à compter du 02/10/2025. Gestion centrale ADII : Division des Bases de Taxation. Principe : premier venu, premier servi. Contact : origine@douane.gov.ma. Mention obligatoire sur les preuves : <strong>Derogation – Appendix B to Protocol 4</strong> (case 7 EUR.1 ou fin de déclaration d'origine).</p>
+</div>
+
+<div class="ctg-head">
+  <span>Position SH 2022</span>
+  <span>Désignation du produit</span>
+  <span style="text-align:right">Contingent / an</span>
+  <span>Règle hors contingent (col. 5)</span>
+</div>
+
+<div class="sec-label">🌿 Huiles végétales — Soja &amp; Colza</div>
+<div class="ctg-row">
+  <div>
+    <span class="sh-code">ex 1507 90 (Soja)</span>
+    <span class="sh-code">ex 1514 19 (Colza)</span>
+  </div>
+  <div>
+    <div class="sh-desc">Huiles raffinées de soja et de colza, <strong>non conditionnées</strong></div>
+    <div style="margin-top:4px"><span class="sh-tag tag-ctg">Usage technique/industriel (hors alimentation humaine)</span></div>
+    <div style="font-size:10px;color:var(--gray-600);margin-top:3px">→ Règle liste Annexe II (hors contingent)</div>
+    <div style="margin-top:5px"><span class="sh-tag tag-ctg">Fractions solides</span> <span class="sh-tag tag-ctg" style="margin-left:3px">Autres</span></div>
+    <div style="font-size:10px;color:var(--gray-600);margin-top:2px">Dans le contingent : Fabrication à partir de matières de toute position à l'exclusion de celle du produit</div>
+    <div style="margin-top:4px"><span class="sh-tag tag-amber">Derogation – Appendix B to Protocol 4</span></div>
+  </div>
+  <div class="sh-vol">10 000 T</div>
+  <div class="sh-rule">
+    <strong>Fractions solides :</strong> Fabrication à partir des autres matières des positions 1507 à 1515<br><br>
+    <strong>Autres :</strong> Fabrication dans laquelle toutes les matières végétales utilisées doivent être entièrement obtenues
+  </div>
+</div>
+
+<div class="sec-label">🌰 Huiles végétales — Arachide, Palme &amp; Maïs</div>
+<div class="ctg-row">
+  <div>
+    <span class="sh-code">ex 1508 90 (Arachide)</span>
+    <span class="sh-code">ex 1511 90 (Palme)</span>
+    <span class="sh-code">ex 1515 29 (Maïs)</span>
+  </div>
+  <div>
+    <div class="sh-desc">Huiles raffinées d'arachide, de palme et de maïs, <strong>non conditionnées</strong></div>
+    <div style="margin-top:4px"><span class="sh-tag tag-ctg">Contingent groupe</span></div>
+    <div style="font-size:10px;color:var(--gray-600);margin-top:2px">Dans le contingent : Fabrication à partir de matières de toute sous-position à l'exclusion de celle du produit</div>
+    <div style="margin-top:4px"><span class="sh-tag tag-amber">Derogation – Appendix B to Protocol 4</span></div>
+  </div>
+  <div class="sh-vol">2 000 T</div>
+  <div class="sh-rule">
+    Fabrication à partir de matières de toute position, à l'exclusion des matières de la même position que le produit
+  </div>
+</div>
+
+<div class="sec-label">🚬 Produits du tabac</div>
+<div class="ctg-row">
+  <div>
+    <span class="sh-code">ex 2402 (Cigares, cigarillos, cigarettes)</span>
+  </div>
+  <div>
+    <div class="sh-desc">Cigares, cigarillos et cigarettes, en tabac ou en succédanés de tabac</div>
+    <div style="margin-top:4px"><span class="sh-tag tag-red">Règle restrictive hors contingent</span></div>
+    <div style="font-size:10px;color:var(--gray-600);margin-top:2px">Dans le contingent : Fabrication à partir de matières de toute position, sauf celle du produit et du tabac à fumer (s/pos. 2403 19), avec <strong>≥ 10 % en poids</strong> des matières n° 2401 entièrement obtenues</div>
+    <div style="margin-top:4px"><span class="sh-tag tag-amber">Derogation – Appendix B to Protocol 4</span></div>
+  </div>
+  <div class="sh-vol">500 T</div>
+  <div class="sh-rule">
+    Fabrication dans laquelle <strong>70 % au moins en poids</strong> des tabacs non fabriqués ou des déchets de tabac du n° 2401 utilisés doivent être déjà originaires
+  </div>
+</div>
+
+<div class="note-box">
+  <strong>Tableau récapitulatif des contingents — Appendice B Circ. 6706/233</strong><br><br>
+  <table class="data-table" style="margin-top:4px">
+    <thead><tr><th>Position SH</th><th>Produit</th><th>Règle dans le contingent (col. 3)</th><th>Contingent annuel (col. 4)</th><th>Règle hors contingent (col. 5)</th></tr></thead>
+    <tbody>
+      <tr><td>ex 1507 90 / ex 1514 19</td><td>Huile de soja et de colza — Fractions solides</td><td>Fabrication à partir de toute position sauf la même</td><td style="text-align:right;font-weight:700">10 000 T</td><td>Fabrication à partir des autres matières des positions 1507 à 1515</td></tr>
+      <tr><td>ex 1507 90 / ex 1514 19</td><td>Huile de soja et de colza — Autres</td><td>Fabrication à partir de toute position sauf la même</td><td style="text-align:right;font-weight:700">10 000 T (commun)</td><td>Fabrication dans laquelle toutes les matières végétales utilisées doivent être entièrement obtenues</td></tr>
+      <tr><td>ex 1508 90 / ex 1511 90 / ex 1515 29</td><td>Huile d'arachide, de palme, de maïs</td><td>Fabrication à partir de toute sous-position sauf la même</td><td style="text-align:right;font-weight:700">2 000 T</td><td>Fabrication à partir de toute position sauf même position que le produit</td></tr>
+      <tr><td>ex 2402</td><td>Cigares, cigarillos, cigarettes</td><td>Toute position sauf même + s/pos. 2403 19, avec ≥ 10 % matières 2401 entièrement obtenues</td><td style="text-align:right;font-weight:700">500 T</td><td>≥ 70 % en poids tabacs non fabriqués ou déchets n° 2401 déjà originaires</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-amber">⚙</div>Procédure de gestion des contingents — Note D308/2025</div>
+  <div class="info-body">
+  <div class="step-list">
+    <div class="step"><div class="step-num">1</div><span>Enregistrement de la <strong>DUM</strong> dans le système douanier + chargement de la <strong>preuve d'origine conventionnelle</strong></span></div>
+    <div class="step"><div class="step-num">2</div><span>Communication <strong>sans délai</strong> à <strong>origine@douane.gov.ma</strong> : N° et date de la DUM · Nature des produits · Quantités et espèces reconnues</span></div>
+    <div class="step"><div class="step-num">3</div><span>Décision d'octroi par la <strong>Division des Bases de Taxation</strong> (principe du premier venu, premier servi)</span></div>
+    <div class="step"><div class="step-num">4</div><span>Au-delà des volumes contingentés : application des <strong>règles hors contingent</strong> (colonne 5 de l'Annexe II)</span></div>
+    <div class="step"><div class="step-num">5</div><span>L'ADII notifie à la <strong>Commission européenne l'épuisement</strong> de chaque contingent</span></div>
+  </div>
+  <br><strong>Durée :</strong> 5 ans à compter du 02/10/2025. Pour l'année 1 : volume calculé proportionnellement à la période comprise entre le 02/10/2025 et le 31/12/2025 (article 2 §2 de l'Appendice B — gestion de l'année 1 calculée en déduisant le volume proportionnel correspondant à la période du 1er janvier à la date d'entrée en vigueur).<br><br>
+  <strong>Mention obligatoire sur la preuve d'origine (EUR.1 case 7 / fin de déclaration d'origine) :</strong><br>
+  <div class="formula-box" style="margin-top:6px">
+    <div class="formula" style="font-size:11px;">Derogation – Appendix B to Protocol 4</div>
+  </div>
+  </div>
+</div>
+
+</div><!-- /panel-ctg -->
+
+<!-- ══ PANEL NOTES INTRODUCTIVES ══ -->
+<div id="panel-notes" class="panel">
+
+<div class="annexe-banner">
+  <h4>📐 Notes introductives à la liste des ouvraisons (Annexe I — Document 2 · Circ. 4978/233)</h4>
+  <p>Ces notes sont indispensables à l'interprétation correcte des règles de liste. Elles définissent les notions clés, les règles de lecture des colonnes, et les tolérances spécifiques aux textiles.</p>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-navy">1️⃣</div>Note 1 — Champ d'application</div>
+  <div class="info-body">La liste figurant à l'Annexe I Document 3 contient, pour <strong>tous les produits</strong>, les conditions requises pour que ces produits puissent être considérés comme suffisamment ouvrés ou transformés au sens de l'article 6 du protocole.</div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-blue">2️⃣</div>Note 2 — Structure de la liste et lecture des colonnes</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Colonne 1 :</strong> Numéro de position ou de chapitre du SH. « ex » devant un numéro = la règle ne s'applique qu'à la partie de la position décrite en colonne 2.</span></div>
+    <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Colonne 2 :</strong> Désignation des marchandises figurant dans le SH pour cette position ou ce chapitre.</span></div>
+    <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Colonnes 3 ET 4 :</strong> Quand les deux figurent, l'exportateur <em>choisit</em> l'une ou l'autre. Si seule la colonne 3 est renseignée, elle s'applique obligatoirement.</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Regroupement :</strong> Quand plusieurs numéros de position sont regroupés, la règle s'applique à tous les produits classés dans les différentes positions ou les positions regroupées du chapitre concerné.</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-green">3️⃣</div>Note 3 — Interprétation des règles de liste</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Note 3.2 :</strong> La liste fixe le <em>degré minimal</em> d'ouvraison. Toute transformation plus poussée confère aussi l'origine ; toute transformation en-deçà ne la confère pas.</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Note 3.3 :</strong> « Fabrication à partir de matières de toute position » autorise même les matières de la même position que le produit, sauf si la règle précise explicitement « à l'exclusion de ».</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Note 3.4 :</strong> « Fabrication à partir de matières A, B, C » = l'une ou l'autre, ou plusieurs, mais pas nécessairement toutes simultanément.</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Note 3.5 :</strong> Si une règle prévoit une matière déterminée, d'autres matières ne pouvant pas satisfaire à la règle en raison de leur nature même peuvent aussi être utilisées.</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Note 3.6 :</strong> Si deux pourcentages max figurent dans une même règle, ils ne s'additionnent pas — le plus élevé prévaut pour l'ensemble des matières non originaires.</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-amber">4️⃣</div>Note 4 — Définitions textiles</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>« Fibres naturelles » :</strong> fibres autres que synthétiques ou artificielles, dans tous états avant la filature (y compris déchets, cardées, peignées mais non filées). Couvre : crin (n° 0503), soie (n°s 5002 et 5003), laine, poils fins et grossiers (n°s 5101 à 5105), coton (n°s 5201 à 5203), autres fibres végétales (n°s 5301 à 5305).</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>« Pâtes textiles », « matières chimiques » :</strong> matières non classées dans les chapitres 50 à 63, utilisées pour fabriquer des fibres ou des fils synthétiques, artificiels ou en papier.</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>« Fibres synthétiques ou artificielles discontinues » :</strong> câbles de filaments, fibres discontinues et déchets des n°s 5501 à 5507.</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-purple">5️⃣</div>Note 5 — Tolérance pour produits textiles mélangés</div>
+  <div class="info-body">
+  Quand la note introductive 5 est référencée pour un produit de la liste, les conditions de la colonne 3 ne s'appliquent pas aux matières textiles de base qui représentent, considérées ensemble, <strong>10 % ou moins du poids total</strong> de toutes les matières textiles de base utilisées.<br><br>
+  Cette tolérance s'applique <em>uniquement</em> aux produits mélangés (deux ou plusieurs matières textiles de base). Ne s'applique pas si le produit n'est pas mélangé.<br><br>
+  <strong>Liste des matières textiles de base :</strong>
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Soie · Laine · Poils grossiers · Poils fins · Crin · Coton · Matières pour papier et papier · Lin · Chanvre · Jute et autres fibres libériennes · Sisal et fibres du genre « agave » · Coco · Abaca · Ramie et autres fibres textiles végétales</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Filaments synthétiques · Filaments artificiels · Filaments conducteurs électriques</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Fibres synthétiques discontinues de polypropylène · polyester · polyamide · polyacrylonitrile · polyimide · polytétrafluoroéthylène · poly(sulfure de phénylène) · poly(chlorure de vinyle) · autres fibres synthétiques discontinues</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Fibres artificielles discontinues de viscose · autres fibres artificielles discontinues</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Fils de polyuréthanes segmentés avec segments souples de polyéthers (même guipés) · avec segments souples de polyesters (même guipés)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Produits du n° 5605 (filés métalliques et fils métallisés formés d'une âme d'aluminium ou pellicule de matière plastique, largeur ≤ 5 mm, insérée par collage entre deux pellicules de matière plastique) · autres produits du n° 5605</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-teal">6️⃣</div>Note 6 — Tolérance spéciale textiles (Note 6-1 et 6-2)</div>
+  <div class="info-body">
+  <strong>Note 6-1 :</strong> Pour les produits dont la fabrication doit être réalisée à partir de fils, l'utilisation de morceaux de tissus ou d'étoffes non originaires est tolérée si leur valeur <strong>n'excède pas 8 % du prix départ usine</strong>, à condition qu'il ne s'agisse pas de doublures et de toiles tailleurs. S'applique aux :
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Produits relevant des chapitres 61 et 62 (vêtements et accessoires du vêtement)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Produits du chapitre 63 (couvertures, linges de lit, articles d'ameublement)</span></div>
+    <div class="rule-item"><div class="rule-dot rd-green"></div><span>Produits classés au chapitre 65 (coiffures et chapeaux)</span></div>
+  </div>
+  <br><strong>Note 6-2 :</strong> Les matières qui ne sont pas classées dans les chapitres 50 à 63 peuvent être utilisées <em>librement</em> dans la fabrication des produits textiles, qu'elles contiennent ou non des matières textiles (ex. boutons en plastique, fermetures à glissière métalliques, rivets, etc.).
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-gold">7️⃣</div>Note 7 — Traitements spécifiques pour les produits pétroliers</div>
+  <div class="info-body">
+  <div class="rule-list">
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Note 7.1 :</strong> Distillation atmosphérique ; distillation sous vide ; reformage catalytique ou thermique ; alkylation, oligomérisation, polymérisation ; isomérisation ; désulfuration, craquage, hydrocraquage, traitement à l'hydrogène, déparaffinage par solvant (hydrofining).</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Note 7.2 :</strong> Pour les gaz de pétrole et hydrocarbures gazeux : distillation, craquage.</span></div>
+    <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Note 7.3 :</strong> Pour les bitumes, asphaltes, schistes et mélanges bitumineux : mélange, dilution, déparaffinage.</span></div>
+  </div>
+  </div>
+</div>
+
+<div class="info-block">
+  <div class="info-h"><div class="info-icon ii-navy">📌</div>Définitions clés (Annexe I — Document 1 · Circ. 4978/233)</div>
+  <div class="info-body" style="padding-left:0">
+  <table class="data-table" style="margin-top:4px">
+    <thead><tr><th>Terme</th><th>Définition</th></tr></thead>
+    <tbody>
+      <tr><td>Fabrication</td><td>Toute ouvraison ou transformation, y compris l'assemblage ou les opérations spécifiques</td></tr>
+      <tr><td>Matière</td><td>Tout ingrédient, toute matière première, tout composant ou toute partie utilisé dans la fabrication du produit</td></tr>
+      <tr><td>Produit</td><td>Le produit obtenu, même s'il est destiné à être utilisé ultérieurement au cours d'une autre opération de fabrication</td></tr>
+      <tr><td>Marchandises</td><td>Les matières et les produits</td></tr>
+      <tr><td>Valeur en douane</td><td>La valeur déterminée conformément à l'accord sur la valeur en douane de l'OMC (accord de 1994 relatif à la mise en œuvre de l'article VII du GATT)</td></tr>
+      <tr><td>Prix départ usine</td><td>Le prix payé pour le produit au fabricant (dans l'entreprise duquel s'est effectuée la dernière ouvraison), y compris la valeur de toutes les matières mises en œuvre, déduction faite de toutes les taxes intérieures qui sont ou peuvent être restituées lorsque le produit obtenu est exporté</td></tr>
+      <tr><td>Valeur des matières</td><td>La valeur en douane au moment de l'importation des matières non originaires utilisées, ou, si elle n'est pas connue, le premier prix vérifiable payé pour les matières dans la CE ou au Maroc</td></tr>
+      <tr><td>Valeur des matières originaires</td><td>La valeur des matières originaires telle que définie pour les matières non originaires (mutatis mutandis)</td></tr>
+      <tr><td>Valeur ajoutée</td><td>Le prix départ usine, diminué de la valeur en douane de toutes les matières utilisées qui sont originaires des autres pays de la zone avec lesquels le cumul est applicable, ou, si la valeur n'est pas connue, le premier prix vérifiable payé au Maroc ou dans la CE pour ces produits</td></tr>
+      <tr><td>Chapitres / positions</td><td>Chapitres et positions (à quatre chiffres) utilisés dans la nomenclature constituant le Système Harmonisé de désignation et de codification des marchandises (SH)</td></tr>
+      <tr><td>Classé</td><td>Terme faisant référence au classement d'un produit ou d'une matière dans une position déterminée du SH</td></tr>
+      <tr><td>Envoi</td><td>Les produits envoyés simultanément par un même exportateur à un même destinataire, transportés sous le couvert d'un document de transport unique, ou couverts par une facture unique en l'absence d'un tel document</td></tr>
+      <tr><td>Territoires</td><td>Les territoires, y compris les eaux territoriales</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+</div><!-- /panel-notes -->
+
+  </div><!-- /col-body droite -->
+</div><!-- /col-right -->
+</div><!-- /layout -->
+
+<footer class="site-footer">
+  <span><strong>Accord d'Association Maroc – Union Européenne (UE) &amp; AELE · Import-eXPert</strong> · Sources : circulaires ADII</span>
+  <span>Sources : Circ. 4978/233 (2005) · Circ. 6706/233 (31/12/2025) · Note D308/2025/ADII/AC/100 · ADII / douane.gov.ma</span>
+</footer>
+
+<script>
+var L_PANELS=['accord','origine','cumul','preuves','nodrawback','circs'];
+var R_PANELS=['ouv','ctg','notes'];
+function switchTab(side,id,el){
+  var panels=side==='left'?L_PANELS:R_PANELS;
+  var tabsId=side==='left'?'left-tabs':'right-tabs';
+  panels.forEach(function(p){var el=document.getElementById('panel-'+p);if(el)el.classList.remove('active')});
+  document.querySelectorAll('#'+tabsId+' .tab-btn').forEach(function(b){b.classList.remove('active')});
+  var panel=document.getElementById('panel-'+id);
+  if(panel)panel.classList.add('active');
+  if(el)el.classList.add('active');
+  if(side==='right'){document.getElementById('right-search').value='';filterRight('')}
+}
+function filterRight(q){
+  var s=q.toLowerCase().trim();
+  document.querySelectorAll('.ouv-row').forEach(function(r){
+    if(!s){r.style.display='';return}
+    r.style.display=r.innerText.toLowerCase().indexOf(s)!==-1?'':'none'
+  });
+  document.querySelectorAll('.ouv-sep').forEach(function(sec){
+    if(!s){sec.style.display='';return}
+    var next=sec.nextElementSibling;var hasV=false;
+    while(next&&!next.classList.contains('ouv-sep')){
+      if(next.classList.contains('ouv-row')&&next.style.display!=='none')hasV=true;
+      next=next.nextElementSibling
+    }
+    sec.style.display=hasV?'':'none'
+  });
+  document.querySelectorAll('.ctg-row').forEach(function(r){
+    if(!s){r.classList.remove('hidden');return}
+    r.classList.toggle('hidden',r.innerText.toLowerCase().indexOf(s)===-1)
+  });
+  document.querySelectorAll('.panel.active .sec-label').forEach(function(sec){
+    if(!s){sec.style.display='';return}
+    var next=sec.nextElementSibling;var hasV=false;
+    while(next&&!next.classList.contains('sec-label')&&!next.classList.contains('annexe-banner')&&!next.classList.contains('note-box')&&!next.classList.contains('info-block')){
+      if(next.classList.contains('ctg-row')&&!next.classList.contains('hidden'))hasV=true;
+      next=next.nextElementSibling
+    }
+    sec.style.display=hasV?'':'none'
+  })
+}
+</script>
+</body>
+</html>
