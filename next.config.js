@@ -11,6 +11,14 @@ const withPWA = require('next-pwa')({
 })
 
 const nextConfig = {
+  // Accords préférentiels : les fiches détaillées sont des pages HTML
+  // autonomes (public/tools/accords/), servies sous /accords/{slug}.
+  async rewrites() {
+    return ['ue', 'royaume-uni', 'etats-unis', 'turquie', 'chine'].map(slug => ({
+      source: `/accords/${slug}`,
+      destination: `/tools/accords/${slug}.html`,
+    }))
+  },
   async redirects() {
     return [
       // Ancien outil combiné "Classificateur HS · DUM · Screening", remplacé

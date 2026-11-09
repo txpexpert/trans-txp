@@ -92,6 +92,10 @@ export const FREE_PATHS = [
  * (voir middleware.ts).
  */
 export function pathToModuleCode(pathname: string): string | null {
+  // Accords préférentiels : page d'aiguillage, fiches et leurs fichiers HTML
+  if (pathname === '/accords' || pathname.startsWith('/accords/') || pathname.startsWith('/tools/accords/')) {
+    return 'accords-preferentiels'
+  }
   if (pathname.startsWith('/modules/')) {
     return pathname.replace(/^\/modules\//, '').replace(/\/$/, '')
   }

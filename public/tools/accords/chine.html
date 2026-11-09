@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarif zéro Maroc – Chine · Import-eXPert</title>
+<style>
+  :root{--navy:#1A1A18;--navy-mid:#2E2E2A;--red:#C0392B;--red-lt:#FCEBEB;--gold:#B8922A;--gold-lt:#FDF3E0;--gold-mid:#D4AC52;--teal:#0F7B6C;--teal-lt:#E0F4F1;--green:#276527;--green-lt:#EAF3DE;--amber:#854F0B;--amber-lt:#FAEEDA;--gray-50:#F9F8F4;--gray-100:#F0EDE4;--gray-200:#E2DDD0;--gray-400:#8B8880;--gray-600:#5A5750;--gray-800:#252220;--border:#E2DDD0;--radius:6px;--radius-lg:10px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:13px;color:var(--gray-800);background:var(--gray-50)}
+  .site-header{background:var(--navy);color:#fff;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;flex-shrink:0;border-bottom:3px solid var(--gold)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-flags{display:flex;gap:3px;align-items:center}
+  .flag-ma{width:32px;height:22px;border-radius:2px;overflow:hidden;display:flex;flex-direction:column}
+  .flag-ma-top{flex:1;background:#C1272D}
+  .flag-ma-mid{flex:1;background:#006233;display:flex;align-items:center;justify-content:center}
+  .flag-ma-star{color:#C1272D;font-size:9px}
+  .flag-ma-bot{flex:0}
+  .flag-cn{width:32px;height:22px;border-radius:2px;background:#DE2910;display:flex;align-items:flex-start;padding:2px 3px;gap:2px}
+  .flag-cn-star{color:#FFDE00;font-size:8px;line-height:1}
+  .flag-cn-stars{display:flex;flex-direction:column;gap:1px;margin-top:1px}
+  .flag-cn-sm{font-size:4px}
+  .flag-sep{color:rgba(255,255,255,0.3);font-size:16px;font-weight:300}
+  .site-header .title{font-size:13.5px;font-weight:600;letter-spacing:.02em;line-height:1.3}
+  .site-header .subtitle{font-size:11px;opacity:.6;margin-top:2px}
+  .header-badges{display:flex;gap:6px}
+  .hbadge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:3px;letter-spacing:.04em;font-family:'Courier New',monospace}
+  .hb-gold{background:rgba(184,146,42,.25);color:#F0D080;border:1px solid rgba(184,146,42,.4)}
+  .hb-green{background:rgba(39,101,39,.22);color:#98D898;border:1px solid rgba(39,101,39,.35)}
+  .hb-red{background:rgba(192,57,43,.25);color:#F5A090;border:1px solid rgba(192,57,43,.4)}
+  .layout{display:flex;height:calc(100vh - 56px);overflow:hidden}
+  .col{display:flex;flex-direction:column;overflow:hidden;background:#fff}
+  .col-left{width:50%;border-right:1px solid var(--border)}
+  .col-right{flex:1}
+  .col-head{padding:10px 16px;background:var(--gray-50);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .col-head-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .icon-gold{background:#FDF3E0;color:var(--gold)}
+  .icon-teal{background:var(--teal-lt);color:var(--teal)}
+  .icon-red{background:var(--red-lt);color:var(--red)}
+  .col-head-label{font-size:12px;font-weight:600;color:var(--gray-800)}
+  .col-head-sub{font-size:10px;color:var(--gray-400);margin-top:1px}
+  .tabs{display:flex;border-bottom:1px solid var(--border);background:var(--gray-50);padding:0 6px;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab-btn{padding:8px 11px;font-size:11px;font-weight:500;color:var(--gray-400);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
+  .tab-btn:hover{color:var(--gray-800)}
+  .tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+  .col-body{flex:1;overflow-y:auto;scroll-behavior:smooth}
+  .search-wrap{padding:8px 12px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0}
+  .search-wrap input{width:100%;padding:6px 10px 6px 28px;font-size:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--gray-50);color:var(--gray-800);outline:none;transition:border-color .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%238D92A0' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:8px center}
+  .search-wrap input:focus{border-color:var(--gold);background-color:#fff}
+  .panel{display:none}
+  .panel.active{display:block}
+  .sec-label{position:sticky;top:0;z-index:2;padding:7px 14px;background:var(--gray-100);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray-600)}
+  .info-block{padding:12px 16px;border-bottom:1px solid var(--gray-100);transition:background .1s}
+  .info-block:hover{background:var(--gray-50)}
+  .info-h{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--navy-mid);margin-bottom:6px}
+  .info-icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+  .ii-gold{background:var(--gold-lt);color:var(--gold)}
+  .ii-teal{background:var(--teal-lt);color:var(--teal)}
+  .ii-green{background:var(--green-lt);color:var(--green)}
+  .ii-amber{background:var(--amber-lt);color:var(--amber)}
+  .ii-red{background:var(--red-lt);color:var(--red)}
+  .ii-navy{background:#E8E6E0;color:var(--navy)}
+  .ii-blue{background:#DBEAFE;color:#1E5FA8}
+  .ii-purple{background:#EDE9FE;color:#5B21B6}
+  .info-body{font-size:12px;color:var(--gray-600);line-height:1.65;padding-left:29px}
+  .info-body strong{color:var(--gray-800);font-weight:600}
+  .rule-list{margin-top:4px}
+  .rule-item{display:flex;gap:7px;align-items:start;padding:3px 0}
+  .rule-dot{width:5px;height:5px;border-radius:50%;margin-top:5px;flex-shrink:0}
+  .rd-gold{background:var(--gold)}.rd-green{background:var(--teal)}.rd-amber{background:var(--amber)}.rd-navy{background:var(--navy-mid)}.rd-red{background:var(--red)}
+  .rule-item span{font-size:11.5px;color:var(--gray-600);line-height:1.55}
+  .rule-item span strong{color:var(--gray-800)}
+  .formula-box{margin:8px 0;padding:10px 14px;background:#F9F5E8;border:1px solid #E2D090;border-radius:var(--radius);text-align:center}
+  .formula{font-family:'Courier New',monospace;font-size:14px;font-weight:700;color:var(--navy-mid);letter-spacing:.05em}
+  .formula-note{font-size:10.5px;color:var(--gray-600);margin-top:5px;line-height:1.5}
+  .leg-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:11px}
+  .leg-table td{padding:4px 8px;border:1px solid var(--border);color:var(--gray-600);line-height:1.4}
+  .leg-table td:first-child{font-family:'Courier New',monospace;font-weight:700;color:var(--navy-mid);white-space:nowrap;background:var(--gray-50);width:60px}
+  .data-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:11px}
+  .data-table th{background:var(--navy-mid);color:#fff;padding:5px 8px;font-weight:600;font-size:10px;text-align:left}
+  .data-table td{padding:5px 8px;border-bottom:1px solid var(--gray-100);color:var(--gray-600)}
+  .data-table tr:nth-child(even) td{background:var(--gray-50)}
+  .data-table td.num{text-align:right;font-family:'Courier New',monospace;font-weight:600;color:var(--navy-mid)}
+  .data-table td.ok{color:var(--green);font-weight:600}
+  .data-table td.warn{color:var(--amber);font-weight:600}
+  .data-table td.danger{color:var(--red);font-weight:600}
+  .circ-card{margin:10px 14px;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  .circ-card-top{padding:9px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+  .circ-card-top.c-base{background:linear-gradient(90deg,#F9F5E8,var(--gray-50))}
+  .circ-card-top.c-new{background:linear-gradient(90deg,var(--green-lt),var(--gray-50))}
+  .circ-card-top.c-warn{background:linear-gradient(90deg,var(--red-lt),var(--gray-50))}
+  .circ-num{font-size:12px;font-weight:700}
+  .c-base .circ-num{color:var(--gold)}.c-new .circ-num{color:var(--green)}.c-warn .circ-num{color:var(--red)}
+  .circ-date{font-size:10px;color:var(--gray-400)}
+  .circ-body{padding:10px 14px}
+  .circ-body p{font-size:11.5px;color:var(--gray-600);line-height:1.6;margin-bottom:5px}
+  .circ-body p:last-child{margin-bottom:0}
+  .circ-body strong{color:var(--gray-800)}
+  .note-box{margin:10px 14px;padding:9px 12px;background:var(--gray-50);border:1px solid var(--border);border-left:3px solid var(--gold-mid);border-radius:var(--radius);font-size:10.5px;color:var(--gray-600);line-height:1.6}
+  .note-box.danger{border-left-color:var(--red);background:var(--red-lt)}
+  .note-box strong{color:var(--gray-800)}
+  .refs-box{margin:10px 14px;padding:10px 14px;background:var(--gray-50);border:1px solid var(--border);border-radius:var(--radius)}
+  .refs-box h5{font-size:10.5px;font-weight:700;color:var(--gray-800);margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em}
+  .refs-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}
+  .refs-item{font-size:10.5px;color:var(--gray-600);line-height:1.5}
+  .refs-item strong{color:var(--gray-800);display:block}
+  .step-list{margin-top:6px;padding-left:0}
+  .step{display:flex;gap:7px;margin-bottom:5px;align-items:start}
+  .step-num{width:17px;height:17px;border-radius:50%;background:var(--navy-mid);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .step span{font-size:11.5px;color:var(--gray-600);line-height:1.55}
+  .step span strong{color:var(--gray-800)}
+  /* ── COLONNE DROITE – codes SH ── */
+  .annexe-banner{padding:10px 14px;background:linear-gradient(135deg,#F9F5E8 0%,#F9F8F4 100%);border-bottom:1px solid #E2D090}
+  .annexe-banner h4{font-size:11px;font-weight:700;color:var(--navy-mid);margin-bottom:3px}
+  .annexe-banner p{font-size:10px;color:var(--gray-600);line-height:1.5}
+  .prod-row{padding:10px 14px;border-bottom:1px solid var(--gray-100);transition:background .1s;display:grid;grid-template-columns:110px 1fr 90px;gap:8px;align-items:start}
+  .prod-row:hover{background:#F9F5E8}
+  .prod-row.hidden{display:none}
+  .prod-code{font-family:'Courier New',monospace;font-size:10.5px;font-weight:700;color:var(--navy-mid);line-height:1.6}
+  .prod-code-range{font-family:'Courier New',monospace;font-size:10px;color:var(--gray-400);line-height:1.4}
+  .prod-desc{font-size:11.5px;color:var(--gray-800);line-height:1.5}
+  .prod-desc small{display:block;font-size:10.5px;color:var(--gray-400);margin-top:2px;line-height:1.4}
+  .prod-meta{text-align:right;font-size:10.5px;color:var(--gray-600);line-height:1.6}
+  .tag{display:inline-block;font-size:9.5px;font-weight:600;padding:2px 6px;border-radius:3px;margin-top:3px}
+  .tag-zero{background:var(--green-lt);color:var(--green)}
+  .tag-condition{background:var(--amber-lt);color:var(--amber)}
+  .tag-risk{background:var(--red-lt);color:var(--red)}
+  .tag-gacc{background:#DBEAFE;color:#1E5FA8}
+  .tag-sps{background:#EDE9FE;color:#5B21B6}
+  .year-divider{margin:0;padding:6px 14px;background:linear-gradient(90deg,#1A1A18,#3A3A30);color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em}
+  .kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--border);flex-shrink:0}
+  .kpi{padding:9px 12px;border-right:1px solid var(--border);background:#fff}
+  .kpi:last-child{border-right:none}
+  .kpi-num{font-size:18px;font-weight:700;color:var(--gold);font-family:'Courier New',monospace;letter-spacing:-0.02em;line-height:1}
+  .kpi-lbl{font-size:9.5px;color:var(--gray-400);margin-top:3px;line-height:1.4}
+  .site-footer{flex-shrink:0;padding:7px 20px;background:var(--gray-100);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .site-footer span{font-size:10px;color:var(--gray-400)}
+  .site-footer strong{color:var(--gray-600)}
+  .redline{border-left:3px solid var(--red)}
+  .goldline{border-left:3px solid var(--gold)}
+</style>
+<style id="ixp-accords">
+.ixp-back{position:fixed;left:16px;bottom:40px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:#14120F;color:#fff!important;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;box-shadow:0 8px 22px -8px rgba(0,0,0,.45)}
+.ixp-back:hover{background:#A8822F}
+@media (max-width:900px){
+ html,body{height:auto!important;overflow:auto!important}
+ body>header,header,.hdr,.header{position:static!important}
+ .layout,#body{display:block!important;position:static!important;height:auto!important;overflow:visible!important}
+ .layout>*,#body>*{width:auto!important;max-width:none!important;height:auto!important;overflow:visible!important}
+ .kpi-strip{grid-template-columns:1fr 1fr!important}
+ .tabs,.tab-bar,[class*="tab-bar"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+ .header-badges,.hdr-badges,.h-badges{display:none!important}
+ footer,.site-footer{position:static!important}
+ .ixp-back{bottom:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-flags">
+      <div class="flag-ma">
+        <div class="flag-ma-top"></div>
+        <div class="flag-ma-mid"><span class="flag-ma-star">✦</span></div>
+        <div class="flag-ma-top"></div>
+      </div>
+      <span class="flag-sep">×</span>
+      <div class="flag-cn">
+        <span class="flag-cn-star">★</span>
+        <div class="flag-cn-stars">
+          <span class="flag-cn-sm">✦</span>
+          <span class="flag-cn-sm">✦</span>
+          <span class="flag-cn-sm">✦</span>
+          <span class="flag-cn-sm">✦</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="title">Tarif Zéro Maroc – République Populaire de Chine · Guide opérationnel Import-eXPert</div>
+      <div class="subtitle">Sources : GACC, MOFCOM, ADII · En vigueur depuis le 1<sup>er</sup> mai 2026 · Mesure unilatérale chinoise · Régime transitoire 2026–2028</div>
+    </div>
+  </div>
+  <div class="header-badges">
+    <span class="hbadge hb-gold">Annonce Xi Jinping · 14 fév. 2026</span>
+    <span class="hbadge hb-green">En vigueur · 1<sup>er</sup> mai 2026</span>
+    <span class="hbadge hb-red">⚠ Pas d'ALE signé</span>
+  </div>
+</header>
+
+<!-- ══ KPI STRIP ══ -->
+<div class="kpi-strip">
+  <div class="kpi"><div class="kpi-num">0 %</div><div class="kpi-lbl">Droit applicable sur toutes les lignes tarifaires marocaines</div></div>
+  <div class="kpi"><div class="kpi-num">9,4 Mds$</div><div class="kpi-lbl">Volume échanges Maroc–Chine 2024 (déséquilibre : 401 M$ exports MA)</div></div>
+  <div class="kpi"><div class="kpi-num">2028</div><div class="kpi-lbl">Fenêtre de négociation pour un accord permanent (mesure = 2 ans)</div></div>
+  <div class="kpi"><div class="kpi-num">86 Mds DH</div><div class="kpi-lbl">Déficit commercial Maroc–Chine (1<sup>er</sup> déficit bilatéral du Maroc)</div></div>
+</div>
+
+<!-- ══ LAYOUT ══ -->
+<div class="layout">
+
+<!-- ══════ COLONNE GAUCHE — RÉGLEMENTATION ══════ -->
+<div class="col col-left">
+  <div class="col-head">
+    <div class="col-head-icon icon-gold">⚖</div>
+    <div>
+      <div class="col-head-label">Réglementation &amp; Procédures douanières</div>
+      <div class="col-head-sub">GACC · Système douanier chinois · Règles d'origine · Documents · Red Flags</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('left','accord')">Régime &amp; Conditions</button>
+    <button class="tab-btn" onclick="switchTab('left','systeme')">Système douanier CN</button>
+    <button class="tab-btn" onclick="switchTab('left','origine')">Règles d'origine</button>
+    <button class="tab-btn" onclick="switchTab('left','proc')">Procédures export MA</button>
+    <button class="tab-btn" onclick="switchTab('left','redflags')">⚠ Red Flags</button>
+    <button class="tab-btn" onclick="switchTab('left','refs')">Références</button>
+  </div>
+  <div class="col-body">
+
+    <!-- ── RÉGIME & CONDITIONS ── -->
+    <div id="panel-left-accord" class="panel active"><div class="ixp-maj" style="border:1px solid #D9C48A;border-left:4px solid #B8922A;background:#FBF5E6;padding:14px 16px;margin:0 0 16px;border-radius:6px;font-size:13px;line-height:1.55;color:#1A1A18"><div style="font-weight:700;font-size:13.5px;margin-bottom:6px">Mise à jour du 9 novembre 2026</div><ul style="margin:4px 0 0 18px;padding:0"><li style="margin:3px 0"><strong>Durée exacte</strong> : du 1<sup>er</sup> mai 2026 au 30 avril 2028, sous forme d’un taux préférentiel accordé aux 20 pays africains non-PMA, dont le Maroc (annonce de la Commission tarifaire du Conseil des affaires d’État du 28 avril 2026).</li><li style="margin:3px 0"><strong>Produits sous contingent chinois</strong> : seul le taux <em>dans</em> le contingent passe à zéro ; le taux hors contingent ne change pas.</li><li style="margin:3px 0"><strong>Ce n’est pas réciproque</strong> : à l’importation au Maroc, les produits chinois restent au droit commun, plus les mesures de défense commerciale. Exemple : antidumping de 76 % sur 46 positions de contreplaqué (4412), jusqu’au 28/08/2027 (circ. 6774/211 du 23/09/2026).</li><li style="margin:3px 0"><strong>Règles d’origine</strong> : les seuils de valeur ajoutée indiqués sur cette page sont indicatifs. Vérifiez-les dans le texte chinois applicable avant toute opération.</li></ul><div style="margin-top:8px;font-size:11.5px;color:#5A5A54">Sources : Xinhua (28/04/2026), Médias24, circulaire ADII 6774/211.</div></div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">📋</div>Nature juridique du dispositif</div>
+        <div class="info-body">La suppression des droits de douane chinois n'est <strong>pas un Accord de Libre-Échange (ALE) signé</strong>. Il s'agit d'une <strong>mesure unilatérale</strong> de la République Populaire de Chine, annoncée par le Président Xi Jinping le 14 février 2026 lors du 39<sup>e</sup> sommet de l'Union africaine à Addis-Abeba, et applicable à compter du <strong>1<sup>er</sup> mai 2026</strong>.
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span>Mesure <strong>unilatérale</strong> — peut être retirée sans concertation préalable</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span>Durée : <strong>du 1<sup>er</sup> mai 2026 au 30 avril 2028</strong> — présentée comme phase de transition</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Pékin prévoit de <strong>négocier des accords de partenariat économique conjoint</strong> à l'issue de cette phase</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Couvre <strong>l'intégralité des lignes tarifaires</strong> (pour les produits sous contingent tarifaire chinois, seul le taux dans le contingent est nul)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-gold">📉</div>Régime tarifaire — Ce qui change pour le Maroc</div>
+        <div class="info-body">Avant le 1<sup>er</sup> mai 2026, le Maroc était soumis aux <strong>droits de douane NPF (Nation la Plus Favorisée)</strong> de la Chine, pouvant atteindre 25 % selon la catégorie. Depuis cette date :
+          <table class="data-table" style="margin-top:8px">
+            <thead><tr><th>Situation</th><th>Droit applicable</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td>Avant 1er mai 2026</td><td>NPF : 0 à 25 % selon SH</td><td class="danger">Droit commun</td></tr>
+              <tr><td>Depuis 1er mai 2026</td><td>0 % toutes lignes tarifaires</td><td class="ok">En vigueur</td></tr>
+              <tr><td>Après le 30 avril 2028</td><td>À négocier (ALE ou renouvellement)</td><td class="warn">Incertain</td></tr>
+            </tbody>
+          </table>
+          <br>Cette mesure s'inscrit dans la continuité du <strong>partenariat stratégique de 2016</strong> et du mémorandum Maroc–Chine sur l'initiative « la Ceinture et la Route ».
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">🔢</div>Secteurs marocains prioritairement concernés</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Phosphates &amp; engrais (OCP) :</strong> Taux NPF antérieurs de 1–3 % — impact tarifaire faible mais signal stratégique fort. Maroc = 3<sup>e</sup> exportateur mondial de phosphates bruts</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Huile d'argan &amp; produits cosmétiques :</strong> Taux NPF de 10–20 % → gain direct significatif. Nécessite enregistrement GACC</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Produits halieutiques :</strong> Taux NPF de 2–15 % → gain modéré à fort. Condition : accréditation établissement usine sur plateforme <strong>CIFER/GACC</strong></span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Agrumes &amp; fruits frais :</strong> Taux NPF de 10–20 % → gain fort. Contraintes phytosanitaires strictes</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Textiles &amp; confection :</strong> Taux NPF de 12–25 % → fort potentiel sous réserve de règles d'origine qualifiées (valeur ajoutée ≥ 40 %)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Cuir &amp; produits dérivés, huile d'olive :</strong> Potentiel export réel, marché chinois en forte expansion</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">⚠</div>Contexte géopolitique &amp; raison de la mesure</div>
+        <div class="info-body">La suppression tarifaire est une réponse stratégique de Pékin à plusieurs dynamiques mondiales :
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Contrepied au <strong>protectionnisme américain</strong> (tarifs Section 301, Inflation Reduction Act) — la Chine se positionne comme champion du libre-échange avec le Sud Global</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Réduction de l'<strong>excédent commercial chinois avec l'Afrique</strong>, fortement critiqué — échanges bilatéraux Chine–Afrique : 348 Mds$ en 2025 (+17,7 %)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Intégration dans la logique de la <strong>Route de la Soie</strong> — le Maroc est un nœud stratégique entre Europe, Afrique et Atlantique</span></div>
+            <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>Risque de détournement de trafic :</strong> la mesure étant très large, les douanes chinoises renforceront les contrôles d'origine pour éviter la réexportation de produits tiers</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="note-box goldline">
+        <strong>Point clé pour les transitaires :</strong> La balance commerciale Maroc–Chine reste structurellement déficitaire : 401 M$ d'exportations marocaines contre ~9 Mds$ d'importations chinoises en 2024 (déficit de 86 Mds DH — premier déficit bilatéral du Maroc). Le tarif zéro est une condition nécessaire mais non suffisante : les obstacles non tarifaires (GACC, normes GB, étiquetage chinois) restent les barrières déterminantes.
+      </div>
+    </div>
+
+    <!-- ── SYSTÈME DOUANIER CHINOIS ── -->
+    <div id="panel-left-systeme" class="panel">
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">🏛</div>Administration — GACC</div>
+        <div class="info-body">Le système douanier chinois est géré par la <strong>GACC (General Administration of Customs of the People's Republic of China)</strong> — Administration Générale des Douanes de la RPC.
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Guichet unique :</strong> La Chine a fusionné douane, inspection sanitaire et phytosanitaire en un système intégré unique (Single Window)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span><strong>Nomenclature :</strong> Système harmonisé à <strong>10 chiffres</strong> (HS Code chinois) — peut diverger du code SH marocain sur les 2 derniers chiffres</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Normes GB (Guobiao) :</strong> Normes techniques nationales chinoises — un produit conforme aux normes CE peut être rejeté s'il ne respecte pas la variante GB</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-teal">🔄</div>Circuits de dédouanement</div>
+        <div class="info-body">La GACC utilise l'IA et le Big Data pour le profilage des risques. Trois circuits principaux :
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Direct Release (Vert) :</strong> Entreprises à haut score de crédit social — mainlevée automatique</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Documentary Audit (Jaune) :</strong> Vérification électronique des certificats — fréquent pour les premières exportations marocaines</span></div>
+            <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>Physical Inspection (Rouge) :</strong> Très fréquent pour alimentaire &amp; produits frais marocains — prélèvements laboratoire systématiques</span></div>
+          </div>
+          <br>Réforme <strong>« Two-Step Declaration »</strong> : l'importateur chinois peut retirer les marchandises après déclaration sommaire (9 éléments), avec déclaration complète sous <strong>14 jours</strong>.
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-gold">📋</div>Enregistrement GACC — Obligation critique</div>
+        <div class="info-body">Pour les <strong>produits alimentaires marocains</strong> (huile d'argan, produits halieutiques, agrumes, conserves), l'usine marocaine doit être <strong>enregistrée sur la plateforme CIFER</strong> de la douane chinoise <em>avant</em> toute expédition.
+          <div class="step-list">
+            <div class="step"><div class="step-num">1</div><span>Inscription sur <strong>CIFER</strong> (Chinese Import Food Enterprise Registration) via le portail GACC</span></div>
+            <div class="step"><div class="step-num">2</div><span>Obtention du <strong>numéro d'enregistrement GACC</strong> — à faire figurer sur tous les documents d'exportation</span></div>
+            <div class="step"><div class="step-num">3</div><span>Vérifier la <strong>correspondance exacte</strong> entre le nom de l'entreprise en anglais sur CIFER et sur les documents d'expédition — toute divergence bloque la marchandise au port</span></div>
+            <div class="step"><div class="step-num">4</div><span>Renouvellement et mise à jour régulière des informations — un enregistrement périmé <strong>bloque sans possibilité de régularisation locale</strong></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">🌐</div>Manifeste de fret &amp; pré-déclaration</div>
+        <div class="info-body">Le manifeste de fret doit être transmis à la GACC <strong>24 heures avant le chargement</strong> au port de départ (Tanger Med ou Casablanca). L'importateur chinois doit obligatoirement disposer d'un <strong>Code CR (Customs Registration)</strong> — numéro d'enregistrement douanier chinois. Sans ce code, l'importation est impossible.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">🏷</div>Étiquetage — Obligation non négociable</div>
+        <div class="info-body">L'étiquetage en <strong>mandarin (chinois simplifié) est obligatoire</strong> avant l'expédition depuis le Maroc. Une erreur de traduction ou d'étiquetage est la <strong>cause n°1 de refoulement de marchandises marocaines</strong> à l'entrée en Chine.
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-red"></div><span>Nom du produit, ingrédients, pays d'origine, coordonnées importateur chinois — <strong>tout en mandarin simplifié</strong></span></div>
+            <div class="rule-item"><div class="rule-dot rd-red"></div><span>Pour les cosmétiques : enregistrement NMPA (National Medical Products Administration) obligatoire en parallèle</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Prévoir un <strong>expert en localisation mandarin</strong> — ne pas se fier à des traductions automatiques</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-purple">©</div>Protection de la marque — Priorité absolue</div>
+        <div class="info-body">La douane chinoise (GACC) est très active dans la protection des marques enregistrées auprès d'elle. <strong>Enregistrez votre marque auprès du GACC IP Protection et de l'CNIPA (China National Intellectual Property Administration) avant même d'exporter.</strong><br><br>Des tiers peuvent enregistrer votre marque en Chine et bloquer vos propres expéditions. Ce risque est réel pour les produits marocains distinctifs (huile d'argan, artisanat de luxe).</div>
+      </div>
+    </div>
+
+    <!-- ── RÈGLES D'ORIGINE ── -->
+    <div id="panel-left-origine" class="panel">
+      <div class="sec-label">SECTION I — NATURE DE L'ORIGINE</div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">🏷</div>Type d'origine applicable — Origine non préférentielle</div>
+        <div class="info-body">En l'absence d'un ALE bilatéral Maroc–Chine, le régime actuel repose sur une <strong>origine non préférentielle</strong>. Le certificat d'origine prouve que la marchandise est bien d'origine marocaine, condition pour bénéficier du tarif zéro accordé aux 53 pays africains.
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Critère principal :</strong> Changement de position tarifaire (SH) OU valeur ajoutée locale substantielle</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Seuil de valeur ajoutée :</strong> Généralement <strong>30 à 40 %</strong> de valeur ajoutée locale exigée pour les produits industriels</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Produits bruts :</strong> Origine présumée si la récolte, l'extraction ou l'abattage ont lieu au Maroc (phosphates, agrumes, poissons, légumes)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>Risque de détournement :</strong> Les douanes chinoises vérifieront rigoureusement pour éviter la réexportation de produits tiers (chinois, turcs, européens) via le Maroc</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">✅</div>Certification — Forme requise</div>
+        <div class="info-body">Le certificat d'origine doit être délivré par les <strong>Chambres de Commerce marocaines ou les autorités compétentes de l'ADII</strong>.
+          <table class="data-table" style="margin-top:8px">
+            <thead><tr><th>Document</th><th>Émetteur (Maroc)</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr><td>Certificat d'origine (Form A)</td><td>Chambre de Commerce</td><td>Origine non-préférentielle</td></tr>
+              <tr><td>Certificat phytosanitaire</td><td>ONSSA</td><td>Produits végétaux</td></tr>
+              <tr><td>Certificat sanitaire</td><td>ONSSA / EACCE</td><td>Agroalimentaire</td></tr>
+              <tr><td>Certificat d'origine GACC</td><td>ADII + GACC enregistrement</td><td>Produits alimentaires transformés</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">🔩</div>Calcul de la valeur ajoutée locale</div>
+        <div class="info-body">
+          <div class="formula-box">
+            <div class="formula">VA locale = (Prix FOB – Valeur intrants tiers) / Prix FOB × 100 ≥ 35–40 %</div>
+            <div class="formula-note">Les intrants en provenance de Chine ou d'autres pays tiers sont exclus du calcul de l'origine marocaine</div>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-red"></div><span><strong>Point critique textiles :</strong> un vêtement assemblé au Maroc avec des tissus chinois ne qualifie PAS comme originaire marocain si la valeur ajoutée reste inférieure au seuil</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Les frais de main-d'œuvre, emballage, transport intérieur <strong>rentrent dans le calcul</strong> de la valeur ajoutée marocaine</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="note-box danger redline">
+        <strong>⚠ Red Flag – Fraude à l'origine :</strong> La GACC est en alerte maximale contre les tentatives de réexportation via le Maroc de marchandises d'origine chinoise, américaine ou turque cherchant à capter la franchise. Les pénalités incluent la saisie, l'exclusion définitive des exportateurs fraudeurs, et des sanctions pénales. Conservez toute traçabilité de production pendant au moins 5 ans.
+      </div>
+    </div>
+
+    <!-- ── PROCÉDURES EXPORT MAROC ── -->
+    <div id="panel-left-proc" class="panel">
+      <div class="sec-label">ÉTAPES PRÉPARATOIRES — CÔTÉ MAROC</div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">🏛</div>Inscription &amp; statut exportateur</div>
+        <div class="info-body">
+          <div class="step-list">
+            <div class="step"><div class="step-num">1</div><span>S'inscrire comme <strong>exportateur agréé auprès de l'ADII</strong> et obtenir un numéro NIF actif</span></div>
+            <div class="step"><div class="step-num">2</div><span>Déposer une <strong>demande d'enregistrement GACC</strong> pour les produits alimentaires via la plateforme CIFER — délai : 3 à 6 mois</span></div>
+            <div class="step"><div class="step-num">3</div><span>Vérifier la conformité des produits aux <strong>normes GB chinoises</strong> — faire appel à un laboratoire accrédité</span></div>
+            <div class="step"><div class="step-num">4</div><span>Enregistrer la <strong>marque commerciale en Chine</strong> (CNIPA) avant la première expédition</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-gold">📦</div>Documents obligatoires pour l'export vers la Chine</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Déclaration export via BADR/PORTNET</strong> — obligatoire côté marocain</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Facture commerciale</strong> — description précise, valeur CIF/FOB, Incoterm, mentions en anglais</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Packing list</strong> — détail par colis (poids, dimensions, contenu)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Connaissement (Bill of Lading)</strong> — original, émis par la compagnie maritime</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Certificat d'origine</strong> — visé par Chambre de Commerce + ADII</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Certificat sanitaire / phytosanitaire ONSSA</strong> — obligatoire pour alimentaire, fruits, poissons</span></div>
+            <div class="rule-item"><div class="rule-dot rd-gold"></div><span><strong>Numéro GACC</strong> de l'établissement exportateur — sur tous les documents</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Licence d'importation automatique</strong> (côté chinois) — pour certains produits : métaux, produits chimiques</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Certificat CCC</strong> (China Compulsory Certificate) — pour produits électriques et électroniques</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-teal">🚢</div>Logistique maritime Maroc–Chine</div>
+        <div class="info-body">
+          <table class="data-table">
+            <thead><tr><th>Route</th><th>Durée estimée</th><th>Observation</th></tr></thead>
+            <tbody>
+              <tr><td>Tanger Med → Shanghai</td><td>25–35 jours</td><td>Via Suez — principal corridor</td></tr>
+              <tr><td>Casablanca → Ningbo</td><td>28–38 jours</td><td>Plusieurs escales</td></tr>
+              <tr><td>Tanger Med → Qingdao</td><td>30–40 jours</td><td>Pour phosphates OCP</td></tr>
+              <tr><td>Aérien (Casablanca → Shanghai/Beijing)</td><td>5–10 jours</td><td>Produits frais haute valeur</td></tr>
+            </tbody>
+          </table>
+          <br>Choisir un <strong>transitaire expérimenté sur la route Maroc–Chine</strong> — prévoir des surestaries élevées en cas de litige documentaire dans les ports chinois (Shanghai, Ningbo — coûts parmi les plus élevés d'Asie).
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">📊</div>Dédouanement côté chinois — Séquence opérationnelle</div>
+        <div class="info-body">
+          <div class="step-list">
+            <div class="step"><div class="step-num">1</div><span><strong>Manifeste de fret</strong> transmis 24h avant chargement à Tanger Med / Casablanca</span></div>
+            <div class="step"><div class="step-num">2</div><span>L'importateur chinois soumet la <strong>déclaration sommaire</strong> (Two-Step Declaration — 9 éléments) à la GACC via Single Window</span></div>
+            <div class="step"><div class="step-num">3</div><span><strong>Inspection documentaire</strong> — vérification du numéro GACC, certificats, factures, étiquetage en mandarin</span></div>
+            <div class="step"><div class="step-num">4</div><span><strong>Inspection physique &amp; prélèvements laboratoire</strong> — fréquent pour alimentaire marocain (prévoir surplus de marchandise)</span></div>
+            <div class="step"><div class="step-num">5</div><span><strong>Mainlevée</strong> après confirmation d'origine et paiement des taxes internes (TVA CN = 9 ou 13 % selon catégorie — tarif douanier 0 %)</span></div>
+            <div class="step"><div class="step-num">6</div><span><strong>Déclaration complète</strong> soumise sous 14 jours par l'importateur chinois</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">💰</div>Calcul des coûts réels à l'importation en Chine</div>
+        <div class="info-body">
+          <div class="formula-box">
+            <div class="formula">Coût total = Valeur CIF × 0 % (douane) + TVA CN (9 ou 13 %) + Frais portuaires + Frais transitaire CN</div>
+            <div class="formula-note">La TVA chinoise à l'importation subsiste — seuls les droits de douane sont supprimés</div>
+          </div>
+          <table class="data-table" style="margin-top:8px">
+            <thead><tr><th>Taxe</th><th>Taux</th><th>Produits concernés</th></tr></thead>
+            <tbody>
+              <tr><td>Droits de douane import CN</td><td class="ok">0 % (depuis 1/5/2026)</td><td>Tous produits marocains</td></tr>
+              <tr><td>TVA à l'importation</td><td class="warn">9 % ou 13 %</td><td>9 % alimentaire / 13 % général</td></tr>
+              <tr><td>Taxe de consommation</td><td class="warn">Variable 5–45 %</td><td>Tabac, alcool, produits de luxe</td></tr>
+              <tr><td>Frais portuaires CN</td><td>~1–2 % valeur</td><td>Tous</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RED FLAGS ── -->
+    <div id="panel-left-redflags" class="panel">
+      <div class="sec-label">⚠ PIÈGES &amp; ÉCUEILS OPÉRATIONNELS</div>
+      <div class="info-block goldline">
+        <div class="info-h"><div class="info-icon ii-red">🚨</div>Red Flag #1 — Étiquetage en mandarin</div>
+        <div class="info-body">La <strong>cause n°1 de refoulement</strong> des produits marocains. Un produit aux normes CE peut être détruit ou renvoyé si l'étiquette n'est pas conforme en chinois simplifié. Obligation : nom du produit, ingrédients/composition, pays d'origine « 摩洛哥 » (Maroc en mandarin), coordonnées de l'importateur chinois, DLC. <strong>Ne pas sous-traiter à Google Translate — mandater un traducteur assermenté.</strong></div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">🚨</div>Red Flag #2 — GACC périmé ou non conforme</div>
+        <div class="info-body">Un enregistrement GACC expiré ou avec des informations divergentes entre la plateforme CIFER et les documents d'expédition <strong>bloque la marchandise au port chinois sans possibilité de régularisation sur place</strong>. Les frais de surestaries à Shanghai ou Ningbo peuvent dépasser la valeur des marchandises. <strong>Vérifier l'enregistrement 3 semaines avant chaque expédition.</strong></div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">🚨</div>Red Flag #3 — Classification SH à 10 chiffres</div>
+        <div class="info-body">La Chine utilise une nomenclature à <strong>10 chiffres (HS Code CN)</strong> très précise. Une divergence entre le code SH marocain (6 chiffres) et le code chinois peut être interprétée comme une tentative de fraude tarifaire. <strong>Toujours faire valider le code SH CN par le transitaire chinois partenaire avant l'expédition.</strong></div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">🚨</div>Red Flag #4 — Détournement de trafic &amp; contrôles d'origine renforcés</div>
+        <div class="info-body">La GACC est en alerte pour des tentatives de réexportation via le Maroc de marchandises d'origine tierce (produits chinois reexportés, produits turcs, textiles asiatiques assemblés superficiellement). Les contrôles documentaires et physiques seront plus stricts sur les marchandises marocaines à forte valeur industrielle. <strong>Maintenir une traçabilité de production complète pendant 5 ans.</strong></div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">🚨</div>Red Flag #5 — Mesure temporaire sans garantie de renouvellement</div>
+        <div class="info-body">Le tarif zéro est présenté par le ministère chinois du Commerce comme une <strong>« mesure de phase de transition et de pilotage » d'une durée de 2 ans</strong>. Il peut être modifié, suspendu ou conditionné à des négociations. Ne pas construire de stratégie export Chine basée uniquement sur ce dispositif sans anticiper le scénario post-2028.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">🚨</div>Red Flag #6 — Normes GB vs normes CE/ISO</div>
+        <div class="info-body">La Chine applique ses propres normes techniques nationales (GB Standards). Un produit conforme aux normes CE européennes <strong>n'est pas automatiquement conforme aux normes GB</strong>. Cela concerne notamment les produits alimentaires transformés, les cosmétiques, l'électronique et les matériaux de construction. Faire auditer les produits par un laboratoire certifié GACC avant lancement.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">⚠</div>Red Flag #7 — Surestaries portuaires</div>
+        <div class="info-body">Les délais de stockage dans les grands ports chinois (Shanghai, Ningbo, Qingdao) <strong>grimpent très vite en cas de litige documentaire</strong>. Les frais de surestaries (demurrage) en Chine font partie des plus élevés d'Asie. Tout blocage lié à un document manquant ou à une étiquette non conforme peut générer des coûts journaliers supérieurs à la valeur du lot.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">⚠</div>Red Flag #8 — Antidumping &amp; pratiques commerciales déloyales</div>
+        <div class="info-body">La Chine est l'un des pays les plus actifs dans l'ouverture d'<strong>enquêtes antidumping</strong>. Le Maroc devra renforcer ses capacités de défense commerciale. Ce risque concerne particulièrement les exportations marocaines à coût compétitif (confection, produits agricoles en volume) qui pourraient être visées par des filières chinoises concurrentes.</div>
+      </div>
+      <div class="note-box danger redline">
+        <strong>Conseil transversal :</strong> Il est <strong>indispensable d'avoir un agent en douane chinois expérimenté</strong> pour naviguer dans les spécificités provinciales et portuaires. Les régions chinoises appliquent des interprétations différentes de certaines normes. Un transitaire local évite les blocages, connaît les circuits préférentiels, et peut intervenir en cas de litige.
+      </div>
+    </div>
+
+    <!-- ── RÉFÉRENCES ── -->
+    <div id="panel-left-refs" class="panel"><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Circulaire ADII n° 6774/211 <span style="font-weight:400;opacity:.8">· 23 septembre 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Antidumping sur le contreplaqué originaire de Chine — positions visées</p><p style="margin:0">Droit de 76 % sur 46 positions du 4412, à compter du 25/09/2026 et jusqu’au 28/08/2027. Exclusion : bouleau blanc 100 %, épaisseur 12 à 18 mm, densité 680 à 730 kg/m³, feuilles de 1,4 mm au plus (±0,3 mm), avec facture visée par le département de l’Industrie.</p></div></div>
+      <div class="circ-card">
+        <div class="circ-card-top c-base"><div class="circ-num">Annonce Xi Jinping — Sommet UA · Addis-Abeba</div><div class="circ-date">14 février 2026</div></div>
+        <div class="circ-body"><p><strong>Contexte :</strong> Lors du 39<sup>e</sup> sommet annuel de l'Union Africaine, le Président Xi Jinping annonce que la Chine appliquera un tarif zéro sur les importations de 53 pays africains ayant des relations diplomatiques avec Pékin.</p><p>Relayé officiellement par l'agence <strong>Xinhua News Agency</strong>. La mesure vise à élargir l'accès des exportations africaines au marché chinois et à rééquilibrer la balance commerciale sino-africaine (348 Mds$ en 2025).</p></div>
+      </div>
+      <div class="circ-card">
+        <div class="circ-card-top c-new"><div class="circ-num">Entrée en vigueur — Tarif Zéro</div><div class="circ-date">1<sup>er</sup> mai 2026</div></div>
+        <div class="circ-body"><p><strong>Application effective</strong> du régime tarifaire zéro sur l'ensemble des lignes tarifaires pour les 53 pays africains concernés, dont le Maroc.</p><p>Décision du <strong>Conseil d'État chinois</strong>. Communiqué officiel du <strong>MOFCOM (Ministère du Commerce de la RPC)</strong>. Durée : <strong>du 1<sup>er</sup> mai 2026 au 30 avril 2028</strong> — phase transitoire avant négociation d'accords bilatéraux.</p></div>
+      </div>
+      <div class="circ-card">
+        <div class="circ-card-top c-warn"><div class="circ-num">Partenariat stratégique Maroc–Chine</div><div class="circ-date">2016 · Mémorandum « Ceinture et Route »</div></div>
+        <div class="circ-body"><p>Base juridique de la coopération bilatérale. Le Maroc a signé un <strong>mémorandum d'entente sur l'initiative « la Ceinture et la Route »</strong> — ancrage dans la logique des investissements chinois (Cité Mohammed VI Tanger Tech, batteries VE, infrastructure portuaire).</p><p>En 2026, les investissements chinois au Maroc sont estimés à <strong>plusieurs milliards de dollars</strong> — base industrielle potentielle pour les exportations vers la Chine.</p></div>
+      </div>
+      <div class="refs-box">
+        <h5>Références institutionnelles &amp; contacts clés</h5>
+        <div class="refs-grid">
+          <div class="refs-item"><strong>Administration douanière CN</strong>GACC — gacc.gov.cn</div>
+          <div class="refs-item"><strong>Plateforme enregistrement</strong>CIFER (gacc.gov.cn/cifer)</div>
+          <div class="refs-item"><strong>Administration douanière MA</strong>ADII — douane.gov.ma</div>
+          <div class="refs-item"><strong>Plateforme export MA</strong>BADR / PORTNET — portnet.ma</div>
+          <div class="refs-item"><strong>Normes sanitaires MA</strong>ONSSA — onssa.gov.ma</div>
+          <div class="refs-item"><strong>Nomenclature SH CN</strong>hts.customs.gov.cn (10 chiffres)</div>
+          <div class="refs-item"><strong>Protection marque CN</strong>CNIPA — cnipa.gov.cn</div>
+          <div class="refs-item"><strong>MOFCOM</strong>mofcom.gov.cn · Informations tarifaires</div>
+          <div class="refs-item"><strong>Coopération commerciale</strong>Conseil d'Affaires Maroc–Chine</div>
+          <div class="refs-item"><strong>Calcul droits MA</strong>douane.gov.ma · PORTNET simulateur</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /col-body -->
+</div><!-- /col-left -->
+
+<!-- ══════ COLONNE DROITE — PRODUITS & CODES SH ══════ -->
+<div class="col col-right">
+  <div class="col-head">
+    <div class="col-head-icon icon-teal">📋</div>
+    <div>
+      <div class="col-head-label">Produits marocains éligibles &amp; conditions d'accès</div>
+      <div class="col-head-sub">Codes SH · Taux NPF antérieurs · Conditions GACC · Obstacles non tarifaires</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('right','produits')">Produits &amp; Codes SH</button>
+    <button class="tab-btn" onclick="switchTab('right','barrières')">Barrières non tarifaires</button>
+    <button class="tab-btn" onclick="switchTab('right','opportunites')">Opportunités stratégiques</button>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="prod-search" placeholder="Rechercher un produit, un code SH ou une note…" oninput="filterProds(this.value)">
+  </div>
+  <div class="col-body">
+
+    <!-- ── PRODUITS & CODES SH ── -->
+    <div id="panel-right-produits" class="panel active">
+      <div class="annexe-banner">
+        <h4>Produits marocains éligibles au tarif zéro — Codes SH &amp; conditions GACC · En vigueur 1<sup>er</sup> mai 2026</h4>
+        <p>Taux NPF = droit chinois applicable AVANT le 1<sup>er</sup> mai 2026. Toutes ces lignes passent à 0 % depuis cette date. Les conditions GACC et SPS subsistent indépendamment du tarif.</p>
+      </div>
+
+      <div class="year-divider">🌿 AGROALIMENTAIRE &amp; PRODUITS FRAIS</div>
+
+      <div class="prod-row" data-search="phosphates engrais ocp 2510 3103 3104">
+        <div><div class="prod-code">2510.10 / 2510.20</div><div class="prod-code">3103 / 3104 / 3105</div></div>
+        <div class="prod-desc">Phosphates bruts &amp; engrais phosphatés (OCP)
+          <small>Phosphates de calcium naturels · Superphosphates · Engrais DAP/MAP/NPK</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 1–3 %</span>
+        </div>
+        <div class="prod-meta">Gain direct faible<br>Signal stratégique fort<br>OCP = leader mondial</div>
+      </div>
+
+      <div class="prod-row" data-search="agrumes citrus orange clémentine 0805">
+        <div><div class="prod-code">0805.10 / 0805.20</div><div class="prod-code">0805.50</div></div>
+        <div class="prod-desc">Agrumes frais — Oranges, Clémentines, Citrons
+          <small>Souss-Massa, Gharb · Saison nov.–avril</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 10–20 %</span>
+          <span class="tag tag-gacc">GACC obligatoire</span>
+        </div>
+        <div class="prod-meta">Gain fort<br>Contrôles SPS<br>Phytosanitaire ONSSA</div>
+      </div>
+
+      <div class="prod-row" data-search="tomates légumes 0702 0707 0709">
+        <div><div class="prod-code">0702 / 0707</div><div class="prod-code">0709.60 / 0709.99</div></div>
+        <div class="prod-desc">Tomates &amp; légumes frais
+          <small>Tomates cerise, Poivrons, Courgettes · Souss-Massa</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 10–15 %</span>
+          <span class="tag tag-sps">Normes SPS strictes</span>
+        </div>
+        <div class="prod-meta">Gain significatif<br>Concurrence &amp; froid<br>Logistique lourde</div>
+      </div>
+
+      <div class="prod-row" data-search="poissons produits mer halieutique 0302 0303 0305 1604">
+        <div><div class="prod-code">0302 / 0303</div><div class="prod-code">0305 / 1604</div></div>
+        <div class="prod-desc">Produits halieutiques — Poissons frais, séchés &amp; conserves
+          <small>Sardines, anchois, céphalopodes · Agadir, Dakhla, Laâyoune</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 2–15 %</span>
+          <span class="tag tag-gacc">Accréditation usine GACC CIFER</span>
+        </div>
+        <div class="prod-meta">Gain modéré à fort<br>GACC impératif<br>Audit usine CN</div>
+      </div>
+
+      <div class="prod-row" data-search="huile olive 1509 extra vierge">
+        <div><div class="prod-code">1509.10 / 1509.90</div></div>
+        <div class="prod-desc">Huile d'olive extra vierge &amp; vierge
+          <small>Meknès, Fès, Marrakech · IGP en cours de reconnaissance CN</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 5–10 %</span>
+          <span class="tag tag-gacc">Enregistrement GACC requis</span>
+        </div>
+        <div class="prod-meta">Gain significatif<br>Marché CN en croissance<br>IGP = valeur ajoutée</div>
+      </div>
+
+      <div class="prod-row" data-search="huile argan 1515 cosmétique">
+        <div><div class="prod-code">1515.90</div></div>
+        <div class="prod-desc">Huile d'argan (alimentaire &amp; cosmétique)
+          <small>Souss-Massa · Coopératives féminines · AOP Maroc</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 10–20 %</span>
+          <span class="tag tag-sps">NMPA si cosmétique</span>
+        </div>
+        <div class="prod-meta">Gain fort<br>Volume limité<br>Marque à protéger CN</div>
+      </div>
+
+      <div class="prod-row" data-search="dattes 0804 medjool">
+        <div><div class="prod-code">0804.10</div></div>
+        <div class="prod-desc">Dattes fraîches &amp; sèches
+          <small>Medjool, Boufeggous · Vallée du Drâa, Tafilalet</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 10 %</span>
+          <span class="tag tag-gacc">GACC + phytosanitaire</span>
+        </div>
+        <div class="prod-meta">Gain modéré<br>Niche premium CN<br>Durée vie critique</div>
+      </div>
+
+      <div class="prod-row" data-search="safran épices 0910 0904">
+        <div><div class="prod-code">0910.20 / 0910.91</div></div>
+        <div class="prod-desc">Safran &amp; épices marocaines
+          <small>Safran de Taliouine · AOP reconnue · Cumin, Ras el hanout</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 10 %</span>
+        </div>
+        <div class="prod-meta">Gain significatif<br>Niche haute valeur<br>Conditionnement CN</div>
+      </div>
+
+      <div class="year-divider">🧵 TEXTILES, CUIR &amp; INDUSTRIE</div>
+
+      <div class="prod-row" data-search="textile vêtement confection 61 62 6109 6204">
+        <div><div class="prod-code">Ch. 61 / Ch. 62</div><div class="prod-code">6109.10 / 6204.62</div></div>
+        <div class="prod-desc">Textiles &amp; vêtements de confection
+          <small>Tanger, Casablanca, Fès · Donneurs d'ordre UE/US via MA</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 12–25 %</span>
+          <span class="tag tag-risk">Règle d'origine stricte 40 %+</span>
+        </div>
+        <div class="prod-meta">Gain fort<br>Sous conditions<br>VA locale ≥ 40 %</div>
+      </div>
+
+      <div class="prod-row" data-search="cuir maroquinerie 4202 4203">
+        <div><div class="prod-code">4203 / 4202</div></div>
+        <div class="prod-desc">Cuir tanné &amp; maroquinerie
+          <small>Fès, Marrakech · Tanneries artisanales · Maroquinerie industrielle</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 10–20 %</span>
+        </div>
+        <div class="prod-meta">Gain fort<br>Marché CN haut de gamme<br>Authentification requise</div>
+      </div>
+
+      <div class="prod-row" data-search="phosphate acide sulfurique 2809">
+        <div><div class="prod-code">2809.20 / 2835</div></div>
+        <div class="prod-desc">Acide phosphorique &amp; phosphates transformés
+          <small>Jorf Lasfar, Safi · Production OCP · Destination agricole CN</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 1–5 %</span>
+        </div>
+        <div class="prod-meta">Gain faible<br>Volume massif<br>Flux OCP direct</div>
+      </div>
+
+      <div class="prod-row" data-search="câblage aéronautique fil 8544 8546">
+        <div><div class="prod-code">8544 / 8546</div></div>
+        <div class="prod-desc">Câblage aéronautique &amp; électronique
+          <small>Casablanca, Tanger · Safran, Airbus, Boeing tier-2</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 0–5 %</span>
+          <span class="tag tag-risk">CCC si composant électrique CN</span>
+        </div>
+        <div class="prod-meta">Gain marginal<br>Marché spécialisé<br>Certif. CCC obligatoire</div>
+      </div>
+
+      <div class="year-divider">🏺 ARTISANAT &amp; PRODUITS DISTINCTIFS</div>
+
+      <div class="prod-row" data-search="céramique poterie artisanat 6911 6912 6913">
+        <div><div class="prod-code">6911 / 6912 / 6913</div></div>
+        <div class="prod-desc">Céramique &amp; poterie artisanale
+          <small>Fès, Salé, Safi · Zellige · Marché tourisme et décoration CN</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 10–20 %</span>
+        </div>
+        <div class="prod-meta">Gain fort<br>Niche déco premium<br>Volume &amp; frêt limité</div>
+      </div>
+
+      <div class="prod-row" data-search="tapis 5701 5702 5703 berbère">
+        <div><div class="prod-code">5701 / 5702 / 5703</div></div>
+        <div class="prod-desc">Tapis &amp; revêtements textiles artisanaux
+          <small>Tapis berbères · Fès, Marrakech, Midelt</small>
+          <span class="tag tag-zero">0 % depuis 1/5/26</span>
+          <span class="tag tag-condition">NPF antérieur : 15–25 %</span>
+        </div>
+        <div class="prod-meta">Gain fort<br>Haute valeur unitaire<br>Certification origine AOP</div>
+      </div>
+
+    </div><!-- /panel produits -->
+
+    <!-- ── BARRIÈRES NON TARIFAIRES ── -->
+    <div id="panel-right-barrières" class="panel">
+      <div class="annexe-banner">
+        <h4>Barrières non tarifaires (BNT) — Ce qui subsiste malgré le tarif zéro</h4>
+        <p>Les obstacles non tarifaires sont souvent plus discriminants que les droits de douane eux-mêmes. Le tarif zéro ne les supprime pas.</p>
+      </div>
+      <div class="prod-row" data-search="">
+        <div><div class="prod-code" style="font-size:11px">Normes SPS</div></div>
+        <div class="prod-desc"><strong>Normes sanitaires &amp; phytosanitaires strictes</strong>
+          <small>Résidus pesticides, agents pathogènes, métaux lourds — seuils parfois plus restrictifs qu'en Europe. Contrôle en laboratoire systématique à l'arrivée.</small>
+          <span class="tag tag-risk">Impact élevé</span>
+          <span class="tag tag-sps">Alimentaire · Halieutique · Agrumes</span>
+        </div>
+        <div class="prod-meta">Action : faire auditer avant envoi</div>
+      </div>
+      <div class="prod-row" data-search="">
+        <div><div class="prod-code" style="font-size:11px">GACC / CIFER</div></div>
+        <div class="prod-desc"><strong>Enregistrement obligatoire des établissements</strong>
+          <small>Toute usine exportant vers la Chine des produits alimentaires ou d'origine animale/végétale transformée doit être enregistrée sur CIFER. Délai d'obtention : 3 à 6 mois minimum.</small>
+          <span class="tag tag-risk">Impact critique</span>
+          <span class="tag tag-gacc">Alimentaire · Halieutique</span>
+        </div>
+        <div class="prod-meta">Action : initier dès maintenant</div>
+      </div>
+      <div class="prod-row" data-search="">
+        <div><div class="prod-code" style="font-size:11px">Étiquetage CN</div></div>
+        <div class="prod-desc"><strong>Étiquetage obligatoire en mandarin</strong>
+          <small>Aucune dérogation. Toutes les informations légales (ingrédients, DLC, origine, importateur CN) en chinois simplifié — avant expédition depuis le Maroc.</small>
+          <span class="tag tag-risk">Cause n°1 de refoulement</span>
+        </div>
+        <div class="prod-meta">Action : prestataire spécialisé</div>
+      </div>
+      <div class="prod-row" data-search="">
+        <div><div class="prod-code" style="font-size:11px">Normes GB</div></div>
+        <div class="prod-desc"><strong>Normes techniques chinoises (GB Standards)</strong>
+          <small>Distinctes des normes CE, ISO ou NF. S'appliquent aux produits industriels, cosmétiques, électroniques, matériaux. Absence de reconnaissance mutuelle avec le Maroc.</small>
+          <span class="tag tag-risk">Impact élevé industrie</span>
+        </div>
+        <div class="prod-meta">Action : audit laboratoire CN accrédité</div>
+      </div>
+      <div class="prod-row" data-search="">
+        <div><div class="prod-code" style="font-size:11px">Surestaries</div></div>
+        <div class="prod-desc"><strong>Coûts portuaires &amp; surestaries</strong>
+          <small>Shanghai, Ningbo, Qingdao — parmi les ports les plus actifs et les plus coûteux d'Asie. Tout retard documentaire génère des frais journaliers élevés. Priorité absolue à la qualité documentaire.</small>
+          <span class="tag tag-risk">Risque financier</span>
+        </div>
+        <div class="prod-meta">Action : transitaire CN spécialisé</div>
+      </div>
+      <div class="prod-row" data-search="">
+        <div><div class="prod-code" style="font-size:11px">Canal de paiement</div></div>
+        <div class="prod-desc"><strong>Règlement en devises &amp; yuan (CNY)</strong>
+          <small>Les paiements en yuan (CNY/RMB) se généralisent. Le Maroc devra diversifier ses canaux de paiement pour sécuriser les règlements avec les contreparties chinoises (lettres de crédit CN, SwiftCNY).</small>
+          <span class="tag tag-condition">Évolution en cours</span>
+        </div>
+        <div class="prod-meta">Action : banques MA spécialisées</div>
+      </div>
+    </div>
+
+    <!-- ── OPPORTUNITÉS STRATÉGIQUES ── -->
+    <div id="panel-right-opportunites" class="panel">
+      <div class="annexe-banner">
+        <h4>Opportunités stratégiques pour le Maroc — Fenêtre 2026–2028</h4>
+        <p>Le tarif zéro est une condition préliminaire. La réussite dépend de la montée en gamme, de la conformité et de la présence sur le marché chinois.</p>
+      </div>
+      <div class="prod-row">
+        <div><div class="prod-code" style="font-size:11px;color:var(--green)">OCP</div></div>
+        <div class="prod-desc"><strong>OCP Group — pivot export Maroc–Chine</strong>
+          <small>La Chine importe massivement des engrais phosphatés. Avec l'absence prolongée des exportations chinoises de phosphates (marché tendu jusqu'en 2026+), OCP est en position forte. Flux direct déjà existants — le tarif zéro consolide la compétitivité de prix.</small>
+          <span class="tag tag-zero">Bénéficiaire immédiat</span>
+        </div>
+        <div class="prod-meta">Fenêtre de tir : 2026–2028</div>
+      </div>
+      <div class="prod-row">
+        <div><div class="prod-code" style="font-size:11px;color:var(--gold)">HUB</div></div>
+        <div class="prod-desc"><strong>Maroc comme hub de réexportation vers la Chine</strong>
+          <small>Grâce à ses 56 ALE et sa position géographique, le Maroc peut attirer des industries de transformation qui exporteront vers la Chine avec l'origine marocaine — sous réserve de respecter les règles d'origine (VA ≥ 35–40 %). Cité Mohammed VI Tanger Tech = levier idéal pour attirer des usines transformatrices.</small>
+          <span class="tag tag-condition">Sous conditions d'origine</span>
+        </div>
+        <div class="prod-meta">Stratégie 2026–2030</div>
+      </div>
+      <div class="prod-row">
+        <div><div class="prod-code" style="font-size:11px;color:var(--teal)">VE</div></div>
+        <div class="prod-desc"><strong>Écosystème véhicules électriques &amp; batteries</strong>
+          <small>Investissements chinois dans les batteries et la mobilité électrique au Maroc. La production locale peut bénéficier du tarif zéro pour exporter des composants vers la Chine — logique de chaîne de valeur intégrée sino-marocaine.</small>
+          <span class="tag tag-zero">Opportunité émergente</span>
+        </div>
+        <div class="prod-meta">Horizon 2027+</div>
+      </div>
+      <div class="prod-row">
+        <div><div class="prod-code" style="font-size:11px;color:var(--amber)">ALE</div></div>
+        <div class="prod-desc"><strong>Négociation d'un ALE bilatéral Maroc–Chine</strong>
+          <small>La mesure actuelle est temporaire (2 ans). La fenêtre 2026–2028 est l'opportunité pour le Maroc de négocier un accord de libre-échange formel et permanent avec la Chine — avec des clauses protégeant l'industrie marocaine (automobile, textile). La Chine a signalé son intérêt.</small>
+          <span class="tag tag-condition">Priorité diplomatique</span>
+        </div>
+        <div class="prod-meta">Échéance : avant 2028</div>
+      </div>
+      <div class="note-box goldline">
+        <strong>Avertissement stratégique (Coface, mai 2026) :</strong> « Le Maroc aborde 2026 avec des fondamentaux macroéconomiques solides et est l'un des pays africains les mieux placés pour tirer parti de la mesure. La réussite dépendra de la capacité à monter en gamme, à négocier les règles d'accès, à s'appuyer sur l'intégration africaine (ZLECAf) et à diversifier les canaux de paiement. »
+      </div>
+    </div>
+
+  </div><!-- /col-body right -->
+</div><!-- /col-right -->
+
+</div><!-- /layout -->
+
+<div class="site-footer">
+  <span><strong>Import-eXPert</strong> · Intelligence douanière &amp; commerciale</span>
+  <span>Sources : GACC · ADII · MOFCOM · Xinhua · L'Économiste · LesEco.ma · Mise à jour : <strong>9 novembre 2026</strong></span>
+  <span>Régime applicable depuis <strong>1<sup>er</sup> mai 2026</strong> · Mesure transitoire 2 ans · Vérifier renouvellement en 2028</span>
+</div>
+
+<script>
+function switchTab(col, id) {
+  const allPanels = document.querySelectorAll('.panel');
+  allPanels.forEach(p => {
+    if ((col === 'left' && p.id.startsWith('panel-left')) ||
+        (col === 'right' && p.id.startsWith('panel-right'))) {
+      p.classList.remove('active');
+    }
+  });
+  const target = document.getElementById('panel-' + col + '-' + id);
+  if (target) target.classList.add('active');
+
+  const side = col === 'left' ? document.querySelector('.col-left') : document.querySelector('.col-right');
+  const btns = side.querySelectorAll('.tab-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function filterProds(query) {
+  const rows = document.querySelectorAll('.prod-row');
+  const q = query.toLowerCase();
+  rows.forEach(row => {
+    const text = (row.textContent + ' ' + (row.getAttribute('data-search') || '')).toLowerCase();
+    row.classList.toggle('hidden', q.length > 1 && !text.includes(q));
+  });
+}
+</script>
+<a class="ixp-back" href="/accords" aria-label="Retour aux accords préférentiels">← Accords préférentiels</a>
+</body>
+</html>

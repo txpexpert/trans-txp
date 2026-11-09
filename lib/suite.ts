@@ -36,6 +36,7 @@ export const ESPACES: Espace[] = [
       { label: 'Autorisations et licences', path: '/modules/autorisations-licences', desc: 'Contrôles techniques, licences et visas préalables', tier: 'operateur' },
       { label: 'Marchandises dangereuses', path: '/modules/substances-dangereuses', desc: 'Classification des substances et obligations associées', tier: 'expert' },
       { label: 'Marquage et signalisation', path: '/modules/marquage-warnings', desc: 'Étiquetage, pictogrammes et mentions obligatoires', tier: 'expert' },
+      { label: 'Accords préférentiels', path: '/accords', desc: 'UE, Royaume-Uni, États-Unis, Türkiye et Chine : régime, origine, preuves et actualité', tier: 'operateur' },
     ],
   },
   {
@@ -45,6 +46,7 @@ export const ESPACES: Espace[] = [
     livrable: 'Stratégie de dédouanement argumentée',
     transmet: 'Origine, régime et taux préférentiel',
     tools: [
+      { label: 'Accords préférentiels', path: '/accords', desc: 'Fiches par accord : contingents, règles et preuves d’origine, circulaires', tier: 'operateur' },
       { label: 'Origine ALECA / UE', path: '/modules/origine-aleca', desc: 'Règles d’origine, preuves, cumul (PEM 2025)', tier: 'operateur' },
       { label: 'Comparateur de régimes', path: '/modules/comparateur', desc: 'Coût réel de chaque régime : droits, garantie, redevances, trésorerie', tier: 'expert' },
       { label: 'Régimes économiques', path: '/modules/regimes-economiques', desc: '12 régimes, garanties et nouveautés 2024-2026', tier: 'expert' },

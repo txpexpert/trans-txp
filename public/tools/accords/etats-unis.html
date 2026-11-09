@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALE Maroc – États-Unis · Import-eXPert</title>
+<style>
+  :root{--navy:#0B2545;--navy-mid:#163566;--blue:#1E5FA8;--blue-lt:#3B82C4;--teal:#0F7B6C;--teal-lt:#E0F4F1;--gold:#B07D2A;--gold-lt:#FDF3E0;--red:#A32D2D;--red-lt:#FCEBEB;--green:#276527;--green-lt:#EAF3DE;--amber:#854F0B;--amber-lt:#FAEEDA;--gray-50:#F7F8FA;--gray-100:#ECEEF2;--gray-200:#D8DBE3;--gray-400:#8D92A0;--gray-600:#505669;--gray-800:#252A37;--border:#DDE0E8;--radius:6px;--radius-lg:10px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:13px;color:var(--gray-800);background:var(--gray-50)}
+  .site-header{background:var(--navy);color:#fff;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:54px;flex-shrink:0;border-bottom:3px solid var(--blue-lt)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-flag{display:flex;gap:2px}
+  .flag-strip{width:7px;height:32px;border-radius:2px}
+  .site-header .title{font-size:14px;font-weight:600;letter-spacing:.02em;line-height:1.3}
+  .site-header .subtitle{font-size:11px;opacity:.65;margin-top:1px}
+  .header-badges{display:flex;gap:6px}
+  .hbadge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;letter-spacing:.04em}
+  .hb-blue{background:rgba(59,130,196,.22);color:#A8CFEE;border:1px solid rgba(59,130,196,.35)}
+  .hb-green{background:rgba(39,101,39,.22);color:#98D898;border:1px solid rgba(39,101,39,.35)}
+  .hb-amber{background:rgba(176,125,42,.22);color:#F5C87A;border:1px solid rgba(176,125,42,.35)}
+  .layout{display:flex;height:calc(100vh - 54px);overflow:hidden}
+  .col{display:flex;flex-direction:column;overflow:hidden;background:#fff}
+  .col-left{width:50%;border-right:1px solid var(--border)}
+  .col-right{flex:1}
+  .col-head{padding:10px 16px;background:var(--gray-50);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .col-head-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .icon-blue{background:#DBEAFE;color:var(--blue)}
+  .icon-teal{background:var(--teal-lt);color:var(--teal)}
+  .col-head-label{font-size:12px;font-weight:600;color:var(--gray-800)}
+  .col-head-sub{font-size:10px;color:var(--gray-400);margin-top:1px}
+  .tabs{display:flex;border-bottom:1px solid var(--border);background:var(--gray-50);padding:0 6px;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab-btn{padding:8px 12px;font-size:11px;font-weight:500;color:var(--gray-400);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
+  .tab-btn:hover{color:var(--gray-800)}
+  .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+  .col-body{flex:1;overflow-y:auto;scroll-behavior:smooth}
+  .search-wrap{padding:8px 12px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0}
+  .search-wrap input{width:100%;padding:6px 10px 6px 28px;font-size:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--gray-50);color:var(--gray-800);outline:none;transition:border-color .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%238D92A0' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:8px center}
+  .search-wrap input:focus{border-color:var(--blue);background-color:#fff}
+  .panel{display:none}
+  .panel.active{display:block}
+  .sec-label{position:sticky;top:0;z-index:2;padding:7px 14px;background:var(--gray-100);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray-600)}
+  .annexe-banner{padding:10px 14px;background:linear-gradient(135deg,#EBF3FC 0%,#F7F9FF 100%);border-bottom:1px solid #C5D8F0}
+  .annexe-banner h4{font-size:11px;font-weight:700;color:var(--navy-mid);margin-bottom:3px}
+  .annexe-banner p{font-size:10px;color:var(--gray-600);line-height:1.5}
+  .sh-row{display:grid;grid-template-columns:115px 1fr 80px;gap:6px;padding:8px 14px;border-bottom:1px solid var(--gray-100);align-items:start;transition:background .1s}
+  .sh-row:hover{background:#F4F7FF}
+  .sh-row.hidden{display:none}
+  .sh-codes{display:flex;flex-direction:column;gap:2px}
+  .sh-code{font-family:'Courier New',monospace;font-size:10.5px;color:var(--navy-mid);font-weight:700;line-height:1.4}
+  .sh-code-range{font-family:'Courier New',monospace;font-size:10px;color:var(--navy-mid);font-weight:700;line-height:1.4;font-style:italic}
+  .sh-code-group{display:flex;flex-wrap:wrap;gap:3px 5px}
+  .sub-lbl{font-size:9.5px;color:var(--gray-400);font-weight:600;margin:4px 0 2px;display:block}
+  .sh-desc{font-size:11.5px;color:var(--gray-800);line-height:1.5}
+  .sh-meta{text-align:right;font-size:10px;color:var(--gray-600);line-height:1.5}
+  .sh-tag{display:inline-block;margin-top:3px;font-size:9.5px;font-weight:600;padding:1px 5px;border-radius:3px}
+  .tag-zero{background:var(--green-lt);color:var(--green)}
+  .tag-free{background:var(--teal-lt);color:var(--teal)}
+  .tag-R{background:#DBEAFE;color:var(--navy-mid)}
+  .tag-S{background:#EDE9FE;color:#5B21B6}
+  .tag-K{background:var(--amber-lt);color:var(--amber)}
+  .tag-J{background:#FBEAF0;color:#72243E}
+  .msa-head{display:grid;grid-template-columns:105px 1fr 90px;gap:6px;padding:6px 14px;border-bottom:1px solid var(--border);background:var(--gray-50)}
+  .msa-head span{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400)}
+  .msa-row{display:grid;grid-template-columns:105px 1fr 90px;gap:6px;padding:8px 14px;border-bottom:1px solid var(--gray-100);align-items:start;transition:background .1s}
+  .msa-row:hover{background:#F4F7FF}
+  .msa-row.hidden{display:none}
+  .msa-nums{text-align:right;font-size:10px;line-height:1.6}
+  .droit-add{color:var(--red);font-weight:700}
+  .note-box{margin:10px 14px;padding:9px 12px;background:var(--gray-50);border:1px solid var(--border);border-left:3px solid var(--blue-lt);border-radius:var(--radius);font-size:10.5px;color:var(--gray-600);line-height:1.6}
+  .note-box strong{color:var(--gray-800)}
+  .year-divider{margin:0;padding:6px 14px;background:linear-gradient(90deg,#163566,#1E5FA8);color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em}
+  .info-block{padding:12px 16px;border-bottom:1px solid var(--gray-100);transition:background .1s}
+  .info-block:hover{background:var(--gray-50)}
+  .info-h{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--navy-mid);margin-bottom:6px}
+  .info-icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+  .ii-blue{background:#DBEAFE;color:var(--blue)}
+  .ii-teal{background:var(--teal-lt);color:var(--teal)}
+  .ii-green{background:var(--green-lt);color:var(--green)}
+  .ii-amber{background:var(--amber-lt);color:var(--amber)}
+  .ii-red{background:var(--red-lt);color:var(--red)}
+  .ii-navy{background:#D8E6F3;color:var(--navy)}
+  .ii-gold{background:var(--gold-lt);color:var(--gold)}
+  .ii-purple{background:#EDE9FE;color:#5B21B6}
+  .info-body{font-size:12px;color:var(--gray-600);line-height:1.65;padding-left:29px}
+  .info-body strong{color:var(--gray-800);font-weight:600}
+  .rule-list{margin-top:4px}
+  .rule-item{display:flex;gap:7px;align-items:start;padding:3px 0}
+  .rule-dot{width:5px;height:5px;border-radius:50%;margin-top:5px;flex-shrink:0}
+  .rd-blue{background:var(--blue)}.rd-green{background:var(--teal)}.rd-amber{background:var(--amber)}.rd-navy{background:var(--navy-mid)}.rd-red{background:var(--red)}
+  .rule-item span{font-size:11.5px;color:var(--gray-600);line-height:1.55}
+  .rule-item span strong{color:var(--gray-800)}
+  .formula-box{margin:8px 0;padding:10px 14px;background:#F0F4FF;border:1px solid #C5D0F0;border-radius:var(--radius);text-align:center}
+  .formula{font-family:'Courier New',monospace;font-size:14px;font-weight:700;color:var(--navy-mid);letter-spacing:.05em}
+  .formula-note{font-size:10.5px;color:var(--gray-600);margin-top:5px;line-height:1.5}
+  .leg-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:11px}
+  .leg-table td{padding:4px 8px;border:1px solid var(--border);color:var(--gray-600);line-height:1.4}
+  .leg-table td:first-child{font-family:'Courier New',monospace;font-weight:700;color:var(--navy-mid);white-space:nowrap;background:var(--gray-50);width:55px}
+  .data-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:11px}
+  .data-table th{background:var(--navy-mid);color:#fff;padding:4px 8px;font-weight:600;font-size:10px;text-align:left}
+  .data-table td{padding:4px 8px;border-bottom:1px solid var(--gray-100);color:var(--gray-600)}
+  .data-table tr:nth-child(even) td{background:var(--gray-50)}
+  .data-table td:last-child{text-align:right;font-family:'Courier New',monospace;font-weight:600;color:var(--navy-mid)}
+  .circ-card{margin:10px 14px;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  .circ-card-top{padding:9px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+  .circ-card-top.c-base{background:linear-gradient(90deg,#EBF3FC,var(--gray-50))}
+  .circ-card-top.c-11{background:linear-gradient(90deg,var(--green-lt),var(--gray-50))}
+  .circ-card-top.c-2025{background:linear-gradient(90deg,var(--amber-lt),var(--gray-50))}
+  .circ-num{font-size:12px;font-weight:700}
+  .c-base .circ-num{color:var(--navy-mid)}.c-11 .circ-num{color:var(--green)}.c-2025 .circ-num{color:var(--amber)}
+  .circ-date{font-size:10px;color:var(--gray-400)}
+  .circ-body{padding:10px 14px}
+  .circ-body p{font-size:11.5px;color:var(--gray-600);line-height:1.6;margin-bottom:5px}
+  .circ-body p:last-child{margin-bottom:0}
+  .circ-body strong{color:var(--gray-800)}
+  .refs-box{margin:10px 14px;padding:10px 14px;background:var(--gray-50);border:1px solid var(--border);border-radius:var(--radius)}
+  .refs-box h5{font-size:10.5px;font-weight:700;color:var(--gray-800);margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em}
+  .refs-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}
+  .refs-item{font-size:10.5px;color:var(--gray-600);line-height:1.5}
+  .refs-item strong{color:var(--gray-800);display:block}
+  .step-list{margin-top:4px;padding-left:29px}
+  .step{display:flex;gap:7px;margin-bottom:5px}
+  .step-num{width:17px;height:17px;border-radius:50%;background:var(--navy-mid);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .step span{font-size:11.5px;color:var(--gray-600);line-height:1.55}
+  .step span strong{color:var(--gray-800)}
+  .site-footer{flex-shrink:0;padding:7px 20px;background:var(--gray-100);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .site-footer span{font-size:10px;color:var(--gray-400)}
+  .site-footer strong{color:var(--gray-600)}
+</style>
+<style id="ixp-accords">
+.ixp-back{position:fixed;left:16px;bottom:40px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:#14120F;color:#fff!important;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;box-shadow:0 8px 22px -8px rgba(0,0,0,.45)}
+.ixp-back:hover{background:#A8822F}
+@media (max-width:900px){
+ html,body{height:auto!important;overflow:auto!important}
+ body>header,header,.hdr,.header{position:static!important}
+ .layout,#body{display:block!important;position:static!important;height:auto!important;overflow:visible!important}
+ .layout>*,#body>*{width:auto!important;max-width:none!important;height:auto!important;overflow:visible!important}
+ .kpi-strip{grid-template-columns:1fr 1fr!important}
+ .tabs,.tab-bar,[class*="tab-bar"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+ .header-badges,.hdr-badges,.h-badges{display:none!important}
+ footer,.site-footer{position:static!important}
+ .ixp-back{bottom:16px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-flag">
+      <div class="flag-strip" style="background:#C1272D"></div>
+      <div class="flag-strip" style="background:#006233"></div>
+      <div class="flag-strip" style="background:#fff"></div>
+      <div class="flag-strip" style="background:#3C3B6E"></div>
+      <div class="flag-strip" style="background:#B22234"></div>
+    </div>
+    <div>
+      <div class="title">Accord de Libre Échange · Maroc – États-Unis d'Amérique</div>
+      <div class="subtitle">Import-eXPert · Sources : circulaires ADII · En vigueur depuis le 1<sup>er</sup> janvier 2006</div>
+    </div>
+  </div>
+  <div class="header-badges">
+    <span class="hbadge hb-blue">Circ. 4977/222 · 2005</span>
+    <span class="hbadge hb-green">Circ. 5562/222 · 2015</span>
+    <span class="hbadge hb-amber">Circ. 6705/222 · 2025</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- ══════════════════ COLONNE GAUCHE — RÉGLEMENTATION -->
+<div class="col col-left">
+  <div class="col-head">
+    <div class="col-head-icon icon-blue">⚖</div>
+    <div>
+      <div class="col-head-label">Réglementation &amp; Procédures</div>
+      <div class="col-head-sub">Circulaires ADII · Régime tarifaire · Règles d'origine · Procédures douanières</div>
+    </div>
+  </div>
+  <div class="tabs" id="left-tabs">
+    <button class="tab-btn active" onclick="switchTab('left','accord')">Accord &amp; Régime</button>
+    <button class="tab-btn" onclick="switchTab('left','origine')">Règles d'origine</button>
+    <button class="tab-btn" onclick="switchTab('left','produits')">Produits &amp; Règles spéciales</button>
+    <button class="tab-btn" onclick="switchTab('left','proc')">Procédures</button>
+    <button class="tab-btn" onclick="switchTab('left','circs')">Circulaires</button>
+  </div>
+  <div class="col-body">
+
+    <!-- ACCORD & RÉGIME -->
+    <div id="panel-accord" class="panel active"><div class="ixp-maj" style="border:1px solid #D9C48A;border-left:4px solid #B8922A;background:#FBF5E6;padding:14px 16px;margin:0 0 16px;border-radius:6px;font-size:13px;line-height:1.55;color:#1A1A18"><div style="font-weight:700;font-size:13.5px;margin-bottom:6px">Mise à jour du 9 novembre 2026</div><ul style="margin:4px 0 0 18px;padding:0"><li style="margin:3px 0"><strong>Côté américain, l’ALE ne protège plus des surtaxes générales.</strong> Depuis le 24 juillet 2026, les produits marocains supportent un droit additionnel de <strong>12,5 %</strong> au titre de la Section 301 (enquête sur l’interdiction d’importer des biens issus du travail forcé), sous la position américaine 9903.05.56. L’ALE Maroc-USA n’en est pas exempté ; les produits soumis aux droits Section 232 et ceux listés en annexe le sont.</li><li style="margin:3px 0"><strong>Chronologie</strong> : surtaxe de 10 % (IEEPA) à partir d’avril 2025, annulée par la Cour suprême le 20 février 2026 ; surtaxe temporaire de 10 % (Section 122) du 24 février au 24 juillet 2026 ; Section 301 à 12,5 % depuis. Le taux pourrait passer à 10 % si le Maroc adopte une interdiction d’importer ces biens et que l’USTR la reconnaît.</li><li style="margin:3px 0"><strong>Côté marocain, rien ne change</strong> : préférences de l’accord, contingents 2026 (circ. 6705/222) et consignation des droits en attente de quote-part (circ. 6720/222).</li><li style="margin:3px 0"><strong>Défense commerciale</strong> : antidumping de 24,88 % sur le PVC originaire des États-Unis, pour 5 ans à compter du 3 janvier 2025 (circ. 6626/211).</li></ul><div style="margin-top:8px;font-size:11.5px;color:#5A5A54">Sources : USTR et Federal Register (avis du 28/07/2026) ; circulaires ADII 6705/222, 6720/222, 6626/211. Statut des droits américains vérifié début novembre 2026.</div></div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">📋</div>Dispositions générales</div>
+        <div class="info-body">L'Accord de libre échange Maroc-USA, signé à <strong>Washington le 15 juin 2004</strong>, promulgué par la <strong>loi n° 28-04</strong> du 28 décembre 2004 (B.O. n° 5294 du 24 février 2005). Entrée en vigueur : <strong>1<sup>er</sup> janvier 2006</strong>.
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Commerce des <strong>marchandises</strong> : produits agricoles, industriels, textiles et vêtements</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Commerce des <strong>services</strong> : services financiers et télécommunications</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Marchés publics</strong>, propriété intellectuelle, environnement et travail</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-blue">📉</div>Régime tarifaire — Principe</div>
+        <div class="info-body">Exonération totale ou réduction progressive du droit de base (Annexe II), avec ou sans limitation quantitative. Démantèlement appliqué dès la 1<sup>ère</sup> année, puis au <strong>1<sup>er</sup> janvier de chaque année</strong>. Taux arrondis à la première décimale.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">🔢</div>Schémas de démantèlement (Annexe I)</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Catégorie A :</strong> Exonération immédiate dès l'entrée en vigueur</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Catégorie L :</strong> Produits déjà exonérés — maintien de l'exonération</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>Catégorie 0 :</strong> Exonération dès l'an 1 dans la limite du contingent (textiles/vêtements)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Catégories B, D, G, R, K, S… :</strong> Réduction progressive selon calendrier Annexe II</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span><strong>Catégories U, V, W :</strong> Traitement spécial (Notes Générales calendrier USA, Annexe IV)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">🛡</div>Restrictions &amp; mesures d'effet équivalent</div>
+        <div class="info-body">Les deux Parties éliminent restrictions et prohibitions à l'import/export. <strong>Exception :</strong> produits soumis aux restrictions quantitatives prises au titre de la <strong>loi n° 13-89</strong> relative au commerce extérieur.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-teal">🔄</div>Produits marocains exportés vers les USA</div>
+        <div class="info-body">Exonération ou démantèlement progressif des droits américains. Symétrie de traitement pour les textiles. Contingent de <strong>30 millions m²</strong> de textiles/vêtements à partir de fils de pays tiers, valable 4 ans, puis démantèlement linéaire sur 6 ans. Disparaît à la <strong>11<sup>ème</sup> année</strong>. Contingents exprimés en <strong>m² équivalent</strong> (Annexe VII).</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">📦</div>Régimes douaniers particuliers</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Admission temporaire :</strong> accordée aux équipements professionnels (presse, TV, cinéma, informatique), produits destinés à exposition ou démonstration, échantillons commerciaux et films publicitaires, équipements sportifs</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Admission temporaire containers USA :</strong> couverte par la déclaration D18 « déclaration d'importation temporaire pour containers »</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>ETPP (Exportation temporaire pour perfectionnement passif) :</strong> marchandises réimportées après réparations ou modifications admises en exonération du droit d'importation sur la valeur ajoutée uniquement</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Échantillons commerciaux et imprimés publicitaires de valeur négligeable :</strong> admis en exonération du droit d'importation — valeur ≤ 1 dollar américain</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span><strong>Produits numériques transmis électroniquement :</strong> exonérés du droit d'importation — taxation des autres droits et taxes exclusivement sur la valeur du support physique</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-purple">©</div>Propriété intellectuelle — Lutte contre la contrefaçon</div>
+        <div class="info-body">L'Administration des Douanes est dotée de nouvelles prérogatives (chapitre 15 de l'Accord) lui permettant de procéder à la <strong>suspension de la mise en libre circulation</strong> de marchandises de contrefaçon ou portant des marques portant atteinte à un droit d'auteur.<br><br>Conditions : production d'une <strong>demande écrite</strong> du détenteur du droit avec éléments de preuve adéquats. La suspension est levée si le demandeur justifie dans un délai de <strong>10 jours ouvrables</strong> avoir intenté une action en justice et constitué les garanties fixées par le tribunal.</div>
+      </div>
+    </div>
+
+    <!-- RÈGLES D'ORIGINE -->
+    <div id="panel-origine" class="panel">
+      <div class="sec-label">SECTION I — DISPOSITIONS GÉNÉRALES</div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">🏷</div>Critères de base — Acquisition de l'origine</div>
+        <div class="info-body">Le bénéfice du traitement préférentiel est subordonné au respect des règles d'origine. Sont considérés comme originaires les produits importés directement du territoire d'une Partie à l'autre :
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>a)</strong> Produits entièrement obtenus, produits ou transformés dans l'une ou les deux Parties</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>b)</strong> Produits fabriqués à partir d'intrants d'origine tierce, sous réserve de l'observation des prescriptions (listes Annexe IX ou définition « article nouveau ou différent »)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">🌱</div>Produits entièrement obtenus (12 catégories)</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(a)</strong> Produits minéraux extraits du territoire des Parties</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(b)</strong> Produits du règne végétal, définis dans le Système Harmonisé, récoltés sur le territoire</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(c)</strong> Animaux vivants nés et élevés sur le territoire</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(d)</strong> Produits provenant d'animaux vivants élevés sur le territoire</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(e)</strong> Produits obtenus de la chasse, du piégeage ou de la pêche sur le territoire</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(f)</strong> Poissons, crustacés, mollusques et autres espèces halieutiques tirés de la mer par des navires immatriculés dans une Partie battant son pavillon</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(g)</strong> Produits fabriqués à bord des navires-usines à partir des produits (f), immatriculés dans une Partie</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(h)</strong> Produits extraits du sol ou sous-sol marin hors eaux territoriales par une Partie ayant des droits d'exploitation</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(i)</strong> Produits extraits de l'espace, non transformés sur territoire tiers</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(j)</strong> Déchets et rebus provenant des opérations de production ou d'articles usagés recueillis sur le territoire</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(k)</strong> Produits récupérés d'articles usagés et utilisés pour la production ou re-transformation</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span><strong>(l)</strong> Produits fabriqués exclusivement à partir de produits (a) à (j) ou de leurs sous-produits, à tout niveau de production</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-blue">📋</div>Listes Annexe IX — Règles spécifiques</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Liste n° 1 :</strong> Règles spécifiques applicables aux <strong>textiles et vêtements</strong> — ouvraison ou transformation à effectuer sur les matières non originaires</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span><strong>Liste n° 2 :</strong> Règles spécifiques applicables aux <strong>autres produits</strong> couverts par l'accord</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Les produits <strong>non repris dans ces listes</strong> sont soumis aux prescriptions générales (article du commerce nouveau ou différent + valorisation 35 %)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">🔄</div>Article du commerce « nouveau ou différent » (B-2)</div>
+        <div class="info-body">Un produit est « nouveau ou différent » s'il a été <strong>transformé substantiellement</strong>, acquérant un nouveau nom, de nouvelles caractéristiques ou un nouvel usage. Transformation substantielle lorsque :
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Le produit à usage multiple est converti en un produit à <strong>usage unique</strong></span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Les <strong>propriétés physiques</strong> sont modifiées de manière significative</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>L'opération subie est <strong>complexe</strong> (nombre d'opérations, temps, niveau de compétence)</span></div>
+          </div>
+          <br>Référence : <strong>Section 102.20 du 19 CFR (Code of Federal Regulations)</strong> — règles basées sur le changement de classification tarifaire, les procédés de fabrication et/ou la valorisation.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-gold">📐</div>Critère de valorisation — Taux adopté : 35 %</div>
+        <div class="info-body">
+          <div class="formula-box">
+            <div class="formula">( VMP + CDT ) / VEP × 100 ≥ 35 %</div>
+            <div class="formula-note">Valeur estimée du produit (VEP) au moment de son importation dans le territoire de l'autre Partie</div>
+          </div>
+          <table class="leg-table">
+            <tr><td>VMP</td><td>Valeur des matières produites dans le territoire du Maroc, des USA ou des deux Parties</td></tr>
+            <tr><td>CDT</td><td>Coûts directs des opérations de transformation effectuées dans le territoire du Maroc, des USA ou des deux Parties</td></tr>
+            <tr><td>VEP</td><td>Valeur estimée du produit au moment de son importation dans le territoire de l'autre Partie</td></tr>
+          </table>
+          <br><strong>Éléments exclus du calcul des 35 % :</strong> valeur des matières non originaires ET profit et frais généraux.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-blue">💰</div>Composition de la valeur des matières (VMP)</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Le <strong>prix effectivement payé</strong> ou à payer par le producteur pour cette matière</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Le fret, l'assurance, l'emballage et tous les autres coûts de transport vers l'usine du producteur (si non inclus dans le prix)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Les coûts des déchets, après déduction de la valeur des rebuts récupérables</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Les taxes ou droits de douane imposés sur la matière, à condition qu'ils ne soient pas remboursés à l'exportation</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-teal">⚙</div>Coûts directs des opérations de transformation (CDT)</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span>Tous les <strong>coûts réels de main-d'œuvre</strong> (avantages sociaux, stages de formation, ingénierie, surveillance, contrôle qualité)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span>Les <strong>outillages, matrices, moules</strong> et amortissement des machines et équipements alloués au produit</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span>Les coûts de <strong>recherche, développement, design, ingénierie et modèles</strong> afférents au produit</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span>Les coûts d'<strong>inspection et d'essais</strong> du produit</span></div>
+            <div class="rule-item"><div class="rule-dot rd-green"></div><span>Les coûts de <strong>conditionnement</strong> destiné à l'exportation vers l'autre Partie</span></div>
+          </div>
+          <br><strong>Ne sont PAS des CDT :</strong> profit, frais généraux de gestion (salaires administratifs, indemnités d'assurance, publicité, commissions des vendeurs) et coûts non directement attribuables au produit.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">🔩</div>Matières indirectes (C)</div>
+        <div class="info-body">Il n'est pas nécessaire d'établir que les <strong>matières indirectes</strong> (énergie, machines, marchandises utilisées en cours de fabrication mais non physiquement incorporées) sont originaires ou non. Toutefois, leur coût est pris en compte pour satisfaire à la condition de valorisation de 35 % lorsqu'elle est applicable. Les matières indirectes sont définies à l'<strong>Annexe IX</strong>.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">📦</div>Conditionnement, emballage et contenants (D)</div>
+        <div class="info-body">Les produits de conditionnement, d'emballage et les contenants pour la vente au détail et l'expédition <strong>ne sont pas pris en compte</strong> pour la détermination de l'origine. Toutefois, leur valeur <strong>doit être retenue</strong> pour le calcul de la valorisation (35 %) lorsque ce critère est applicable.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">🚫</div>Ouvraisons insuffisantes (E)</div>
+        <div class="info-body">Aucun produit ne sera considéré comme « article du commerce nouveau ou différent » du seul fait qu'il a subi uniquement :
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-red"></div><span>Des <strong>opérations simples d'emballage</strong> ou de réunion de parties</span></div>
+            <div class="rule-item"><div class="rule-dot rd-red"></div><span>Une <strong>simple dilution</strong> dans l'eau ou dans une autre substance ne modifiant pas suffisamment ses caractéristiques</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-purple">➕</div>Cumul de l'origine (F)</div>
+        <div class="info-body">L'Accord prévoit un <strong>cumul total de l'origine, sans aucune restriction</strong>, entre les deux Parties :
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Les CDT et la valeur des matières produites dans les territoires des Parties sont pris en compte <strong>sans limitation</strong> pour satisfaire à la condition de 35 %</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Un produit ou matière originaire est considéré comme originaire du <strong>pays où il a été incorporé</strong> dans la fabrication d'un autre produit</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span>Pour le cumul, il n'est pas nécessaire que les intrants originaires fassent l'objet d'ouvraisons allant au-delà des ouvraisons insuffisantes</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-teal">✈</div>Transport direct — Notion d'importation directe (G)</div>
+        <div class="info-body">Les marchandises doivent être <strong>importées directement</strong> du territoire d'une Partie à l'autre. L'importation peut se faire avec emprunt de territoires de pays tiers avec <strong>transit, transbordement ou entreposage</strong>, à condition que le produit ne subisse aucune production, transformation ou autre opération dans le pays tiers (exception : déchargement, rechargement, opérations de préservation).</div>
+      </div>
+      <div class="sec-label">SECTION II — DISPOSITIONS PARTICULIÈRES : TEXTILES &amp; VÊTEMENTS</div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-blue">🧵</div>Règle de minimis — 7 % du poids total</div>
+        <div class="info-body">Un textile ou vêtement sera considéré comme originaire si le poids total des fibres ou fils n'ayant pas subi le changement de classification tarifaire requis <strong>ne dépasse pas 7 %</strong> du poids total du composant déterminant sa classification.<br><br><strong>Exception :</strong> produits dont le composant déterminant contient des <strong>fils élastomères</strong> — ces fils doivent être fabriqués intégralement sur le territoire d'une Partie.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">🛍</div>Traitement des assortiments</div>
+        <div class="info-body">Textiles et vêtements classés comme produits présentés en assortiments conditionnés pour la vente au détail ne sont considérés comme originaires que si :
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>Chacun des produits de l'assortiment est originaire ; ou</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span>La valeur totale des produits non originaires <strong>n'excède pas 10 %</strong> de la valeur taxable de l'assortiment</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">📏</div>Mesures de souplesse — Contingent annuel textiles (Maroc → USA)</div>
+        <div class="info-body">Dans la limite d'un contingent annuel, produits textiles fabriqués à partir d'intrants non originaires bénéficient du traitement préférentiel :<br>
+          <table class="data-table" style="margin-top:6px">
+            <thead><tr><th>Période (12 mois)</th><th>Quantité (m² équivalent)</th></tr></thead>
+            <tbody>
+              <tr><td>1<sup>ère</sup> à 4<sup>ème</sup> période</td><td>30 000 000</td></tr>
+              <tr><td>5<sup>ème</sup> période</td><td>25 714 000</td></tr>
+              <tr><td>6<sup>ème</sup> période</td><td>21 428 000</td></tr>
+              <tr><td>7<sup>ème</sup> période</td><td>17 142 000</td></tr>
+              <tr><td>8<sup>ème</sup> période</td><td>12 856 000</td></tr>
+              <tr><td>9<sup>ème</sup> période</td><td>8 571 000</td></tr>
+              <tr><td>10<sup>ème</sup> période</td><td>4 285 000</td></tr>
+            </tbody>
+          </table>
+          <br>Ces mesures <strong>cessent à partir du 1<sup>er</sup> jour de la 11<sup>ème</sup> année</strong>. Octroi subordonné à la présentation d'un <strong>certificat d'éligibilité</strong> établi par l'exportateur et visé par le service douanier (cachet « CC »). Autorisation délivrée par le <strong>Département de l'Industrie</strong>.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">🌍</div>Traitement réservé aux produits à base de coton PMA</div>
+        <div class="info-body">Produits textiles/habillement à partir de <strong>fibres de coton (SH 52 0100)</strong> originaires de <strong>pays africains subsahariens les moins avancés (PMA)</strong> — contingent annuel limité à <strong>1 067 257 kg</strong>.<br><br>Conditions : fibres originaires d'un ou plusieurs pays africains les moins avancés ET <strong>cardées ou peignées</strong> sur le territoire d'une Partie ou d'un des pays les moins avancés.</div>
+      </div>
+      <div class="sec-label">SECTION III — CERTIFICATION ET VÉRIFICATION DE L'ORIGINE</div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">✅</div>Pas de certificat d'origine requis</div>
+        <div class="info-body">Contrairement aux autres accords, <strong>l'ALE Maroc-USA ne requiert pas la production d'un certificat d'origine</strong>. L'origine est déterminée à l'importation lorsque l'importateur demande le bénéfice du traitement préférentiel ou déclare un produit dans le cadre de l'accord.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-blue">👤</div>Obligations de l'importateur</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Être considéré comme avoir <strong>certifié</strong> l'éligibilité au traitement tarifaire préférentiel — en cas de fausse déclaration, soumis aux dispositions contentieuses</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Produire, <strong>en cas de demande</strong>, une déclaration signée avec toutes les informations relatives à l'obtention, la production ou la transformation du produit</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span>Conserver les informations pendant <strong>cinq (5) ans</strong> à partir de la date d'importation</span></div>
+          </div>
+          <br>La déclaration doit comporter : description du produit, quantité, marques des colis, n° de factures, description des opérations effectuées, identification des CDT, description des matières utilisées et leur valeur.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">⚠</div>Rejet du traitement préférentiel — Délai réglementaire</div>
+        <div class="info-body">Si le service rejette le traitement préférentiel, il doit en faire mention sur la déclaration en détail et en aviser l'importateur ou son déclarant <strong>dans un délai ne dépassant pas un mois</strong>, en précisant les éléments de faits et les bases juridiques de sa décision.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">🔍</div>Vérification de l'origine — Coopération douanière</div>
+        <div class="info-body">Demandes de vérification relatives aux produits textiles dans deux cas : (1) contrôle à titre de sondage ou doute sur l'origine ; (2) doutes fondés sur des preuves de contournement.<br><br>Le résultat du contrôle doit être communiqué dans un délai maximum de <strong>12 mois</strong>. En cas de dépassement, les Parties peuvent prendre d'autres actions, y compris <strong>l'exclusion du traitement tarifaire préférentiel pour toute marchandise produite ou exportée par le contrevenant</strong>.</div>
+      </div>
+    </div>
+
+    <!-- PRODUITS & RÈGLES SPÉCIALES -->
+    <div id="panel-produits" class="panel">
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-blue">👕</div>Produits textiles &amp; vêtements</div>
+        <div class="info-body">Exonération dès l'entrée en vigueur avec ou sans limitation quantitative, ou démantèlement progressif selon Annexe II. Produits exonérés soumis à contingents (Annexe III) pendant 5 ans → exonération sans limitation à partir de la <strong>6<sup>ème</sup> année</strong>.<br><br><strong>Exemple :</strong> Chemises et chemisettes (pos. 61.05.10) — Contingent 350 kg. Dans la limite : exonération 5 ans (Annexe III). Au-delà : catégorie « D » (Annexe I).</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">🌾</div>Produits agricoles — Cadre général</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Annexe II :</strong> Taux préférentiels de base et schémas de démantèlement</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Annexe IV :</strong> Produits soumis à contingents — traitement tarifaire plus favorable (gestion : 1er venu, 1er servi, sauf blé : appel d'offres ONICL)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-amber"></div><span><strong>Annexe V :</strong> Produits soumis aux mesures de sauvegarde automatique (MSA) liées aux volumes d'importation</span></div>
+            <div class="rule-item"><div class="rule-dot rd-navy"></div><span><strong>Annexe VIII :</strong> Mesures de sauvegarde sur les produits marocains exportés vers les USA à des prix inférieurs aux seuils de déclenchement</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">🥩</div>Viandes bovines haute qualité — Règle spéciale</div>
+        <div class="info-body">Réservées exclusivement aux <strong>restaurants officiellement classés et hôtels 4 et 5 étoiles</strong> (liste établie par le Département du Tourisme).<div class="step-list"><div class="step"><div class="step-num">1</div><span><strong>Licence d'importation</strong> — modèle Annexe XI, délivrée par le Département de l'Agriculture</span></div><div class="step"><div class="step-num">2</div><span><strong>Certificat sanitaire vétérinaire</strong> précisant nature, quantité et catégorie (« prime » ou « choice »)</span></div></div></div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">🌾</div>Blé dur &amp; blé tendre — Procédure spéciale</div>
+        <div class="info-body">Gestion via <strong>appel d'offres ONICL</strong>. DFD visée par l'ONICL + visa Ministère du Commerce Extérieur obligatoires. <strong>À l'exclusion des mois de juin et de juillet.</strong><br><br><strong>Circ. 5557/210 :</strong> taux de <strong>9,9 %</strong> (tranche ≤ 1 000 DH/tonne) et <strong>2,5 %</strong> (tranche &gt;1 000 DH/tonne). Le taux sera de 0% si la suspension des droits de douane du blé (prise à partir du 1<sup>er</sup> novembre 2021) est toujours maintenue.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">🫒</div>Huile d'olive — Produit ajouté (Circ. 6705/222 · 2026)</div>
+        <div class="info-body">Produit intégré dans les contingents à compter de la période 2026 :<br><br>• <strong>Huile d'olive extra vierge (1509200000) :</strong> Contingent 204 T · Tarif préférentiel 0 % · Hors contingent : 0 %<br>• <strong>Huile d'olive vierge (1509300000) :</strong> Contingent 68 T · Tarif préférentiel 0 % · Hors contingent : 0 %</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">⚠</div>Mesures de sauvegarde agricole (MSA)</div>
+        <div class="info-body">Droit additionnel applicable dès dépassement du volume seuil de l'Annexe V. Enlèvement autorisé après <strong>consignation des droits et taxes</strong> en attendant la décision de l'Administration Centrale.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-teal">🐑</div>Viandes ovines &amp; caprines</div>
+        <div class="info-body">Non soumises à contingent. Importations soumises au <strong>paiement des droits et taxes de droit commun</strong>. Les deux Parties ont convenu d'entrer en consultations si, après entrée en vigueur de l'Accord, les USA commencent à exporter ces viandes vers le Maroc.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">🍎</div>Clause de préférence — Produits agricoles</div>
+        <div class="info-body">Les produits agricoles de la <strong>Liste A (Annexe X)</strong> ne peuvent faire l'objet d'une importation dans le cadre préférentiel d'autres accords bilatéraux/régionaux, lorsque les pays concernés ne sont pas des exportateurs nets. Les pays non-exportateurs nets sont repris à la <strong>Liste B (Annexe X)</strong>.</div>
+      </div>
+    </div>
+
+    <!-- PROCÉDURES -->
+    <div id="panel-proc" class="panel">
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-blue">⏱</div>Gestion des contingents — Principe « 1er venu, 1er servi »</div>
+        <div class="info-body">Traitement préférentiel accordé au fur et à mesure des importations réalisées jusqu'à épuisement du contingent, sur la base de la <strong>date d'enregistrement de la DI</strong>, sous réserve du dépôt physique de la DUM et de ses documents annexes.<br><br><strong>Exception :</strong> blé dur et blé tendre → procédure d'<strong>appel d'offres ONICL</strong>.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-navy">🏛</div>Gestion centralisée — Division de la Coopération Internationale</div>
+        <div class="info-body">Communiquer <strong>par fax, sans délai</strong>, dès dépôt physique de la DUM :<div class="step-list"><div class="step"><div class="step-num">1</div><span>Numéro et date de la DUM</span></div><div class="step"><div class="step-num">2</div><span>Nature des produits</span></div><div class="step"><div class="step-num">3</div><span>Quantité et espèce reconnues</span></div><div class="step"><div class="step-num">4</div><span>Qualité de l'importateur</span></div></div></div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-red">📊</div>Suivi quotidien — Produits sensibles</div>
+        <div class="info-body">Pour les produits soumis à sauvegarde (Annexe V) et les produits agricoles contingentés, communiquer <strong>quotidiennement</strong> à la Division de la Coopération Internationale : numéro DUM, nature, quantité, espèce, qualité de l'importateur.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-amber">🛟</div>Dépassement du contingent</div>
+        <div class="info-body">• <strong>Textiles/vêtements :</strong> traitement — 4<sup>ème</sup> colonne Annexe III<br>• <strong>Produits agricoles :</strong> traitement — 4<sup>ème</sup> colonne Annexe IV (colonne hors contingent)</div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-teal">📦</div>Documents requis — Produits agricoles</div>
+        <div class="info-body">
+          <div class="rule-list">
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Certificat sanitaire vétérinaire</strong> (produits carnés)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Certificat phytosanitaire</strong> (produits végétaux)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Licence d'importation</strong> (viandes bovines haute qualité — modèle Annexe XI)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>DFD visée ONICL</strong> + visa Ministère Commerce Extérieur (blé dur et blé tendre)</span></div>
+            <div class="rule-item"><div class="rule-dot rd-blue"></div><span><strong>Certificat d'éligibilité</strong> visé douanier (cachet CC) — textiles et vêtements bénéficiant de la souplesse</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-h"><div class="info-icon ii-green">📋</div>Gestion du quota supplémentaire blé dur (2026)</div>
+        <div class="info-body">Un quota supplémentaire de <strong>3 050 T</strong> (résultant de l'application de la clause de préférence) ne sera effectif qu'après épuisement du quota principal de <strong>2 185,66 T</strong>. Les importations de blé dur et de blé tendre sont gérées selon la procédure d'appel d'offres organisé par l'ONICL.</div>
+      </div>
+    </div>
+
+    <!-- CIRCULAIRES -->
+    <div id="panel-circs" class="panel"><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Circulaire n° 6626/211 <span style="font-weight:400;opacity:.8">· 3 janvier 2025</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Antidumping sur le PVC originaire des États-Unis — révision et prorogation</p><p style="margin:0">Droit de 24,88 % ad valorem pour tous les exportateurs américains, pour 5 ans. Exclusion : PVC accompagné d’une facture visée par le département de l’Industrie. Arrêté conjoint n° 3182.24 (BO 7366 du 02/01/2025).</p></div></div><div class="ixp-circ" style="border:1px solid #E4E2DA;border-radius:6px;margin:0 0 12px;background:#fff;overflow:hidden"><div style="background:#1A1A18;color:#fff;padding:8px 12px;font-size:12.5px;font-weight:600">Circulaire n° 6720/222 <span style="font-weight:400;opacity:.8">· 6 février 2026</span><span style="float:right;background:#B8922A;color:#fff;font-size:10px;padding:1px 7px;border-radius:9px">Nouveau</span></div><div style="padding:10px 12px;font-size:12.5px;line-height:1.55"><p style="margin:0 0 4px"><strong>Objet :</strong> Contingents tarifaires — consignation des droits et taxes</p><p style="margin:0">Lorsque la quote-part demandée au Ministère de l’Industrie et du Commerce n’est pas encore attribuée au moment du dédouanement, l’importateur peut demander à consigner les droits et taxes de la DUM au lieu de les payer au taux de droit commun. Modèle unique de demande ; autorisation de l’ordonnateur du bureau ; demande et RIB téléversés dans BADR (« Demande de consignation Contingent » et « RIB »).</p></div></div>
+      <div class="circ-card">
+        <div class="circ-card-top c-base"><div class="circ-num">Circulaire N° 4977/222 — Circulaire de base</div><div class="circ-date">Rabat, 30 décembre 2005</div></div>
+        <div class="circ-body"><p><strong>Objet :</strong> Entrée en vigueur de l'Accord de libre échange Maroc–États-Unis d'Amérique.</p><p><strong>Référence :</strong> Lettre n° 003207 du 21 décembre 2005 — Ministère des Affaires Étrangères et de la Coopération.</p><p>Circulaire fondatrice définissant les schémas de démantèlement (Annexes I à XI), le régime tarifaire, les procédures douanières, les règles d'origine et la gestion des contingents. Entrée en vigueur : <strong>1<sup>er</sup> janvier 2006</strong>. Tirage 1 N° 42. Signataire : El Aid MAHSOUSSI, Directeur des Études et de la Coopération Internationale.</p></div>
+      </div>
+      <div class="circ-card">
+        <div class="circ-card-top c-11"><div class="circ-num">Circulaire N° 5562/222 — 11ème année</div><div class="circ-date">Rabat, 31 décembre 2015</div></div>
+        <div class="circ-body"><p><strong>Objet :</strong> ALE Maroc-USA — 11<sup>ème</sup> année de démantèlement + Modification des quotités tarifaires applicables au blé tendre et ses dérivés.</p><p><strong>Référence :</strong> Circ. de base 4977/222 du 30/12/2005 telle que modifiée + Circ. 5557/210 du 29 décembre 2015.</p><p>Mise en œuvre du démantèlement à compter du <strong>1<sup>er</sup> janvier 2016</strong>. Modification des taux blé tendre : <strong>9,9 %</strong> (≤ 1 000 DH/tonne) et <strong>2,5 %</strong> (&gt;1 000 DH/tonne). Contient les Annexes IV et V actualisées. Signataire : Zouhair CHORFI, Directeur Général ADII.</p></div>
+      </div>
+      <div class="circ-card">
+        <div class="circ-card-top c-2025"><div class="circ-num">Circulaire N° 6705/222 — Contingents 2026</div><div class="circ-date">Rabat, 31 décembre 2025</div></div>
+        <div class="circ-body"><p><strong>Objet :</strong> ALE Maroc/USA et Accord d'Association Maroc/Royaume-Uni — Contingents tarifaires pour la période 1<sup>er</sup> janvier au 31 décembre 2026.</p><p><strong>Référence :</strong> Circ. de base 4977/222, Circ. 6139/222 du 31/12/2020 + Lettres Département Agriculture n° 2403 et 2404 du 18 décembre 2025.</p><p>Communique les valeurs actualisées des contingents tarifaires (<strong>Annexe IV–A</strong>) et mesures de sauvegarde agricole (<strong>Annexe V</strong>) pour l'ALE Maroc/USA. Contient également l'<strong>Annexe I Agricole – Liste 3</strong> de l'Accord d'Association Maroc/Royaume-Uni. Signataire : Abdellatif AMRANI, Directeur Général de l'ADII.</p></div>
+      </div>
+      <div class="refs-box">
+        <h5>Références légales &amp; institutionnelles</h5>
+        <div class="refs-grid">
+          <div class="refs-item"><strong>Loi de promulgation</strong>Loi n° 28-04 du 28/12/2004</div>
+          <div class="refs-item"><strong>Bulletin Officiel</strong>B.O. n° 5294 du 24/02/2005</div>
+          <div class="refs-item"><strong>Signature de l'Accord</strong>Washington, 15 juin 2004</div>
+          <div class="refs-item"><strong>Entrée en vigueur</strong>1<sup>er</sup> janvier 2006</div>
+          <div class="refs-item"><strong>Règles d'origine US</strong>19 CFR 102.20 · Annexe IX</div>
+          <div class="refs-item"><strong>Loi commerce extérieur</strong>Loi n° 13-89</div>
+          <div class="refs-item"><strong>Gestion blé</strong>Appel d'offres ONICL</div>
+          <div class="refs-item"><strong>Textiles souplesse</strong>Dept. Industrie + cachet CC</div>
+          <div class="refs-item"><strong>Susp. droits blé</strong>Décrets 2-20-299 · 2-21-851 · 2-21-852</div>
+          <div class="refs-item"><strong>Contrefaçon</strong>Chapitre 15 de l'Accord</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- FIN COLONNE GAUCHE -->
+
+<!-- ══════════════════════════════════ COLONNE DROITE — LISTES SH -->
+<div class="col col-right">
+  <div class="col-head">
+    <div class="col-head-icon icon-teal">📋</div>
+    <div>
+      <div class="col-head-label">Listes de démantèlement — Codes SH &amp; Désignations</div>
+      <div class="col-head-sub">Annexes IV (2016 &amp; 2026) et V (2016 &amp; 2026) · Codes SH à 10 chiffres reconstitués</div>
+    </div>
+  </div>
+  <div class="tabs" id="right-tabs">
+    <button class="tab-btn active" onclick="switchTab('right','ann4_2016')">Annexe IV — 2016</button>
+    <button class="tab-btn" onclick="switchTab('right','ann4_2026')">Annexe IV-A — 2026</button>
+    <button class="tab-btn" onclick="switchTab('right','annV')">Annexe V — MSA</button>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="sh-search" placeholder="Rechercher un code SH (10 chiffres) ou une désignation de produit…" oninput="filterRows(this.value)">
+  </div>
+  <div class="col-body">
+
+    <!-- ──────── ANNEXE IV 2016 ──────── -->
+    <div id="panel-ann4_2016" class="panel active">
+      <div class="annexe-banner">
+        <h4>ANNEXE IV — ALE MAROC-USA · Circulaire 5562/222 du 31-12-2015 · Contingents tarifaires — 1<sup>er</sup> jan. au 31 déc. 2016</h4>
+        <p>Circulaire de base : 4977/222 du 30/12/2005 — 11<sup>ème</sup> année de démantèlement — Gestion : 1<sup>er</sup> venu, 1<sup>er</sup> servi (sauf blé : appel d'offres ONICL) — Calendrier : 1<sup>er</sup> janvier au 31 décembre 2016</p>
+      </div>
+
+      <div class="sec-label">🐄 Viande bovine standard</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <span class="sub-lbl">Positions (codes individuels) :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">0201100011</span><span class="sh-code">0201100019</span><span class="sh-code">0201100090</span>
+            <span class="sh-code">0201201190</span><span class="sh-code">0201201990</span><span class="sh-code">0201209090</span>
+            <span class="sh-code">0201301190</span><span class="sh-code">0201301990</span><span class="sh-code">0201309090</span>
+            <span class="sh-code">0202100010</span><span class="sh-code">0202100090</span>
+            <span class="sh-code">0202201090</span><span class="sh-code">0202209090</span>
+            <span class="sh-code">0202301990</span><span class="sh-code">0202309000</span>
+            <span class="sh-code">0206101000</span><span class="sh-code">0206109190</span><span class="sh-code">0206109900</span>
+            <span class="sh-code">0206210010</span><span class="sh-code">0206210091</span><span class="sh-code">0206210099</span>
+            <span class="sh-code">0206220010</span><span class="sh-code">0206220091</span><span class="sh-code">0206220099</span>
+            <span class="sh-code">0206291000</span><span class="sh-code">0206299190</span><span class="sh-code">0206299900</span>
+            <span class="sh-code">1602500090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Viande bovine standard (diverses coupes) + abats bovins + préparations à base de bœuf<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">2 252,16 T<br>Hors CT :<br>10 – 200 %</div>
+      </div>
+
+      <div class="sec-label">🥩 Viande bovine haute qualité</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0201201110</span><span class="sh-code">0201201910</span><span class="sh-code">0201209010</span>
+            <span class="sh-code">0201301110</span><span class="sh-code">0201301910</span><span class="sh-code">0201309010</span>
+            <span class="sh-code">0202201010</span><span class="sh-code">0202209010</span>
+            <span class="sh-code">0202301910</span>
+            <span class="sh-code">0206109110</span><span class="sh-code">0206299110</span>
+          </div>
+        </div>
+        <div class="sh-desc">Viande bovine haute qualité (diverses coupes) + abats sélectionnés (catégories « prime » ou « choice »)<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">5 921 T<br>Hors CT :<br>19,4 – 106,9 %</div>
+      </div>
+
+      <div class="sec-label">🍗 Volailles</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0207110000</span><span class="sh-code">0207120000</span>
+            <span class="sh-code">0207240000</span><span class="sh-code">0207250000</span>
+          </div>
+        </div>
+        <div class="sh-desc">Coqs, poules, dindes et dindons entiers — frais, réfrigérés ou congelés<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">2 250 T<br>Hors CT :<br>96,2 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0207130029</span><span class="sh-code">0207149291</span>
+          </div>
+        </div>
+        <div class="sh-desc">Cuisses et ailes de volaille (morceaux)<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">6 000 T<br>Hors CT :<br>118,1 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes"><div class="sh-code-group"><span class="sh-code">0207149212</span></div></div>
+        <div class="sh-desc">Viande de cuisses de poulet sans peau, congelées et désossées (non mécaniquement désossées)<br><span class="sh-tag tag-free">0,0 % — Illimité</span></div>
+        <div class="sh-meta">Illimité<br>Hors CT :<br>0,0 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes"><div class="sh-code-group"><span class="sh-code">0207149219</span></div></div>
+        <div class="sh-desc">Autres viandes de volailles, congelées et non mécaniquement désossées<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">122 T<br>Hors CT :<br>96,2 %</div>
+      </div>
+
+      <div class="sec-label">🌾 Blé dur &amp; dérivés</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">1001109010</span><span class="sh-code">1001109090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Blé dur — <em>Hors mois de juin et juillet</em><br><span class="sh-tag tag-zero">0 % (≤ 1 000 DH/t)</span>&nbsp;<span class="sh-tag tag-free">2,5 % (&gt;1 000 DH/t)</span></div>
+        <div class="sh-meta">350 000 T<br>Hors CT :<br>170 % (juin-juil.)</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <span class="sub-lbl">Farines blé dur :</span>
+          <div class="sh-code-group"><span class="sh-code">1101001000</span></div>
+          <span class="sub-lbl">Gruaux &amp; semoules :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1103110001</span><span class="sh-code">1103110009</span>
+            <span class="sh-code">1103110041</span><span class="sh-code">1103110049</span>
+          </div>
+          <span class="sub-lbl">Formes travaillées :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1104291010</span><span class="sh-code">1104293010</span><span class="sh-code">1104295010</span>
+          </div>
+          <span class="sub-lbl">Pâtes alimentaires :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1902110010</span><span class="sh-code">1902110090</span>
+            <span class="sh-code">1902190019</span><span class="sh-code">1902190099</span>
+            <span class="sh-code">1902301000</span><span class="sh-code">1902309000</span>
+            <span class="sh-code">1902401110</span><span class="sh-code">1902401191</span><span class="sh-code">1902401199</span><span class="sh-code">1902401900</span>
+            <span class="sh-code">1902409110</span><span class="sh-code">1902409191</span><span class="sh-code">1902409199</span><span class="sh-code">1902409900</span>
+          </div>
+        </div>
+        <div class="sh-desc">Produits dérivés du blé dur — farines, gruaux, semoules, formes travaillées, pâtes alimentaires<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">1 828,86 T<br>Hors CT :<br>2,5 – 70 %</div>
+      </div>
+
+      <div class="sec-label">🌾 Blé tendre &amp; dérivés</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">1001909011</span><span class="sh-code">1001909019</span><span class="sh-code">1001909090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Blé tendre (épeautre, froment, méteil) — <em>Hors mois de juin et juillet</em><br><span class="sh-tag tag-zero">0,6 % / 9,9 % (≤ 1 000 DH/t)</span>&nbsp;<span class="sh-tag tag-free">2,5 % (&gt;1 000 DH/t)</span></div>
+        <div class="sh-meta">Selon prod.<br>Hors CT :<br>30 % / 2,5 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <span class="sub-lbl">Farines blé tendre :</span>
+          <div class="sh-code-group"><span class="sh-code">1101009000</span></div>
+          <span class="sub-lbl">Gruaux &amp; semoules :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1103110020</span><span class="sh-code">1103110030</span>
+            <span class="sh-code">1103110050</span><span class="sh-code">1103110080</span>
+          </div>
+          <span class="sub-lbl">Grains travaillés (1104.29.10xx) :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1104291020</span><span class="sh-code">1104291030</span><span class="sh-code">1104291040</span><span class="sh-code">1104291050</span>
+            <span class="sh-code">1104291060</span><span class="sh-code">1104291070</span><span class="sh-code">1104291080</span><span class="sh-code">1104291090</span>
+          </div>
+          <span class="sub-lbl">Grains travaillés (1104.29.30xx) :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1104293020</span><span class="sh-code">1104293030</span><span class="sh-code">1104293040</span><span class="sh-code">1104293050</span>
+            <span class="sh-code">1104293060</span><span class="sh-code">1104293070</span><span class="sh-code">1104293080</span><span class="sh-code">1104293090</span>
+          </div>
+          <span class="sub-lbl">Flocons (1104.29.50xx) :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1104295020</span><span class="sh-code">1104295030</span><span class="sh-code">1104295090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Produits dérivés du blé tendre — farines, gruaux, semoules, flocons<br><span class="sh-tag tag-zero">40,9 % (farine) · 42,8 % (gruaux) · 27,8 % (flocons)</span></div>
+        <div class="sh-meta">1 828,86 T<br>Hors CT :<br>50 – 70 %</div>
+      </div>
+
+      <div class="sec-label">🍎 Fruits</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0802110091</span><span class="sh-code">0802110099</span>
+            <span class="sh-code">0802120091</span><span class="sh-code">0802120099</span>
+          </div>
+        </div>
+        <div class="sh-desc">Amandes fraîches ou séchées, avec ou sans coques<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">74 T<br>Hors CT :<br>13,3 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0808101000</span><span class="sh-code">0808109010</span>
+            <span class="sh-code">0808109020</span><span class="sh-code">0808109090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Pommes fraîches — Calendrier : 1<sup>er</sup> fév. → 31 mai 2016<br><span class="sh-tag tag-free">0,0 % — Illimité</span></div>
+        <div class="sh-meta">Illimité<br>Hors CT :<br>0,0 %</div>
+      </div>
+
+      <div class="note-box">
+        <strong>(1)</strong> Blé tendre et dérivés : taux de 9,9 % applicable à la tranche de valeur ≤ 1 000 DH/tonne. La tranche supérieure à 1 000 DH/tonne est soumise à un droit d'importation de 2,5 %. (Circulaire 5557/210 du 29/12/2015)
+      </div>
+    </div>
+
+    <!-- ──────── ANNEXE IV-A 2026 ──────── -->
+    <div id="panel-ann4_2026" class="panel">
+      <div class="annexe-banner">
+        <h4>ANNEXE IV-A — ALE MAROC-USA · Circulaire 6705/222 du 31-12-2025 · Contingents tarifaires — 1<sup>er</sup> jan. au 31 déc. 2026</h4>
+        <p>Circulaire de base 4977/222 — Principe : 1<sup>er</sup> venu, 1<sup>er</sup> servi (sauf blé : appel d'offres ONICL) — Nomenclature SH 2022</p>
+      </div>
+
+      <div class="sec-label">🐄 Viande bovine domestique standard</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0201100011</span><span class="sh-code">0201100019</span>
+            <span class="sh-code">0201201190</span><span class="sh-code">0201201990</span>
+            <span class="sh-code">0201301190</span><span class="sh-code">0201301990</span>
+            <span class="sh-code">0202100010</span><span class="sh-code">0202301990</span>
+            <span class="sh-code">0202201090</span>
+            <span class="sh-code">0206109190</span><span class="sh-code">0206210091</span>
+            <span class="sh-code">0206299190</span><span class="sh-code">1602500000</span>
+          </div>
+        </div>
+        <div class="sh-desc">Viande bovine domestique standard — diverses coupes + abats + préparations<br><span class="sh-tag tag-zero">0 % dans CT</span></div>
+        <div class="sh-meta">2 745,37 T<br>Hors CT :<br>200 %</div>
+      </div>
+
+      <div class="sec-label">🍗 Cuisses et ailes de volaille</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0207130029</span><span class="sh-code">0207149291</span>
+          </div>
+        </div>
+        <div class="sh-desc">Cuisses et ailes de coqs et de poules — frais, réfrigérés ou congelés<br><span class="sh-tag tag-zero">0 % dans CT</span></div>
+        <div class="sh-meta">8 000 T<br>Hors CT :<br>41,2 %</div>
+      </div>
+
+      <div class="sec-label">🌾 Blé dur &amp; dérivés</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">1001190010</span><span class="sh-code">1001190090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Blé dur — <em>Hors mois de juin et juillet</em><br><span class="sh-tag tag-zero">0 % (1er jan. → 31 déc.)</span>&nbsp;<span class="sh-tag tag-free">2,5 % (&gt;1 000 DH/t)</span></div>
+        <div class="sh-meta">450 000 T<br>Hors CT :<br>170 % (juin-juil.)</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <span class="sub-lbl">Farines &amp; gruaux blé dur :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1101001000</span><span class="sh-code">1103110001</span><span class="sh-code">1103110009</span>
+            <span class="sh-code">1103110041</span><span class="sh-code">1103110049</span>
+          </div>
+          <span class="sub-lbl">Pâtes alimentaires (quota principal 2229,37T) :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1902300091</span><span class="sh-code">1902401110</span><span class="sh-code">1902401191</span>
+            <span class="sh-code">1902401199</span><span class="sh-code">1902409110</span><span class="sh-code">1902409191</span>
+            <span class="sh-code">1902409199</span>
+          </div>
+          <span class="sub-lbl">Pâtes alimentaires (quota supplémentaire 3050T) :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1902119010</span><span class="sh-code">1902119090</span>
+            <span class="sh-code">1902199019</span><span class="sh-code">1902199099</span>
+            <span class="sh-code">1902300099</span><span class="sh-code">1902401900</span><span class="sh-code">1902409900</span>
+          </div>
+        </div>
+        <div class="sh-desc">Produits dérivés du blé dur — farines, gruaux, semoules, pâtes alimentaires<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">2 229,37 T + 3 050 T<br>Hors CT :<br>40 – 200 %</div>
+      </div>
+
+      <div class="sec-label">🌾 Blé tendre &amp; dérivés</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">1001990011</span><span class="sh-code">1001990019</span><span class="sh-code">1001990090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Épeautre, froment et méteil (blé tendre) — <em>Hors mois de juin et juillet</em><br><span class="sh-tag tag-zero">0,6 % · 12,1 %</span></div>
+        <div class="sh-meta">Selon prod. 2026<br>Hors CT :<br>35 % / 2,5 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <span class="sub-lbl">Farines, gruaux et semoules blé tendre :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1101009000</span>
+            <span class="sh-code">1103110020</span><span class="sh-code">1103110030</span>
+            <span class="sh-code">1103110050</span><span class="sh-code">1103110080</span>
+          </div>
+        </div>
+        <div class="sh-desc">Produits dérivés du blé tendre — farines, gruaux, semoules<br><span class="sh-tag tag-zero">40,9 % (farine) · 45,3 % (gruaux/semoules)</span></div>
+        <div class="sh-meta">2 229,37 T<br>Hors CT :<br>66 – 70 %</div>
+      </div>
+
+      <div class="sec-label">🍎 Fruits</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0802110091</span><span class="sh-code">0802110099</span>
+            <span class="sh-code">0802120091</span><span class="sh-code">0802120099</span>
+          </div>
+        </div>
+        <div class="sh-desc">Amandes douces, fraîches ou sèches<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">27 T<br>Hors CT :<br>0,0 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0808109020</span><span class="sh-code">0808109090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Pommes fraîches (catégorie extra) — 1<sup>er</sup> fév. au 31 mai<br><span class="sh-tag tag-free">0,0 % dans CT</span></div>
+        <div class="sh-meta">545 T<br>Hors CT :<br>0,0 %</div>
+      </div>
+
+      <div class="sec-label">🫒 Huile d'olive</div>
+      <div class="sh-row">
+        <div class="sh-codes"><div class="sh-code-group"><span class="sh-code">1509200000</span></div></div>
+        <div class="sh-desc">Huile d'olive extra vierge<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">204 T<br>Hors CT :<br>0,0 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes"><div class="sh-code-group"><span class="sh-code">1509300000</span></div></div>
+        <div class="sh-desc">Huile d'olive vierge<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">68 T<br>Hors CT :<br>0,0 %</div>
+      </div>
+
+      <div class="sec-label">🌿 Légumineuses &amp; fèves</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">0713509010</span><span class="sh-code">0713509090</span>
+          </div>
+        </div>
+        <div class="sh-desc">Fèves/féveroles sèches sauf semences<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">272 T<br>Hors CT :<br>24,5 %</div>
+      </div>
+
+      <div class="sec-label">🍖 Préparations alimentaires à base de viandes</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <span class="sub-lbl">Saucisses et produits similaires :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1601001000</span><span class="sh-code">1601009910</span><span class="sh-code">1601009980</span>
+          </div>
+        </div>
+        <div class="sh-desc">Saucisses, saucissons et produits similaires de viandes, d'abats, autres que saucisses sèches, non cuits et préparations alimentaires<br><span class="sh-tag tag-zero">10,0 % dans CT</span></div>
+        <div class="sh-meta">136 T<br>Hors CT :<br>10,0 %</div>
+      </div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <span class="sub-lbl">Préparations à base de foie :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1602200021</span><span class="sh-code">1602200023</span><span class="sh-code">1602200029</span>
+            <span class="sh-code">1602200091</span><span class="sh-code">1602200099</span>
+          </div>
+          <span class="sub-lbl">Préparations de dinde :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1602310091</span><span class="sh-code">1602310099</span>
+          </div>
+          <span class="sub-lbl">Préparations de coqs et poules :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1602321000</span><span class="sh-code">1602329000</span>
+          </div>
+          <span class="sub-lbl">Préparations homogénéisées volailles :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1602100090</span>
+          </div>
+          <span class="sub-lbl">Préparations de bovins :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1602500000</span>
+          </div>
+          <span class="sub-lbl">Préparations à base d'ovins/gibier/lapin :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1602900091</span><span class="sh-code">1602900092</span><span class="sh-code">1602900099</span>
+          </div>
+        </div>
+        <div class="sh-desc">Autres préparations alimentaires à base de viandes (foie, dinde, coqs, poules, bovins, ovins, gibier, lapin)<br><span class="sh-tag tag-zero">10,0 % dans CT</span></div>
+        <div class="sh-meta">136 T<br>Hors CT :<br>10,0 %</div>
+      </div>
+
+      <div class="sec-label">🍝 Pâtes alimentaires</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <span class="sub-lbl">Pâtes avec œufs :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1902111020</span><span class="sh-code">1902111030</span>
+          </div>
+          <span class="sub-lbl">Pâtes mêmes cuites ou farcies (quota 204T) :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1902119010</span><span class="sh-code">1902119090</span><span class="sh-code">1902199090</span>
+            <span class="sh-code">1902208010</span><span class="sh-code">1902208020</span><span class="sh-code">1902208030</span>
+            <span class="sh-code">1902208091</span><span class="sh-code">1902208099</span>
+            <span class="sh-code">1902200500</span><span class="sh-code">1902300099</span><span class="sh-code">1902300010</span>
+            <span class="sh-code">1902401191</span><span class="sh-code">1902401199</span><span class="sh-code">1902401900</span>
+            <span class="sh-code">1902409110</span><span class="sh-code">1902409191</span><span class="sh-code">1902409199</span><span class="sh-code">1902409900</span>
+          </div>
+          <span class="sub-lbl">Couscous :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1902500000</span>
+          </div>
+          <span class="sub-lbl">Pâtes de régime au gluten :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1902021000</span><span class="sh-code">1902022000</span><span class="sh-code">1902200500</span>
+            <span class="sh-code">1902300091</span><span class="sh-code">1902111000</span><span class="sh-code">1902119011</span><span class="sh-code">1902199091</span>
+          </div>
+          <span class="sub-lbl">Vermicelles de riz avec œufs :</span>
+          <div class="sh-code-group">
+            <span class="sh-code">1902111020</span><span class="sh-code">1902113030</span>
+          </div>
+        </div>
+        <div class="sh-desc">Pâtes alimentaires, même cuites ou farcies ou autrement préparées, et couscous même préparé<br><span class="sh-tag tag-zero">0,0 % dans CT (divers quotas)</span></div>
+        <div class="sh-meta">204 T / 415 T<br>Hors CT :<br>35 – 50 %</div>
+      </div>
+
+      <div class="sec-label">🍅 Tomates préparées</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">2002901000</span><span class="sh-code">2002909011</span><span class="sh-code">2002909019</span>
+            <span class="sh-code">2002909091</span><span class="sh-code">2002909099</span>
+          </div>
+        </div>
+        <div class="sh-desc">Tomates, préparées ou conservées autrement qu'au vinaigre ou à l'acide acétique (à l'exclusion des tomates entières ou en morceaux) en emballages nets supérieurs à 25 kg<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">136 T<br>Hors CT :<br>0,0 %</div>
+      </div>
+
+      <div class="sec-label">🐾 Aliments composés pour animaux</div>
+      <div class="sh-row">
+        <div class="sh-codes">
+          <div class="sh-code-group">
+            <span class="sh-code">2309908092</span><span class="sh-code">2309908099</span><span class="sh-code">2309900500</span>
+          </div>
+        </div>
+        <div class="sh-desc">Aliments composés pour animaux<br><span class="sh-tag tag-zero">0,0 % dans CT</span></div>
+        <div class="sh-meta">5 001 T<br>Hors CT :<br>0,0 %</div>
+      </div>
+
+      <div class="note-box">
+        <strong>(1)</strong> Taux appliqué à la tranche de valeur inférieure ou égale à 1 000 dh/tonne ; la tranche supérieure à 1 000 dh/tonne est soumise à un droit d'importation de 2,5 %. <strong>(2)</strong> Ce taux sera de 0% si la suspension des droits de douane du blé (en vigueur depuis le 1<sup>er</sup> novembre 2021) est toujours maintenue. <strong>(3)</strong> Le quota supplémentaire de 3 050 T ne sera effectif qu'après épuisement du quota principal de 2 185,66 T. <strong>(5)</strong> Les importations de blé dur et de blé tendre sont gérées selon la procédure d'appel d'offres organisé par l'ONICL.
+      </div>
+    </div>
+
+    <!-- ──────── ANNEXE V — MSA ──────── -->
+    <div id="panel-annV" class="panel">
+      <div class="year-divider">📅 ANNEXE V — MESURES DE SAUVEGARDE AGRICOLE (MSA) · DEUX MILLÉSIMES COMPARÉS</div>
+      <div class="msa-head">
+        <span>Code SH (10 chiffres)</span>
+        <span>Description · Catégorie · Tarif préférentiel</span>
+        <span style="text-align:right">Vol. décl. · D.add.</span>
+      </div>
+
+      <!-- 2016 -->
+      <div class="annexe-banner" style="background:linear-gradient(135deg,#EAF3DE 0%,#F7FFF7 100%);border-bottom:1px solid #9DCE9D">
+        <h4 style="color:#276527">Circulaire 5562/222 du 31-12-2015 · Période 1<sup>er</sup> janvier au 31 décembre 2016</h4>
+        <p>Droit additionnel applicable après déclenchement du volume seuil — Schéma démantèlement Annexe I circ. 4977/222</p>
+      </div>
+      <div class="sec-label">🍗 Volailles — 2016</div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0207110000</span></div><div class="sh-desc">Coqs et poules entiers frais ou réfrigérés<br><span class="sh-tag tag-R">Cat. R · Base 124 % · Préf. 96,2 % → 99,1 %</span></div><div class="msa-nums">2 925 T<br><span class="droit-add">+2,9 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0207120000</span></div><div class="sh-desc">Coqs et poules entiers congelés<br><span class="sh-tag tag-R">Cat. R · Base 124 % · Préf. 96,2 % → 99,1 %</span></div><div class="msa-nums">2 925 T<br><span class="droit-add">+2,9 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0207240000</span></div><div class="sh-desc">Dindes et dindons entiers frais ou réfrigérés<br><span class="sh-tag tag-R">Cat. R · Base 124 % · Préf. 96,2 % → 99,1 %</span></div><div class="msa-nums">2 925 T<br><span class="droit-add">+2,9 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0207250000</span></div><div class="sh-desc">Dindes et dindons entiers congelés<br><span class="sh-tag tag-R">Cat. R · Base 124 % · Préf. 96,2 % → 99,1 %</span></div><div class="msa-nums">2 925 T<br><span class="droit-add">+2,9 %</span></div></div>
+      <div class="sec-label">🫘 Légumineuses — 2016</div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0713209010</span></div><div class="sh-desc">Pois chiches secs en grains sauf semence<br><span class="sh-tag tag-K">Cat. K · Base 50 % · Préf. 36 % → 39 %</span></div><div class="msa-nums">444 T<br><span class="droit-add">+3 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0713209090</span></div><div class="sh-desc">Autres pois chiches secs (hors semences, hors grains)<br><span class="sh-tag tag-K">Cat. K · Base 50 % · Préf. 36 % → 39 %</span></div><div class="msa-nums">444 T<br><span class="droit-add">+3 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0713409010</span></div><div class="sh-desc">Lentilles sèches en grains sauf semence<br><span class="sh-tag tag-K">Cat. K · Base 50 % · Préf. 36 % → 39 %</span></div><div class="msa-nums">740 T<br><span class="droit-add">+3 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0713409090</span></div><div class="sh-desc">Autres lentilles sèches (hors semences, hors grains)<br><span class="sh-tag tag-K">Cat. K · Base 50 % · Préf. 36 % → 39 %</span></div><div class="msa-nums">740 T<br><span class="droit-add">+3 %</span></div></div>
+      <div class="sec-label">🥜 Fruits à coques — 2016</div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0802110011</span></div><div class="sh-desc">Amandes amères fraîches en coques<br><span class="sh-tag tag-J">Cat. J · Base 50 % · Préf. 13,3 % → 26,7 %</span></div><div class="msa-nums">96 T<br><span class="droit-add">+13,4 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0802110019</span></div><div class="sh-desc">Amandes amères séchées en coques<br><span class="sh-tag tag-J">Cat. J · Base 50 % · Préf. 13,3 % → 26,7 %</span></div><div class="msa-nums">96 T<br><span class="droit-add">+13,4 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0802120011</span></div><div class="sh-desc">Amandes amères fraîches sans coques<br><span class="sh-tag tag-J">Cat. J · Base 50 % · Préf. 13,3 % → 26,7 %</span></div><div class="msa-nums">96 T<br><span class="droit-add">+13,4 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0802120019</span></div><div class="sh-desc">Amandes amères séchées sans coques<br><span class="sh-tag tag-J">Cat. J · Base 50 % · Préf. 13,3 % → 26,7 %</span></div><div class="msa-nums">96 T<br><span class="droit-add">+13,4 %</span></div></div>
+
+      <!-- 2026 -->
+      <div class="annexe-banner" style="background:linear-gradient(135deg,#FAEEDA 0%,#FFFAF5 100%);border-bottom:1px solid #E2B97A;margin-top:8px">
+        <h4 style="color:#854F0B">Circulaire 6705/222 du 31-12-2025 · Période 1<sup>er</sup> janvier au 31 décembre 2026</h4>
+        <p>Volume de déclenchement et droit additionnel à appliquer — Catégorie de démantèlement : Annexe I circ. 4977/222</p>
+      </div>
+      <div class="sec-label">🍗 Volailles — 2026</div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0207130029</span></div><div class="sh-desc">Cuisses et ailes de coqs et de poules frais ou réfrigérés<br><span class="sh-tag tag-S">Cat. S · Base 124 % · Préf. 41,2 % → 58,8 %</span></div><div class="msa-nums">10 400 T<br><span class="droit-add">+17,6 %</span></div></div>
+      <div class="msa-row"><div class="sh-codes"><span class="sh-code">0207149291</span></div><div class="sh-desc">Cuisses et ailes de coqs et de poules congelés<br><span class="sh-tag tag-S">Cat. S · Base 124 % · Préf. 41,2 % → 58,8 %</span></div><div class="msa-nums">10 400 T<br><span class="droit-add">+17,6 %</span></div></div>
+
+      <div class="note-box" style="margin-top:10px">
+        <strong>Catégories de démantèlement :</strong><br>
+        <strong>R</strong> = Progressif 15 ans &nbsp;·&nbsp; <strong>K</strong> = Progressif &nbsp;·&nbsp; <strong>J</strong> = Partiel &nbsp;·&nbsp; <strong>S</strong> = Progressif spécifique<br>
+        Voir Annexe I à la circulaire de base 4977/222 du 30/12/2005.
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- FIN COLONNE DROITE -->
+
+</div>
+
+<footer class="site-footer">
+  <span><strong>ALE Maroc – USA</strong> · Import-eXPert · Sources : circulaires ADII</span>
+  <span>Circ. 4977/222 (2005) · Circ. 5562/222 (2015) · Circ. 6705/222 (2025) · Sources : ADII / douane.gov.ma</span>
+</footer>
+
+<script>
+function switchTab(side,id){
+  if(side==='left'){
+    ['accord','origine','produits','proc','circs'].forEach(function(p){document.getElementById('panel-'+p).classList.remove('active')});
+    document.querySelectorAll('#left-tabs .tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.getElementById('panel-'+id).classList.add('active');
+    event.target.classList.add('active');
+  } else {
+    ['ann4_2016','ann4_2026','annV'].forEach(function(p){document.getElementById('panel-'+p).classList.remove('active')});
+    document.querySelectorAll('#right-tabs .tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.getElementById('panel-'+id).classList.add('active');
+    event.target.classList.add('active');
+    document.getElementById('sh-search').value='';
+    filterRows('');
+  }
+}
+function filterRows(q){
+  var s=q.toLowerCase().trim();
+  var rows=document.querySelectorAll('.sh-row,.msa-row');
+  rows.forEach(function(r){
+    if(!s){r.classList.remove('hidden');return;}
+    r.classList.toggle('hidden',r.innerText.toLowerCase().indexOf(s)===-1);
+  });
+  document.querySelectorAll('.sec-label').forEach(function(sec){
+    if(!s){sec.style.display='';return;}
+    var next=sec.nextElementSibling;var hasVisible=false;
+    while(next&&!next.classList.contains('sec-label')&&!next.classList.contains('annexe-banner')&&!next.classList.contains('msa-head')&&!next.classList.contains('note-box')&&!next.classList.contains('year-divider')){
+      if((next.classList.contains('sh-row')||next.classList.contains('msa-row'))&&!next.classList.contains('hidden'))hasVisible=true;
+      next=next.nextElementSibling;
+    }
+    sec.style.display=hasVisible?'':'none';
+  });
+}
+</script>
+<a class="ixp-back" href="/accords" aria-label="Retour aux accords préférentiels">← Accords préférentiels</a>
+</body>
+</html>
