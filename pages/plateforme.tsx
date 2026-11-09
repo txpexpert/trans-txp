@@ -39,18 +39,6 @@ export default function Plateforme() {
         </div>
       </section>
 
-      <section className="x-sec-tight" id="video" style={{ paddingTop: 0 }}>
-        <div className="x-wrap">
-          <div className="x-video" role="img" aria-label="Emplacement de la vidéo de présentation">
-            <div className="x-video-play" aria-hidden="true">▶</div>
-            <div>
-              <div className="x-eyebrow">Vidéo de présentation · 60 secondes</div>
-              <h2 className="x-h3" style={{ margin: '6px 0 4px' }}>La plateforme en six séquences</h2>
-              <p style={{ margin: 0, color: 'var(--x-ink2)' }}>Le risque, IXP-Assistant, les cinq étapes de la chaîne, le diagnostic et les kits, l’expertise. Vidéo en préparation.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="x-sec-tight" style={{ paddingTop: 0 }}>
         <div className="x-wrap" style={{ display: 'grid', gap: 14 }}>

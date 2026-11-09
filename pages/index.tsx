@@ -51,15 +51,14 @@ export default function Accueil() {
         <div className="x-wrap"><IxpAssistant /></div>
         <div className="x-wrap x-hero-grid">
           <div>
-            <div className="x-eyebrow">Plateforme de conformité et d’optimisation douanière · Maroc</div>
+            <div className="x-eyebrow">Conformité import · Maroc</div>
             <div className="x-h1-row">
               <IxpLogo size={84} className="x-hero-logo" />
-              <h1 className="x-h1 x-h1-sm">Chaque importation <em>qualifiée, chiffrée et sécurisée</em>, avant d’initier vos opérations.</h1>
+              <h1 className="x-h1 x-h1-sm">Ce que la douane contrôlera demain, <em>vérifiez-le aujourd’hui</em>.</h1>
             </div>
-            <p className="x-lead">Import-eXPert relie le classement SH des produits, l’origine, le coût rendu, les documents et la conformité dans un seul dossier traçable. Naviguez et consultez toutes les dispositions actualisées de la réglementation en matière d’impôts, d’opérations de change, de fiscalité territoriale, de commerce extérieur et de douane, en un seul endroit.<br />Nos experts prennent le relais quand un dossier l’exige ou quand vous sollicitez une assistance personnalisée.</p>
+            <p className="x-lead">Code SH, origine, valeur, coût rendu, documents : Import-eXPert qualifie, chiffre et sécurise chaque importation avant le dédouanement, et vous remet un dossier défendable, chaque point appuyé sur le texte officiel.<br />Nos experts douaniers tranchent les cas difficiles.</p>
             <div className="x-hero-cta">
-              <Link href="/diagnostic" className="x-btn x-btn-dark">Lancer le diagnostic de conformité</Link>
-              <Link href="/plateforme#video" className="x-btn x-btn-line">▶ Voir la présentation</Link>
+              <Link href="/diagnostic" className="x-btn x-btn-dark">Mesurer mon exposition</Link>
             </div>
             <Link href="/plateforme" className="x-pres-link">
               <span className="x-pres-link-k">Découvrir</span>
@@ -137,6 +136,7 @@ export default function Accueil() {
             <div className="x-eyebrow">Le risque</div>
             <h2 className="x-h2">Une erreur d’importation ne se voit pas <em>le jour où la marchandise arrive</em>.</h2>
             <p className="x-sub">Elle se révèle plus tard : lors d’un contrôle, d’un litige fournisseur, d’un écart de stock ou d’une revue comptable, quand la marchandise est vendue depuis longtemps et que l’erreur est irréversible. Les quatre fragilités concentrent toutes ces mauvaises surprises ; chacune correspond à une étape sur la plateforme.</p>
+            <p className="x-sub"><b>23,5 milliards de dirhams</b> : c’est le montant des redressements opérés en 2025 au titre de la sous-facturation, en hausse de 33 % sur un an (ADII, rapport d’activité 2025). Les contrôles s’appuient désormais sur l’analyse de risque et le contrôle a posteriori.</p>
           </div>
           <div className="x-risks">
             {RISQUES.map((r, i) => (
@@ -241,7 +241,7 @@ export default function Accueil() {
       <section className="x-sec-tight">
         <div className="x-wrap x-two">
           <div className="x-panel">
-            <div className="x-eyebrow">Baromètre 2026 · en préparation</div>
+            <div className="x-eyebrow">Baromètre 2026 · enquête ouverte</div>
             <h3 className="x-h3">La friction douanière au Maroc, mesurée par ceux qui la vivent</h3>
             <p className="x-sub">Délais, erreurs de conformité, accords sous-exploités : une enquête menée auprès d’importateurs, de transitaires et de directions financières. Participez et recevez le rapport en avant-première.</p>
             <div style={{ marginTop: 20 }}><Link href="/enquete" className="x-btn x-btn-line">Participer à l’enquête</Link></div>
