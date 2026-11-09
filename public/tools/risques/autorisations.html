@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Licences et autorisations préalables : ONSSA, ANRT, normes et autres visas · Import-eXPert</title>
+<style>
+:root{
+  --navy:#0B2545;--navy-mid:#163566;--blue:#1E5FA8;--blue-lt:#3B82C4;
+  --teal:#0F7B6C;--teal-lt:#E0F4F1;--green:#276527;--green-lt:#EAF3DE;
+  --amber:#854F0B;--amber-lt:#FAEEDA;--red:#A32D2D;--red-lt:#FCEBEB;
+  --gray-50:#F7F8FA;--gray-100:#ECEEF2;--gray-800:#252A37;--border:#DDE0E8;
+  --uk-red:#CF142B;--uk-blue:#012169;--ma-red:#C1272D;--ma-green:#006233;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;color:var(--gray-800);background:#fff;overflow:hidden}
+/* HEADER */
+header{
+  position:fixed;top:0;left:0;right:0;height:54px;z-index:100;
+  background:var(--navy);display:flex;align-items:center;
+  border-bottom:3px solid var(--blue-lt);
+}
+.hdr-flag-ma{width:12px;height:54px;background:linear-gradient(to bottom,var(--ma-red) 50%,var(--ma-green) 50%)}
+.hdr-flag-uk{width:12px;height:54px;background:linear-gradient(to bottom,var(--uk-blue) 33%,var(--uk-red) 33%,var(--uk-red) 66%,var(--uk-blue) 66%)}
+.hdr-center{flex:1;display:flex;align-items:center;gap:12px;padding:0 16px}
+.hdr-title{font-size:14px;font-weight:700;color:#fff;letter-spacing:.3px;white-space:nowrap}
+.hdr-sub{font-size:11px;color:#a0b4d0;white-space:nowrap}
+.hdr-badges{display:flex;gap:6px;margin-left:auto}
+.badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.badge-base{background:var(--navy-mid);color:#90b4e0;border:1px solid #2a4a80}
+.badge-update{background:#12284a;color:#7ec8e3;border:1px solid #1a4060}
+.badge-uk{background:var(--uk-blue);color:#fff}
+/* TWO COLUMNS */
+.layout{display:grid;grid-template-columns:42% 58%;position:fixed;top:54px;left:0;right:0;bottom:28px}
+/* LEFT COL */
+.col-l{overflow-y:auto;border-right:1px solid var(--border);background:#fff}
+.col-r{overflow-y:auto;background:var(--gray-50)}
+/* TABS */
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;overflow-x:auto}
+.tab-bar::-webkit-scrollbar{height:3px}.tab-bar::-webkit-scrollbar-thumb{background:var(--border)}
+.tab-btn{flex-shrink:0;padding:8px 12px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7a99;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-btn:hover:not(.active){color:var(--navy);background:var(--gray-50)}
+.tab-content{display:none;padding:0}
+.tab-content.active{display:block}
+/* INFO BLOCKS */
+.info-block{padding:12px 14px;border-bottom:1px solid var(--border)}
+.info-h{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:7px}
+.info-icon{width:18px;height:18px;background:var(--teal-lt);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.info-body{padding-left:25px;line-height:1.6;color:#44506a;font-size:12px}
+.info-body p{margin-bottom:5px}
+.formula-box{background:#EFF6FF;border:1px solid #B8D4F5;border-radius:5px;padding:8px 10px;margin:4px 0;font-size:11.5px;color:var(--navy-mid)}
+.kv-row{display:flex;gap:6px;margin-bottom:3px;font-size:12px}
+.kv-label{color:#6b7a99;min-width:150px;flex-shrink:0}
+.kv-val{color:var(--navy);font-weight:600}
+.step-list{counter-reset:steps;padding-left:0}
+.step{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
+.step-num{width:20px;height:20px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
+.rule-list{margin:4px 0}
+.rule-item{display:flex;gap:6px;margin-bottom:4px}
+.rule-dot{width:7px;height:7px;background:var(--blue);border-radius:50%;margin-top:5px;flex-shrink:0}
+/* CIRCULAIRE CARDS */
+.circ-card{border:1px solid var(--border);border-radius:6px;margin:10px 14px;overflow:hidden}
+.circ-card-top{padding:9px 12px;color:#fff;font-size:12px;font-weight:700}
+.circ-card-top.c1{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%)}
+.circ-card-top.c2{background:linear-gradient(135deg,#1a3f6f 0%,#2254a0 100%)}
+.circ-card-top.c3{background:linear-gradient(135deg,var(--teal) 0%,#1a9e8a 100%)}
+.circ-card-top.c4{background:linear-gradient(135deg,#6b2f02 0%,var(--amber) 100%)}
+.circ-body{padding:9px 12px;font-size:11.5px;line-height:1.6;color:#44506a}
+.circ-body strong{color:var(--navy)}
+/* SECTION LABELS (right col) */
+.sec-label{position:sticky;top:0;background:var(--gray-100);color:var(--navy-mid);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:5px 12px;border-bottom:1px solid var(--border);z-index:40}
+/* SH ROWS */
+.sh-row{display:grid;grid-template-columns:115px 1fr 80px;gap:4px;padding:5px 10px;border-bottom:1px solid #f0f2f6;align-items:center;min-height:32px}
+.sh-row:hover{background:#f5f7fa}
+.sh-code-group{display:flex;flex-wrap:wrap;gap:3px}
+.sh-code{font-family:'Courier New',monospace;font-size:10.5px;color:var(--navy-mid);background:#EFF6FF;padding:1px 4px;border-radius:3px;white-space:nowrap}
+.sh-code.ex-code{background:#FFF3E0;color:#8B4513}
+.sh-desc{font-size:11.5px;color:var(--gray-800);line-height:1.4}
+.sh-desc small{font-size:10px;color:#8892a8;display:block}
+.sh-meta{text-align:right;font-size:11px}
+.sh-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 5px;border-radius:9px;white-space:nowrap}
+.tag-zero{background:var(--green-lt);color:var(--green)}
+.tag-free{background:var(--green-lt);color:var(--green)}
+.tag-pref{background:#EFF6FF;color:var(--blue)}
+.tag-amber{background:var(--amber-lt);color:var(--amber)}
+.tag-red{background:var(--red-lt);color:var(--red)}
+.sh-vol{font-size:10.5px;color:#6b7a99;white-space:nowrap}
+.sub-lbl{font-size:9px;color:#8892a8;text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+/* ANNEXE BANNER */
+.annexe-banner{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--blue) 100%);color:#fff;padding:10px 14px;margin-bottom:0}
+.annexe-banner h3{font-size:13px;font-weight:700;margin-bottom:3px}
+.annexe-banner p{font-size:11px;opacity:.85}
+.annexe-banner .meta{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap}
+.annexe-banner .meta span{font-size:10px;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:10px}
+/* YEAR DIVIDER */
+.year-divider{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;text-align:center;letter-spacing:1px;position:sticky;top:0;z-index:39}
+/* NOTES DE BAS */
+.notes-box{background:var(--gray-50);border-top:2px solid var(--border);padding:10px 14px;font-size:10.5px;color:#5a6476;line-height:1.7}
+.notes-box p{margin-bottom:3px}
+/* SEARCH BAR */
+.search-bar{padding:8px 10px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:60}
+.search-input{width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:5px;font-size:12px;outline:none;color:var(--gray-800)}
+.search-input:focus{border-color:var(--blue)}
+/* DATA TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:11.5px;margin:6px 0}
+.data-table th{background:var(--navy-mid);color:#fff;padding:5px 8px;text-align:left;font-size:11px}
+.data-table td{padding:4px 8px;border-bottom:1px solid #f0f2f6;vertical-align:top}
+.data-table tr:nth-child(even) td{background:#f7f9fc}
+/* WARNING BOX */
+.warn-box{background:var(--red-lt);border-left:4px solid var(--red);padding:8px 10px;margin:8px 14px;border-radius:0 5px 5px 0;font-size:11.5px;color:#7a1e1e}
+.note-box{background:var(--amber-lt);border-left:4px solid var(--amber);padding:8px 10px;margin:8px 14px;border-radius:0 5px 5px 0;font-size:11.5px;color:#6a3e08}
+/* FOOTER */
+footer{position:fixed;bottom:0;left:0;right:0;height:28px;background:var(--navy);color:#7090b0;font-size:10px;display:flex;align-items:center;padding:0 14px;gap:12px;border-top:1px solid var(--navy-mid)}
+footer span{white-space:nowrap}
+/* RIGHT COL SPECIFIC */
+.rh-tab-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:55;display:flex;overflow-x:auto}
+.rh-tab-bar::-webkit-scrollbar{height:3px}.rh-tab-bar::-webkit-scrollbar-thumb{background:var(--teal)}
+.rh-tab-btn{flex-shrink:0;padding:8px 11px;font-size:10.5px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7a99;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.rh-tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+.rh-tab-btn:hover:not(.active){color:var(--navy);background:var(--gray-50)}
+.hidden-row{display:none!important}
+.col-r .tab-bar{top:40px}
+/* MODS NOTE */
+.mod-badge{font-size:9.5px;background:#FFF8E1;color:#7B5300;border:1px solid #F5D060;padding:1px 5px;border-radius:8px;margin-left:4px}
+</style>
+<style id="ixp-accords">
+.ixp-back{position:fixed;left:16px;bottom:40px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:#14120F;color:#fff!important;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;box-shadow:0 8px 22px -8px rgba(0,0,0,.45)}
+.ixp-back:hover{background:#A8822F}
+@media (max-width:900px){
+ html,body{height:auto!important;overflow:auto!important}
+ body>header,header,.hdr,.header{position:static!important}
+ .layout,#body{display:block!important;position:static!important;height:auto!important;overflow:visible!important}
+ .layout>*,#body>*{width:auto!important;max-width:none!important;height:auto!important;overflow:visible!important}
+ .kpi-strip{grid-template-columns:1fr 1fr!important}
+ .tabs,.tab-bar,[class*="tab-bar"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+ .header-badges,.hdr-badges,.h-badges{display:none!important}
+ footer,.site-footer{position:static!important}
+ .ixp-back{bottom:16px}
+}
+</style>
+<style id="ixp-accords-2">
+.ixp-back-top{flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;color:#14120F!important;font:600 12.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;white-space:nowrap;border:1px solid rgba(255,255,255,.6)}
+.ixp-back-top:hover{background:#C9A84C;color:#fff!important}
+:is(.tab-btn,.rh-tab-btn){border-radius:6px 6px 0 0!important;border-bottom:3px solid transparent!important;transition:color .18s,background .18s,border-color .18s,transform .12s}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+1){--tc:#1E5FA8;--tb:#DBEAFE;--tbc:#1E5FA8}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+2){--tc:#276527;--tb:#EAF3DE;--tbc:#276527}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+3){--tc:#854F0B;--tb:#FAEEDA;--tbc:#854F0B}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+4){--tc:#5B21B6;--tb:#EDE9FE;--tbc:#5B21B6}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+5){--tc:#A32D2D;--tb:#FCEBEB;--tbc:#A32D2D}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+6){--tc:#0F7B6C;--tb:#E0F4F1;--tbc:#0F7B6C}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+7){--tc:#003399;--tb:#E8EEFF;--tbc:#003399}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+8){--tc:#9D174D;--tb:#FCE7F3;--tbc:#9D174D}
+.tab-btn,.rh-tab-btn{margin-right:3px}
+:is(.tab-btn,.rh-tab-btn):not(.active){color:var(--tc)!important;background:var(--tb)!important;opacity:.85}
+:is(.tab-btn,.rh-tab-btn):not(.active):hover{opacity:1;transform:translateY(-1px)}
+:is(.tab-btn,.rh-tab-btn).active{color:var(--tc)!important;background:var(--tb)!important;border-bottom-color:var(--tbc)!important;font-weight:700;opacity:1;box-shadow:inset 0 0 0 1px var(--tbc)}
+@media (max-width:900px){.ixp-back-top{padding:7px 11px;font-size:12px}}
+</style>
+<style id="ixp-risques">
+.hdr-sub{display:block;margin-top:2px}
+.lead{padding:12px 14px;border-bottom:1px solid var(--border);background:#FBF5E6;border-left:4px solid #B8922A;font-size:12.5px;line-height:1.6;color:#1A1A18}
+.lead b{color:#7A5200}
+.do-list,.dont-list,.flag-list{list-style:none;margin:4px 0}
+.do-list li,.dont-list li,.flag-list li{display:flex;gap:8px;padding:7px 10px;margin-bottom:5px;border-radius:5px;font-size:12px;line-height:1.55}
+.do-list li{background:var(--green-lt);color:#1f4a1f}
+.do-list li::before{content:'✓';font-weight:700;color:var(--green)}
+.dont-list li{background:var(--red-lt);color:#6d1f1f}
+.dont-list li::before{content:'✕';font-weight:700;color:var(--red)}
+.flag-list li{background:var(--amber-lt);color:#5a3507}
+.flag-list li::before{content:'⚑';color:var(--amber)}
+.ref{font-family:'Courier New',monospace;font-size:10.5px;color:var(--navy-mid);background:#EFF6FF;padding:1px 5px;border-radius:3px;white-space:nowrap}
+.new{display:inline-block;font-size:9.5px;font-weight:700;background:var(--red);color:#fff;padding:1px 6px;border-radius:8px;margin-left:4px;vertical-align:middle}
+.pad{padding:10px 14px}
+.data-table td small{color:#6b7a99}
+.kv-label{min-width:170px}
+.col-r .tab-bar{top:0}
+.col-r .tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr-center">
+    <div>
+      <div class="hdr-title">Licences et autorisations préalables : ONSSA, ANRT, normes et autres visas</div>
+      <div class="hdr-sub">Ce qui doit être obtenu avant l'arrivée de la marchandise, et ce qui arrive sans</div>
+    </div>
+    <a class="ixp-back-top" href="/risques">← Risques et litiges</a>
+  </div>
+</header>
+
+<div class="layout">
+<div class="col-l">
+  <div class="tab-bar" id="ltabs">
+    <button class="tab-btn active" data-t="l1" onclick="switchTab('l','l1')">🗺️ Qui autorise quoi</button>
+    <button class="tab-btn" data-t="l2" onclick="switchTab('l','l2')">📜 Licences 2026</button>
+    <button class="tab-btn" data-t="l3" onclick="switchTab('l','l3')">🏷️ Normes obligatoires</button>
+    <button class="tab-btn" data-t="l4" onclick="switchTab('l','l4')">🌿 Sanitaire et autres</button>
+  </div>
+
+  <div class="tab-content active" id="l1">
+    <div class="lead"><b>Le dédouanement ne commence vraiment qu'une fois l'autorisation obtenue.</b> Pour la plupart des produits réglementés, la douane subordonne la mainlevée au résultat ou au titre délivré par une autre administration. Une marchandise arrivée sans ce titre reste bloquée en magasin, avec des frais qui courent, puis risque le refoulement ou la destruction.</div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🗺️</div> Cartographie des autorisations à l'importation</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Autorité</th><th>Produits</th><th>Ce qu'il faut obtenir</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Commerce extérieur</strong></td><td>Marchandises listées par l'arrêté 1308-94 (explosifs, substances qui appauvrissent la couche d'ozone, certains produits agricoles et sidérurgiques…)</td><td>Licence d'importation, domiciliée en banque</td></tr>
+            <tr><td><strong>Commerce (qualité)</strong></td><td>Produits industriels soumis à une norme d'application obligatoire (annexe XII-17 de la réglementation douanière)</td><td>Résultat de contrôle favorable ou attestation de conformité</td></tr>
+            <tr><td><strong>ONSSA</strong></td><td>Produits alimentaires, végétaux, animaux, aliments pour animaux, intrants agricoles</td><td>Contrôle sanitaire ou phytosanitaire avant mise sur le marché ; établissement agréé ou autorisé</td></tr>
+            <tr><td><strong>AMMPS</strong></td><td>Médicaments, matières premières pharmaceutiques, dispositifs médicaux</td><td>AMM, autorisation spécifique, visa sanitaire, certificat d'enregistrement</td></tr>
+            <tr><td><strong>ANRT</strong></td><td>Équipements terminaux et toute installation radioélectrique (GSM, Wi-Fi, Bluetooth, GPS…)</td><td>Agrément (10 ans) ou autorisation d'importation, demandés via PortNet ; vignette d'agrément avant la vente</td></tr>
+            <tr><td><strong>NARSA</strong></td><td>Véhicules de tourisme neufs importés hors mandataires accrédités</td><td>Homologation à titre isolé ou accord de principe</td></tr>
+            <tr><td><strong>Développement durable</strong></td><td>Déchets, dangereux ou non</td><td>Autorisation d'importation ou d'exportation</td></tr>
+            <tr><td><strong>Défense nationale et Intérieur</strong></td><td>Matériels de défense et de sécurité, armes et munitions</td><td>Autorisation d'importation, de transit et de transport</td></tr>
+            <tr><td><strong>Épidémiologie (Santé)</strong></td><td>Pesticides de santé et d'hygiène publique</td><td>AMM du pesticide</td></tr>
+            <tr><td><strong>Communication, CCM, BMDA</strong></td><td>Livres et périodiques, œuvres cinématographiques, supports soumis aux droits d'auteur</td><td>Visa ou autorisation</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🔗</div> Échange électronique avec la douane <span class="new">2026</span></div>
+      <div class="info-body">
+        <p>Depuis le 2 juillet 2026, les autorisations et résultats de contrôle de l'AMMPS, de la Direction de l'épidémiologie, du département de la Communication, du Centre cinématographique marocain et du Bureau marocain du droit d'auteur sont transmis <strong>directement à BADR</strong> <span class="ref">Circ. 6755/311</span>. Conséquence : une autorisation absente, expirée ou retirée est visible immédiatement au dédouanement.</p>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🚫</div> Une autorisation retirée bloque tout</div>
+      <div class="info-body">
+        <p>Exemple : le 12 juin 2026, l'AMMPS a retiré le certificat d'enregistrement d'un dispositif médical ; la douane s'oppose désormais à toute importation présentée sous ce certificat <span class="ref">Note D133/2026</span>. Vérifiez la validité de chaque titre avant expédition, pas seulement son existence.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="l2">
+    <div class="lead"><b>La liste des licences bouge en cours d'année.</b> Quatre arrêtés publiés en 2026 ont modifié l'arrêté 1308-94. La licence s'applique dès la publication au Bulletin officiel.</div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📜</div> Modifications 2026</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Produit</th><th>Position</th><th>Mesure</th><th>Depuis</th></tr></thead>
+          <tbody>
+            <tr><td>Fils en fer ou acier non alliés, ≥ 0,6 % de carbone</td><td>7217.10.10.00</td><td>Licence d'importation</td><td>11/06/2026</td></tr>
+            <tr><td>Torons et câbles (autres)</td><td>7312.10.00.90</td><td>Licence d'importation</td><td>11/06/2026</td></tr>
+            <tr><td>Masques de protection</td><td>Ex 3926, 4818, 4823, 6307, 9020</td><td><strong>Fin</strong> de la licence d'importation</td><td>27/07/2026</td></tr>
+            <tr><td>Antiseptiques, masques chirurgicaux et FFP2</td><td>Ex 3401, 3402, 3808, 6307</td><td><strong>Fin</strong> de la licence d'exportation</td><td>27/07/2026</td></tr>
+            <tr><td>Pommes de terre découpées surgelées pour friture</td><td>2004.10.20.00</td><td>Licence d'importation</td><td>06/08/2026</td></tr>
+            <tr><td>Aulx frais ou réfrigérés</td><td>0703.20.00.00</td><td>Licence d'importation pour 18 mois</td><td>24/09/2026</td></tr>
+          </tbody>
+        </table>
+        <div class="note-box">🔁 <strong>Opérations engagées avant la publication</strong> : elles restent possibles sans licence si un crédit documentaire irrévocable et confirmé a été ouvert avant, ou si des titres de transport établis avant prouvent la destination directe et exclusive vers le Maroc. Les deux conditions sont alternatives.</div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📋</div> Rappel : la liste de base</div>
+      <div class="info-body">
+        <p>L'arrêté 1308-94 soumet notamment à licence d'importation : l'amiante, les substances halogénées qui appauvrissent la couche d'ozone et les équipements frigorifiques qui en contiennent, certains agents chimiques toxiques (précurseurs d'armes chimiques, saxitoxine, ricine), les poudres et explosifs (chapitre 36) et les pesticides au bromure de méthyle. À l'exportation : céréales, safran et arganier (bulbes, plants, graines), algues brutes, certains cuirs et peaux, charbon de bois, objets d'antiquité de plus de 100 ans, collections.</p>
+        <p>Une licence de sauvegarde peut aussi être instaurée sous forme de restriction quantitative (loi 15-09, art. 72).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="l3">
+    <div class="lead"><b>Pas de mainlevée sans résultat favorable.</b> Pour les produits soumis à une norme obligatoire, la douane attend le résultat du contrôle de conformité transmis dans BADR. La déclaration de conformité et le dossier technique engagent l'importateur sous sa seule responsabilité (loi 24-09, art. 14 et 16).</div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🔎</div> Les résultats possibles</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Résultat</th><th>Effet</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Admis</strong> ou « non soumis »</td><td>Mainlevée définitive</td></tr>
+            <tr><td><strong>Partiellement admis</strong></td><td>Mainlevée de la seule partie admise ; le reste est défalqué</td></tr>
+            <tr><td><strong>Admis provisoire sans scellé</strong></td><td>Mainlevée</td></tr>
+            <tr><td><strong>Admis provisoire avec scellé</strong></td><td>Enlèvement sous scellés vers un lieu déclaré ; interdiction de vendre jusqu'au résultat définitif ; destruction ou réexportation en cas de non-conformité</td></tr>
+            <tr><td><strong>Non admis</strong></td><td>Annulation de la déclaration, puis réexportation ou destruction de la marchandise refoulée</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:6px">En cas de non-conformité, l'importateur dispose de <strong>8 jours</strong> pour demander une seconde analyse sur le même prélèvement (circulaire conjointe MICNT-ADII n° 1).</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🆕</div> Normes rendues obligatoires récemment</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Produits</th><th>Exigence clé</th><th>Depuis</th></tr></thead>
+          <tbody>
+            <tr><td>Sachets de nicotine (NM 08.8.130)</td><td>12 mg de nicotine au plus <strong>par sachet</strong></td><td>20/02/2026</td></tr>
+            <tr><td>Cigarettes électroniques jetables, PODS, cartouches (NM 08.8.250 à 252)</td><td>20 mg/ml de nicotine au plus <strong>et</strong> 2 ml de liquide au plus</td><td>20/02/2026</td></tr>
+            <tr><td>Liquides « sans nicotine »</td><td>0,5 mg/ml au plus</td><td>20/02/2026</td></tr>
+            <tr><td>Tabac muassel (NM 08.8.200)</td><td>Contrôle de conformité</td><td>20/02/2026</td></tr>
+            <tr><td>Fils d'acier zingués (NM EN 10244-2)</td><td>Contrôle de conformité, positions 7217.20 et 7229.20/90</td><td>2026 <span class="ref">Circ. 6736/311</span></td></tr>
+          </tbody>
+        </table>
+        <div class="warn-box">⚠️ La douane constate que des produits alternatifs du tabac non conformes continuent d'être importés et a demandé une vigilance renforcée <span class="ref">Note D235/2026</span> (28/10/2026).</div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📦</div> Familles couvertes (annexe XII-17)</div>
+      <div class="info-body">
+        <p>Sidérurgie et construction (fil machine, treillis, ronds à béton, tôles, profils, ciments, menuiseries, robinetterie, sanitaires, verres, carrelage), produits chimiques (allumettes, alcool industriel, peintures et vernis), papeterie et hygiène (cahiers, couches), caoutchouc et plastiques (tuyaux, films agricoles, pneumatiques, canalisations), matériel électrique (câbles, disjoncteurs, prises, transformateurs), appareils à gaz et électroménager, mobilier et puériculture, jouets, textile et chaussures (étiquetage), articles en contact alimentaire, équipements automobiles (batteries, plaquettes de frein, vitrages, filtres).</p>
+        <p>Deux listes du département du Commerce, mises à jour le 20/02/2026, distinguent les produits <strong>contrôlés à l'arrivée</strong> et ceux <strong>contrôlés à l'origine</strong>, avec des seuils de dispense par produit (par exemple 100 kg ou 5 000 DH pour les allumettes, 10 000 DH pour les tuyaux de gaz).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="l4">
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🌿</div> ONSSA : produits alimentaires et agricoles</div>
+      <div class="info-body">
+        <p>La loi 28-07 relative à la sécurité sanitaire des produits alimentaires <strong>responsabilise l'importateur</strong> : produits issus d'établissements agréés, traçabilité, et contrôle sanitaire avant la mise sur le marché, en principe avant le débarquement. Il est conseillé d'engager la démarche auprès de l'ONSSA avant même les formalités douanières.</p>
+        <p>À l'importation de végétaux, l'inspecteur phytosanitaire rend l'une de trois décisions : <strong>admis après contrôle</strong>, <strong>à fumiger</strong> avant enlèvement, ou <strong>à refouler</strong> vers l'origine ou en entrepôt pour réexportation <span class="ref">Circ. 4216/313</span>.</p>
+        <div class="warn-box">⚠️ <strong>Pesticides</strong> : l'ONSSA a retiré l'homologation de nombreux pesticides à usage agricole entre janvier 2018 et décembre 2025 ; leur importation est interdite et la douane s'y oppose <span class="ref">Note D23/2026</span>. Vérifiez le nom commercial avant toute commande.</div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📡</div> ANRT : équipements de télécommunication</div>
+      <div class="info-body">
+        <p>Décision ANRT/DG n° 12-04 du 29 décembre 2004 fixant le régime d'agrément des équipements terminaux et des installations radioélectriques (BO n° 5288 du 3 février 2005).</p>
+        <table class="data-table">
+          <thead><tr><th>Point</th><th>Règle</th><th>Art.</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Champ</strong></td><td>Tout équipement terminal qui se connecte, même indirectement, à un réseau public et émet, reçoit ou traite des signaux ; et <strong>toute installation radioélectrique</strong>, connectée ou non à un réseau public. Exclus : équipements de la défense nationale et de la sécurité publique.</td><td>1, 3</td></tr>
+            <tr><td><strong>Quand l'agrément est exigé</strong></td><td>Fabrication pour le marché marocain, <strong>importation</strong>, détention en vue de la vente, mise en vente, distribution gratuite ou payante, publicité visant le Maroc.</td><td>2</td></tr>
+            <tr><td><strong>Deux régimes</strong></td><td><strong>Déclaratif</strong> si les interfaces sont déclarées conformes aux spécifications nationales. <strong>Non déclaratif</strong> sinon : l'ANRT peut exiger rapports et certificats d'essais, un échantillon (admission temporaire de 3 mois renouvelable) ou des tests sur site.</td><td>5</td></tr>
+            <tr><td><strong>Dossier</strong></td><td>Formulaire de l'annexe 1 signé et cacheté, attestation du registre du commerce (une fois par an), documentation technique. Dossier allégé et envoi électronique pour les sociétés ayant souscrit l'engagement de l'annexe 2. Tout dossier incomplet suspend le délai ; tout refus est motivé.</td><td>5</td></tr>
+            <tr><td><strong>Frais</strong></td><td>500 DH HT par équipement, non remboursables, plus les frais de déplacement si des tests sont faits à l'extérieur.</td><td>6</td></tr>
+            <tr><td><strong>Durée</strong></td><td>Agrément valable <strong>10 ans</strong>, renouvelable. Un équipement modifié au point de ne plus être conforme exige un nouvel agrément ; sinon, un certificat d'agrément suffit.</td><td>4, 7, 13</td></tr>
+            <tr><td><strong>Admission temporaire</strong></td><td>Équipement non agréé admis pour démonstration, exposition ou usage temporaire justifié : 3 mois renouvelables, mention « Équipement non agréé » obligatoire.</td><td>8</td></tr>
+            <tr><td><strong>Particuliers</strong></td><td>Un seul exemplaire à titre personnel, sans agrément, pour un terminal GSM, un répondeur, un télécopieur, un poste téléphonique, un modem intégré à un portable ou un récepteur GPS, contre un engagement (annexe 3) déposé en douane.</td><td>9</td></tr>
+            <tr><td><strong>Usage exclusif</strong></td><td>Autorisation d'importation définitive sur simple demande pour les associations, établissements d'enseignement et de recherche, administrations, organismes diplomatiques, opérateurs et fournisseurs de télécommunications, centres d'appels.</td><td>10</td></tr>
+            <tr><td><strong>Avis d'autres autorités</strong></td><td>Pour certains équipements, l'ANRT ne se prononce qu'après l'avis d'autres administrations : prévoir ce délai.</td><td>11</td></tr>
+            <tr><td><strong>Marquage</strong></td><td>Vignette inamovible « Agréé par l'ANRT Maroc » avant toute commercialisation. Un équipement vendu sans marquage est <strong>réputé non agréé</strong>.</td><td>12</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:6px">Les demandes (agrément, autorisation d'importation, dispense) se déposent aujourd'hui en ligne via PortNet, où la base des équipements déjà agréés est consultable.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🚗</div> NARSA : véhicules neufs <span class="new">2026</span></div>
+      <div class="info-body">
+        <p>Hors mandataires accrédités, le dédouanement d'un véhicule neuf est subordonné à l'homologation à titre isolé ; l'importateur peut consigner les droits pendant un mois pour présenter le véhicule au CNEH <span class="ref">Note D85/2026</span>. Depuis septembre 2026, les véhicules de tourisme <strong>facturés</strong> depuis l'UE, les États-Unis, le Canada ou un pays du Golfe sont dédouanés sans homologation préalable ; l'homologation reste exigée avant immatriculation <span class="ref">Note D212/2026</span>.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">♻️</div> Déchets, armes, produits sensibles</div>
+      <div class="info-body">
+        <div class="rule-list">
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Déchets</strong> : autorisation du département du Développement durable sous tout régime. Importation de déchets dangereux interdite, sauf depuis une zone d'accélération industrielle sur autorisation ; déchets non dangereux limités à la liste de l'arrêté 1339-20 <span class="ref">Circ. 6337/311</span>.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Matériels de défense, armes et munitions</strong> (loi 10-20) : interdits sans autorisation ; les biens à double usage de l'annexe 4 relèvent du droit commun <span class="ref">Circ. 6672/311</span>.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="col-r">
+  <div class="tab-bar" id="rtabs">
+    <button class="tab-btn active" data-t="r1" onclick="switchTab('r','r1')">⛔ À éviter</button>
+    <button class="tab-btn" data-t="r2" onclick="switchTab('r','r2')">🚩 Signaux d'alerte</button>
+    <button class="tab-btn" data-t="r3" onclick="switchTab('r','r3')">⚖️ Sanctions</button>
+    <button class="tab-btn" data-t="r4" onclick="switchTab('r','r4')">📚 Références</button>
+  </div>
+
+  <div class="tab-content active" id="r1">
+    <div class="sec-label">Liste négative</div>
+    <div class="pad">
+      <ul class="dont-list">
+        <li>Expédier la marchandise avant d'avoir obtenu la licence, l'agrément ANRT, l'AMM ou le certificat d'enregistrement.</li>
+        <li>Supposer que le certificat européen ou le marquage CE suffit : la norme marocaine obligatoire et son contrôle s'appliquent.</li>
+        <li>Importer des sachets de nicotine ou des cigarettes électroniques sans vérifier la teneur unitaire et le volume de liquide.</li>
+        <li>Commander un pesticide sans vérifier qu'il n'est pas sur la liste des homologations retirées par l'ONSSA.</li>
+        <li>Vendre ou déplacer une marchandise « admise provisoire avec scellé » avant le résultat définitif.</li>
+        <li>Laisser passer le délai de 8 jours pour demander une contre-analyse.</li>
+        <li>Importer sous couvert d'un certificat ou d'une autorisation expirés, retirés ou établis au nom d'une autre société.</li>
+        <li>Traiter un véhicule neuf comme un mandataire accrédité alors que vous ne l'êtes pas.</li>
+        <li>Mettre en vente un équipement radio ou télécom sans la vignette « Agréé par l'ANRT Maroc », ou après une modification qui le rend non conforme à la version agréée.</li>
+        <li>Laisser un équipement en admission temporaire au-delà de 3 mois sans renouvellement, ou le vendre.</li>
+        <li>Importer des déchets ou des équipements à double usage sans vérifier leur classement.</li>
+      </ul>
+    </div>
+    <div class="sec-label">Bonnes pratiques</div>
+    <div class="pad">
+      <ul class="do-list">
+        <li>Pour chaque nouvelle référence : identifier la position tarifaire, puis l'autorité de contrôle et le titre exigé, avant de signer.</li>
+        <li>Exiger du fournisseur les rapports d'essais et le dossier technique avant expédition.</li>
+        <li>Engager l'ONSSA et l'ANRT dès la commande, en parallèle de la logistique.</li>
+        <li>Tenir un registre des autorisations avec leur date d'expiration et leur titulaire.</li>
+        <li>Prévoir un lieu de stockage conforme pour un éventuel enlèvement sous scellés.</li>
+        <li>Négocier une clause de reprise ou de remplacement en cas de refoulement pour non-conformité.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r2">
+    <div class="sec-label">Signaux qui annoncent un blocage</div>
+    <div class="pad">
+      <ul class="flag-list">
+        <li>Le fournisseur ne peut pas produire de rapport d'essai d'un laboratoire reconnu.</li>
+        <li>Le produit contient un module radio (Wi-Fi, Bluetooth, GSM) non mentionné dans la facture.</li>
+        <li>La position tarifaire figure dans une circulaire récente de la série 311 (restrictions, normes, réglementations particulières).</li>
+        <li>Résultat « non admis » ou « partiellement admis » transmis dans BADR.</li>
+        <li>Prélèvement d'échantillon pour analyse : la marchandise est immobilisée jusqu'au résultat.</li>
+        <li>L'autorité de contrôle notifie le retrait d'un agrément, d'une homologation ou d'un certificat.</li>
+        <li>Frais de magasinage et de surestaries qui s'accumulent en attente d'une autorisation.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r3">
+    <div class="sec-label">Conséquences d'un manquement</div>
+    <div class="pad">
+      <table class="data-table">
+        <thead><tr><th>Manquement</th><th>Conséquence</th><th>Texte</th></tr></thead>
+        <tbody>
+          <tr><td>Produit non conforme au contrôle à l'importation</td><td>Refoulement : réexportation ou destruction aux frais de l'importateur</td><td>Circ. conjointes MICNT-ADII ; circ. 6220/312</td></tr>
+          <tr><td>Végétaux non conformes</td><td>Fumigation obligatoire ou refoulement</td><td>Circ. 4216/313</td></tr>
+          <tr><td>Marchandise prohibée importée sans l'autorisation exigée</td><td>Contravention douanière de 2<sup>e</sup> classe</td><td>CDII, art. 294-6° bis et ter</td></tr>
+          <tr><td>Importation ou mise sur le marché d'un produit ne respectant pas une réglementation technique</td><td>3 mois à 2 ans et/ou 50 000 à 1 000 000 DH ; PM : amende doublée ou triplée</td><td>Loi 24-09, art. 51 et 55</td></tr>
+          <tr><td>Produit faisant l'objet d'une mesure de suspension, retrait ou rappel</td><td>Mêmes peines</td><td>Loi 24-09, art. 51-5°</td></tr>
+          <tr><td>Falsification d'une déclaration de conformité, du dossier technique ou du marquage</td><td>Peines du Code pénal</td><td>Loi 24-09, art. 54</td></tr>
+          <tr><td>Disparition d'un produit saisi</td><td>Peines de l'article 524 du Code pénal</td><td>Loi 24-09, art. 52</td></tr>
+          <tr><td>Obstacle aux agents de contrôle</td><td>1 mois à 1 an et/ou 10 000 à 30 000 DH</td><td>Loi 24-09, art. 56</td></tr>
+          <tr><td>Équipement télécom ou radio mis sur le marché sans vignette d'agrément</td><td>Réputé non agréé ; infraction constatée et punie selon la loi 24-96 sur la poste et les télécommunications</td><td>Décision ANRT 12-04, art. 12 et 15</td></tr>
+          <tr><td>Document joint non authentique</td><td>Responsabilité personnelle du déclarant</td><td>Circ. 6662/312</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box">💡 Le tribunal peut en outre ordonner le rappel, le retrait ou la destruction des produits aux frais du contrevenant, la publication du jugement et la fermeture de l'établissement (loi 24-09, art. 59 et 60).</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r4">
+    <div class="sec-label">Textes de référence</div>
+    <div class="pad">
+      <table class="data-table">
+        <thead><tr><th>Référence</th><th>Objet</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ref">Arrêté 1308-94</span></td><td>Marchandises soumises à licence d'importation ou d'exportation</td></tr>
+          <tr><td><span class="ref">Circ. 6747, 6765, 6766, 6775/311</span></td><td>Modifications de la liste des licences en 2026</td></tr>
+          <tr><td><span class="ref">Loi 24-09</span></td><td>Sécurité des produits et des services</td></tr>
+          <tr><td><span class="ref">Loi 12-06</span></td><td>Normalisation, certification et accréditation</td></tr>
+          <tr><td><span class="ref">Circ. 6724/311 · 6736/311</span></td><td>Annexe XII-17 : produits soumis au contrôle de conformité</td></tr>
+          <tr><td><span class="ref">Note D235/2026</span></td><td>Contrôle normatif des produits alternatifs du tabac (28/10/2026)</td></tr>
+          <tr><td><span class="ref">Circ. 4958/311</span></td><td>Procédure dématérialisée du contrôle de conformité</td></tr>
+          <tr><td><span class="ref">Circ. conjointes 1 et 2</span></td><td>Contrôle des produits industriels (Casa-Port, Guergarate)</td></tr>
+          <tr><td><span class="ref">Loi 28-07</span></td><td>Sécurité sanitaire des produits alimentaires ; décret 2-10-473</td></tr>
+          <tr><td><span class="ref">Note D23/2026</span></td><td>Pesticides dont l'homologation a été retirée par l'ONSSA</td></tr>
+          <tr><td><span class="ref">Décision ANRT/DG 12-04</span></td><td>Régime d'agrément des équipements terminaux et installations radioélectriques (29/12/2004, BO 5288 du 03/02/2005)</td></tr>
+          <tr><td><span class="ref">Loi 24-96</span></td><td>Poste et télécommunications : sanctions en matière d'agrément</td></tr>
+          <tr><td><span class="ref">Circ. 6755/311</span></td><td>Échange électronique des résultats de contrôle (AMMPS et autres)</td></tr>
+          <tr><td><span class="ref">Notes D85 et D212/2026</span></td><td>Véhicules neufs importés hors mandataires accrédités</td></tr>
+          <tr><td><span class="ref">Note D133/2026</span></td><td>Retrait d'un certificat d'enregistrement de dispositif médical</td></tr>
+          <tr><td><span class="ref">Circ. 6337/311</span></td><td>Importation et exportation des déchets (loi 28-00)</td></tr>
+          <tr><td><span class="ref">Circ. 6672/311</span></td><td>Matériels de défense et de sécurité, armes et munitions (loi 10-20)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <span>📋 Import-eXPert · Mise à jour : 9 novembre 2026</span>
+  <span>Arrêté 1308-94 · Lois 24-09, 28-07, 28-00, 10-20 · Décision ANRT 12-04</span>
+  <span>Circ. ADII 6724, 6736, 6747, 6755, 6765, 6775/311 · Notes D23, D85, D133, D212, D235/2026</span>
+
+</footer>
+
+<script>
+function switchTab(side,id){
+  var bar=side==='l'?'#ltabs':'#rtabs', col=side==='l'?'.col-l':'.col-r';
+  document.querySelectorAll(bar+' button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-t')===id);});
+  document.querySelectorAll(col+' .tab-content').forEach(function(c){c.classList.toggle('active',c.id===id);});
+  var el=document.querySelector(col); if(el) el.scrollTop=0;
+}
+</script>
+</body>
+</html>

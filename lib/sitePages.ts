@@ -48,7 +48,7 @@ export const SITE_PAGES: SitePage[] = [
   { slug: 'oea', path: '/modules/oea', title: 'OEA — Opérateur économique agréé', description: 'Statut OEA, conditions, avantages, procédure d\'obtention' },
   { slug: 'audit', path: '/modules/audit', title: 'Audit douanier', description: 'Évaluer sa conformité douanière, checklists, auto-évaluation' },
   { slug: 'risques', path: '/modules/risques', title: 'Contrôle des risques', description: 'Situations à risque, contrôles douaniers, actions correctives' },
-  { slug: 'contentieux', path: '/modules/contentieux', title: 'Contentieux & litiges', description: 'Infractions douanières, sanctions, recours, transaction, procédure contentieuse' },
+  { slug: 'contentieux', path: '/risques', title: 'Comment éviter les risques et litiges ?', description: 'Commerce extérieur, contrôle des changes, contentieux douanier, licences et autorisations préalables : déclencheurs, actions à éviter, sanctions' },
   { slug: 'autorisations-licences', path: '/modules/autorisations-licences', title: 'Autorisations et licences', description: 'Licences d\'importation, autorisations préalables, contrôles techniques' },
   { slug: 'marquage-warnings', path: '/modules/marquage-warnings', title: 'Marquage & signalisation', description: 'Étiquetage, marquage obligatoire des produits importés' },
   { slug: 'substances-dangereuses', path: '/modules/substances-dangereuses', title: 'Substances dangereuses', description: 'Marchandises dangereuses, classification, ONU, IMDG' },

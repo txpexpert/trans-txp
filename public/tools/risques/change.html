@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contrôle des changes : les risques de l'importateur et de l'exportateur · Import-eXPert</title>
+<style>
+:root{
+  --navy:#0B2545;--navy-mid:#163566;--blue:#1E5FA8;--blue-lt:#3B82C4;
+  --teal:#0F7B6C;--teal-lt:#E0F4F1;--green:#276527;--green-lt:#EAF3DE;
+  --amber:#854F0B;--amber-lt:#FAEEDA;--red:#A32D2D;--red-lt:#FCEBEB;
+  --gray-50:#F7F8FA;--gray-100:#ECEEF2;--gray-800:#252A37;--border:#DDE0E8;
+  --uk-red:#CF142B;--uk-blue:#012169;--ma-red:#C1272D;--ma-green:#006233;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;color:var(--gray-800);background:#fff;overflow:hidden}
+/* HEADER */
+header{
+  position:fixed;top:0;left:0;right:0;height:54px;z-index:100;
+  background:var(--navy);display:flex;align-items:center;
+  border-bottom:3px solid var(--blue-lt);
+}
+.hdr-flag-ma{width:12px;height:54px;background:linear-gradient(to bottom,var(--ma-red) 50%,var(--ma-green) 50%)}
+.hdr-flag-uk{width:12px;height:54px;background:linear-gradient(to bottom,var(--uk-blue) 33%,var(--uk-red) 33%,var(--uk-red) 66%,var(--uk-blue) 66%)}
+.hdr-center{flex:1;display:flex;align-items:center;gap:12px;padding:0 16px}
+.hdr-title{font-size:14px;font-weight:700;color:#fff;letter-spacing:.3px;white-space:nowrap}
+.hdr-sub{font-size:11px;color:#a0b4d0;white-space:nowrap}
+.hdr-badges{display:flex;gap:6px;margin-left:auto}
+.badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.badge-base{background:var(--navy-mid);color:#90b4e0;border:1px solid #2a4a80}
+.badge-update{background:#12284a;color:#7ec8e3;border:1px solid #1a4060}
+.badge-uk{background:var(--uk-blue);color:#fff}
+/* TWO COLUMNS */
+.layout{display:grid;grid-template-columns:42% 58%;position:fixed;top:54px;left:0;right:0;bottom:28px}
+/* LEFT COL */
+.col-l{overflow-y:auto;border-right:1px solid var(--border);background:#fff}
+.col-r{overflow-y:auto;background:var(--gray-50)}
+/* TABS */
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;overflow-x:auto}
+.tab-bar::-webkit-scrollbar{height:3px}.tab-bar::-webkit-scrollbar-thumb{background:var(--border)}
+.tab-btn{flex-shrink:0;padding:8px 12px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7a99;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-btn:hover:not(.active){color:var(--navy);background:var(--gray-50)}
+.tab-content{display:none;padding:0}
+.tab-content.active{display:block}
+/* INFO BLOCKS */
+.info-block{padding:12px 14px;border-bottom:1px solid var(--border)}
+.info-h{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:7px}
+.info-icon{width:18px;height:18px;background:var(--teal-lt);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.info-body{padding-left:25px;line-height:1.6;color:#44506a;font-size:12px}
+.info-body p{margin-bottom:5px}
+.formula-box{background:#EFF6FF;border:1px solid #B8D4F5;border-radius:5px;padding:8px 10px;margin:4px 0;font-size:11.5px;color:var(--navy-mid)}
+.kv-row{display:flex;gap:6px;margin-bottom:3px;font-size:12px}
+.kv-label{color:#6b7a99;min-width:150px;flex-shrink:0}
+.kv-val{color:var(--navy);font-weight:600}
+.step-list{counter-reset:steps;padding-left:0}
+.step{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
+.step-num{width:20px;height:20px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
+.rule-list{margin:4px 0}
+.rule-item{display:flex;gap:6px;margin-bottom:4px}
+.rule-dot{width:7px;height:7px;background:var(--blue);border-radius:50%;margin-top:5px;flex-shrink:0}
+/* CIRCULAIRE CARDS */
+.circ-card{border:1px solid var(--border);border-radius:6px;margin:10px 14px;overflow:hidden}
+.circ-card-top{padding:9px 12px;color:#fff;font-size:12px;font-weight:700}
+.circ-card-top.c1{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%)}
+.circ-card-top.c2{background:linear-gradient(135deg,#1a3f6f 0%,#2254a0 100%)}
+.circ-card-top.c3{background:linear-gradient(135deg,var(--teal) 0%,#1a9e8a 100%)}
+.circ-card-top.c4{background:linear-gradient(135deg,#6b2f02 0%,var(--amber) 100%)}
+.circ-body{padding:9px 12px;font-size:11.5px;line-height:1.6;color:#44506a}
+.circ-body strong{color:var(--navy)}
+/* SECTION LABELS (right col) */
+.sec-label{position:sticky;top:0;background:var(--gray-100);color:var(--navy-mid);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:5px 12px;border-bottom:1px solid var(--border);z-index:40}
+/* SH ROWS */
+.sh-row{display:grid;grid-template-columns:115px 1fr 80px;gap:4px;padding:5px 10px;border-bottom:1px solid #f0f2f6;align-items:center;min-height:32px}
+.sh-row:hover{background:#f5f7fa}
+.sh-code-group{display:flex;flex-wrap:wrap;gap:3px}
+.sh-code{font-family:'Courier New',monospace;font-size:10.5px;color:var(--navy-mid);background:#EFF6FF;padding:1px 4px;border-radius:3px;white-space:nowrap}
+.sh-code.ex-code{background:#FFF3E0;color:#8B4513}
+.sh-desc{font-size:11.5px;color:var(--gray-800);line-height:1.4}
+.sh-desc small{font-size:10px;color:#8892a8;display:block}
+.sh-meta{text-align:right;font-size:11px}
+.sh-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 5px;border-radius:9px;white-space:nowrap}
+.tag-zero{background:var(--green-lt);color:var(--green)}
+.tag-free{background:var(--green-lt);color:var(--green)}
+.tag-pref{background:#EFF6FF;color:var(--blue)}
+.tag-amber{background:var(--amber-lt);color:var(--amber)}
+.tag-red{background:var(--red-lt);color:var(--red)}
+.sh-vol{font-size:10.5px;color:#6b7a99;white-space:nowrap}
+.sub-lbl{font-size:9px;color:#8892a8;text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+/* ANNEXE BANNER */
+.annexe-banner{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--blue) 100%);color:#fff;padding:10px 14px;margin-bottom:0}
+.annexe-banner h3{font-size:13px;font-weight:700;margin-bottom:3px}
+.annexe-banner p{font-size:11px;opacity:.85}
+.annexe-banner .meta{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap}
+.annexe-banner .meta span{font-size:10px;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:10px}
+/* YEAR DIVIDER */
+.year-divider{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;text-align:center;letter-spacing:1px;position:sticky;top:0;z-index:39}
+/* NOTES DE BAS */
+.notes-box{background:var(--gray-50);border-top:2px solid var(--border);padding:10px 14px;font-size:10.5px;color:#5a6476;line-height:1.7}
+.notes-box p{margin-bottom:3px}
+/* SEARCH BAR */
+.search-bar{padding:8px 10px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:60}
+.search-input{width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:5px;font-size:12px;outline:none;color:var(--gray-800)}
+.search-input:focus{border-color:var(--blue)}
+/* DATA TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:11.5px;margin:6px 0}
+.data-table th{background:var(--navy-mid);color:#fff;padding:5px 8px;text-align:left;font-size:11px}
+.data-table td{padding:4px 8px;border-bottom:1px solid #f0f2f6;vertical-align:top}
+.data-table tr:nth-child(even) td{background:#f7f9fc}
+/* WARNING BOX */
+.warn-box{background:var(--red-lt);border-left:4px solid var(--red);padding:8px 10px;margin:8px 14px;border-radius:0 5px 5px 0;font-size:11.5px;color:#7a1e1e}
+.note-box{background:var(--amber-lt);border-left:4px solid var(--amber);padding:8px 10px;margin:8px 14px;border-radius:0 5px 5px 0;font-size:11.5px;color:#6a3e08}
+/* FOOTER */
+footer{position:fixed;bottom:0;left:0;right:0;height:28px;background:var(--navy);color:#7090b0;font-size:10px;display:flex;align-items:center;padding:0 14px;gap:12px;border-top:1px solid var(--navy-mid)}
+footer span{white-space:nowrap}
+/* RIGHT COL SPECIFIC */
+.rh-tab-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:55;display:flex;overflow-x:auto}
+.rh-tab-bar::-webkit-scrollbar{height:3px}.rh-tab-bar::-webkit-scrollbar-thumb{background:var(--teal)}
+.rh-tab-btn{flex-shrink:0;padding:8px 11px;font-size:10.5px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7a99;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.rh-tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+.rh-tab-btn:hover:not(.active){color:var(--navy);background:var(--gray-50)}
+.hidden-row{display:none!important}
+.col-r .tab-bar{top:40px}
+/* MODS NOTE */
+.mod-badge{font-size:9.5px;background:#FFF8E1;color:#7B5300;border:1px solid #F5D060;padding:1px 5px;border-radius:8px;margin-left:4px}
+</style>
+<style id="ixp-accords">
+.ixp-back{position:fixed;left:16px;bottom:40px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:#14120F;color:#fff!important;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;box-shadow:0 8px 22px -8px rgba(0,0,0,.45)}
+.ixp-back:hover{background:#A8822F}
+@media (max-width:900px){
+ html,body{height:auto!important;overflow:auto!important}
+ body>header,header,.hdr,.header{position:static!important}
+ .layout,#body{display:block!important;position:static!important;height:auto!important;overflow:visible!important}
+ .layout>*,#body>*{width:auto!important;max-width:none!important;height:auto!important;overflow:visible!important}
+ .kpi-strip{grid-template-columns:1fr 1fr!important}
+ .tabs,.tab-bar,[class*="tab-bar"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+ .header-badges,.hdr-badges,.h-badges{display:none!important}
+ footer,.site-footer{position:static!important}
+ .ixp-back{bottom:16px}
+}
+</style>
+<style id="ixp-accords-2">
+.ixp-back-top{flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;color:#14120F!important;font:600 12.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;white-space:nowrap;border:1px solid rgba(255,255,255,.6)}
+.ixp-back-top:hover{background:#C9A84C;color:#fff!important}
+:is(.tab-btn,.rh-tab-btn){border-radius:6px 6px 0 0!important;border-bottom:3px solid transparent!important;transition:color .18s,background .18s,border-color .18s,transform .12s}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+1){--tc:#1E5FA8;--tb:#DBEAFE;--tbc:#1E5FA8}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+2){--tc:#276527;--tb:#EAF3DE;--tbc:#276527}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+3){--tc:#854F0B;--tb:#FAEEDA;--tbc:#854F0B}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+4){--tc:#5B21B6;--tb:#EDE9FE;--tbc:#5B21B6}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+5){--tc:#A32D2D;--tb:#FCEBEB;--tbc:#A32D2D}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+6){--tc:#0F7B6C;--tb:#E0F4F1;--tbc:#0F7B6C}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+7){--tc:#003399;--tb:#E8EEFF;--tbc:#003399}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+8){--tc:#9D174D;--tb:#FCE7F3;--tbc:#9D174D}
+.tab-btn,.rh-tab-btn{margin-right:3px}
+:is(.tab-btn,.rh-tab-btn):not(.active){color:var(--tc)!important;background:var(--tb)!important;opacity:.85}
+:is(.tab-btn,.rh-tab-btn):not(.active):hover{opacity:1;transform:translateY(-1px)}
+:is(.tab-btn,.rh-tab-btn).active{color:var(--tc)!important;background:var(--tb)!important;border-bottom-color:var(--tbc)!important;font-weight:700;opacity:1;box-shadow:inset 0 0 0 1px var(--tbc)}
+@media (max-width:900px){.ixp-back-top{padding:7px 11px;font-size:12px}}
+</style>
+<style id="ixp-risques">
+.hdr-sub{display:block;margin-top:2px}
+.lead{padding:12px 14px;border-bottom:1px solid var(--border);background:#FBF5E6;border-left:4px solid #B8922A;font-size:12.5px;line-height:1.6;color:#1A1A18}
+.lead b{color:#7A5200}
+.do-list,.dont-list,.flag-list{list-style:none;margin:4px 0}
+.do-list li,.dont-list li,.flag-list li{display:flex;gap:8px;padding:7px 10px;margin-bottom:5px;border-radius:5px;font-size:12px;line-height:1.55}
+.do-list li{background:var(--green-lt);color:#1f4a1f}
+.do-list li::before{content:'✓';font-weight:700;color:var(--green)}
+.dont-list li{background:var(--red-lt);color:#6d1f1f}
+.dont-list li::before{content:'✕';font-weight:700;color:var(--red)}
+.flag-list li{background:var(--amber-lt);color:#5a3507}
+.flag-list li::before{content:'⚑';color:var(--amber)}
+.ref{font-family:'Courier New',monospace;font-size:10.5px;color:var(--navy-mid);background:#EFF6FF;padding:1px 5px;border-radius:3px;white-space:nowrap}
+.new{display:inline-block;font-size:9.5px;font-weight:700;background:var(--red);color:#fff;padding:1px 6px;border-radius:8px;margin-left:4px;vertical-align:middle}
+.pad{padding:10px 14px}
+.data-table td small{color:#6b7a99}
+.kv-label{min-width:170px}
+.col-r .tab-bar{top:0}
+.col-r .tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr-center">
+    <div>
+      <div class="hdr-title">Contrôle des changes : les risques de l'importateur et de l'exportateur</div>
+      <div class="hdr-sub">Domiciliation, règlement, rapatriement, déclarations et moyens de paiement selon l'IGOC 2026</div>
+    </div>
+    <a class="ixp-back-top" href="/risques">← Risques et litiges</a>
+  </div>
+</header>
+
+<div class="layout">
+<div class="col-l">
+  <div class="tab-bar" id="ltabs">
+    <button class="tab-btn active" data-t="l1" onclick="switchTab('l','l1')">📋 Principes</button>
+    <button class="tab-btn" data-t="l2" onclick="switchTab('l','l2')">📥 Importation</button>
+    <button class="tab-btn" data-t="l3" onclick="switchTab('l','l3')">📤 Exportation</button>
+    <button class="tab-btn" data-t="l4" onclick="switchTab('l','l4')">💵 Devises et voyageurs</button>
+  </div>
+
+  <div class="tab-content active" id="l1">
+    <div class="lead"><b>Tout ce qui n'est pas prévu est soumis à autorisation.</b> L'Instruction générale des opérations de change (IGOC) 2026 liste les opérations libres et leurs modalités. Toute opération qui n'y figure pas, ou qui s'en écarte, exige l'autorisation préalable de l'Office des changes (art. 1). C'est la source principale des infractions involontaires.</div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🏛️</div> Six principes à connaître (art. 3 à 8)</div>
+      <div class="info-body">
+        <div class="rule-list">
+          <div class="rule-item"><div class="rule-dot"></div><div>Contrats en dirhams ou en devises ; <strong>règlements dans une devise cotée</strong> par Bank Al-Maghrib.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Les <strong>banques exécutent</strong> les règlements par délégation de l'Office des changes.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Les règlements portent sur des <strong>transactions effectives, au prix du marché</strong> : c'est la responsabilité de l'opérateur.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Le respect de l'IGOC ne dispense pas des <strong>autres réglementations</strong> (commerce extérieur, douane, fiscalité).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Changement de banque domiciliataire possible à tout moment, avec copie du dossier et attestation des règlements déjà effectués.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Les règlements vers l'étranger respectent les dispositions fiscales (retenues à la source).</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">⛔</div> Opérations soumises à autorisation préalable (exemples, art. 1)</div>
+      <div class="info-body">
+        <div class="rule-list">
+          <div class="rule-item"><div class="rule-dot"></div><div>Engagements rendant un résident débiteur d'un non-résident hors des cas prévus.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Règlements par <strong>compensation</strong> entre créances et dettes avec l'étranger.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Avances de fonds d'un résident à un non-résident.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Règlements en devises sur le territoire marocain.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Ouverture de comptes à l'étranger et constitution d'avoirs à l'étranger par des résidents marocains.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Règlement d'<strong>intérêts de retard, majorations et pénalités</strong> au profit de l'étranger.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🗂️</div> Obligations permanentes</div>
+      <div class="info-body">
+        <div class="kv-row"><span class="kv-label">Cession des recettes</span><span class="kv-val">Toute somme reçue de l'étranger est créditée en compte ou cédée sur le marché des changes (art. 11)</span></div>
+        <div class="kv-row"><span class="kv-label">Avoirs à l'étranger</span><span class="kv-val">Déclaration à l'Office des changes par tout résident (art. 18)</span></div>
+        <div class="kv-row"><span class="kv-label">Conservation</span><span class="kv-val">10 ans pour tous les documents des opérations de change (art. 20)</span></div>
+        <div class="kv-row"><span class="kv-label">Statistiques</span><span class="kv-val">Déclarations statistiques des échanges extérieurs (loi 19-06)</span></div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">⭐</div> Le levier des opérateurs catégorisés (art. 16 et 17)</div>
+      <div class="info-body">
+        <p>Les entreprises catégorisées par la douane ou la DGI bénéficient de facilités : règlement par anticipation des importations à <strong>100 % sans plafond</strong>, alimentation du compte en devises jusqu'à 85 % des recettes d'exportation, traitement prioritaire par l'Office des changes.</p>
+        <div class="warn-box">⚠️ Ces avantages sont <strong>retirés automatiquement</strong> en cas de retrait ou de non-renouvellement de la catégorisation, et en cas de non-respect de la réglementation des changes ou d'abus des facilités.</div>
+        <p>Doivent s'immatriculer auprès de l'Office des changes : les transporteurs internationaux, le secteur aéronautique et spatial, certaines succursales d'entités étrangères, les opérateurs de négoce international.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="l2">
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🧭</div> Le circuit d'une importation (art. 46 à 50)</div>
+      <div class="info-body">
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div><strong>Domiciliation</strong> du titre d'importation auprès d'une banque, via PortNet, <strong>avant tout règlement</strong>.</div></div>
+          <div class="step"><div class="step-num">2</div><div><strong>Ouverture du dossier d'importation</strong> par la banque : contrat ou facture, documents de transport, justificatifs de paiement, contrat de prêt le cas échéant.</div></div>
+          <div class="step"><div class="step-num">3</div><div><strong>Imputation douanière</strong> du titre sur PortNet, qui constate l'entrée de la marchandise.</div></div>
+          <div class="step"><div class="step-num">4</div><div><strong>Règlement</strong> après imputation, dans la limite du montant imputé majoré du fret, des frais accessoires et de l'assurance.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">💳</div> Payer avant l'arrivée : ce qui est permis</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Mode</th><th>Limite</th><th>Art.</th></tr></thead>
+          <tbody>
+            <tr><td>Crédit documentaire ou remise documentaire</td><td>Avant imputation, contre documents</td><td>52</td></tr>
+            <tr><td>Acompte</td><td><strong>30 %</strong> de la valeur ; si le dépassement final dépasse 5 % de la facture définitive, autorisation de l'Office des changes</td><td>53</td></tr>
+            <tr><td>Règlement par anticipation</td><td>100 % de la facture dans la limite de <strong>200 000 DH</strong></td><td>54</td></tr>
+            <tr><td>Anticipation par compte en devises d'exportateur</td><td>100 % si le contrat le prévoit</td><td>54</td></tr>
+            <tr><td>Opérateur catégorisé</td><td>100 %, sans plafond</td><td>62</td></tr>
+            <tr><td>Secteur aéronautique et spatial</td><td>Acompte 50 % ; anticipation 100 %</td><td>64, 66</td></tr>
+            <tr><td>Personne physique non inscrite au registre du commerce</td><td>20 000 DH par an sans titre d'importation ; justification dans le mois suivant l'entrée</td><td>55</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📐</div> Dépassements et frais</div>
+      <div class="info-body">
+        <p>Payer au-delà du montant imputé n'est admis que dans les cas prévus (art. 51) : perte ou dommage avant débarquement (dispache, expertise), coulage dans la limite de 1 % pour les céréales et des écarts constatés pour les produits pétroliers, miniers et chimiques. Fret, frais d'inspection, de certification et d'entreposage se règlent sur justificatifs (art. 56 à 60).</p>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🧾</div> Importations de services (art. 69 à 85)</div>
+      <div class="info-body">
+        <p>L'importateur de services doit s'assurer de l'<strong>effectivité de la prestation</strong> et d'un prix conforme au marché (art. 72). Acompte ou anticipation limité à <strong>30 %</strong> du contrat (art. 74) ; les marchés se règlent au fur et à mesure de l'avancement.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="l3">
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">⏳</div> Rapatrier dans les délais</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Opération</th><th>Délai de rapatriement</th><th>Art.</th></tr></thead>
+          <tbody>
+            <tr><td>Exportation de biens</td><td><strong>150 jours</strong> à compter de l'enregistrement de la DUM d'exportation</td><td>89</td></tr>
+            <tr><td>Exportation de services</td><td><strong>90 jours</strong> à compter de la réalisation des prestations</td><td>97</td></tr>
+            <tr><td>Produits de cession ou de liquidation d'investissements à l'étranger</td><td>30 jours à compter de la mise en paiement</td><td>Invest. à l'étranger</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:6px">Le montant à rapatrier est <strong>intégral</strong>. Il ne peut être réduit que des éléments listés (fret étranger-étranger, commissions d'agents, promotion, emballage, droits du pays importateur, assurance) ou sur autorisation de l'Office des changes (art. 89 et 91). La mobilisation de la créance auprès d'une banque marocaine (escompte, affacturage) ne modifie pas le délai (art. 93).</p>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📝</div> Autres obligations de l'exportateur</div>
+      <div class="info-body">
+        <div class="rule-list">
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Contrat commercial</strong> obligatoire ; la vente en consignation, réservée aux fruits, légumes, produits de la pêche et fleurs, exige un décompte de vente détaillé (art. 87).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Rétrocessions</strong> (retours, avoirs aux clients étrangers) déclarées à la banque domiciliataire (art. 94).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Exportations <strong>sans paiement</strong> libres jusqu'à 10 000 DH (20 000 DH pour les échantillons), et dans les cas listés à l'article 88.</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Pièces justificatives (contrat, factures définitives, DUM, preuves de rapatriement) conservées 10 ans et tenues à disposition de l'Office des changes (art. 20).</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🌍</div> Négoce international (art. 106 à 110)</div>
+      <div class="info-body">
+        <p>Achat à l'étranger et revente à l'étranger sans passage par le Maroc : domiciliation bancaire et <strong>immatriculation auprès de l'Office des changes</strong> obligatoires. Règle <strong>70/30</strong> : 70 % de la marge peuvent être logés en compte en devises, 30 % sont cédés sur le marché des changes. Régler l'achat avant l'encaissement de la vente n'est possible que pour les opérateurs catégorisés ou sur autorisation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="l4">
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">💵</div> Espèces et instruments au porteur</div>
+      <div class="info-body">
+        <div class="kv-row"><span class="kv-label">Seuil de déclaration</span><span class="kv-val">Au-delà de 100 000 DH en billets étrangers ou instruments négociables au porteur, à l'entrée comme à la sortie (art. 34 et 37)</span></div>
+        <div class="kv-row"><span class="kv-label">Billets en dirhams</span><span class="kv-val">Import et export libres dans la limite de 2 000 DH (art. 42)</span></div>
+        <div class="kv-row"><span class="kv-label">Revente des devises non utilisées</span><span class="kv-val">Dans les 3 mois suivant l'achat (art. 33)</span></div>
+        <div class="kv-row"><span class="kv-label">Voyages d'affaires</span><span class="kv-val">Billets livrés en espèces limités à 100 000 DH par voyage sur les comptes en devises d'exportateurs (art. 90 et 98)</span></div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📱</div> Bordereaux de change à code QR <span class="new">2026</span></div>
+      <div class="info-body">
+        <p>Les bordereaux émis par les sociétés de change via la plateforme <strong>SARF</strong> de l'Office des changes portent un code QR que la douane lit instantanément aux frontières. Les autres bordereaux restent vérifiés dans l'application des dotations en devises. Un bordereau non authentique ne justifie pas l'origine des devises détenues <span class="ref">Note D167/2026</span>.</p>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">✈️</div> Dotations 2026</div>
+      <div class="info-body">
+        <p>La circulaire <span class="ref">6708/311</span> du 19 janvier 2026 transpose pour la douane les nouveaux montants de dotations de l'IGOC 2026 (voyages personnels, études, soins). Exemple : frais de séjour pour études portés à <strong>15 000 DH par mois</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="col-r">
+  <div class="tab-bar" id="rtabs">
+    <button class="tab-btn active" data-t="r1" onclick="switchTab('r','r1')">⛔ À éviter</button>
+    <button class="tab-btn" data-t="r2" onclick="switchTab('r','r2')">🚩 Signaux d'alerte</button>
+    <button class="tab-btn" data-t="r3" onclick="switchTab('r','r3')">⚖️ Sanctions</button>
+    <button class="tab-btn" data-t="r4" onclick="switchTab('r','r4')">📚 Références</button>
+  </div>
+
+  <div class="tab-content active" id="r1">
+    <div class="sec-label">Liste négative</div>
+    <div class="pad">
+      <ul class="dont-list">
+        <li>Payer un fournisseur étranger sans titre d'importation domicilié, ou avant imputation douanière hors des cas permis (crédit documentaire, acompte de 30 %, anticipation dans les plafonds).</li>
+        <li>Verser un acompte supérieur à 30 % sans être catégorisé, exportateur titulaire d'un compte en devises ou autorisé.</li>
+        <li>Compenser une dette fournisseur avec une créance client à l'étranger.</li>
+        <li>Laisser une créance export dépasser 150 jours (biens) ou 90 jours (services) sans rapatriement ni autorisation.</li>
+        <li>Accorder un avoir ou accepter un retour à un client étranger sans le déclarer à la banque domiciliataire.</li>
+        <li>Payer des pénalités ou intérêts de retard à l'étranger sans autorisation de l'Office des changes.</li>
+        <li>Ouvrir un compte bancaire à l'étranger ou y laisser des recettes, sans autorisation.</li>
+        <li>Faire du négoce international sans immatriculation auprès de l'Office des changes.</li>
+        <li>Franchir la frontière avec plus de 100 000 DH en espèces ou instruments au porteur sans les déclarer.</li>
+        <li>Facturer ou payer à un prix éloigné du marché, en particulier entre sociétés liées.</li>
+      </ul>
+    </div>
+    <div class="sec-label">Bonnes pratiques</div>
+    <div class="pad">
+      <ul class="do-list">
+        <li>Inscrire dans chaque contrat les modalités de paiement compatibles avec l'IGOC (acompte, crédit documentaire, échéances).</li>
+        <li>Tenir un échéancier de rapatriement par DUM d'exportation, avec alerte à J+120.</li>
+        <li>Rapprocher chaque mois les montants réglés et les montants imputés par la douane sur PortNet.</li>
+        <li>Demander l'autorisation de l'Office des changes avant toute opération non prévue, plutôt que de régulariser après coup.</li>
+        <li>Viser la catégorisation (douane ou DGI) pour bénéficier des facilités de change, et la préserver.</li>
+        <li>Archiver 10 ans : contrats, factures définitives, DUM, formules bancaires, preuves de rapatriement.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r2">
+    <div class="sec-label">Signaux qui annoncent un contrôle</div>
+    <div class="pad">
+      <ul class="flag-list">
+        <li>Écart entre montant réglé et montant imputé sur PortNet, non couvert par un cas de l'article 51.</li>
+        <li>Dossiers d'importation ouverts en banque sans imputation douanière plusieurs mois après un acompte.</li>
+        <li>DUM d'exportation sans rapatriement enregistré à l'approche des 150 jours.</li>
+        <li>Rétrocessions fréquentes ou importantes accordées aux clients étrangers.</li>
+        <li>Retrait ou non-renouvellement de la catégorisation douanière ou fiscale : les facilités tombent automatiquement.</li>
+        <li>Demande d'information ou notification d'infraction de l'Office des changes.</li>
+        <li>Fournisseur demandant un paiement sur un compte dans un pays tiers ou au nom d'un tiers.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r3">
+    <div class="sec-label">Conséquences d'une infraction</div>
+    <div class="pad">
+      <table class="data-table">
+        <thead><tr><th>Manquement</th><th>Conséquence</th><th>Texte</th></tr></thead>
+        <tbody>
+          <tr><td>Infraction à la réglementation des changes</td><td>Poursuites selon le régime de répression des infractions de change</td><td>Dahir du 30 août 1949</td></tr>
+          <tr><td>Capitaux de 100 000 DH ou plus non déclarés à la frontière</td><td>Contravention de 3<sup>e</sup> classe : amende égale au <strong>montant non déclaré</strong></td><td>CDII, art. 297-7° et 297 bis</td></tr>
+          <tr><td>Défaut ou fausse déclaration statistique</td><td>10 % de la valeur des opérations, plafonné à 10 000 DH (PP) ou 50 000 DH (PM) ; doublé en cas de récidive</td><td>Loi 19-06, art. 8 et 11</td></tr>
+          <tr><td>Non-respect de la réglementation ou abus des facilités</td><td>Retrait du statut d'opérateur catégorisé au titre du change</td><td>IGOC 2026, art. 17</td></tr>
+          <tr><td>Condamnation pour infraction de change</td><td>Retrait d'office de certaines licences ou agréments sectoriels</td><td>Ex. lois 11-16 et 01-07</td></tr>
+          <tr><td>Manquement aux obligations de vigilance</td><td>Sanction de 20 000 à 1 000 000 DH par le superviseur</td><td>Loi 43-05, art. 28</td></tr>
+          <tr><td>Blanchiment de capitaux</td><td>PP : 2 à 5 ans et 50 000 à 500 000 DH · PM : 500 000 à 3 000 000 DH</td><td>Code pénal, art. 574-3</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box">💡 Une infraction de change s'accompagne souvent d'un risque douanier (valeur, origine des fonds) et fiscal (prix de transfert). Traitez les trois en même temps.</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r4">
+    <div class="sec-label">Textes de référence</div>
+    <div class="pad">
+      <table class="data-table">
+        <thead><tr><th>Référence</th><th>Objet</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ref">IGOC 2026</span></td><td>Instruction générale des opérations de change</td></tr>
+          <tr><td><span class="ref">Dahir 1-58-021</span></td><td>Office des changes (22 janvier 1958)</td></tr>
+          <tr><td><span class="ref">Dahir 30/08/1949</span></td><td>Répression des infractions à la réglementation des changes</td></tr>
+          <tr><td><span class="ref">Loi 19-06</span></td><td>Déclarations statistiques des échanges extérieurs</td></tr>
+          <tr><td><span class="ref">Loi 43-05</span></td><td>Lutte contre le blanchiment de capitaux</td></tr>
+          <tr><td><span class="ref">Circ. ADII 6708/311</span></td><td>Dotations en devises de l'IGOC 2026 (19/01/2026)</td></tr>
+          <tr><td><span class="ref">Note D167/2026</span></td><td>Bordereaux de change SARF à code QR (27/07/2026)</td></tr>
+          <tr><td><span class="ref">Note D126/2026</span></td><td>Contrôle normalisé des voyageurs et de leurs bagages (04/06/2026)</td></tr>
+          <tr><td><span class="ref">Circ. OC 1/2026</span></td><td>Plateforme unique de change de devises</td></tr>
+          <tr><td><span class="ref">CDII art. 66 bis, 297</span></td><td>Déclaration des capitaux à la frontière</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <span>📋 Import-eXPert · Mise à jour : 9 novembre 2026</span>
+  <span>Instruction générale des opérations de change 2026 · Office des changes</span>
+  <span>Circ. ADII 6708/311 · Note D167/2026 · Loi 19-06</span>
+
+</footer>
+
+<script>
+function switchTab(side,id){
+  var bar=side==='l'?'#ltabs':'#rtabs', col=side==='l'?'.col-l':'.col-r';
+  document.querySelectorAll(bar+' button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-t')===id);});
+  document.querySelectorAll(col+' .tab-content').forEach(function(c){c.classList.toggle('active',c.id===id);});
+  var el=document.querySelector(col); if(el) el.scrollTop=0;
+}
+</script>
+</body>
+</html>
