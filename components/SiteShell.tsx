@@ -39,7 +39,7 @@ export default function SiteShell({ title, description, children, plain = false 
           </nav>
           <div className="x-act">
             <Link href="/auth/login" className="x-tile t-rose x-login">Connexion</Link>
-            <Link href="/plateforme#video" className="x-btn x-btn-dark"><span className="x-long">▶ Voir la présentation</span><span className="x-short">▶ Présentation</span></Link>
+            <Link href="/diagnostic" className="x-btn x-btn-dark"><span className="x-long">Mesurer mon exposition</span><span className="x-short">Diagnostic</span></Link>
             <button type="button" className="x-burger" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(m => !m)}>{menu ? '✕' : '☰'}</button>
           </div>
         </div>

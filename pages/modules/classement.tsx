@@ -190,7 +190,7 @@ export default function Classement() {
     <ModuleLayout
       kicker="MODULE 05"
       title="Classement tarifaire et SH"
-      sub="Faites vos recherches dans les 17 224 codes SH du tarif douanier marocain (dossier actualisé).">
+      sub="Faites vos recherches dans les codes SH du tarif douanier marocain, à jour.">
 
       <div className="info-grid" style={{ marginBottom: '1.5rem' }}>
         <div className="istat">
