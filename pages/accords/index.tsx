@@ -59,10 +59,6 @@ export default function AccordsPage() {
           </p>
           <div className="x-acc-grid">{uni.map(a => <Carte key={a.slug} a={a} />)}</div>
 
-          <p className="x-note" style={{ marginTop: 28 }}>
-            Pour qualifier l’origine d’un produit précis, utilisez aussi <Link href="/modules/origine-aleca" style={{ textDecoration: 'underline' }}>Origine ALECA / UE</Link>.
-            Une question ? <Link href="/#assistant" style={{ textDecoration: 'underline' }}>IXP-Assistant</Link> répond en citant la circulaire.
-          </p>
         </div>
       </section>
 
