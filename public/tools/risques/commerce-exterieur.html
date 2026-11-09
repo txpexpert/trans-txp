@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Commerce extérieur : ce qui déclenche le contentieux · Import-eXPert</title>
+<style>
+:root{
+  --navy:#0B2545;--navy-mid:#163566;--blue:#1E5FA8;--blue-lt:#3B82C4;
+  --teal:#0F7B6C;--teal-lt:#E0F4F1;--green:#276527;--green-lt:#EAF3DE;
+  --amber:#854F0B;--amber-lt:#FAEEDA;--red:#A32D2D;--red-lt:#FCEBEB;
+  --gray-50:#F7F8FA;--gray-100:#ECEEF2;--gray-800:#252A37;--border:#DDE0E8;
+  --uk-red:#CF142B;--uk-blue:#012169;--ma-red:#C1272D;--ma-green:#006233;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;color:var(--gray-800);background:#fff;overflow:hidden}
+/* HEADER */
+header{
+  position:fixed;top:0;left:0;right:0;height:54px;z-index:100;
+  background:var(--navy);display:flex;align-items:center;
+  border-bottom:3px solid var(--blue-lt);
+}
+.hdr-flag-ma{width:12px;height:54px;background:linear-gradient(to bottom,var(--ma-red) 50%,var(--ma-green) 50%)}
+.hdr-flag-uk{width:12px;height:54px;background:linear-gradient(to bottom,var(--uk-blue) 33%,var(--uk-red) 33%,var(--uk-red) 66%,var(--uk-blue) 66%)}
+.hdr-center{flex:1;display:flex;align-items:center;gap:12px;padding:0 16px}
+.hdr-title{font-size:14px;font-weight:700;color:#fff;letter-spacing:.3px;white-space:nowrap}
+.hdr-sub{font-size:11px;color:#a0b4d0;white-space:nowrap}
+.hdr-badges{display:flex;gap:6px;margin-left:auto}
+.badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.badge-base{background:var(--navy-mid);color:#90b4e0;border:1px solid #2a4a80}
+.badge-update{background:#12284a;color:#7ec8e3;border:1px solid #1a4060}
+.badge-uk{background:var(--uk-blue);color:#fff}
+/* TWO COLUMNS */
+.layout{display:grid;grid-template-columns:42% 58%;position:fixed;top:54px;left:0;right:0;bottom:28px}
+/* LEFT COL */
+.col-l{overflow-y:auto;border-right:1px solid var(--border);background:#fff}
+.col-r{overflow-y:auto;background:var(--gray-50)}
+/* TABS */
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;overflow-x:auto}
+.tab-bar::-webkit-scrollbar{height:3px}.tab-bar::-webkit-scrollbar-thumb{background:var(--border)}
+.tab-btn{flex-shrink:0;padding:8px 12px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7a99;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-btn:hover:not(.active){color:var(--navy);background:var(--gray-50)}
+.tab-content{display:none;padding:0}
+.tab-content.active{display:block}
+/* INFO BLOCKS */
+.info-block{padding:12px 14px;border-bottom:1px solid var(--border)}
+.info-h{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:7px}
+.info-icon{width:18px;height:18px;background:var(--teal-lt);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.info-body{padding-left:25px;line-height:1.6;color:#44506a;font-size:12px}
+.info-body p{margin-bottom:5px}
+.formula-box{background:#EFF6FF;border:1px solid #B8D4F5;border-radius:5px;padding:8px 10px;margin:4px 0;font-size:11.5px;color:var(--navy-mid)}
+.kv-row{display:flex;gap:6px;margin-bottom:3px;font-size:12px}
+.kv-label{color:#6b7a99;min-width:150px;flex-shrink:0}
+.kv-val{color:var(--navy);font-weight:600}
+.step-list{counter-reset:steps;padding-left:0}
+.step{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
+.step-num{width:20px;height:20px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
+.rule-list{margin:4px 0}
+.rule-item{display:flex;gap:6px;margin-bottom:4px}
+.rule-dot{width:7px;height:7px;background:var(--blue);border-radius:50%;margin-top:5px;flex-shrink:0}
+/* CIRCULAIRE CARDS */
+.circ-card{border:1px solid var(--border);border-radius:6px;margin:10px 14px;overflow:hidden}
+.circ-card-top{padding:9px 12px;color:#fff;font-size:12px;font-weight:700}
+.circ-card-top.c1{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%)}
+.circ-card-top.c2{background:linear-gradient(135deg,#1a3f6f 0%,#2254a0 100%)}
+.circ-card-top.c3{background:linear-gradient(135deg,var(--teal) 0%,#1a9e8a 100%)}
+.circ-card-top.c4{background:linear-gradient(135deg,#6b2f02 0%,var(--amber) 100%)}
+.circ-body{padding:9px 12px;font-size:11.5px;line-height:1.6;color:#44506a}
+.circ-body strong{color:var(--navy)}
+/* SECTION LABELS (right col) */
+.sec-label{position:sticky;top:0;background:var(--gray-100);color:var(--navy-mid);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:5px 12px;border-bottom:1px solid var(--border);z-index:40}
+/* SH ROWS */
+.sh-row{display:grid;grid-template-columns:115px 1fr 80px;gap:4px;padding:5px 10px;border-bottom:1px solid #f0f2f6;align-items:center;min-height:32px}
+.sh-row:hover{background:#f5f7fa}
+.sh-code-group{display:flex;flex-wrap:wrap;gap:3px}
+.sh-code{font-family:'Courier New',monospace;font-size:10.5px;color:var(--navy-mid);background:#EFF6FF;padding:1px 4px;border-radius:3px;white-space:nowrap}
+.sh-code.ex-code{background:#FFF3E0;color:#8B4513}
+.sh-desc{font-size:11.5px;color:var(--gray-800);line-height:1.4}
+.sh-desc small{font-size:10px;color:#8892a8;display:block}
+.sh-meta{text-align:right;font-size:11px}
+.sh-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 5px;border-radius:9px;white-space:nowrap}
+.tag-zero{background:var(--green-lt);color:var(--green)}
+.tag-free{background:var(--green-lt);color:var(--green)}
+.tag-pref{background:#EFF6FF;color:var(--blue)}
+.tag-amber{background:var(--amber-lt);color:var(--amber)}
+.tag-red{background:var(--red-lt);color:var(--red)}
+.sh-vol{font-size:10.5px;color:#6b7a99;white-space:nowrap}
+.sub-lbl{font-size:9px;color:#8892a8;text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+/* ANNEXE BANNER */
+.annexe-banner{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--blue) 100%);color:#fff;padding:10px 14px;margin-bottom:0}
+.annexe-banner h3{font-size:13px;font-weight:700;margin-bottom:3px}
+.annexe-banner p{font-size:11px;opacity:.85}
+.annexe-banner .meta{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap}
+.annexe-banner .meta span{font-size:10px;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:10px}
+/* YEAR DIVIDER */
+.year-divider{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;text-align:center;letter-spacing:1px;position:sticky;top:0;z-index:39}
+/* NOTES DE BAS */
+.notes-box{background:var(--gray-50);border-top:2px solid var(--border);padding:10px 14px;font-size:10.5px;color:#5a6476;line-height:1.7}
+.notes-box p{margin-bottom:3px}
+/* SEARCH BAR */
+.search-bar{padding:8px 10px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:60}
+.search-input{width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:5px;font-size:12px;outline:none;color:var(--gray-800)}
+.search-input:focus{border-color:var(--blue)}
+/* DATA TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:11.5px;margin:6px 0}
+.data-table th{background:var(--navy-mid);color:#fff;padding:5px 8px;text-align:left;font-size:11px}
+.data-table td{padding:4px 8px;border-bottom:1px solid #f0f2f6;vertical-align:top}
+.data-table tr:nth-child(even) td{background:#f7f9fc}
+/* WARNING BOX */
+.warn-box{background:var(--red-lt);border-left:4px solid var(--red);padding:8px 10px;margin:8px 14px;border-radius:0 5px 5px 0;font-size:11.5px;color:#7a1e1e}
+.note-box{background:var(--amber-lt);border-left:4px solid var(--amber);padding:8px 10px;margin:8px 14px;border-radius:0 5px 5px 0;font-size:11.5px;color:#6a3e08}
+/* FOOTER */
+footer{position:fixed;bottom:0;left:0;right:0;height:28px;background:var(--navy);color:#7090b0;font-size:10px;display:flex;align-items:center;padding:0 14px;gap:12px;border-top:1px solid var(--navy-mid)}
+footer span{white-space:nowrap}
+/* RIGHT COL SPECIFIC */
+.rh-tab-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:55;display:flex;overflow-x:auto}
+.rh-tab-bar::-webkit-scrollbar{height:3px}.rh-tab-bar::-webkit-scrollbar-thumb{background:var(--teal)}
+.rh-tab-btn{flex-shrink:0;padding:8px 11px;font-size:10.5px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7a99;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.rh-tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+.rh-tab-btn:hover:not(.active){color:var(--navy);background:var(--gray-50)}
+.hidden-row{display:none!important}
+.col-r .tab-bar{top:40px}
+/* MODS NOTE */
+.mod-badge{font-size:9.5px;background:#FFF8E1;color:#7B5300;border:1px solid #F5D060;padding:1px 5px;border-radius:8px;margin-left:4px}
+</style>
+<style id="ixp-accords">
+.ixp-back{position:fixed;left:16px;bottom:40px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:#14120F;color:#fff!important;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;box-shadow:0 8px 22px -8px rgba(0,0,0,.45)}
+.ixp-back:hover{background:#A8822F}
+@media (max-width:900px){
+ html,body{height:auto!important;overflow:auto!important}
+ body>header,header,.hdr,.header{position:static!important}
+ .layout,#body{display:block!important;position:static!important;height:auto!important;overflow:visible!important}
+ .layout>*,#body>*{width:auto!important;max-width:none!important;height:auto!important;overflow:visible!important}
+ .kpi-strip{grid-template-columns:1fr 1fr!important}
+ .tabs,.tab-bar,[class*="tab-bar"]{overflow-x:auto!important;flex-wrap:nowrap!important}
+ .header-badges,.hdr-badges,.h-badges{display:none!important}
+ footer,.site-footer{position:static!important}
+ .ixp-back{bottom:16px}
+}
+</style>
+<style id="ixp-accords-2">
+.ixp-back-top{flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;color:#14120F!important;font:600 12.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;white-space:nowrap;border:1px solid rgba(255,255,255,.6)}
+.ixp-back-top:hover{background:#C9A84C;color:#fff!important}
+:is(.tab-btn,.rh-tab-btn){border-radius:6px 6px 0 0!important;border-bottom:3px solid transparent!important;transition:color .18s,background .18s,border-color .18s,transform .12s}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+1){--tc:#1E5FA8;--tb:#DBEAFE;--tbc:#1E5FA8}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+2){--tc:#276527;--tb:#EAF3DE;--tbc:#276527}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+3){--tc:#854F0B;--tb:#FAEEDA;--tbc:#854F0B}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+4){--tc:#5B21B6;--tb:#EDE9FE;--tbc:#5B21B6}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+5){--tc:#A32D2D;--tb:#FCEBEB;--tbc:#A32D2D}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+6){--tc:#0F7B6C;--tb:#E0F4F1;--tbc:#0F7B6C}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+7){--tc:#003399;--tb:#E8EEFF;--tbc:#003399}
+:is(.tab-btn,.rh-tab-btn):nth-of-type(8n+8){--tc:#9D174D;--tb:#FCE7F3;--tbc:#9D174D}
+.tab-btn,.rh-tab-btn{margin-right:3px}
+:is(.tab-btn,.rh-tab-btn):not(.active){color:var(--tc)!important;background:var(--tb)!important;opacity:.85}
+:is(.tab-btn,.rh-tab-btn):not(.active):hover{opacity:1;transform:translateY(-1px)}
+:is(.tab-btn,.rh-tab-btn).active{color:var(--tc)!important;background:var(--tb)!important;border-bottom-color:var(--tbc)!important;font-weight:700;opacity:1;box-shadow:inset 0 0 0 1px var(--tbc)}
+@media (max-width:900px){.ixp-back-top{padding:7px 11px;font-size:12px}}
+</style>
+<style id="ixp-risques">
+.hdr-sub{display:block;margin-top:2px}
+.lead{padding:12px 14px;border-bottom:1px solid var(--border);background:#FBF5E6;border-left:4px solid #B8922A;font-size:12.5px;line-height:1.6;color:#1A1A18}
+.lead b{color:#7A5200}
+.do-list,.dont-list,.flag-list{list-style:none;margin:4px 0}
+.do-list li,.dont-list li,.flag-list li{display:flex;gap:8px;padding:7px 10px;margin-bottom:5px;border-radius:5px;font-size:12px;line-height:1.55}
+.do-list li{background:var(--green-lt);color:#1f4a1f}
+.do-list li::before{content:'✓';font-weight:700;color:var(--green)}
+.dont-list li{background:var(--red-lt);color:#6d1f1f}
+.dont-list li::before{content:'✕';font-weight:700;color:var(--red)}
+.flag-list li{background:var(--amber-lt);color:#5a3507}
+.flag-list li::before{content:'⚑';color:var(--amber)}
+.ref{font-family:'Courier New',monospace;font-size:10.5px;color:var(--navy-mid);background:#EFF6FF;padding:1px 5px;border-radius:3px;white-space:nowrap}
+.new{display:inline-block;font-size:9.5px;font-weight:700;background:var(--red);color:#fff;padding:1px 6px;border-radius:8px;margin-left:4px;vertical-align:middle}
+.pad{padding:10px 14px}
+.data-table td small{color:#6b7a99}
+.kv-label{min-width:170px}
+.col-r .tab-bar{top:0}
+.col-r .tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr-center">
+    <div>
+      <div class="hdr-title">Commerce extérieur : ce qui déclenche le contentieux</div>
+      <div class="hdr-sub">Titres d'importation, licences, contingents, défense commerciale, conformité et déclarations statistiques</div>
+    </div>
+    <a class="ixp-back-top" href="/risques">← Risques et litiges</a>
+  </div>
+</header>
+
+<div class="layout">
+<div class="col-l">
+  <div class="tab-bar" id="ltabs">
+    <button class="tab-btn active" data-t="l1" onclick="switchTab('l','l1')">📋 Cadre et obligations</button>
+    <button class="tab-btn" data-t="l2" onclick="switchTab('l','l2')">⚡ Déclencheurs</button>
+    <button class="tab-btn" data-t="l3" onclick="switchTab('l','l3')">🛡️ Défense commerciale</button>
+    <button class="tab-btn" data-t="l4" onclick="switchTab('l','l4')">⏱️ Délais clés</button>
+  </div>
+
+  <!-- L1 -->
+  <div class="tab-content active" id="l1">
+    <div class="lead">
+      <b>Le principe est la liberté, l'exception crée le risque.</b> Les importations et exportations sont libres, sauf restrictions motivées par la sécurité, la santé, l'environnement, la balance des paiements, une pénurie ou une mesure de défense commerciale. La quasi-totalité des litiges naissent d'une exception ignorée : licence non obtenue, contingent mal géré, droit antidumping non anticipé, produit non conforme ou titre d'importation absent.
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🏛️</div> Textes applicables</div>
+      <div class="info-body">
+        <div class="kv-row"><span class="kv-label">Commerce extérieur</span><span class="kv-val">Loi 91-14 (dahir 1-16-25 du 2 mars 2016), qui abroge la loi 13-89</span></div>
+        <div class="kv-row"><span class="kv-label">Défense commerciale</span><span class="kv-val">Loi 15-09 et décret 2-12-645 du 27 décembre 2012</span></div>
+        <div class="kv-row"><span class="kv-label">Sécurité des produits</span><span class="kv-val">Loi 24-09 relative à la sécurité des produits et des services</span></div>
+        <div class="kv-row"><span class="kv-label">Déclarations statistiques</span><span class="kv-val">Loi 19-06 (Office des changes)</span></div>
+        <div class="kv-row"><span class="kv-label">Liste des licences</span><span class="kv-val">Arrêté 1308-94 du 19 avril 1994, modifié à de multiples reprises (dernières modifications 2026)</span></div>
+        <div class="note-box">⚠️ L'entrée en vigueur de plusieurs dispositions de la loi 91-14 (registre des importateurs et exportateurs, cahiers des charges) dépend de son décret d'application, présenté sous la forme du projet de décret n° 2.22.30. Les mesures de restriction prises sous la loi 13-89 restent en vigueur jusqu'à leur extinction (art. 32).</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📄</div> Les quatre documents du commerce extérieur (loi 91-14)</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Document</th><th>Quand</th><th>Article</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Engagement d'importation</strong></td><td>Toute importation de marchandises libres, domiciliée auprès d'une banque. Il permet le règlement financier et doit être présenté au passage en douane.</td><td>Art. 12</td></tr>
+            <tr><td><strong>Licence d'importation ou d'exportation</strong></td><td>Marchandises soumises à restriction quantitative. Délivrée par l'administration ; la licence d'importation est domiciliée en banque.</td><td>Art. 13</td></tr>
+            <tr><td><strong>Demande de franchise douanière</strong></td><td>Importation dans le cadre d'un contingent tarifaire.</td><td>Art. 15</td></tr>
+            <tr><td><strong>Cahier des charges</strong></td><td>Certaines catégories de marchandises : exigences techniques et capacités minimales de l'opérateur. Contrôle sur pièces ou sur place, avec procès-verbal faisant foi jusqu'à preuve contraire.</td><td>Art. 9 à 11</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:6px">Dispenses d'engagement d'importation : importations sans paiement, régimes particuliers du Code des douanes (sauf catégories listées), importations personnelles ou occasionnelles sous un seuil, importations directes de l'administration (art. 12).</p>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🧾</div> Registre des importateurs et exportateurs</div>
+      <div class="info-body">
+        <p>Seules les personnes inscrites au registre pourront importer ou exporter (art. 6 et 7). Inscription valable <strong>2 ans</strong>, renouvelable. Sont dispensés : administrations, collectivités, associations, ambassades, et les opérations à titre personnel ou occasionnel (art. 8).</p>
+        <p>Selon le projet de décret 2.22.30, le renouvellement doit être demandé <strong>au plus tard 3 mois avant l'expiration</strong>, sous peine de radiation à la date d'échéance ; le numéro d'identification figurera sur tous les documents d'importation et d'exportation.</p>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🥬</div> Produits agricoles et de la pêche</div>
+      <div class="info-body">
+        <p>Ils doivent répondre aux exigences sanitaires et phytosanitaires, y compris d'étiquetage, et aux normes marocaines de commercialisation lorsqu'elles existent (art. 28). La clause de sauvegarde spéciale peut déclencher un <strong>droit additionnel</strong> sur les céréales, oléagineux, huiles, sucre, produits laitiers et animaux, en cas de hausse des volumes ou de chute des prix CAF (art. 21 à 23). Ce droit et ses infractions sont traités <strong>comme en matière de douane</strong> (art. 25).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- L2 -->
+  <div class="tab-content" id="l2">
+    <div class="lead"><b>Huit déclencheurs couvrent l'essentiel des litiges.</b> Chacun se détecte avant l'expédition : c'est à ce stade que le risque coûte le moins cher à traiter.</div>
+
+    <div class="circ-card">
+      <div class="circ-card-top c1">1 · Marchandise soumise à licence importée sans licence</div>
+      <div class="circ-body">La liste évolue en cours d'année. Une marchandise libre à la commande peut être soumise à licence à l'arrivée. Sans licence, la déclaration ne peut pas aboutir et l'importation d'une marchandise prohibée sans autorisation est réprimée par le Code des douanes. <strong>Voir l'onglet « Licences 2026 » de la fiche Licences et autorisations.</strong></div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c2">2 · Titre d'importation absent, non domicilié ou dépassé</div>
+      <div class="circ-body">Le titre doit être domicilié en banque via PortNet avant tout règlement, puis imputé par la douane. Un règlement au-delà du montant imputé, hors cas autorisés, relève de l'infraction de change. <strong>Voir la fiche Contrôle des changes.</strong></div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c3">3 · Contingent tarifaire mal utilisé</div>
+      <div class="circ-body">Le contingent est réparti après un « avis aux importateurs » (premier arrivé, courants traditionnels, appel d'offres). Importer sans demande de franchise douanière ou au-delà du volume alloué fait perdre le taux préférentiel : le droit commun s'applique.</div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c4">4 · Mesure antidumping ou de sauvegarde non anticipée</div>
+      <div class="circ-body">Un droit additionnel peut frapper une commande déjà engagée, y compris de façon rétroactive dans certaines limites, et s'étendre aux produits modifiés, aux pays tiers ou aux pièces destinées à l'assemblage en cas de contournement. <strong>Voir l'onglet Défense commerciale.</strong></div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c1">5 · Produit non conforme à une norme obligatoire</div>
+      <div class="circ-body">L'enlèvement est subordonné au résultat favorable du contrôle. En cas de non-conformité : refoulement ou destruction aux frais de l'importateur, et poursuites possibles au titre de la loi 24-09.</div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c2">6 · Déclaration statistique omise ou erronée</div>
+      <div class="circ-body">Les opérations entre résidents et non-résidents font l'objet de déclarations statistiques à l'Office des changes (loi 19-06). Le défaut ou la fausse déclaration est sanctionné de 10 % de la valeur des opérations, avec un plafond.</div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c3">7 · Documents commerciaux non authentiques</div>
+      <div class="circ-body">Le déposant d'une déclaration s'engage sur l'authenticité des documents joints. Tout document dont le défaut d'authenticité pouvait être détecté (code QR notamment) engage sa responsabilité personnelle <span class="ref">Circ. 6662/312</span>.</div>
+    </div>
+    <div class="circ-card">
+      <div class="circ-card-top c4">8 · Prix hors marché ou transaction non effective</div>
+      <div class="circ-body">Les règlements doivent porter sur des transactions effectives rémunérées au prix du marché, sous la responsabilité de l'opérateur (IGOC 2026, art. 5). Un prix anormal expose à la fois au contrôle de la valeur en douane et au contrôle de change.</div>
+    </div>
+  </div>
+
+  <!-- L3 -->
+  <div class="tab-content" id="l3">
+    <div class="lead"><b>Loi 15-09 : trois instruments.</b> Droit antidumping (prix inférieur à la valeur normale), droit compensateur (subvention) et mesure de sauvegarde (afflux massif d'importations). Tous sont liquidés et recouvrés comme en matière de douane.</div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">⚖️</div> Antidumping et compensateur : ce qui surprend l'importateur</div>
+      <div class="info-body">
+        <div class="rule-list">
+          <div class="rule-item"><div class="rule-dot"></div><div>L'ouverture d'une enquête <strong>ne bloque pas le dédouanement</strong>, mais annonce un droit possible (art. 17).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Droit provisoire possible <strong>60 jours</strong> après l'ouverture ; durée maximale <strong>6 mois</strong> (antidumping, prorogeable de 3 mois) ou <strong>4 mois</strong> (compensateur). Il est perçu sous forme de <strong>consignation</strong> (art. 29 et 31).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Le droit est <strong>individuel par exportateur</strong> : un fournisseur qui n'a pas coopéré à l'enquête supporte en général un taux plus élevé (art. 32).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Rétroactivité</strong> : le droit définitif peut être perçu sur les importations effectuées jusqu'à <strong>90 jours</strong> avant le droit provisoire, jamais avant l'ouverture de l'enquête (art. 34).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Si le définitif est inférieur au provisoire, la différence est <strong>remboursée sous 90 jours</strong> ; s'il est supérieur, la différence n'est pas perçue (art. 33).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div><strong>Contournement</strong> : extension du droit au produit légèrement modifié, au produit expédié via un pays tiers sans en acquérir l'origine, et aux pièces destinées à l'assemblage (art. 49 à 51).</div></div>
+          <div class="rule-item"><div class="rule-dot"></div><div>Pendant un réexamen, le droit est remplacé par une consignation d'un montant équivalent (art. 44).</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🧱</div> Sauvegarde</div>
+      <div class="info-body">
+        <p>Mesure provisoire de <strong>200 jours</strong> au plus ; mesure définitive de <strong>4 ans</strong> au plus, démantelée progressivement ; durée totale plafonnée à <strong>10 ans</strong> (art. 63 et 65). Elle prend la forme d'un droit additionnel ou d'une restriction quantitative avec licence (art. 72).</p>
+        <p>Les pays en développement dont la part est inférieure à 3 % (et 9 % en cumul) en sont exclus (art. 76). La sauvegarde <strong>préférentielle</strong> peut s'appliquer aux produits d'un partenaire de libre-échange sans dépasser le droit commun (art. 79).</p>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">📌</div> Mesures récentes à vérifier avant toute commande</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Produit</th><th>Mesure</th><th>Circulaire</th></tr></thead>
+          <tbody>
+            <tr><td>Fils galvanisés (Égypte, Émirats arabes unis)</td><td>Antidumping définitif</td><td><span class="ref">6773/211</span> 23/09/2026</td></tr>
+            <tr><td>Contreplaqué originaire de Chine</td><td>Antidumping définitif</td><td><span class="ref">6774/211</span> 23/09/2026</td></tr>
+            <tr><td>Tôles d'acier laminées à froid (Égypte)</td><td>Antidumping définitif, 5 ans</td><td><span class="ref">6753/211</span> 02/07/2026</td></tr>
+            <tr><td>Panneaux de fibres de bois revêtus</td><td>Sauvegarde</td><td><span class="ref">6754/211</span> 02/07/2026</td></tr>
+            <tr><td>Tôles laminées à chaud</td><td>Sauvegarde prorogée jusqu'au 18/06/2029</td><td><span class="ref">6744/211</span> 16/06/2026</td></tr>
+            <tr><td>Contreplaqué latté</td><td>Antidumping maintenu à titre provisoire</td><td><span class="ref">6725/211</span> 25/02/2026</td></tr>
+            <tr><td>Polychlorure de vinyle (PVC) originaire d'Égypte</td><td>Antidumping définitif</td><td><span class="ref">6719/211</span> 03/02/2026</td></tr>
+            <tr><td>Panneaux de bois revêtus</td><td>Sauvegarde prorogée</td><td><span class="ref">6692/211</span> 21/11/2025</td></tr>
+            <tr><td>Cahiers originaires de Tunisie</td><td>Antidumping prorogé</td><td><span class="ref">6634/211</span> 06/02/2025</td></tr>
+            <tr><td>Fours électriques originaires de Türkiye</td><td>Antidumping définitif</td><td><span class="ref">6625/211</span> 03/01/2025</td></tr>
+            <tr><td>Conserves de tomates</td><td>Antidumping définitif</td><td><span class="ref">6618/211</span> 23/12/2024</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:6px"><small>Liste indicative : vérifiez le taux, l'origine et l'exportateur visés dans la circulaire avant de passer commande.</small></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- L4 -->
+  <div class="tab-content" id="l4">
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">⏱️</div> Délais qui conditionnent vos droits</div>
+      <div class="info-body">
+        <table class="data-table">
+          <thead><tr><th>Étape</th><th>Délai</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td>Inscription au registre</td><td>Valable 2 ans</td><td>Loi 91-14, art. 7</td></tr>
+            <tr><td>Demande de renouvellement</td><td>3 mois avant l'échéance</td><td>Projet de décret 2.22.30</td></tr>
+            <tr><td>Décision sur une licence ou une franchise</td><td>60 jours ouvrables ; refus motivé</td><td>Projet de décret 2.22.30</td></tr>
+            <tr><td>Contrôle de conformité au cahier des charges</td><td>30 jours ouvrables</td><td>Projet de décret 2.22.30</td></tr>
+            <tr><td>Ouverture d'une enquête de défense commerciale</td><td>21 jours après acceptation de la requête</td><td>Loi 15-09, art. 17</td></tr>
+            <tr><td>Remboursement d'un trop-perçu antidumping ou sauvegarde</td><td>90 jours</td><td>Loi 15-09, art. 33, 47, 75</td></tr>
+            <tr><td>Réponse à une notification de l'Office des changes (déclaration statistique)</td><td>30 jours minimum</td><td>Loi 19-06, art. 9</td></tr>
+            <tr><td>Paiement de la sanction statistique</td><td>30 jours (PM) · 60 jours (PP)</td><td>Loi 19-06, art. 9</td></tr>
+            <tr><td>Contre-analyse après non-conformité</td><td>8 jours</td><td>Circulaire conjointe MICNT-ADII n° 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-h"><div class="info-icon">🔁</div> Clause transitoire : protéger une commande déjà engagée</div>
+      <div class="info-body">
+        <p>Lorsqu'une licence est instaurée en cours d'année, les arrêtés de 2026 maintiennent les opérations engagées si l'une de ces deux conditions est remplie :</p>
+        <div class="step-list">
+          <div class="step"><div class="step-num">1</div><div>un <strong>crédit documentaire irrévocable et confirmé</strong> ouvert avant la publication de l'arrêté ;</div></div>
+          <div class="step"><div class="step-num">2</div><div>des <strong>titres de transport établis avant</strong> la publication, prouvant que la marchandise était dès le départ destinée directement et exclusivement au Maroc.</div></div>
+        </div>
+        <p>La même logique s'applique en matière tarifaire : l'article 13 du Code des douanes, modifié par la loi de finances 2026, retient ces deux conditions alternatives pour le bénéfice du régime antérieur plus favorable.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="col-r">
+  <div class="tab-bar" id="rtabs">
+    <button class="tab-btn active" data-t="r1" onclick="switchTab('r','r1')">⛔ À éviter</button>
+    <button class="tab-btn" data-t="r2" onclick="switchTab('r','r2')">🚩 Signaux d'alerte</button>
+    <button class="tab-btn" data-t="r3" onclick="switchTab('r','r3')">⚖️ Sanctions</button>
+    <button class="tab-btn" data-t="r4" onclick="switchTab('r','r4')">📚 Références</button>
+  </div>
+
+  <div class="tab-content active" id="r1">
+    <div class="sec-label">Liste négative : ce qu'il ne faut pas faire</div>
+    <div class="pad">
+      <ul class="dont-list">
+        <li>Signer une commande sans vérifier le statut de la marchandise (libre, soumise à licence, contingentée, frappée d'un droit antidumping ou de sauvegarde) au jour de l'arrivée prévue, et pas seulement au jour de la commande.</li>
+        <li>Payer le fournisseur avant d'avoir domicilié le titre d'importation, ou au-delà du montant imputé par la douane hors cas prévus par la réglementation des changes.</li>
+        <li>Changer de fournisseur ou de pays d'expédition pour un produit visé par un droit antidumping sans analyser le risque de contournement.</li>
+        <li>Expédier un produit soumis à une norme obligatoire sans attestation de conformité, en comptant sur une régularisation au port.</li>
+        <li>Joindre à la déclaration une facture ou un certificat dont l'authenticité n'a pas été vérifiée (code QR, émetteur).</li>
+        <li>Laisser expirer l'inscription au registre des importateurs et exportateurs (lorsqu'il sera opérationnel) ou un cahier des charges sectoriel.</li>
+        <li>Négliger les déclarations statistiques demandées par la banque ou l'Office des changes.</li>
+        <li>Fixer un prix de transaction déconnecté du marché, surtout entre entreprises liées.</li>
+      </ul>
+    </div>
+    <div class="sec-label">Bonnes pratiques</div>
+    <div class="pad">
+      <ul class="do-list">
+        <li>Tenir une fiche par produit : position tarifaire, licence, norme obligatoire, autorité de contrôle, mesures de défense commerciale en vigueur.</li>
+        <li>Surveiller chaque semaine les circulaires « Études tarifaires » (série 211) et « Investissements et régimes particuliers » (série 311).</li>
+        <li>Prévoir dans le contrat une clause d'adaptation du prix ou de résiliation en cas de nouvelle licence, de droit antidumping ou de sauvegarde.</li>
+        <li>Ouvrir un crédit documentaire irrévocable et confirmé pour les produits sensibles : il protège la commande si une licence est instaurée en cours de route.</li>
+        <li>Exiger du fournisseur sa coopération à toute enquête de défense commerciale : elle conditionne un droit individuel plus faible.</li>
+        <li>Conserver l'ensemble des pièces (contrat, facture, titre de transport, preuves de paiement) pendant au moins 10 ans.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r2">
+    <div class="sec-label">Signaux qui annoncent un litige</div>
+    <div class="pad">
+      <ul class="flag-list">
+        <li>Un avis d'ouverture d'enquête antidumping ou de sauvegarde est publié pour votre produit : un droit provisoire peut arriver 60 jours plus tard.</li>
+        <li>Un arrêté complétant l'arrêté 1308-94 est publié au Bulletin officiel : la licence s'applique dès sa publication.</li>
+        <li>Le fournisseur propose soudain d'expédier depuis un autre pays, ou en pièces détachées, un produit visé par un droit antidumping.</li>
+        <li>La déclaration est bloquée en attente d'un résultat de contrôle de conformité ou classée « admis provisoire avec scellé ».</li>
+        <li>Votre banque refuse de régler faute d'imputation douanière ou signale un dépassement du montant imputé.</li>
+        <li>L'Office des changes vous adresse une notification d'infraction : le délai de réponse est d'au moins 30 jours.</li>
+        <li>Un prix nettement inférieur aux prix habituels du marché pour le même produit et la même origine.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r3">
+    <div class="sec-label">Ce que coûte une erreur</div>
+    <div class="pad">
+      <table class="data-table">
+        <thead><tr><th>Manquement</th><th>Conséquence</th><th>Texte</th></tr></thead>
+        <tbody>
+          <tr><td>Importation, sans l'autorisation exigée, d'une marchandise prohibée au sens de l'article 23-1°b) du CDII, déclarée en douane</td><td>Contravention douanière de 2<sup>e</sup> classe</td><td>CDII, art. 294-6° bis et ter</td></tr>
+          <tr><td>Droit antidumping, compensateur ou additionnel éludé</td><td>Recouvré et réprimé comme en matière de douane</td><td>Loi 15-09, art. 32 et 72 ; loi 91-14, art. 25</td></tr>
+          <tr><td>Défaut ou fausse déclaration statistique (entreprise)</td><td>10 % de la valeur des opérations, plafonné à 10 000 DH (personne physique) ou 50 000 DH (personne morale) ; doublé en cas de récidive dans les 12 mois</td><td>Loi 19-06, art. 8 et 11</td></tr>
+          <tr><td>Mise sur le marché d'un produit non conforme à une réglementation technique</td><td>3 mois à 2 ans d'emprisonnement et/ou 50 000 à 1 000 000 DH</td><td>Loi 24-09, art. 51</td></tr>
+          <tr><td>Exposition délibérée d'autrui à un risque grave</td><td>6 mois à 5 ans et/ou 10 000 à 60 000 DH</td><td>Loi 24-09, art. 50</td></tr>
+          <tr><td>Déclaration de conformité ou dossier technique non tenu à disposition</td><td>1 mois à 2 ans et/ou 5 000 à 50 000 DH</td><td>Loi 24-09, art. 53</td></tr>
+          <tr><td>Personne morale (loi 24-09)</td><td>Amende portée du double au triple ; dissolution possible</td><td>Loi 24-09, art. 55</td></tr>
+          <tr><td>Mesures complémentaires</td><td>Rappel, retrait ou destruction aux frais du contrevenant, publication du jugement, fermeture de l'établissement</td><td>Loi 24-09, art. 59 et 60</td></tr>
+          <tr><td>Manquement au cahier des charges</td><td>Interdiction d'importer ou d'exporter la catégorie concernée jusqu'à mise en conformité</td><td>Loi 91-14, art. 10</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box">💡 <strong>Transaction administrative (loi 24-09, art. 61)</strong> : sans dommage causé à autrui, l'administration peut transiger. Le contrevenant dispose de 15 jours pour présenter sa défense ; l'amende administrative va de 3 000 à 40 000 DH (personne physique) et de 10 000 à 200 000 DH (personne morale), doublée en cas de récidive.</div>
+      <div class="note-box">ℹ️ Les sanctions de la loi 19-06 ne s'appliquent pas aux mêmes faits déjà poursuivis au titre de la législation douanière (art. 11).</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="r4">
+    <div class="sec-label">Textes et circulaires de référence</div>
+    <div class="pad">
+      <table class="data-table">
+        <thead><tr><th>Référence</th><th>Objet</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ref">Loi 91-14</span></td><td>Commerce extérieur (dahir 1-16-25 du 2 mars 2016)</td></tr>
+          <tr><td><span class="ref">Projet décret 2.22.30</span></td><td>Application de la loi 91-14 : registre, cahiers des charges, licences, contingents</td></tr>
+          <tr><td><span class="ref">Arrêté 1308-94</span></td><td>Liste des marchandises soumises à licence d'importation ou d'exportation</td></tr>
+          <tr><td><span class="ref">Loi 15-09</span></td><td>Mesures de défense commerciale ; décret 2-12-645</td></tr>
+          <tr><td><span class="ref">Loi 24-09</span></td><td>Sécurité des produits et des services</td></tr>
+          <tr><td><span class="ref">Loi 19-06</span></td><td>Déclarations statistiques des échanges extérieurs</td></tr>
+          <tr><td><span class="ref">Circ. 6747/311</span></td><td>Licence : fils d'acier à haute teneur en carbone, torons et câbles (11/06/2026)</td></tr>
+          <tr><td><span class="ref">Circ. 6765/311</span></td><td>Licence : pommes de terre découpées surgelées (06/08/2026)</td></tr>
+          <tr><td><span class="ref">Circ. 6766/311</span></td><td>Fin des licences : masques et antiseptiques (27/07/2026)</td></tr>
+          <tr><td><span class="ref">Circ. 6775/311</span></td><td>Licence : aulx frais ou réfrigérés, 18 mois (24/09/2026)</td></tr>
+          <tr><td><span class="ref">Circ. 6662/312</span></td><td>Authenticité des documents joints aux déclarations (24/06/2025)</td></tr>
+          <tr><td><span class="ref">Circ. 6702/210</span></td><td>Loi de finances 2026 : clause transitoire de l'article 13 du CDII</td></tr>
+          <tr><td><span class="ref">Série 211</span></td><td>Circulaires « Études tarifaires » : antidumping, sauvegarde, suspensions de droits</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <span>📋 Import-eXPert · Mise à jour : 9 novembre 2026</span>
+  <span>Lois 91-14, 15-09, 24-09 et 19-06 · Code des douanes</span>
+  <span>Circulaires ADII 6747, 6765, 6766, 6775/311 (2026)</span>
+
+</footer>
+
+<script>
+function switchTab(side,id){
+  var bar=side==='l'?'#ltabs':'#rtabs', col=side==='l'?'.col-l':'.col-r';
+  document.querySelectorAll(bar+' button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-t')===id);});
+  document.querySelectorAll(col+' .tab-content').forEach(function(c){c.classList.toggle('active',c.id===id);});
+  var el=document.querySelector(col); if(el) el.scrollTop=0;
+}
+</script>
+</body>
+</html>

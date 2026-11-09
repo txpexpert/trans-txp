@@ -13,11 +13,18 @@ const withPWA = require('next-pwa')({
 const nextConfig = {
   // Accords préférentiels : les fiches détaillées sont des pages HTML
   // autonomes (public/tools/accords/), servies sous /accords/{slug}.
+  // Même architecture pour Risques et litiges (public/tools/risques/),
+  // servies sous /risques/{slug}.
   async rewrites() {
-    return ['ue', 'royaume-uni', 'etats-unis', 'turquie', 'chine'].map(slug => ({
+    const accords = ['ue', 'royaume-uni', 'etats-unis', 'turquie', 'chine'].map(slug => ({
       source: `/accords/${slug}`,
       destination: `/tools/accords/${slug}.html`,
     }))
+    const risques = ['commerce-exterieur', 'change', 'contentieux-douanier', 'autorisations'].map(slug => ({
+      source: `/risques/${slug}`,
+      destination: `/tools/risques/${slug}.html`,
+    }))
+    return [...accords, ...risques]
   },
   async redirects() {
     return [
@@ -35,6 +42,8 @@ const nextConfig = {
       { source: '/abonnements', destination: '/tarifs', permanent: false },
       // Audit Express retiré (doublon du Diagnostic de conformité, nov. 2026).
       { source: '/modules/audit-express', destination: '/diagnostic', permanent: false },
+      // Contentieux et litiges remplacé par la page Risques et litiges (nov. 2026).
+      { source: '/modules/contentieux', destination: '/risques', permanent: false },
       // Doublon de /confidentialite (nov. 2026).
       { source: '/tools/m36-intelligence-import.html', destination: '/tools/intelligence-import.html', permanent: true },
       { source: '/politique-confidentialite', destination: '/confidentialite', permanent: true },

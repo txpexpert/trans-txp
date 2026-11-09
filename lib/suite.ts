@@ -98,7 +98,7 @@ export const ESPACES: Espace[] = [
       { label: 'Diagnostic de conformité', path: '/diagnostic', desc: '8 domaines, exposition chiffrée, plan d’action suivi dans le temps', tier: 'decouverte' },
       { label: 'Audit des processus : auto-diagnostic', path: '/modules/audit', desc: '60 points de contrôle et recommandations', tier: 'expert' },
       { label: 'Contrôle et maîtrise des risques', path: '/modules/risques', desc: '38 situations de risque documentées', tier: 'expert' },
-      { label: 'Contentieux et litiges', path: '/modules/contentieux', desc: 'Procédures, délais et voies de recours', tier: 'entreprise' },
+      { label: 'Comment éviter les risques et litiges ?', path: '/risques', desc: 'Commerce extérieur, change, contentieux douanier, licences et autorisations', tier: 'entreprise' },
       { label: 'Catégorisation en OEA (Opérateur Économique Agréé)', path: '/modules/oea', desc: 'Critères, préparation et avantages du statut', tier: 'expert' },
       { label: 'Veille réglementaire', path: '/modules/veille-reglementaire', desc: 'Restez vigilants et informés', tier: 'operateur' },
       { label: 'Alertes fiscales', path: '/modules/alertes-fiscales', desc: 'Échéances et changements fiscaux', tier: 'operateur' },
