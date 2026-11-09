@@ -79,16 +79,6 @@ export const FREE_PATHS = [
 
   '/tools/alertes-fiscales.html',
   '/modules/contentieux', // redirigé vers /risques (nov. 2026)
-  // Risques et litiges : reprend l'accès libre de l'ancien module Contentieux
-  '/risques',
-  '/risques/commerce-exterieur',
-  '/risques/change',
-  '/risques/contentieux-douanier',
-  '/risques/autorisations',
-  '/tools/risques/commerce-exterieur.html',
-  '/tools/risques/change.html',
-  '/tools/risques/contentieux-douanier.html',
-  '/tools/risques/autorisations.html',
   '/modules/veille-reglementaire',
   '/tools/surestaries.html',
 ]
@@ -106,9 +96,9 @@ export function pathToModuleCode(pathname: string): string | null {
   if (pathname === '/accords' || pathname.startsWith('/accords/') || pathname.startsWith('/tools/accords/')) {
     return 'accords-preferentiels'
   }
-  // Risques et litiges (pages aussi listées dans FREE_PATHS)
+  // Risques et litiges : page mère et fiches, accès Pro et au-dessus
   if (pathname === '/risques' || pathname.startsWith('/risques/') || pathname.startsWith('/tools/risques/')) {
-    return 'contentieux'
+    return 'risques-litiges'
   }
   if (pathname.startsWith('/modules/')) {
     return pathname.replace(/^\/modules\//, '').replace(/\/$/, '')
