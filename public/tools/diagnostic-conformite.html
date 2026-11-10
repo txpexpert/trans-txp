@@ -107,6 +107,12 @@ footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);fo
 @media (max-width:900px){.grid2,.grid3,.kpis,.expo{grid-template-columns:1fr 1fr}.bars .row{grid-template-columns:130px 1fr 46px}}
 @media (max-width:600px){.grid2,.grid3,.kpis,.expo{grid-template-columns:1fr}.toplinks{display:none}.panel{padding:18px}}
 @media print{header.top,.steps,.actions,.noprint,footer.b{display:none!important}body{background:#fff}.panel{break-inside:avoid;border-color:#ccc}.sec{display:block!important}}
+.tot{margin:18px 0 6px;padding:22px 24px;border-radius:16px;background:var(--ink,#14120F);color:#fff}
+.tot .tot-l{font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.tot .tot-v{font-family:var(--serif);font-size:40px;line-height:1.1;margin:6px 0}
+.tot .tot-h{font-size:13px;opacity:.8}
+.acct{font-size:14px;margin:8px 0 0;color:var(--ink3)}
+.acct a{color:inherit;font-weight:600}
 </style>
 <link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
 </head>
@@ -137,7 +143,7 @@ footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);fo
   <section class="sec" id="s1">
     <div class="panel">
       <h2>Votre profil</h2>
-      <p class="note" style="margin-top:0">Le profil adapte les questions et permet de chiffrer l’exposition. Les montants sont facultatifs : sans eux, seul l’indice de maîtrise est calculé.</p>
+      <p class="note" style="margin-top:0">Le profil adapte les questions et permet de chiffrer l’exposition. Les montants sont facultatifs : sans eux, l’exposition est estimée par une fourchette fondée sur des valeurs moyennes, indiquées sous le résultat. Renseignez-les pour un chiffrage propre à votre entreprise.</p>
       <div class="grid3">
         <div><label class="f" for="p-nom">Entreprise ou dossier<small>Libre, pour vous repérer</small></label><input type="text" id="p-nom" placeholder="Ex. : Société X, site de Tanger"></div>
         <div><label class="f" for="p-type">Profil<small>Oriente les questions</small></label>
@@ -177,6 +183,8 @@ footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);fo
     <div class="panel">
       <div class="eb" id="r-date"></div>
       <h2 id="r-title">Résultats</h2>
+      <div class="tot" id="expo-total"></div>
+      <p class="acct" id="acct-note"></p>
       <div class="kpis" style="margin-top:14px">
         <div class="kpi"><b id="k-idx">—</b><span>Indice de maîtrise global</span></div>
         <div class="kpi"><b id="k-lvl">—</b><span>Niveau d’exposition</span></div>
@@ -397,7 +405,49 @@ function compute(){
   if(prev&&prev.date.slice(0,10)===current.date.slice(0,10)){current.status=prev.status||{};hist[hist.length-1]=current;prev=hist.length>1?hist[hist.length-2]:null;}
   else hist.push(current);
   save(hist); try{localStorage.removeItem(DRAFT);}catch(e){}
-  renderResults(current,prev); return true;
+  renderResults(current,prev); saveRemote(current); return true;
+}
+
+/* ═══════════ Exposition en DH ═══════════ */
+// Valeurs moyennes utilisées quand le profil ne donne pas les montants. Affichées à l'utilisateur.
+var VOL_DEF={pme:[5e6,20e6],importateur:[20e6,100e6],transitaire:[20e6,100e6],exportateur:[20e6,100e6],groupe:[100e6,300e6]};
+var TAUX_DEF=[10,17.5];
+function mfmt(n){return n>=1e6?(Math.round(n/1e5)/10).toLocaleString('fr-FR')+' MDH':fmt(n);}
+function range(lo,hi){return (lo==null)?'—':(Math.round(lo)===Math.round(hi)?fmt(lo):'entre '+mfmt(lo)+' et '+mfmt(hi));}
+function exposure(c){
+  var p=c.profile||{},hyp=[],est=false;
+  function m(id){return c.domains[id]==null?1:c.domains[id];}
+  var vol=p.vol?[p.vol,p.vol]:null; if(!vol){vol=VOL_DEF[p.type]||VOL_DEF.pme;est=true;hyp.push('importations annuelles de '+mfmt(vol[0])+' à '+mfmt(vol[1])+' (valeur moyenne retenue pour votre profil)');}
+  var t=p.taux?[p.taux,p.taux]:null; if(!t){t=TAUX_DEF;est=true;hyp.push('taux moyen de droit de '+t[0].toLocaleString('fr-FR')+' % à '+t[1].toLocaleString('fr-FR')+' %');}
+  var mc=(m('clas')+m('val'))/2,items=[],lo=0,hi=0;
+  var a=[vol[0]*t[0]/100*4*(1-mc),vol[1]*t[1]/100*4*(1-mc)];lo+=a[0];hi+=a[1];
+  items.push({lo:a[0],hi:a[1],label:'Classement et valeur : assiette de droits non couverte sur 4 ans',f:'valeur × taux × 4 × (1 − maîtrise moyenne classement et valeur)'});
+  if(p.pref>0){var b=[vol[0]*p.pref/100*t[0]/100*4*(1-m('orig')),vol[1]*p.pref/100*t[1]/100*4*(1-m('orig'))];lo+=b[0];hi+=b[1];
+    items.push({lo:b[0],hi:b[1],label:'Préférences : droits de droit commun exigibles si la préférence était refusée, part non couverte sur 4 ans',f:'valeur × part sous préférence × taux × 4 × (1 − maîtrise origine)'});}
+  else items.push({lo:null,label:'Préférences : aucune importation déclarée sous préférence'});
+  if(p.red==='oui'&&p.encours){var r2=p.encours*(1-m('red'));lo+=r2;hi+=r2;
+    items.push({lo:r2,hi:r2,label:'Régimes économiques : encours suspendu non couvert par les contrôles (amende jusqu’à 1,5 fois les droits en cas de défaut d’apurement)',f:'encours × (1 − maîtrise régimes)'});}
+  else items.push({lo:null,label:'Régimes économiques : '+(p.red==='oui'?'renseignez l’encours suspendu dans le profil':'non utilisés')});
+  var h=est?'Estimation fondée sur des valeurs moyennes : '+hyp.join(' ; ')+'. Renseignez vos montants dans le profil pour un chiffrage propre.':'Calculé à partir des montants de votre profil. Indicateur, et non évaluation d’un risque.';
+  return {lo:lo,hi:hi,estimee:est,hyp:h,items:items};
+}
+/* ═══════════ Compte : conservation du score ═══════════ */
+var remoteHist=null;
+function acctNote(html){$('acct-note').innerHTML=html;}
+function saveRemote(c){
+  var ex=exposure(c);
+  fetch('/api/diagnostics',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({indice:c.global,domaines:c.domains,ecarts:c.gaps,critiques:c.crit,exposition_basse:Math.round(ex.lo),exposition_haute:Math.round(ex.hi),estimee:ex.estimee,hypotheses:ex.hyp,profil:c.profile})})
+  .then(function(r){return r.json().then(function(j){return {s:r.status,j:j};});})
+  .then(function(o){
+    if(o.s===401)acctNote('Pour conserver ce score et suivre son évolution chaque mois, <a href="/auth/register?plan=pro" target="_top">essayez Import-eXPert Pro pendant 14 jours</a> ou <a href="/auth/login" target="_top">connectez-vous</a>.');
+    else if(o.j&&o.j.conserve){acctNote('Score enregistré dans votre compte. Il servira de point de départ à votre suivi mensuel.');loadRemote();}
+    else acctNote('Le suivi mensuel du score est inclus à partir de l’offre Pro. <a href="/tarifs" target="_top">Voir les offres</a>.');
+  }).catch(function(){});
+}
+function loadRemote(){
+  fetch('/api/diagnostics',{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null;})
+  .then(function(j){if(j&&j.conserve){remoteHist=j.historique||[];renderHist();}}).catch(function(){});
 }
 
 /* ═══════════ Résultats ═══════════ */
@@ -423,18 +473,9 @@ function renderResults(c,prev){
   $('bars').innerHTML=h;
   radar(c,prev);
   // exposition
-  var e='',vol=p.vol,t=(p.taux||0)/100;
-  function m(id){return c.domains[id]==null?1:c.domains[id];}
-  if(vol&&t){
-    var D=vol*t, mc=(m('clas')+m('val'))/2;
-    e+='<div class="kpi"><b>'+fmt(D*4*(1-mc))+'</b><span>Classement et valeur : assiette de droits non couverte sur 4 ans</span><div class="formula">valeur × taux × 4 × (1 − maîtrise moyenne classement et valeur)</div></div>';
-    if(p.pref>0)e+='<div class="kpi"><b>'+fmt(vol*p.pref/100*t*4*(1-m('orig')))+'</b><span>Préférences : droits de droit commun exigibles si la préférence était refusée, part non couverte sur 4 ans</span><div class="formula">valeur × part sous préférence × taux × 4 × (1 − maîtrise origine)</div></div>';
-    else e+='<div class="kpi"><b>—</b><span>Préférences : aucune importation déclarée sous préférence</span></div>';
-  }else{
-    e+='<div class="kpi"><b>—</b><span>Renseignez la valeur des importations et le taux moyen de droit dans le profil pour chiffrer l’exposition.</span></div><div class="kpi"><b>—</b><span>Préférences</span></div>';
-  }
-  if(p.red==='oui'&&p.encours)e+='<div class="kpi"><b>'+fmt(p.encours*(1-m('red')))+'</b><span>Régimes économiques : encours suspendu non couvert par les contrôles (amende jusqu’à 1,5 fois les droits en cas de défaut d’apurement)</span><div class="formula">encours × (1 − maîtrise régimes)</div></div>';
-  else e+='<div class="kpi"><b>—</b><span>Régimes économiques : '+(p.red==='oui'?'renseignez l’encours suspendu dans le profil':'non utilisés')+'</span></div>';
+  var ex=exposure(c),e='';
+  ex.items.forEach(function(it){e+='<div class="kpi"><b>'+(it.lo==null?'—':range(it.lo,it.hi))+'</b><span>'+it.label+'</span>'+(it.f?'<div class="formula">'+it.f+'</div>':'')+'</div>';});
+  $('expo-total').innerHTML='<div class="tot-l">'+(ex.estimee?'Exposition estimée sur 4 ans':'Exposition sur 4 ans')+'</div><div class="tot-v">'+range(ex.lo,ex.hi)+'</div><div class="tot-h">'+ex.hyp+'</div>';
   $('expo').innerHTML=e;
 }
 function radar(c,prev){
@@ -477,8 +518,12 @@ function renderPlan(){
     var hist=store();var last=hist[hist.length-1];if(!last)return;last.status=last.status||{};last.status[sel.dataset.q]=sel.value;save(hist);current=last;renderHist();});});
 }
 function renderHist(){
-  var hist=store(); if(!hist.length){$('hist').innerHTML='<tr><td>Aucun diagnostic enregistré.</td></tr>';return;}
+  var hist=store(),rh='';
+  if(remoteHist&&remoteHist.length){rh='<tr><th colspan="6">Enregistré dans votre compte</th></tr><tr><th>Date</th><th>Indice global</th><th>Exposition sur 4 ans</th><th>Écarts (critiques)</th><th colspan="2">Base de calcul</th></tr>';
+    remoteHist.forEach(function(d){rh+='<tr><td>'+new Date(d.created_at).toLocaleDateString('fr-FR')+'</td><td><b>'+(d.indice==null?'—':pct(d.indice))+'</b></td><td>'+range(d.exposition_basse,d.exposition_haute)+'</td><td>'+(d.ecarts==null?'—':d.ecarts)+' ('+(d.critiques==null?'—':d.critiques)+')</td><td colspan="2">'+(d.estimee?'Valeurs moyennes':'Montants du profil')+'</td></tr>';});}
+  if(!hist.length&&rh){$('hist').innerHTML=rh;return;} if(!hist.length){$('hist').innerHTML='<tr><td>Aucun diagnostic enregistré.</td></tr>';return;}
   var h='<tr><th>Date</th><th>Dossier</th><th>Indice global</th><th>Exposition</th><th>Écarts (critiques)</th><th>Actions faites</th></tr>';
+  if(rh)h=rh+'<tr><th colspan="6">Sur ce poste</th></tr>'+h;
   hist.slice().reverse().forEach(function(c){var st=c.status||{},done=Object.keys(st).filter(function(k){return st[k]==='fait';}).length;
     h+='<tr><td>'+new Date(c.date).toLocaleDateString('fr-FR')+'</td><td>'+(c.profile&&c.profile.nom||'—')+'</td><td><b>'+(c.global==null?'—':pct(c.global))+'</b></td><td class="'+lvlCls(c.global)+'">'+level(c.global)+'</td><td>'+c.gaps+' ('+c.crit+')</td><td>'+done+'</td></tr>';});
   $('hist').innerHTML=h;
@@ -501,6 +546,7 @@ function dl(content,name,type){var b=new Blob([content],{type:type}),a=document.
 try{var dr=JSON.parse(localStorage.getItem(DRAFT)||'null');if(dr&&dr.profile){state=dr;writeProfile(dr.profile);var n=Object.keys(dr.answers||{}).length;if(n)$('resume-note').textContent='Brouillon en cours : '+n+' réponse(s) déjà saisie(s).';}}catch(e){}
 var last=store().slice(-1)[0];
 if(last&&!Object.keys(state.answers).length){$('resume-note').textContent='Dernier diagnostic le '+new Date(last.date).toLocaleDateString('fr-FR')+' ('+(last.global==null?'—':pct(last.global))+'). Consultez l’onglet « Plan d’action et suivi ».';current=last;}
+loadRemote();
 })();
 </script>
 </body>

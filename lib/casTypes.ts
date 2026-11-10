@@ -17,6 +17,8 @@ export type CasType = {
   ceQueVoitIxp: string
   textes: { ref: string; objet: string }[]
   outils: { label: string; path: string }[]
+  // Exemple chiffré fictif, présenté comme illustratif : hypothèses puis calcul.
+  exemple: { hypotheses: string[]; calcul: string[]; resultat: string }
 }
 
 export const CAS_TYPES: CasType[] = [
@@ -37,6 +39,11 @@ export const CAS_TYPES: CasType[] = [
       { ref: 'Code des douanes et impôts indirects, art. 20 ter-1° c)', objet: 'Redevances et droits de licence à ajouter au prix payé' },
       { ref: 'Code des douanes et impôts indirects, art. 99 bis et 99 ter', objet: 'Prescription de quatre ans ; point de départ en cas de fraude' },
     ],
+    exemple: {
+      hypotheses: ['Importations de produits de marque : 2 000 000 DH par an', 'Redevance au titulaire de la marque : 5 % du prix, soit 100 000 DH par an', 'Droit d’importation : 17,5 % ; TVA à l’importation : 20 %'],
+      calcul: ['Droit non acquitté : 100 000 × 17,5 % = 17 500 DH par an', 'TVA à l’importation non acquittée : (100 000 + 17 500) × 20 % = 23 500 DH par an', 'Total : 41 000 DH par an, sur quatre années reprises'],
+      resultat: '164 000 DH de rappel, hors intérêts de retard et amendes',
+    },
     outils: [
       { label: 'Valeur en douane', path: '/modules/valeur-douane' },
       { label: 'Vérifier vos documents d’import', path: '/modules/verificateur-dum' },
@@ -59,6 +66,11 @@ export const CAS_TYPES: CasType[] = [
       { ref: 'Circulaire n° 6706/233 du 31/12/2025', objet: 'Règles d’origine UE, Turquie, Accord d’Agadir et AELE : preuves, mention de cumul, validité' },
       { ref: 'Note n° D105/2026/ADII/AC/100 du 30/04/2026', objet: 'Cachets EUR.1 et adresses pour le contrôle a posteriori des preuves d’origine' },
     ],
+    exemple: {
+      hypotheses: ['Importations sous préférence UE : 3 000 000 DH par an, au droit préférentiel de 0 %', 'Droit commun applicable sans la préférence : 17,5 %', 'Opérations couvertes par des preuves sans mention de cumul : 12 mois'],
+      calcul: ['Droit commun exigible : 3 000 000 × 17,5 % = 525 000 DH pour l’année concernée', 'Si le défaut se répète sur quatre années : 525 000 × 4 = 2 100 000 DH'],
+      resultat: '525 000 DH par année d’opérations concernée, hors TVA, intérêts et amendes',
+    },
     outils: [
       { label: 'Origine ALECA / UE', path: '/modules/origine-aleca' },
       { label: 'Accords préférentiels', path: '/accords' },
@@ -81,6 +93,11 @@ export const CAS_TYPES: CasType[] = [
       { ref: 'Circulaire n° 5361/313 du 17/01/2013', objet: 'Échange standard avec importation anticipée : autorisation préalable, régime 323, délai de deux mois' },
       { ref: 'Circulaire n° 6348/313 du 06/07/2022', objet: 'Régimes économiques : opérations restant soumises à autorisation préalable' },
     ],
+    exemple: {
+      hypotheses: ['Valeur en douane de la pièce de remplacement : 400 000 DH', 'Droit d’importation applicable : 2,5 % ; TVA à l’importation : 20 %'],
+      calcul: ['Droit d’importation : 400 000 × 2,5 % = 10 000 DH', 'TVA à l’importation : (400 000 + 10 000) × 20 % = 82 000 DH', 'Total acquitté au régime commun : 92 000 DH au lieu d’une simple garantie'],
+      resultat: '92 000 DH à décaisser immédiatement, la TVA pouvant être récupérable selon la situation de l’entreprise',
+    },
     outils: [
       { label: 'Comparateur de régimes', path: '/modules/comparateur' },
       { label: 'Régimes économiques', path: '/modules/regimes-economiques' },

@@ -15,6 +15,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { COOKIE_NAME, verifyToken, siteUrl } from '../../../lib/adminAuth'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { runBillingCron } from '../../../lib/billingCron'
+import { runTrialEndReports } from '../../../lib/scoreReport'
 
 export const config = { maxDuration: 60 }
 
@@ -38,5 +39,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('[cron/billing]', e)
     billing = { error: e?.message || 'Erreur facturation' }
   }
-  return res.status(200).json({ ok: true, expired: data, billing })
+  // Rapport de score d'exposition à la fin de l'essai (refonte SaaS, étape 1)
+  let scores: Awaited<ReturnType<typeof runTrialEndReports>> | { error: string }
+  try {
+    scores = await runTrialEndReports(siteUrl(req))
+    if (scores.erreurs.length) console.error('[cron/scores]', scores.erreurs)
+  } catch (e: any) {
+    console.error('[cron/scores]', e)
+    scores = { error: e?.message || 'Erreur rapport de score' }
+  }
+  return res.status(200).json({ ok: true, expired: data, billing, scores })
 }
