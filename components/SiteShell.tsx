@@ -2,7 +2,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState, type ReactNode } from 'react'
+import { useState, type ReactNode, useEffect } from 'react'
 import { CHAIN } from '../lib/suite'
 import IxpLogo from './IxpLogo'
 
@@ -20,6 +20,25 @@ const NAV = [
 export default function SiteShell({ title, description, children, plain = false }: { title: string; description?: string; children: ReactNode; plain?: boolean }) {
   const { pathname } = useRouter()
   const [menu, setMenu] = useState(false)
+  // Session en cours : nom du client affiché dans l'en-tête, avec la tuile Déconnexion
+  const [user, setUser] = useState<{ label: string; detail: string } | null>(null)
+  useEffect(() => {
+    let alive = true
+    fetch('/api/auth/me', { credentials: 'same-origin' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(u => {
+        if (!alive || !u) return
+        const nom = [u.prenom, u.nom].filter(Boolean).join(' ').trim()
+        setUser({ label: nom || u.societe || u.email, detail: [u.societe, u.email, u.numero ? `n° ${u.numero}` : ''].filter(Boolean).join(' · ') })
+      })
+      .catch(() => {})
+    return () => { alive = false }
+  }, [])
+  const logout = async () => {
+    try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }) } catch {}
+    setUser(null)
+    window.location.href = '/'
+  }
   return (
     <div className={plain ? 'xs xs-wrapped' : 'xs'}>
       <Head>
@@ -38,7 +57,14 @@ export default function SiteShell({ title, description, children, plain = false 
             ))}
           </nav>
           <div className="x-act">
-            <Link href="/auth/login" className="x-tile t-rose x-login">Connexion</Link>
+            {user ? (
+              <>
+                <Link href="/app" className="x-tile t-green x-user" title={`Session en cours : ${user.detail}`}><span className="x-dot" aria-hidden="true" />{user.label}</Link>
+                <button type="button" className="x-tile t-rose x-logout" onClick={logout}>Déconnexion</button>
+              </>
+            ) : (
+              <Link href="/auth/login" className="x-tile t-rose x-login">Connexion</Link>
+            )}
             <Link href="/diagnostic" className="x-btn x-btn-dark"><span className="x-long">Mesurer mon exposition</span><span className="x-short">Diagnostic</span></Link>
             <button type="button" className="x-burger" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(m => !m)}>{menu ? '✕' : '☰'}</button>
           </div>
@@ -47,7 +73,14 @@ export default function SiteShell({ title, description, children, plain = false 
           <nav className="x-mnav" aria-label="Navigation mobile" hidden={!menu}>
             {NAV.map(n => <Link key={n.href} href={n.href} className={n.tone} onClick={() => setMenu(false)}>{n.label}</Link>)}
             <Link href="/diagnostic" className="t-red" onClick={() => setMenu(false)}>Diagnostic de conformité</Link>
-            <Link href="/auth/login" className="t-rose" onClick={() => setMenu(false)}>Connexion</Link>
+            {user ? (
+              <>
+                <Link href="/app" className="t-green" onClick={() => setMenu(false)}>Connecté : {user.label}</Link>
+                <a href="/" className="t-rose" onClick={e => { e.preventDefault(); setMenu(false); logout() }}>Déconnexion</a>
+              </>
+            ) : (
+              <Link href="/auth/login" className="t-rose" onClick={() => setMenu(false)}>Connexion</Link>
+            )}
           </nav>
         )}
       </header>
