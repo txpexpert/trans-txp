@@ -22,12 +22,15 @@ export default function SiteShell({ title, description, children, plain = false 
   const [menu, setMenu] = useState(false)
   // Session en cours : nom du client affiché dans l'en-tête, avec la tuile Déconnexion
   const [user, setUser] = useState<{ label: string; detail: string; compte: string } | null>(null)
+  const [replaced, setReplaced] = useState(false)
   useEffect(() => {
     let alive = true
     fetch('/api/auth/me', { credentials: 'same-origin' })
-      .then(r => (r.ok ? r.json() : null))
-      .then(u => {
-        if (!alive || !u) return
+      .then(r => r.json().then(j => ({ ok: r.ok, j })).catch(() => ({ ok: false, j: null as any })))
+      .then(({ ok, j: u }) => {
+        if (!alive) return
+        if (!ok) { if (u?.code === 'SESSION_REPLACED') setReplaced(true); return }
+        if (!u) return
         const nom = [u.prenom, u.nom].filter(Boolean).join(' ').trim()
         const PLAN: Record<string, string> = { free: 'Découverte', trial: 'Essai', pro: 'Pro', premium: 'Premium', enterprise: 'Entreprise' }
         const compte = u.role === 'admin' || u.role === 'generaladmin' ? 'Administrateur' : `Compte ${PLAN[u.plan] || u.plan || ''}`.trim()
@@ -65,7 +68,10 @@ export default function SiteShell({ title, description, children, plain = false 
                 <button type="button" className="x-tile t-rose x-logout" onClick={logout}>Déconnexion</button>
               </div>
             ) : (
-              <Link href="/auth/login" className="x-tile t-rose x-login">Connexion</Link>
+              <div className="x-session">
+                {replaced && <span className="x-sess-off">Session fermée : connexion ouverte ailleurs</span>}
+                <Link href="/auth/login" className="x-tile t-rose x-login">Connexion</Link>
+              </div>
             )}
             <button type="button" className="x-burger" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(m => !m)}>{menu ? '✕' : '☰'}</button>
           </div>

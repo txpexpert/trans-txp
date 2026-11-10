@@ -49,7 +49,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (dbUser?.current_session_id && dbUser.current_session_id !== payload.sessionId) {
-    return res.status(401).json({ error: 'Session invalidée — une connexion plus récente a eu lieu sur ce compte.' })
+    // Le cookie périmé est effacé : sinon le middleware, qui ne lit que le cookie,
+    // laisserait l'accès aux pages réservées alors que l'en-tête affiche « Connexion ».
+    res.setHeader('Set-Cookie', clearUserCookie())
+    return res.status(401).json({ code: 'SESSION_REPLACED', error: 'Session invalidée — une connexion plus récente a eu lieu sur ce compte.' })
   }
 
   const role: string =
