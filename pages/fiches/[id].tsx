@@ -37,7 +37,6 @@ export default function FichePage() {
                   <p>La fiche sera supprimée définitivement. <button type="button" className="x-btn x-btn-dark x-btn-sm" onClick={supprimer}>Confirmer la suppression</button></p></details>
               </div>
               <FicheView f={f} />
-              <p className="x-disclaimer" style={{ marginTop: 14 }}>Document d’aide à la conformité : il ne vaut pas décision de l’administration.</p>
             </>
           )}
           {f && edit && <div style={{ marginTop: 14 }}><FicheForm initiale={f} /></div>}
