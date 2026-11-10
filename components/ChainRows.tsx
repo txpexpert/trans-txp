@@ -32,7 +32,7 @@ export default function ChainRows() {
   const state = (g: number) => (g === active ? 'on' : g < active ? 'done' : '')
 
   return (
-    <div className="x-flow" onMouseEnter={() => { paused.current = true }} onMouseLeave={() => { paused.current = false }}>
+    <div className="x-pc" onMouseEnter={() => { paused.current = true }} onMouseLeave={() => { paused.current = false }}>
       {CHAIN.map((e, si) => {
         const first = starts[si]
         const last = first + e.tools.length - 1
@@ -40,23 +40,23 @@ export default function ChainRows() {
         const linkOn = active === last + 1 || (active > last && si < CHAIN.length - 1 && active === starts[si + 1])
         return (
           <Fragment key={e.slug}>
-            <div className={`x-link-card x-row3 x-flow-row x-c-${e.slug} ${stepOn ? 'is-on' : ''}`}>
-              <Link href={`/espaces/${e.slug}`} className="x-flow-head">
+            <div className={`x-link-card x-row3 x-pc-row x-c-${e.slug} ${stepOn ? 'is-on' : ''}`}>
+              <Link href={`/espaces/${e.slug}`} className="x-pc-head">
                 <span className="x-num">ÉTAPE {e.num}</span>
                 <div className="x-verb">{e.verb}</div>
                 <div className="x-card-t" style={{ marginBottom: 0 }}>{e.title}</div>
-                <span className="x-flow-open">Ouvrir l’espace →</span>
+                <span className="x-pc-open">Ouvrir l’espace →</span>
               </Link>
               <div>
                 <p style={{ margin: '0 0 8px', fontWeight: 500 }}>{e.question}</p>
                 <p style={{ margin: 0, color: 'var(--x-ink2)', fontSize: 15 }}>{e.promise}</p>
-                <div className="x-flow-tools" aria-label={`Parcours des modules de l’étape ${e.verb}`}>
+                <div className="x-pc-tools" aria-label={`Parcours des modules de l’étape ${e.verb}`}>
                   {e.tools.map((t, ti) => {
                     const g = first + ti
                     return (
                       <Fragment key={t.path + t.label}>
-                        {ti > 0 && <span className={`x-flow-arr ${g <= active ? 'lit' : ''}`} aria-hidden="true" />}
-                        <Link href={t.path} className={`x-flow-chip ${state(g)}`} title={t.desc}>
+                        {ti > 0 && <span className={`x-pc-arr ${g <= active ? 'lit' : ''}`} aria-hidden="true" />}
+                        <Link href={t.path} className={`x-pc-chip ${state(g)}`} title={t.desc}>
                           <i>{ti + 1}</i>{t.label}
                         </Link>
                       </Fragment>
@@ -70,9 +70,9 @@ export default function ChainRows() {
               </div>
             </div>
             {si < CHAIN.length - 1 && (
-              <div className={`x-flow-link ${linkOn ? 'on' : active > last ? 'done' : ''}`} aria-hidden="true">
-                <span className="x-flow-line" />
-                <span className="x-flow-tag">{e.transmet} → {CHAIN[si + 1].verb}</span>
+              <div className={`x-pc-link ${linkOn ? 'on' : active > last ? 'done' : ''}`} aria-hidden="true">
+                <span className="x-pc-line" />
+                <span className="x-pc-tag">{e.transmet} → {CHAIN[si + 1].verb}</span>
               </div>
             )}
           </Fragment>
