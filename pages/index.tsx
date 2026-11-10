@@ -3,11 +3,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import SiteShell from '../components/SiteShell'
+import ChainRows from '../components/ChainRows'
 import IxpAssistant from '../components/IxpAssistant'
 import IxpIntro from '../components/IxpIntro'
 import IxpTicker from '../components/IxpTicker'
 import IxpLogo from '../components/IxpLogo'
-import { CHAIN, PROFILS, espaceBySlug } from '../lib/suite'
+import { PROFILS, espaceBySlug } from '../lib/suite'
 import { CAS_TYPES } from '../lib/casTypes'
 
 const DOULEURS = [
@@ -147,18 +148,7 @@ export default function Accueil() {
           <div className="x-eyebrow">La plateforme</div>
           <h2 className="x-h2">Une opération, <em>cinq étapes</em>, un seul dossier.</h2>
           <p className="x-sub">Chaque espace répond à une question que vous vous posez à chaque importation, produit un livrable, et transmet ses données à l’étape suivante.</p>
-          <div className="x-chain">
-            {CHAIN.map((e, i) => (
-              <Link href={`/espaces/${e.slug}`} className={`x-link-card x-c-${e.slug}`} key={e.slug}>
-                <span className="x-num">{e.num}</span>
-                <div className="x-verb">{e.verb}</div>
-                <div className="x-card-t">{e.title}</div>
-                <p className="x-card-q">{e.question}</p>
-                <div className="x-card-out"><b>Livrable</b>{e.livrable}</div>
-                {i < CHAIN.length - 1 && <span className="x-arrow" aria-hidden="true" />}
-              </Link>
-            ))}
-          </div>
+          <div style={{ marginTop: 32 }}><ChainRows /></div>
           <div className="x-base">
             <Link href="/espaces/bibliotheque" className="x-link-card x-c-bibliotheque"><div className="x-verb">Bibliothèque</div><p>Le socle : tarif, circulaires, CGI, IGOC, décisions, glossaire.</p></Link>
             <Link href="#assistant" className="x-link-card x-c-assistant"><div className="x-verb">IXP-Assistant</div><p>Dans chaque espace, il répond en citant le texte exact.</p></Link>
