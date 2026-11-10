@@ -484,3 +484,4 @@
 .xs .x-session .x-tile{padding:4px 12px;font-size:13px}
 .xs button.x-tile{cursor:pointer;font:inherit;font-weight:500;line-height:inherit}
 @media (max-width:760px){.x-act .x-session{display:none}}
+.xs .x-sess-off{font-size:11.5px;color:var(--x-red);white-space:nowrap}
