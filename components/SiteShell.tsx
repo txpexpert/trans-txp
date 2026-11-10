@@ -21,7 +21,7 @@ export default function SiteShell({ title, description, children, plain = false 
   const { pathname } = useRouter()
   const [menu, setMenu] = useState(false)
   // Session en cours : nom du client affiché dans l'en-tête, avec la tuile Déconnexion
-  const [user, setUser] = useState<{ label: string; detail: string } | null>(null)
+  const [user, setUser] = useState<{ label: string; detail: string; compte: string } | null>(null)
   useEffect(() => {
     let alive = true
     fetch('/api/auth/me', { credentials: 'same-origin' })
@@ -29,7 +29,9 @@ export default function SiteShell({ title, description, children, plain = false 
       .then(u => {
         if (!alive || !u) return
         const nom = [u.prenom, u.nom].filter(Boolean).join(' ').trim()
-        setUser({ label: nom || u.societe || u.email, detail: [u.societe, u.email, u.numero ? `n° ${u.numero}` : ''].filter(Boolean).join(' · ') })
+        const PLAN: Record<string, string> = { free: 'Découverte', trial: 'Essai', pro: 'Pro', premium: 'Premium', enterprise: 'Entreprise' }
+        const compte = u.role === 'admin' || u.role === 'generaladmin' ? 'Administrateur' : `Compte ${PLAN[u.plan] || u.plan || ''}`.trim()
+        setUser({ label: nom || u.societe || u.email, compte, detail: [u.societe, u.email, u.numero ? `n° ${u.numero}` : ''].filter(Boolean).join(' · ') })
       })
       .catch(() => {})
     return () => { alive = false }
@@ -58,14 +60,13 @@ export default function SiteShell({ title, description, children, plain = false 
           </nav>
           <div className="x-act">
             {user ? (
-              <>
-                <Link href="/app" className="x-tile t-green x-user" title={`Session en cours : ${user.detail}`}><span className="x-dot" aria-hidden="true" />{user.label}</Link>
+              <div className="x-session" title={`Session en cours : ${user.detail}`}>
+                <Link href="/app" className="x-sess-who"><span className="x-dot" aria-hidden="true" />{user.label}<small>{user.compte}</small></Link>
                 <button type="button" className="x-tile t-rose x-logout" onClick={logout}>Déconnexion</button>
-              </>
+              </div>
             ) : (
               <Link href="/auth/login" className="x-tile t-rose x-login">Connexion</Link>
             )}
-            <Link href="/diagnostic" className="x-btn x-btn-dark"><span className="x-long">Mesurer mon exposition</span><span className="x-short">Diagnostic</span></Link>
             <button type="button" className="x-burger" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(m => !m)}>{menu ? '✕' : '☰'}</button>
           </div>
         </div>
