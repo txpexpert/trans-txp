@@ -1,0 +1,61 @@
+# .github/workflows/deploy-vps.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# Mise en ligne sur le VPS CapConnect (voir deploy/vps/README.md).
+#
+# Pendant la migration : déclenchement MANUEL uniquement (onglet Actions →
+# « Déploiement VPS » → Run workflow). Vercel reste la plateforme de
+# production tant que la bascule DNS n'est pas faite.
+# Après la bascule : décommenter le bloc « push » pour retrouver la mise en
+# ligne automatique à chaque fusion, comme sur Vercel.
+#
+# Secrets à créer (Settings → Secrets and variables → Actions) :
+#   VPS_HOST     adresse IP du VPS
+#   VPS_SSH_KEY  clé privée SSH autorisée pour l'utilisateur ixp
+# ─────────────────────────────────────────────────────────────────────────────
+name: Déploiement VPS
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environnement"
+        type: choice
+        options: [prod, demo]
+        default: demo
+  # push:
+  #   branches: [main, demo-refonte-marketing.IXP]
+
+concurrency:
+  group: deploy-vps-${{ github.event.inputs.env || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Choix de l'environnement
+        id: target
+        run: |
+          if [ -n "${{ github.event.inputs.env }}" ]; then
+            echo "env=${{ github.event.inputs.env }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.ref_name }}" = "main" ]; then
+            echo "env=prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "env=demo" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Connexion SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Mise en ligne (${{ steps.target.outputs.env }})
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: ssh ixp@"$VPS_HOST" "/srv/ixp/bin/deploy.sh ${{ steps.target.outputs.env }}"
