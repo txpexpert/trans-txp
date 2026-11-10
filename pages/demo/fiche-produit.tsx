@@ -13,7 +13,8 @@ const QTE = 500, FOB_U = 420, FRET = 18000, ASSUR = 2100
 const FOB = QTE * FOB_U
 const VD = FOB + FRET + ASSUR
 const DI = VD * 0.30
-const TVA = (VD + DI) * 0.20
+const TPI = VD * 0.0025
+const TVA = (VD + DI + TPI) * 0.20
 
 const MODULES = [
   { n: 1, label: 'Classement tarifaire SH', action: 'Code SH recherché et retenu', done: true },
@@ -66,7 +67,7 @@ export default function FicheProduitDemo() {
           <article className="x-fp">
             <header className="x-fp-hd">
               <div>
-                <span className="x-mono">FICHE PRODUIT DOUANE · PRD-0001</span>
+                <span className="x-mono">FICHE PRODUIT DOUANE · RÉF. INTERNE ART-10452 (FICTIVE)</span>
                 <h2>Compteur d’énergie intelligent monophasé</h2>
                 <p>Référence DDSU666-H · boîtier compact sur rail · mesure la consommation, la production solaire et les échanges avec le réseau, et pilote la batterie via l’onduleur.</p>
               </div>
@@ -102,6 +103,8 @@ export default function FicheProduitDemo() {
                   <dt>Prix unitaire</dt><dd>{dh(FOB_U)} départ usine chargé (fictif)</dd>
                   <dt>À ajouter</dt><dd>Fret et assurance jusqu’à la frontière (Code des douanes, art. 20 ter-1° e et g)</dd>
                   <dt>Redevances, commissions</dt><dd>Aucune déclarée par le fournisseur</dd>
+                  <dt>Poids net / brut</dt><dd>0,25 kg / 0,35 kg par unité (fictif)</dd>
+                  <dt>Unité</dt><dd>Unité (u)</dd>
                 </dl>
               </section>
 
@@ -124,8 +127,9 @@ export default function FicheProduitDemo() {
                     <tr><td>Fret et assurance</td><td>{dh(FRET + ASSUR)}</td></tr>
                     <tr className="sub"><td>Valeur en douane</td><td>{dh(VD)}</td></tr>
                     <tr><td>Droit d’importation 30 %</td><td>{dh(DI)}</td></tr>
+                    <tr><td>Taxe parafiscale à l’importation 0,25 %</td><td>{dh(TPI)}</td></tr>
                     <tr><td>TVA à l’importation 20 %</td><td>{dh(TVA)}</td></tr>
-                    <tr className="tot"><td>Droits et taxes</td><td>{dh(DI + TVA)}</td></tr>
+                    <tr className="tot"><td>Droits et taxes</td><td>{dh(DI + TPI + TVA)}</td></tr>
                   </tbody>
                 </table>
                 <p className="x-fp-note">Le calcul complet (frais de port, transit, change) se fait à l’étape Chiffrer.</p>
@@ -135,7 +139,7 @@ export default function FicheProduitDemo() {
             <footer className="x-fp-ft">
               <div>
                 <span className="x-mono">TEXTES DE RÉFÉRENCE</span>
-                <p>Circulaire n° 6780/232 du 21/10/2026 · Code des douanes, art. 20 ter et 45 ter · Règles générales interprétatives 1 et 6 · Tarif des droits d’importation 2026</p>
+                <p>Circulaire n° 6780/232 du 21/10/2026 · Code des douanes, art. 20 ter et 45 ter · Règles générales interprétatives 1 et 6 · TPI 0,25 % : note n° D7106/16/ADII/100 · Tarif des droits d’importation 2026</p>
               </div>
               <div>
                 <span className="x-mono">TRANSMIS À L’ÉTAPE SUIVANTE</span>
@@ -145,7 +149,8 @@ export default function FicheProduitDemo() {
           </article>
           <p className="x-disclaimer" style={{ marginTop: 14 }}>Document d’aide à la conformité : il ne vaut pas décision de l’administration.</p>
           <div style={{ marginTop: 24, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <Link href="/auth/register?plan=pro" className="x-btn x-btn-dark">Essai 14 jours</Link>
+            <Link href="/fiches/nouvelle" className="x-btn x-btn-dark">Créer ma fiche produit</Link>
+            <Link href="/auth/register?plan=pro" className="x-btn x-btn-line">Essai 14 jours</Link>
             <Link href="/espaces/qualifier" className="x-btn x-btn-line">Découvrir l’espace Qualifier</Link>
           </div>
         </div>
