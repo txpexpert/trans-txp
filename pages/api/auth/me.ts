@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // lit que le cookie, voit alors aussi le nouveau plan.
   const { data: dbUser, error: dbError } = await supabase
     .from('users')
-    .select('role, current_session_id, numero_abonne, plan, statut, trial_ends_at, plan_ends_at')
+    .select('role, current_session_id, numero_abonne, plan, statut, trial_ends_at, plan_ends_at, prenom, nom, societe')
     .eq('email', payload.email.toLowerCase())
     .single()
 
@@ -84,6 +84,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     role,
     numero:    dbUser?.numero_abonne ?? null,
     email:     payload.email,
+    prenom:    dbUser?.prenom ?? null,
+    nom:       dbUser?.nom ?? null,
+    societe:   dbUser?.societe ?? null,
     plan,
     statut,
     trialEnds: trialEnds ?? null,
