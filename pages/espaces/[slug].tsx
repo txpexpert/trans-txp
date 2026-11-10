@@ -4,6 +4,7 @@
 // aux outils en paramètres d'URL.
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import ProgressBar from '../../components/ProgressBar'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import SiteShell from '../../components/SiteShell'
 import { CHAIN, ESPACES, TIER_LABEL, espaceBySlug } from '../../lib/suite'
@@ -47,6 +48,11 @@ export default function EspacePage({ slug }: { slug: string }) {
           </div>
         </div>
       </section>
+      {e.chain && (
+        <section className="x-sec-tight" style={{ paddingTop: 18, paddingBottom: 0 }}>
+          <div className="x-wrap"><ProgressBar etape={e.slug} livrable={e.livrable} /></div>
+        </section>
+      )}
 
       <section className="x-sec-tight">
         <div className="x-wrap">
