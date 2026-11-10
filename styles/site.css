@@ -534,3 +534,56 @@
 .x-initier{display:inline-flex;align-items:center;gap:14px;margin:0 0 18px;padding:12px 26px 12px 22px;border-radius:999px;background:var(--x-ink);color:#fff;font-family:var(--x-serif);font-weight:400;font-size:clamp(28px,4vw,44px);line-height:1.1}
 .x-initier::before{content:'';width:14px;height:14px;border-radius:50%;background:var(--x-gold2);box-shadow:0 0 0 6px rgba(201,168,76,.25)}
 .x-pc-full{grid-column:1 / -1;margin-top:4px;padding-top:18px;border-top:1px dashed var(--cl)}
+
+/* ── Barre de progression d'étape ── */
+.x-prog{background:#fff;border:1px solid var(--cl);border-radius:16px;padding:18px 22px}
+.x-prog-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.x-prog-steps{display:flex;gap:6px;flex-wrap:wrap;font-size:13px}
+.x-prog-steps b,.x-prog-steps span{padding:4px 10px;border-radius:999px;border:1px solid var(--x-line)}
+.x-prog-steps b{background:var(--c);border-color:var(--c);color:#fff;font-weight:600}
+.x-prog-steps span{color:var(--x-ink3)}
+.x-prog-top .x-mono{font-size:11px;color:var(--x-ink3)}
+.x-prog-bar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;margin:14px 0 10px}
+.x-prog-bar span{height:10px;border-radius:999px;background:var(--cb);border:1px solid var(--cl)}
+.x-prog-bar span.ok{background:var(--c);border-color:var(--c)}
+.x-prog-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--x-ink2)}
+.x-prog-next{font-weight:600;color:var(--c)}
+
+/* ── Fiche produit douane (modèle) ── */
+.x-fp{background:#fff;border:1px solid var(--x-line2);border-radius:18px;overflow:hidden;box-shadow:0 20px 40px -30px rgba(20,18,15,.35)}
+.x-fp-hd{display:flex;justify-content:space-between;gap:24px;padding:28px 32px;background:var(--x-paper);border-bottom:1px solid var(--x-line)}
+.x-fp-hd .x-mono{font-size:11.5px;color:var(--x-gold)}
+.x-fp-hd h2{font-family:var(--x-serif);font-weight:400;font-size:30px;margin:6px 0 8px}
+.x-fp-hd p{margin:0;color:var(--x-ink2);max-width:640px}
+.x-fp-stamp{flex:none;display:grid;grid-template-columns:auto;gap:2px;text-align:right;padding:12px 16px;border:1px dashed var(--x-line2);border-radius:12px;font-size:12px;color:var(--x-ink3);height:max-content}
+.x-fp-stamp b{font-size:15px;color:var(--x-ink);margin-bottom:6px}
+.x-fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.x-fp-grid>section{padding:24px 32px;border-bottom:1px solid var(--x-line)}
+.x-fp-grid>section:nth-child(odd){border-right:1px solid var(--x-line)}
+.x-fp h3{margin:0 0 12px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--x-navy)}
+.x-fp-code{font-family:var(--x-mono);font-size:30px;color:var(--x-ink);margin:0 0 6px}
+.x-fp dl{display:grid;grid-template-columns:150px 1fr;gap:8px 14px;margin:12px 0 0;font-size:14.5px}
+.x-fp dt{color:var(--x-ink3)}
+.x-fp dd{margin:0;color:var(--x-ink)}
+.x-fp-alert{margin:16px 0 0;padding:12px 14px;border-left:4px solid var(--x-red);background:#FCEEF0;border-radius:0 10px 10px 0;font-size:14px}
+.x-fp-docs{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14.5px}
+.x-fp-docs span{display:inline-block;min-width:96px;margin-right:10px;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:600;text-align:center}
+.x-fp-docs .ob{background:#E9EFF9;color:var(--x-navy)}
+.x-fp-docs .co{background:#FCF4E3;color:#9A620C}
+.x-fp-docs .re{background:#EBF6EF;color:#1E7346}
+.x-fp-calc{width:100%;border-collapse:collapse;font-size:14.5px}
+.x-fp-calc td{padding:6px 0;border-bottom:1px solid var(--x-line)}
+.x-fp-calc td:last-child{text-align:right;font-family:var(--x-mono)}
+.x-fp-calc tr.sub td{font-weight:600}
+.x-fp-calc tr.tot td{font-weight:700;border-bottom:0;font-size:16px}
+.x-fp-note{margin:10px 0 0;font-size:13px;color:var(--x-ink3)}
+.x-fp-ft{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;padding:20px 32px;background:var(--x-paper)}
+.x-fp-ft .x-mono{font-size:11px;color:var(--x-ink3)}
+.x-fp-ft p{margin:6px 0 0;font-size:14px;color:var(--x-ink2)}
+@media (max-width:900px){.x-fp-grid,.x-fp-ft{grid-template-columns:1fr}.x-fp-grid>section:nth-child(odd){border-right:0}.x-fp-hd{flex-direction:column}.x-fp-stamp{text-align:left}.x-fp dl{grid-template-columns:1fr}}
+
+/* ── Parcours : tuiles non cliquables sans abonnement ── */
+span.x-pc-chip{cursor:default}
+span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
+.x-pc-cta{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;padding:18px 22px;border-radius:16px;background:var(--x-ink);color:#fff}
+.x-pc-cta p{margin:0;font-size:15px}
