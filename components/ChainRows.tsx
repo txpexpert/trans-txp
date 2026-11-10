@@ -18,6 +18,19 @@ export default function ChainRows() {
 
   const [active, setActive] = useState(-1)
   const paused = useRef(false)
+  // Accès : modules cliquables seulement pour un abonnement en cours (essai compris) ou un administrateur.
+  const [abonne, setAbonne] = useState(false)
+  useEffect(() => {
+    fetch('/api/auth/me', { credentials: 'same-origin' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(u => {
+        if (!u) return
+        const admin = u.role === 'admin' || u.role === 'generaladmin'
+        const actif = ['pro', 'premium', 'enterprise', 'trial'].includes(u.plan) && (u.statut === 'active' || u.statut === 'trial')
+        setAbonne(admin || actif)
+      })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -64,12 +77,16 @@ export default function ChainRows() {
                   const col = row % 2 === 0 ? pos : 2 - pos
                   const lastTool = ti === e.tools.length - 1
                   const dir = lastTool ? '' : pos === 2 ? 'a-down' : row % 2 === 0 ? 'a-right' : 'a-left'
-                  return (
-                    <Link key={t.path + t.label} href={t.path} title={t.desc}
-                      className={`x-pc-chip ${state(g)} ${dir} ${g < active ? 'lit' : ''}`}
-                      style={{ ['--gr' as any]: row + 1, ['--gc' as any]: col + 1 }}>
+                  const cls = `x-pc-chip ${state(g)} ${dir} ${g < active ? 'lit' : ''}`
+                  const place = { ['--gr' as any]: row + 1, ['--gc' as any]: col + 1 }
+                  return abonne ? (
+                    <Link key={t.path + t.label} href={t.path} title={t.desc} className={cls} style={place}>
                       <i>{ti + 1}</i><span>{t.label}</span>
                     </Link>
+                  ) : (
+                    <span key={t.path + t.label} title={t.desc} className={cls} style={place}>
+                      <i>{ti + 1}</i><span>{t.label}</span>
+                    </span>
                   )
                 })}
               </div>
@@ -83,6 +100,12 @@ export default function ChainRows() {
           </Fragment>
         )
       })}
+      {!abonne && (
+        <div className="x-pc-cta">
+          <p>Les modules s’ouvrent avec un abonnement. Essayez le parcours complet pendant 14 jours.</p>
+          <Link href="/auth/register?plan=pro" className="x-btn x-btn-gold">Essai 14 jours</Link>
+        </div>
+      )}
     </div>
   )
 }
