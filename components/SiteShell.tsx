@@ -9,8 +9,8 @@ import IxpLogo from './IxpLogo'
 const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === '1'
 
 const NAV = [
-  { href: '/plateforme', label: 'Accueil', tone: 't-blue' },
-  { href: '/plateforme#profils', label: 'Solutions', tone: 't-green' },
+  { href: '/', label: 'Accueil', tone: 't-blue' },
+  { href: '/plateforme', label: 'Solutions', tone: 't-green' },
   { href: '/espaces/piloter', label: 'Piloter', tone: 't-slate' },
   { href: '/espaces/bibliotheque', label: 'Bibliothèque', tone: 't-teal' },
   { href: '/expertise', label: 'Expertise', tone: 't-violet' },
