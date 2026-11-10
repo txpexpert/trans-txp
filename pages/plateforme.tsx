@@ -41,7 +41,7 @@ export default function Plateforme() {
       </section>
 
 
-      <ChainCompact eyebrow="Initier vos opérations" id="initier" />
+      <ChainCompact eyebrow="Initier vos opérations" id="initier" big />
 
       <section className="x-sec x-sec-dark">
         <div className="x-wrap">

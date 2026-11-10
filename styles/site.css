@@ -485,3 +485,34 @@
 .xs button.x-tile{cursor:pointer;font:inherit;font-weight:500;line-height:inherit}
 @media (max-width:760px){.x-act .x-session{display:none}}
 .xs .x-sess-off{font-size:11.5px;color:var(--x-red);white-space:nowrap}
+
+/* ── Parcours animé des modules (accueil) ── */
+.x-flow{display:grid;gap:0}
+.x-flow-row{transition:box-shadow .3s ease,border-color .3s ease}
+.x-flow-row.is-on{border-color:var(--c);box-shadow:0 0 0 3px var(--cl)}
+.x-flow-head{display:block;color:inherit;text-decoration:none}
+.x-flow-open{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;color:var(--c)}
+.x-flow-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 4px;margin-top:14px}
+.x-flow-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--cl);background:#fff;color:var(--x-ink2);font-size:12.5px;text-decoration:none;transition:all .35s ease}
+.x-flow-chip i{font-style:normal;font-family:var(--x-mono);font-size:10.5px;width:17px;height:17px;border-radius:50%;display:inline-grid;place-items:center;background:var(--cb);color:var(--c)}
+.x-flow-chip:hover{border-color:var(--c);color:var(--c)}
+.x-flow-chip.done{background:var(--cb);color:var(--x-ink)}
+.x-flow-chip.on{background:var(--c);border-color:var(--c);color:#fff;transform:scale(1.06);box-shadow:0 4px 14px -4px var(--c)}
+.x-flow-chip.on i{background:#fff;color:var(--c)}
+.x-flow-arr{position:relative;display:inline-block;width:18px;height:2px;background:var(--cl);margin:0 2px}
+.x-flow-arr::after{content:'';position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:6px solid var(--cl);border-right:0}
+.x-flow-arr.lit{background:var(--c)}
+.x-flow-arr.lit::after{border-left-color:var(--c)}
+.x-flow-link{position:relative;height:46px;display:flex;align-items:center;padding-left:56px}
+.x-flow-line{position:absolute;left:40px;top:0;bottom:0;width:2px;background:var(--x-line2);overflow:hidden}
+.x-flow-line::after{content:'';position:absolute;bottom:-1px;left:-5px;border:6px solid transparent;border-top:7px solid var(--x-line2);border-bottom:0}
+.x-flow-link.done .x-flow-line{background:var(--x-ink3)}
+.x-flow-link.on .x-flow-line{background:linear-gradient(var(--x-gold) 50%,var(--x-line2) 50%);background-size:2px 16px;animation:x-flow-run .5s linear infinite}
+.x-flow-tag{font-family:var(--x-mono);font-size:11.5px;color:var(--x-ink3);letter-spacing:.02em}
+.x-flow-link.on .x-flow-tag{color:var(--x-gold);font-weight:600}
+@keyframes x-flow-run{from{background-position:0 0}to{background-position:0 16px}}
+@media (prefers-reduced-motion:reduce){.x-flow-chip,.x-flow-row{transition:none}.x-flow-link.on .x-flow-line{animation:none}}
+
+/* ── « Initier vos opérations » mis en avant (page Solutions) ── */
+.x-initier{display:inline-flex;align-items:center;gap:14px;margin:0 0 18px;padding:12px 26px 12px 22px;border-radius:999px;background:var(--x-ink);color:#fff;font-family:var(--x-serif);font-weight:400;font-size:clamp(28px,4vw,44px);line-height:1.1}
+.x-initier::before{content:'';width:14px;height:14px;border-radius:50%;background:var(--x-gold2);box-shadow:0 0 0 6px rgba(201,168,76,.25)}

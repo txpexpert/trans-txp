@@ -2,12 +2,14 @@
 import Link from 'next/link'
 import { CHAIN } from '../lib/suite'
 
-export default function ChainCompact({ eyebrow, id }: { eyebrow: string; id?: string }) {
+export default function ChainCompact({ eyebrow, id, big = false }: { eyebrow: string; id?: string; big?: boolean }) {
   return (
     <section className="x-sec x-sec-dark" id={id}>
       <div className="x-wrap">
-        <div className="x-eyebrow">{eyebrow}</div>
-        <h2 className="x-h2">Une opération, <em>cinq étapes</em>, un seul dossier.</h2>
+        {big ? <h2 className="x-initier">{eyebrow}</h2> : <div className="x-eyebrow">{eyebrow}</div>}
+        {big
+          ? <h3 className="x-h2" style={{ fontSize: 'clamp(24px,3vw,34px)' }}>Une opération, <em>cinq étapes</em>, un seul dossier.</h3>
+          : <h2 className="x-h2">Une opération, <em>cinq étapes</em>, un seul dossier.</h2>}
         <p className="x-sub">Chaque espace répond à une question que vous vous posez à chaque importation, produit un livrable, et transmet ses données à l’étape suivante.</p>
         <div className="x-chain">
           {CHAIN.map((e, i) => (
