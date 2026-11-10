@@ -146,8 +146,8 @@ export default function FicheProduitDemo() {
                 <p>Code SH 9028.30.10.90, droit de 30 %, origine Chine, documents exigés → <b>Optimiser</b></p>
               </div>
             </footer>
+            <p className="x-fp-disc">Document d’aide à la décision, établi à partir des informations saisies et des textes disponibles à la date de vérification. Il ne constitue ni une décision ni un avis opposable : les données finales sont celles édictées par les autorités compétentes (Administration des douanes et impôts indirects et autres administrations concernées).</p>
           </article>
-          <p className="x-disclaimer" style={{ marginTop: 14 }}>Document d’aide à la conformité : il ne vaut pas décision de l’administration.</p>
           <div style={{ marginTop: 24, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <Link href="/fiches/nouvelle" className="x-btn x-btn-dark">Créer ma fiche produit</Link>
             <Link href="/auth/register?plan=pro" className="x-btn x-btn-line">Essai 14 jours</Link>

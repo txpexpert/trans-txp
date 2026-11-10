@@ -627,3 +627,4 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 .x-prog-steps a{padding:4px 10px;border-radius:999px;border:1px solid var(--x-line);color:var(--x-ink3);text-decoration:none}
 @media (max-width:760px){.x-ff-grid{grid-template-columns:1fr}.x-fl{display:block;overflow-x:auto}}
 @media print{.noprint,.x-hdr,.x-ftr,.x-disclaimer+div{display:none!important}.x-fp{box-shadow:none}}
+.x-fp-disc{margin:0;padding:14px 32px;border-top:1px solid var(--x-line);background:#fff;font-size:12.5px;line-height:1.5;color:var(--x-ink3);font-style:italic}

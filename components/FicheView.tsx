@@ -106,6 +106,7 @@ export default function FicheView({ f }: { f: Record<string, any> }) {
         <div><span className="x-mono">TEXTES DE RÉFÉRENCE</span><p>{refs.join(' · ')}</p></div>
         <div><span className="x-mono">TRANSMIS À L’ÉTAPE SUIVANTE</span><p>Code SH {fmtSh(f.code_sh)}, droit de {f.taux_droit ?? '—'} %, origine {f.pays_origine || '—'} → <b>Optimiser</b></p></div>
       </footer>
+      <p className="x-fp-disc">Document d’aide à la décision, établi à partir des informations saisies et des textes disponibles à la date de vérification. Il ne constitue ni une décision ni un avis opposable : les données finales sont celles édictées par les autorités compétentes (Administration des douanes et impôts indirects et autres administrations concernées).</p>
     </article>
   )
 }
