@@ -128,19 +128,6 @@ export default function Accueil() {
         </div>
       </section>
 
-      {/* ── PILIERS ── */}
-      <section className="x-sec x-sec-white">
-        <div className="x-wrap">
-          <div className="x-eyebrow">La réponse</div>
-          <h2 className="x-h2">Savoir, chiffrer, <em>prouver</em>.</h2>
-          <p className="x-sub">Import-eXPert redonne à l’entreprise ce que l’administration a déjà : des règles à jour, des calculs fiables et une trace de chaque décision.</p>
-          <div className="x-pillars">
-            {PILIERS.map(p => (
-              <div className="x-pillar" key={p.v}><div className="x-verb">{p.v}</div><p>{p.p}</p><span className="x-mono">{p.m}</span></div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── LA CHAÎNE ── */}
       <section className="x-sec x-sec-dark" id="chaine">
@@ -190,8 +177,22 @@ export default function Accueil() {
         </div>
       </section>
 
-      {/* ── CAS TYPES ── */}
+      {/* ── PILIERS ── */}
       <section className="x-sec x-sec-white">
+        <div className="x-wrap">
+          <div className="x-eyebrow">La réponse</div>
+          <h2 className="x-h2">Savoir, chiffrer, <em>prouver</em>.</h2>
+          <p className="x-sub">Import-eXPert redonne à l’entreprise ce que l’administration a déjà : des règles à jour, des calculs fiables et une trace de chaque décision.</p>
+          <div className="x-pillars">
+            {PILIERS.map(p => (
+              <div className="x-pillar" key={p.v}><div className="x-verb">{p.v}</div><p>{p.p}</p><span className="x-mono">{p.m}</span></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CAS TYPES ── */}
+      <section className="x-sec">
         <div className="x-wrap">
           <div className="x-eyebrow">Cas types</div>
           <h2 className="x-h2">Trois erreurs fréquentes, <em>expliquées par les textes</em>.</h2>
@@ -211,7 +212,7 @@ export default function Accueil() {
       </section>
 
       {/* ── PROFILS ── */}
-      <section className="x-sec" id="profils">
+      <section className="x-sec x-sec-white" id="profils">
         <div className="x-wrap">
           <div className="x-eyebrow">Pour qui</div>
           <h2 className="x-h2">Conçue pour ceux qui <em>signent</em> les opérations.</h2>
