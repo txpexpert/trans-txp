@@ -12,7 +12,7 @@ export default function CasTypes() {
           <div className="x-eyebrow">Cas types</div>
           <h1 className="x-h1" style={{ maxWidth: 900 }}>L’erreur ne se voit pas au dédouanement. <em>Elle se paie au contrôle.</em></h1>
           <p className="x-lead">Trois situations fréquentes, expliquées pas à pas : ce qui s’est passé, le point qui coince, ce que cela coûte, et ce qu’Import-eXPert aurait signalé avant l’opération. Chaque mécanisme est rattaché au texte officiel qui le fonde.</p>
-          <p className="x-disclaimer">Cas illustratifs construits à partir des textes : les entreprises et situations sont fictives.</p>
+          <p className="x-disclaimer">Cas illustratifs construits à partir des textes : les entreprises, situations et montants sont fictifs. Les taux sont donnés à titre d’exemple ; le taux applicable dépend du code SH et de l’origine.</p>
         </div>
       </section>
 
@@ -28,6 +28,14 @@ export default function CasTypes() {
                 <div><h4>Le point qui coince</h4><p>{c.ceQuiCoince}</p></div>
                 <div><h4>Ce que cela coûte</h4><p>{c.consequence}</p></div>
                 <div><h4>Ce qu’Import-eXPert signale avant</h4><p>{c.ceQueVoitIxp}</p></div>
+              </div>
+              <div className="x-cas-ex">
+                <span className="x-mono">EXEMPLE CHIFFRÉ · ILLUSTRATIF</span>
+                <div className="x-cas-ex-grid">
+                  <div><h4>Hypothèses</h4><ul>{c.exemple.hypotheses.map(h => <li key={h}>{h}</li>)}</ul></div>
+                  <div><h4>Calcul</h4><ul>{c.exemple.calcul.map(h => <li key={h}>{h}</li>)}</ul></div>
+                </div>
+                <p className="x-cas-ex-res">{c.exemple.resultat}</p>
               </div>
               <div className="x-cas-src">
                 <span className="x-mono">TEXTES DE RÉFÉRENCE</span>
