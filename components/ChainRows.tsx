@@ -50,23 +50,28 @@ export default function ChainRows() {
               <div>
                 <p style={{ margin: '0 0 8px', fontWeight: 500 }}>{e.question}</p>
                 <p style={{ margin: 0, color: 'var(--x-ink2)', fontSize: 15 }}>{e.promise}</p>
-                <div className="x-pc-tools" aria-label={`Parcours des modules de l’étape ${e.verb}`}>
-                  {e.tools.map((t, ti) => {
-                    const g = first + ti
-                    return (
-                      <Fragment key={t.path + t.label}>
-                        {ti > 0 && <span className={`x-pc-arr ${g <= active ? 'lit' : ''}`} aria-hidden="true" />}
-                        <Link href={t.path} className={`x-pc-chip ${state(g)}`} title={t.desc}>
-                          <i>{ti + 1}</i>{t.label}
-                        </Link>
-                      </Fragment>
-                    )
-                  })}
-                </div>
               </div>
               <div className="x-card-out" style={{ borderTop: 'none', paddingTop: 0 }}>
                 <b>Livrable</b>{e.livrable}
                 <b style={{ marginTop: 12 }}>Transmet</b>{e.transmet}
+              </div>
+              <div className="x-pc-tools x-pc-full" aria-label={`Parcours des modules de l’étape ${e.verb}`}>
+                {e.tools.map((t, ti) => {
+                  const g = first + ti
+                  // Grille de 3 par ligne, en serpentin : ligne paire de gauche à droite,
+                  // ligne impaire de droite à gauche, pour que chaque tuile touche la suivante.
+                  const row = Math.floor(ti / 3), pos = ti % 3
+                  const col = row % 2 === 0 ? pos : 2 - pos
+                  const lastTool = ti === e.tools.length - 1
+                  const dir = lastTool ? '' : pos === 2 ? 'a-down' : row % 2 === 0 ? 'a-right' : 'a-left'
+                  return (
+                    <Link key={t.path + t.label} href={t.path} title={t.desc}
+                      className={`x-pc-chip ${state(g)} ${dir} ${g < active ? 'lit' : ''}`}
+                      style={{ ['--gr' as any]: row + 1, ['--gc' as any]: col + 1 }}>
+                      <i>{ti + 1}</i><span>{t.label}</span>
+                    </Link>
+                  )
+                })}
               </div>
             </div>
             {si < CHAIN.length - 1 && (
