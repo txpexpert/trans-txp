@@ -475,8 +475,12 @@
 .x-cas-ex li{margin:3px 0}
 .x-cas-ex-res{margin:14px 0 0;font-family:var(--x-serif);font-size:21px;color:var(--x-ink)}
 @media (max-width:900px){.x-cas-ex-grid{grid-template-columns:1fr}}
-/* Session en cours dans l'en-tête */
-.xs .x-user{max-width:220px;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.xs .x-user .x-dot{flex:none;width:8px;height:8px;border-radius:50%;background:#1E7346;box-shadow:0 0 0 3px rgba(30,115,70,.18)}
-.xs button.x-tile{cursor:pointer;font:inherit;font-size:14px;font-weight:500;line-height:inherit}
-@media (max-width:760px){.x-act .x-user,.x-act .x-logout{display:none}}
+/* Session en cours dans l'en-tête : nom et compte au-dessus de la tuile Déconnexion */
+.xs .x-session{display:flex;flex-direction:column;align-items:flex-end;gap:3px;line-height:1.1}
+.xs .x-sess-who{display:flex;align-items:center;gap:6px;max-width:240px;font-size:13px;font-weight:600;color:#1E7346;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xs .x-sess-who small{font-weight:500;color:var(--x-ink3);font-size:11.5px}
+.xs .x-sess-who small::before{content:'·';margin-right:6px}
+.xs .x-dot{flex:none;width:7px;height:7px;border-radius:50%;background:#1E7346;box-shadow:0 0 0 3px rgba(30,115,70,.18)}
+.xs .x-session .x-tile{padding:4px 12px;font-size:13px}
+.xs button.x-tile{cursor:pointer;font:inherit;font-weight:500;line-height:inherit}
+@media (max-width:760px){.x-act .x-session{display:none}}

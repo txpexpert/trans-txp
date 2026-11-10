@@ -113,7 +113,10 @@ footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);fo
 .tot .tot-h{font-size:13px;opacity:.8}
 .acct{font-size:14px;margin:8px 0 0;color:var(--ink3)}
 .acct a{color:inherit;font-weight:600}
-#ixp-session{display:flex;gap:8px}
+#ixp-session{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+#ixp-session.on .sess{border:0;background:none;padding:0;font-size:13px}
+#ixp-session.on .sess small{font-weight:500;color:var(--ink3);margin-left:6px}
+#ixp-session.on .out{padding:4px 12px;font-size:13px}
 .toplinks .sess{border-color:#BFE0CC;background:#EAF6EF;color:#1E7346;font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .toplinks .out{border-color:#F0C9CF;background:#FCEEF0;color:#A82D3C;cursor:pointer;font:inherit;font-size:13.5px;padding:7px 12px;border-radius:999px;border-style:solid;border-width:1px}
 </style>
@@ -558,8 +561,10 @@ loadRemote();
   fetch('/api/auth/me',{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null;}).then(function(u){
     if(!u) return;
     var nom=[u.prenom,u.nom].filter(Boolean).join(' ').trim()||u.societe||u.email;
-    box.innerHTML='';
-    var a=document.createElement('a'); a.href='/app'; a.className='sess'; a.textContent='● '+nom; a.title='Session en cours : '+[u.societe,u.email].filter(Boolean).join(' · ');
+    var PLAN={free:'Découverte',trial:'Essai',pro:'Pro',premium:'Premium',enterprise:'Entreprise'};
+    var compte=(u.role==='admin'||u.role==='generaladmin')?'Administrateur':('Compte '+(PLAN[u.plan]||u.plan||''));
+    box.innerHTML=''; box.className='on';
+    var a=document.createElement('a'); a.href='/app'; a.className='sess'; a.textContent='● '+nom; var sm=document.createElement('small'); sm.textContent='· '+compte; a.appendChild(sm); a.title='Session en cours : '+[u.societe,u.email].filter(Boolean).join(' · ');
     var b=document.createElement('button'); b.type='button'; b.className='out'; b.textContent='Déconnexion';
     b.onclick=function(){fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'}).finally(function(){location.href='/';});};
     box.appendChild(a); box.appendChild(b);
