@@ -104,15 +104,6 @@ footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);fo
 
   <div id="form-zone">
     <div id="questions"></div>
-    <div class="panel">
-      <h2 style="font-size:24px">Recevoir le rapport (facultatif)</h2>
-      <p class="note" style="margin-top:0">Laissez vos coordonnées si vous souhaitez recevoir le rapport du Baromètre 2026. Elles ne sont jamais publiées avec les réponses.</p>
-      <div class="grid2">
-        <div><label class="f" for="c-nom">Nom et fonction</label><input type="text" id="c-nom" autocomplete="name"></div>
-        <div><label class="f" for="c-mail">E-mail professionnel</label><input type="email" id="c-mail" autocomplete="email"></div>
-      </div>
-      <label class="consent"><input type="checkbox" id="c-ok"><span>J’accepte que mes coordonnées soient utilisées pour m’envoyer le rapport du Baromètre 2026 et les informations qui s’y rapportent.</span></label>
-    </div>
     <div class="actions">
       <button class="btn dark" id="submit" disabled>Envoyer mes réponses et voir les résultats</button>
       <span class="note" id="req">Répondez au moins aux 10 premières questions.</span>
@@ -157,7 +148,7 @@ var Q=[
  {id:'outils',c:'c6',type:'many',t:'Avec quels outils pilotez-vous la conformité douanière ?',o:['Tableurs','ERP','Logiciel douane dédié','Uniquement via le transitaire','Assistant ou outil d’IA','Aucun outil formalisé']},
  {id:'priorites',c:'c6',type:'many',max:3,t:'Quelles sont vos priorités pour les douze prochains mois ?',h:'Trois réponses au plus.',o:['Réduire les délais de dédouanement','Sécuriser le classement tarifaire','Mieux exploiter les accords de libre-échange','Maîtriser le coût rendu','Mieux apurer les régimes économiques','Obtenir ou renouveler le statut OEA','Former les équipes','Digitaliser la fonction douane']}
 ];
-var KEY='ixp-enquete-2026', MINE='ixp-enquete-2026-moi';
+var KEY='ixp-enquete-2026', MINE='ixp-enquete-2026-moi', GLOBAL=null, KIOSK=false;
 var ans={};
 function $(id){return document.getElementById(id);}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
@@ -194,15 +185,20 @@ function progress(){
   $('submit').disabled=!ok;$('req').textContent=ok?'Vous pouvez envoyer vos réponses.':'Répondez au moins aux 10 premières questions.';
 }
 $('submit').addEventListener('click',function(){
-  var mail=$('c-mail').value.trim();
-  if(mail&&!$('c-ok').checked){$('sent').innerHTML='<div class="msg warn">Cochez la case de consentement pour recevoir le rapport, ou effacez votre e-mail.</div>';return;}
-  if(mail&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)){$('sent').innerHTML='<div class="msg warn">L’adresse e-mail semble incorrecte.</div>';return;}
-  var rep={id:'R'+Date.now(),date:new Date().toISOString(),a:JSON.parse(JSON.stringify(ans)),contact:mail?{nom:$('c-nom').value.trim(),mail:mail}:null};
-  var l=load();l.push(rep);save(l);
-  try{localStorage.setItem(MINE,rep.id);}catch(e){}
-  // Démo : la réponse est enregistrée sur ce poste. En production, l'envoyer aussi à une table dédiée (voir la note de mise en ligne).
-  $('sent').innerHTML='<div class="msg">Merci, vos réponses sont enregistrées. Les résultats ci-dessous en tiennent compte.</div>';
-  results();document.getElementById('results').scrollIntoView({behavior:'smooth'});
+  var rep={id:'R'+Date.now(),date:new Date().toISOString(),a:JSON.parse(JSON.stringify(ans))};
+  var btn=$('submit');btn.disabled=true;
+  // La réponse est envoyée au Baromètre (base centrale) ; une copie reste sur ce poste pour l'affichage « vos réponses ».
+  fetch('/api/barometre',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reponses:rep.a,source:KIOSK?'collecte':'web'})})
+   .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
+   .then(function(x){
+     if(!x.ok){btn.disabled=false;$('sent').innerHTML='<div class="msg warn">'+esc(x.j.error||'Envoi impossible, réessayez.')+'</div>';return;}
+     var l=load();l.push(rep);save(l);
+     try{localStorage.setItem(MINE,rep.id);}catch(e){}
+     GLOBAL=x.j;
+     $('sent').innerHTML='<div class="msg">Merci, vos réponses sont enregistrées dans le Baromètre 2026. Les résultats de l’ensemble des répondants s’afficheront ci-dessous dès 10 réponses.</div>';
+     results();document.getElementById('results').scrollIntoView({behavior:'smooth'});
+   })
+   .catch(function(){btn.disabled=false;$('sent').innerHTML='<div class="msg warn">Erreur réseau, réessayez.</div>';});
 });
 
 /* ── Résultats ── */
@@ -226,13 +222,30 @@ function donut(q,st,mine){
   var leg=q.o.map(function(o,j){var me=mine&&mine.indexOf(j)>=0;return '<div'+(me?' style="font-weight:600"':'')+'><span style="background:'+PAL[j%8]+'"></span>'+esc(o)+' · '+pc(st.cnt[j],st.n)+' %'+(me?' · vous':'')+'</div>';}).join('');
   return '<div class="donut"><svg viewBox="0 0 128 128" width="128" height="128" aria-hidden="true">'+svg+'<text x="64" y="69" text-anchor="middle" font-size="15" font-family="DM Sans" fill="#14120F">n = '+st.n+'</text></svg><div class="legend">'+leg+'</div></div>';
 }
+/* Résultats de l'ensemble des répondants (base centrale), quand ils sont diffusés (10 répondants au moins) */
+function gstats(q){var r=GLOBAL&&GLOBAL.resultats&&GLOBAL.resultats[q.id];return r?{cnt:r.cnt.slice(),n:r.n}:{cnt:q.o.map(function(){return 0;}),n:0};}
 function results(){
-  var l=load(),n=l.length,mineId=null;try{mineId=localStorage.getItem(MINE);}catch(e){}
+  var l=load(),mineId=null;try{mineId=localStorage.getItem(MINE);}catch(e){}
   var mine=l.filter(function(r){return r.id===mineId;})[0];
+  var glob=!!(GLOBAL&&GLOBAL.resultats);
+  if(glob){stats=function(_l,q){return gstats(q);};}
+  var n=glob?GLOBAL.n:l.length;
+  if(glob){
+    $('r-title').textContent='Résultats : '+n+' répondants';
+    $('r-src').textContent='Ensemble des réponses reçues ('+(GLOBAL.publie?'échantillon exploitable':'échantillon encore restreint : à interpréter avec prudence')+'). Les cases en gras sont les vôtres.';
+  } else if(GLOBAL){
+    $('r-title').textContent=GLOBAL.n+' répondant'+(GLOBAL.n>1?'s':'')+' à ce jour';
+    $('r-src').textContent='Les pourcentages sont diffusés à partir de 10 répondants, pour préserver l’anonymat. En attendant, vos propres réponses s’affichent ci-dessous.';
+    n=l.length;
+  } else {
   $('r-title').textContent=n?'Résultats : '+n+' répondant'+(n>1?'s':''):'Aucune réponse pour l’instant';
   $('r-src').textContent=n?'Réponses enregistrées sur ce poste ('+(n<30?'échantillon encore restreint : à interpréter avec prudence':'échantillon exploitable')+'). Les cases en gras sont les vôtres.':'Les graphiques apparaîtront dès la première réponse envoyée.';
+  }
   if(!n){$('kpis').innerHTML='';$('charts').innerHTML='<div class="chart"><div class="empty">Répondez au questionnaire pour afficher les premiers résultats.</div></div>';return;}
   function share(id,test){var s=0,m=0;l.forEach(function(r){var a=r.a[id];if(!a)return;m++;if(test(a))s++;});return m?Math.round(s/m*100)+' %':'—';}
+  if(glob){share=function(id){var q=Q.filter(function(x){return x.id===id;})[0],st=gstats(q);if(!st.n)return '—';
+    if(id==='controle')return Math.round((st.cnt[1]+st.cnt[2])/st.n*100)+' %';
+    if(id==='ale')return Math.round((st.n-st.cnt[q.o.length-1])/st.n*100)+' %';return '—';};}
   var qc=Q[6],qa=Q[7],qr=Q[4],qp=Q[11];
   var tr=stats(l,qr),tp=stats(l,qp),ir=tr.cnt.indexOf(Math.max.apply(null,tr.cnt)),ip=tp.cnt.indexOf(Math.max.apply(null,tp.cnt));
   $('kpis').innerHTML=
@@ -246,16 +259,17 @@ function results(){
       (st.n?(q.type==='one'&&q.o.length<=6?donut(q,st,me):bars(q,st,me)):'<div class="empty">Pas encore de réponse.</div>')+'</div>';});
   $('charts').innerHTML=h;
 }
-$('kiosk').addEventListener('click',function(){ans={};['c-nom','c-mail'].forEach(function(id){$(id).value='';});$('c-ok').checked=false;$('sent').innerHTML='';
+$('kiosk').addEventListener('click',function(){KIOSK=true;ans={};$('sent').innerHTML='';
   try{localStorage.removeItem(MINE);}catch(e){}render();progress();results();window.scrollTo({top:0,behavior:'smooth'});});
 $('print').addEventListener('click',function(){window.print();});
 $('csv').addEventListener('click',function(){var l=load();if(!l.length)return;
-  var head=['id','date'].concat(Q.map(function(q,i){return 'Q'+(i+1)+' '+q.t;})).concat(['contact_nom','contact_email']);
-  var rows=l.map(function(r){return [r.id,r.date].concat(Q.map(function(q){return (r.a[q.id]||[]).map(function(j){return q.o[j];}).join(' | ');})).concat([r.contact?r.contact.nom:'',r.contact?r.contact.mail:'']);});
+  var head=['id','date'].concat(Q.map(function(q,i){return 'Q'+(i+1)+' '+q.t;}));
+  var rows=l.map(function(r){return [r.id,r.date].concat(Q.map(function(q){return (r.a[q.id]||[]).map(function(j){return q.o[j];}).join(' | ');}));});
   var csv='﻿'+[head].concat(rows).map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(';');}).join('\n');
   var b=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='enquete-barometre-2026.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);});
 
 render();progress();results();
+fetch('/api/barometre').then(function(r){return r.json();}).then(function(j){GLOBAL=j;results();}).catch(function(){});
 })();
 </script>
 </body>
