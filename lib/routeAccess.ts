@@ -46,6 +46,8 @@ export const FREE_PATHS = [
   '/ar',
   '/ar/tarifs',
   '/tools/diagnostic-conformite.html',
+  '/ar/diagnostic',
+  '/tools/diagnostic-conformite-ar.html',
   // Kits opérationnels téléchargeables (démo : accès libre, à arbitrer)
   '/kits/Kit01_Origine_preferentielle_ALE.html',
   '/kits/Kit02_Regimes_suspensifs_economiques.html',

@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="ixp-theme">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تشخيص الامتثال الجمركي | IXP-Import-eXPert</title>
+<meta name="description" content="تشخيص الامتثال الجمركي في ثمانية مجالات: مؤشر التحكم، والتعرّض بالدرهم، ومخطط عمل حسب الأولوية، والتتبع عبر الزمن.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Noto+Naskh+Arabic:wght@400;600&family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--paper:#FAF7F0;--line:#E6DCC7;--line2:#D6C9AC;--gold:#A8822F;--gold2:#C9A84C;
+--navy:#153E82;--navy2:#0E2C5E;--navys:#E9EFF9;--red:#A82D3C;--green:#1E7346;--amber:#9A620C;
+--serif:'DM Serif Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;font-size:15.5px}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.logo{font-family:var(--serif);font-size:23px;text-decoration:none}.logo b{font-weight:400;color:var(--red)}
+.logo sup{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--ink3);margin-left:5px}
+.toplinks{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.toplinks a{text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff}
+.toplinks a:hover{border-color:var(--ink)}
+.eb{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4.4vw,52px);line-height:1.06;margin:12px 0 14px}
+h1 em{color:var(--navy)}
+h2{font-family:var(--serif);font-weight:400;font-size:30px;margin:0 0 8px}
+h3{font-family:var(--serif);font-weight:400;font-size:22px;margin:0 0 6px}
+.lead{font-size:17.5px;color:var(--ink2);max-width:760px}
+.hero{padding:48px 0 22px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:13px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+/* Étapes */
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
+.stepbtn{font:inherit;font-size:14px;padding:10px 16px;border-radius:12px;border:1px solid var(--line2);background:#fff;cursor:pointer;display:flex;gap:8px;align-items:center}
+.stepbtn b{font-family:var(--mono);font-size:11px;color:var(--ink3);font-weight:400}
+.stepbtn.on{background:var(--ink);color:#fff;border-color:var(--ink)}.stepbtn.on b{color:var(--gold2)}
+.stepbtn:disabled{opacity:.45;cursor:not-allowed}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;margin-bottom:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+label.f{display:block;font-size:13.5px;font-weight:500;margin-bottom:6px}
+label.f small{display:block;font-weight:400;color:var(--ink3);font-size:12.5px}
+input[type=text],input[type=number],select{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--paper)}
+input:focus,select:focus{outline:none;border-color:var(--navy);background:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:500;font-size:14.5px;padding:11px 20px;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.dark{background:var(--ink);color:#fff}.dark:hover{background:var(--navy2)}
+.line{background:#fff;border-color:var(--line2);color:var(--ink)}.line:hover{border-color:var(--ink)}
+.gold{background:var(--gold2);color:var(--ink)}
+.navy{background:var(--navy);color:#fff}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+/* Domaines (couleurs) */
+.d-gouv{--c:#3D4A63;--cb:#EEF1F6;--cl:#CDD4E2}.d-clas{--c:#1F4E9A;--cb:#EDF3FC;--cl:#C9DAF3}.d-orig{--c:#1E7346;--cb:#EBF6EF;--cl:#C3E3CF}
+.d-val{--c:#9A620C;--cb:#FCF4E3;--cl:#EFD9A8}.d-adm{--c:#16706B;--cb:#E8F6F5;--cl:#BFE2DF}.d-ded{--c:#5B3FA0;--cb:#F2EEFB;--cl:#D8CDF1}
+.d-red{--c:#A8822F;--cb:#FBF5E6;--cl:#E8D7A6}.d-arch{--c:#A82D3C;--cb:#FCEEF0;--cl:#F0C9CF}
+.dtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.dtab{font:inherit;font-size:13.5px;padding:8px 13px;border-radius:999px;border:1px solid var(--cl);background:var(--cb);color:var(--c);cursor:pointer;font-weight:500}
+.dtab.on{box-shadow:0 0 0 2px var(--c) inset}
+.dtab .cnt{font-family:var(--mono);font-size:11px;margin-left:6px;opacity:.85}
+.dhead{border-left:4px solid var(--c);padding:4px 0 4px 14px;margin-bottom:14px}
+.dhead h3{color:var(--c)}
+.q{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:10px;background:#fff}
+.q.na{opacity:.6}
+.qtop{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.qtxt{font-weight:500}
+.qw{font-family:var(--mono);font-size:10.5px;color:var(--ink3);white-space:nowrap}
+.qref{font-size:12.5px;color:var(--ink3);margin-top:4px}
+.opts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.opt{font:inherit;font-size:13.5px;padding:7px 12px;border-radius:9px;border:1px solid var(--line2);background:#fff;cursor:pointer}
+.opt.on.v-oui{background:#E6F1E8;border-color:var(--green);color:var(--green);font-weight:600}
+.opt.on.v-partiel{background:#FCF4E3;border-color:var(--amber);color:var(--amber);font-weight:600}
+.opt.on.v-non{background:#FCEEF0;border-color:var(--red);color:var(--red);font-weight:600}
+.opt.on.v-nsp{background:#F2EEFB;border-color:#5B3FA0;color:#5B3FA0;font-weight:600}
+.opt.on.v-na{background:#EEF1F6;border-color:#3D4A63;color:#3D4A63;font-weight:600}
+.why{font-size:13px;color:var(--ink2);margin-top:8px;display:none;background:var(--paper);border-radius:9px;padding:8px 10px}
+.q.open .why{display:block}
+.whybtn{font:inherit;font-size:12.5px;background:none;border:none;color:var(--navy);cursor:pointer;padding:0;margin-top:6px;text-decoration:underline}
+.progress{height:8px;background:#EEE6D4;border-radius:99px;overflow:hidden;margin:6px 0 14px}
+.progress i{display:block;height:100%;background:var(--navy);width:0}
+.prog-pct{color:var(--navy);font-weight:700;font-size:14px;margin-left:4px}
+/* Résultats */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.kpi b{display:block;font-family:var(--serif);font-weight:400;font-size:38px;line-height:1.05}
+.kpi span{font-size:13px;color:var(--ink3)}
+.lvl-faible{color:var(--green)}.lvl-moderee{color:var(--amber)}.lvl-elevee{color:var(--red)}
+.bars .row{display:grid;grid-template-columns:210px 1fr 54px;gap:12px;align-items:center;margin-bottom:9px;font-size:14px}
+.bar{height:12px;background:#EEE6D4;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--c);border-radius:99px}
+.delta{font-family:var(--mono);font-size:11px;margin-left:6px}
+.up{color:var(--green)}.down{color:var(--red)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{text-align:left;font-weight:500;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--line);padding:8px 6px}
+table.t td{border-bottom:1px solid var(--line);padding:9px 6px;vertical-align:top}
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:99px;background:var(--cb);color:var(--c);border:1px solid var(--cl);white-space:nowrap}
+.hz{font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.hz1{background:#FCEEF0;color:var(--red)}.hz2{background:#FCF4E3;color:var(--amber)}.hz3{background:#EEF1F6;color:#3D4A63}
+.note{font-size:12.5px;color:var(--ink3)}
+.expo{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.expo .kpi b{font-size:28px}
+.formula{font-family:var(--mono);font-size:11.5px;color:var(--ink2);background:var(--paper);border-radius:8px;padding:6px 8px;margin-top:8px}
+.alert{border-left:4px solid var(--red);background:#FCEEF0;padding:12px 14px;border-radius:0 12px 12px 0;margin:12px 0;font-size:14px}
+.ok{border-left-color:var(--green);background:#EBF6EF}
+select.st{width:auto;padding:5px 8px;font-size:13px}
+.hidden{display:none!important}
+footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink3)}
+@media (max-width:900px){.grid2,.grid3,.kpis,.expo{grid-template-columns:1fr 1fr}.bars .row{grid-template-columns:130px 1fr 46px}}
+@media (max-width:600px){.grid2,.grid3,.kpis,.expo{grid-template-columns:1fr}.toplinks{display:none}.panel{padding:18px}}
+@media print{header.top,.steps,.actions,.noprint,footer.b{display:none!important}body{background:#fff}.panel{break-inside:avoid;border-color:#ccc}.sec{display:block!important}}
+.tot{margin:18px 0 6px;padding:22px 24px;border-radius:16px;background:var(--ink,#14120F);color:#fff}
+.tot .tot-l{font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.tot .tot-v{font-family:var(--serif);font-size:40px;line-height:1.1;margin:6px 0}
+.tot .tot-h{font-size:13px;opacity:.8}
+.acct{font-size:14px;margin:8px 0 0;color:var(--ink3)}
+.acct a{color:inherit;font-weight:600}
+#ixp-session{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+#ixp-session.on .sess{border:0;background:none;padding:0;font-size:13px}
+#ixp-session.on .sess small{font-weight:500;color:var(--ink3);margin-left:6px}
+#ixp-session.on .out{padding:4px 12px;font-size:13px}
+.toplinks .sess{border-color:#BFE0CC;background:#EAF6EF;color:#1E7346;font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Arabe : sens de lecture et polices */
+html[dir=rtl]{--serif:'Noto Naskh Arabic','DM Serif Display',Georgia,serif;--sans:'Noto Sans Arabic','DM Sans',system-ui,sans-serif}
+html[dir=rtl] body{font-size:16px;line-height:1.75}
+html[dir=rtl] .eb{letter-spacing:0;font-family:var(--sans);font-size:13px;font-weight:600}
+html[dir=rtl] .toplinks{margin-left:0;margin-right:auto}
+html[dir=rtl] .logo{direction:ltr}
+html[dir=rtl] .dhead{border-left:0;border-right:4px solid var(--c);padding:4px 14px 4px 0}
+html[dir=rtl] table.t th{text-align:right;letter-spacing:0;text-transform:none}
+html[dir=rtl] .alert{border-left:0;border-right:4px solid var(--red);border-radius:12px 0 0 12px}
+html[dir=rtl] .alert.ok{border-right-color:var(--green)}
+html[dir=rtl] .tot .tot-l{letter-spacing:0;text-transform:none}
+html[dir=rtl] .dtab .cnt{margin-left:0;margin-right:6px}
+html[dir=rtl] .delta{margin-left:0;margin-right:6px}
+html[dir=rtl] #ixp-session{align-items:flex-start}
+html[dir=rtl] .qref,html[dir=rtl] .formula{unicode-bidi:plaintext}
+.toplinks .out{border-color:#F0C9CF;background:#FCEEF0;color:#A82D3C;cursor:pointer;font:inherit;font-size:13.5px;padding:7px 12px;border-radius:999px;border-style:solid;border-width:1px}
+</style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
+</head>
+<body>
+<header class="top" data-ixp-own-header><div class="wrap">
+  <a class="logo" href="/ar">Import<b>-</b>eXPert<sup>MAROC</sup></a>
+  <nav class="toplinks">
+    <a href="/ar">الرئيسية</a><a href="/ar/tarifs">العروض والأسعار</a><a href="/tools/diagnostic-conformite.html" lang="fr">Version française</a><span id="ixp-session"><a href="/auth/login">تسجيل الدخول</a></span>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eb">أداة · تشخيص الامتثال الجمركي</div>
+    <h1>قيسوا درجة تعرّضكم الجمركي، واحسبوها، <em>وقلّصوها</em>.</h1>
+    <p class="lead">ثمانية مجالات ونحو خمسين نقطة مراقبة مستخلصة من مدونة الجمارك والضرائب غير المباشرة ومن دوريات إدارة الجمارك. تحصلون على مؤشر للتحكم، وتقدير للرسوم المعرّضة للخطر، ومخطط عمل حسب الأولوية تتابعونه وتقيسون تقدّمه من تشخيص إلى آخر.</p>
+    <div class="chips"><span class="chip">حوالي 15 دقيقة</span><span class="chip">أسئلة ملائمة لنشاطكم</span><span class="chip">السجل والتطور</span><span class="chip">تصدير PDF وملف</span><span class="chip">بيانات محفوظة على جهازكم</span></div>
+  </section>
+
+  <div class="steps" role="tablist">
+    <button class="stepbtn on" data-step="1"><b>01</b>الملف التعريفي</button>
+    <button class="stepbtn" data-step="2"><b>02</b>الاستبيان</button>
+    <button class="stepbtn" data-step="3"><b>03</b>النتائج</button>
+    <button class="stepbtn" data-step="4"><b>04</b>مخطط العمل والتتبع</button>
+  </div>
+
+  <!-- 1. PROFIL -->
+  <section class="sec" id="s1">
+    <div class="panel">
+      <h2>ملفكم التعريفي</h2>
+      <p class="note" style="margin-top:0">يُكيّف الملف التعريفي الأسئلة ويسمح بحساب درجة التعرّض. المبالغ اختيارية: في غيابها، يُقدَّر التعرّض بمجال مبني على قيم متوسطة تُذكر تحت النتيجة. أدخلوها للحصول على حساب خاص بمقاولتكم.</p>
+      <div class="grid3">
+        <div><label class="f" for="p-nom">المقاولة أو الملف<small>اختياري، للتمييز بين الملفات</small></label><input type="text" id="p-nom" placeholder="مثال: شركة X، موقع طنجة"></div>
+        <div><label class="f" for="p-type">مجال النشاط<small>يوجّه الأسئلة</small></label>
+          <select id="p-type"><option value="importateur">مستورد صناعي</option><option value="pme">مقاولة صغرى أو متوسطة مستوردة</option><option value="transitaire">معشر في الجمرك</option><option value="exportateur">مصدّر في إطار الأنظمة الاقتصادية الجمركية</option><option value="groupe">مجموعة، إدارة مالية</option></select></div>
+        <div><label class="f" for="p-oea">صفة المتعامل الاقتصادي المقبول</label>
+          <select id="p-oea"><option value="non">لا</option><option value="encours">طلب قيد الدراسة</option><option value="oui">حاصل عليها</option></select></div>
+        <div><label class="f" for="p-vol">القيمة السنوية للواردات (درهم)<small>القيمة في الجمرك التقريبية</small></label><input type="number" id="p-vol" min="0" step="1000" placeholder="مثال: 50000000"></div>
+        <div><label class="f" for="p-taux">متوسط مقدار رسم الاستيراد (%)<small>القانون العام، دون الضريبة على القيمة المضافة</small></label><input type="number" id="p-taux" min="0" max="200" step="0.1" placeholder="مثال: 17,5"></div>
+        <div><label class="f" for="p-dum">عدد التصاريح المفصلة في السنة</label><input type="number" id="p-dum" min="0" step="1" placeholder="مثال: 300"></div>
+        <div><label class="f" for="p-pref">حصة الواردات تحت نظام تعريفي تفضيلي (%)<small>اتفاقيات التبادل الحر</small></label><input type="number" id="p-pref" min="0" max="100" step="1" placeholder="مثال: 40"></div>
+        <div><label class="f" for="p-us">واردات من الولايات المتحدة</label><select id="p-us"><option value="non">لا</option><option value="oui">نعم</option></select></div>
+        <div><label class="f" for="p-exp">صادرات بإثبات المنشأ</label><select id="p-exp"><option value="non">لا</option><option value="oui">نعم</option></select></div>
+        <div><label class="f" for="p-red">أنظمة اقتصادية مستعملة<small>القبول المؤقت لتحسين الصنع الفعال، القبول المؤقت، المستودع…</small></label><select id="p-red"><option value="non">لا</option><option value="oui">نعم</option></select></div>
+        <div><label class="f" for="p-encours">الرسوم والمكوس الموقوفة الجارية (درهم)<small>المبالغ المعلّقة في الحسابات المفتوحة</small></label><input type="number" id="p-encours" min="0" step="1000" placeholder="مثال: 2000000"></div>
+        <div><label class="f" for="p-cap">خضعتم لمراقبة بعدية (السنوات الثلاث الأخيرة)</label><select id="p-cap"><option value="non">لا</option><option value="oui">نعم</option></select></div>
+      </div>
+      <div class="actions"><button class="btn dark" id="go-q">ابدأوا الاستبيان ←</button><span class="note" id="resume-note"></span></div>
+    </div>
+  </section>
+
+  <!-- 2. QUESTIONNAIRE -->
+  <section class="sec hidden" id="s2">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline">
+        <h2>الاستبيان</h2><span class="note" id="prog-txt"></span>
+      </div>
+      <div class="progress"><i id="prog"></i></div>
+      <div class="dtabs" id="dtabs"></div>
+      <div id="qzone"></div>
+      <div class="actions"><button class="btn line" id="prev-d">→ المجال السابق</button><button class="btn dark" id="next-d">المجال التالي ←</button><button class="btn navy" id="to-res">عرض النتائج</button></div>
+      <p class="note">يُحتسب جواب «لا أعرف» فارقًا: الممارسة التي لا يستطيع أحد تأكيدها لا تحمي عند المراقبة.</p>
+    </div>
+  </section>
+
+  <!-- 3. RÉSULTATS -->
+  <section class="sec hidden" id="s3">
+    <div class="panel">
+      <div class="eb" id="r-date"></div>
+      <h2 id="r-title">النتائج</h2>
+      <div class="tot" id="expo-total"></div>
+      <p class="acct" id="acct-note"></p>
+      <div class="kpis" style="margin-top:14px">
+        <div class="kpi"><b id="k-idx">—</b><span>المؤشر العام للتحكم</span></div>
+        <div class="kpi"><b id="k-lvl">—</b><span>درجة التعرّض</span></div>
+        <div class="kpi"><b id="k-gaps">—</b><span>الفوارق المحددة (منها الحرجة)</span></div>
+        <div class="kpi"><b id="k-next">—</b><span>التشخيص المقبل الموصى به</span></div>
+      </div>
+      <div id="r-alerts"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>التحكم حسب المجال</h3><p class="note" style="margin-top:0" id="delta-note"></p><div class="bars" id="bars"></div></div>
+      <div class="panel" style="display:flex;flex-direction:column;align-items:center"><h3 style="align-self:flex-start">خريطة التحكم</h3><svg id="radar" viewBox="0 0 360 330" width="100%" style="max-width:420px"></svg></div>
+    </div>
+    <div class="panel">
+      <h3>تقدير الرسوم المعرّضة للخطر</h3>
+      <p class="note" style="margin-top:0">مؤشرات وليست تقييمًا للخطر: الجزء من وعاء الرسوم، خلال مدة المراجعة البالغة أربع سنوات (مدونة الجمارك، الفصل 99 مكرر)، غير المشمول بمراقبات قائمة. تظهر الصيغ تحت كل مبلغ.</p>
+      <div class="expo" id="expo"></div>
+    </div>
+    <div class="actions noprint"><button class="btn dark" id="to-plan">عرض مخطط العمل ←</button><button class="btn line" id="print">طباعة أو حفظ بصيغة PDF</button><button class="btn line" id="back-q">تعديل الأجوبة</button></div>
+  </section>
+
+  <!-- 4. PLAN ET SUIVI -->
+  <section class="sec hidden" id="s4">
+    <div class="panel">
+      <h2>مخطط العمل حسب الأولوية</h2>
+      <p class="note" style="margin-top:0">مرتب حسب الأهمية: وزن نقطة المراقبة × الفارق. يُحفظ التقدم على هذا الجهاز ويُسترجع في التشخيص المقبل.</p>
+      <div style="overflow-x:auto"><table class="t" id="plan"></table></div>
+      <div class="actions noprint"><button class="btn line" id="csv">تصدير المخطط (CSV)</button><button class="btn line" id="print2">طباعة أو حفظ بصيغة PDF</button></div>
+    </div>
+    <div class="panel">
+      <h2>السجل والتطور</h2>
+      <p class="note" style="margin-top:0">يبقى كل تشخيص محفوظ قابلًا للاطلاع. أعيدوه بعد الإجراءات التصحيحية لقياس التقدم.</p>
+      <div style="overflow-x:auto"><table class="t" id="hist"></table></div>
+      <div class="actions noprint">
+        <button class="btn dark" id="new">تشخيص جديد (مع استرجاع الأجوبة)</button>
+        <button class="btn line" id="export">تصدير جميع التشخيصات (ملف)</button>
+        <label class="btn line" style="cursor:pointer">استيراد ملف<input type="file" id="import" accept="application/json" hidden></label>
+        <button class="btn line" id="wipe">مسح السجل</button>
+      </div>
+      <p class="note">تبقى البيانات في متصفح هذا الجهاز؛ صدّروها للاحتفاظ بها أو إرسالها. التشخيص استرشادي ولا يعوّض افتحاصًا ولا رأي خبير في ملف محدد.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="b"><div class="wrap">Import-eXPert · تشخيص معدّ انطلاقًا من دليل المساطر الجمركية بالمغرب (طبعة 2026، محيّن إلى 04/10/2026) ومن مرجع Import Process Management. أداة مساعدة لا تعوّض النصوص الرسمية ولا الاستشارة.</div></footer>
+
+<script>
+(function(){
+'use strict';
+/* ═══════════ Référentiel ═══════════ */
+var DOMAINS=[
+ {id:'gouv',cls:'d-gouv',name:'الحكامة والتنظيم'},
+ {id:'clas',cls:'d-clas',name:'التصنيف التعريفي'},
+ {id:'orig',cls:'d-orig',name:'المنشأ والأنظمة التفضيلية'},
+ {id:'val', cls:'d-val', name:'القيمة في الجمرك'},
+ {id:'adm', cls:'d-adm', name:'المقبولية والأنظمة التقنينية'},
+ {id:'ded', cls:'d-ded', name:'الاستخلاص الجمركي والمراقبات الأساسية'},
+ {id:'red', cls:'d-red', name:'الأنظمة الاقتصادية الجمركية'},
+ {id:'arch',cls:'d-arch',name:'الأرشفة والمراقبة البعدية'}
+];
+/* w = الوزن (1 إلى 3) ؛ c = شرط العرض ؛ r = الخطر ؛ a = الإجراء ؛ ref ؛ l = رابط */
+var Q=[
+ {id:'g1',d:'gouv',w:2,t:"تم تعيين مسؤول عن الوظيفة الجمركية، مع مصفوفة للمسؤوليات (RACI) وتفويضات للتوقيع.",r:"دون مسؤول عن المسار، تتكرر الأخطاء من عملية إلى أخرى ولا يجيب أحد عن طلبات الإدارة.",a:"تعيين المسؤول، وتوثيق مصفوفة المسؤوليات والتفويضات.",ref:"Import Process Management، 23.1",l:'/plateforme'},
+ {id:'g2',d:'gouv',w:2,t:"دليل مكتوب لمساطر الاستيراد يغطي فحص المقبولية، والتصريح، والأنظمة، والأرشفة، ومعالجة الفوارق.",r:"الممارسات غير المكتوبة رهينة بالأشخاص، ولا يمكن إثباتها عند افتحاص صفة المتعامل الاقتصادي المقبول أو عند المراقبة.",a:"تحرير الدليل انطلاقًا من المذكرة المنهجية للعُدّة 04.",ref:"IPM، 23.1 ؛ استبيان المتعامل الاقتصادي المقبول",l:'/expertise#kits'},
+ {id:'g3',d:'gouv',w:2,t:"رصد يتابع الدوريات حسب السلسلة (الدراسات التعريفية، التصنيف 232، المنشأ 233، الأنظمة 313) وقانون المالية.",r:"تغيّر بند تعريفي فرعي أو قاعدة منشأ دون متابعة يجعل التصاريح خاطئة، ولو بقي الرسم دون تغيير.",a:"إرساء رصد حسب السلاسل وتأريخ كل تحيين.",ref:"الدليل رقم 2-001 ؛ IPM، الفصل 2",l:'/modules/veille-reglementaire'},
+ {id:'g4',d:'gouv',w:1,t:"يوجد مخطط تكوين لكل وظيفة معنية (المشتريات، اللوجستيك، المالية، الإنتاج).",r:"كثيرًا ما تنشأ الأخطاء في المراحل السابقة: سند الطلب، العقد، فاتورة المورّد.",a:"وضع مخطط تكوين لكل وظيفة.",ref:"IPM، 23.1"},
+ {id:'g5',d:'gouv',w:2,t:"افتحاص داخلي سنوي يشمل عيّنة من الملفات، مع مراجعة من طرف الإدارة العليا.",r:"دون افتحاص، لا تكتشف الفوارق المنهجية إلا الإدارة الجمركية، وعلى أربع سنوات من العمليات.",a:"برمجة الافتحاص السنوي وإعادة هذا التشخيص بالمناسبة.",ref:"مدونة الجمارك، الفصل 99 مكرر ؛ IPM، 23.2"},
+ {id:'g6',d:'gouv',w:1,t:"تتم متابعة مؤشرات: آجال الاستخلاص الجمركي، نسبة الأخطاء، الحسابات التي حلّ أجلها، التصحيحات.",r:"دون قياس، يستحيل إثبات التحسن أو توجيه المجهود.",a:"تحديد 4 إلى 6 مؤشرات ومراجعة شهرية.",ref:"IPM، الفصل 25"},
+ {id:'g7',d:'gouv',w:1,c:function(p){return p.oea!=='oui';},t:"تم الشروع في مسار الحصول على صفة المتعامل الاقتصادي المقبول أو دراسته.",r:"تتيح هذه الصفة تسهيلات (مساطر مسرّعة، كفالة) وتنظّم الامتثال.",a:"تقييم الفارق بالنسبة لمعايير الصفة.",ref:"الدليل، القسم 8.1",l:'/modules/oea'},
+
+ {id:'c1',d:'clas',w:3,t:"لكل سلعة مستوردة بند تعريفي فرعي من 10 أرقام موثّق، مع القواعد العامة للتفسير المطبقة والتعليل.",r:"رمز النظام المنسق الخاطئ يجعل الرسم المؤدى والوثائق المطلوبة غير صحيحة، ويمكن تصحيح الفارق على أربع سنوات.",a:"إعداد سجل رموز النظام المنسق (العُدّة 03).",ref:"مدونة الجمارك، الفصل 15 ؛ الدليل رقم 2-002",l:'/modules/classement'},
+ {id:'c2',d:'clas',w:3,t:"تحدد المقاولة التصنيف بنفسها، ولا يُترك لعادة المعشر في الجمرك وحدها.",r:"يتحمل المصرّح مسؤولية النوع المصرّح به، والعادة لا تُعدّ تعليلًا.",a:"المصادقة داخليًا على كل رمز وتبليغه إلى المعشر.",ref:"مدونة الجمارك، الفصل 15 ؛ IPM، 4.2"},
+ {id:'c3',d:'clas',w:2,t:"تخضع كل سلعة جديدة لمصادقة مزدوجة (الاستيراد والمصلحة التقنية).",r:"التركيب أو الاستعمال أو الحالة الكيميائية تحسم التصنيف في الغالب، ويعرفها التقني لا المشتري.",a:"اعتماد المصادقة المزدوجة عند إحداث السلعة.",ref:"IPM، 23.2 ؛ الدليل رقم 2-002"},
+ {id:'c4',d:'clas',w:2,t:"يتم البحث في دوريات التصنيف (السلسلة 232) المتعلقة بمنتجات مماثلة قبل التصنيف.",r:"تطبّق الإدارة دورياتها على كل استيراد للمنتوج نفسه.",a:"إدراج البحث في الدوريات 232 ضمن المسطرة.",ref:"الدليل رقم 2-005",l:'/modules/decisions-classement'},
+ {id:'c5',d:'clas',w:2,t:"تُحيَّن قاعدة السلع يوم دخول كل دورية «دراسات تعريفية» حيز التنفيذ.",r:"بند فرعي محذوف أو مقسّم يجعل التصريح خاطئًا، ولو لم يتغير الرسم.",a:"ربط قاعدة السلع بالرصد التعريفي.",ref:"الدليل رقم 2-001"},
+ {id:'c6',d:'clas',w:2,t:"تُقرأ ملاحظات الفصول والملاحظات التكميلية الوطنية قبل اختيار البند الفرعي.",r:"تحدد الملاحظات عتبات (الوزن، النسبة، التلفيف) تغيّر البند الفرعي وأحيانًا المقدار.",a:"إضافة قراءة الملاحظات إلى قائمة مراقبة التصنيف.",ref:"مدونة الجمارك، الفصلان 2 و5-3° ؛ الدليل رقم 2-003"},
+ {id:'c7',d:'clas',w:2,t:"المنتجات التي يتوقف تصنيفها على تركيبها تتوفر على بطاقة تقنية أو نشرة تحليل.",r:"عند الشك، تُجري الإدارة تحليلًا، وتكون المصاريف على عاتقكم إذا خالف التحليل التصريح.",a:"مطالبة المورّد بالبطاقة التقنية، وتحليل الحالات الحساسة.",ref:"مدونة الجمارك، الفصل 81-2°"},
+ {id:'c8',d:'clas',w:2,t:"تُمسك المقررات المسبقة في سجل مع تاريخ انتهاء صلاحيتها (5 سنوات للتصنيف، 3 للمنشأ، سنة للقيمة).",r:"المقرر المنتهي أو المبني على وصف ناقص لا يحمي، بل قد يُلغى بأثر رجعي.",a:"مسك السجل وإعادة التحقق عند كل تغيير في النصوص.",ref:"مدونة الجمارك، الفصل 45 ثالثًا-2°"},
+ {id:'c9',d:'clas',w:1,t:"المعدات المسلّمة على عدة إرساليات يُصرّح بها بموجب إذن (إرساليات مجزأة أو تصريح إجمالي).",r:"التصريح بكل إرسالية حسب طبيعة القطع يضاعف البنود والرسوم.",a:"طلب الإذن قبل وصول الإرسالية الأولى.",ref:"مدونة الجمارك، الفصلان 15-4° و76 مكرر-4° ؛ الدورية رقم 6771/312"},
+
+ {id:'o1',d:'orig',w:3,c:function(p){return p.pref>0||p.exp==='oui';},t:"توجد بطاقة منشأ لكل منتوج ولكل اتفاقية يُحتج بها (المدخلات، أصولها، قاعدة اللائحة، الحساب).",r:"هي الوثيقة المطلوبة عند التحقق، وبدونها يُرفض النظام التفضيلي وتُطالَب رسوم القانون العام.",a:"إعداد بطاقات المنشأ بمصفوفة العُدّة 01.",ref:"الدليل رقم 2-021 و2-024",l:'/modules/origine-aleca'},
+ {id:'o2',d:'orig',w:3,c:function(p){return p.pref>0;},t:"تُراقب إثباتات المنشأ المتوصل بها قبل توقيع التصريح المفصل (الاتفاقية، صلاحية 10 أشهر للاتحاد الأوروبي وتركيا، البيانات، الختم).",r:"إثبات منتهي الصلاحية أو ناقص أو بختم غير مطابق يُسقط النظام التفضيلي ويؤدي إلى طلب تحقق.",a:"إضافة مراقبة الإثباتات إلى المطابقة قبل التوقيع.",ref:"الدورية رقم 6706/233، الملحق I، المادة 23 ؛ المذكرة D105/2026"},
+ {id:'o3',d:'orig',w:2,c:function(p){return p.pref>0||p.exp==='oui';},t:"تم إدماج القواعد المراجَعة المطبقة على الاتحاد الأوروبي وتركيا منذ 01/01/2026 (حذف EUR-MED، بيان «REVISED RULES»).",r:"الاستمرار في تطبيق القواعد القديمة أو إصدار EUR-MED يعرّض لرفض الإثبات.",a:"مراجعة البطاقات ونماذج الإثباتات الخاصة بالاتحاد الأوروبي وتركيا.",ref:"الدوريتان رقم 6706/233 و6722/233"},
+ {id:'o4',d:'orig',w:2,c:function(p){return p.pref>0;},t:"بالنسبة لتصريح المنشأ الذي يتجاوز 6 000 يورو، يتم التحقق من رقم المصدّر المعتمد لدى المورّد.",r:"فوق 6 000 يورو، لا يحق إعداد التصريح إلا لمصدّر معتمد، وإلا رُفض النظام التفضيلي.",a:"التحقق من الرقم وصيغته، وإلا المطالبة بشهادة EUR.1.",ref:"الملحق I، المادة 18 ؛ المذكرة D99/2026"},
+ {id:'o5',d:'orig',w:2,c:function(p){return p.pref>0;},t:"التزم المورّدون كتابةً بالرد على طلبات التحقق من المنشأ.",r:"إذا لم تؤكد الجمارك الأجنبية المنشأ داخل 10 أشهر، يُرفض النظام التفضيلي بأثر لاحق.",a:"إدراج بند التعاون (العُدّة 01، النموذج C).",ref:"الملحق I، المادتان 34 و35 ؛ الدليل رقم 2-027",l:'/expertise#kits'},
+ {id:'o6',d:'orig',w:2,c:function(p){return p.us==='oui';},t:"الواردات من الولايات المتحدة: يُحصَل على ملف منشأ المورّد (معيار 35 %) قبل طلب النظام التفضيلي ويُحتفظ به 5 سنوات.",r:"في غياب شهادة، يشهد المستورد بنفسه على الأهلية ويتحمل مسؤوليتها.",a:"الحصول على ملف المنشأ المكتوب من المورّد.",ref:"الدورية رقم 4977/222"},
+ {id:'o7',d:'orig',w:2,c:function(p){return p.exp==='oui';},t:"عند التصدير، تُصدر الإثباتات وفق القواعد: مصدّر معتمد فوق 6 000 يورو، بيانات التراكم، عدم الاسترداد بالنسبة للنسيج.",r:"الإثبات غير السليم يُفقد الزبون النظام التفضيلي ويعرّض المصدّر للمسؤولية.",a:"تطبيق قائمة مراقبة التصدير في العُدّة 01.",ref:"الملحق I، المواد 7 و18 و19 ؛ الدورية رقم 6139/222"},
+ {id:'o8',d:'orig',w:1,c:function(p){return p.pref>0||p.exp==='oui';},t:"يتم التوصل بتصاريح المورّدين طويلة الأمد وتتبّع تاريخ انتهائها (سنتان على الأكثر).",r:"دون تصريح ساري المفعول، لا يمكن تطبيق التراكم.",a:"المطالبة بالتصريح طويل الأمد منذ الإرسالية الأولى.",ref:"الملحق I، المادة 29"},
+ {id:'o9',d:'orig',w:1,t:"يتم البحث مرة في السنة على الأقل عن فرص اتفاقيات التبادل الحر غير المستغلة.",r:"أداء رسم القانون العام على منتوج مؤهل خسارة صافية، دون خطر تصحيح ولكن دون مقابل.",a:"تمرير التدفقات الرئيسية عبر مصفوفة الأهلية.",ref:"الدليل رقم 2-021",l:'/modules/origine-aleca'},
+
+ {id:'v1',d:'val',w:3,t:"تُعاد تشكيل القيمة في الجمرك حسب شرط التسليم Incoterm (النقل، التأمين، المصاريف إلى مكان الإدخال) قبل التوقيع.",r:"القيمة الناقصة تصريح مزيف، وهي الخطأ الأكثر شيوعًا في المراقبة البعدية.",a:"اعتماد بطاقة لحساب القيمة لكل عملية.",ref:"IPM، الملحق D.2",l:'/modules/valeur-douane'},
+ {id:'v2',d:'val',w:3,t:"يتم تحديد الأتاوات وحقوق الترخيص والعمولات والمساهمات المرتبطة بالبضائع، وإدماجها في القيمة عند الاقتضاء.",r:"هذه العناصر، المؤداة خارج الفاتورة، هي أول ما يُبحث عنه عند المراقبة.",a:"مراجعة الأتاوات والعمولات والمساهمات كل سنة.",ref:"IPM، 23.2 ؛ الدليل، القسم 2.3"},
+ {id:'v3',d:'val',w:2,c:function(p){return p.type==='groupe'||p.type==='importateur';},t:"تُحلَّل المشتريات من شركات مرتبطة (أسعار التحويل، تأثير الارتباط على الثمن).",r:"قد يدفع الارتباط بين المشتري والبائع الإدارة إلى استبعاد الثمن المصرّح به.",a:"توثيق عدم تأثير الارتباط على الثمن.",ref:"الدليل، القسم 2.3"},
+ {id:'v4',d:'val',w:2,t:"تُحسب الكلفة الإجمالية للاستيراد (الرسوم، الضريبة على القيمة المضافة، الضريبة الداخلية على الاستهلاك، الصرف) قبل الطلبية.",r:"دون هذه الكلفة، تبقى الهامش الحقيقي وجدوى الاتفاقية أو النظام مجهولة.",a:"استعمال محاكي الرسوم والضرائب قبل كل مرجع جديد.",ref:"IPM، الفصل 7",l:'/modules/simulateur'},
+ {id:'v5',d:'val',w:1,t:"يتم توزيع المصاريف (نقل مجمّع، تأمين إجمالي) وفق مفتاح موثّق وثابت.",r:"التوزيع الاعتباطي يصعب تبريره سلعةً بسلعة.",a:"تحديد مفتاح التوزيع وتوثيقه.",ref:"IPM، الفصل 5"},
+
+ {id:'a1',d:'adm',w:3,t:"يُطبَّق فحص للمقبولية قبل الطلبية (لائحة المنتجات الخاضعة للترخيص، بيانات «EX»).",r:"البضاعة الخاضعة للترخيص المستوردة دون سند تُوقف أو تُرجع أو يُعاقب عليها.",a:"إرساء فحص المقبولية قبل الطلبية.",ref:"IPM، الفصل 6 والملحق D.1",l:'/modules/autorisations-licences'},
+ {id:'a2',d:'adm',w:2,t:"يتم تحديد المعايير الإلزامية والمراقبة التقنية (في بلد المنشأ أو عند الوصول) لكل منتوج.",r:"يُوقف المنتوج غير المطابق، وتُولّد آجال المراقبة مصاريف المكوث.",a:"الإشارة في سجل النظام المنسق إلى المراقبات المطلوبة لكل سلعة.",ref:"IPM، 6.3 ؛ القانون رقم 24-09",l:'/modules/documents-sh'},
+ {id:'a3',d:'adm',w:2,t:"يتم تحديد المراقبات الصحية والبيطرية والصحية النباتية المطبقة (المكتب الوطني للسلامة الصحية للمنتجات الغذائية وسلطات أخرى).",r:"وقف الرسوم لا يُعفي من هذه الإجراءات، ونظام BADR يطالب بها.",a:"حصر التأشيرات غير الموقوفة لكل سلعة.",ref:"الدورية رقم 6164/313 ؛ IPM، 6.4"},
+ {id:'a4',d:'adm',w:2,t:"يتم التحقق من تدابير الدفاع التجاري (مكافحة الإغراق، الوقاية) حسب المنتوج والمنتِج.",r:"رسم مكافحة الإغراق غير المتوقع قد يمتص الهامش كله.",a:"التحقق من التدابير السارية قبل كل مورّد جديد.",ref:"IPM، 6.6 ؛ الدليل، القسم 5.2"},
+ {id:'a5',d:'adm',w:1,t:"يتم التحقق من الوسم والعلامات الإلزامية (منها العربية وهوية المستورد).",r:"عيب الوسم يمنع العرض في السوق.",a:"إضافة الوسم إلى قائمة مراقبة المورّد.",ref:"IPM، الملحق D.1",l:'/modules/marquage-warnings'},
+ {id:'a6',d:'adm',w:1,t:"يتم رصد السلع الحساسة أو ذات الاستعمال المزدوج وإخضاعها للأذون المطلوبة.",r:"تخضع هذه السلع لأنظمة ترخيص صارمة.",a:"رصد السلع الحساسة في قاعدة السلع.",ref:"الدليل، القسم 5.4"},
+
+ {id:'d1',d:'ded',w:3,t:"تتم مطابقة الفاتورة والتصريح المفصل وسند الاستيراد وإثبات المنشأ قبل توقيع التصريح.",r:"الفارق بين هذه الوثائق هو المصدر المباشر للتصريح المزيف.",a:"إرساء المطابقة بين الوثائق الأربع.",ref:"IPM، 23.2"},
+ {id:'d2',d:'ded',w:3,t:"مراجعة بعد رفع اليد (بين اليوم 7 واليوم 30) تقارن التصريح المفصل بالاستلام الفعلي وبالمحاسبة.",r:"يمكن تعديل خطأ مُبادَر بالكشف عنه داخل 30 يومًا من رفع اليد دون أداء غرامة.",a:"اعتماد المراجعة بعد رفع اليد.",ref:"مدونة الجمارك، الفصل 78-3°"},
+ {id:'d3',d:'ded',w:2,t:"توجد مسطرة للكشف التلقائي عن الأخطاء (من يقرر، في أي أجل، بأي مستندات).",r:"بعد 30 يومًا أو بعد الإعلان عن مراقبة، لا يعود الإعفاء ممكنًا.",a:"كتابة المسطرة وتعيين صاحب القرار.",ref:"مدونة الجمارك، الفصل 78-3° ؛ المرسوم، المادتان 74 و74 مكرر"},
+ {id:'d4',d:'ded',w:2,c:function(p){return p.type!=='transitaire';},t:"التوكيلات الممنوحة للمعشرين محيّنة على PortNet وتنص صراحة على سندات الإعفاء بكفالة عند الحاجة.",r:"يُلغى التوكيل غير المستعمل بعد سنة، ودون نص صريح لا يُحتج بالسند أو بالتفويت.",a:"مراجعة التوكيلات وصلاحياتها.",ref:"الدوريتان رقم 6421/411 و5496/400"},
+ {id:'d5',d:'ded',w:2,c:function(p){return p.type==='transitaire';},t:"بالنسبة لكل زبون، يتم التحقق من التوكيل والصلاحيات الخاصة والوثائق الأصلية قبل التصريح.",r:"يتحمل المعشر مسؤوليته المهنية عن البيانات التي يودعها.",a:"اعتماد قائمة مراقبة لفتح ملف كل زبون.",ref:"IPM، 4.2 ؛ مدونة الجمارك، الفصل 88 مكرر"},
+ {id:'d6',d:'ded',w:2,t:"سند الاستيراد موطَّن وساري المفعول قبل الشحن.",r:"دون سند صالح لا استخلاص جمركي، وفي حال المخالفة تُطبَّق أيضًا قوانين الصرف.",a:"مراقبة السند قبل كل شحنة.",ref:"IPM، الفصل 9"},
+ {id:'d7',d:'ded',w:1,t:"تتم متابعة آجال المكوث تحت المراقبة الجمركية ومصاريف التأخير لكل عملية.",r:"التجاوزات تولّد كلفة يمكن تفاديها وقد تؤدي إلى مساطر تلقائية.",a:"تتبع الآجال لكل عملية.",ref:"IPM، 11.3",l:'/modules/surestaries'},
+
+ {id:'r1',d:'red',w:3,c:function(p){return p.red==='oui';},t:"يُمسك جدول آجال لجميع الحسابات المفتوحة، مع تنبيهات قبل 90 و60 يومًا.",r:"حساب حلّ أجله دون إبراء: رسوم مستحقة وغرامة تعادل مرة ونصف الرسوم.",a:"استعمال جدول الإبراء في العُدّة 02.",ref:"مدونة الجمارك، الفصلان 294 و294 مكرر ؛ الدليل رقم 7-006",l:'/expertise#kits'},
+ {id:'r2',d:'red',w:3,c:function(p){return p.red==='oui';},t:"لا يوجد أي حساب حلّ أجله في انتظار التسوية.",r:"الحساب الذي حلّ أجله يوقف تسهيلات الكفالة، أي الخزينة.",a:"التسوية دون تأخير: تصدير خارج الأجل أو عرض للاستهلاك مأذون به.",ref:"المذكرة رقم 12014/313 ؛ الدورية رقم 6348/313"},
+ {id:'r3',d:'red',w:2,c:function(p){return p.red==='oui';},t:"تتم مطابقة سجل الحسابات في نظام BADR كل شهر مع محاسبة المواد.",r:"الفارق غير المبرر يُفترض معه سوء استعمال النظام عند المراقبة.",a:"برمجة المطابقة الشهرية.",ref:"مدونة الجمارك، الفصلان 116 ثالثًا و287"},
+ {id:'r4',d:'red',w:2,c:function(p){return p.red==='oui';},t:"نسب المردود والنفايات موثّقة لكل منتوج تعويضي.",r:"يجب أن تكون عناصر الإبراء المصرّح بها قابلة للتبرير، وللإدارة شهران لمراقبتها.",a:"توثيق قوائم مكونات التصنيع والنسب.",ref:"مدونة الجمارك، الفصل 136"},
+ {id:'r5',d:'red',w:2,c:function(p){return p.red==='oui';},t:"تتم تسوية النفايات الخاضعة للرسوم خلال مدة صلاحية الحساب.",r:"وإلا تُصفّى الرسوم تلقائيًا، وهو السبب الأول لتعطّل شهادات الإبراء.",a:"معالجة النفايات أولًا بأول.",ref:"الدورية رقم 5458/313"},
+ {id:'r6',d:'red',w:1,c:function(p){return p.red==='oui';},t:"تتم متابعة نسبة العرض للاستهلاك لتبقى دون 15 % من الكميات المصدّرة.",r:"فوق 15 %، يسقط الإعفاء من الغرامة.",a:"تتبع النسبة باستمرار.",ref:"الدورية رقم 6348/313، الملحق I"},
+ {id:'r7',d:'red',w:1,c:function(p){return p.red==='oui';},t:"الضمان محدد على أساس أقصى مبلغ معلّق، والولوج إلى تسهيلات الكفالة مُعَدّ.",r:"الكفالة غير الكافية توقف رفع اليد، والتسهيل غير المستعمل ثلاثة أشهر يُعلَّق.",a:"تحديد الضمان واستهداف التسهيل الملائم.",ref:"الدورية رقم 6707/313"},
+ {id:'r8',d:'red',w:1,c:function(p){return p.red==='oui';},t:"لا تُسلَّم البضائع المفوَّتة تحت النظام إلا بعد قبول الإدارة.",r:"إلى حين القبول، يبقى المفوِّت وحده ملتزمًا.",a:"اتباع مسطرة التفويت في أربع مراحل.",ref:"مدونة الجمارك، الفصل 116-5° ؛ الدليل رقم 7-007"},
+
+ {id:'x1',d:'arch',w:3,t:"لكل عملية ملف وحيد مؤرشف لمدة أربع سنوات (الفاتورة، النقل، السند، إثبات الأداء، إثبات المنشأ).",r:"عدم الاحتفاظ بالوثائق يعاقب عليه بغرامة تعادل قيمة البضائع.",a:"تنظيم الأرشفة حسب التصريح.",ref:"مدونة الجمارك، الفصول 42-2° و72 و285-15° و287 مكرر"},
+ {id:'x2',d:'arch',w:2,t:"توجد مسطرة للرد كتابةً على طلبات الاطلاع، مع مسؤول وأجل داخلي.",r:"رفض تقديم الوثائق يعاقب عليه بغرامة من 30 000 إلى 60 000 درهم، مع غرامة تهديدية تصل إلى 500 درهم عن كل يوم.",a:"تعيين المسؤول وكتابة المسطرة.",ref:"مدونة الجمارك، الفصلان 297 مكرر و301"},
+ {id:'x3',d:'arch',w:1,t:"تُسترجَع الوثائق الأصلية من المعشر مقابل إبراء بالتسلّم.",r:"الاحتفاظ يقع على عاتق مالك البضاعة، ودون إبراء ينقص إثبات التسليم.",a:"توقيع إبراء عند كل استرجاع.",ref:"الدورية رقم 6639/312"},
+ {id:'x4',d:'arch',w:2,t:"لم تقع أي مصالحة أو إدانة جمركية خلال السنوات الثلاث الأخيرة.",r:"حالة العود خلال ثلاث سنوات تضاعف الحد الأقصى للغرامة.",a:"في حال وجود سابقة، تعزيز المراقبة على المجال المعني.",ref:"مدونة الجمارك، الفصل 257 ثالثًا"},
+ {id:'x5',d:'arch',w:2,c:function(p){return p.cap==='oui';},t:"أفضت ملاحظات آخر مراقبة بعدية إلى إجراءات تصحيحية موثّقة.",r:"تكرار فارق سبقت معاينته يُفقد حجة حسن النية.",a:"حصر الملاحظات وتتبع تصحيحها في هذا المخطط.",ref:"مدونة الجمارك، الفصل 86 مكرر ؛ IPM، 23.3"},
+ {id:'x6',d:'arch',w:1,t:"سُبل التشاور والطعن (لجنة التشاور المحلية، اللجنة الاستشارية والطعن) معروفة وتُستعمل عند الخلاف.",r:"يمكن عرض الخلاف حول النوع أو المنشأ أو القيمة على هذه اللجان قبل أي نزاع.",a:"تحديد المسطرة وآجالها.",ref:"مدونة الجمارك، الفصلان 22 مكرر و22 ثالثًا"}
+];
+var ANS=[['oui','نعم'],['partiel','جزئيًا'],['non','لا'],['nsp','لا أعرف'],['na','لا ينطبق']];
+var VAL={oui:1,partiel:0.5,non:0,nsp:0};
+var KEY='ixp-diagnostic-v1', DRAFT='ixp-diagnostic-brouillon-v1';
+
+/* ═══════════ État ═══════════ */
+var state={profile:{},answers:{},dom:0};
+function store(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
+function save(list){try{localStorage.setItem(KEY,JSON.stringify(list));}catch(e){}}
+function saveDraft(){try{localStorage.setItem(DRAFT,JSON.stringify(state));}catch(e){}}
+function $(id){return document.getElementById(id);}
+function fmt(n){return Math.round(n).toLocaleString('fr-FR')+' درهم';}
+function pct(x){return Math.round(x*100)+' %';}
+function num(id){var v=parseFloat(String($(id).value).replace(',','.'));return isNaN(v)?null:v;}
+
+function readProfile(){
+  var p={nom:$('p-nom').value.trim(),type:$('p-type').value,oea:$('p-oea').value,vol:num('p-vol'),taux:num('p-taux'),dum:num('p-dum'),
+    pref:num('p-pref')||0,us:$('p-us').value,exp:$('p-exp').value,red:$('p-red').value,encours:num('p-encours'),cap:$('p-cap').value};
+  state.profile=p;return p;
+}
+function writeProfile(p){
+  ['nom','type','oea','vol','taux','dum','pref','us','exp','red','encours','cap'].forEach(function(k){var el=$('p-'+k);if(el&&p[k]!=null)el.value=p[k];});
+}
+function visible(q){return !q.c||q.c(state.profile);}
+function domQs(d){return Q.filter(function(q){return q.d===d&&visible(q);});}
+function activeDomains(){return DOMAINS.filter(function(d){return domQs(d.id).length>0;});}
+
+/* ═══════════ Navigation ═══════════ */
+function show(step){
+  for(var i=1;i<=4;i++){$('s'+i).classList.toggle('hidden',i!==step);}
+  document.querySelectorAll('.stepbtn').forEach(function(b){b.classList.toggle('on',+b.dataset.step===step);});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.stepbtn').forEach(function(b){b.addEventListener('click',function(){
+  var s=+b.dataset.step; if(s>=2)readProfile(); if(s===2)renderQ(); if(s===3){if(!compute())return;} if(s===4){if(!compute())return;renderPlan();renderHist();} show(s);});});
+
+/* ═══════════ Questionnaire ═══════════ */
+function renderTabs(){
+  var doms=activeDomains(),h='';
+  doms.forEach(function(d,i){var qs=domQs(d.id),n=qs.filter(function(q){return state.answers[q.id];}).length;
+    h+='<button class="dtab '+d.cls+(i===state.dom?' on':'')+'" data-i="'+i+'">'+d.name+'<span class="cnt">'+n+'/'+qs.length+'</span></button>';});
+  $('dtabs').innerHTML=h;
+  $('dtabs').querySelectorAll('.dtab').forEach(function(b){b.addEventListener('click',function(){state.dom=+b.dataset.i;renderQ();});});
+  var all=Q.filter(visible),done=all.filter(function(q){return state.answers[q.id];}).length;
+  $('prog').style.width=(all.length?done/all.length*100:0)+'%';
+  var pct=all.length?Math.round(done/all.length*100):0;$('prog-txt').innerHTML=done+' جوابًا من أصل '+all.length+' سؤالًا <b class="prog-pct">· '+pct+' %</b>';
+}
+function renderQ(){
+  var doms=activeDomains(); if(state.dom>=doms.length)state.dom=0;
+  var d=doms[state.dom],qs=domQs(d.id),h='<div class="dhead '+d.cls+'"><h3>'+d.name+'</h3><div class="note">'+qs.length+' نقاط مراقبة</div></div>';
+  qs.forEach(function(q){var a=state.answers[q.id];
+    h+='<div class="q '+(a==='na'?'na':'')+'" id="q-'+q.id+'"><div class="qtop"><div class="qtxt">'+q.t+'</div><span class="qw">الوزن '+q.w+'</span></div>'+
+      '<div class="qref">'+q.ref+'</div><div class="opts">'+ANS.map(function(o){return '<button class="opt v-'+o[0]+(a===o[0]?' on':'')+'" data-q="'+q.id+'" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('')+'</div>'+
+      '<button class="whybtn" data-w="'+q.id+'">لماذا هذه النقطة مهمة</button><div class="why"><b>الخطر:</b> '+q.r+'<br><b>الإجراء:</b> '+q.a+'</div></div>';});
+  $('qzone').innerHTML=h;
+  $('qzone').querySelectorAll('.opt').forEach(function(b){b.addEventListener('click',function(){state.answers[b.dataset.q]=b.dataset.v;saveDraft();renderQ();});});
+  $('qzone').querySelectorAll('.whybtn').forEach(function(b){b.addEventListener('click',function(){$('q-'+b.dataset.w).classList.toggle('open');});});
+  $('prev-d').disabled=state.dom===0; $('next-d').classList.toggle('hidden',state.dom>=doms.length-1);
+  renderTabs();
+}
+/* Compteur anonyme du parcours (aucune donnée sur le visiteur) */
+window.ixpCompter=compter;
+function compter(e){try{fetch('/api/evenement',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({e:e})});}catch(x){}}
+function compterUneFois(e){try{if(sessionStorage.getItem('ixp-'+e))return;sessionStorage.setItem('ixp-'+e,'1');}catch(x){}compter(e);}
+$('go-q').addEventListener('click',function(){compterUneFois('diagnostic_commence');readProfile();saveDraft();state.dom=0;renderQ();show(2);});
+$('prev-d').addEventListener('click',function(){if(state.dom>0){state.dom--;renderQ();window.scrollTo({top:0});}});
+$('next-d').addEventListener('click',function(){state.dom++;renderQ();window.scrollTo({top:0});});
+$('to-res').addEventListener('click',function(){if(compute()){show(3);}});
+$('back-q').addEventListener('click',function(){renderQ();show(2);});
+$('to-plan').addEventListener('click',function(){renderPlan();renderHist();show(4);});
+
+/* ═══════════ Calcul ═══════════ */
+var current=null;
+function scoreOf(answers,profile){
+  var saveP=state.profile; state.profile=profile;
+  var res={domains:{},global:null,gaps:0,crit:0,answered:0,total:0};
+  var gp=0,gm=0;
+  DOMAINS.forEach(function(d){var qs=domQs(d.id),pt=0,mx=0;
+    qs.forEach(function(q){res.total++;var a=answers[q.id];if(!a)return;res.answered++;if(a==='na')return;
+      mx+=q.w;pt+=q.w*VAL[a];if(a!=='oui'){res.gaps++;if(q.w===3&&a!=='partiel')res.crit++;}});
+    res.domains[d.id]=mx?pt/mx:null;gp+=pt;gm+=mx;});
+  res.global=gm?gp/gm:null; state.profile=saveP; return res;
+}
+function level(x){return x==null?'—':x>=0.8?'ضعيفة':x>=0.5?'متوسطة':'مرتفعة';}
+function lvlCls(x){return x==null?'':x>=0.8?'lvl-faible':x>=0.5?'lvl-moderee':'lvl-elevee';}
+function nextDate(x,from){var d=new Date(from),m=x==null?6:x>=0.8?12:x>=0.5?6:3;d.setMonth(d.getMonth()+m);return d;}
+function compute(){
+  readProfile();
+  var vis=Q.filter(visible),ans=vis.filter(function(q){return state.answers[q.id];}).length;
+  if(ans<Math.ceil(vis.length*0.6)){alert('أجيبوا عن 60 % من الأسئلة على الأقل ('+ans+' من أصل '+vis.length+' حاليًا) للحصول على نتائج موثوقة.');renderQ();show(2);return false;}
+  var s=scoreOf(state.answers,state.profile);
+  var hist=store(), now=new Date();
+  var prev=hist.length?hist[hist.length-1]:null;
+  current={id:'D'+now.getTime(),date:now.toISOString(),profile:JSON.parse(JSON.stringify(state.profile)),answers:JSON.parse(JSON.stringify(state.answers)),
+    domains:s.domains,global:s.global,gaps:s.gaps,crit:s.crit,status:prev&&prev.status?JSON.parse(JSON.stringify(prev.status)):{}};
+  // Remplace un diagnostic du même jour plutôt que d'empiler les essais
+  if(prev&&prev.date.slice(0,10)===current.date.slice(0,10)){current.status=prev.status||{};hist[hist.length-1]=current;prev=hist.length>1?hist[hist.length-2]:null;}
+  else hist.push(current);
+  save(hist); try{localStorage.removeItem(DRAFT);}catch(e){}
+  renderResults(current,prev); saveRemote(current); compterUneFois('diagnostic_termine'); return true;
+}
+
+/* ═══════════ Exposition en DH ═══════════ */
+// Valeurs moyennes utilisées quand le profil ne donne pas les montants. Affichées à l'utilisateur.
+var VOL_DEF={pme:[5e6,20e6],importateur:[20e6,100e6],transitaire:[20e6,100e6],exportateur:[20e6,100e6],groupe:[100e6,300e6]};
+var TAUX_DEF=[10,17.5];
+function mfmt(n){return n>=1e6?(Math.round(n/1e5)/10).toLocaleString('fr-FR')+' مليون درهم':fmt(n);}
+function range(lo,hi){return (lo==null)?'—':(Math.round(lo)===Math.round(hi)?fmt(lo):'بين '+mfmt(lo)+' و'+mfmt(hi));}
+function exposure(c){
+  var p=c.profile||{},hyp=[],est=false;
+  function m(id){return c.domains[id]==null?1:c.domains[id];}
+  var vol=p.vol?[p.vol,p.vol]:null; if(!vol){vol=VOL_DEF[p.type]||VOL_DEF.pme;est=true;hyp.push('واردات سنوية من '+mfmt(vol[0])+' إلى '+mfmt(vol[1])+' (قيمة متوسطة معتمدة لمجال نشاطكم)');}
+  var t=p.taux?[p.taux,p.taux]:null; if(!t){t=TAUX_DEF;est=true;hyp.push('متوسط مقدار الرسم من '+t[0].toLocaleString('fr-FR')+' % إلى '+t[1].toLocaleString('fr-FR')+' %');}
+  var mc=(m('clas')+m('val'))/2,items=[],lo=0,hi=0;
+  var a=[vol[0]*t[0]/100*4*(1-mc),vol[1]*t[1]/100*4*(1-mc)];lo+=a[0];hi+=a[1];
+  items.push({lo:a[0],hi:a[1],label:'التصنيف والقيمة: وعاء الرسوم غير المشمول بالمراقبة على 4 سنوات',f:'القيمة × المقدار × 4 × (1 − متوسط التحكم في التصنيف والقيمة)'});
+  if(p.pref>0){var b=[vol[0]*p.pref/100*t[0]/100*4*(1-m('orig')),vol[1]*p.pref/100*t[1]/100*4*(1-m('orig'))];lo+=b[0];hi+=b[1];
+    items.push({lo:b[0],hi:b[1],label:'الأنظمة التفضيلية: رسوم القانون العام المستحقة لو رُفض النظام التفضيلي، الجزء غير المشمول على 4 سنوات',f:'القيمة × الحصة التفضيلية × المقدار × 4 × (1 − التحكم في المنشأ)'});}
+  else items.push({lo:null,label:'الأنظمة التفضيلية: لا توجد واردات مصرّح بها تحت نظام تفضيلي'});
+  if(p.red==='oui'&&p.encours){var r2=p.encours*(1-m('red'));lo+=r2;hi+=r2;
+    items.push({lo:r2,hi:r2,label:'الأنظمة الاقتصادية: المبالغ الموقوفة غير المشمولة بالمراقبة (غرامة تصل إلى مرة ونصف الرسوم عند عدم الإبراء)',f:'المبالغ الموقوفة × (1 − التحكم في الأنظمة)'});}
+  else items.push({lo:null,label:'الأنظمة الاقتصادية: '+(p.red==='oui'?'أدخلوا المبالغ الموقوفة في الملف التعريفي':'غير مستعملة')});
+  var h=est?'تقدير مبني على قيم متوسطة: '+hyp.join(' ؛ ')+'. أدخلوا مبالغكم في الملف التعريفي للحصول على حساب خاص.':'محسوب انطلاقًا من مبالغ ملفكم التعريفي. مؤشر وليس تقييمًا للخطر.';
+  return {lo:lo,hi:hi,estimee:est,hyp:h,items:items};
+}
+/* ═══════════ Compte : conservation du score ═══════════ */
+var remoteHist=null;
+function acctNote(html){$('acct-note').innerHTML=html;}
+function saveRemote(c){
+  var ex=exposure(c);
+  fetch('/api/diagnostics',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({indice:c.global,domaines:c.domains,ecarts:c.gaps,critiques:c.crit,exposition_basse:Math.round(ex.lo),exposition_haute:Math.round(ex.hi),estimee:ex.estimee,hypotheses:ex.hyp,profil:c.profile})})
+  .then(function(r){return r.json().then(function(j){return {s:r.status,j:j};});})
+  .then(function(o){
+    if(o.s===401)acctNote('للاحتفاظ بهذه النتيجة وتتبع تطورها كل شهر، <a href="/auth/register?plan=pro" target="_top">جرّبوا Import-eXPert Pro لمدة 14 يومًا</a> أو <a href="/auth/login" target="_top">سجّلوا الدخول</a>.');
+    else if(o.j&&o.j.conserve){acctNote('تم حفظ النتيجة في حسابكم، وستكون نقطة انطلاق تتبعكم الشهري.');loadRemote();}
+    else acctNote('التتبع الشهري للنتيجة متاح ابتداءً من عرض Pro. <a href="/ar/tarifs" target="_top">الاطلاع على العروض</a>.');
+  }).catch(function(){});
+}
+function loadRemote(){
+  fetch('/api/diagnostics',{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null;})
+  .then(function(j){if(j&&j.conserve){remoteHist=j.historique||[];renderHist();}}).catch(function(){});
+}
+
+/* ═══════════ Résultats ═══════════ */
+function renderResults(c,prev){
+  var p=c.profile,d=new Date(c.date);
+  $('r-date').textContent='تشخيص بتاريخ '+d.toLocaleDateString('fr-FR')+(p.nom?' · '+p.nom:'');
+  $('r-title').textContent='درجة تعرّضكم '+level(c.global);
+  $('k-idx').textContent=c.global==null?'—':pct(c.global);
+  $('k-lvl').textContent=level(c.global); $('k-lvl').className=lvlCls(c.global);
+  $('k-gaps').textContent=c.gaps+' ('+c.crit+')';
+  $('k-next').textContent=nextDate(c.global,c.date).toLocaleDateString('fr-FR');
+  var al='';
+  if(c.crit>0)al+='<div class="alert"><b>'+c.crit+' فارق(ات) حرج(ة)</b> في نقاط وزنها 3: تأتي في مقدمة مخطط العمل، وتُعالج داخل 30 يومًا.</div>';
+  if(p.red==='oui'&&c.answers.r2&&c.answers.r2!=='oui')al+='<div class="alert">قد يكون أجل حساب تحت نظام اقتصادي قد حلّ: رسوم مستحقة، وغرامة تعادل مرة ونصف الرسوم، وتعليق تسهيلات الكفالة (مدونة الجمارك، الفصل 294 مكرر ؛ المذكرة رقم 12014/313).</div>';
+  if(c.answers.d2&&c.answers.d2!=='oui')al+='<div class="alert">دون مراجعة بعد رفع اليد، تفقدون إمكانية تعديل خطأ داخل 30 يومًا دون أداء غرامة (مدونة الجمارك، الفصل 78-3°).</div>';
+  if(!al)al='<div class="alert ok">لا يوجد أي فارق حرج: حافظوا على المستوى بالافتحاص السنوي والرصد.</div>';
+  al+='<div class="alert ok"><b>لقاء مجاني لمدة 20 دقيقة مع خبير جمركي</b>: نراجع معكم هذه النتيجة ونحدد الإجراءين أو الثلاثة الأكثر تقليصًا لتعرّضكم. <a href="/echange-expert?depuis=diagnostic" target="_top" onclick="window.ixpCompter&&window.ixpCompter(\'echange_demande\')">اطلبوا اللقاء</a> (بالفرنسية)</div>';
+  $('r-alerts').innerHTML=al;
+  // barres
+  var h='';$('delta-note').textContent=prev?'التطور مقارنة بتشخيص '+new Date(prev.date).toLocaleDateString('fr-FR')+'.':'تشخيص أول: سيظهر التطور في التشخيص المقبل.';
+  DOMAINS.forEach(function(dm){var v=c.domains[dm.id];if(v==null)return;var dl='';
+    if(prev&&prev.domains&&prev.domains[dm.id]!=null){var x=Math.round((v-prev.domains[dm.id])*100);dl=x===0?'<span class="delta">=</span>':'<span class="delta '+(x>0?'up':'down')+'">'+(x>0?'+':'')+x+'</span>';}
+    h+='<div class="row '+dm.cls+'"><span>'+dm.name+'</span><div class="bar"><i style="width:'+Math.round(v*100)+'%"></i></div><b>'+Math.round(v*100)+'%</b>'+dl+'</div>';});
+  $('bars').innerHTML=h;
+  radar(c,prev);
+  // exposition
+  var ex=exposure(c),e='';
+  ex.items.forEach(function(it){e+='<div class="kpi"><b>'+(it.lo==null?'—':range(it.lo,it.hi))+'</b><span>'+it.label+'</span>'+(it.f?'<div class="formula">'+it.f+'</div>':'')+'</div>';});
+  $('expo-total').innerHTML='<div class="tot-l">'+(ex.estimee?'التعرّض المقدّر على 4 سنوات':'التعرّض على 4 سنوات')+'</div><div class="tot-v">'+range(ex.lo,ex.hi)+'</div><div class="tot-h">'+ex.hyp+'</div>';
+  $('expo').innerHTML=e;
+}
+function radar(c,prev){
+  var doms=DOMAINS.filter(function(d){return c.domains[d.id]!=null;}),n=doms.length,cx=180,cy=160,R=115,s='';
+  if(n<3){$('radar').innerHTML='<text x="180" y="160" text-anchor="middle" font-size="13" fill="#7A7168">يلزم ثلاثة مجالات على الأقل</text>';return;}
+  function pt(i,v){var a=-Math.PI/2+i*2*Math.PI/n;return [cx+Math.cos(a)*R*v,cy+Math.sin(a)*R*v];}
+  [0.25,0.5,0.75,1].forEach(function(r){s+='<polygon points="'+doms.map(function(_,i){return pt(i,r).join(',');}).join(' ')+'" fill="none" stroke="#E6DCC7"/>';});
+  doms.forEach(function(d,i){var p=pt(i,1),l=pt(i,1.17);s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="#E6DCC7"/>'+
+    '<text x="'+l[0]+'" y="'+l[1]+'" font-size="10.5" text-anchor="middle" dominant-baseline="middle" fill="#3B3631">'+d.name.split(' ')[0]+'</text>';});
+  if(prev&&prev.domains){var pp=doms.map(function(d,i){return pt(i,prev.domains[d.id]==null?0:prev.domains[d.id]).join(',');}).join(' ');
+    s+='<polygon points="'+pp+'" fill="none" stroke="#A8822F" stroke-dasharray="4 3" stroke-width="1.5"/>';}
+  s+='<polygon points="'+doms.map(function(d,i){return pt(i,c.domains[d.id]).join(',');}).join(' ')+'" fill="rgba(21,62,130,.18)" stroke="#153E82" stroke-width="2"/>';
+  doms.forEach(function(d,i){var p=pt(i,c.domains[d.id]);s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#153E82"/>';});
+  s+='<text x="348" y="318" text-anchor="end" font-size="11" fill="#153E82">━ اليوم</text>'+(prev?'<text x="250" y="318" text-anchor="end" font-size="11" fill="#A8822F">┅ التشخيص السابق</text>':'');
+  $('radar').innerHTML=s;
+}
+
+/* ═══════════ Plan d'action ═══════════ */
+function planItems(c){
+  var save=state.profile;state.profile=c.profile;var items=[];
+  Q.forEach(function(q){if(!visible(q))return;var a=c.answers[q.id];if(!a||a==='oui'||a==='na')return;
+    var gap=a==='partiel'?0.5:1,crit=q.w*gap;
+    var hz=crit>=3?['hz1','داخل 30 يومًا']:crit>=2?['hz2','داخل 90 يومًا']:['hz3','داخل 6 أشهر'];
+    items.push({q:q,a:a,crit:crit,hz:hz});});
+  state.profile=save;
+  items.sort(function(x,y){return y.crit-x.crit||DOMAINS.findIndex(function(d){return d.id===x.q.d;})-DOMAINS.findIndex(function(d){return d.id===y.q.d;});});
+  return items;
+}
+function renderPlan(){
+  var c=current||store().slice(-1)[0]; if(!c){$('plan').innerHTML='<tr><td>لا يوجد أي تشخيص محفوظ.</td></tr>';return;}
+  current=c; var items=planItems(c),lab={non:'لا',partiel:'جزئيًا',nsp:'لا أعرف'};
+  if(!items.length){$('plan').innerHTML='<tr><td>لا يوجد أي فارق: جميع الممارسات المقيّمة قائمة.</td></tr>';return;}
+  var h='<tr><th>#</th><th>المجال</th><th>الإجراء</th><th>الأجل</th><th>المرجع</th><th>التقدم</th></tr>';
+  items.forEach(function(it,i){var d=DOMAINS.filter(function(x){return x.id===it.q.d;})[0],st=(c.status||{})[it.q.id]||'afaire';
+    h+='<tr><td>'+(i+1)+'</td><td><span class="tag '+d.cls+'">'+d.name+'</span></td><td><b>'+it.q.a+'</b><div class="note">المعاينة: '+lab[it.a]+' — '+it.q.t+'</div>'+
+      (it.q.l?'<div class="note"><a href="'+it.q.l+'">فتح الأداة المرتبطة (بالفرنسية) ←</a></div>':'')+'</td><td><span class="hz '+it.hz[0]+'">'+it.hz[1]+'</span></td><td class="note">'+it.q.ref+'</td>'+
+      '<td><select class="st" data-q="'+it.q.id+'"><option value="afaire"'+(st==='afaire'?' selected':'')+'>للإنجاز</option><option value="encours"'+(st==='encours'?' selected':'')+'>قيد الإنجاز</option><option value="fait"'+(st==='fait'?' selected':'')+'>منجز</option></select></td></tr>';});
+  $('plan').innerHTML=h;
+  $('plan').querySelectorAll('select.st').forEach(function(sel){sel.addEventListener('change',function(){
+    var hist=store();var last=hist[hist.length-1];if(!last)return;last.status=last.status||{};last.status[sel.dataset.q]=sel.value;save(hist);current=last;renderHist();});});
+}
+function renderHist(){
+  var hist=store(),rh='';
+  if(remoteHist&&remoteHist.length){rh='<tr><th colspan="6">محفوظ في حسابكم</th></tr><tr><th>التاريخ</th><th>المؤشر العام</th><th>التعرّض على 4 سنوات</th><th>الفوارق (الحرجة)</th><th colspan="2">أساس الحساب</th></tr>';
+    remoteHist.forEach(function(d){rh+='<tr><td>'+new Date(d.created_at).toLocaleDateString('fr-FR')+'</td><td><b>'+(d.indice==null?'—':pct(d.indice))+'</b></td><td>'+range(d.exposition_basse,d.exposition_haute)+'</td><td>'+(d.ecarts==null?'—':d.ecarts)+' ('+(d.critiques==null?'—':d.critiques)+')</td><td colspan="2">'+(d.estimee?'قيم متوسطة':'مبالغ الملف التعريفي')+'</td></tr>';});}
+  if(!hist.length&&rh){$('hist').innerHTML=rh;return;} if(!hist.length){$('hist').innerHTML='<tr><td>لا يوجد أي تشخيص محفوظ.</td></tr>';return;}
+  var h='<tr><th>التاريخ</th><th>الملف</th><th>المؤشر العام</th><th>درجة التعرّض</th><th>الفوارق (الحرجة)</th><th>الإجراءات المنجزة</th></tr>';
+  if(rh)h=rh+'<tr><th colspan="6">على هذا الجهاز</th></tr>'+h;
+  hist.slice().reverse().forEach(function(c){var st=c.status||{},done=Object.keys(st).filter(function(k){return st[k]==='fait';}).length;
+    h+='<tr><td>'+new Date(c.date).toLocaleDateString('fr-FR')+'</td><td>'+(c.profile&&c.profile.nom||'—')+'</td><td><b>'+(c.global==null?'—':pct(c.global))+'</b></td><td class="'+lvlCls(c.global)+'">'+level(c.global)+'</td><td>'+c.gaps+' ('+c.crit+')</td><td>'+done+'</td></tr>';});
+  $('hist').innerHTML=h;
+}
+$('new').addEventListener('click',function(){var last=store().slice(-1)[0];if(last){state.answers=JSON.parse(JSON.stringify(last.answers));state.profile=last.profile;writeProfile(last.profile);}state.dom=0;show(1);
+  $('resume-note').textContent='تم استرجاع أجوبة التشخيص الأخير: حيّنوا ما تغيّر منها.';});
+$('csv').addEventListener('click',function(){var c=current||store().slice(-1)[0];if(!c)return;var rows=[['الرتبة','المجال','الإجراء','المعاينة','الأجل','المرجع','التقدم']];
+  planItems(c).forEach(function(it,i){var d=DOMAINS.filter(function(x){return x.id===it.q.d;})[0];rows.push([i+1,d.name,it.q.a,it.q.t,it.hz[1],it.q.ref,({afaire:'للإنجاز',encours:'قيد الإنجاز',fait:'منجز'})[(c.status||{})[it.q.id]||'afaire']]);});
+  var csv='﻿'+rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(';');}).join('\n');
+  dl(csv,'plan-action-diagnostic-ar.csv','text/csv;charset=utf-8');});
+$('export').addEventListener('click',function(){dl(JSON.stringify(store(),null,2),'diagnostics-import-expert.json','application/json');});
+$('import').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var data=JSON.parse(r.result);if(!Array.isArray(data))throw 0;
+  var hist=store(),ids={};hist.forEach(function(h){ids[h.id]=1;});data.forEach(function(d){if(d&&d.id&&!ids[d.id])hist.push(d);});hist.sort(function(a,b){return a.date<b.date?-1:1;});save(hist);current=hist[hist.length-1];renderPlan();renderHist();alert('انتهى الاستيراد: تمت قراءة '+data.length+' تشخيص(ات).');}catch(err){alert('ملف غير معروف.');}};r.readAsText(f);});
+$('wipe').addEventListener('click',function(){if(confirm('مسح سجل هذا الجهاز نهائيًا؟ احرصوا على تصديره قبل ذلك.')){save([]);current=null;renderPlan();renderHist();}});
+$('print').addEventListener('click',function(){window.print();});
+$('print2').addEventListener('click',function(){window.print();});
+function dl(content,name,type){var b=new Blob([content],{type:type}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+/* ═══════════ Démarrage : brouillon ou dernier diagnostic ═══════════ */
+try{var dr=JSON.parse(localStorage.getItem(DRAFT)||'null');if(dr&&dr.profile){state=dr;writeProfile(dr.profile);var n=Object.keys(dr.answers||{}).length;if(n)$('resume-note').textContent='مسودة جارية: '+n+' جواب(ًا) مُدخل(ًا).';}}catch(e){}
+var last=store().slice(-1)[0];
+if(last&&!Object.keys(state.answers).length){$('resume-note').textContent='آخر تشخيص بتاريخ '+new Date(last.date).toLocaleDateString('fr-FR')+' ('+(last.global==null?'—':pct(last.global))+'). اطلعوا على تبويب «مخطط العمل والتتبع».';current=last;}
+loadRemote();
+})();
+
+/* Session en cours : nom du client et déconnexion */
+(function(){
+  var box=document.getElementById('ixp-session'); if(!box) return;
+  fetch('/api/auth/me',{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null;}).then(function(u){
+    if(!u) return;
+    var nom=[u.prenom,u.nom].filter(Boolean).join(' ').trim()||u.societe||u.email;
+    var PLAN={free:'الاستكشافي',trial:'تجربة',pro:'Pro',premium:'Premium',enterprise:'مؤسسة'};
+    var compte=(u.role==='admin'||u.role==='generaladmin')?'مسؤول':('حساب '+(PLAN[u.plan]||u.plan||''));
+    box.innerHTML=''; box.className='on';
+    var a=document.createElement('a'); a.href='/app'; a.className='sess'; a.textContent='● '+nom; var sm=document.createElement('small'); sm.textContent='· '+compte; a.appendChild(sm); a.title='الجلسة الحالية: '+[u.societe,u.email].filter(Boolean).join(' · ');
+    var b=document.createElement('button'); b.type='button'; b.className='out'; b.textContent='تسجيل الخروج';
+    b.onclick=function(){fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'}).finally(function(){location.href='/ar';});};
+    box.appendChild(a); box.appendChild(b);
+  }).catch(function(){});
+})();
+</script>
+</body>
+</html>
