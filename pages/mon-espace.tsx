@@ -59,8 +59,9 @@ export default function MonEspace() {
         <div className="x-wrap" style={{ display: 'grid', gap: 22 }}>
           {etat === 'charge' && <p className="x-note">Chargement…</p>}
           {etat === 'connexion' && <div className="x-pc-cta"><p>Connectez-vous pour accéder à votre espace.</p><Link href="/auth/login?redirect=/mon-espace" className="x-btn x-btn-gold">Connexion</Link></div>}
-          {etat === 'ok' && !s.abonne && <div className="x-pc-cta"><p>Fiches produits, dossiers défendables, veille et rapport mensuel sont inclus dans l’essai et les offres payantes.</p><Link href="/auth/register?plan=pro" className="x-btn x-btn-gold">Essai 14 jours</Link></div>}
-          {etat === 'ok' && s.abonne && (
+          {etat === 'ok' && !s.abonne && !s.decouverte && <div className="x-pc-cta"><p>Votre compte est suspendu. Contactez-nous pour le réactiver.</p><Link href="/contact" className="x-btn x-btn-gold">Nous contacter</Link></div>}
+          {etat === 'ok' && s.decouverte && <div className="x-pc-cta"><p><b>Offre Découverte.</b> Vous gardez le diagnostic, 3 fiches produits et la veille sur ces produits. L’offre Pro ajoute les fiches sans limite, les dossiers défendables, la veille hebdomadaire et le rapport mensuel au dirigeant.</p><Link href="/tarifs" className="x-btn x-btn-gold">Passer à l’offre Pro</Link></div>}
+          {etat === 'ok' && (s.abonne || s.decouverte) && (
             <>
               <div className="x-me-score">
                 <div>
@@ -74,14 +75,14 @@ export default function MonEspace() {
               </div>
               <div className="x-me-grid">
                 <Tuile href="/fiches" t="Fiches produits" v={String(s.fiches.total)} d={`${s.fiches.completes} complète${s.fiches.completes > 1 ? 's' : ''}`} />
-                <Tuile href="/dossiers" t="Dossiers défendables" v={String(s.dossiers)} d="émis et vérifiables" />
+                <Tuile href={s.abonne ? '/dossiers' : '/tarifs'} t="Dossiers défendables" v={s.abonne ? String(s.dossiers) : 'Pro'} d={s.abonne ? 'émis et vérifiables' : 'inclus à partir de l’offre Pro'} />
                 <Tuile href="/veille" t="Veille sur mes produits" v={String(s.veille.total)} d={s.veille.aExaminer ? `${s.veille.aExaminer} à examiner` : 'textes sur 12 mois'} alerte={s.veille.aExaminer > 0} />
-                <Tuile href="/portail" t="Portail clients" v={String(s.partages.ouverts)} d={s.partages.piecesFournies ? `${s.partages.piecesFournies} pièce(s) reçue(s) à valider` : 'dossiers partagés en cours'} alerte={s.partages.piecesFournies > 0} />
+                <Tuile href={s.abonne ? '/portail' : '/tarifs'} t="Portail clients" v={s.abonne ? String(s.partages.ouverts) : 'Pro'} d={s.partages.piecesFournies ? `${s.partages.piecesFournies} pièce(s) reçue(s) à valider` : 'dossiers partagés en cours'} alerte={s.partages.piecesFournies > 0} />
                 <Tuile href="/calculateur-dum" t="Argent laissé sur la table" v="DUM" d="analyser un export de déclarations" />
                 <Tuile href="/espaces/qualifier" t="Parcours" v="5 étapes" d="Qualifier, Optimiser, Chiffrer, Exécuter, Sécuriser" />
               </div>
 
-              <div className="x-ff">
+              {s.abonne && <div className="x-ff">
                 <h3 style={{ margin: '0 0 6px' }}>Rapport mensuel au dirigeant</h3>
                 <p className="x-ff-note" style={{ marginTop: 0 }}>Chaque début de mois, un email résume l’exposition et son évolution, l’activité de conformité et les textes qui touchent vos produits. Le dirigeant voit la valeur sans avoir à se connecter.{rap && !rap.inclus ? ' Inclus à partir de l’offre Pro : pendant l’essai, vous pouvez en voir l’aperçu.' : ''}</p>
                 <div className="x-ff-grid" style={{ marginTop: 12 }}>
@@ -95,7 +96,7 @@ export default function MonEspace() {
                   {msg && <span className="x-ff-note" style={{ alignSelf: 'center' }}>{msg}</span>}
                 </div>
                 {voir && rap && <iframe title="Aperçu du rapport mensuel" className="x-me-apercu" srcDoc={rap.apercu.html} />}
-              </div>
+              </div>}
               <p className="x-note">Sur mobile : <Link href="/app">version mobile de l’espace</Link>.</p>
             </>
           )}

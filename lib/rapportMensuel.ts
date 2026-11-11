@@ -107,3 +107,43 @@ export async function runRapportsMensuels(site: string, maintenant = new Date())
   }
   return res
 }
+
+/** Offre Découverte : alerte mensuelle sur les produits suivis (comptes gratuits, essais terminés,
+ *  abonnements échus), envoyée seulement si des textes du mois touchent leurs produits. */
+export async function runAlertesDecouverte(site: string, maintenant = new Date()) {
+  const res = { envoyes: 0, erreurs: [] as string[] }
+  if (maintenant.getUTCDate() > 5) return res
+  const db = supabaseAdmin()
+  const p = periodeRapport(maintenant)
+  const { data: proprios } = await db.from('fiches_produits').select('user_id')
+  const ids = Array.from(new Set((proprios ?? []).map(x => x.user_id)))
+  if (!ids.length) return res
+  const { data: users } = await db.from('users').select('id, email, prenom, plan, statut, role, trial_ends_at').in('id', ids)
+  for (const u of users ?? []) {
+    const admin = u.role === 'admin' || u.role === 'generaladmin'
+    const essai = u.plan === 'trial' && u.statut === 'trial' && (!u.trial_ends_at || new Date(u.trial_ends_at) > maintenant)
+    const payant = ['pro', 'premium', 'enterprise'].includes(u.plan) && u.statut === 'active'
+    if (admin || essai || payant || u.statut === 'suspended') continue
+    const { data: deja } = await db.from('score_envois').select('id').eq('user_id', u.id).eq('type', 'alerte_decouverte').eq('periode', p.cle).maybeSingle()
+    if (deja) continue
+    try {
+      const fin = p.fin.toISOString().slice(0, 10)
+      const alertes = (await veilleCompte(u.id, { depuisDoc: p.debut.toISOString().slice(0, 10) })).filter(a => !a.date_texte || a.date_texte < fin)
+      if (!alertes.length) continue
+      const nb = new Set(alertes.map(a => a.fiche_id)).size
+      const html = `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#14120F">
+        <div style="padding:20px 0;border-bottom:2px solid #A8822F"><b style="font-size:18px">Import-eXPert</b> · Vos produits en ${p.libelle}</div>
+        <p>Bonjour${u.prenom ? ' ' + esc(u.prenom) : ''},</p>
+        <p><b>${alertes.length} texte${alertes.length > 1 ? 's' : ''}</b> publié${alertes.length > 1 ? 's' : ''} en ${p.libelle} touche${alertes.length > 1 ? 'nt' : ''} <b>${nb} de vos produits</b>.</p>
+        ${blocAlertes(alertes, site, 5)}
+        <p style="font-size:14px">Avec l’offre Pro, ces alertes vous arrivent chaque semaine, pour tous vos produits, et chaque fiche peut être figée en dossier défendable, vérifiable en ligne.</p>
+        <p><a href="${site}/tarifs" style="display:inline-block;background:#14120F;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none">Découvrir l’offre Pro</a> &nbsp; <a href="${site}/veille" style="color:#153E82">Voir ma veille</a></p>
+        <p style="font-size:12px;color:#7A7168;margin-top:28px;border-top:1px solid #E6DCC7;padding-top:12px">Alerte de l’offre Découverte, établie en rapprochant les codes SH de vos fiches des textes publiés. Elle signale un texte à examiner ; elle ne préjuge pas de son effet sur vos opérations.</p></div>`
+      const e = await sendEmail({ to: u.email, subject: `${alertes.length} texte${alertes.length > 1 ? 's' : ''} du mois touche${alertes.length > 1 ? 'nt' : ''} ${nb} de vos produits`, html })
+      if (!e.ok) { res.erreurs.push(`${u.email}: envoi impossible`); continue }
+      await db.from('score_envois').insert({ user_id: u.id, type: 'alerte_decouverte', periode: p.cle })
+      res.envoyes++
+    } catch (e: any) { res.erreurs.push(`${u.email}: ${e?.message}`) }
+  }
+  return res
+}

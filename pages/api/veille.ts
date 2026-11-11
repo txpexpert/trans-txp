@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'GET') return res.status(405).json({ error: 'Méthode non autorisée' })
   const c = await compteAbonne(req)
   if (!c) return res.status(401).json({ error: 'Non connecté' })
-  if (!c.abonne) return res.status(403).json({ error: 'La veille sur vos produits est incluse dans l’essai et les offres payantes.', code: 'ABONNEMENT' })
+  if (!c.abonne && !c.decouverte) return res.status(403).json({ error: 'La veille sur vos produits est incluse dans l’essai et les offres payantes.', code: 'ABONNEMENT' })
   try {
     const alertes = await veilleCompte(c.id)
     const { data: fiches } = await supabaseAdmin().from('fiches_produits').select('id, designation, code_sh, verifie_le').eq('user_id', c.id)

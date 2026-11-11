@@ -28,6 +28,9 @@ import { verifyUserTokenEdge } from './lib/edgeAuth'
 import { FREE_PATHS, pathToModuleCode } from './lib/routeAccess'
 import { canAccessModule } from './lib/moduleAccess'
 
+// Pages du compte ouvertes à l'offre Découverte (compte gratuit, essai terminé, abonnement échu)
+const DECOUVERTE = ['/fiches', '/veille', '/mon-espace', '/dossiers', '/portail']
+
 const USER_COOKIE = 'dia_session' // dupliqué volontairement : évite d'importer moduleAccess pour une seule string
 
 function redirectToAbonnementRequis(req: NextRequest, pathname: string) {
@@ -53,7 +56,7 @@ export async function middleware(req: NextRequest) {
 
   const allowed = moduleCode
     ? canAccessModule(payload.plan, payload.statut, moduleCode, payload.trialEnds)
-    : payload.statut !== 'suspended' && payload.statut !== 'expired' // page hors matrice : compte actif suffit
+    : payload.statut !== 'suspended' && (payload.statut !== 'expired' || DECOUVERTE.some(p => pathname === p || pathname.startsWith(p + '/'))) // page hors matrice : compte actif, ou page de l'offre Découverte
 
   if (!allowed) return redirectToAbonnementRequis(req, pathname)
 
@@ -62,6 +65,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|backoffice$|backoffice/|gestion-abonnements$|gestion-abonnements/|mon-abonnement$|facturation/|_next/static|_next/image|favicon.ico|manifest.json|icons/|brand/|sw.js|workbox-|app/|verifier$|verifier/|partage/|produits$|produits/|barometre$|google[a-z0-9]+\\.html|robots.txt|sitemap.xml).*)',
+    '/((?!api/|backoffice$|backoffice/|gestion-abonnements$|gestion-abonnements/|mon-abonnement$|facturation/|_next/static|_next/image|favicon.ico|manifest.json|icons/|brand/|sw.js|workbox-|app/|verifier$|verifier/|partage/|produits$|produits/|barometre$|p/|google[a-z0-9]+\\.html|robots.txt|sitemap.xml).*)',
   ],
 }

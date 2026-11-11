@@ -17,7 +17,7 @@ import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { runBillingCron } from '../../../lib/billingCron'
 import { runTrialEndReports } from '../../../lib/scoreReport'
 import { runVeilleHebdo } from '../../../lib/veille'
-import { runRapportsMensuels } from '../../../lib/rapportMensuel'
+import { runRapportsMensuels, runAlertesDecouverte } from '../../../lib/rapportMensuel'
 
 export const config = { maxDuration: 300 }
 
@@ -56,5 +56,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   catch (e: any) { console.error('[cron/veille]', e); veille = { error: e?.message || 'Erreur veille' } }
   try { rapports = await runRapportsMensuels(siteUrl(req)); if (rapports.erreurs.length) console.error('[cron/rapports]', rapports.erreurs) }
   catch (e: any) { console.error('[cron/rapports]', e); rapports = { error: e?.message || 'Erreur rapports' } }
-  return res.status(200).json({ ok: true, expired: data, billing, scores, veille, rapports })
+  let decouverte: any
+  try { decouverte = await runAlertesDecouverte(siteUrl(req)); if (decouverte.erreurs.length) console.error('[cron/decouverte]', decouverte.erreurs) }
+  catch (e: any) { console.error('[cron/decouverte]', e); decouverte = { error: e?.message || 'Erreur alertes Découverte' } }
+  return res.status(200).json({ ok: true, expired: data, billing, scores, veille, rapports, decouverte })
 }

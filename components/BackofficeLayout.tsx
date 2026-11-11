@@ -31,7 +31,11 @@ const NAV = [
     { href:'/backoffice/parametres', label:'Paramètres',              icon:'⚙' },
   ]},
   { section: 'ACQUISITION', items: [
-    { href:'/backoffice/scanner-leads', label:'Leads Scanner', icon:'⚡', highlight: true },
+    { href:'/backoffice/indicateurs', label:'Indicateurs du parcours', icon:'▲', highlight: true },
+    { href:'/backoffice/partenaires', label:'Partenaires', icon:'⇄' },
+    { href:'/backoffice/packs', label:'Commandes de packs', icon:'▣' },
+    { href:'/backoffice/texte-semaine', label:'Texte de la semaine', icon:'✎' },
+    { href:'/backoffice/scanner-leads', label:'Leads Scanner', icon:'⚡' },
   ]},
 ]
 

@@ -185,19 +185,19 @@ export const PLANS = [
   {
     id: 'free', nom: 'Découverte', resultat: 'Mesurer mon exposition', prix: '0', unite: 'pour toujours',
     pour: 'Pour évaluer la plateforme',
-    inclus: ['Diagnostic de conformité et indice d’exposition', 'Coût de revient à l’import', 'Bibliothèque : FAQ, glossaire, recherche CGI', 'IXP-Assistant : questions limitées'],
+    inclus: ['Diagnostic de conformité et exposition en dirhams', '3 fiches produits et alerte mensuelle sur vos produits', 'Coût de revient à l’import', 'Bibliothèque : FAQ, glossaire, recherche CGI', 'IXP-Assistant : questions limitées'],
     cta: 'Créer un compte', href: '/auth/register?plan=free',
   },
   {
     id: 'pro', nom: 'Pro', resultat: 'Importer juste', prix: fmtDH(PRICING.pro.annual!), unite: priceLine('pro').replace(/^DH /, ''),
     pour: 'PME importatrices',
-    inclus: ['Qualifier, Chiffrer et Exécuter', 'Classement SH inclus', 'Bibliothèque complète', 'IXP-Assistant illimité', 'Support par email'],
+    inclus: ['Qualifier, Chiffrer et Exécuter', 'Fiches produits sans limite, dossiers défendables', 'Veille hebdomadaire et rapport mensuel au dirigeant', 'Bibliothèque complète', 'IXP-Assistant illimité'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=pro',
   },
   {
     id: 'premium', nom: 'Premium', resultat: 'Sécuriser et prouver', prix: fmtDH(PRICING.premium.annual!), unite: priceLine('premium').replace(/^DH /, ''), vedette: true,
     pour: 'Transitaires, commissionnaires, cabinets',
-    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients', '24 renseignements experts par an inclus (2 par mois)'],
+    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients et portail clients à votre nom', '24 renseignements experts par an inclus (2 par mois)'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=premium',
   },
   {

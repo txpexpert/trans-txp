@@ -8,7 +8,7 @@ import { enregistrerDepuisFiche, ficheComplete } from '../../../lib/progression'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const c = await compteAbonne(req)
   if (!c) return res.status(401).json({ error: 'Non connecté' })
-  if (!c.abonne) return res.status(403).json({ error: 'Abonnement requis', code: 'ABONNEMENT' })
+  if (!c.abonne && !c.decouverte) return res.status(403).json({ error: 'Compte suspendu.', code: 'ABONNEMENT' })
   const id = String(req.query.id || '')
   if (!/^[0-9a-f-]{36}$/i.test(id)) return res.status(400).json({ error: 'Identifiant invalide' })
   const db = supabaseAdmin()

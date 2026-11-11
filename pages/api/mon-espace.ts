@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     db.from('partages').select('id, statut, pieces').eq('user_id', c.id),
   ])
   let veille = { total: 0, aExaminer: 0 }
-  if (c.abonne && fiches.data?.length) {
+  if ((c.abonne || c.decouverte) && fiches.data?.length) {
     try {
       const a = await veilleCompte(c.id)
       const verif = new Map(fiches.data.map(f => [f.id, f.verifie_le]))
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const pl = partages.data ?? []
   res.setHeader('Cache-Control', 'no-store')
   return res.status(200).json({
-    abonne: c.abonne, compte: u,
+    abonne: c.abonne, decouverte: c.decouverte, compte: u,
     score: diag ?? [],
     fiches: { total: fiches.data?.length ?? 0, completes: (fiches.data ?? []).filter(f => f.statut === 'complete').length },
     dossiers: dossiers.count ?? 0,
