@@ -21,10 +21,10 @@ export default function AccueilAr() {
           <h1 className="x-h1 x-h1-sm">ما ستراقبه الجمارك غدًا، <em>تحقّقوا منه اليوم</em>.</h1>
           <p className="x-lead">رمز النظام المنسق، المنشأ، القيمة، الكلفة الإجمالية، الوثائق: تؤهّل Import-eXPert كل عملية استيراد وتحسب كلفتها وتؤمّنها قبل الاستخلاص الجمركي، وتسلّمكم ملفًا قابلًا للدفاع عنه، كل نقطة فيه مستندة إلى النص الرسمي. ويحسم خبراؤنا الجمركيون الحالات الصعبة.</p>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}>
-            <Link href="/diagnostic" className="x-btn x-btn-dark">قيسوا درجة تعرّضكم</Link>
+            <Link href="/ar/diagnostic" className="x-btn x-btn-dark">قيسوا درجة تعرّضكم</Link>
             <a href="/tools/enquete-barometre-ar.html" className="x-btn x-btn-line">شاركوا في بارومتر 2026</a>
           </div>
-          <p className="x-note">التشخيص متاح حاليًا باللغة الفرنسية، والنتائج تُعرض بالدرهم.</p>
+          <p className="x-note">حوالي 15 دقيقة، والنتائج تُعرض بالدرهم، وتبقى بياناتكم على جهازكم.</p>
         </div>
       </section>
 

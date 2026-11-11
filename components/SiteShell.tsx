@@ -11,7 +11,7 @@ const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === '1'
 // Interface en arabe (parcours clés) : navigation et pied de page dédiés, sens de lecture de droite à gauche
 const NAV_AR = [
   { href: '/ar', label: 'الرئيسية', tone: 't-blue' },
-  { href: '/diagnostic', label: 'التشخيص', tone: 't-green' },
+  { href: '/ar/diagnostic', label: 'التشخيص', tone: 't-green' },
   { href: '/ar/tarifs', label: 'العروض والأسعار', tone: 't-amber' },
   { href: '/tools/enquete-barometre-ar.html', label: 'بارومتر 2026', tone: 't-teal' },
   { href: '/', label: 'Français', tone: 't-slate' },
@@ -114,7 +114,7 @@ export default function SiteShell({ title, description, children, plain = false,
               <p>منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل الاستخلاص الجمركي، يصممها ويؤطرها خبراء جمركيون.</p>
             </div>
             <div><h5>المنصة</h5><ul>
-              <li><Link href="/diagnostic">تشخيص الامتثال (بالفرنسية)</Link></li>
+              <li><Link href="/ar/diagnostic">تشخيص الامتثال</Link></li>
               <li><Link href="/ar/tarifs">العروض والأسعار</Link></li>
               <li><a href="/tools/enquete-barometre-ar.html">بارومتر 2026</a></li>
               <li><Link href="/contact">اتصلوا بنا</Link></li>
