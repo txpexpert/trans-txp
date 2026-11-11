@@ -1,6 +1,7 @@
 // pages/ar/index.tsx — accueil en arabe (parcours clés) : le risque, la réponse, les offres, le diagnostic.
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import SiteShell from '../../components/SiteShell'
 import { AR_VALIDE } from '../../lib/ar'
 
@@ -12,9 +13,16 @@ const ALAM = [
 ]
 
 export default function AccueilAr() {
+  const { query } = useRouter()
+  const verifie = query.verified === '1'
   return (
     <SiteShell lang="ar" title="Import-eXPert | الامتثال في الاستيراد بالمغرب" description="منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل الاستخلاص الجمركي، مع ملف قابل للدفاع عنه عند المراقبة.">
       {!AR_VALIDE && <Head><meta name="robots" content="noindex, nofollow" /></Head>}
+      {verifie && (
+        <div className="x-wrap" style={{ marginTop: 18 }}>
+          <p className="x-ff-ok" role="status">تم تأكيد بريدكم الإلكتروني وتفعيل حسابكم. يمكنكم الآن <Link href="/mon-espace">الدخول إلى فضائكم</Link> (بالفرنسية) أو <Link href="/ar/diagnostic">البدء بالتشخيص</Link>.</p>
+        </div>
+      )}
       <section className="x-hero">
         <div className="x-wrap">
           <div className="x-eyebrow">الامتثال في الاستيراد · المغرب</div>

@@ -50,7 +50,8 @@ export async function sendEmail({ to, subject, html, from, replyTo, headers }: {
   return { ok: true }
 }
 
-export async function sendVerificationEmail(to: string, prenom: string, token: string) {
+export async function sendVerificationEmail(to: string, prenom: string, token: string, langue: 'fr' | 'ar' = 'fr') {
+  if (langue === 'ar') return sendVerificationEmailAr(to, prenom, token)
   const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/verify-email?token=${token}`
 
   const html = `
@@ -83,6 +84,43 @@ export async function sendVerificationEmail(to: string, prenom: string, token: s
   `
 
   return sendEmail({ to, subject: 'Confirmez votre email — Import-eXPert', html })
+}
+
+// Version arabe : inscription faite depuis l'interface arabe (/ar/inscription) ou langue arabe choisie
+async function sendVerificationEmailAr(to: string, prenom: string, token: string) {
+  const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/verify-email?token=${token}&langue=ar`
+  const esc = (v: string) => v.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!))
+  const html = `
+    <div dir="rtl" lang="ar" style="font-family: 'Noto Sans Arabic', Tahoma, Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #0A0A0A; text-align: right;">
+      <div style="background: #0A0A0A; padding: 20px; text-align: center;">
+        <span dir="ltr" style="color: #E8C97A; font-family: Georgia, serif; font-size: 20px; letter-spacing: -0.5px;">IMPORT-EXPERT</span>
+      </div>
+      <div style="padding: 32px 24px;">
+        <h1 style="font-size: 21px; font-weight: 600; margin: 0 0 16px;">مرحبًا${prenom ? ' ' + esc(prenom) : ''}،</h1>
+        <p style="font-size: 15px; line-height: 1.9; color: #3A3530;">
+          شكرًا على تسجيلكم في Import-eXPert. لتفعيل حسابكم، أكّدوا عنوان بريدكم الإلكتروني بالضغط على الزر أسفله.
+        </p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${verifyUrl}" style="display: inline-block; background: #0A0A0A; color: #E8C97A; padding: 14px 28px; text-decoration: none; font-size: 15px;">
+            تأكيد بريدي الإلكتروني
+          </a>
+        </div>
+        <p style="font-size: 13px; color: #8A8078; line-height: 1.8;">
+          هذا الرابط صالح لمدة 48 ساعة. إذا لم تقوموا بهذا التسجيل، يمكنكم تجاهل هذه الرسالة.
+        </p>
+        <p style="font-size: 12px; color: #8A8078; line-height: 1.8;">
+          أو انسخوا هذا الرابط في متصفحكم:<br><span dir="ltr" style="word-break: break-all;">${verifyUrl}</span>
+        </p>
+        <p style="font-size: 12px; color: #8A8078; line-height: 1.8;">
+          تبقى واجهة الحساب حاليًا باللغة الفرنسية، ويجيبكم خبراؤنا بالعربية أو بالفرنسية حسب اختياركم.
+        </p>
+      </div>
+      <div style="border-top: 1px solid #E8DFC8; padding: 16px 24px; font-size: 11px; color: #8A8078;">
+        <span dir="ltr">© 2026 Import-eXPert</span>
+      </div>
+    </div>
+  `
+  return sendEmail({ to, subject: 'أكّدوا بريدكم الإلكتروني — Import-eXPert', html })
 }
 
 // ── Administrateurs (2026-11-01) ─────────────────────────────────────────────
