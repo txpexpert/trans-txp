@@ -5,8 +5,10 @@ import { useRouter } from 'next/router'
 import { useState, type ReactNode, useEffect } from 'react'
 import { CHAIN } from '../lib/suite'
 import IxpLogo from './IxpLogo'
+import { COOKIE_LANGUE, equivalent, lienLangue } from '../lib/langues'
 
 const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === '1'
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || 'https://import-expert.ma').replace(/\/$/, '')
 
 // Interface en arabe (parcours clés) : navigation et pied de page dédiés, sens de lecture de droite à gauche
 const NAV_AR = [
@@ -14,7 +16,6 @@ const NAV_AR = [
   { href: '/ar/diagnostic', label: 'التشخيص', tone: 't-green' },
   { href: '/ar/tarifs', label: 'العروض والأسعار', tone: 't-amber' },
   { href: '/tools/enquete-barometre-ar.html', label: 'بارومتر 2026', tone: 't-teal' },
-  { href: '/', label: 'Français', tone: 't-slate' },
 ]
 
 const NAV = [
@@ -28,8 +29,22 @@ const NAV = [
 
 export default function SiteShell({ title, description, children, plain = false, lang = 'fr' }: { title: string; description?: string; children: ReactNode; plain?: boolean; lang?: 'fr' | 'ar' }) {
   const ar = lang === 'ar'
-  const nav = ar ? NAV_AR : [...NAV, { href: '/ar', label: 'العربية', tone: 't-slate' }]
   const { pathname } = useRouter()
+  // Sélecteur de langue : enregistre le choix et ouvre la même page dans l'autre langue
+  const autreLangue = ar ? lienLangue('fr', pathname) : lienLangue('ar', pathname)
+  const nav = ar ? [...NAV_AR, { href: autreLangue, label: 'Français', tone: 't-slate' }] : [...NAV, { href: autreLangue, label: 'العربية', tone: 't-slate' }]
+  const versionFr = ar ? equivalent(pathname, 'fr') : pathname
+  const versionAr = ar ? pathname : equivalent(pathname, 'ar')
+  // Proposition discrète de l'interface arabe aux navigateurs réglés en arabe, tant qu'aucune langue n'est choisie
+  const [proposerAr, setProposerAr] = useState(false)
+  useEffect(() => {
+    if (ar) return
+    try {
+      const choisie = document.cookie.split('; ').some(c => c.startsWith(COOKIE_LANGUE + '='))
+      const nav0 = (navigator.languages && navigator.languages[0]) || navigator.language || ''
+      if (!choisie && nav0.toLowerCase().startsWith('ar')) setProposerAr(true)
+    } catch {}
+  }, [ar])
   const [menu, setMenu] = useState(false)
   // Session en cours : nom du client affiché dans l'en-tête, avec la tuile Déconnexion
   const [user, setUser] = useState<{ label: string; detail: string; compte: string } | null>(null)
@@ -62,14 +77,26 @@ export default function SiteShell({ title, description, children, plain = false,
         {description && <meta name="description" content={description} />}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {DEMO && <meta name="robots" content="noindex, nofollow" />}
+        {versionFr && versionAr && <link rel="alternate" hrefLang="fr" href={SITE + versionFr} />}
+        {versionFr && versionAr && <link rel="alternate" hrefLang="ar" href={SITE + versionAr} />}
+        {versionFr && versionAr && <link rel="alternate" hrefLang="x-default" href={SITE + versionFr} />}
       </Head>
+      {proposerAr && (
+        <div className="x-langbar" dir="rtl" lang="ar">
+          <span>الموقع متوفر باللغة العربية.</span>
+          <a href={lienLangue('ar', pathname)}>التصفح بالعربية</a>
+          <a href={lienLangue('fr', pathname)} lang="fr" dir="ltr">Continuer en français</a>
+        </div>
+      )}
 
       <header className="x-hdr">
         <div className="x-wrap">
           <Link href={ar ? '/ar' : '/'} className="x-logo" aria-label="Import-eXPert, accueil" dir="ltr"><IxpLogo size={38} /><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></Link>
           <nav className="x-nav" aria-label="Navigation principale">
             {nav.map(n => (
-              <Link key={n.href} href={n.href} className={`x-tile ${n.tone} ${pathname === n.href.split('#')[0] && !n.href.includes('#') ? 'on' : ''}`}>{n.label}</Link>
+              n.href.startsWith('/api/')
+                ? <a key={n.href} href={n.href} className={`x-tile ${n.tone}`} lang={ar ? 'fr' : 'ar'}>{n.label}</a>
+                : <Link key={n.href} href={n.href} className={`x-tile ${n.tone} ${pathname === n.href.split('#')[0] && !n.href.includes('#') ? 'on' : ''}`}>{n.label}</Link>
             ))}
           </nav>
           <div className="x-act">
@@ -89,7 +116,9 @@ export default function SiteShell({ title, description, children, plain = false,
         </div>
         {(
           <nav className="x-mnav" aria-label="Navigation mobile" hidden={!menu}>
-            {nav.map(n => <Link key={n.href} href={n.href} className={n.tone} onClick={() => setMenu(false)}>{n.label}</Link>)}
+            {nav.map(n => n.href.startsWith('/api/')
+              ? <a key={n.href} href={n.href} className={n.tone} lang={ar ? 'fr' : 'ar'}>{n.label}</a>
+              : <Link key={n.href} href={n.href} className={n.tone} onClick={() => setMenu(false)}>{n.label}</Link>)}
             {!ar && <Link href="/diagnostic" className="t-red" onClick={() => setMenu(false)}>Diagnostic de conformité</Link>}
             {user ? (
               <>
@@ -120,7 +149,7 @@ export default function SiteShell({ title, description, children, plain = false,
               <li><Link href="/contact">اتصلوا بنا</Link></li>
             </ul></div>
             <div><h5>روابط</h5><ul>
-              <li><Link href="/">Version française</Link></li>
+              <li><a href={autreLangue}>Version française</a></li>
               <li><a href="https://www.douane.gov.ma" target="_blank" rel="noreferrer">douane.gov.ma ↗</a></li>
               <li><a href="https://www.portnet.ma" target="_blank" rel="noreferrer">portnet.ma ↗</a></li>
             </ul></div>

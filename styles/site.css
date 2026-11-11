@@ -811,3 +811,8 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 .xs-ar .x-pf-card[data-ton="navy"]{border-right-color:var(--x-navy)}
 .x-pf-grid4{grid-template-columns:repeat(4,1fr)}
 @media (max-width:1000px){.x-pf-grid4{grid-template-columns:1fr 1fr}}@media (max-width:600px){.x-pf-grid4{grid-template-columns:1fr}}
+
+/* Proposition de l'interface arabe (navigateur réglé en arabe, aucune langue choisie) */
+.x-langbar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center;padding:9px 16px;background:var(--x-navy,#153E82);color:#fff;font-family:'Noto Sans Arabic',var(--x-sans);font-size:14px}
+.x-langbar a{color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.x-langbar a[lang=fr]{font-family:var(--x-sans);font-weight:400;opacity:.85}

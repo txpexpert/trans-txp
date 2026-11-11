@@ -26,6 +26,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { verifyUserTokenEdge } from './lib/edgeAuth'
 import { FREE_PATHS, pathToModuleCode } from './lib/routeAccess'
+import { COOKIE_LANGUE, equivalent, estArabe } from './lib/langues'
 import { canAccessModule } from './lib/moduleAccess'
 
 // Pages du compte ouvertes à l'offre Découverte (compte gratuit, essai terminé, abonnement échu)
@@ -44,6 +45,17 @@ function redirectToAbonnementRequis(req: NextRequest, pathname: string) {
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
+
+  // Deux interfaces : une page qui existe dans la langue choisie par le visiteur s'ouvre dans cette langue
+  const langue = req.cookies.get(COOKIE_LANGUE)?.value
+  if ((langue === 'ar' || langue === 'fr') && req.method === 'GET') {
+    const cible = langue === 'ar' ? (!estArabe(pathname) ? equivalent(pathname, 'ar') : null) : (estArabe(pathname) ? equivalent(pathname, 'fr') : null)
+    if (cible && cible !== pathname) {
+      const url = req.nextUrl.clone()
+      url.pathname = cible
+      return NextResponse.redirect(url)
+    }
+  }
 
   if (FREE_PATHS.includes(pathname)) return NextResponse.next()
 

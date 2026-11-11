@@ -29,16 +29,24 @@
   function a(h, t, c) { return '<a href="' + href(h) + '"' + (c ? ' class="' + c + '"' : '') + '>' + t + '</a>'; }
 
   var AR = (document.documentElement.getAttribute('lang') || '').slice(0, 2) === 'ar';
+  // Deux interfaces : même table d'équivalences que lib/langues.ts
+  var EQUIV = [['/', '/ar'], ['/tarifs', '/ar/tarifs'], ['/diagnostic', '/ar/diagnostic'],
+    ['/tools/diagnostic-conformite.html', '/tools/diagnostic-conformite-ar.html'], ['/tools/enquete-barometre.html', '/tools/enquete-barometre-ar.html']];
+  function lienLangue(vers) {
+    var p = location.pathname, cible = vers === 'ar' ? '/ar' : '/';
+    EQUIV.forEach(function (e) { if (vers === 'ar' && e[0] === p) cible = e[1]; if (vers === 'fr' && e[1] === p) cible = e[0]; });
+    return offline ? href(cible) : '/api/langue?l=' + vers + '&r=' + encodeURIComponent(cible);
+  }
   var NAV_AR = [
     ['/ar', 'الرئيسية', 't-blue'],
     ['/ar/diagnostic', 'التشخيص', 't-green'],
     ['/ar/tarifs', 'العروض والأسعار', 't-amber'],
-    ['/tools/enquete-barometre-ar.html', 'بارومتر 2026', 't-teal'],
-    ['/', 'Français', 't-slate']
+    ['/tools/enquete-barometre-ar.html', 'بارومتر 2026', 't-teal']
   ];
   function headerAr() {
-    var nav = NAV_AR.map(function (n) { return a(n[0], n[1], 'x-tile ' + n[2]); }).join('');
-    var mnav = NAV_AR.map(function (n) { return a(n[0], n[1], n[2]); }).join('') + a('/auth/login', 'تسجيل الدخول', 't-rose');
+    var fr = '<a href="' + lienLangue('fr') + '" lang="fr" class="x-tile t-slate">Français</a>';
+    var nav = NAV_AR.map(function (n) { return a(n[0], n[1], 'x-tile ' + n[2]); }).join('') + fr;
+    var mnav = NAV_AR.map(function (n) { return a(n[0], n[1], n[2]); }).join('') + '<a href="' + lienLangue('fr') + '" lang="fr" class="t-slate">Français</a>' + a('/auth/login', 'تسجيل الدخول', 't-rose');
     return '<header class="x-hdr"><div class="x-wrap">' +
       '<a href="' + href('/ar') + '" class="x-logo" dir="ltr" aria-label="IXP-Import-eXPert"><img src="' + LOGO + '" width="38" height="38" alt="IXP Import-eXPert" class="ixp-logo-img" data-ixp-logo=""><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></a>' +
       '<nav class="x-nav" aria-label="التنقل الرئيسي">' + nav + '</nav>' +
@@ -51,13 +59,14 @@
       '<div><div class="x-logo" dir="ltr"><img src="' + LOGO + '" width="34" height="34" alt="" class="ixp-logo-img" data-ixp-logo=""><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></div>' +
       '<p>منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل الاستخلاص الجمركي، يصممها ويؤطرها خبراء جمركيون.</p></div>' +
       '<div><h5>المنصة</h5><ul><li>' + a('/ar/diagnostic', 'تشخيص الامتثال') + '</li><li>' + a('/ar/tarifs', 'العروض والأسعار') + '</li><li>' + a('/tools/enquete-barometre-ar.html', 'بارومتر 2026') + '</li><li>' + a('/contact', 'اتصلوا بنا') + '</li></ul></div>' +
-      '<div><h5>روابط</h5><ul><li>' + a('/', 'Version française') + '</li><li><a href="https://www.douane.gov.ma" target="_blank" rel="noreferrer">douane.gov.ma ↗</a></li><li><a href="https://www.portnet.ma" target="_blank" rel="noreferrer">portnet.ma ↗</a></li></ul></div>' +
+      '<div><h5>روابط</h5><ul><li><a href="' + lienLangue('fr') + '" lang="fr">Version française</a></li><li><a href="https://www.douane.gov.ma" target="_blank" rel="noreferrer">douane.gov.ma ↗</a></li><li><a href="https://www.portnet.ma" target="_blank" rel="noreferrer">portnet.ma ↗</a></li></ul></div>' +
       '</div><div class="x-ftr-bot"><span>© 2026 IXP-Import-eXPert · import-expert.ma</span></div></div></footer>';
   }
 
   function header() {
-    var nav = NAV.map(function (n) { return a(n[0], n[1], 'x-tile ' + n[2]); }).join('');
-    var mnav = NAV.map(function (n) { return a(n[0], n[1], n[2]); }).join('') + a('/diagnostic', 'Diagnostic de conformité', 't-red') + a('/auth/login', 'Connexion', 't-rose');
+    var ar = '<a href="' + lienLangue('ar') + '" lang="ar" class="x-tile t-slate">العربية</a>';
+    var nav = NAV.map(function (n) { return a(n[0], n[1], 'x-tile ' + n[2]); }).join('') + ar;
+    var mnav = NAV.map(function (n) { return a(n[0], n[1], n[2]); }).join('') + a('/diagnostic', 'Diagnostic de conformité', 't-red') + '<a href="' + lienLangue('ar') + '" lang="ar" class="t-slate">العربية</a>' + a('/auth/login', 'Connexion', 't-rose');
     return '<header class="x-hdr"><div class="x-wrap">' +
       '<a href="' + href('/') + '" class="x-logo" aria-label="IXP-Import-eXPert, accueil"><img src="' + LOGO + '" width="38" height="38" alt="IXP Import-eXPert" class="ixp-logo-img" data-ixp-logo=""><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></a>' +
       '<nav class="x-nav" aria-label="Navigation principale">' + nav + '</nav>' +
