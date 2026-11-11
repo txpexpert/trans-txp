@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const db = supabaseAdmin()
 
   if (req.method === 'GET') {
-    const { data, error } = await db.from('dossiers')
+    const { data, error } = await db.from('dossiers_defendables')
       .select('id, numero, created_at, type, titre, statut, fiches').eq('user_id', c.id)
       .order('created_at', { ascending: false }).limit(100)
     if (error) return res.status(500).json({ error: error.message })
@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const numero = nouveauNumero()
     const contenu = { numero, created_at, type, titre: titre!, operation, titulaire, fiches: fiches.map(figerFiche) }
     const row = { ...contenu, user_id: c.id, empreinte: empreinte(contenu) }
-    const { data, error } = await db.from('dossiers').insert(row).select('id, numero').single()
+    const { data, error } = await db.from('dossiers_defendables').insert(row).select('id, numero').single()
     if (error) return res.status(500).json({ error: error.message })
     return res.status(201).json({ dossier: data })
   }
