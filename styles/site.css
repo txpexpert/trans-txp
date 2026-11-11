@@ -796,3 +796,18 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 .x-me-codes b{font-size:22px}
 .x-me-codes small{font-size:13px;color:var(--x-ink2)}
 @media (max-width:700px){.x-me-codes{grid-template-columns:1fr}}
+
+/* ── Interface en arabe (sens de lecture de droite à gauche) ── */
+.xs-ar{--x-sans:"Noto Sans Arabic","Segoe UI",Tahoma,sans-serif;--x-serif:"Noto Naskh Arabic","Noto Sans Arabic",serif;font-family:var(--x-sans)}
+.xs-ar .x-h1,.xs-ar .x-h2,.xs-ar .x-h3,.xs-ar h1,.xs-ar h2{font-family:var(--x-serif);line-height:1.35}
+.xs-ar em{font-style:normal;color:var(--x-gold)}
+.xs-ar .x-eyebrow,.xs-ar .x-mono{letter-spacing:0;text-transform:none;font-family:var(--x-sans)}
+.xs-ar .x-lead,.xs-ar p,.xs-ar li{line-height:1.8}
+.xs-ar .x-list li{padding-left:0;padding-right:22px}
+.xs-ar .x-list li::before{left:auto;right:0}
+.xs-ar .x-btn{font-family:var(--x-sans)}
+.xs-ar .ltr{direction:ltr;unicode-bidi:embed}
+.xs-ar .x-pf-card{border-left:1px solid var(--x-line);border-right:4px solid var(--x-red);border-radius:14px 0 0 14px}
+.xs-ar .x-pf-card[data-ton="navy"]{border-right-color:var(--x-navy)}
+.x-pf-grid4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:1000px){.x-pf-grid4{grid-template-columns:1fr 1fr}}@media (max-width:600px){.x-pf-grid4{grid-template-columns:1fr}}

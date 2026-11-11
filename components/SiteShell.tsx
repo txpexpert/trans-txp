@@ -8,6 +8,15 @@ import IxpLogo from './IxpLogo'
 
 const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === '1'
 
+// Interface en arabe (parcours clés) : navigation et pied de page dédiés, sens de lecture de droite à gauche
+const NAV_AR = [
+  { href: '/ar', label: 'الرئيسية', tone: 't-blue' },
+  { href: '/diagnostic', label: 'التشخيص', tone: 't-green' },
+  { href: '/ar/tarifs', label: 'العروض والأسعار', tone: 't-amber' },
+  { href: '/tools/enquete-barometre-ar.html', label: 'بارومتر 2026', tone: 't-teal' },
+  { href: '/', label: 'Français', tone: 't-slate' },
+]
+
 const NAV = [
   { href: '/', label: 'Accueil', tone: 't-blue' },
   { href: '/plateforme', label: 'Solutions', tone: 't-green' },
@@ -17,7 +26,9 @@ const NAV = [
   { href: '/tarifs', label: 'Tarifs', tone: 't-amber' },
 ]
 
-export default function SiteShell({ title, description, children, plain = false }: { title: string; description?: string; children: ReactNode; plain?: boolean }) {
+export default function SiteShell({ title, description, children, plain = false, lang = 'fr' }: { title: string; description?: string; children: ReactNode; plain?: boolean; lang?: 'fr' | 'ar' }) {
+  const ar = lang === 'ar'
+  const nav = ar ? NAV_AR : [...NAV, { href: '/ar', label: 'العربية', tone: 't-slate' }]
   const { pathname } = useRouter()
   const [menu, setMenu] = useState(false)
   // Session en cours : nom du client affiché dans l'en-tête, avec la tuile Déconnexion
@@ -45,7 +56,7 @@ export default function SiteShell({ title, description, children, plain = false 
     window.location.href = '/'
   }
   return (
-    <div className={plain ? 'xs xs-wrapped' : 'xs'}>
+    <div className={`${plain ? 'xs xs-wrapped' : 'xs'}${ar ? ' xs-ar' : ''}`} dir={ar ? 'rtl' : undefined} lang={ar ? 'ar' : undefined}>
       <Head>
         <title>{title}</title>
         {description && <meta name="description" content={description} />}
@@ -55,9 +66,9 @@ export default function SiteShell({ title, description, children, plain = false 
 
       <header className="x-hdr">
         <div className="x-wrap">
-          <Link href="/" className="x-logo" aria-label="Import-eXPert, accueil"><IxpLogo size={38} /><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></Link>
+          <Link href={ar ? '/ar' : '/'} className="x-logo" aria-label="Import-eXPert, accueil" dir="ltr"><IxpLogo size={38} /><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></Link>
           <nav className="x-nav" aria-label="Navigation principale">
-            {NAV.map(n => (
+            {nav.map(n => (
               <Link key={n.href} href={n.href} className={`x-tile ${n.tone} ${pathname === n.href.split('#')[0] && !n.href.includes('#') ? 'on' : ''}`}>{n.label}</Link>
             ))}
           </nav>
@@ -65,12 +76,12 @@ export default function SiteShell({ title, description, children, plain = false 
             {user ? (
               <div className="x-session" title={`Session en cours : ${user.detail}`}>
                 <Link href="/mon-espace" className="x-sess-who"><span className="x-dot" aria-hidden="true" />{user.label}<small>{user.compte}</small></Link>
-                <button type="button" className="x-tile t-rose x-logout" onClick={logout}>Déconnexion</button>
+                <button type="button" className="x-tile t-rose x-logout" onClick={logout}>{ar ? 'خروج' : 'Déconnexion'}</button>
               </div>
             ) : (
               <div className="x-session">
                 {replaced && <span className="x-sess-off">Session fermée : connexion ouverte ailleurs</span>}
-                <Link href="/auth/login" className="x-tile t-rose x-login">Connexion</Link>
+                <Link href="/auth/login" className="x-tile t-rose x-login">{ar ? 'تسجيل الدخول' : 'Connexion'}</Link>
               </div>
             )}
             <button type="button" className="x-burger" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(m => !m)}>{menu ? '✕' : '☰'}</button>
@@ -78,8 +89,8 @@ export default function SiteShell({ title, description, children, plain = false 
         </div>
         {(
           <nav className="x-mnav" aria-label="Navigation mobile" hidden={!menu}>
-            {NAV.map(n => <Link key={n.href} href={n.href} className={n.tone} onClick={() => setMenu(false)}>{n.label}</Link>)}
-            <Link href="/diagnostic" className="t-red" onClick={() => setMenu(false)}>Diagnostic de conformité</Link>
+            {nav.map(n => <Link key={n.href} href={n.href} className={n.tone} onClick={() => setMenu(false)}>{n.label}</Link>)}
+            {!ar && <Link href="/diagnostic" className="t-red" onClick={() => setMenu(false)}>Diagnostic de conformité</Link>}
             {user ? (
               <>
                 <Link href="/mon-espace" className="t-green" onClick={() => setMenu(false)}>Connecté : {user.label}</Link>
@@ -94,6 +105,30 @@ export default function SiteShell({ title, description, children, plain = false 
 
       <main>{children}</main>
 
+      {ar ? (
+      <footer className="x-ftr">
+        <div className="x-wrap">
+          <div className="x-ftr-grid">
+            <div>
+              <div className="x-logo" dir="ltr"><IxpLogo size={34} /><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></div>
+              <p>منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل التخليص الجمركي، يصممها ويؤطرها خبراء جمركيون.</p>
+            </div>
+            <div><h5>المنصة</h5><ul>
+              <li><Link href="/diagnostic">تشخيص الامتثال (بالفرنسية)</Link></li>
+              <li><Link href="/ar/tarifs">العروض والأسعار</Link></li>
+              <li><a href="/tools/enquete-barometre-ar.html">بارومتر 2026</a></li>
+              <li><Link href="/contact">اتصلوا بنا</Link></li>
+            </ul></div>
+            <div><h5>روابط</h5><ul>
+              <li><Link href="/">Version française</Link></li>
+              <li><a href="https://www.douane.gov.ma" target="_blank" rel="noreferrer">douane.gov.ma ↗</a></li>
+              <li><a href="https://www.portnet.ma" target="_blank" rel="noreferrer">portnet.ma ↗</a></li>
+            </ul></div>
+          </div>
+          <div className="x-ftr-bot"><span>© 2026 IXP-Import-eXPert · import-expert.ma</span></div>
+        </div>
+      </footer>
+      ) : (
       <footer className="x-ftr">
         <div className="x-wrap">
           <div className="x-ftr-grid">
@@ -146,6 +181,7 @@ export default function SiteShell({ title, description, children, plain = false 
           </div>
         </div>
       </footer>
+      )}
 
       {DEMO && (
         <div className="x-demo">

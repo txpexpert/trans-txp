@@ -42,6 +42,9 @@ export const FREE_PATHS = [
   '/profils/prescripteurs',
   '/enquete',
   '/tools/enquete-barometre.html',
+  '/tools/enquete-barometre-ar.html',
+  '/ar',
+  '/ar/tarifs',
   '/tools/diagnostic-conformite.html',
   // Kits opérationnels téléchargeables (démo : accès libre, à arbitrer)
   '/kits/Kit01_Origine_preferentielle_ALE.html',

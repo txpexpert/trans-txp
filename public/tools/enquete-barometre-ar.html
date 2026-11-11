@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="ixp-theme">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>استبيان بارومتر 2026 | IXP-Import-eXPert</title>
+<meta name="description" content="استبيان حول صعوبات الجمارك والامتثال في الاستيراد بالمغرب: 12 سؤالًا ونتائج فورية.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Noto+Naskh+Arabic:wght@400;600&family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--paper:#FAF7F0;--line:#E6DCC7;--line2:#D6C9AC;--gold:#A8822F;--gold2:#C9A84C;
+--navy:#153E82;--navy2:#0E2C5E;--red:#A82D3C;--green:#1E7346;
+--serif:'DM Serif Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;font-size:15.5px}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(250,247,240,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.logo{font-family:var(--serif);font-size:23px;text-decoration:none}.logo b{font-weight:400;color:var(--red)}
+.logo sup{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--ink3);margin-left:5px}
+.toplinks{margin-left:auto;display:flex;gap:8px}
+.toplinks a{text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff}
+.eb{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.2vw,48px);line-height:1.08;margin:12px 0 14px}
+h1 em{color:var(--navy)}
+h2{font-family:var(--serif);font-weight:400;font-size:30px;margin:0 0 8px}
+.lead{font-size:17px;color:var(--ink2);max-width:760px}
+.hero{padding:44px 0 18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:13px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+.prog{position:sticky;top:64px;z-index:10;background:var(--paper);padding:10px 0}
+.bar0{height:8px;background:#EEE6D4;border-radius:99px;overflow:hidden}.bar0 i{display:block;height:100%;background:var(--navy);width:0;transition:width .25s}
+.prog small{font-size:12.5px;color:var(--ink3)}
+/* Questions */
+.q{background:#fff;border:1px solid var(--line);border-left:5px solid var(--c);border-radius:16px;padding:20px 22px;margin:14px 0}
+.qn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--c)}
+.qt{font-weight:600;font-size:16.5px;margin:4px 0 2px}
+.qh{font-size:13px;color:var(--ink3);margin-bottom:12px}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line2);border-radius:11px;cursor:pointer;background:#fff;font-size:14.5px;line-height:1.35}
+.opt:hover{border-color:var(--c)}
+.opt input{margin:2px 0 0;width:17px;height:17px;accent-color:var(--c);flex:0 0 17px}
+.opt.on{background:var(--cb);border-color:var(--c)}
+.opt.dis{opacity:.45;cursor:not-allowed}
+.c1{--c:#1F4E9A;--cb:#EDF3FC}.c2{--c:#1E7346;--cb:#EBF6EF}.c3{--c:#9A620C;--cb:#FCF4E3}.c4{--c:#5B3FA0;--cb:#F2EEFB}
+.c5{--c:#A82D3C;--cb:#FCEEF0}.c6{--c:#16706B;--cb:#E8F6F5}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;margin:16px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label.f{display:block;font-size:13.5px;font-weight:500;margin-bottom:6px}
+input[type=text],input[type=email]{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--paper)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink2);margin-top:12px}
+.consent input{margin-top:3px;width:17px;height:17px;accent-color:var(--navy)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:500;font-size:14.5px;padding:12px 22px;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.dark{background:var(--ink);color:#fff}.dark:hover{background:var(--navy2)}.dark:disabled{opacity:.5;cursor:not-allowed}
+.line{background:#fff;border-color:var(--line2);color:var(--ink)}.line:hover{border-color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.note{font-size:12.5px;color:var(--ink3)}
+.msg{border-left:4px solid var(--green);background:#EBF6EF;padding:12px 14px;border-radius:0 12px 12px 0;margin:12px 0;font-size:14.5px}
+.msg.warn{border-left-color:var(--red);background:#FCEEF0}
+/* Résultats */
+#results{scroll-margin-top:80px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;border-top:4px solid var(--c)}
+.kpi b{display:block;font-family:var(--serif);font-weight:400;font-size:36px;line-height:1.05;color:var(--c)}
+.kpi span{font-size:13px;color:var(--ink3)}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chart{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.chart h4{margin:0 0 4px;font-size:15px;font-weight:600}
+.chart .sub{font-size:12px;color:var(--ink3);margin-bottom:12px}
+.row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) 46px;gap:10px;align-items:center;margin-bottom:8px;font-size:13.5px}
+.row .lab{line-height:1.25}
+.row .lab.me{font-weight:600}
+.row .lab.me::after{content:' · vous';font-family:var(--mono);font-size:10px;color:var(--navy)}
+.track{height:12px;background:#EEE6D4;border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;border-radius:99px;background:var(--c);opacity:.85}
+.row .v{font-family:var(--mono);font-size:12px;text-align:right}
+.donut{display:flex;gap:18px;align-items:center}
+.legend{font-size:13px;display:grid;gap:6px}
+.legend span{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+.empty{color:var(--ink3);font-size:14px;padding:12px 0}
+footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink3)}
+@media (max-width:860px){.opts,.charts,.grid2{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.kpis{grid-template-columns:1fr}.toplinks{display:none}.q{padding:16px}.row{grid-template-columns:minmax(0,1fr) 90px 40px}}
+@media print{header.top,.prog,#form-zone,.actions,footer.b{display:none!important}body{background:#fff}.chart,.kpi{break-inside:avoid}}
+body{font-family:"Noto Sans Arabic","Segoe UI",Tahoma,sans-serif}h1,h2,.logo{font-family:"Noto Naskh Arabic","Noto Sans Arabic",serif}.eb,.qn{letter-spacing:0}.logo{direction:ltr}
+</style>
+<link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
+</head>
+<body>
+<header class="top" data-ixp-own-header><div class="wrap">
+  <a class="logo" href="/">Import<b>-</b>eXPert<sup>MAROC</sup></a>
+  <nav class="toplinks"><a href="/ar">الرئيسية</a><a href="#results">النتائج</a><a href="/tools/enquete-barometre.html" lang="fr" dir="ltr">Français</a></nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eb">بارومتر 2026 · استبيان</div>
+    <h1>صعوبات الجمارك في المغرب، <em>كما يقيسها من يعيشها</em>.</h1>
+    <p class="lead">اثنا عشر سؤالًا بخانات اختيار حول آجال التخليص، وصعوبات الامتثال، واستعمالكم لاتفاقيات التبادل الحر والأنظمة الاقتصادية الجمركية، وأولوياتكم. تظهر النتائج أسفل الصفحة فور إرسال أجوبتكم.</p>
+    <div class="chips"><span class="chip">12 سؤالًا · 4 دقائق</span><span class="chip">أجوبة مجهولة الهوية</span><span class="chip">نتائج فورية</span></div>
+  </section>
+
+  <div class="prog"><div class="bar0"><i id="pbar"></i></div><small id="ptxt">0 من 12 سؤالًا</small></div>
+
+  <div id="form-zone">
+    <div id="questions"></div>
+    <div class="actions">
+      <button class="btn dark" id="submit" disabled>إرسال أجوبتي والاطلاع على النتائج</button>
+      <span class="note" id="req">أجيبوا على الأسئلة العشرة الأولى على الأقل.</span>
+    </div>
+    <div id="sent"></div>
+  </div>
+
+  <!-- RÉSULTATS -->
+  <section id="results">
+    <div class="panel" style="margin-top:34px">
+      <div class="eb">النتائج</div>
+      <h2 id="r-title">نتائج الاستبيان</h2>
+      <p class="note" id="r-src" style="margin-top:0"></p>
+      <div class="kpis" id="kpis"></div>
+      <div class="actions">
+        <button class="btn line" id="kiosk">مشارك جديد (وضع الجمع)</button>
+        <button class="btn line" id="csv">تصدير الأجوبة (CSV)</button>
+        <button class="btn line" id="print">طباعة النتائج</button>
+      </div>
+    </div>
+    <div class="charts" id="charts"></div>
+  </section>
+</main>
+
+<footer class="b"><div class="wrap">Import-eXPert · بارومتر 2026 لصعوبات الجمارك والامتثال في الاستيراد. النتائج المعروضة هي نتائج الأجوبة المجمَّعة فعلًا، وتتوقف دلالتها على عدد المشاركين المبيَّن فوق الرسوم البيانية.</div></footer>
+
+<script>
+(function(){
+'use strict';
+/* type : 'one' = une seule case ; 'many' = plusieurs cases ; max = nombre maximum */
+var Q=[
+ {id:'profil',c:'c1',type:'one',t:'ما هو مجال نشاطكم؟',o:['مستورد صناعي','مقاولة صغرى أو متوسطة مستوردة','معشر أو وكيل لدى الجمارك','مصدّر في إطار الأنظمة الاقتصادية الجمركية','إدارة مالية أو مراقبة التسيير','آخر']},
+ {id:'volume',c:'c1',type:'one',t:'كم عدد التصاريح المفصلة (DUM) التي تعالجونها سنويًا؟',o:['أقل من 50','من 50 إلى 200','من 200 إلى 1000','أكثر من 1000']},
+ {id:'bureaux',c:'c1',type:'many',t:'عبر أي نقاط دخول تمر عملياتكم؟',o:['ميناء طنجة المتوسط','ميناء الدار البيضاء','ميناء أكادير','ميناء الجرف الأصفر','مطار محمد الخامس','المكاتب الداخلية ومخازن وساحات الاستخلاص الجمركي','الحدود البرية','آخر']},
+ {id:'delai',c:'c2',type:'one',t:'ما هو متوسط أجل التخليص الجمركي، من وصول البضاعة إلى رفعها؟',o:['أقل من 24 ساعة','من يوم إلى 3 أيام','من 3 إلى 7 أيام','أكثر من 7 أيام','لا أعرف']},
+ {id:'retards',c:'c2',type:'many',max:3,t:'ما هي الأسباب الرئيسية للتأخير؟',h:'ثلاثة أجوبة على الأكثر.',o:['وثائق ناقصة أو غير مكتملة','المراقبة التقنية (المعايير، المكتب الوطني للسلامة الصحية…)','منازعة في التصنيف التعريفي','منازعة في القيمة','رفض إثبات المنشأ أو عدم اكتماله','سند الاستيراد أو التوطين البنكي','أداء الرسوم والضمانات','المعاينة المادية وتوفر المصلحة','الأنظمة المعلوماتية (BADR، PortNet)']},
+ {id:'erreurs',c:'c3',type:'many',t:'ما صعوبات الامتثال التي واجهتموها خلال السنوات الثلاث الأخيرة؟',o:['التصنيف وفق النظام المنسق','القيمة لدى الجمارك (النقل، الإتاوات، العمولات)','رفض المنشأ أو المعاملة التفضيلية','حسابات أنظمة اقتصادية حلّ أجلها','الرخص والأذون','الوسم والمعايير','لم نواجه صعوبة تُذكر']},
+ {id:'controle',c:'c3',type:'one',t:'هل خضعتم لمراقبة بعدية أو لتصحيح خلال السنوات الثلاث الأخيرة؟',o:['أبدًا','مرة واحدة','عدة مرات','لا أعرف']},
+ {id:'ale',c:'c4',type:'many',t:'ما اتفاقيات التبادل الحر التي تستعملونها؟',o:['الاتحاد الأوروبي','تركيا','الولايات المتحدة','الرابطة الأوروبية للتبادل الحر (سويسرا، النرويج…)','اتفاقية أكادير','المملكة المتحدة','منطقة التبادل الحر العربية الكبرى','منطقة التجارة الحرة القارية الإفريقية','لا أيّ اتفاقية']},
+ {id:'freins',c:'c4',type:'many',t:'ما الذي يمنعكم من الاستفادة أكثر من التفضيلات التعريفية؟',o:['عدم الإلمام بالاتفاقيات','قواعد منشأ معقدة جدًا','المورّد لا يقدّم الإثباتات','كلفة إدارية مرتفعة جدًا','الخوف من مراقبة بعدية','لا شيء: نستغلها بالكامل']},
+ {id:'regimes',c:'c5',type:'many',t:'ما الأنظمة الاقتصادية الجمركية التي تستعملونها؟',o:['القبول المؤقت من أجل التحسين الفعال','القبول المؤقت على الحالة','المستودع الجمركي','التحويل تحت المراقبة الجمركية','منطقة التسريع الصناعي','نظام استرداد الرسوم (Drawback)','لا أيّ نظام']},
+ {id:'outils',c:'c6',type:'many',t:'بأي أدوات تدبّرون الامتثال الجمركي؟',o:['جداول حسابية','نظام تخطيط موارد المقاولة (ERP)','برنامج جمركي مخصص','عن طريق المعشر فقط','مساعد أو أداة ذكاء اصطناعي','لا أيّ أداة منظّمة']},
+ {id:'priorites',c:'c6',type:'many',max:3,t:'ما أولوياتكم خلال الاثني عشر شهرًا المقبلة؟',h:'ثلاثة أجوبة على الأكثر.',o:['تقليص آجال التخليص الجمركي','تأمين التصنيف التعريفي','استغلال أفضل لاتفاقيات التبادل الحر','التحكم في الكلفة الإجمالية للاستيراد','تصفية أفضل للأنظمة الاقتصادية','الحصول على صفة الفاعل الاقتصادي المعتمد أو تجديدها','تكوين الفرق','رقمنة الوظيفة الجمركية']}
+];
+var KEY='ixp-enquete-2026', MINE='ixp-enquete-2026-moi', GLOBAL=null, KIOSK=false;
+var ans={};
+function $(id){return document.getElementById(id);}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
+function save(l){try{localStorage.setItem(KEY,JSON.stringify(l));}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* ── Formulaire ── */
+function render(){
+  var h='';
+  Q.forEach(function(q,i){
+    var sel=ans[q.id]||[], full=q.max&&sel.length>=q.max;
+    h+='<fieldset class="q '+q.c+'" style="margin-inline:0"><legend class="qn" style="padding:0">السؤال '+(i+1)+' / 12</legend><div class="qt">'+esc(q.t)+'</div>'+
+      '<div class="qh">'+(q.h?esc(q.h):(q.type==='one'?'جواب واحد.':'يمكن اختيار عدة أجوبة.'))+'</div><div class="opts">'+
+      q.o.map(function(o,j){var on=sel.indexOf(j)>=0,dis=full&&!on;
+        return '<label class="opt'+(on?' on':'')+(dis?' dis':'')+'"><input type="checkbox" data-q="'+q.id+'" data-j="'+j+'"'+(on?' checked':'')+(dis?' disabled':'')+'><span>'+esc(o)+'</span></label>';}).join('')+
+      '</div></fieldset>';
+  });
+  $('questions').innerHTML=h;
+  $('questions').querySelectorAll('input[type=checkbox]').forEach(function(cb){cb.addEventListener('change',function(){
+    var q=Q.filter(function(x){return x.id===cb.dataset.q;})[0],j=+cb.dataset.j,sel=ans[q.id]||[];
+    if(q.type==='one'){sel=cb.checked?[j]:[];}
+    else{
+      var exclusive=/^(لا أيّ|لم نواجه|لا شيء)/.test(q.o[j]);
+      if(cb.checked){sel=exclusive?[j]:sel.filter(function(k){return !/^(لا أيّ|لم نواجه|لا شيء)/.test(q.o[k]);}).concat([j]);}
+      else sel=sel.filter(function(k){return k!==j;});
+    }
+    if(sel.length)ans[q.id]=sel;else delete ans[q.id];
+    var y=window.scrollY;render();window.scrollTo(0,y);progress();});});
+}
+function progress(){
+  var n=Q.filter(function(q){return ans[q.id];}).length;
+  $('pbar').style.width=(n/12*100)+'%';$('ptxt').textContent=n+' من 12 سؤالًا';
+  var ok=Q.slice(0,10).every(function(q){return ans[q.id];});
+  $('submit').disabled=!ok;$('req').textContent=ok?'يمكنكم إرسال أجوبتكم.':'أجيبوا على الأسئلة العشرة الأولى على الأقل.';
+}
+$('submit').addEventListener('click',function(){
+  var rep={id:'R'+Date.now(),date:new Date().toISOString(),a:JSON.parse(JSON.stringify(ans))};
+  var btn=$('submit');btn.disabled=true;
+  // La réponse est envoyée au Baromètre (base centrale) ; une copie reste sur ce poste pour l'affichage « vos réponses ».
+  fetch('/api/barometre',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reponses:rep.a,source:KIOSK?'collecte':'web'})})
+   .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
+   .then(function(x){
+     if(!x.ok){btn.disabled=false;$('sent').innerHTML='<div class="msg warn">'+esc(x.j.error||'تعذّر الإرسال، أعيدوا المحاولة.')+'</div>';return;}
+     var l=load();l.push(rep);save(l);
+     try{localStorage.setItem(MINE,rep.id);}catch(e){}
+     GLOBAL=x.j;
+     $('sent').innerHTML='<div class="msg">شكرًا، سُجّلت أجوبتكم في بارومتر 2026. <a href="/barometre">الاطلاع على النتائج المنشورة</a></div>';
+     results();document.getElementById('results').scrollIntoView({behavior:'smooth'});
+   })
+   .catch(function(){btn.disabled=false;$('sent').innerHTML='<div class="msg warn">خطأ في الشبكة، أعيدوا المحاولة.</div>';});
+});
+
+/* ── Résultats ── */
+var PAL=['#1F4E9A','#1E7346','#9A620C','#5B3FA0','#A82D3C','#16706B','#3D4A63','#A8822F'];
+function stats(l,q){var cnt=q.o.map(function(){return 0;}),n=0;
+  l.forEach(function(r){var s=r.a[q.id];if(!s)return;n++;s.forEach(function(j){cnt[j]++;});});return {cnt:cnt,n:n};}
+function pc(x,n){return n?Math.round(x/n*100):0;}
+function bars(q,st,mine){
+  var order=q.o.map(function(_,j){return j;});
+  if(q.type==='many')order.sort(function(a,b){return st.cnt[b]-st.cnt[a];});
+  return order.map(function(j){var p=pc(st.cnt[j],st.n),me=mine&&mine.indexOf(j)>=0;
+    return '<div class="row"><span class="lab'+(me?' me':'')+'">'+esc(q.o[j])+'</span><div class="track"><i style="width:'+p+'%"></i></div><span class="v">'+p+' %</span></div>';}).join('');
+}
+function donut(q,st,mine){
+  var tot=st.cnt.reduce(function(a,b){return a+b;},0)||1,a0=-Math.PI/2,R=54,r=32,cx=64,cy=64,svg='';
+  st.cnt.forEach(function(v,j){if(!v)return;var a1=a0+v/tot*2*Math.PI;
+    if(v===tot){svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+((R+r)/2)+'" fill="none" stroke="'+PAL[j%8]+'" stroke-width="'+(R-r)+'"/>';}
+    else{var L=a1-a0>Math.PI?1:0,p=function(rad,a){return [cx+rad*Math.cos(a),cy+rad*Math.sin(a)];},A=p(R,a0),B=p(R,a1),C=p(r,a1),D=p(r,a0);
+      svg+='<path d="M'+A+' A'+R+' '+R+' 0 '+L+' 1 '+B+' L'+C+' A'+r+' '+r+' 0 '+L+' 0 '+D+' Z" fill="'+PAL[j%8]+'" opacity=".88"/>';}
+    a0=a1;});
+  var leg=q.o.map(function(o,j){var me=mine&&mine.indexOf(j)>=0;return '<div'+(me?' style="font-weight:600"':'')+'><span style="background:'+PAL[j%8]+'"></span>'+esc(o)+' · '+pc(st.cnt[j],st.n)+' %'+(me?' · أنتم':'')+'</div>';}).join('');
+  return '<div class="donut"><svg viewBox="0 0 128 128" width="128" height="128" aria-hidden="true">'+svg+'<text x="64" y="69" text-anchor="middle" font-size="15" font-family="DM Sans" fill="#14120F">n = '+st.n+'</text></svg><div class="legend">'+leg+'</div></div>';
+}
+/* Résultats de l'ensemble des répondants (base centrale), quand ils sont diffusés (10 répondants au moins) */
+function gstats(q){var r=GLOBAL&&GLOBAL.resultats&&GLOBAL.resultats[q.id];return r?{cnt:r.cnt.slice(),n:r.n}:{cnt:q.o.map(function(){return 0;}),n:0};}
+function results(){
+  var l=load(),mineId=null;try{mineId=localStorage.getItem(MINE);}catch(e){}
+  var mine=l.filter(function(r){return r.id===mineId;})[0];
+  var glob=!!(GLOBAL&&GLOBAL.resultats);
+  if(glob){stats=function(_l,q){return gstats(q);};}
+  var n=glob?GLOBAL.n:l.length;
+  if(glob){
+    $('r-title').textContent='النتائج: '+n+' مشاركًا';
+    $('r-src').textContent='مجموع الأجوبة الواردة ('+(GLOBAL.publie?'عيّنة قابلة للاستغلال':'عيّنة لا تزال محدودة: تُقرأ بحذر')+'). الخانات بخط عريض هي أجوبتكم.';
+  } else if(GLOBAL){
+    $('r-title').textContent=GLOBAL.n+' مشاركًا إلى حدود اليوم';
+    $('r-src').textContent='تُنشر النسب ابتداءً من 10 مشاركين حفاظًا على السرية. في انتظار ذلك، تظهر أجوبتكم أدناه.';
+    n=l.length;
+  } else {
+  $('r-title').textContent=n?'النتائج: '+n+' مشاركًا':'لا توجد أجوبة حتى الآن';
+  $('r-src').textContent=n?'أجوبة مسجلة على هذا الجهاز ('+(n<30?'عيّنة لا تزال محدودة: تُقرأ بحذر':'عيّنة قابلة للاستغلال')+'). الخانات بخط عريض هي أجوبتكم.':'تظهر الرسوم البيانية بعد إرسال أول جواب.';
+  }
+  if(!n){$('kpis').innerHTML='';$('charts').innerHTML='<div class="chart"><div class="empty">أجيبوا على الاستبيان لعرض النتائج الأولى.</div></div>';return;}
+  function share(id,test){var s=0,m=0;l.forEach(function(r){var a=r.a[id];if(!a)return;m++;if(test(a))s++;});return m?Math.round(s/m*100)+' %':'—';}
+  if(glob){share=function(id){var q=Q.filter(function(x){return x.id===id;})[0],st=gstats(q);if(!st.n)return '—';
+    if(id==='controle')return Math.round((st.cnt[1]+st.cnt[2])/st.n*100)+' %';
+    if(id==='ale')return Math.round((st.n-st.cnt[q.o.length-1])/st.n*100)+' %';return '—';};}
+  var qc=Q[6],qa=Q[7],qr=Q[4],qp=Q[11];
+  var tr=stats(l,qr),tp=stats(l,qp),ir=tr.cnt.indexOf(Math.max.apply(null,tr.cnt)),ip=tp.cnt.indexOf(Math.max.apply(null,tp.cnt));
+  $('kpis').innerHTML=
+    '<div class="kpi c5"><b>'+share('controle',function(a){return a[0]===1||a[0]===2;})+'</b><span>خضعوا لمراقبة بعدية أو لتصحيح خلال 3 سنوات</span></div>'+
+    '<div class="kpi c4"><b>'+share('ale',function(a){return a.indexOf(qa.o.length-1)<0;})+'</b><span>يستعملون اتفاقية تبادل حر واحدة على الأقل</span></div>'+
+    '<div class="kpi c2"><b style="font-size:20px;line-height:1.25">'+(tr.n?esc(qr.o[ir]):'—')+'</b><span>أول سبب للتأخير</span></div>'+
+    '<div class="kpi c6"><b style="font-size:20px;line-height:1.25">'+(tp.n?esc(qp.o[ip]):'—')+'</b><span>أول أولوية خلال 12 شهرًا</span></div>';
+  var h='';
+  Q.forEach(function(q,i){var st=stats(l,q),me=mine?mine.a[q.id]:null;
+    h+='<div class="chart '+q.c+'"><h4>'+(i+1)+'. '+esc(q.t)+'</h4><div class="sub">'+st.n+' جوابًا'+(q.type==='many'?' · عدة اختيارات ممكنة: النسب لا تُجمع':'')+'</div>'+
+      (st.n?(q.type==='one'&&q.o.length<=6?donut(q,st,me):bars(q,st,me)):'<div class="empty">لا جواب بعد.</div>')+'</div>';});
+  $('charts').innerHTML=h;
+}
+$('kiosk').addEventListener('click',function(){KIOSK=true;ans={};$('sent').innerHTML='';
+  try{localStorage.removeItem(MINE);}catch(e){}render();progress();results();window.scrollTo({top:0,behavior:'smooth'});});
+$('print').addEventListener('click',function(){window.print();});
+$('csv').addEventListener('click',function(){var l=load();if(!l.length)return;
+  var head=['id','date'].concat(Q.map(function(q,i){return 'Q'+(i+1)+' '+q.t;}));
+  var rows=l.map(function(r){return [r.id,r.date].concat(Q.map(function(q){return (r.a[q.id]||[]).map(function(j){return q.o[j];}).join(' | ');}));});
+  var csv='﻿'+[head].concat(rows).map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(';');}).join('\n');
+  var b=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='enquete-barometre-2026.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);});
+
+render();progress();results();
+fetch('/api/barometre').then(function(r){return r.json();}).then(function(j){GLOBAL=j;results();}).catch(function(){});
+})();
+</script>
+</body>
+</html>
