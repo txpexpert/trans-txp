@@ -3,6 +3,13 @@
 import { supabaseAdmin } from './supabaseAdmin'
 import { ajouterLibellesComplets } from './tarifLibelle'
 
+// Intitulés des positions absentes du tarif chargé (seules leurs sous-positions y figurent) : libellés du système harmonisé.
+const INTITULES: Record<string, string> = {
+  '1211': 'Plantes, parties de plantes, graines et fruits utilisés principalement en parfumerie, en médecine ou à usages insecticides, parasiticides ou similaires',
+  '2907': 'Phénols ; phénols-alcools',
+  '8421': 'Centrifugeuses, y compris les essoreuses centrifuges ; appareils pour la filtration ou l’épuration des liquides ou des gaz',
+  '8544': 'Fils, câbles et autres conducteurs isolés pour l’électricité ; câbles de fibres optiques',
+}
 const net = (s: string | null) => (s || '').replace(/\s+/g, ' ').replace(/[\s:;,.]+$/, '').trim()
 
 export type LigneTarif = { code: string; libelle: string; taux: number | null; unite: string | null }
@@ -30,7 +37,11 @@ export async function chargerPosition(sh4: string): Promise<Position | null> {
     decisions = d2 ?? []
   }
   if (!feuilles?.length) return null
-  const libelle = net(tete?.[0]?.designation_clean ?? null) || `Position ${sh4}`
+  let libelle = net(tete?.[0]?.designation_clean ?? null) || INTITULES[sh4] || ''
+  if (!libelle) {
+    const { data: n3 } = await db.from('tarifs').select('designation_clean').like('code_sh', sh4 + '%').order('niveau').order('code_sh').limit(1)
+    libelle = `Position ${sh4}` + (n3?.[0]?.designation_clean ? ` : ${net(n3[0].designation_clean)}, …` : '')
+  }
   const complets = await ajouterLibellesComplets(db, feuilles.map(f => ({ code_sh: f.code_sh, designation_clean: f.designation_clean })))
   const lignes: LigneTarif[] = feuilles.map((f, i) => {
     const parts = complets[i].libelle_complet.split(' › ')
@@ -52,7 +63,7 @@ export async function resumePositions(codes: string[]) {
   const m = new Map(((data ?? []) as any[]).map(r => [r.sh4, r]))
   return codes.map(c => {
     const r: any = m.get(c) || {}
-    return { sh4: c, libelle: net(r.libelle ?? null) || `Position ${c}`,
+    return { sh4: c, libelle: net(r.libelle ?? null) || INTITULES[c] || `Position ${c}`,
       min: r.min_taux != null ? Number(r.min_taux) : null, max: r.max_taux != null ? Number(r.max_taux) : null, lignes: Number(r.lignes || 0) }
   })
 }
