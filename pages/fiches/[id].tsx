@@ -32,7 +32,8 @@ export default function FichePage() {
             <>
               <div className="noprint" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', margin: '10px 0 18px' }}>
                 <button type="button" className="x-btn x-btn-dark" onClick={() => setEdit(true)}>Modifier</button>
-                <button type="button" className="x-btn x-btn-line" onClick={() => window.print()}>Imprimer ou enregistrer en PDF</button>
+                <Link href={`/dossiers?fiche=${f.id}`} className="x-btn x-btn-gold">Émettre un dossier défendable</Link>
+                <button type="button" className="x-btn x-btn-line" onClick={() => window.print()}>Imprimer la fiche</button>
                 <details className="x-fl-del"><summary className="x-btn x-btn-line">Supprimer</summary>
                   <p>La fiche sera supprimée définitivement. <button type="button" className="x-btn x-btn-dark x-btn-sm" onClick={supprimer}>Confirmer la suppression</button></p></details>
               </div>

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { ajouterLibellesComplets } from "../../lib/tarifLibelle";
 
 function getSupabase() {
   return createClient(
@@ -52,5 +53,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (error) return res.status(500).json({ error: error.message });
   if (!data?.length) return res.status(404).json({ error: "Position SH non trouvée dans la nomenclature tarifaire" });
 
-  return res.status(200).json({ results: data });
+  const results = await ajouterLibellesComplets(supabase, data as any[]);
+  return res.status(200).json({ results });
 }

@@ -61,7 +61,7 @@ export default function FicheForm({ initiale }: { initiale?: F }) {
     setTarifs(rows)
   }
   function choisirTarif(t: any) {
-    setF(p => ({ ...p, code_sh: t.code_sh, libelle_tarif: t.designation_clean, taux_droit: t.taux_droit, unite_tarif: t.unite_norm || p.unite_tarif }))
+    setF(p => ({ ...p, code_sh: t.code_sh, libelle_tarif: t.libelle_complet || t.designation_clean, taux_droit: t.taux_droit, unite_tarif: t.unite_norm || p.unite_tarif }))
     setTarifs([])
   }
   async function chercherDecisions() {
@@ -105,7 +105,7 @@ export default function FicheForm({ initiale }: { initiale?: F }) {
             <Link href="/modules/classement" target="_blank" className="x-ff-link">Je ne connais pas le code : module Classement ↗</Link></div>
           {tarifs.length > 0 && (
             <ul className="x-ff-pick wide">{tarifs.map(t => (
-              <li key={t.code_sh}><button type="button" onClick={() => choisirTarif(t)}><b>{t.code_sh}</b> {t.designation_clean} · <b>{t.taux_raw ?? t.taux_droit} %</b>{t.unite_norm ? ` · ${t.unite_norm}` : ''}</button></li>))}</ul>
+              <li key={t.code_sh}><button type="button" onClick={() => choisirTarif(t)}><b>{t.code_sh}</b> {t.libelle_complet || t.designation_clean} · <b>{t.taux_raw ?? t.taux_droit} %</b>{t.unite_norm ? ` · ${t.unite_norm}` : ''}</button></li>))}</ul>
           )}
           {f.libelle_tarif && <p className="x-ff-ok wide">Position retenue : <b>{f.code_sh}</b> · {f.libelle_tarif} · droit de <b>{f.taux_droit} %</b></p>}
           <label className="wide">Décision de classement

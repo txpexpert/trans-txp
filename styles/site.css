@@ -628,3 +628,31 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 @media (max-width:760px){.x-ff-grid{grid-template-columns:1fr}.x-fl{display:block;overflow-x:auto}}
 @media print{.noprint,.x-hdr,.x-ftr,.x-disclaimer+div{display:none!important}.x-fp{box-shadow:none}}
 .x-fp-disc{margin:0;padding:14px 32px;border-top:1px solid var(--x-line);background:#fff;font-size:12.5px;line-height:1.5;color:var(--x-ink3);font-style:italic}
+
+/* ── Dossier défendable ── */
+.x-dos{display:grid;gap:26px}
+.x-dos-cover{background:#fff;border:1px solid var(--x-line2);border-radius:18px;padding:32px}
+.x-dos-cover .x-mono{font-size:11.5px;color:var(--x-gold)}
+.x-dos-cover h1{font-family:var(--x-serif);font-weight:400;font-size:34px;margin:8px 0 18px}
+.x-dos-cover h2,.x-dos-fin h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--x-navy);margin:26px 0 12px}
+.x-dos dl{display:grid;grid-template-columns:170px 1fr;gap:8px 14px;margin:0;font-size:15px}
+.x-dos dt{color:var(--x-ink3)}.x-dos dd{margin:0}
+.mono{font-family:var(--x-mono)}
+.x-dos-verif{margin-top:22px;padding:16px 18px;border:1px dashed var(--x-gold);border-radius:12px;background:var(--x-paper)}
+.x-dos-verif p{margin:8px 0 0;font-size:14px}
+.x-dos-hash{font-size:12px;word-break:break-all}
+.x-dos-num{display:block;font-size:11px;color:var(--x-ink3);margin-bottom:8px}
+.x-dos-fin{background:#fff;border:1px solid var(--x-line);border-radius:18px;padding:26px 32px}
+.x-dos-fin ul{margin:0;padding-left:18px;font-size:14.5px}
+.x-dos-fin p{font-size:14.5px;color:var(--x-ink2)}
+.x-dos-disc{font-style:italic;font-size:13px!important;color:var(--x-ink3)!important}
+.x-vf{background:#fff;border:1px solid var(--x-line);border-left:6px solid #1E7346;border-radius:16px;padding:24px 28px;margin-bottom:16px}
+.x-vf.ko{border-left-color:var(--x-red)}
+.x-vf h2{margin:0 0 14px;font-size:22px}
+.x-vf dl{display:grid;grid-template-columns:130px 1fr;gap:8px 14px;margin:0 0 16px;font-size:15px}
+.x-vf dt{color:var(--x-ink3)}.x-vf dd{margin:0}
+.x-vf-cmp{display:grid;gap:6px;font-size:13.5px;color:var(--x-ink2)}
+.x-vf-cmp input,.x-vf-in{font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--x-line2);border-radius:10px}
+.x-vf-in{min-width:280px;font-family:var(--x-mono)}
+@media (max-width:760px){.x-dos dl,.x-vf dl{grid-template-columns:1fr}}
+@media print{.x-dos-fiche{break-before:page}.x-dos-fin{break-before:page}.x-dos-cover,.x-dos-fin{border:0;padding:0}.x-dos-verif{break-inside:avoid}}

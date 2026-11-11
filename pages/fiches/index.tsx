@@ -33,7 +33,7 @@ export default function Fiches() {
           {etat === 'abonnement' && <div className="x-pc-cta"><p>Les fiches produits sont incluses dans l’essai et les offres payantes.</p><Link href="/auth/register?plan=pro" className="x-btn x-btn-gold">Essai 14 jours</Link></div>}
           {etat === 'ok' && (
             <>
-              <div><Link href="/fiches/nouvelle" className="x-btn x-btn-dark">+ Nouvelle fiche produit</Link> <Link href="/demo/fiche-produit" className="x-btn x-btn-line">Voir un exemple</Link></div>
+              <div><Link href="/fiches/nouvelle" className="x-btn x-btn-dark">+ Nouvelle fiche produit</Link> <Link href="/demo/fiche-produit" className="x-btn x-btn-line">Voir un exemple</Link> <Link href="/dossiers" className="x-btn x-btn-line">Mes dossiers défendables</Link></div>
               {fiches.length === 0
                 ? <div className="x-fl-empty"><b>Votre première fiche en 5 minutes.</b> Désignation, code SH, origine : la fiche se construit en trois écrans et valide votre parcours Qualifier.</div>
                 : <table className="x-fl"><thead><tr><th>Produit</th><th>Réf. interne</th><th>Code SH</th><th>Droit</th><th>Origine</th><th>Statut</th><th>Mise à jour</th></tr></thead><tbody>
