@@ -428,3 +428,7 @@ html.ixp-theme{--ink:#14120F;--ink2:#3B3631;--ink3:#7A7168;--text:#14120F;--text
 html.ixp-theme body{font-family:'DM Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 html.ixp-theme body h1,html.ixp-theme body h2{font-family:'DM Serif Display',Georgia,serif !important;font-weight:400 !important;letter-spacing:-.01em}
 html.ixp-theme body h1 em,html.ixp-theme body h2 em{font-style:italic}
+
+/* Version arabe (pages autonomes en arabe) */
+.ixp-chrome.xs-ar{--x-sans:"Noto Sans Arabic","DM Sans",system-ui,sans-serif}
+.ixp-chrome.xs-ar .x-tile{font-family:var(--x-sans)}
