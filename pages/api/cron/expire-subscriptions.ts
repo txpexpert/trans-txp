@@ -16,8 +16,10 @@ import { COOKIE_NAME, verifyToken, siteUrl } from '../../../lib/adminAuth'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { runBillingCron } from '../../../lib/billingCron'
 import { runTrialEndReports } from '../../../lib/scoreReport'
+import { runVeilleHebdo } from '../../../lib/veille'
+import { runRapportsMensuels } from '../../../lib/rapportMensuel'
 
-export const config = { maxDuration: 60 }
+export const config = { maxDuration: 300 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const secret = process.env.CRON_SECRET
@@ -48,5 +50,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('[cron/scores]', e)
     scores = { error: e?.message || 'Erreur rapport de score' }
   }
-  return res.status(200).json({ ok: true, expired: data, billing, scores })
+  // Veille hebdomadaire sur les produits (le lundi) et rapport mensuel au dirigeant (du 1er au 5)
+  let veille: any, rapports: any
+  try { veille = await runVeilleHebdo(siteUrl(req)); if (veille.erreurs.length) console.error('[cron/veille]', veille.erreurs) }
+  catch (e: any) { console.error('[cron/veille]', e); veille = { error: e?.message || 'Erreur veille' } }
+  try { rapports = await runRapportsMensuels(siteUrl(req)); if (rapports.erreurs.length) console.error('[cron/rapports]', rapports.erreurs) }
+  catch (e: any) { console.error('[cron/rapports]', e); rapports = { error: e?.message || 'Erreur rapports' } }
+  return res.status(200).json({ ok: true, expired: data, billing, scores, veille, rapports })
 }
