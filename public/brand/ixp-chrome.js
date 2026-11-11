@@ -31,7 +31,8 @@
   var AR = (document.documentElement.getAttribute('lang') || '').slice(0, 2) === 'ar';
   // Deux interfaces : même table d'équivalences que lib/langues.ts
   var EQUIV = [['/', '/ar'], ['/tarifs', '/ar/tarifs'], ['/diagnostic', '/ar/diagnostic'],
-    ['/tools/diagnostic-conformite.html', '/tools/diagnostic-conformite-ar.html'], ['/tools/enquete-barometre.html', '/tools/enquete-barometre-ar.html']];
+    ['/tools/diagnostic-conformite.html', '/tools/diagnostic-conformite-ar.html'], ['/tools/enquete-barometre.html', '/tools/enquete-barometre-ar.html'],
+    ['/auth/register', '/ar/inscription'], ['/contact', '/ar/contact'], ['/echange-expert', '/ar/echange-expert']];
   function lienLangue(vers) {
     var p = location.pathname, cible = vers === 'ar' ? '/ar' : '/';
     EQUIV.forEach(function (e) { if (vers === 'ar' && e[0] === p) cible = e[1]; if (vers === 'fr' && e[1] === p) cible = e[0]; });
@@ -58,7 +59,7 @@
     return '<footer class="x-ftr"><div class="x-wrap"><div class="x-ftr-grid">' +
       '<div><div class="x-logo" dir="ltr"><img src="' + LOGO + '" width="34" height="34" alt="" class="ixp-logo-img" data-ixp-logo=""><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></div>' +
       '<p>منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل الاستخلاص الجمركي، يصممها ويؤطرها خبراء جمركيون.</p></div>' +
-      '<div><h5>المنصة</h5><ul><li>' + a('/ar/diagnostic', 'تشخيص الامتثال') + '</li><li>' + a('/ar/tarifs', 'العروض والأسعار') + '</li><li>' + a('/tools/enquete-barometre-ar.html', 'بارومتر 2026') + '</li><li>' + a('/contact', 'اتصلوا بنا') + '</li></ul></div>' +
+      '<div><h5>المنصة</h5><ul><li>' + a('/ar/diagnostic', 'تشخيص الامتثال') + '</li><li>' + a('/ar/tarifs', 'العروض والأسعار') + '</li><li>' + a('/tools/enquete-barometre-ar.html', 'بارومتر 2026') + '</li><li>' + a('/ar/contact', 'اتصلوا بنا') + '</li></ul></div>' +
       '<div><h5>روابط</h5><ul><li><a href="' + lienLangue('fr') + '" lang="fr">Version française</a></li><li><a href="https://www.douane.gov.ma" target="_blank" rel="noreferrer">douane.gov.ma ↗</a></li><li><a href="https://www.portnet.ma" target="_blank" rel="noreferrer">portnet.ma ↗</a></li></ul></div>' +
       '</div><div class="x-ftr-bot"><span>© 2026 IXP-Import-eXPert · import-expert.ma</span></div></div></footer>';
   }

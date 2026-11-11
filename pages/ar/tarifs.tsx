@@ -16,9 +16,9 @@ const PACKS_AR: Record<string, { nom: string; desc: string }> = {
 export default function TarifsAr() {
   const pro = PRICING.pro.annual!, prem = PRICING.premium.annual!
   const plans = [
-    { nom: 'استكشافي', prix: 'مجانًا', pour: 'لتقييم المنصة', inclus: ['تشخيص الامتثال ودرجة التعرّض بالدرهم', '3 بطاقات منتوج ورصد شهري لمنتجاتكم', 'حساب كلفة الاستيراد'], href: '/auth/register?plan=free', cta: 'إنشاء حساب' },
-    { nom: 'احترافي (Pro)', prix: `${chiffreAr(pro)} درهم`, pour: 'المقاولات الصغرى والمتوسطة المستوردة', inclus: ['50 مرجعًا متابَعًا وملفات قابلة للدفاع عنها', 'رصد أسبوعي وتقرير شهري إلى المسيّر', 'المكتبة كاملة والمساعد دون حدود'], href: '/auth/register?plan=pro', cta: 'تجربة 14 يومًا' },
-    { nom: 'متميّز (Premium)', prix: `${chiffreAr(prem)} درهم`, pour: 'المعشرون والوكلاء والمكاتب', inclus: ['المراحل الخمس كاملة و120 مرجعًا متابَعًا', 'بوابة الزبناء باسمكم', '24 استشارة خبير في السنة، أي 36 000 درهم بسعر الاستشارة الواحدة'], href: '/auth/register?plan=premium', cta: 'تجربة 14 يومًا', vedette: true },
+    { nom: 'استكشافي', prix: 'مجانًا', pour: 'لتقييم المنصة', inclus: ['تشخيص الامتثال ودرجة التعرّض بالدرهم', '3 بطاقات منتوج ورصد شهري لمنتجاتكم', 'حساب كلفة الاستيراد'], href: '/ar/inscription?plan=free', cta: 'إنشاء حساب' },
+    { nom: 'احترافي (Pro)', prix: `${chiffreAr(pro)} درهم`, pour: 'المقاولات الصغرى والمتوسطة المستوردة', inclus: ['50 مرجعًا متابَعًا وملفات قابلة للدفاع عنها', 'رصد أسبوعي وتقرير شهري إلى المسيّر', 'المكتبة كاملة والمساعد دون حدود'], href: '/ar/inscription?plan=pro', cta: 'تجربة 14 يومًا' },
+    { nom: 'متميّز (Premium)', prix: `${chiffreAr(prem)} درهم`, pour: 'المعشرون والوكلاء والمكاتب', inclus: ['المراحل الخمس كاملة و120 مرجعًا متابَعًا', 'بوابة الزبناء باسمكم', '24 استشارة خبير في السنة، أي 36 000 درهم بسعر الاستشارة الواحدة'], href: '/ar/inscription?plan=premium', cta: 'تجربة 14 يومًا', vedette: true },
   ]
   return (
     <SiteShell lang="ar" title="العروض والأسعار | Import-eXPert" description="عروض Import-eXPert وأسعارها: استكشافي مجاني، احترافي ومتميّز، وباقات الخبرة.">
@@ -59,7 +59,7 @@ export default function TarifsAr() {
             {PACKS.map(p => (
               <div key={p.nom}><h4>{PACKS_AR[p.nom]?.nom || p.nom}</h4><p className="x-tf-prix">{chiffreAr(p.prix)} درهم دون احتساب الرسوم</p><p>{PACKS_AR[p.nom]?.desc}</p></div>))}
           </div>
-          <div style={{ marginTop: 24 }}><Link href="/tarifs" className="x-btn x-btn-dark">طلب باقة (بالفرنسية)</Link></div>
+          <div style={{ marginTop: 24 }}><Link href="/ar/contact?sujet=pack-expert" className="x-btn x-btn-dark">طلب باقة</Link></div>
         </div>
       </section>
     </SiteShell>

@@ -146,7 +146,7 @@ export default function SiteShell({ title, description, children, plain = false,
               <li><Link href="/ar/diagnostic">تشخيص الامتثال</Link></li>
               <li><Link href="/ar/tarifs">العروض والأسعار</Link></li>
               <li><a href="/tools/enquete-barometre-ar.html">بارومتر 2026</a></li>
-              <li><Link href="/contact">اتصلوا بنا</Link></li>
+              <li><Link href="/ar/contact">اتصلوا بنا</Link></li>
             </ul></div>
             <div><h5>روابط</h5><ul>
               <li><a href={autreLangue}>Version française</a></li>

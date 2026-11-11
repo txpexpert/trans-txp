@@ -5,7 +5,7 @@ import { POSITIONS_TOP } from '../lib/produitsTop'
 const PAGES = ['/', '/plateforme', '/tarifs', '/expertise', '/diagnostic', '/barometre', '/calculateur-dum', '/produits', '/cas-types',
   '/espaces/qualifier', '/espaces/optimiser', '/espaces/chiffrer', '/espaces/executer', '/espaces/securiser', '/espaces/bibliotheque', '/espaces/piloter',
   '/demo/fiche-produit', '/a-propos', '/contact',
-  '/profils/pme', '/profils/transitaire', '/profils/industriel', '/profils/daf', '/profils/prescripteurs', '/ar', '/ar/tarifs', '/tools/diagnostic-conformite-ar.html']
+  '/profils/pme', '/profils/transitaire', '/profils/industriel', '/profils/daf', '/profils/prescripteurs', '/ar', '/ar/tarifs', '/tools/diagnostic-conformite-ar.html', '/ar/contact', '/ar/echange-expert']
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const base = `https://${req.headers.host}`

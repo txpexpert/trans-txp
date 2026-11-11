@@ -47,6 +47,9 @@ export const FREE_PATHS = [
   '/ar/tarifs',
   '/tools/diagnostic-conformite.html',
   '/ar/diagnostic',
+  '/ar/inscription',
+  '/ar/contact',
+  '/ar/echange-expert',
   '/tools/diagnostic-conformite-ar.html',
   // Kits opérationnels téléchargeables (démo : accès libre, à arbitrer)
   '/kits/Kit01_Origine_preferentielle_ALE.html',
