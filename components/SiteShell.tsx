@@ -64,7 +64,7 @@ export default function SiteShell({ title, description, children, plain = false 
           <div className="x-act">
             {user ? (
               <div className="x-session" title={`Session en cours : ${user.detail}`}>
-                <Link href="/app" className="x-sess-who"><span className="x-dot" aria-hidden="true" />{user.label}<small>{user.compte}</small></Link>
+                <Link href="/mon-espace" className="x-sess-who"><span className="x-dot" aria-hidden="true" />{user.label}<small>{user.compte}</small></Link>
                 <button type="button" className="x-tile t-rose x-logout" onClick={logout}>Déconnexion</button>
               </div>
             ) : (
@@ -82,7 +82,7 @@ export default function SiteShell({ title, description, children, plain = false 
             <Link href="/diagnostic" className="t-red" onClick={() => setMenu(false)}>Diagnostic de conformité</Link>
             {user ? (
               <>
-                <Link href="/app" className="t-green" onClick={() => setMenu(false)}>Connecté : {user.label}</Link>
+                <Link href="/mon-espace" className="t-green" onClick={() => setMenu(false)}>Connecté : {user.label}</Link>
                 <a href="/" className="t-rose" onClick={e => { e.preventDefault(); setMenu(false); logout() }}>Déconnexion</a>
               </>
             ) : (
