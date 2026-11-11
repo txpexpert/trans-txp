@@ -16,6 +16,22 @@ export default function MonEspace() {
   const [actif, setActif] = useState(true)
   const [msg, setMsg] = useState('')
   const [voir, setVoir] = useState(false)
+  const [codes, setCodes] = useState<any>(null)
+  const [saisie, setSaisie] = useState('')
+  const [msgCode, setMsgCode] = useState('')
+  const [baroFait, setBaroFait] = useState(true)
+  useEffect(() => {
+    try { setBaroFait(!!localStorage.getItem('ixp-enquete-2026-moi')) } catch { setBaroFait(false) }
+    fetch('/api/codes', { credentials: 'same-origin' }).then(r => (r.ok ? r.json() : null)).then(j => j && setCodes(j)).catch(() => {})
+  }, [])
+  async function appliquer(code: string) {
+    setMsgCode('')
+    const r = await fetch('/api/codes', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) })
+    const j = await r.json()
+    if (!r.ok) return setMsgCode(j.error)
+    setMsgCode(`Code appliqué : −${j.pourcentage} % sur votre premier abonnement${j.reemise ? ' (pro-forma réémise au nouveau montant)' : ''}.`)
+    fetch('/api/codes', { credentials: 'same-origin' }).then(x => x.json()).then(setCodes)
+  }
 
   useEffect(() => {
     fetch('/api/mon-espace', { credentials: 'same-origin' }).then(async r => {
@@ -73,6 +89,11 @@ export default function MonEspace() {
                 </div>
                 <Link href="/diagnostic" className="x-btn x-btn-gold">{sc ? 'Recalculer mon score' : 'Mesurer mon exposition'}</Link>
               </div>
+              {!baroFait && (
+                <div className="x-pc-cta" style={{ marginTop: 0 }}>
+                  <p><b>Baromètre 2026 : 4 minutes, réponses anonymes.</b> Délais, difficultés de conformité, accords utilisés : vos réponses alimentent le premier baromètre de la friction douanière au Maroc.</p>
+                  <a href="/enquete" className="x-btn x-btn-gold">Répondre</a>
+                </div>)}
               <div className="x-me-grid">
                 <Tuile href="/fiches" t="Fiches produits" v={String(s.fiches.total)} d={`${s.fiches.completes} complète${s.fiches.completes > 1 ? 's' : ''}`} />
                 <Tuile href={s.abonne ? '/dossiers' : '/tarifs'} t="Dossiers défendables" v={s.abonne ? String(s.dossiers) : 'Pro'} d={s.abonne ? 'émis et vérifiables' : 'inclus à partir de l’offre Pro'} />
@@ -81,6 +102,23 @@ export default function MonEspace() {
                 <Tuile href="/calculateur-dum" t="Argent laissé sur la table" v="DUM" d="analyser un export de déclarations" />
                 <Tuile href="/espaces/qualifier" t="Parcours" v="5 étapes" d="Qualifier, Optimiser, Chiffrer, Exécuter, Sécuriser" />
               </div>
+
+              {codes && (
+                <div className="x-ff">
+                  <h3 style={{ margin: '0 0 6px' }}>Vos codes de réduction</h3>
+                  <div className="x-me-codes">
+                    <div><span>Votre code de bienvenue</span><b className="mono">{codes.codes.bienvenue?.code}</b>
+                      <small>−{codes.codes.bienvenue?.pourcentage} % sur votre premier abonnement annuel</small>
+                      {!codes.applique && <button type="button" className="x-btn x-btn-dark x-btn-sm" onClick={() => appliquer(codes.codes.bienvenue.code)}>Appliquer à mon abonnement</button>}</div>
+                    <div><span>Code à offrir</span><b className="mono">{codes.codes.parrainage?.code}</b>
+                      <small>−{codes.codes.parrainage?.pourcentage} % pour un ami ou un partenaire sur son premier abonnement</small>
+                      <button type="button" className="x-btn x-btn-line x-btn-sm" onClick={() => { navigator.clipboard?.writeText(`Je vous recommande Import-eXPert pour sécuriser vos importations. Avec le code ${codes.codes.parrainage.code}, vous bénéficiez de ${codes.codes.parrainage.pourcentage} % de réduction sur votre premier abonnement : ${window.location.origin}`); setMsgCode('Message de recommandation copié.') }}>Copier le message à envoyer</button></div>
+                  </div>
+                  {codes.applique ? <p className="x-ff-ok" style={{ marginTop: 12 }}>Code {codes.applique.code} {codes.applique.utilise_le ? 'utilisé sur votre abonnement.' : `appliqué : Pro ${codes.simulation.pro.net.toLocaleString('fr-FR')} DH HT au lieu de ${codes.simulation.pro.base.toLocaleString('fr-FR')}, Premium ${codes.simulation.premium.net.toLocaleString('fr-FR')} DH HT au lieu de ${codes.simulation.premium.base.toLocaleString('fr-FR')}.`}</p>
+                    : <div className="x-ff-row" style={{ marginTop: 12 }}><input value={saisie} onChange={e => setSaisie(e.target.value)} placeholder="Vous avez reçu un code ? AMI-…" style={{ padding: '9px 12px', border: '1px solid var(--x-line2)', borderRadius: 10 }} />
+                      <button type="button" className="x-btn x-btn-line x-btn-sm" onClick={() => appliquer(saisie)}>Appliquer</button></div>}
+                  {msgCode && <p className="x-ff-note">{msgCode}</p>}
+                </div>)}
 
               {s.abonne && <div className="x-ff">
                 <h3 style={{ margin: '0 0 6px' }}>Rapport mensuel au dirigeant</h3>

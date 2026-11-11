@@ -9,6 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'PATCH') return res.status(405).json({ error: 'Méthode non autorisée' })
   const upd: Record<string, any> = { updated_at: new Date().toISOString() }
   if (STATUTS.includes(req.body?.statut)) upd.statut = req.body.statut
+  if ('payee' in (req.body || {})) upd.payee_le = req.body.payee ? new Date().toISOString() : null
   if ('montant_ht' in (req.body || {})) { const n = parseFloat(String(req.body.montant_ht).replace(',', '.')); upd.montant_ht = Number.isFinite(n) ? n : null }
   const { error } = await supabaseAdmin().from('commandes_packs').update(upd).eq('id', String(req.body?.id || ''))
   if (error) return res.status(500).json({ error: error.message })

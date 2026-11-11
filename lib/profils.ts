@@ -32,9 +32,9 @@ export const PROFILS_PAGES: Profil[] = [
       { t: 'Des allers-retours sans fin', d: 'La pièce manquante se découvre à l’arrivée du navire, par téléphone ou par WhatsApp, sans trace.' },
       { t: 'Un service difficile à facturer', d: 'Le conseil en amont est attendu, rarement rémunéré.' },
     ],
-    gains: ['Un portail clients à votre nom : fiche partagée, pièces demandées, statut en 5 étapes', 'Une DUM vérifiée avant dépôt', 'Un service à valeur ajoutée à refacturer, et une commission sur les clients qui s’abonnent'],
+    gains: ['Un portail clients à votre nom : fiche partagée, pièces demandées, statut en 5 étapes', 'Une DUM vérifiée avant dépôt', 'Un service à valeur ajoutée à refacturer à vos clients'],
     activation: { t: 'Votre première victoire : un dossier client partagé', d: 'Créez la fiche produit d’un client, ouvrez son dossier dans le portail et envoyez-lui le lien : il voit les pièces attendues et l’avancement.', href: '/auth/register?plan=premium', cta: 'Essai 14 jours' },
-    offre: { nom: 'Premium', pourquoi: 'Les 5 espaces, la gestion multi-clients, le portail clients et 24 renseignements experts par an.', href: '/tarifs' },
+    offre: { nom: 'Premium', pourquoi: 'Les 5 espaces, 120 références suivies, le portail clients et 24 renseignements experts par an, soit 36 000 DH HT de valeur au tarif à l’acte.', href: '/tarifs' },
     preuves: [{ href: '/profils/prescripteurs', t: 'Programme partenaires' }, { href: '/demo/fiche-produit', t: 'Voir une fiche produit' }],
   },
   {
@@ -68,14 +68,14 @@ export const PROFILS_PAGES: Profil[] = [
   {
     id: 'prescripteurs', titre: 'Partenaires et prescripteurs', eyebrow: 'Transitaires, experts-comptables, banques, CCI, fédérations',
     h1: ['Offrez le diagnostic', 'à vos clients, sous votre nom.'],
-    lead: 'Vos clients importateurs vous demandent conseil sur des sujets douaniers qui ne sont pas votre cœur de métier. Avec le programme partenaires, vous leur offrez le diagnostic de conformité sous votre nom, et vous êtes rémunéré sur ceux qui s’abonnent.',
+    lead: 'Vos clients importateurs vous demandent conseil sur des sujets douaniers qui ne sont pas votre cœur de métier. Avec le programme partenaires, vous leur offrez le diagnostic de conformité sous votre nom.',
     douleurs: [
       { t: 'Des questions hors de votre spécialité', d: 'Classement, origine, valeur : vos clients attendent une réponse, vous n’êtes pas douanier.' },
       { t: 'Un risque que vos clients ne voient pas', d: 'L’erreur se découvre deux à quatre ans plus tard, lors d’un contrôle a posteriori.' },
     ],
-    gains: ['Un lien « diagnostic offert par … » à votre nom', 'Les comptes créés depuis votre lien vous sont rattachés pendant 90 jours', 'Une commission récurrente sur chaque client qui passe à une offre payante'],
+    gains: ['Un lien « diagnostic offert par … » à votre nom', 'Les comptes créés depuis votre lien vous sont rattachés pendant 90 jours', 'Des conditions de partenariat définies avec vous, sur demande'],
     activation: { t: 'Recevoir votre lien partenaire', d: 'Écrivez-nous : nous créons votre lien et vous transmettons les conditions du programme.', href: '/contact?sujet=partenaire', cta: 'Devenir partenaire' },
-    offre: { nom: 'Programme partenaires', pourquoi: 'Lien à votre nom, suivi des comptes rattachés, commission sur les abonnements.', href: '/contact?sujet=partenaire' },
+    offre: { nom: 'Programme partenaires', pourquoi: 'Lien à votre nom, suivi des comptes rattachés ; conditions sur demande.', href: '/contact?sujet=partenaire' },
     preuves: [{ href: '/diagnostic', t: 'Voir le diagnostic' }, { href: '/calculateur-dum', t: 'Calculateur DUM' }],
   },
 ]

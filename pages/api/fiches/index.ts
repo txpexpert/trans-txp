@@ -24,7 +24,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'POST') {
     if (quota != null) {
       const { count } = await db.from('fiches_produits').select('id', { count: 'exact', head: true }).eq('user_id', c.id)
-      if ((count ?? 0) >= quota) return res.status(403).json({ error: `L’offre Découverte comprend ${quota} fiches produits. Passez à l’offre Pro pour en créer davantage.`, code: 'QUOTA' })
+      if ((count ?? 0) >= quota) return res.status(403).json({ error: !c.abonne
+        ? `L’offre Découverte comprend ${quota} fiches produits. Passez à l’offre Pro pour en créer davantage.`
+        : c.plan === 'pro' ? `L’offre Pro comprend ${quota} références suivies. Passez à Premium (120 références) ou supprimez une fiche inutile.`
+        : `Votre offre comprend ${quota} références suivies. Contactez-nous pour l’offre Entreprise.`, code: 'QUOTA' })
     }
     const champs = nettoyerFiche(req.body)
     if (!champs.designation) return res.status(400).json({ error: 'La désignation est obligatoire.' })
