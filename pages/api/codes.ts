@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   if (req.method === 'POST') {
     const r = await appliquerCode(c.id, String(req.body?.code || ''))
-    if (!r.ok) return res.status(400).json({ error: r.error })
+    if (!r.ok) return res.status(400).json({ error: (r as { error: string }).error })
     // Pro-forma d'abonnement déjà en attente : réémise au montant réduit si aucun paiement n'est déclaré
     const { data: pending } = await db.from('invoices').select('id, plan_code').eq('user_id', c.id).eq('status', 'proforma_envoyee').maybeSingle()
     let reemise = false
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!error) { await emettrePremierAbonnement({ userId: c.id, plan: pending.plan_code, actor: 'client', origin: 'client', base: siteUrl(req) }); reemise = true }
       }
     }
-    return res.status(200).json({ ok: true, pourcentage: r.pourcentage, reemise })
+    return res.status(200).json({ ok: true, pourcentage: (r as { pourcentage: number }).pourcentage, reemise })
   }
   res.setHeader('Allow', 'GET, POST')
   return res.status(405).json({ error: 'Méthode non autorisée' })
