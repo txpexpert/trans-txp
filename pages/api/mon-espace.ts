@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const pl = partages.data ?? []
   res.setHeader('Cache-Control', 'no-store')
   return res.status(200).json({
-    abonne: c.abonne, decouverte: c.decouverte, compte: u,
+    abonne: c.abonne, decouverte: c.decouverte, cabinet: c.cabinet, compte: u,
     score: diag ?? [],
     fiches: { total: fiches.data?.length ?? 0, completes: (fiches.data ?? []).filter(f => f.statut === 'complete').length },
     dossiers: dossiers.count ?? 0,

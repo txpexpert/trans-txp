@@ -376,7 +376,11 @@ function renderQ(){
   $('prev-d').disabled=state.dom===0; $('next-d').classList.toggle('hidden',state.dom>=doms.length-1);
   renderTabs();
 }
-$('go-q').addEventListener('click',function(){readProfile();saveDraft();state.dom=0;renderQ();show(2);});
+/* Compteur anonyme du parcours (aucune donnée sur le visiteur) */
+window.ixpCompter=compter;
+function compter(e){try{fetch('/api/evenement',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({e:e})});}catch(x){}}
+function compterUneFois(e){try{if(sessionStorage.getItem('ixp-'+e))return;sessionStorage.setItem('ixp-'+e,'1');}catch(x){}compter(e);}
+$('go-q').addEventListener('click',function(){compterUneFois('diagnostic_commence');readProfile();saveDraft();state.dom=0;renderQ();show(2);});
 $('prev-d').addEventListener('click',function(){if(state.dom>0){state.dom--;renderQ();window.scrollTo({top:0});}});
 $('next-d').addEventListener('click',function(){state.dom++;renderQ();window.scrollTo({top:0});});
 $('to-res').addEventListener('click',function(){if(compute()){show(3);}});
@@ -411,7 +415,7 @@ function compute(){
   if(prev&&prev.date.slice(0,10)===current.date.slice(0,10)){current.status=prev.status||{};hist[hist.length-1]=current;prev=hist.length>1?hist[hist.length-2]:null;}
   else hist.push(current);
   save(hist); try{localStorage.removeItem(DRAFT);}catch(e){}
-  renderResults(current,prev); saveRemote(current); return true;
+  renderResults(current,prev); saveRemote(current); compterUneFois('diagnostic_termine'); return true;
 }
 
 /* ═══════════ Exposition en DH ═══════════ */
@@ -470,6 +474,7 @@ function renderResults(c,prev){
   if(p.red==='oui'&&c.answers.r2&&c.answers.r2!=='oui')al+='<div class="alert">Un compte sous régime économique peut être échu : droits exigibles, amende d’une fois et demie les droits et suspension des facilités de cautionnement (CDII, art. 294 bis ; note n° 12014/313).</div>';
   if(c.answers.d2&&c.answers.d2!=='oui')al+='<div class="alert">Sans revue post-mainlevée, vous perdez la possibilité de révéler une erreur dans les 30 jours avec dispense de pénalités (CDII, art. 78-3°).</div>';
   if(!al)al='<div class="alert ok">Aucun écart critique : maintenez le niveau par l’audit annuel et la veille.</div>';
+  al+='<div class="alert ok"><b>Un échange de 20 minutes avec un expert douanier</b>, offert : nous relisons ce résultat avec vous et vous indiquons les deux ou trois actions qui réduisent le plus votre exposition. <a href="/echange-expert?depuis=diagnostic" target="_top" onclick="window.ixpCompter&&window.ixpCompter(\'echange_demande\')">Demander mon échange</a></div>';
   $('r-alerts').innerHTML=al;
   // barres
   var h='';$('delta-note').textContent=prev?'Évolution par rapport au diagnostic du '+new Date(prev.date).toLocaleDateString('fr-FR')+'.':'Premier diagnostic : l’évolution apparaîtra au suivant.';

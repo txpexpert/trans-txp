@@ -76,7 +76,8 @@ export default function MonEspace() {
           {etat === 'charge' && <p className="x-note">Chargement…</p>}
           {etat === 'connexion' && <div className="x-pc-cta"><p>Connectez-vous pour accéder à votre espace.</p><Link href="/auth/login?redirect=/mon-espace" className="x-btn x-btn-gold">Connexion</Link></div>}
           {etat === 'ok' && !s.abonne && !s.decouverte && <div className="x-pc-cta"><p>Votre compte est suspendu. Contactez-nous pour le réactiver.</p><Link href="/contact" className="x-btn x-btn-gold">Nous contacter</Link></div>}
-          {etat === 'ok' && s.decouverte && <div className="x-pc-cta"><p><b>Offre Découverte.</b> Vous gardez le diagnostic, 3 fiches produits et la veille sur ces produits. L’offre Pro ajoute les fiches sans limite, les dossiers défendables, la veille hebdomadaire et le rapport mensuel au dirigeant.</p><Link href="/tarifs" className="x-btn x-btn-gold">Passer à l’offre Pro</Link></div>}
+          {etat === 'ok' && s.decouverte && s.cabinet && <div className="x-pc-cta"><p><b>Accès offert par {s.cabinet.nom}.</b> Vous disposez du diagnostic, de 10 fiches produits et de la veille sur ces produits. L’offre Pro ajoute 50 références, les dossiers défendables, la veille hebdomadaire et le rapport mensuel.</p><Link href="/tarifs" className="x-btn x-btn-gold">Voir l’offre Pro</Link></div>}
+          {etat === 'ok' && s.decouverte && !s.cabinet && <div className="x-pc-cta"><p><b>Offre Découverte.</b> Vous gardez le diagnostic, 3 fiches produits et la veille sur ces produits. L’offre Pro ajoute les fiches sans limite, les dossiers défendables, la veille hebdomadaire et le rapport mensuel au dirigeant.</p><Link href="/tarifs" className="x-btn x-btn-gold">Passer à l’offre Pro</Link></div>}
           {etat === 'ok' && (s.abonne || s.decouverte) && (
             <>
               <div className="x-me-score">
@@ -87,7 +88,10 @@ export default function MonEspace() {
                     : delta == null ? `Diagnostic du ${new Date(sc.created_at).toLocaleDateString('fr-FR')}`
                     : delta < 0 ? `En baisse de ${dh(-delta)} depuis le diagnostic précédent` : delta > 0 ? `En hausse de ${dh(delta)} depuis le diagnostic précédent` : 'Stable'}</small>
                 </div>
-                <Link href="/diagnostic" className="x-btn x-btn-gold">{sc ? 'Recalculer mon score' : 'Mesurer mon exposition'}</Link>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <Link href="/diagnostic" className="x-btn x-btn-gold">{sc ? 'Recalculer mon score' : 'Mesurer mon exposition'}</Link>
+                  {sc && <Link href="/echange-expert" className="x-btn x-btn-line" style={{ color: '#fff', borderColor: 'rgba(255,255,255,.4)' }}>Échange de 20 minutes avec un expert</Link>}
+                </div>
               </div>
               {!baroFait && (
                 <div className="x-pc-cta" style={{ marginTop: 0 }}>
@@ -122,7 +126,7 @@ export default function MonEspace() {
 
               {s.abonne && <div className="x-ff">
                 <h3 style={{ margin: '0 0 6px' }}>Rapport mensuel au dirigeant</h3>
-                <p className="x-ff-note" style={{ marginTop: 0 }}>Chaque début de mois, un email résume l’exposition et son évolution, l’activité de conformité et les textes qui touchent vos produits. Le dirigeant voit la valeur sans avoir à se connecter.{rap && !rap.inclus ? ' Inclus à partir de l’offre Pro : pendant l’essai, vous pouvez en voir l’aperçu.' : ''}</p>
+                <p className="x-ff-note" style={{ marginTop: 0 }}>Chaque début de mois, un email résume l’exposition et son évolution, l’activité de conformité et les textes qui touchent vos produits. Le dirigeant voit la valeur sans avoir à se connecter. Offre Entreprise : un rapport trimestriel au comité de direction s’y ajoute en janvier, avril, juillet et octobre.{rap && !rap.inclus ? ' Inclus à partir de l’offre Pro : pendant l’essai, vous pouvez en voir l’aperçu.' : ''}</p>
                 <div className="x-ff-grid" style={{ marginTop: 12 }}>
                   <label>Email du dirigeant (en plus du vôtre)<input value={dir} onChange={e => setDir(e.target.value)} placeholder="direction@votre-societe.ma" /></label>
                   <label className="x-ff-chk" style={{ alignSelf: 'end' }}><input type="checkbox" checked={actif} onChange={e => setActif(e.target.checked)} /> Recevoir le rapport chaque mois</label>
@@ -131,6 +135,7 @@ export default function MonEspace() {
                   <button type="button" className="x-btn x-btn-dark" onClick={enregistrer}>Enregistrer</button>
                   <button type="button" className="x-btn x-btn-line" onClick={() => setVoir(v => !v)} disabled={!rap}>{voir ? 'Masquer l’aperçu' : 'Voir l’aperçu'}</button>
                   <button type="button" className="x-btn x-btn-line" onClick={essai} disabled={!rap}>M’envoyer un essai</button>
+                  {s.compte?.plan === 'enterprise' && <button type="button" className="x-btn x-btn-line" onClick={() => fetch('/api/rapport?trimestre=1', { credentials: 'same-origin' }).then(r => r.json()).then(k => { setRap(k); setVoir(true) })}>Aperçu trimestriel</button>}
                   {msg && <span className="x-ff-note" style={{ alignSelf: 'center' }}>{msg}</span>}
                 </div>
                 {voir && rap && <iframe title="Aperçu du rapport mensuel" className="x-me-apercu" srcDoc={rap.apercu.html} />}

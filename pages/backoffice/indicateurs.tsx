@@ -12,13 +12,21 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   const auth = await requireAdminSSR(ctx)
   if ('redirect' in auth) return auth
   const jours = [7, 30, 90, 365].includes(Number(ctx.query.j)) ? Number(ctx.query.j) : 30
-  const { data, error } = await supabaseAdmin().rpc('admin_indicateurs', { p_jours: jours })
-  return { props: { i: data ?? {}, jours, erreur: error?.message ?? null } }
+  const db = supabaseAdmin()
+  const { data, error } = await db.rpc('admin_indicateurs', { p_jours: jours })
+  const depuis = new Date(Date.now() - jours * 864e5).toISOString().slice(0, 10)
+  const { data: cpt } = await db.from('compteurs_evenements').select('evenement, variante, n').gte('jour', depuis)
+  const c: Record<string, Record<string, number>> = {}
+  for (const r of cpt ?? []) { c[r.evenement] = c[r.evenement] || {}; c[r.evenement][r.variante || '—'] = (c[r.evenement][r.variante || '—'] || 0) + Number(r.n) }
+  return { props: { i: data ?? {}, jours, erreur: error?.message ?? null, c } }
 }
 
 const pc = (a: number, b: number) => (b ? Math.round((a / b) * 100) + ' %' : '—')
 
-export default function Indicateurs({ i, jours, erreur }: { i: I; jours: number; erreur: string | null }) {
+const ACCROCHES: Record<string, string> = { A: 'Ce que la douane contrôlera demain, vérifiez-le aujourd’hui', B: 'Importez sans mauvaise surprise', C: 'Votre importation coûte plus cher que votre facture' }
+const somme = (o?: Record<string, number>) => Object.values(o || {}).reduce((s, x) => s + x, 0)
+
+export default function Indicateurs({ i, jours, erreur, c }: { i: I; jours: number; erreur: string | null; c: Record<string, Record<string, number>> }) {
   const Carte = ({ t, v, s, cible }: { t: string; v: string | number; s?: string; cible?: string }) => (
     <div style={{ background: '#fff', border: '1px solid #E2E8F0', padding: '14px 16px', borderRadius: 6 }}>
       <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '.06em', color: '#64748B' }}>{t}</div>
@@ -44,6 +52,19 @@ export default function Indicateurs({ i, jours, erreur }: { i: I; jours: number;
         <Carte t="Dossiers défendables émis" v={i.dossiers_emis ?? 0} s={`sur ${jours} jours`} />
         <Carte t="Dossiers clients partagés" v={i.dossiers_partages ?? 0} s={`portail transitaire, sur ${jours} jours`} />
       </div>
+
+      <h2 style={h2}>Haut du parcours ({jours} derniers jours, compteurs anonymes)</h2>
+      <div style={grille}>
+        <Carte t="Visites de l’accueil" v={somme(c.accueil_vue)} s="une par visite et par onglet" />
+        <Carte t="Diagnostics commencés" v={somme(c.diagnostic_commence)} s={`soit ${pc(somme(c.diagnostic_commence), somme(c.accueil_vue))} des visites`} cible="8 % des visiteurs" />
+        <Carte t="Diagnostics terminés" v={somme(c.diagnostic_termine)} s={`soit ${pc(somme(c.diagnostic_termine), somme(c.diagnostic_commence))} des diagnostics commencés`} cible="50 %" />
+        <Carte t="Échanges expert demandés" v={somme(c.echange_demande)} s={`${somme(c.echange_vue)} vues de la page d’échange`} />
+      </div>
+      <h2 style={h2}>Test A/B de l’accroche</h2>
+      <table className="data-table" style={{ marginBottom: 22 }}><thead><tr><th>Variante</th><th>Accroche</th><th>Visites</th><th>Diagnostics commencés</th><th>Taux</th><th>Terminés</th></tr></thead><tbody>
+        {['A', 'B', 'C'].map(v => <tr key={v}><td><b>{v}</b></td><td>{ACCROCHES[v]}</td><td>{c.accueil_vue?.[v] || 0}</td><td>{c.diagnostic_commence?.[v] || 0}</td><td><b>{pc(c.diagnostic_commence?.[v] || 0, c.accueil_vue?.[v] || 0)}</b></td><td>{c.diagnostic_termine?.[v] || 0}</td></tr>)}
+      </tbody></table>
+      <p style={{ fontSize: 12, color: 'var(--inkm)', marginTop: -14, marginBottom: 22 }}>Ne concluez qu’avec plusieurs centaines de visites par variante ; les diagnostics ouverts sans passer par l’accueil sont comptés sans variante.</p>
 
       <h2 style={h2}>Parcours de conversion ({jours} derniers jours)</h2>
       <div style={grille}>

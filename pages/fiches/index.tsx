@@ -38,7 +38,7 @@ export default function Fiches() {
               {quota != null && abonne && <p className="x-ff-note" style={{ margin: 0 }}>{fiches.length} référence{fiches.length > 1 ? 's' : ''} suivie{fiches.length > 1 ? 's' : ''} sur {quota} incluses dans votre offre.</p>}
               {quota != null && !abonne && (
                 <div className="x-pc-cta" style={{ marginTop: 0 }}>
-                  <p><b>Offre Découverte : {Math.min(fiches.length, quota)} fiche{fiches.length > 1 ? 's' : ''} sur {quota}.</b> Avec l’offre Pro : fiches sans limite, dossiers défendables, veille hebdomadaire et rapport mensuel au dirigeant.</p>
+                  <p><b>{quota > 3 ? 'Accès offert par votre transitaire' : 'Offre Découverte'} : {Math.min(fiches.length, quota)} fiche{fiches.length > 1 ? 's' : ''} sur {quota}.</b> Avec l’offre Pro : fiches sans limite, dossiers défendables, veille hebdomadaire et rapport mensuel au dirigeant.</p>
                   <Link href="/tarifs" className="x-btn x-btn-gold">Voir l’offre Pro</Link>
                 </div>)}
               <div>{(quota == null || fiches.length < quota) && <Link href="/fiches/nouvelle" className="x-btn x-btn-dark">+ Nouvelle fiche produit</Link>} <Link href="/demo/fiche-produit" className="x-btn x-btn-line">Voir un exemple</Link> <Link href="/dossiers" className="x-btn x-btn-line">Mes dossiers défendables</Link></div>

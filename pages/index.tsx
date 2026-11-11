@@ -1,5 +1,6 @@
 // pages/index.tsx — Accueil IXP-Import-eXPert (refonte 2026)
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import SiteShell from '../components/SiteShell'
@@ -10,6 +11,17 @@ import IxpTicker from '../components/IxpTicker'
 import IxpLogo from '../components/IxpLogo'
 import { PROFILS, espaceBySlug } from '../lib/suite'
 import { CAS_TYPES } from '../lib/casTypes'
+import { VARIANTES, lireVariante, type Variante } from '../lib/ab'
+
+// Test A/B de l'accroche : variante attribuée au premier passage (cookie technique, sans donnée personnelle)
+export const getServerSideProps: GetServerSideProps<{ variante: Variante }> = async ({ req, res }) => {
+  let variante = lireVariante(req.headers.cookie)
+  if (!variante) {
+    variante = (['A', 'B', 'C'] as Variante[])[Math.floor(Math.random() * 3)]
+    res.setHeader('Set-Cookie', `ixp_ab=${variante}; Path=/; Max-Age=${90 * 86400}; SameSite=Lax; Secure`)
+  }
+  return { props: { variante } }
+}
 
 const DOULEURS = [
   { q: '« Votre DUM est passée. Cela ne prouve pas que votre code est juste. »', d: "Un classement repris par habitude passe le dédouanement, puis se discute lors d'un contrôle a posteriori, sur plusieurs années d'opérations.", e: 'Qualifier · fiche produit justifiée' },
@@ -33,7 +45,12 @@ const SCAN: ScanQ[] = [
   { q: 'Contrôle ou blocage sur les 3 dernières années ?', o: [['Plusieurs fois', 33], ['Une fois', 18], ['Jamais', 5]] },
 ]
 
-export default function Accueil() {
+export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
+  const accroche = VARIANTES[variante] || VARIANTES.A
+  useEffect(() => {
+    try { if (sessionStorage.getItem('ixp-accueil_vue')) return; sessionStorage.setItem('ixp-accueil_vue', '1') } catch {}
+    fetch('/api/evenement', { method: 'POST', credentials: 'same-origin', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ e: 'accueil_vue' }) }).catch(() => {})
+  }, [])
   const router = useRouter()
   const [produit, setProduit] = useState('')
   const [profil, setProfil] = useState(PROFILS[0].id)
@@ -64,7 +81,7 @@ export default function Accueil() {
             <div className="x-eyebrow">Conformité import · Maroc</div>
             <div className="x-h1-row">
               <IxpLogo size={84} className="x-hero-logo" />
-              <h1 className="x-h1 x-h1-sm">Ce que la douane contrôlera demain, <em>vérifiez-le aujourd’hui</em>.</h1>
+              <h1 className="x-h1 x-h1-sm">{accroche.avant} <em>{accroche.apres}</em>.</h1>
             </div>
             <p className="x-lead">Code SH, origine, valeur, coût rendu, documents : Import-eXPert qualifie, chiffre et sécurise chaque importation avant le dédouanement, et vous remet un dossier défendable, chaque point appuyé sur le texte officiel.<br />Nos experts douaniers tranchent les cas difficiles.</p>
             <div className="x-hero-cta">

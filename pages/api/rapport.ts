@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     const { data: u } = await db.from('users').select('email, email_dirigeant, rapport_mensuel').eq('id', c.id).single()
-    const r = await construireRapport(c.id, site)
+    const r = await construireRapport(c.id, site, new Date(), req.query.trimestre ? 3 : 1)
     res.setHeader('Cache-Control', 'no-store')
     return res.status(200).json({ reglages: u, apercu: r, inclus: ['pro', 'premium', 'enterprise'].includes(c.plan) || c.role === 'admin' || c.role === 'generaladmin' })
   }
