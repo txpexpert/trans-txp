@@ -32,6 +32,7 @@ export const FREE_PATHS = [
   '/diagnostic',
   '/cas-types',
   '/demo/fiche-produit',
+  '/calculateur-dum',
   '/enquete',
   '/tools/enquete-barometre.html',
   '/tools/diagnostic-conformite.html',

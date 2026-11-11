@@ -112,6 +112,7 @@ export default function SiteShell({ title, description, children, plain = false 
                 <li><Link href="/espaces/piloter">Piloter</Link></li>
                 <li><Link href="/#assistant">IXP-Assistant</Link></li>
                 <li><Link href="/diagnostic">Diagnostic de conformité</Link></li>
+                <li><Link href="/calculateur-dum">Argent laissé sur la table</Link></li>
               </ul>
             </div>
             <div>
