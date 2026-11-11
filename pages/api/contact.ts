@@ -15,6 +15,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { sendEmail } from '../../lib/email'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -45,6 +46,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: "Erreur lors de l'enregistrement de la demande" })
   }
 
+  // Prévenir l'équipe (si l'adresse d'alerte est configurée)
+  if (process.env.BILLING_ADMIN_EMAIL) {
+    const esc = (v: unknown) => String(v ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!))
+    await sendEmail({ to: process.env.BILLING_ADMIN_EMAIL, replyTo: String(email).toLowerCase(),
+      subject: `Demande : ${service || source || 'contact'} (${nom})`,
+      html: `<p><b>${esc(nom)}</b> · ${esc(email)}${societe ? ' · ' + esc(societe) : ''}</p><p>${esc(service || source)}</p><p style="white-space:pre-wrap">${esc(msg)}</p>` }).catch(() => {})
+  }
   return res.status(200).json({ success: true })
 }
 

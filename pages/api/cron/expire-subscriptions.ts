@@ -17,7 +17,7 @@ import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { runBillingCron } from '../../../lib/billingCron'
 import { runTrialEndReports } from '../../../lib/scoreReport'
 import { runVeilleHebdo } from '../../../lib/veille'
-import { runRapportsMensuels, runAlertesDecouverte } from '../../../lib/rapportMensuel'
+import { runRapportsMensuels, runAlertesDecouverte, runRapportsTrimestriels } from '../../../lib/rapportMensuel'
 
 export const config = { maxDuration: 300 }
 
@@ -59,5 +59,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let decouverte: any
   try { decouverte = await runAlertesDecouverte(siteUrl(req)); if (decouverte.erreurs.length) console.error('[cron/decouverte]', decouverte.erreurs) }
   catch (e: any) { console.error('[cron/decouverte]', e); decouverte = { error: e?.message || 'Erreur alertes Découverte' } }
-  return res.status(200).json({ ok: true, expired: data, billing, scores, veille, rapports, decouverte })
+  let trimestriels: any
+  try { trimestriels = await runRapportsTrimestriels(siteUrl(req)); if (trimestriels.erreurs.length) console.error('[cron/trimestriels]', trimestriels.erreurs) }
+  catch (e: any) { console.error('[cron/trimestriels]', e); trimestriels = { error: e?.message || 'Erreur rapports trimestriels' } }
+  return res.status(200).json({ ok: true, expired: data, billing, scores, veille, rapports, decouverte, trimestriels })
 }

@@ -108,7 +108,8 @@ export default function Tarifs() {
           </div>
           <div>
             <ul className="x-list">
-              <li>Portail clients : vos importateurs suivent leur dossier, leurs pièces et son avancement, à votre nom</li>
+              <li>Licence Cabinet (Premium) : vos clients importateurs créent leur accès par votre lien et disposent de l’offre Découverte étendue, à votre nom</li>
+              <li>Portail clients : vos importateurs suivent leur dossier, leurs pièces et son avancement</li>
               <li>Fiches produits partagées avec vos clients : moins d’allers-retours, des dossiers prêts avant le dépôt</li>
               <li>Un lien « diagnostic offert par … » à votre nom ; conditions du programme sur demande</li>
             </ul>

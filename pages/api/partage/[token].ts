@@ -28,12 +28,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       db.from('fiches_produits').select('*').eq('id', p.fiche_id).maybeSingle(),
       db.from('users').select('raison_sociale, societe').eq('id', p.user_id).single(),
     ])
+    const { data: cab } = await db.from('partenaires').select('code').eq('user_id', p.user_id).eq('actif', true).maybeSingle()
     await db.from('partages').update({ vu_client_le: new Date().toISOString() }).eq('id', p.id)
     const fiche = f ? { ...f, user_id: undefined, notes: undefined } : null
     return res.status(200).json({
       transitaire: u?.raison_sociale || u?.societe || 'Votre transitaire',
       client_nom: p.client_nom, reference: p.reference, statut: p.statut, pieces: p.pieces, message: p.message,
-      maj: p.updated_at, fiche,
+      maj: p.updated_at, fiche, invitation: cab?.code ? `/p/${cab.code}` : null,
     })
   }
 

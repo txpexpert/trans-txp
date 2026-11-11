@@ -16,12 +16,14 @@ export default function Portail() {
   const [nouvelle, setNouvelle] = useState('')
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
+  const [cab, setCab] = useState<any>(null)
 
   useEffect(() => {
     Promise.all([fetch('/api/partages', { credentials: 'same-origin' }), fetch('/api/fiches', { credentials: 'same-origin' })]).then(async ([a, b]) => {
       if (a.status === 401) return setEtat('connexion')
       if (a.status === 403) return setEtat('abonnement')
       setPartages((await a.json()).partages || []); setFiches((await b.json()).fiches || []); setEtat('ok')
+      fetch('/api/cabinet', { credentials: 'same-origin' }).then(r => (r.ok ? r.json() : null)).then(j => j && setCab(j)).catch(() => {})
     }).catch(() => setEtat('connexion'))
   }, [])
 
@@ -65,6 +67,14 @@ export default function Portail() {
           {etat === 'abonnement' && <div className="x-pc-cta"><p>Le portail clients est inclus dans l’essai et les offres payantes.</p><Link href="/auth/register?plan=pro" className="x-btn x-btn-gold">Essai 14 jours</Link></div>}
           {etat === 'ok' && (
             <>
+              {cab?.eligible && (
+                <div className="x-ff">
+                  <div className="x-eyebrow">Licence Cabinet</div>
+                  <p style={{ margin: '6px 0 10px' }}>Invitez vos clients importateurs : en créant leur compte par ce lien, ils disposent de l’offre Découverte étendue (10 fiches produits, veille sur leurs produits), présentée comme offerte par <b>{cab.nom}</b>. {cab.invites} client{cab.invites > 1 ? 's' : ''} inscrit{cab.invites > 1 ? 's' : ''} par votre lien.</p>
+                  <div className="x-ff-row"><input readOnly value={cab.lien} onFocus={e => e.currentTarget.select()} style={{ flex: 1, minWidth: 260, padding: '9px 12px', border: '1px solid var(--x-line2)', borderRadius: 10 }} />
+                    <button type="button" className="x-btn x-btn-line x-btn-sm" onClick={() => navigator.clipboard?.writeText(cab.lien)}>Copier le lien</button></div>
+                </div>)}
+              {cab && !cab.eligible && <p className="x-ff-note" style={{ margin: 0 }}>Licence Cabinet (inviter vos clients à votre nom) : incluse dans l’offre Premium.</p>}
               <div className="x-ff">
                 <h3 style={{ margin: '0 0 14px' }}>Ouvrir un dossier client</h3>
                 {fiches.length === 0 ? <p>Le dossier client part d’une fiche produit. <Link href="/fiches/nouvelle">Créer une fiche</Link></p> : (

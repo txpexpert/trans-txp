@@ -51,6 +51,7 @@ export default function PartageClient() {
                   </li>))}</ul>
               </div>)}
             {d.fiche && <><h3 style={{ margin: '8px 0 0' }}>Fiche produit</h3><FicheView f={d.fiche} /></>}
+            {d.invitation && <div className="x-pc-cta"><p><b>Suivez tous vos produits.</b> {d.transitaire} vous offre un accès Import-eXPert : vos fiches produits et la veille sur les textes qui les touchent.</p><a href={d.invitation} className="x-btn x-btn-gold">Créer mon accès</a></div>}
             <p className="x-note">Espace de suivi fourni par {d.transitaire} avec Import-eXPert.</p>
           </>
         )}
