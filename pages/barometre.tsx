@@ -91,7 +91,7 @@ export default function Barometre({ a }: { a: Agregats }) {
               <div className="x-eyebrow">Méthodologie</div>
               <ul className="x-bm-list">
                 <li>Questionnaire en ligne de douze questions fermées, ouvert aux importateurs, transitaires, exportateurs sous régimes économiques et directions financières.</li>
-                <li>Réponses anonymes. Les coordonnées, facultatives et laissées avec consentement pour recevoir le rapport, ne sont jamais rattachées aux résultats publiés.</li>
+                <li>Réponses strictement anonymes : aucun nom, aucune adresse email ni aucun identifiant n’est demandé ou enregistré.</li>
                 <li>Seuls des pourcentages agrégés sont diffusés, à partir de {SEUIL_AGREGATS} répondants ; les résultats sont considérés comme exploitables à partir de {SEUIL_PUBLICATION}.</li>
                 <li>Pour les questions à choix multiples, les pourcentages ne s’additionnent pas.</li>
               </ul>
