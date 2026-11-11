@@ -9,8 +9,8 @@ import SiteShell from '../components/SiteShell'
 // page « Présentation de notre plateforme en 5 espaces ». Les pages de la vitrine appellent
 // SiteShell elles-mêmes ; les autres sont enveloppées ici.
 // Hors champ : l'application mobile (/app, /mobile), qui a sa propre navigation, et le back-office.
-const OWN_SHELL = new Set(['/', '/plateforme', '/expertise', '/tarifs', '/a-propos', '/espaces/[slug]', '/accords', '/risques', '/cas-types', '/demo/fiche-produit', '/fiches', '/fiches/nouvelle', '/fiches/[id]', '/dossiers', '/dossiers/[id]', '/verifier', '/verifier/[numero]', '/veille', '/mon-espace', '/portail', '/portail/[id]', '/partage/[token]', '/calculateur-dum'])
-const NO_SHELL = /^\/(app|mobile|backoffice|gestion-abonnements|facturation|_error|404|500)(\/|$)/
+const OWN_SHELL = new Set(['/', '/plateforme', '/expertise', '/tarifs', '/a-propos', '/espaces/[slug]', '/accords', '/risques', '/cas-types', '/demo/fiche-produit', '/fiches', '/fiches/nouvelle', '/fiches/[id]', '/dossiers', '/dossiers/[id]', '/verifier', '/verifier/[numero]', '/veille', '/mon-espace', '/portail', '/portail/[id]', '/partage/[token]', '/calculateur-dum', '/barometre', '/produits', '/produits/[sh4]'])
+const NO_SHELL = /^\/(app|mobile|backoffice|gestion-abonnements|facturation|_error|404|500|robots\.txt|sitemap\.xml)(\/|$)/
 
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()

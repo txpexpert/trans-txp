@@ -113,6 +113,8 @@ export default function SiteShell({ title, description, children, plain = false 
                 <li><Link href="/#assistant">IXP-Assistant</Link></li>
                 <li><Link href="/diagnostic">Diagnostic de conformité</Link></li>
                 <li><Link href="/calculateur-dum">Argent laissé sur la table</Link></li>
+                <li><Link href="/produits">Droits par produit (SH)</Link></li>
+                <li><Link href="/barometre">Baromètre 2026</Link></li>
               </ul>
             </div>
             <div>
