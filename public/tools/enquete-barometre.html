@@ -104,15 +104,6 @@ footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);fo
 
   <div id="form-zone">
     <div id="questions"></div>
-    <div class="panel">
-      <h2 style="font-size:24px">Recevoir le rapport (facultatif)</h2>
-      <p class="note" style="margin-top:0">Laissez vos coordonnées si vous souhaitez recevoir le rapport du Baromètre 2026. Elles ne sont jamais publiées avec les réponses.</p>
-      <div class="grid2">
-        <div><label class="f" for="c-nom">Nom et fonction</label><input type="text" id="c-nom" autocomplete="name"></div>
-        <div><label class="f" for="c-mail">E-mail professionnel</label><input type="email" id="c-mail" autocomplete="email"></div>
-      </div>
-      <label class="consent"><input type="checkbox" id="c-ok"><span>J’accepte que mes coordonnées soient utilisées pour m’envoyer le rapport du Baromètre 2026 et les informations qui s’y rapportent.</span></label>
-    </div>
     <div class="actions">
       <button class="btn dark" id="submit" disabled>Envoyer mes réponses et voir les résultats</button>
       <span class="note" id="req">Répondez au moins aux 10 premières questions.</span>
@@ -194,13 +185,10 @@ function progress(){
   $('submit').disabled=!ok;$('req').textContent=ok?'Vous pouvez envoyer vos réponses.':'Répondez au moins aux 10 premières questions.';
 }
 $('submit').addEventListener('click',function(){
-  var mail=$('c-mail').value.trim();
-  if(mail&&!$('c-ok').checked){$('sent').innerHTML='<div class="msg warn">Cochez la case de consentement pour recevoir le rapport, ou effacez votre e-mail.</div>';return;}
-  if(mail&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)){$('sent').innerHTML='<div class="msg warn">L’adresse e-mail semble incorrecte.</div>';return;}
-  var rep={id:'R'+Date.now(),date:new Date().toISOString(),a:JSON.parse(JSON.stringify(ans)),contact:mail?{nom:$('c-nom').value.trim(),mail:mail}:null};
+  var rep={id:'R'+Date.now(),date:new Date().toISOString(),a:JSON.parse(JSON.stringify(ans))};
   var btn=$('submit');btn.disabled=true;
   // La réponse est envoyée au Baromètre (base centrale) ; une copie reste sur ce poste pour l'affichage « vos réponses ».
-  fetch('/api/barometre',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reponses:rep.a,contact:rep.contact,consentement:!!(mail&&$('c-ok').checked),source:KIOSK?'collecte':'web'})})
+  fetch('/api/barometre',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reponses:rep.a,source:KIOSK?'collecte':'web'})})
    .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
    .then(function(x){
      if(!x.ok){btn.disabled=false;$('sent').innerHTML='<div class="msg warn">'+esc(x.j.error||'Envoi impossible, réessayez.')+'</div>';return;}
@@ -271,12 +259,12 @@ function results(){
       (st.n?(q.type==='one'&&q.o.length<=6?donut(q,st,me):bars(q,st,me)):'<div class="empty">Pas encore de réponse.</div>')+'</div>';});
   $('charts').innerHTML=h;
 }
-$('kiosk').addEventListener('click',function(){KIOSK=true;ans={};['c-nom','c-mail'].forEach(function(id){$(id).value='';});$('c-ok').checked=false;$('sent').innerHTML='';
+$('kiosk').addEventListener('click',function(){KIOSK=true;ans={};$('sent').innerHTML='';
   try{localStorage.removeItem(MINE);}catch(e){}render();progress();results();window.scrollTo({top:0,behavior:'smooth'});});
 $('print').addEventListener('click',function(){window.print();});
 $('csv').addEventListener('click',function(){var l=load();if(!l.length)return;
-  var head=['id','date'].concat(Q.map(function(q,i){return 'Q'+(i+1)+' '+q.t;})).concat(['contact_nom','contact_email']);
-  var rows=l.map(function(r){return [r.id,r.date].concat(Q.map(function(q){return (r.a[q.id]||[]).map(function(j){return q.o[j];}).join(' | ');})).concat([r.contact?r.contact.nom:'',r.contact?r.contact.mail:'']);});
+  var head=['id','date'].concat(Q.map(function(q,i){return 'Q'+(i+1)+' '+q.t;}));
+  var rows=l.map(function(r){return [r.id,r.date].concat(Q.map(function(q){return (r.a[q.id]||[]).map(function(j){return q.o[j];}).join(' | ');}));});
   var csv='﻿'+[head].concat(rows).map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(';');}).join('\n');
   var b=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='enquete-barometre-2026.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);});
 

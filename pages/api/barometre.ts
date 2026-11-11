@@ -1,6 +1,6 @@
 // pages/api/barometre.ts — Baromètre 2026.
 //   GET  → nombre de répondants et agrégats (pourcentages diffusés à partir de 10 répondants)
-//   POST → enregistre une réponse (anonyme ; coordonnées seulement avec consentement)
+//   POST → enregistre une réponse anonyme (aucune donnée identifiante)
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabaseAdmin } from '../../lib/supabaseAdmin'
 import { QUESTIONS } from '../../lib/barometre'
@@ -32,10 +32,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (idx.length) propres[q.id] = idx
     }
     if (QUESTIONS.slice(0, 10).some(q => !propres[q.id])) return res.status(400).json({ error: 'Répondez au moins aux 10 premières questions.' })
-    const c = req.body?.contact
-    const mail = c?.mail && req.body?.consentement === true && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(c.mail)) ? String(c.mail).slice(0, 200) : null
+    // Aucune donnée identifiante n'est collectée : seules les réponses aux questions sont enregistrées.
     const { error } = await supabaseAdmin().from('barometre_reponses').insert({
-      reponses: propres, contact_email: mail, contact_nom: mail && c?.nom ? String(c.nom).slice(0, 160) : null,
+      reponses: propres,
       source: req.body?.source === 'collecte' ? 'collecte' : 'web',
     })
     if (error) return res.status(500).json({ error: error.message })

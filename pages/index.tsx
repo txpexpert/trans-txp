@@ -275,7 +275,7 @@ export default function Accueil() {
           <div className="x-panel">
             <div className="x-eyebrow">Baromètre 2026 · enquête ouverte</div>
             <h3 className="x-h3">La friction douanière au Maroc, mesurée par ceux qui la vivent</h3>
-            <p className="x-sub">Délais, erreurs de conformité, accords sous-exploités : une enquête menée auprès d’importateurs, de transitaires et de directions financières. Participez et recevez le rapport en avant-première.</p>
+            <p className="x-sub">Délais, erreurs de conformité, accords sous-exploités : une enquête menée auprès d’importateurs, de transitaires et de directions financières. Les réponses sont anonymes et les résultats publiés en ligne.</p>
             <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Link href="/enquete" className="x-btn x-btn-dark">Participer à l’enquête</Link><Link href="/barometre" className="x-btn x-btn-line">Voir les résultats</Link></div>
           </div>
           <div className="x-panel">
