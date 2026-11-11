@@ -111,7 +111,7 @@ export default function SiteShell({ title, description, children, plain = false,
           <div className="x-ftr-grid">
             <div>
               <div className="x-logo" dir="ltr"><IxpLogo size={34} /><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></div>
-              <p>منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل التخليص الجمركي، يصممها ويؤطرها خبراء جمركيون.</p>
+              <p>منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل الاستخلاص الجمركي، يصممها ويؤطرها خبراء جمركيون.</p>
             </div>
             <div><h5>المنصة</h5><ul>
               <li><Link href="/diagnostic">تشخيص الامتثال (بالفرنسية)</Link></li>
