@@ -432,3 +432,4 @@ html.ixp-theme body h1 em,html.ixp-theme body h2 em{font-style:italic}
 /* Version arabe (pages autonomes en arabe) */
 .ixp-chrome.xs-ar{--x-sans:"Noto Sans Arabic","DM Sans",system-ui,sans-serif}
 .ixp-chrome.xs-ar .x-tile{font-family:var(--x-sans)}
+.ixp-chrome.xs-ar .x-tile,.ixp-chrome.xs-ar .x-login{white-space:nowrap}
