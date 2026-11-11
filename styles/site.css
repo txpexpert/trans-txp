@@ -811,3 +811,12 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 .xs-ar .x-pf-card[data-ton="navy"]{border-right-color:var(--x-navy)}
 .x-pf-grid4{grid-template-columns:repeat(4,1fr)}
 @media (max-width:1000px){.x-pf-grid4{grid-template-columns:1fr 1fr}}@media (max-width:600px){.x-pf-grid4{grid-template-columns:1fr}}
+
+/* Bouton flottant WhatsApp (components/WhatsAppButton.tsx) */
+.xs .x-wa{position:fixed;right:20px;bottom:20px;z-index:90;display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;background:#25D366;color:#fff;font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:transform .15s ease,box-shadow .15s ease}
+.xs .x-wa:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.22);color:#fff}
+.xs .x-wa:focus-visible{outline:3px solid #128C7E;outline-offset:3px}
+.xs.xs-ar .x-wa{right:auto;left:20px}
+.xs:has(.x-demo) .x-wa{bottom:52px}
+@media (max-width:640px){.xs .x-wa{padding:13px;right:14px;bottom:14px}.xs .x-wa span{display:none}.xs.xs-ar .x-wa{left:14px}.xs:has(.x-demo) .x-wa{bottom:46px}}
+@media print{.xs .x-wa{display:none}}

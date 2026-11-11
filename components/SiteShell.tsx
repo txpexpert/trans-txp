@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useState, type ReactNode, useEffect } from 'react'
 import { CHAIN } from '../lib/suite'
 import IxpLogo from './IxpLogo'
+import WhatsAppButton from './WhatsAppButton'
 
 const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === '1'
 
@@ -182,6 +183,8 @@ export default function SiteShell({ title, description, children, plain = false,
         </div>
       </footer>
       )}
+
+      <WhatsAppButton ar={ar} />
 
       {DEMO && (
         <div className="x-demo">

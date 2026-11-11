@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import SiteShell from '../components/SiteShell'
+import WhatsAppLink from '../components/WhatsAppLink'
 
 const dh = (n: number) => Math.round(n).toLocaleString('fr-FR') + ' DH'
 const mdh = (n: number) => (n >= 1e6 ? (Math.round(n / 1e5) / 10).toLocaleString('fr-FR') + ' MDH' : dh(n))
@@ -140,6 +141,7 @@ export default function MonEspace() {
                 </div>
                 {voir && rap && <iframe title="Aperçu du rapport mensuel" className="x-me-apercu" srcDoc={rap.apercu.html} />}
               </div>}
+              <WhatsAppLink />
               <p className="x-note">Sur mobile : <Link href="/app">version mobile de l’espace</Link>.</p>
             </>
           )}
