@@ -64,5 +64,6 @@ export function fmtDH(n: number): string {
 export function priceLine(plan: PaidPlan): string {
   const p = PRICING[plan]
   if (p.annual == null) return p.note
-  return `DH HT / an · soit ${fmtDH(p.annualTTC!)} DH TTC (TVA ${VAT_RATE} %) · équivalent ${fmtDH(p.monthlyTTC!)} DH TTC / mois`
+  // Pas d'équivalent mensuel affiché : abonnement annuel uniquement, payable par virement (décision du 11/11/2026)
+  return `DH HT / an · soit ${fmtDH(p.annualTTC!)} DH TTC (TVA ${VAT_RATE} %), facturé à l’année`
 }
