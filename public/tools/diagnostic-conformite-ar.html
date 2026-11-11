@@ -465,7 +465,7 @@ function saveRemote(c){
     body:JSON.stringify({indice:c.global,domaines:c.domains,ecarts:c.gaps,critiques:c.crit,exposition_basse:Math.round(ex.lo),exposition_haute:Math.round(ex.hi),estimee:ex.estimee,hypotheses:ex.hyp,profil:c.profile})})
   .then(function(r){return r.json().then(function(j){return {s:r.status,j:j};});})
   .then(function(o){
-    if(o.s===401)acctNote('للاحتفاظ بهذه النتيجة وتتبع تطورها كل شهر، <a href="/auth/register?plan=pro" target="_top">جرّبوا Import-eXPert Pro لمدة 14 يومًا</a> أو <a href="/auth/login" target="_top">سجّلوا الدخول</a>.');
+    if(o.s===401)acctNote('للاحتفاظ بهذه النتيجة وتتبع تطورها كل شهر، <a href="/ar/inscription?plan=pro" target="_top">جرّبوا Import-eXPert Pro لمدة 14 يومًا</a> أو <a href="/auth/login" target="_top">سجّلوا الدخول</a>.');
     else if(o.j&&o.j.conserve){acctNote('تم حفظ النتيجة في حسابكم، وستكون نقطة انطلاق تتبعكم الشهري.');loadRemote();}
     else acctNote('التتبع الشهري للنتيجة متاح ابتداءً من عرض Pro. <a href="/ar/tarifs" target="_top">الاطلاع على العروض</a>.');
   }).catch(function(){});
@@ -489,7 +489,7 @@ function renderResults(c,prev){
   if(p.red==='oui'&&c.answers.r2&&c.answers.r2!=='oui')al+='<div class="alert">قد يكون أجل حساب تحت نظام اقتصادي قد حلّ: رسوم مستحقة، وغرامة تعادل مرة ونصف الرسوم، وتعليق تسهيلات الكفالة (مدونة الجمارك، الفصل 294 مكرر ؛ المذكرة رقم 12014/313).</div>';
   if(c.answers.d2&&c.answers.d2!=='oui')al+='<div class="alert">دون مراجعة بعد رفع اليد، تفقدون إمكانية تعديل خطأ داخل 30 يومًا دون أداء غرامة (مدونة الجمارك، الفصل 78-3°).</div>';
   if(!al)al='<div class="alert ok">لا يوجد أي فارق حرج: حافظوا على المستوى بالافتحاص السنوي والرصد.</div>';
-  al+='<div class="alert ok"><b>لقاء مجاني لمدة 20 دقيقة مع خبير جمركي</b>: نراجع معكم هذه النتيجة ونحدد الإجراءين أو الثلاثة الأكثر تقليصًا لتعرّضكم. <a href="/echange-expert?depuis=diagnostic" target="_top" onclick="window.ixpCompter&&window.ixpCompter(\'echange_demande\')">اطلبوا اللقاء</a> (بالفرنسية)</div>';
+  al+='<div class="alert ok"><b>لقاء مجاني لمدة 20 دقيقة مع خبير جمركي</b>: نراجع معكم هذه النتيجة ونحدد الإجراءين أو الثلاثة الأكثر تقليصًا لتعرّضكم. <a href="/ar/echange-expert?depuis=diagnostic" target="_top" onclick="window.ixpCompter&&window.ixpCompter(\'echange_demande\')">اطلبوا اللقاء</a></div>';
   $('r-alerts').innerHTML=al;
   // barres
   var h='';$('delta-note').textContent=prev?'التطور مقارنة بتشخيص '+new Date(prev.date).toLocaleDateString('fr-FR')+'.':'تشخيص أول: سيظهر التطور في التشخيص المقبل.';

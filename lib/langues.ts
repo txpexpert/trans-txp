@@ -12,6 +12,9 @@ export const EQUIVALENTS: [string, string][] = [
   ['/diagnostic', '/ar/diagnostic'],
   ['/tools/diagnostic-conformite.html', '/tools/diagnostic-conformite-ar.html'],
   ['/tools/enquete-barometre.html', '/tools/enquete-barometre-ar.html'],
+  ['/auth/register', '/ar/inscription'],
+  ['/contact', '/ar/contact'],
+  ['/echange-expert', '/ar/echange-expert'],
 ]
 
 const sansSlashFinal = (p: string) => (p.length > 1 ? p.replace(/\/+$/, '') : p)

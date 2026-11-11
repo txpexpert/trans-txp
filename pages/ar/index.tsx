@@ -66,7 +66,7 @@ export default function AccueilAr() {
             <div className="x-eyebrow">ابدأوا مجانًا</div>
             <p>العرض الاستكشافي مجاني: التشخيص، وثلاث بطاقات منتوج، ورصد النصوص التي تمسّها. وتجربة كاملة لمدة 14 يومًا دون وسيلة أداء.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-              <Link href="/auth/register?plan=pro" className="x-btn x-btn-dark">تجربة 14 يومًا</Link>
+              <Link href="/ar/inscription?plan=pro" className="x-btn x-btn-dark">تجربة 14 يومًا</Link>
               <Link href="/ar/tarifs" className="x-btn x-btn-line">العروض والأسعار</Link>
             </div>
           </div>
