@@ -9,7 +9,7 @@ import { PRICING, fmtDH } from '../lib/pricing'
 const FAQ = [
   ['Comment est calculé l’abonnement ?', 'L’abonnement est souscrit pour un an, par utilisateur. Le plan Entreprise est une option contractuelle couvrant toute une équipe.'],
   ['Que vaut un abonnement face au risque couvert ?', 'Le plan Pro représente environ 14 DH HT par jour. À comparer avec un seul redressement, une amende ou quelques jours de surestaries.'],
-  ['Les packs experts sont-ils déductibles ?', 'Oui : le montant d’un pack réglé est déduit de votre premier abonnement annuel s’il est souscrit dans les 30 jours qui suivent. L’audit flash du classement vaut le prix de l’offre Pro : votre première année Pro est alors offerte.'],
+  ['Les packs experts sont-ils déductibles ?', 'Oui : le montant d’un pack réglé est déduit de votre premier abonnement annuel s’il est souscrit dans les 30 jours qui suivent. Un pack d’au moins 5 000 DH HT couvre une année Pro, d’au moins 9 000 DH HT une année Premium : votre première année est alors offerte.'],
   ['Que coûte l’avis d’un expert ?', 'Un renseignement express coûte 1 500 DH HT, un avis motivé 4 000 DH HT. L’offre Premium inclut 24 renseignements par an : 36 000 DH HT de valeur au tarif à l’acte, pour un abonnement de 9 000 DH HT.'],
   ['Ai-je droit à une réduction ?', 'Chaque nouveau client reçoit un code de bienvenue de 15 % sur son premier abonnement, et un code à offrir à un ami ou un partenaire, qui lui donne la même réduction. Les codes se trouvent dans « Mon espace ».'],
   ['L’essai gratuit donne-t-il accès à tout ?', 'Oui : 14 jours d’accès complet, sans engagement et sans moyen de paiement. À la fin de l’essai, le compte passe à l’offre Découverte : vous gardez le diagnostic, 3 fiches produits et l’alerte mensuelle sur vos produits.'],
@@ -81,7 +81,7 @@ export default function Tarifs() {
           <p className="x-sub">Forfait fixe, payable par virement. Le montant du pack est déduit de votre premier abonnement annuel s’il est souscrit dans les 30 jours : l’audit flash vaut une année Pro, qui vous est donc offerte.</p>
           <div className="x-presta">
             {PACKS.map(p => (
-              <div key={p.nom}><span className="x-mono">{p.pour} · {p.delai}</span><h4>{p.nom}</h4><p className="x-tf-prix">{fmtDH(p.prix)} DH HT{p.prix >= PRICING.pro.annual! ? <small> · première année Pro offerte</small> : null}</p><p>{p.desc}</p>
+              <div key={p.nom}><span className="x-mono">{p.pour} · {p.delai}</span><h4>{p.nom}</h4><p className="x-tf-prix">{fmtDH(p.prix)} DH HT{p.prix >= PRICING.premium.annual! ? <small> · première année Premium offerte</small> : p.prix >= PRICING.pro.annual! ? <small> · première année Pro offerte</small> : null}</p><p>{p.desc}</p>
                 <button type="button" className="x-btn x-btn-line x-btn-sm" style={{ marginTop: 10 }} onClick={() => setPack(p.nom)}>Commander</button></div>
             ))}
           </div>
@@ -108,7 +108,7 @@ export default function Tarifs() {
           </div>
           <div>
             <ul className="x-list">
-              <li>Licence Cabinet : invitez vos clients importateurs, qui disposent d’un accès Découverte étendu à votre nom</li>
+              <li>Portail clients : vos importateurs suivent leur dossier, leurs pièces et son avancement, à votre nom</li>
               <li>Fiches produits partagées avec vos clients : moins d’allers-retours, des dossiers prêts avant le dépôt</li>
               <li>Un lien « diagnostic offert par … » à votre nom ; conditions du programme sur demande</li>
             </ul>
