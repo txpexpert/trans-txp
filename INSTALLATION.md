@@ -140,3 +140,21 @@ alter table avoirs   enable trigger trg_avoirs_immutable;
 | Avoir | `AVIXP27AA01` | AV-IXP27AA01 |
 
 Ordre : AA01 → AA99, puis AB01… (66 924 numéros par an).
+
+## 7. WhatsApp (facultatif)
+
+Sans configuration, rien ne s'affiche. Deux niveaux indépendants :
+
+**Bouton flottant** : renseigner `NEXT_PUBLIC_WHATSAPP_NUMBER` (format international sans + ni 0, ex. `212612345678`) puis redéployer. Le message pré-rempli dépend de la page (liste dans `components/WhatsAppButton.tsx`). Les clics sont comptés de façon anonyme (`whatsapp_clic` dans `compteurs_evenements`).
+
+**API Cloud de Meta** (IXP-Assistant sur WhatsApp, liaison du numéro, messages d'abonnement) :
+
+1. Appliquer `supabase/migrations/0011_whatsapp.sql`.
+2. business.facebook.com : portefeuille au nom de RIGORIS LEX, vérification de l'entreprise.
+3. developers.facebook.com : application de type « Business », produit WhatsApp, ajout du numéro dédié. Pour garder aussi l'application WhatsApp Business sur ce numéro, choisir la « coexistence » lors de l'ajout.
+4. Utilisateur système Meta Business → jeton permanent (droits `whatsapp_business_messaging`, `whatsapp_business_management`).
+5. Variables Vercel : `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_ID`, `WHATSAPP_APP_SECRET`, `WHATSAPP_VERIFY_TOKEN` (chaîne libre), `WHATSAPP_ADMIN_EMAIL`.
+6. Webhook : URL `https://<domaine>/api/whatsapp/webhook`, jeton = `WHATSAPP_VERIFY_TOKEN`, champ abonné `messages`.
+7. Modèles à soumettre à Meta (catégorie « Utilitaire », français) avant de brancher les envois automatiques (`notifyUser` dans `lib/whatsapp.ts`) : `fin_essai`, `proforma_emise`, `virement_recu`, `renouvellement_proche`.
+
+Parcours abonné : Mon espace → « Relier mon numéro WhatsApp » → envoi de `IXP 123456` depuis WhatsApp. Cet envoi relie le numéro et date le consentement. `STOP` désinscrit, `START` réactive, `CONSEILLER` confie la conversation à l'équipe pendant 24 h (email à `WHATSAPP_ADMIN_EMAIL`). L'assistant refuse les messages contenant un email, un téléphone, un ICE, un RIB ou un numéro de CIN.
