@@ -262,7 +262,7 @@ function PlanChooser({ me, onDone, onError }: { me: Me; onDone: (m: string) => v
               <div style={{ fontWeight: 700, color: 'var(--bd)' }}>{p.label}{chosen && <span style={{ fontSize: 10, marginLeft: 8, color: '#1A7A40' }}>✓ CHOISI</span>}</div>
               {ht != null ? <>
                 <div style={{ fontSize: 20, fontFamily: "'DM Serif Display',serif", margin: '6px 0 2px' }}>{fmtMAD(ht)} <small style={{ fontSize: 11 }}>HT / an</small></div>
-                <div style={{ fontSize: 12, color: 'var(--inkm)' }}>soit {fmtMAD(ht * (1 + vat / 100))} TTC · ≈ {Math.round(ht * (1 + vat / 100) / 12)} DH TTC / mois</div>
+                <div style={{ fontSize: 12, color: 'var(--inkm)' }}>soit {fmtMAD(ht * (1 + vat / 100))} TTC</div>
                 <div style={{ display: 'flex', gap: 6, marginTop: 10, flexWrap: 'wrap' }}>
                   {!chosen && <button style={S.btn(false)} disabled={!!busy} onClick={() => post('choose_plan', p.code)}>Choisir</button>}
                   <button style={{ ...S.btn(), opacity: ready ? 1 : .5 }} disabled={!!busy || !ready} onClick={() => post('request_proforma', p.code)}

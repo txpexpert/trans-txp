@@ -42,6 +42,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const password_hash = await bcrypt.hash(password, 12)
 
+  // Programme partenaires : code du lien « offert par … » (cookie technique posé par /p/<code>)
+  let parrainCode: string | null = null
+  const ck = String(req.cookies?.ixp_parrain || '').toLowerCase()
+  if (/^[a-z0-9-]{3,30}$/.test(ck)) {
+    const { data: p } = await supabase.from('partenaires').select('code').eq('code', ck).eq('actif', true).maybeSingle()
+    parrainCode = p?.code ?? null
+  }
+
   // ── Vérification d'email ──────────────────────────────────────────────────
   // Le compte est créé immédiatement (essai de 14 jours calculé dès
   // maintenant, cf. TRIAL_TTL_MS), mais NE PEUT PAS se connecter tant que
@@ -64,6 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       trial_ends_at: new Date(Date.now() + TRIAL_TTL_MS).toISOString(),
       email_verified: false,
       plan_souhaite: planSouhaite,
+      parrain_code: parrainCode,
       verify_token: verifyToken,
       verify_token_expires: verifyTokenExpires,
     })

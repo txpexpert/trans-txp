@@ -115,6 +115,10 @@ export default function SiteShell({ title, description, children, plain = false 
                 <li><Link href="/calculateur-dum">Argent laissé sur la table</Link></li>
                 <li><Link href="/produits">Droits par produit (SH)</Link></li>
                 <li><Link href="/barometre">Baromètre 2026</Link></li>
+                <li><Link href="/profils/pme">PME importatrices</Link></li>
+                <li><Link href="/profils/transitaire">Transitaires</Link></li>
+                <li><Link href="/profils/daf">Directions financières</Link></li>
+                <li><Link href="/profils/prescripteurs">Programme partenaires</Link></li>
               </ul>
             </div>
             <div>

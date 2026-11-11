@@ -234,7 +234,7 @@ export default function Accueil() {
                     <Link key={s} href={`/espaces/${s}`} className={`x-chip x-c-${s}`}><span className="x-num">{e.num}</span>{e.verb}</Link>
                   ) })}
                 </div>
-                <div style={{ marginTop: 26 }}><Link href="/diagnostic" className="x-btn x-btn-dark">Évaluer votre conformité</Link></div>
+                <div style={{ marginTop: 26, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Link href="/diagnostic" className="x-btn x-btn-dark">Évaluer votre conformité</Link><Link href={`/profils/${p.id}`} className="x-btn x-btn-line">Votre page dédiée</Link></div>
               </div>
             </div>
           ))}

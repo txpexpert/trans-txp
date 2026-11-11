@@ -1,6 +1,7 @@
 // pages/tarifs.tsx — abonnement annuel + prestations expertes à l'acte.
 // Montants : lib/pricing.ts (source unique), via lib/suite.ts.
 import Link from 'next/link'
+import { useState } from 'react'
 import SiteShell from '../components/SiteShell'
 import { PLANS, PRESTATIONS, PACKS } from '../lib/suite'
 
@@ -9,11 +10,20 @@ const FAQ = [
   ['Que vaut un abonnement face au risque couvert ?', 'Le plan Pro représente environ 14 DH HT par jour. À comparer avec un seul redressement, une amende ou quelques jours de surestaries.'],
   ['Les packs experts sont-ils déductibles ?', 'Oui : le montant d’un pack est déduit de votre premier abonnement annuel s’il est souscrit dans les 30 jours qui suivent.'],
   ['Que coûte l’avis d’un expert ?', 'Les renseignements et avis sont facturés à l’opération, selon un barème communiqué avant toute intervention. Le plan Premium en inclut deux par mois.'],
-  ['L’essai gratuit donne-t-il accès à tout ?', 'Oui : 14 jours d’accès complet, sans engagement.'],
+  ['L’essai gratuit donne-t-il accès à tout ?', 'Oui : 14 jours d’accès complet, sans engagement et sans moyen de paiement. À la fin de l’essai, le compte passe à l’offre Découverte : vous gardez le diagnostic, 3 fiches produits et l’alerte mensuelle sur vos produits.'],
   ['Comment se règle l’abonnement ?', 'Par virement bancaire, en dirhams, en une fois pour l’année, avec la référence indiquée sur votre facture pro-forma. Votre plan est activé pour 12 mois à la validation du paiement, et la facture vous est envoyée par email.'],
 ]
 
 export default function Tarifs() {
+  const [pack, setPack] = useState<string | null>(null)
+  const [prec, setPrec] = useState('')
+  const [etat, setEtat] = useState('')
+  async function commander() {
+    setEtat('')
+    const r = await fetch('/api/packs', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pack, precisions: prec }) })
+    if (r.status === 401) { window.location.href = '/auth/login?redirect=/tarifs'; return }
+    const j = await r.json(); setEtat(r.ok ? 'ok' : (j.error || 'Commande impossible'))
+  }
   return (
     <SiteShell title="Tarifs | IXP-Import-eXPert" description="Abonnement par utilisateur, prestations expertes à l'acte, essai gratuit de 14 jours.">
       <section className="x-hero" style={{ paddingBottom: 24 }}>
@@ -49,10 +59,22 @@ export default function Tarifs() {
           <p className="x-sub">Forfait annoncé avant toute intervention. Le montant du pack est déduit de votre premier abonnement annuel s’il est souscrit dans les 30 jours.</p>
           <div className="x-presta">
             {PACKS.map(p => (
-              <div key={p.nom}><span className="x-mono">{p.pour} · {p.delai}</span><h4>{p.nom}</h4><p>{p.desc}</p></div>
+              <div key={p.nom}><span className="x-mono">{p.pour} · {p.delai}</span><h4>{p.nom}</h4><p>{p.desc}</p>
+                <button type="button" className="x-btn x-btn-line x-btn-sm" style={{ marginTop: 10 }} onClick={() => setPack(p.nom)}>Commander</button></div>
             ))}
           </div>
-          <div style={{ marginTop: 28 }}><Link href="/contact?sujet=pack-expert" className="x-btn x-btn-dark">Demander un pack</Link></div>
+          {pack && (
+            <div className="x-ff" style={{ marginTop: 22 }}>
+              <h4 style={{ margin: '0 0 8px' }}>Commander : {pack}</h4>
+              {etat === 'ok' ? <p className="x-ff-ok">Commande enregistrée. Un expert revient vers vous sous 48 heures ouvrées avec le forfait et la pro-forma (virement).</p> : (
+                <>
+                  <label>Précisions (facultatif)<textarea rows={3} value={prec} onChange={e => setPrec(e.target.value)} placeholder="Nombre de références, période, contexte du contrôle…" /></label>
+                  {etat && etat !== 'ok' && <p className="x-ff-err" style={{ marginTop: 10 }}>{etat}</p>}
+                  <div className="x-ff-nav"><button type="button" className="x-btn x-btn-dark" onClick={commander}>Envoyer la commande</button>
+                    <button type="button" className="x-btn x-btn-line" onClick={() => { setPack(null); setEtat('') }}>Annuler</button></div>
+                  <p className="x-ff-note">Commande sans engagement de paiement : le forfait vous est annoncé avant toute intervention.</p>
+                </>)}
+            </div>)}
         </div>
       </section>
 
@@ -68,7 +90,7 @@ export default function Tarifs() {
               <li>Fiches produits partagées avec vos clients : moins d’allers-retours, des dossiers prêts avant le dépôt</li>
               <li>Une commission récurrente sur chaque client qui passe à une offre payante</li>
             </ul>
-            <div style={{ marginTop: 22 }}><Link href="/contact?sujet=partenaire" className="x-btn x-btn-line">Devenir partenaire</Link></div>
+            <div style={{ marginTop: 22 }}><Link href="/profils/prescripteurs" className="x-btn x-btn-line">Devenir partenaire</Link></div>
           </div>
         </div>
       </section>
