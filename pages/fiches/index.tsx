@@ -10,11 +10,12 @@ export default function Fiches() {
   const [etat, setEtat] = useState<'charge' | 'ok' | 'abonnement' | 'connexion'>('charge')
   const [fiches, setFiches] = useState<any[]>([])
   const [quota, setQuota] = useState<number | null>(null)
+  const [abonne, setAbonne] = useState(false)
   useEffect(() => {
     fetch('/api/fiches', { credentials: 'same-origin' }).then(async r => {
       if (r.status === 401) return setEtat('connexion')
       if (r.status === 403) return setEtat('abonnement')
-      const j = await r.json(); setFiches(j.fiches || []); setQuota(j.quota ?? null); setEtat('ok')
+      const j = await r.json(); setFiches(j.fiches || []); setQuota(j.quota ?? null); setAbonne(!!j.abonne); setEtat('ok')
     }).catch(() => setEtat('connexion'))
   }, [])
   return (
@@ -34,7 +35,8 @@ export default function Fiches() {
           {etat === 'abonnement' && <div className="x-pc-cta"><p>Les fiches produits sont incluses dans l’essai et les offres payantes.</p><Link href="/auth/register?plan=pro" className="x-btn x-btn-gold">Essai 14 jours</Link></div>}
           {etat === 'ok' && (
             <>
-              {quota != null && (
+              {quota != null && abonne && <p className="x-ff-note" style={{ margin: 0 }}>{fiches.length} référence{fiches.length > 1 ? 's' : ''} suivie{fiches.length > 1 ? 's' : ''} sur {quota} incluses dans votre offre.</p>}
+              {quota != null && !abonne && (
                 <div className="x-pc-cta" style={{ marginTop: 0 }}>
                   <p><b>Offre Découverte : {Math.min(fiches.length, quota)} fiche{fiches.length > 1 ? 's' : ''} sur {quota}.</b> Avec l’offre Pro : fiches sans limite, dossiers défendables, veille hebdomadaire et rapport mensuel au dirigeant.</p>
                   <Link href="/tarifs" className="x-btn x-btn-gold">Voir l’offre Pro</Link>

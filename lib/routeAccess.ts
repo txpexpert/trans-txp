@@ -33,6 +33,7 @@ export const FREE_PATHS = [
   '/cas-types',
   '/demo/fiche-produit',
   '/calculateur-dum',
+  '/lf-2027',
   '/profils/pme',
   '/profils/transitaire',
   '/profils/industriel',

@@ -8,6 +8,7 @@
 //        { action: 'request_proforma', plan }  → pro-forma émise + envoyée
 // Accessible même abonnement expiré (pas de contrôle de plan ici).
 // ─────────────────────────────────────────────────────────────────────────────
+import { emettrePremierAbonnement } from '../../../lib/offres'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { getBillingUser, issueProforma, loadSettings } from '../../../lib/billingServer'
@@ -99,10 +100,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const { error: cErr } = await sb.rpc('admin_cancel_proforma', { p_invoice_id: pending.id, p_actor: 'client', p_note: 'Remplacée par le client (changement de plan)' })
           if (cErr) return res.status(400).json({ error: cErr.message })
         }
-        const r = await issueProforma({
-          userId: user.id, plan: body.plan, actor: 'client', origin: 'client', reuse: true, base: siteUrl(req),
-        })
-        return res.status(200).json({ ok: true, document: r.doc, emailed: r.emailed })
+        // Premier abonnement : code de réduction et packs experts déduits (lib/offres.ts)
+        const r = await emettrePremierAbonnement({ userId: user.id, plan: body.plan, actor: 'client', origin: 'client', base: siteUrl(req) })
+        return res.status(200).json({ ok: true, document: r.doc, emailed: r.emailed, active: r.active, reductions: (r as any).notes || [] })
       } catch (e: any) {
         return res.status(400).json({ error: e.message })
       }

@@ -1,4 +1,5 @@
 // pages/api/auth/register.ts
+import { codesDuClient } from '../../../lib/offres'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
@@ -83,6 +84,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('[register]', error)
     return res.status(500).json({ error: 'Erreur lors de la création du compte' })
   }
+
+  // Codes de réduction du nouveau client : bienvenue (pour lui) et à offrir (lib/offres.ts)
+  try { await codesDuClient(user.id) } catch (e) { console.error('[register] codes', e) }
 
   const emailResult = await sendVerificationEmail(user.email, user.prenom || '', verifyToken)
   if (!emailResult.ok) {

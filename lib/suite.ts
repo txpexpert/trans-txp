@@ -191,13 +191,13 @@ export const PLANS = [
   {
     id: 'pro', nom: 'Pro', resultat: 'Importer juste', prix: fmtDH(PRICING.pro.annual!), unite: priceLine('pro').replace(/^DH /, ''),
     pour: 'PME importatrices',
-    inclus: ['Qualifier, Chiffrer et Exécuter', 'Fiches produits sans limite, dossiers défendables', 'Veille hebdomadaire et rapport mensuel au dirigeant', 'Bibliothèque complète', 'IXP-Assistant illimité'],
+    inclus: ['Qualifier, Chiffrer et Exécuter', '50 références suivies, dossiers défendables', 'Veille hebdomadaire et rapport mensuel au dirigeant', 'Bibliothèque complète', 'IXP-Assistant illimité'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=pro',
   },
   {
     id: 'premium', nom: 'Premium', resultat: 'Sécuriser et prouver', prix: fmtDH(PRICING.premium.annual!), unite: priceLine('premium').replace(/^DH /, ''), vedette: true,
     pour: 'Transitaires, commissionnaires, cabinets',
-    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients et portail clients à votre nom', '24 renseignements experts par an inclus (2 par mois)'],
+    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', '120 références suivies, gestion multi-clients et portail clients à votre nom', '24 renseignements experts par an inclus, soit 36 000 DH HT au tarif à l’acte'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=premium',
   },
   {
@@ -210,15 +210,17 @@ export const PLANS = [
 
 // Interventions expertes. Les forfaits sont annoncés avant toute intervention ;
 // les packs sont déduits du premier abonnement annuel souscrit dans les 30 jours.
+// Prix HT proposés (11/11/2026), à valider par les associés : modifier ici uniquement.
+export const PRIX_RENSEIGNEMENT = 1500
 export const PRESTATIONS = [
-  { nom: 'Renseignement express', delai: 'Sous 48 h ouvrées', desc: 'Une question précise, une réponse écrite et sourcée par un expert : classement, origine, régime, document.' },
-  { nom: 'Avis motivé', delai: 'Sous 5 jours ouvrés', desc: 'Une analyse argumentée sur un point sensible, prête à être jointe à un dossier ou présentée à l’administration.' },
-  { nom: 'Accompagnement de dossier', delai: 'Sur devis', desc: 'Contentieux, demande de régime économique, audit sur site : une mission Douane Engineering cadrée.' },
+  { nom: 'Renseignement express', prix: '1 500 DH HT', delai: 'Sous 48 h ouvrées', desc: 'Une question précise, une réponse écrite et sourcée par un expert : classement, origine, régime, document.' },
+  { nom: 'Avis motivé', prix: '4 000 DH HT', delai: 'Sous 5 jours ouvrés', desc: 'Une analyse argumentée sur un point sensible, prête à être jointe à un dossier ou présentée à l’administration.' },
+  { nom: 'Accompagnement de dossier', prix: 'Sur devis', delai: 'Sur devis', desc: 'Contentieux, demande de régime économique, audit sur site : une mission Douane Engineering cadrée.' },
 ]
 
 export const PACKS = [
-  { nom: 'Audit flash du classement', delai: '20 références', pour: 'PME importatrices', desc: 'Vingt références produits revues par un expert, avec une note écrite des écarts de classement et des documents exigés.' },
-  { nom: 'Bilan origine', delai: '12 mois d’importations', pour: 'Directions financières', desc: 'Ce que vos accords de libre-échange vous font gagner, ce qu’ils pourraient vous faire gagner, et les preuves à sécuriser.' },
-  { nom: 'Préparation au contrôle a posteriori', delai: 'Avant ou pendant un contrôle', pour: 'Importateurs contrôlés', desc: 'Revue du dossier, points de fragilité et liste des pièces à réunir pour répondre à l’administration.' },
-  { nom: 'Pré-OEA', delai: 'Écart et feuille de route', pour: 'Industriels et transitaires', desc: 'Écart entre votre situation et les critères de l’Opérateur Économique Agréé, avec un plan pour y arriver.' },
+  { nom: 'Audit flash du classement', prix: 5000, delai: '20 références', pour: 'PME importatrices', desc: 'Vingt références produits revues par un expert, avec une note écrite des écarts de classement et des documents exigés.' },
+  { nom: 'Bilan origine', prix: 7500, delai: '12 mois d’importations', pour: 'Directions financières', desc: 'Ce que vos accords de libre-échange vous font gagner, ce qu’ils pourraient vous faire gagner, et les preuves à sécuriser.' },
+  { nom: 'Préparation au contrôle a posteriori', prix: 12000, delai: 'Avant ou pendant un contrôle', pour: 'Importateurs contrôlés', desc: 'Revue du dossier, points de fragilité et liste des pièces à réunir pour répondre à l’administration.' },
+  { nom: 'Pré-OEA', prix: 15000, delai: 'Écart et feuille de route', pour: 'Industriels et transitaires', desc: 'Écart entre votre situation et les critères de l’Opérateur Économique Agréé, avec un plan pour y arriver.' },
 ]
