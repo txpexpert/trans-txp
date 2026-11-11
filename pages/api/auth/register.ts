@@ -88,7 +88,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Codes de réduction du nouveau client : bienvenue (pour lui) et à offrir (lib/offres.ts)
   try { await codesDuClient(user.id) } catch (e) { console.error('[register] codes', e) }
 
-  const emailResult = await sendVerificationEmail(user.email, user.prenom || '', verifyToken)
+  const langue = req.body?.langue === 'ar' || req.cookies?.ixp_lang === 'ar' ? 'ar' : 'fr'
+  const emailResult = await sendVerificationEmail(user.email, user.prenom || '', verifyToken, langue)
   if (!emailResult.ok) {
     // Le compte existe déjà en base à ce stade — on ne l'annule pas pour un
     // simple échec d'envoi (l'utilisateur peut redemander l'email ensuite),

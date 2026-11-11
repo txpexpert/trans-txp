@@ -35,7 +35,7 @@ export default function InscriptionAr() {
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, password: form.password, nom: form.nom, prenom: form.prenom, societe: form.societe, telephone: form.telephone, profil: form.profil, plan }),
+        body: JSON.stringify({ email: form.email, password: form.password, nom: form.nom, prenom: form.prenom, societe: form.societe, telephone: form.telephone, profil: form.profil, plan, langue: 'ar' }),
       })
       if (!res.ok) {
         setError(res.status === 409 ? 'هذا البريد الإلكتروني مستعمل بالفعل. سجّلوا الدخول أو استعملوا بريدًا آخر.'
@@ -56,7 +56,7 @@ export default function InscriptionAr() {
               <div className="x-eyebrow">الخطوة الأخيرة</div>
               <h1 className="x-h1 x-h1-sm">تحققوا من بريدكم الإلكتروني.</h1>
               <p className="x-lead">أرسلنا رسالة تأكيد إلى <b dir="ltr">{form.email}</b>. اضغطوا على الرابط الذي تتضمنه لتفعيل حسابكم{plan === 'free' ? '' : ' وبدء التجربة المجانية لمدة 14 يومًا'}.</p>
-              <p className="x-note">الرسالة محررة حاليًا باللغة الفرنسية. إن لم تصلكم بعد بضع دقائق، تحققوا من البريد غير المرغوب فيه، أو <Link href="/auth/login">سجّلوا الدخول</Link> لطلب إرسالها من جديد.</p>
+              <p className="x-note">إن لم تصلكم بعد بضع دقائق، تحققوا من البريد غير المرغوب فيه، أو <Link href="/auth/login">سجّلوا الدخول</Link> لطلب إرسالها من جديد.</p>
             </>
           ) : (
             <>
