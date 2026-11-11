@@ -20,6 +20,7 @@ export default function InscriptionAr() {
   const [form, setForm] = useState({ email: '', password: '', confirm: '', nom: '', prenom: '', societe: '', telephone: '', profil: 'importateur' })
   const [cgu, setCgu] = useState(false)
   const [inscrit, setInscrit] = useState(false)
+  const [emailEnvoye, setEmailEnvoye] = useState(true)
   const [envoi, setEnvoi] = useState(false)
   const [error, setError] = useState('')
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm(f => ({ ...f, [k]: e.target.value }))
@@ -43,6 +44,8 @@ export default function InscriptionAr() {
           : 'تعذّر إنشاء الحساب. يرجى إعادة المحاولة.')
         setEnvoi(false); return
       }
+      const data = await res.json().catch(() => ({}))
+      setEmailEnvoye(data?.emailSent !== false)
       setInscrit(true)
     } catch { setError('خطأ في الاتصال، يرجى إعادة المحاولة.'); setEnvoi(false) }
   }
@@ -55,7 +58,8 @@ export default function InscriptionAr() {
             <>
               <div className="x-eyebrow">الخطوة الأخيرة</div>
               <h1 className="x-h1 x-h1-sm">تحققوا من بريدكم الإلكتروني.</h1>
-              <p className="x-lead">أرسلنا رسالة تأكيد إلى <b dir="ltr">{form.email}</b>. اضغطوا على الرابط الذي تتضمنه لتفعيل حسابكم{plan === 'free' ? '' : ' وبدء التجربة المجانية لمدة 14 يومًا'}.</p>
+              {!emailEnvoye && <p className="x-ff-err">تم إنشاء حسابكم، لكن تعذّر إرسال رسالة التأكيد حاليًا. <Link href="/auth/login">سجّلوا الدخول</Link> لطلب إرسالها من جديد، أو <Link href="/ar/contact">اتصلوا بنا</Link>.</p>}
+              <p className="x-lead">{emailEnvoye ? 'أرسلنا' : 'سنرسل'} رسالة تأكيد إلى <b dir="ltr">{form.email}</b>. اضغطوا على الرابط الذي تتضمنه لتفعيل حسابكم{plan === 'free' ? '' : ' وبدء التجربة المجانية لمدة 14 يومًا'}.</p>
               <p className="x-note">إن لم تصلكم بعد بضع دقائق، تحققوا من البريد غير المرغوب فيه، أو <Link href="/auth/login">سجّلوا الدخول</Link> لطلب إرسالها من جديد.</p>
             </>
           ) : (
