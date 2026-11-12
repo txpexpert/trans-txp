@@ -126,7 +126,7 @@ export default function MonEspace() {
 
               {s.abonne && <div className="x-ff">
                 <h3 style={{ margin: '0 0 6px' }}>Rapport mensuel au dirigeant</h3>
-                <p className="x-ff-note" style={{ marginTop: 0 }}>Chaque début de mois, un email résume l’exposition et son évolution, l’activité de conformité et les textes qui touchent vos produits. Le dirigeant voit la valeur sans avoir à se connecter. Offre Entreprise : un rapport trimestriel au comité de direction s’y ajoute en janvier, avril, juillet et octobre.{rap && !rap.inclus ? ' Inclus à partir de l’offre Pro : pendant l’essai, vous pouvez en voir l’aperçu.' : ''}</p>
+                <p className="x-ff-note" style={{ marginTop: 0 }}>Chaque début de mois, un email résume l’exposition et son évolution, l’activité de conformité et les textes qui touchent vos produits. Le dirigeant voit la valeur sans avoir à se connecter. Offres Premium et Entreprise : un rapport trimestriel au comité de direction s’y ajoute en janvier, avril, juillet et octobre, avec la tendance du trimestre et les priorités du suivant.{rap && !rap.inclus ? ' Inclus à partir de l’offre Pro : pendant l’essai, vous pouvez en voir l’aperçu.' : ''}</p>
                 <div className="x-ff-grid" style={{ marginTop: 12 }}>
                   <label>Email du dirigeant (en plus du vôtre)<input value={dir} onChange={e => setDir(e.target.value)} placeholder="direction@votre-societe.ma" /></label>
                   <label className="x-ff-chk" style={{ alignSelf: 'end' }}><input type="checkbox" checked={actif} onChange={e => setActif(e.target.checked)} /> Recevoir le rapport chaque mois</label>
@@ -135,7 +135,7 @@ export default function MonEspace() {
                   <button type="button" className="x-btn x-btn-dark" onClick={enregistrer}>Enregistrer</button>
                   <button type="button" className="x-btn x-btn-line" onClick={() => setVoir(v => !v)} disabled={!rap}>{voir ? 'Masquer l’aperçu' : 'Voir l’aperçu'}</button>
                   <button type="button" className="x-btn x-btn-line" onClick={essai} disabled={!rap}>M’envoyer un essai</button>
-                  {s.compte?.plan === 'enterprise' && <button type="button" className="x-btn x-btn-line" onClick={() => fetch('/api/rapport?trimestre=1', { credentials: 'same-origin' }).then(r => r.json()).then(k => { setRap(k); setVoir(true) })}>Aperçu trimestriel</button>}
+                  {['premium', 'enterprise'].includes(s.compte?.plan) && <button type="button" className="x-btn x-btn-line" onClick={() => fetch('/api/rapport?trimestre=1', { credentials: 'same-origin' }).then(r => r.json()).then(k => { setRap(k); setVoir(true) })}>Aperçu trimestriel</button>}
                   {msg && <span className="x-ff-note" style={{ alignSelf: 'center' }}>{msg}</span>}
                 </div>
                 {voir && rap && <iframe title="Aperçu du rapport mensuel" className="x-me-apercu" srcDoc={rap.apercu.html} />}

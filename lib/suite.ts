@@ -197,7 +197,7 @@ export const PLANS = [
   {
     id: 'premium', nom: 'Premium', resultat: 'Sécuriser et prouver', prix: fmtDH(PRICING.premium.annual!), unite: priceLine('premium').replace(/^DH /, ''), vedette: true,
     pour: 'Transitaires, commissionnaires, cabinets',
-    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', '120 références suivies, gestion multi-clients et portail clients à votre nom', '24 renseignements experts par an inclus, soit 36 000 DH HT au tarif à l’acte'],
+    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', '120 références suivies, gestion multi-clients et portail clients à votre nom', 'Rapport trimestriel au comité de direction', '24 renseignements experts par an inclus, soit 36 000 DH HT au tarif à l’acte'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=premium',
   },
   {

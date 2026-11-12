@@ -15,6 +15,8 @@ const esc = (s: unknown) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&am
 const dh = (n: number) => Math.round(n).toLocaleString('fr-FR') + ' DH'
 const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
 export const PLANS_RAPPORT = ['pro', 'premium', 'enterprise']
+/** Rapport trimestriel au comité de direction : offres Premium et Entreprise. */
+export const PLANS_TRIMESTRIEL = ['premium', 'enterprise']
 
 /** Période couverte : le mois civil précédant la date d'envoi. */
 export function periodeRapport(maintenant = new Date(), mois = 1) {
@@ -38,6 +40,7 @@ export async function construireRapport(userId: string, site: string, maintenant
     db.from('fiches_produits').select('id, created_at, updated_at, statut').eq('user_id', userId),
     db.from('dossiers_defendables').select('numero, created_at, titre, statut').eq('user_id', userId).gte('created_at', p.debut.toISOString()).lt('created_at', p.fin.toISOString()),
   ])
+  const { data: tousDossiers } = tri ? await db.from('dossiers_defendables').select('fiches, statut').eq('user_id', userId).eq('statut', 'emis') : { data: [] as any[] }
   const prog = await etatProgression(userId)
   let alertes: Awaited<ReturnType<typeof veilleCompte>> = []
   try { alertes = (await veilleCompte(userId, { depuisDoc: p.debut.toISOString().slice(0, 10) })).filter(a => !a.date_texte || a.date_texte < p.fin.toISOString().slice(0, 10)) } catch {}
@@ -69,12 +72,49 @@ export async function construireRapport(userId: string, site: string, maintenant
     ${ageJours != null && ageJours > 31 ? `<p style="font-size:14px">Votre dernier diagnostic date de ${ageJours} jours. <a href="${site}/diagnostic" style="color:#153E82">Recalculer le score</a> (une quinzaine de minutes) pour mesurer l’effet de vos actions ${sur}.</p>` : ''}`
     : `<p>Aucun score d’exposition n’est encore enregistré. <a href="${site}/diagnostic" style="color:#153E82">Mesurer l’exposition</a> : le diagnostic chiffre en dirhams les droits exposés sur la période de reprise de quatre ans.</p>`
 
+  // ── Synthèse trimestrielle : tendance, couverture, priorités du trimestre suivant ──
+  let triHtml = ''
+  if (tri) {
+    const dansP = (d: any) => new Date(d.created_at) >= p.debut && new Date(d.created_at) < p.fin
+    const avant = (diags ?? []).find(d => new Date(d.created_at) < p.debut && mil(d) != null)
+    const finT = (diags ?? []).find(d => dansP(d) && mil(d) != null)
+    const duT = (diags ?? []).filter(dansP).reverse()
+    const varT = mil(finT) != null && mil(avant) != null ? mil(finT)! - mil(avant)! : null
+    const couvertes = new Set<string>()
+    for (const d of tousDossiers ?? []) for (const f of (Array.isArray(d.fiches) ? d.fiches : [])) if (f?.id) couvertes.add(String(f.id))
+    const incompletes = fl.filter(f => f.statut !== 'complete').length
+    const sansDossier = fl.filter(f => f.statut === 'complete' && !couvertes.has(String(f.id))).length
+    const couverture = fl.length ? Math.round(couvertes.size / fl.length * 100) : 0
+    const messages = [
+      varT == null ? (finT ? `Exposition mesurée ce trimestre : ${fourchette(finT.exposition_basse, finT.exposition_haute)}. Pas de mesure au trimestre précédent pour comparer.` : 'Aucun diagnostic ce trimestre : l’exposition n’a pas été remesurée.')
+        : varT < 0 ? `L’exposition a baissé de ${dh(-varT)} sur le trimestre : les actions engagées réduisent le risque.`
+        : varT > 0 ? `L’exposition a augmenté de ${dh(varT)} sur le trimestre : des écarts nouveaux sont à traiter.` : 'L’exposition est stable sur le trimestre.',
+      fl.length ? `${couvertes.size} produit${couvertes.size > 1 ? 's' : ''} sur ${fl.length} couvert${couvertes.size > 1 ? 's' : ''} par un dossier défendable (${couverture} %).` : 'Aucun produit n’est encore suivi par une fiche.',
+      alertes.length ? `${alertes.length} texte${alertes.length > 1 ? 's' : ''} publié${alertes.length > 1 ? 's' : ''} ce trimestre touche${alertes.length > 1 ? 'nt' : ''} vos produits.` : 'Aucun texte publié ce trimestre ne touche vos produits.',
+    ]
+    const prio: string[] = []
+    if (!dernier || (ageJours ?? 0) > 90) prio.push(`Remesurer l’exposition : <a href="${site}/diagnostic" style="color:#153E82">refaire le diagnostic</a>${dernier ? ` (le dernier date de ${ageJours} jours)` : ''}.`)
+    if (dernier?.critiques) prio.push(`Traiter les ${dernier.critiques} écart${dernier.critiques > 1 ? 's' : ''} critique${dernier.critiques > 1 ? 's' : ''} du dernier diagnostic.`)
+    if (incompletes) prio.push(`Compléter ${incompletes} fiche${incompletes > 1 ? 's' : ''} produit${incompletes > 1 ? 's' : ''} : classement, documents, contrôle MIC, origine.`)
+    if (sansDossier) prio.push(`Figer ${sansDossier} fiche${sansDossier > 1 ? 's' : ''} complète${sansDossier > 1 ? 's' : ''} en dossier défendable, vérifiable en ligne.`)
+    const etape = prog.find(e => e.total > 0 && e.faits < e.total)
+    if (etape) prio.push(`Avancer l’étape « ${esc(etape.verb)} » : ${etape.faits}/${etape.total} modules réalisés.`)
+    if (alertes.length) prio.push(`Faire examiner les ${alertes.length} texte${alertes.length > 1 ? 's' : ''} du trimestre par la personne en charge de la conformité.`)
+    triHtml = `
+    <h2 style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#153E82">Synthèse pour la direction</h2>
+    <ul style="font-size:15px;line-height:1.55;padding-left:18px;margin:8px 0 18px">${messages.map(m => `<li>${m}</li>`).join('')}</ul>
+    ${duT.length ? `<table style="width:100%;font-size:13px;border-collapse:collapse;margin:0 0 18px"><tr style="color:#7A7168;text-align:left"><th style="padding:4px 0">Diagnostic</th><th>Exposition</th><th>Écarts critiques</th></tr>${duT.map(d => `<tr style="border-top:1px solid #E6DCC7"><td style="padding:5px 0">${new Date(d.created_at).toLocaleDateString('fr-FR')}</td><td>${fourchette(d.exposition_basse, d.exposition_haute)}</td><td>${d.critiques ?? '—'}</td></tr>`).join('')}</table>` : ''}
+    <h2 style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#153E82">Priorités du trimestre suivant</h2>
+    ${prio.length ? `<ol style="font-size:14px;line-height:1.55;padding-left:18px;margin:8px 0 6px">${prio.slice(0, 5).map(x => `<li>${x}</li>`).join('')}</ol>` : '<p style="font-size:14px">Aucune action prioritaire : maintenir la veille et remesurer l’exposition au prochain trimestre.</p>'}
+    <p style="font-size:12px;color:#7A7168;margin:0 0 6px">Le détail du trimestre suit : exposition, activité, textes.</p>`
+  }
+
   const progHtml = prog.filter(e => e.total > 0).map(e => `<tr><td style="padding:4px 0">${esc(e.verb)}</td><td style="padding:4px 0;text-align:right">${e.faits}/${e.total} modules</td></tr>`).join('')
 
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;max-width:620px;margin:0 auto;color:#14120F">
     <div style="padding:20px 0;border-bottom:2px solid #A8822F"><b style="font-size:18px">Import-eXPert</b> · ${tri ? 'Rapport trimestriel au comité de direction' : 'Rapport mensuel'}${societe ? ' · ' + esc(societe) : ''}</div>
     <h1 style="font-size:22px;margin:22px 0 6px">Conformité import : ${p.libelle}</h1>
-    <p style="color:#3B3631;margin:0 0 18px">Ce que l’entreprise a sécurisé ${ce}, et ce qui reste à traiter.</p>
+    <p style="color:#3B3631;margin:0 0 18px">Ce que l’entreprise a sécurisé ${ce}, et ce qui reste à traiter.</p>${triHtml}
     <h2 style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#153E82">1. Exposition</h2>${scoreHtml}
     <h2 style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#153E82;margin-top:24px">2. Activité ${sur}</h2>
     <table style="width:100%;border-collapse:separate;border-spacing:8px 0"><tr>
@@ -154,14 +194,14 @@ export async function runAlertesDecouverte(site: string, maintenant = new Date()
   return res
 }
 
-/** Offre Entreprise : rapport trimestriel au comité de direction, du 1er au 5 de janvier, avril, juillet et octobre. */
+/** Offres Premium et Entreprise : rapport trimestriel au comité de direction, du 1er au 5 de janvier, avril, juillet et octobre. */
 export async function runRapportsTrimestriels(site: string, maintenant = new Date()) {
   const res = { envoyes: 0, erreurs: [] as string[] }
   if (maintenant.getUTCDate() > 5 || maintenant.getUTCMonth() % 3 !== 0) return res
   const db = supabaseAdmin()
   const { cle } = periodeRapport(maintenant, 3)
   const { data: users, error } = await db.from('users').select('id, email, email_dirigeant')
-    .eq('plan', 'enterprise').eq('statut', 'active').eq('rapport_mensuel', true)
+    .in('plan', PLANS_TRIMESTRIEL).eq('statut', 'active').eq('rapport_mensuel', true)
   if (error) return { ...res, erreurs: [error.message] }
   for (const u of users ?? []) {
     const { data: deja } = await db.from('score_envois').select('id').eq('user_id', u.id).eq('type', 'trimestriel').eq('periode', cle).maybeSingle()
