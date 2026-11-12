@@ -59,6 +59,7 @@ export default function Indicateurs({ i, jours, erreur, c }: { i: I; jours: numb
         <Carte t="Diagnostics commencés" v={somme(c.diagnostic_commence)} s={`soit ${pc(somme(c.diagnostic_commence), somme(c.accueil_vue))} des visites`} cible="8 % des visiteurs" />
         <Carte t="Diagnostics terminés" v={somme(c.diagnostic_termine)} s={`soit ${pc(somme(c.diagnostic_termine), somme(c.diagnostic_commence))} des diagnostics commencés`} cible="50 %" />
         <Carte t="Échanges expert demandés" v={somme(c.echange_demande)} s={`${somme(c.echange_vue)} vues de la page d’échange`} />
+        <Carte t="Clics WhatsApp" v={somme(c.whatsapp_clic)} s="bouton flottant, toutes pages" />
       </div>
       <h2 style={h2}>Test A/B de l’accroche</h2>
       <table className="data-table" style={{ marginBottom: 22 }}><thead><tr><th>Variante</th><th>Accroche</th><th>Visites</th><th>Diagnostics commencés</th><th>Taux</th><th>Terminés</th></tr></thead><tbody>

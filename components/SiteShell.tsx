@@ -6,6 +6,7 @@ import { useState, type ReactNode, useEffect } from 'react'
 import { CHAIN } from '../lib/suite'
 import IxpLogo from './IxpLogo'
 import { COOKIE_LANGUE, equivalent, lienLangue } from '../lib/langues'
+import WhatsAppBouton from './WhatsAppBouton'
 
 const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === '1'
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL || 'https://import-expert.ma').replace(/\/$/, '')
@@ -136,6 +137,7 @@ export default function SiteShell({ title, description, children, plain = false,
       </header>
 
       <main>{children}</main>
+      <WhatsAppBouton chemin={pathname} ar={ar} />
 
       {ar ? (
       <footer className="x-ftr">

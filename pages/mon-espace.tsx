@@ -20,6 +20,17 @@ export default function MonEspace() {
   const [saisie, setSaisie] = useState('')
   const [msgCode, setMsgCode] = useState('')
   const [baroFait, setBaroFait] = useState(true)
+  const [wa, setWa] = useState<any>(null)
+  const [waCode, setWaCode] = useState<any>(null)
+  const chargerWa = () => fetch('/api/whatsapp/lien', { credentials: 'same-origin' }).then(r => (r.ok ? r.json() : null)).then(setWa).catch(() => {})
+  useEffect(() => { chargerWa() }, [])
+  async function relierWa() {
+    const r = await fetch('/api/whatsapp/lien', { method: 'POST', credentials: 'same-origin' })
+    const j = await r.json(); if (r.ok) setWaCode(j)
+  }
+  async function delierWa() {
+    await fetch('/api/whatsapp/lien', { method: 'DELETE', credentials: 'same-origin' }); setWaCode(null); chargerWa()
+  }
   useEffect(() => {
     try { setBaroFait(!!localStorage.getItem('ixp-enquete-2026-moi')) } catch { setBaroFait(false) }
     fetch('/api/codes', { credentials: 'same-origin' }).then(r => (r.ok ? r.json() : null)).then(j => j && setCodes(j)).catch(() => {})
@@ -123,6 +134,20 @@ export default function MonEspace() {
                       <button type="button" className="x-btn x-btn-line x-btn-sm" onClick={() => appliquer(saisie)}>Appliquer</button></div>}
                   {msgCode && <p className="x-ff-note">{msgCode}</p>}
                 </div>)}
+
+              {wa?.actif && <div className="x-ff">
+                <h3 style={{ margin: '0 0 6px' }}>IXP-Assistant sur WhatsApp</h3>
+                <p className="x-ff-note" style={{ marginTop: 0 }}>Posez vos questions de réglementation depuis WhatsApp, au {wa.numero}. Les réponses s’appuient sur les mêmes textes officiels que l’assistant du site et se terminent par le lien vers la bonne page. Seul le texte de la question est analysé : ni votre numéro ni votre nom. Envoyez STOP pour vous désinscrire, CONSEILLER pour parler à un expert.{!wa.inclus ? ' Inclus pendant l’essai et dans les offres payantes.' : ''}</p>
+                {wa.relie
+                  ? <div className="x-ff-nav"><span className="x-ff-ok" style={{ alignSelf: 'center' }}>Numéro relié : {wa.relie.telephone}{wa.relie.desinscrit ? ' (désinscrit : envoyez START pour réactiver)' : wa.relie.depuis ? `, depuis le ${new Date(wa.relie.depuis).toLocaleDateString('fr-FR')}` : ''}</span>
+                      <button type="button" className="x-btn x-btn-line x-btn-sm" onClick={delierWa}>Délier ce numéro</button></div>
+                  : waCode
+                    ? <div><p style={{ margin: '8px 0' }}>Depuis le téléphone à relier, envoyez le message <b style={{ fontFamily: 'var(--x-mono)' }}>IXP {waCode.code}</b> au {wa.numero}. Le code est valable {waCode.expire_dans} minutes ; c’est votre envoi qui relie le numéro et date votre accord.</p>
+                        <div className="x-ff-nav"><a href={waCode.lien} target="_blank" rel="noopener noreferrer" className="x-btn x-btn-dark">Ouvrir WhatsApp avec le message</a>
+                          <button type="button" className="x-btn x-btn-line" onClick={chargerWa}>J’ai envoyé le message</button></div></div>
+                    : <div className="x-ff-nav"><button type="button" className="x-btn x-btn-dark" onClick={relierWa} disabled={!wa.inclus}>Relier mon numéro</button></div>}
+                {!wa.assistant && <p className="x-ff-note">En cours d’ouverture : le bouton WhatsApp fonctionne déjà ; les réponses automatiques arrivent dès la validation du compte WhatsApp Business.</p>}
+              </div>}
 
               {s.abonne && <div className="x-ff">
                 <h3 style={{ margin: '0 0 6px' }}>Rapport mensuel au dirigeant</h3>

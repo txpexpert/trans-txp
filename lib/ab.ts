@@ -7,7 +7,7 @@ export const VARIANTES = {
   C: { avant: 'Votre importation coûte plus cher', apres: 'que votre facture' },
 } as const
 export type Variante = keyof typeof VARIANTES
-export const EVENEMENTS = ['accueil_vue', 'diagnostic_commence', 'diagnostic_termine', 'echange_demande', 'echange_vue'] as const
+export const EVENEMENTS = ['accueil_vue', 'diagnostic_commence', 'diagnostic_termine', 'echange_demande', 'echange_vue', 'whatsapp_clic'] as const
 
 export function lireVariante(cookie: string | undefined | null): Variante | null {
   const m = /(?:^|;\s*)ixp_ab=([ABC])/.exec(cookie || '')

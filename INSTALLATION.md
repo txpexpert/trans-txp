@@ -140,3 +140,22 @@ alter table avoirs   enable trigger trg_avoirs_immutable;
 | Avoir | `AVIXP27AA01` | AV-IXP27AA01 |
 
 Ordre : AA01 → AA99, puis AB01… (66 924 numéros par an).
+
+## WhatsApp : IXP-Assistant (bouton, liaison du numéro, réponses automatiques)
+
+1. **Bouton seul** : `NEXT_PUBLIC_WHATSAPP_NUMBER=212666651839` (chiffres, sans `+` ni `00`). Le bouton flottant
+   ouvre WhatsApp avec un message pré-rempli selon la page ; la carte « IXP-Assistant sur WhatsApp » apparaît dans Mon espace.
+2. **Tables** : migration `supabase/migrations/0011_whatsapp.sql` (création uniquement : `whatsapp_contacts`,
+   `whatsapp_codes`, `whatsapp_journal`, RLS sans politique).
+3. **Compte Meta** (business.facebook.com) : compte entreprise vérifié, application de type « Business » avec le produit
+   WhatsApp, numéro dédié ajouté et vérifié, jeton d'accès permanent (utilisateur système).
+4. **Variables Vercel** (serveur) : `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_ID` (identifiant du numéro chez Meta),
+   `WHATSAPP_APP_SECRET` (clé secrète de l'application), `WHATSAPP_VERIFY_TOKEN` (chaîne de votre choix),
+   `WHATSAPP_ADMIN_EMAIL` (destinataire des demandes « CONSEILLER »).
+5. **Webhook** dans l'application Meta : URL `https://<site>/api/whatsapp/webhook`, jeton de vérification =
+   `WHATSAPP_VERIFY_TOKEN`, abonnement au champ `messages`.
+
+Règles appliquées : un abonné relie son numéro en envoyant `IXP <code>` (code de Mon espace, 15 minutes) ; `STOP` /
+`START` ; `CONSEILLER` suspend l'assistant 24 h et prévient par e-mail ; questions contenant email, téléphone, ICE, RIB
+ou CIN refusées ; 30 réponses par heure et par numéro ; seul le texte de la question est transmis à l'IA, rien n'est
+conservé du contenu des messages.
