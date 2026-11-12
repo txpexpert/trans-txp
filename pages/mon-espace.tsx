@@ -135,7 +135,7 @@ export default function MonEspace() {
                   {msgCode && <p className="x-ff-note">{msgCode}</p>}
                 </div>)}
 
-              {wa?.actif && <div className="x-ff">
+              {wa?.actif && wa?.assistant && <div className="x-ff">
                 <h3 style={{ margin: '0 0 6px' }}>IXP-Assistant sur WhatsApp</h3>
                 <p className="x-ff-note" style={{ marginTop: 0 }}>Posez vos questions de réglementation depuis WhatsApp, au {wa.numero}. Les réponses s’appuient sur les mêmes textes officiels que l’assistant du site et se terminent par le lien vers la bonne page. Seul le texte de la question est analysé : ni votre numéro ni votre nom. Envoyez STOP pour vous désinscrire, CONSEILLER pour parler à un expert.{!wa.inclus ? ' Inclus pendant l’essai et dans les offres payantes.' : ''}</p>
                 {wa.relie
@@ -146,7 +146,6 @@ export default function MonEspace() {
                         <div className="x-ff-nav"><a href={waCode.lien} target="_blank" rel="noopener noreferrer" className="x-btn x-btn-dark">Ouvrir WhatsApp avec le message</a>
                           <button type="button" className="x-btn x-btn-line" onClick={chargerWa}>J’ai envoyé le message</button></div></div>
                     : <div className="x-ff-nav"><button type="button" className="x-btn x-btn-dark" onClick={relierWa} disabled={!wa.inclus}>Relier mon numéro</button></div>}
-                {!wa.assistant && <p className="x-ff-note">En cours d’ouverture : le bouton WhatsApp fonctionne déjà ; les réponses automatiques arrivent dès la validation du compte WhatsApp Business.</p>}
               </div>}
 
               {s.abonne && <div className="x-ff">
