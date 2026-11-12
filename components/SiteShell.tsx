@@ -32,7 +32,9 @@ export default function SiteShell({ title, description, children, plain = false,
   const { pathname } = useRouter()
   // Sélecteur de langue : enregistre le choix et ouvre la même page dans l'autre langue
   const autreLangue = ar ? lienLangue('fr', pathname) : lienLangue('ar', pathname)
-  const nav = ar ? [...NAV_AR, { href: autreLangue, label: 'Français', tone: 't-slate' }] : [...NAV, { href: autreLangue, label: 'العربية', tone: 't-slate' }]
+  // Le bouton de langue n'est plus dans le menu : il reste affiché en permanence dans l'en-tête (bureau et mobile).
+  // Il ne touche qu'au cookie de langue : la session de l'utilisateur est conservée.
+  const nav = ar ? NAV_AR : NAV
   const versionFr = ar ? equivalent(pathname, 'fr') : pathname
   const versionAr = ar ? pathname : equivalent(pathname, 'ar')
   // Proposition discrète de l'interface arabe aux navigateurs réglés en arabe, tant qu'aucune langue n'est choisie
@@ -100,6 +102,7 @@ export default function SiteShell({ title, description, children, plain = false,
             ))}
           </nav>
           <div className="x-act">
+            <a href={autreLangue} className="x-tile t-slate x-lang" lang={ar ? 'fr' : 'ar'} dir={ar ? 'ltr' : 'rtl'} title={ar ? 'Version française (principale)' : 'النسخة العربية'}>{ar ? 'Français' : 'العربية'}</a>
             {user ? (
               <div className="x-session" title={`Session en cours : ${user.detail}`}>
                 <Link href="/mon-espace" className="x-sess-who"><span className="x-dot" aria-hidden="true" />{user.label}<small>{user.compte}</small></Link>

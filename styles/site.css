@@ -816,3 +816,7 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 .x-langbar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center;padding:9px 16px;background:var(--x-navy,#153E82);color:#fff;font-family:'Noto Sans Arabic',var(--x-sans);font-size:14px}
 .x-langbar a{color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .x-langbar a[lang=fr]{font-family:var(--x-sans);font-weight:400;opacity:.85}
+
+/* Bouton de langue : toujours visible dans l'en-tête, y compris sur mobile */
+.xs .x-hdr .x-lang{display:inline-flex;font-weight:600;white-space:nowrap}
+@media (max-width:760px){.xs .x-hdr .x-lang{padding:7px 11px;font-size:13px}}
