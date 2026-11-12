@@ -125,11 +125,11 @@ export default function SiteShell({ title, description, children, plain = false,
             {!ar && <Link href="/diagnostic" className="t-red" onClick={() => setMenu(false)}>Diagnostic de conformité</Link>}
             {user ? (
               <>
-                <Link href="/mon-espace" className="t-green" onClick={() => setMenu(false)}>Connecté : {user.label}</Link>
-                <a href="/" className="t-rose" onClick={e => { e.preventDefault(); setMenu(false); logout() }}>Déconnexion</a>
+                <Link href="/mon-espace" className="t-green" onClick={() => setMenu(false)}>{ar ? 'متصل: ' : 'Connecté : '}{user.label}</Link>
+                <a href="/" className="t-rose" onClick={e => { e.preventDefault(); setMenu(false); logout() }}>{ar ? 'خروج' : 'Déconnexion'}</a>
               </>
             ) : (
-              <Link href="/auth/login" className="t-rose" onClick={() => setMenu(false)}>Connexion</Link>
+              <Link href="/auth/login" className="t-rose" onClick={() => setMenu(false)}>{ar ? 'تسجيل الدخول' : 'Connexion'}</Link>
             )}
           </nav>
         )}
