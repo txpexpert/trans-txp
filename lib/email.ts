@@ -6,6 +6,7 @@
 //
 // ── VARIABLES D'ENVIRONNEMENT REQUISES ──────────────────────────────────────
 //   RESEND_API_KEY   — clé API Resend
+//   RESEND_REPLY_TO  — adresse de réponse par défaut (facultatif)
 //   RESEND_FROM      — adresse d'expédition, ex: "Import-eXPert <no-reply@import-ia.com>"
 //                      Doit être un domaine vérifié dans Resend (pas gmail.com etc.)
 //   NEXT_PUBLIC_SITE_URL — URL de base du site, ex: "https://import-ia.com"
@@ -37,7 +38,8 @@ export async function sendEmail({ to, subject, html, from, replyTo, headers }: {
       to,
       subject,
       html,
-      ...(replyTo ? { reply_to: replyTo } : {}),
+      // Adresse de réponse : celle de l'appel, sinon RESEND_REPLY_TO (réponses des clients vers l'équipe)
+      ...((replyTo || process.env.RESEND_REPLY_TO) ? { reply_to: replyTo || process.env.RESEND_REPLY_TO } : {}),
       ...(headers ? { headers } : {}),
     }),
   })
