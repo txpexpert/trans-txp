@@ -820,3 +820,10 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 /* Bouton de langue : toujours visible dans l'en-tête, y compris sur mobile */
 .xs .x-hdr .x-lang{display:inline-flex;font-weight:600;white-space:nowrap}
 @media (max-width:760px){.xs .x-hdr .x-lang{padding:7px 11px;font-size:13px}}
+
+/* Bouton flottant WhatsApp : à droite (FR), à gauche (AR) ; au-dessus du bandeau « démo » */
+.x-wa{position:fixed;right:18px;bottom:48px;z-index:90;display:inline-flex;align-items:center;gap:8px;padding:10px 16px 10px 12px;border-radius:999px;background:#25D366;color:#fff !important;font-weight:600;font-size:14px;box-shadow:0 6px 18px rgba(0,0,0,.18);text-decoration:none}
+.x-wa:hover{background:#1EBE5A}
+.x-wa-ar{right:auto;left:18px;padding:10px 12px 10px 16px}
+@media (max-width:760px){.x-wa{padding:12px;bottom:44px}.x-wa-txt{display:none}}
+@media print{.x-wa{display:none}}
