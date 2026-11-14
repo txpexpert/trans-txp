@@ -13,9 +13,10 @@ import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { clearUserCookie } from '../../../lib/userAuth'
-import { empreinteJeton, verifierMotDePasse } from '../../../lib/motDePasse'
+import { empreinteJeton, langueRequete, verifierMotDePasse } from '../../../lib/motDePasse'
 
 const INVALIDE = 'Lien invalide ou expiré. Demandez un nouveau lien.'
+const INVALIDE_AR = 'الرابط غير صالح أو منتهي الصلاحية. اطلبوا رابطًا جديدًا.'
 
 async function compteDuJeton(jeton: string) {
   if (!jeton || jeton.length < 20) return null
@@ -29,20 +30,22 @@ async function compteDuJeton(jeton: string) {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Cache-Control', 'no-store')
+  const langue = langueRequete(req)
+  const invalide = langue === 'ar' ? INVALIDE_AR : INVALIDE
 
   if (req.method === 'GET') {
     const u = await compteDuJeton(String(req.query.token || ''))
-    if (!u) return res.status(404).json({ error: INVALIDE })
+    if (!u) return res.status(404).json({ error: invalide })
     return res.status(200).json({ ok: true })
   }
 
   if (req.method !== 'POST') return res.status(405).end()
 
   const u = await compteDuJeton(String(req.body?.token || ''))
-  if (!u) return res.status(404).json({ error: INVALIDE })
+  if (!u) return res.status(404).json({ error: invalide })
 
   const nouveau = String(req.body?.nouveau || '')
-  const err = verifierMotDePasse(nouveau, u.email)
+  const err = verifierMotDePasse(nouveau, u.email, langue)
   if (err) return res.status(400).json({ error: err })
 
   const { error } = await supabaseAdmin().from('users').update({
@@ -55,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     locked_until:        null,
     email_verified:      true,
   }).eq('id', u.id)
-  if (error) return res.status(500).json({ error: 'Enregistrement impossible, réessayez.' })
+  if (error) return res.status(500).json({ error: langue === 'ar' ? 'تعذّر الحفظ، يُرجى إعادة المحاولة.' : 'Enregistrement impossible, réessayez.' })
 
   res.setHeader('Set-Cookie', clearUserCookie())
   return res.status(200).json({ ok: true })

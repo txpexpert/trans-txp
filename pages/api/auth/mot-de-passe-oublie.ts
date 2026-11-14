@@ -10,15 +10,18 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { siteUrl } from '../../../lib/adminAuth'
 import { sendPasswordResetEmail } from '../../../lib/email'
-import { DUREE_LIEN_MS, nouveauJeton } from '../../../lib/motDePasse'
+import { DUREE_LIEN_MS, langueRequete, nouveauJeton } from '../../../lib/motDePasse'
 
-const OK = { ok: true, message: 'Si un compte existe pour cette adresse, un email contenant un lien de réinitialisation vient d’être envoyé. Pensez à vérifier vos courriers indésirables.' }
+const OK_FR = { ok: true, message: 'Si un compte existe pour cette adresse, un email contenant un lien de réinitialisation vient d’être envoyé. Pensez à vérifier vos courriers indésirables.' }
+const OK_AR = { ok: true, message: 'إذا كان هناك حساب مرتبط بهذا العنوان، فقد تم إرسال رسالة تتضمن رابط إعادة التعيين. يُرجى التحقق أيضًا من مجلد الرسائل غير المرغوب فيها.' }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end()
 
+  const langue = langueRequete(req)
+  const OK = langue === 'ar' ? OK_AR : OK_FR
   const email = String(req.body?.email || '').trim().toLowerCase()
-  if (!email || !email.includes('@')) return res.status(400).json({ error: 'Adresse email requise.' })
+  if (!email || !email.includes('@')) return res.status(400).json({ error: langue === 'ar' ? 'البريد الإلكتروني مطلوب.' : 'Adresse email requise.' })
 
   const sb = supabaseAdmin()
   const { data: u } = await sb.from('users')
@@ -39,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     reset_token_expires: new Date(Date.now() + DUREE_LIEN_MS).toISOString(),
   }).eq('id', u.id)
 
-  const r = await sendPasswordResetEmail(u.email, `${siteUrl(req)}/auth/reinitialiser?token=${jeton}`)
+  const r = await sendPasswordResetEmail(u.email, `${siteUrl(req)}/auth/reinitialiser?token=${jeton}${langue === 'ar' ? '&langue=ar' : ''}`, langue)
   if (!r.ok) console.error('[mot-de-passe-oublie] envoi email :', r.error)
 
   return res.status(200).json(OK)
