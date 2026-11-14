@@ -108,6 +108,9 @@ export default function AppLogin({ redirect }: Props) {
           >
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
+          <div style={{ marginTop: 12, textAlign: 'center', fontSize: 13 }}>
+            <a href="/auth/mot-de-passe-oublie" style={{ color: '#153E82' }}>Mot de passe oublié ?</a>
+          </div>
         </form>
       </div>
     </div>

@@ -14,6 +14,8 @@ export const FREE_PATHS = [
   '/abonnement-requis',
   '/auth/login',
   '/auth/register',
+  '/auth/mot-de-passe-oublie',
+  '/auth/reinitialiser',
   '/contact',
   '/a-propos',
   '/mobile',

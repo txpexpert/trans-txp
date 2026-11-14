@@ -164,7 +164,7 @@ export default function MonEspace() {
                 </div>
                 {voir && rap && <iframe title="Aperçu du rapport mensuel" className="x-me-apercu" srcDoc={rap.apercu.html} />}
               </div>}
-              <p className="x-note">Sur mobile : <Link href="/app">version mobile de l’espace</Link>.</p>
+              <p className="x-note">Sur mobile : <Link href="/app">version mobile de l’espace</Link>. Compte et sécurité : <Link href="/dashboard">changer mon mot de passe</Link>.</p>
             </>
           )}
         </div>

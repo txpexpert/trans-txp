@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import Layout from '../components/Layout'
 import { useAuth } from '../context/AuthContext'
 import { fmtAbonne } from '../lib/billing'
+import ChangerMotDePasse from '../components/ChangerMotDePasse'
 
 const PLAN_LABELS: Record<string, string> = {
   trial:      'Essai gratuit',
@@ -91,6 +92,8 @@ export default function Dashboard() {
             </span>
           </div>
         </div>
+
+        <ChangerMotDePasse />
 
         {needsUpgrade && (
           <div style={{ background: '#FEF5E4', border: '.5px solid #E8C97A88', padding: '1.25rem', marginBottom: '1.5rem' }}>
