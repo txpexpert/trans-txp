@@ -7,9 +7,9 @@
 // ── VARIABLES D'ENVIRONNEMENT REQUISES ──────────────────────────────────────
 //   RESEND_API_KEY   — clé API Resend
 //   RESEND_REPLY_TO  — adresse de réponse par défaut (facultatif)
-//   RESEND_FROM      — adresse d'expédition, ex: "Import-eXPert <no-reply@import-ia.com>"
+//   RESEND_FROM      — adresse d'expédition, ex: "Import-eXPert <no-reply@import-expert.ma>"
 //                      Doit être un domaine vérifié dans Resend (pas gmail.com etc.)
-//   NEXT_PUBLIC_SITE_URL — URL de base du site, ex: "https://import-ia.com"
+//   NEXT_PUBLIC_SITE_URL — URL de base du site, ex: "https://import-expert.ma" (démo : https://demo.import-ia.ma)
 //                      (utilisée pour construire le lien de vérification)
 //   RESEND_FROM_BILLING — expéditeur des documents de facturation (facultatif),
 //                      ex: "RIGORIS LEX — Abonnements <abonnement@rigorislex.ma>"
@@ -18,38 +18,56 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const RESEND_API = 'https://api.resend.com/emails'
+// Expéditeur par défaut : domaine import-expert.ma, vérifié dans Resend le 12/11/2026
+const FROM_DEFAUT = 'Import-eXPert <no-reply@import-expert.ma>'
+const DELAI_MS = 10_000
 
+/**
+ * Envoi via l'API Resend. Ne lève jamais d'exception : renvoie { ok, id? , error? }.
+ * (2026-11-14) délai maximal de 10 s, erreurs réseau capturées, une nouvelle
+ * tentative sur erreur temporaire (429 / 5xx), identifiant Resend journalisé.
+ */
 export async function sendEmail({ to, subject, html, from, replyTo, headers }: {
   to: string | string[]; subject: string; html: string; from?: string; replyTo?: string; headers?: Record<string, string>
-}) {
+}): Promise<{ ok: boolean; id?: string; error?: string }> {
   if (!process.env.RESEND_API_KEY) {
-    console.error('[email] RESEND_API_KEY manquante — email non envoyé (to:', to, ')')
+    console.error('[email] RESEND_API_KEY manquante — email non envoyé')
     return { ok: false, error: 'Service email non configuré' }
   }
 
-  const res = await fetch(RESEND_API, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: from || process.env.RESEND_FROM || 'Import-eXPert <no-reply@import-ia.com>',
-      to,
-      subject,
-      html,
-      // Adresse de réponse : celle de l'appel, sinon RESEND_REPLY_TO (réponses des clients vers l'équipe)
-      ...((replyTo || process.env.RESEND_REPLY_TO) ? { reply_to: replyTo || process.env.RESEND_REPLY_TO } : {}),
-      ...(headers ? { headers } : {}),
-    }),
+  const body = JSON.stringify({
+    from: from || process.env.RESEND_FROM || FROM_DEFAUT,
+    to,
+    subject,
+    html,
+    // Adresse de réponse : celle de l'appel, sinon RESEND_REPLY_TO (réponses des clients vers l'équipe)
+    ...((replyTo || process.env.RESEND_REPLY_TO) ? { reply_to: replyTo || process.env.RESEND_REPLY_TO } : {}),
+    ...(headers ? { headers } : {}),
   })
 
-  if (!res.ok) {
-    const err = await res.text()
-    console.error('[email] Échec envoi Resend:', err)
-    return { ok: false, error: err }
+  for (let essai = 1; essai <= 2; essai++) {
+    try {
+      const res = await fetch(RESEND_API, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body,
+        signal: AbortSignal.timeout(DELAI_MS),
+      })
+      if (res.ok) {
+        const data = await res.json().catch(() => ({} as any))
+        return { ok: true, id: data?.id }
+      }
+      const err = await res.text().catch(() => String(res.status))
+      const temporaire = res.status === 429 || res.status >= 500
+      console.error(`[email] Échec envoi Resend (HTTP ${res.status}, essai ${essai}) : ${err.slice(0, 300)}`)
+      if (!temporaire || essai === 2) return { ok: false, error: err }
+    } catch (e: any) {
+      console.error(`[email] Erreur réseau Resend (essai ${essai}) : ${e?.name || ''} ${e?.message || e}`)
+      if (essai === 2) return { ok: false, error: 'Service email injoignable' }
+    }
+    await new Promise(r => setTimeout(r, 800))
   }
-  return { ok: true }
+  return { ok: false, error: 'Envoi impossible' }
 }
 
 export async function sendVerificationEmail(to: string, prenom: string, token: string, langue: 'fr' | 'ar' = 'fr') {
