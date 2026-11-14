@@ -186,7 +186,8 @@ export async function sendAdminResetEmail(to: string, url: string) {
 }
 
 // Réinitialisation du mot de passe d'un compte client (2026-11-14)
-export async function sendPasswordResetEmail(to: string, url: string) {
+export async function sendPasswordResetEmail(to: string, url: string, langue: 'fr' | 'ar' = 'fr') {
+  if (langue === 'ar') return sendPasswordResetEmailAr(to, url)
   const html = `
     <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #0A0A0A;">
       <div style="background: #0C2D5C; padding: 20px; text-align: center;">
@@ -205,4 +206,28 @@ export async function sendPasswordResetEmail(to: string, url: string) {
       </div>
     </div>`
   return sendEmail({ to, subject: 'Réinitialisation de votre mot de passe — Import-eXPert', html })
+}
+
+// Version arabe : demande faite depuis l'interface arabe (2026-11-14)
+async function sendPasswordResetEmailAr(to: string, url: string) {
+  const html = `
+    <div dir="rtl" lang="ar" style="font-family: 'Noto Sans Arabic', Tahoma, Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #0A0A0A; text-align: right;">
+      <div style="background: #0C2D5C; padding: 20px; text-align: center;">
+        <span dir="ltr" style="color: #E8C97A; font-family: Georgia, serif; font-size: 20px;">IMPORT-EXPERT</span>
+      </div>
+      <div style="padding: 32px 24px;">
+        <h1 style="font-size: 21px; font-weight: 600; margin: 0 0 16px;">كلمة مرور جديدة</h1>
+        <p style="font-size: 15px; line-height: 1.9; color: #3A3530;">تم طلب إعادة تعيين كلمة المرور الخاصة بحسابكم في Import-eXPert. اضغطوا على الزر أسفله لاختيار كلمة مرور جديدة.</p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${url}" style="display: inline-block; background: #0C2D5C; color: #E8C97A; padding: 14px 28px; text-decoration: none; font-size: 15px;">اختيار كلمة مرور جديدة</a>
+        </div>
+        <p style="font-size: 13px; color: #6E6A62; line-height: 1.8;">
+          هذا الرابط شخصي، صالح لمدة ساعة واحدة ويُستعمل مرة واحدة فقط. إذا لم تقوموا بهذا الطلب، يمكنكم تجاهل هذه الرسالة: تبقى كلمة المرور الحالية صالحة.
+        </p>
+        <p style="font-size: 12px; color: #6E6A62; line-height: 1.8;">
+          أو انسخوا هذا الرابط في متصفحكم:<br><span dir="ltr" style="word-break: break-all;">${url}</span>
+        </p>
+      </div>
+    </div>`
+  return sendEmail({ to, subject: 'إعادة تعيين كلمة المرور — Import-eXPert', html })
 }

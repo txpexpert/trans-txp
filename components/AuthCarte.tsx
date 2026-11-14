@@ -1,14 +1,29 @@
 // components/AuthCarte.tsx — cadre visuel commun aux pages « mot de passe oublié » et « réinitialiser » (même style que /auth/login)
 import Head from 'next/head'
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
+import { useRouter } from 'next/router'
 
-export default function AuthCarte({ titre, sousTitre, children }: { titre: string; sousTitre?: string; children: ReactNode }) {
+/** Langue de la page : ?langue=ar ou cookie de langue du site (ixp_lang). */
+export function useLangueAuth(): 'fr' | 'ar' {
+  const { query, isReady } = useRouter()
+  const [langue, setLangue] = useState<'fr' | 'ar'>('fr')
+  useEffect(() => {
+    if (!isReady) return
+    let ar = query.langue === 'ar'
+    if (!ar && query.langue !== 'fr') { try { ar = document.cookie.split('; ').includes('ixp_lang=ar') } catch {} }
+    setLangue(ar ? 'ar' : 'fr')
+  }, [isReady, query.langue])
+  return langue
+}
+
+export default function AuthCarte({ titre, sousTitre, children, langue = 'fr' }: { titre: string; sousTitre?: string; children: ReactNode; langue?: 'fr' | 'ar' }) {
+  const ar = langue === 'ar'
   return (
     <>
       <Head>
         <title>{titre} — IXP-Import-eXPert</title>
         <meta name="robots" content="noindex" />
-        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Noto+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet" />
       </Head>
       <style dangerouslySetInnerHTML={{ __html: `
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -27,11 +42,14 @@ export default function AuthCarte({ titre, sousTitre, children }: { titre: strin
         .aide{font-size:12px;color:var(--ink3);line-height:1.5;margin:-.4rem 0 .9rem}
         .lien{margin-top:.875rem;text-align:center;font-size:12px;color:var(--ink3)}
         .lien a{color:var(--gold);font-weight:500}
+        .ar,.ar input,.ar button{font-family:'Noto Sans Arabic',Tahoma,sans-serif}
+        .ar .label{letter-spacing:0;font-size:13px}
+        .ar .btn{letter-spacing:0;font-size:14px}
       ` }} />
-      <main style={{ display: 'flex', justifyContent: 'center', padding: '3rem 1rem' }}>
+      <main className={ar ? 'ar' : undefined} dir={ar ? 'rtl' : undefined} lang={ar ? 'ar' : undefined} style={{ display: 'flex', justifyContent: 'center', padding: '3rem 1rem' }}>
         <div style={{ width: '100%', maxWidth: 420, border: '1px solid var(--border)', background: 'var(--white)' }}>
           <div style={{ padding: '1.5rem 2rem 1rem', borderBottom: '1px solid var(--border)' }}>
-            <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 26, marginBottom: '.2rem' }}>{titre}</div>
+            <div style={{ fontFamily: ar ? "'Noto Sans Arabic',Tahoma,sans-serif" : "'DM Serif Display',serif", fontSize: ar ? 24 : 26, fontWeight: ar ? 600 : 400, marginBottom: '.2rem' }}>{titre}</div>
             {sousTitre && <div style={{ fontSize: 13, color: 'var(--ink3)' }}>{sousTitre}</div>}
           </div>
           <div style={{ padding: '1.5rem 2rem' }}>{children}</div>

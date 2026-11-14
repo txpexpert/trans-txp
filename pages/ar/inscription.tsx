@@ -80,7 +80,7 @@ export default function InscriptionAr() {
                 </div>
                 {error && <p className="x-ff-err" style={{ marginTop: 12 }}>{error}</p>}
                 <div className="x-ff-nav"><button type="submit" className="x-btn x-btn-dark" disabled={envoi}>{envoi ? 'جارٍ إنشاء الحساب…' : plan === 'free' ? 'إنشاء حسابي' : 'ابدؤوا التجربة المجانية'}</button></div>
-                <p className="x-ff-note">لديكم حساب؟ <Link href="/auth/login">سجّلوا الدخول</Link>. تبقى واجهة الحساب حاليًا باللغة الفرنسية.</p>
+                <p className="x-ff-note">لديكم حساب؟ <Link href="/auth/login">سجّلوا الدخول</Link>. <Link href="/auth/mot-de-passe-oublie?langue=ar">نسيتم كلمة المرور؟</Link> تبقى واجهة الحساب حاليًا باللغة الفرنسية.</p>
               </form>
               <ul className="x-list" style={{ marginTop: 22 }}>
                 <li>تشخيص الامتثال ودرجة التعرّض بالدرهم</li>

@@ -24,9 +24,9 @@ import crypto from 'crypto'
 import { USER_COOKIE } from './moduleAccess'
 import type { Plan, Statut } from './moduleAccess'
 export * from './moduleAccess'
+import { cleSessionClient } from './cleSecrete'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-const SECRET      = process.env.USER_SECRET || process.env.ADMIN_SECRET || 'dev-secret'
 const SESSION_TTL = parseInt(process.env.USER_SESSION_TTL || '604800', 10) // 7 jours session
 
 export interface SessionPayload {
@@ -43,7 +43,7 @@ export interface SessionPayload {
 export function createUserToken(payload: Omit<SessionPayload, 'exp'>): string {
   const data    = { ...payload, exp: Date.now() + SESSION_TTL * 1000 }
   const encoded = Buffer.from(JSON.stringify(data)).toString('base64url')
-  const sig     = crypto.createHmac('sha256', SECRET).update(encoded).digest('base64url')
+  const sig     = crypto.createHmac('sha256', cleSessionClient()).update(encoded).digest('base64url')
   return `${encoded}.${sig}`
 }
 
@@ -52,8 +52,9 @@ export function verifyUserToken(token: string | undefined): SessionPayload | nul
   const parts = token.split('.')
   if (parts.length !== 2) return null
   const [encoded, sig] = parts
-  const expected = crypto.createHmac('sha256', SECRET).update(encoded).digest('base64url')
   try {
+    // Clé absente sur Vercel → exception → jeton refusé (voir lib/cleSecrete.ts)
+    const expected = crypto.createHmac('sha256', cleSessionClient()).update(encoded).digest('base64url')
     const valid = crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))
     if (!valid) return null
     const payload: SessionPayload = JSON.parse(Buffer.from(encoded, 'base64url').toString())

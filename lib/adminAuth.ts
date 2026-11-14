@@ -24,9 +24,9 @@
 import crypto from 'crypto'
 import type { GetServerSidePropsContext, NextApiRequest } from 'next'
 import { supabaseAdmin } from './supabaseAdmin'
+import { cleSessionAdmin } from './cleSecrete'
 import { ALL_PERMISSIONS, type AdminCapabilities, type AdminNiveau, type PermissionCode } from './adminPermissions'
 
-const SECRET = process.env.ADMIN_SECRET || 'fallback-dev-secret'
 const TTL = parseInt(process.env.ADMIN_SESSION_TTL || '86400', 10)
 
 export const COOKIE_NAME    = 'das_admin'
@@ -46,7 +46,7 @@ interface AdminTokenPayload {
 // ── Jetons ───────────────────────────────────────────────────────────────────
 export function createToken(p: Omit<AdminTokenPayload, 'exp'>): string {
   const payload = Buffer.from(JSON.stringify({ ...p, exp: Date.now() + TTL * 1000 })).toString('base64url')
-  const sig = crypto.createHmac('sha256', SECRET).update(payload).digest('base64url')
+  const sig = crypto.createHmac('sha256', cleSessionAdmin()).update(payload).digest('base64url')
   return payload + '.' + sig
 }
 
@@ -55,8 +55,9 @@ export function readToken(token: string | undefined): AdminTokenPayload | null {
   const parts = token.split('.')
   if (parts.length !== 2) return null
   const [payload, sig] = parts
-  const expected = crypto.createHmac('sha256', SECRET).update(payload).digest('base64url')
   try {
+    // Clé absente sur Vercel → exception → jeton refusé (voir lib/cleSecrete.ts)
+    const expected = crypto.createHmac('sha256', cleSessionAdmin()).update(payload).digest('base64url')
     if (sig.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null
     const decoded = JSON.parse(Buffer.from(payload, 'base64url').toString())
     if (!decoded?.aid || !decoded?.niveau || !decoded?.scope || Date.now() >= decoded.exp) return null
