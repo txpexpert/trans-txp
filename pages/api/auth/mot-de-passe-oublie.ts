@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }).eq('id', u.id)
 
   const r = await sendPasswordResetEmail(u.email, `${siteUrl(req)}/auth/reinitialiser?token=${jeton}`)
-  if (r && (r as any).ok === false) console.error('[mot-de-passe-oublie] envoi email :', (r as any).error)
+  if (!r.ok) console.error('[mot-de-passe-oublie] envoi email :', r.error)
 
   return res.status(200).json(OK)
 }
