@@ -146,6 +146,9 @@ export default function Login() {
                   required
                 />
               </div>
+              <div style={{ textAlign: 'right', margin: '-.4rem 0 .9rem', fontSize: 12 }}>
+                <Link href="/auth/mot-de-passe-oublie" style={{ color: 'var(--gold)' }}>Mot de passe oublié ?</Link>
+              </div>
 
               <button
                 type="submit"

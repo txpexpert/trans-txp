@@ -166,3 +166,25 @@ export async function sendAdminResetEmail(to: string, url: string) {
       url, 'CHOISIR UN MOT DE PASSE'),
   })
 }
+
+// Réinitialisation du mot de passe d'un compte client (2026-11-14)
+export async function sendPasswordResetEmail(to: string, url: string) {
+  const html = `
+    <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #0A0A0A;">
+      <div style="background: #0C2D5C; padding: 20px; text-align: center;">
+        <span style="color: #E8C97A; font-family: Georgia, serif; font-size: 20px;">IMPORT-EXPERT</span>
+      </div>
+      <div style="padding: 32px 24px;">
+        <h1 style="font-size: 20px; font-weight: 500; margin: 0 0 16px;">Nouveau mot de passe</h1>
+        <p style="font-size: 14px; line-height: 1.6; color: #3A3530;">Une réinitialisation du mot de passe de votre compte Import-eXPert a été demandée. Cliquez ci-dessous pour en choisir un nouveau.</p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${url}" style="display: inline-block; background: #0C2D5C; color: #E8C97A; padding: 14px 28px; text-decoration: none; font-size: 13px; letter-spacing: 0.08em;">CHOISIR UN MOT DE PASSE</a>
+        </div>
+        <p style="font-size: 12px; color: #6E6A62; line-height: 1.6;">
+          Ce lien est personnel, valable une heure et utilisable une seule fois. Si vous n'êtes pas à l'origine de cette demande, ignorez cet email : votre mot de passe actuel reste valable.
+        </p>
+        <p style="font-size: 12px; color: #6E6A62; word-break: break-all;">Ou copiez ce lien dans votre navigateur : ${url}</p>
+      </div>
+    </div>`
+  return sendEmail({ to, subject: 'Réinitialisation de votre mot de passe — Import-eXPert', html })
+}
