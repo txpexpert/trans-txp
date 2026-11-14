@@ -50,7 +50,7 @@ export default function SiteShell({ title, description, children, plain = false,
   }, [ar])
   const [menu, setMenu] = useState(false)
   // Session en cours : nom du client affiché dans l'en-tête, avec la tuile Déconnexion
-  const [user, setUser] = useState<{ label: string; detail: string; compte: string } | null>(null)
+  const [user, setUser] = useState<{ label: string; detail: string; compte: string; admin: boolean } | null>(null)
   const [replaced, setReplaced] = useState(false)
   useEffect(() => {
     let alive = true
@@ -62,8 +62,9 @@ export default function SiteShell({ title, description, children, plain = false,
         if (!u) return
         const nom = [u.prenom, u.nom].filter(Boolean).join(' ').trim()
         const PLAN: Record<string, string> = { free: 'Découverte', trial: 'Essai', pro: 'Pro', premium: 'Premium', enterprise: 'Entreprise' }
-        const compte = u.role === 'admin' || u.role === 'generaladmin' ? 'Administrateur' : `Compte ${PLAN[u.plan] || u.plan || ''}`.trim()
-        setUser({ label: nom || u.societe || u.email, compte, detail: [u.societe, u.email, u.numero ? `n° ${u.numero}` : ''].filter(Boolean).join(' · ') })
+        const admin = u.role === 'admin' || u.role === 'generaladmin'
+        const compte = admin ? 'Administrateur' : `Compte ${PLAN[u.plan] || u.plan || ''}`.trim()
+        setUser({ label: nom || u.societe || u.email, compte, admin, detail: [u.societe, u.email, u.numero ? `n° ${u.numero}` : ''].filter(Boolean).join(' · ') })
       })
       .catch(() => {})
     return () => { alive = false }
@@ -101,6 +102,8 @@ export default function SiteShell({ title, description, children, plain = false,
                 ? <a key={n.href} href={n.href} className={`x-tile ${n.tone}`} lang={ar ? 'fr' : 'ar'}>{n.label}</a>
                 : <Link key={n.href} href={n.href} className={`x-tile ${n.tone} ${pathname === n.href.split('#')[0] && !n.href.includes('#') ? 'on' : ''}`}>{n.label}</Link>
             ))}
+            {/* Tuile « Admin » : visible pour les comptes administrateurs uniquement, ouvre le backoffice (voir /api/admin/acces-direct) */}
+            {user?.admin && <a href="/api/admin/acces-direct" className="x-tile t-red" title="Tableau de bord administrateur">Admin</a>}
           </nav>
           <div className="x-act">
             <a href={autreLangue} className="x-tile t-slate x-lang" lang={ar ? 'fr' : 'ar'} dir={ar ? 'ltr' : 'rtl'} title={ar ? 'Version française (principale)' : 'النسخة العربية'}>{ar ? 'Français' : 'العربية'}</a>
@@ -124,6 +127,7 @@ export default function SiteShell({ title, description, children, plain = false,
               ? <a key={n.href} href={n.href} className={n.tone} lang={ar ? 'fr' : 'ar'}>{n.label}</a>
               : <Link key={n.href} href={n.href} className={n.tone} onClick={() => setMenu(false)}>{n.label}</Link>)}
             {!ar && <Link href="/diagnostic" className="t-red" onClick={() => setMenu(false)}>Diagnostic de conformité</Link>}
+            {user?.admin && <a href="/api/admin/acces-direct" className="t-red" onClick={() => setMenu(false)}>Admin</a>}
             {user ? (
               <>
                 <Link href="/mon-espace" className="t-green" onClick={() => setMenu(false)}>{ar ? 'متصل: ' : 'Connecté : '}{user.label}</Link>
