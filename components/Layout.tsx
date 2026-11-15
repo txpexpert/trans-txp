@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useAuth } from '../context/AuthContext'
 import IxpLogo from './IxpLogo'
+import VoirMotDePasse from './VoirMotDePasse'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -209,6 +210,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
                 onChange={e => setPassword(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && doLogin()}
               />
+              <VoirMotDePasse style={{ margin: '8px 0 0' }} />
             </div>
             <div style={{ display:'flex', justifyContent:'flex-end', fontSize:'12px', marginTop:'.5rem' }}>
               <span style={{ color:'var(--inkm)' }}>

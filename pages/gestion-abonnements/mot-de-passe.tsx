@@ -9,6 +9,7 @@ import type { FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { AdminAuthCard, Field, Notice, SubmitButton } from '../../components/AdminAuthCard'
+import VoirMotDePasse from '../../components/VoirMotDePasse'
 
 export default function AdminMotDePasse() {
   const router = useRouter()
@@ -53,6 +54,7 @@ export default function AdminMotDePasse() {
           <Notice tone="info">Compte : <b>{check.email}</b>. Mot de passe de 10 caractères minimum.</Notice>
           <Field label="MOT DE PASSE"><input id="mp-pwd" type="password" autoComplete="new-password" value={pwd} onChange={e => setPwd(e.target.value)} /></Field>
           <Field label="CONFIRMER"><input id="mp-pwd2" type="password" autoComplete="new-password" value={pwd2} onChange={e => setPwd2(e.target.value)} /></Field>
+          <VoirMotDePasse />
           {error && <Notice tone="error">{error}</Notice>}
           <SubmitButton busy={busy} disabled={pwd.length < 10 || !pwd2}>ENREGISTRER</SubmitButton>
         </form>

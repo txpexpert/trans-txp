@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import SiteShell from '../../components/SiteShell'
+import VoirMotDePasse from '../../components/VoirMotDePasse'
 
 const PROFILS = [
   { value: 'transitaire', label: 'معشر في الجمرك' },
@@ -76,6 +77,7 @@ export default function InscriptionAr() {
                   <label className="wide">مجال النشاط<select value={form.profil} onChange={set('profil')}>{PROFILS.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}</select></label>
                   <label>كلمة المرور *<input required type="password" dir="ltr" value={form.password} onChange={set('password')} autoComplete="new-password" placeholder="8 أحرف على الأقل" /></label>
                   <label>تأكيد كلمة المرور *<input required type="password" dir="ltr" value={form.confirm} onChange={set('confirm')} autoComplete="new-password" /></label>
+                  <VoirMotDePasse langue="ar" />
                   <label className="wide x-ff-chk"><input type="checkbox" checked={cgu} onChange={e => setCgu(e.target.checked)} /><span>أوافق على <Link href="/cgu" target="_blank">شروط الاستعمال</Link> و<Link href="/confidentialite" target="_blank">سياسة السرية</Link> (بالفرنسية)</span></label>
                 </div>
                 {error && <p className="x-ff-err" style={{ marginTop: 12 }}>{error}</p>}

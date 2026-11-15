@@ -9,6 +9,7 @@ import type { FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { AdminAuthCard, Field, Notice, SubmitButton } from '../../components/AdminAuthCard'
+import VoirMotDePasse from '../../components/VoirMotDePasse'
 
 export default function GestionConnexion() {
   const router = useRouter()
@@ -49,6 +50,7 @@ export default function GestionConnexion() {
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Field label="EMAIL"><input id="ga-email" type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} placeholder="vous@exemple.com" /></Field>
         {!forgot && <Field label="MOT DE PASSE"><input id="ga-pwd" type="password" autoComplete="current-password" value={pwd} onChange={e => setPwd(e.target.value)} placeholder="••••••••••" /></Field>}
+        {!forgot && <VoirMotDePasse />}
         {info && <Notice tone="ok">{info}</Notice>}
         {error && <Notice tone="error">{error}{toBackoffice && <> <Link href="/backoffice">Ouvrir le backoffice →</Link></>}</Notice>}
         <SubmitButton busy={busy} disabled={!email || (!forgot && !pwd)}>{forgot ? 'RECEVOIR UN LIEN' : 'SE CONNECTER'}</SubmitButton>
