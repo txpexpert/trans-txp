@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import AuthCarte, { useLangueAuth } from '../../components/AuthCarte'
+import VoirMotDePasse from '../../components/VoirMotDePasse'
 
 const MIN = 12
 
@@ -88,6 +89,7 @@ export default function Reinitialiser() {
             <label className="label" htmlFor="mdp2">{t.confirmer}</label>
             <input id="mdp2" className="inp" type="password" dir="ltr" value={mdp2} onChange={e => setMdp2(e.target.value)} autoComplete="new-password" minLength={MIN} required />
           </div>
+          <VoirMotDePasse langue={langue} />
           <button type="submit" className="btn" disabled={busy}>{busy ? t.enreg : t.bouton}</button>
         </form>
       )}

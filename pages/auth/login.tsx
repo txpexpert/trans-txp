@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import VoirMotDePasse from '../../components/VoirMotDePasse'
 
 export default function Login() {
   const router = useRouter()
@@ -146,6 +147,7 @@ export default function Login() {
                   required
                 />
               </div>
+              <VoirMotDePasse style={{ marginTop: '-.4rem' }} />
               <div style={{ textAlign: 'right', margin: '-.4rem 0 .9rem', fontSize: 12 }}>
                 <Link href="/auth/mot-de-passe-oublie" style={{ color: 'var(--gold)' }}>Mot de passe oublié ?</Link>
               </div>

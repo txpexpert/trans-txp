@@ -1,6 +1,7 @@
 // components/ChangerMotDePasse.tsx — formulaire « Changer mon mot de passe » de l'espace « Mon compte » (2026-11-14)
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
+import VoirMotDePasse from './VoirMotDePasse'
 
 const MIN = 12
 const inp = { width: '100%', padding: '9px 12px', border: '.5px solid var(--rule)', fontSize: 13, fontFamily: 'inherit', boxSizing: 'border-box' as const, marginBottom: 10 }
@@ -53,6 +54,7 @@ export default function ChangerMotDePasse() {
           <input id="mdp-nouveau" style={inp} type="password" value={nouveau} onChange={e => setNouveau(e.target.value)} autoComplete="new-password" minLength={MIN} required />
           <label style={lab} htmlFor="mdp-confirm">CONFIRMER LE NOUVEAU MOT DE PASSE</label>
           <input id="mdp-confirm" style={inp} type="password" value={confirm} onChange={e => setConfirm(e.target.value)} autoComplete="new-password" minLength={MIN} required />
+          <VoirMotDePasse style={{ margin: '0 0 10px' }} />
           <p style={{ fontSize: 11.5, color: 'var(--inkm)', margin: '0 0 12px', lineHeight: 1.5 }}>
             {MIN} caractères minimum, avec au moins une lettre et un chiffre. Mot de passe actuel oublié ? <Link href="/auth/mot-de-passe-oublie" style={{ color: 'var(--bd)', textDecoration: 'underline' }}>Recevoir un lien par email</Link>.
           </p>
