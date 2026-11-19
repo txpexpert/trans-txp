@@ -215,7 +215,7 @@ export const PRIX_RENSEIGNEMENT = 1500
 export const PRESTATIONS = [
   { nom: 'Renseignement express', prix: '1 500 DH HT', delai: 'Sous 48 h ouvrées', desc: 'Une question précise, une réponse écrite et sourcée par un expert : classement, origine, régime, document.' },
   { nom: 'Avis motivé', prix: '4 000 DH HT', delai: 'Sous 5 jours ouvrés', desc: 'Une analyse argumentée sur un point sensible, prête à être jointe à un dossier ou présentée à l’administration.' },
-  { nom: 'Accompagnement de dossier', prix: 'Sur devis', delai: 'Sur devis', desc: 'Contentieux, demande de régime économique, audit sur site : une mission Douane Engineering cadrée.' },
+  { nom: 'Accompagnement de dossier', prix: 'Sur devis', delai: 'Sur devis', desc: 'Contentieux, demande de régime économique, audit sur site : une mission Import Engineering cadrée.' },
 ]
 
 export const PACKS = [

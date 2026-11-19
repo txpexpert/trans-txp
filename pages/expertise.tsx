@@ -1,5 +1,4 @@
-// pages/expertise.tsx — le volet humain : Douane Engineering, prestations à l'acte, kits.
-import Link from 'next/link'
+// pages/expertise.tsx — le volet humain : conseil personnalisé, Import Engineering, prestations à l'acte, kits.
 import SiteShell from '../components/SiteShell'
 import ConseilPersonnalise from '../components/ConseilPersonnalise'
 import { PRESTATIONS } from '../lib/suite'
@@ -8,17 +7,13 @@ import { KITS_PRATIQUES, kitHref, kitCompletHref, nbKitsEnLettres } from '../lib
 
 export default function Expertise() {
   return (
-    <SiteShell title="Expertise et services | IXP-Import-eXPert" description="Douane Engineering : renseignements, avis motivés et accompagnement de dossiers par des experts douaniers.">
+    <SiteShell title="Expertise et services | IXP-Import-eXPert" description="Import Engineering : renseignements, avis motivés et accompagnement de dossiers par des experts douaniers.">
       <section className="x-hero">
         <div className="x-wrap x-hero-grid">
           <div>
-            <div className="x-eyebrow">Douane Engineering</div>
+            <div className="x-eyebrow">Import Engineering</div>
             <h1 className="x-h1">Derrière la plateforme, <em>des experts douaniers</em>.</h1>
             <p className="x-lead">Import-eXPert est né du terrain : dix-huit ans de pratique douanière, une méthode d’amélioration continue issue du Lean Six Sigma, et des ouvrages de référence sur l’ingénierie douanière et les guerres tarifaires. Le logiciel industrialise ce savoir ; l’équipe reste disponible quand un dossier sort de l’ordinaire.</p>
-            <div className="x-hero-cta">
-              <Link href="/contact?sujet=renseignement" className="x-btn x-btn-dark">Poser une question à un expert</Link>
-              <Link href="/contact?sujet=mission" className="x-btn x-btn-line">Décrire une mission</Link>
-            </div>
           </div>
           <div className="x-panel">
             <div className="x-eyebrow">Publications</div>
@@ -32,13 +27,22 @@ export default function Expertise() {
         </div>
       </section>
 
+      <section className="x-sec-tight" id="conseil" style={{ scrollMarginTop: 90 }}>
+        <div className="x-wrap">
+          <div className="x-eyebrow">Conseil personnalisé · Consultation express</div>
+          <h2 className="x-h2">Une question réglementaire, <em>une réponse sourcée</em>.</h2>
+          <p className="x-sub" style={{ marginBottom: 18 }}>Réponse immédiate à partir des textes officiels, ou étude complète rédigée et validée par nos consultants.</p>
+          <ConseilPersonnalise />
+        </div>
+      </section>
+
       <section className="x-sec-tight" id="acces-expert">
         <div className="x-wrap">
           <div className="x-eyebrow">Deux portes d’entrée</div>
           <h2 className="x-h2">Un expert pour <em>votre dossier</em>.</h2>
           <div className="x-tools" style={{ gridTemplateColumns: 'repeat(2,1fr)' }}>
             <a className="x-tool" href="/tools/douane-engineering.html" style={{ borderTop: '3px solid var(--x-gold, #B8922A)' }}>
-              <b>Douane Engineering</b>
+              <b>Import Engineering</b>
               <p>Assistance et accompagnement expert : diagnostic de vos flux, structuration de vos opérations, optimisation tarifaire et sécurisation des dossiers sensibles.</p>
               <span className="x-tier">Découvrir l’offre →</span>
             </a>
@@ -48,15 +52,6 @@ export default function Expertise() {
               <span className="x-tier">Poser ma question →</span>
             </a>
           </div>
-        </div>
-      </section>
-
-      <section className="x-sec-tight" id="conseil" style={{ scrollMarginTop: 90 }}>
-        <div className="x-wrap">
-          <div className="x-eyebrow">Conseil personnalisé · Consultation express</div>
-          <h2 className="x-h2">Votre question, <em>une réponse sourcée</em>.</h2>
-          <p className="x-sub" style={{ marginBottom: 18 }}>Réponse immédiate à partir des textes officiels, ou étude complète rédigée et validée par nos consultants. Vous pouvez aussi soumettre votre dossier directement à un expert.</p>
-          <ConseilPersonnalise />
         </div>
       </section>
 

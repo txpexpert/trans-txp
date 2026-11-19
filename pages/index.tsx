@@ -181,7 +181,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
               <Link href="#assistant" className="x-btn x-btn-line">Essayer IXP-Assistant</Link>
             </div>
             <div className="x-panel dark">
-              <div className="x-eyebrow">Douane Engineering</div>
+              <div className="x-eyebrow">Import Engineering</div>
               <h3 className="x-h3">Un expert, quand l’enjeu le justifie</h3>
               <ul className="x-list">
                 <li>Renseignement express, réponse écrite sous 48 h ouvrées</li>

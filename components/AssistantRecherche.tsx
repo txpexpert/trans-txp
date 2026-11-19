@@ -7,24 +7,24 @@ type Source = { titre: string; lien?: string; extrait: string }
 type Mode = 'rapide' | 'dissertation'
 
 const S = {
-  carte: { background: '#fff', border: '.5px solid var(--border)', padding: '1.5rem' } as CSSProperties,
-  titre: { fontFamily: "'DM Serif Display', serif", fontSize: 19, color: 'var(--ink)', marginBottom: '.25rem' } as CSSProperties,
-  sous: { fontSize: 13, color: 'var(--inkm)', lineHeight: 1.6, marginBottom: '1.25rem' } as CSSProperties,
-  label: { fontSize: 10.5, letterSpacing: '.1em', color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', display: 'block', marginBottom: '.5rem' } as CSSProperties,
+  carte: { background: '#fff', border: '1px solid var(--border)', borderRadius: 18, padding: '1.6rem 1.75rem' } as CSSProperties,
+  titre: { fontFamily: "'DM Serif Display', serif", fontSize: 24, color: 'var(--ink)', marginBottom: '.25rem' } as CSSProperties,
+  sous: { fontSize: 15.5, color: 'var(--inkm)', lineHeight: 1.6, marginBottom: '1.25rem' } as CSSProperties,
+  label: { fontSize: 13.5, fontWeight: 600, color: 'var(--ink)', display: 'block', marginBottom: '.5rem' } as CSSProperties,
 }
 
 function Choix({ actif, onClick, titre, texte, note }: { actif: boolean; onClick: () => void; titre: string; texte: string; note?: string }) {
   return (
     <button type="button" onClick={onClick} aria-pressed={actif} style={{
-      textAlign: 'left', padding: '1rem 1.1rem', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
+      textAlign: 'left', padding: '1rem 1.1rem', cursor: 'pointer', borderRadius: 14, fontFamily: "'DM Sans', sans-serif",
       background: actif ? 'var(--gold-pale)' : '#fff', border: `1px solid ${actif ? 'var(--gold)' : 'var(--border)'}`,
       boxShadow: actif ? '0 0 0 2px rgba(184,146,42,.15)' : 'none', display: 'flex', gap: '.75rem', alignItems: 'flex-start',
     }}>
       <span aria-hidden="true" style={{ width: 15, height: 15, borderRadius: '50%', flexShrink: 0, marginTop: 2, border: `1.5px solid ${actif ? 'var(--gold)' : 'var(--border-mid)'}`, background: actif ? 'radial-gradient(var(--gold) 45%, transparent 50%)' : '#fff' }} />
       <span>
-        <b style={{ display: 'block', fontSize: 14, color: 'var(--ink)', marginBottom: 4 }}>{titre}</b>
-        <span style={{ display: 'block', fontSize: 12.5, color: 'var(--mid)', lineHeight: 1.55 }}>{texte}</span>
-        {note && <span style={{ display: 'block', fontSize: 11.5, color: 'var(--muted)', marginTop: 6, lineHeight: 1.5 }}>{note}</span>}
+        <b style={{ display: 'block', fontSize: 16, color: 'var(--ink)', marginBottom: 4 }}>{titre}</b>
+        <span style={{ display: 'block', fontSize: 14.5, color: 'var(--mid)', lineHeight: 1.55 }}>{texte}</span>
+        {note && <span style={{ display: 'block', fontSize: 13, color: 'var(--muted)', marginTop: 6, lineHeight: 1.5 }}>{note}</span>}
       </span>
     </button>
   )
@@ -101,10 +101,10 @@ export default function AssistantRecherche() {
 
         <label htmlFor="ar-question" style={S.label}>Votre question</label>
         <textarea id="ar-question" className="form-textarea" value={question} onChange={e => setQuestion(e.target.value)} maxLength={2000}
-          style={{ minHeight: 110, fontSize: 13.5, lineHeight: 1.6, width: '100%' }}
+          style={{ minHeight: 110, lineHeight: 1.6, width: '100%' }}
           placeholder="Ex. : Quelles sont les conditions pour placer des matières premières sous le régime de l’admission temporaire pour perfectionnement actif ?" />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '.75rem', gap: '1rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>N’indiquez ni nom ni donnée personnelle : seule la question est analysée.</span>
+          <span style={{ fontSize: 13, color: 'var(--muted)' }}>N’indiquez ni nom ni donnée personnelle : seule la question est analysée.</span>
           <button className="btn btn-primary" onClick={soumettre} disabled={question.trim().length < 10 || encours}
             style={{ opacity: question.trim().length < 10 || encours ? .5 : 1 }}>
             {encours ? (mode === 'rapide' ? 'Recherche en cours…' : 'Envoi…') : 'Soumettre'}
