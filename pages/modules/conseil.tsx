@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ModuleLayout from '../../components/ModuleLayout'
+import AssistantRecherche from '../../components/AssistantRecherche'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type Onglet = 'services' | 'experts' | 'contact' | 'faq'
+type Onglet = 'recherche' | 'services' | 'experts' | 'contact' | 'faq'
 
 interface Service {
   id: string
@@ -40,6 +41,7 @@ const SERVICES: Service[] = [
     plan: 'Professionnel+',
     tarif: 'Inclus — illimité',
     inclus: [
+      'Assistant de recherche : réponse rapide sourcée, ou recherche et dissertation validée par un expert',
       'Réponse écrite détaillée par email',
       'Références réglementaires citées (CDDE, circulaires)',
       'Rappel du délai et des démarches à suivre',
@@ -185,7 +187,12 @@ const FAQ_DATA: FAQ[] = [
 
 // ── Composant principal ───────────────────────────────────────────────────────
 export default function Conseil() {
-  const [onglet, setOnglet] = useState<Onglet>('services')
+  const [onglet, setOnglet] = useState<Onglet>('recherche')
+  // Lien direct vers un onglet : /modules/conseil?onglet=services
+  useEffect(() => {
+    const o = new URLSearchParams(window.location.search).get('onglet') as Onglet | null
+    if (o && ['recherche', 'services', 'experts', 'contact', 'faq'].includes(o)) setOnglet(o)
+  }, [])
   const [serviceSelectionne, setServiceSelectionne] = useState<string | null>(null)
   const [faqOuverte, setFaqOuverte] = useState<number | null>(null)
 
@@ -201,6 +208,7 @@ export default function Conseil() {
   const [sent, setSent] = useState(false)
 
   const ONGLETS: { id: Onglet; label: string }[] = [
+    { id: 'recherche', label: 'Assistant de recherche' },
     { id: 'services', label: 'Services & Offres' },
     { id: 'experts', label: 'Nos experts' },
     { id: 'contact', label: 'Contacter un expert' },
@@ -275,6 +283,9 @@ export default function Conseil() {
         ))}
       </div>
 
+      {/* ── ASSISTANT DE RECHERCHE ── */}
+      {onglet === 'recherche' && <AssistantRecherche />}
+
       {/* ── SERVICES ── */}
       {onglet === 'services' && (
         <div>
@@ -320,6 +331,18 @@ export default function Conseil() {
                   </div>
                 ))}
               </div>
+              {serviceSel.id === 'express' && (
+                <button
+                  onClick={() => setOnglet('recherche')}
+                  style={{
+                    marginTop: '1.25rem', marginRight: '.5rem', padding: '.55rem 1.25rem',
+                    background: 'var(--gold)', color: '#fff', border: 'none',
+                    fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
+                  }}
+                >
+                  Assistant de recherche →
+                </button>
+              )}
               <button
                 onClick={() => { setService(serviceSel.id); setOnglet('contact') }}
                 style={{

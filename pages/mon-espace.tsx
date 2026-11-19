@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import SiteShell from '../components/SiteShell'
+import MesRecherches from '../components/MesRecherches'
 
 const dh = (n: number) => Math.round(n).toLocaleString('fr-FR') + ' DH'
 const mdh = (n: number) => (n >= 1e6 ? (Math.round(n / 1e5) / 10).toLocaleString('fr-FR') + ' MDH' : dh(n))
@@ -116,7 +117,10 @@ export default function MonEspace() {
                 <Tuile href={s.abonne ? '/portail' : '/tarifs'} t="Portail clients" v={s.abonne ? String(s.partages.ouverts) : 'Pro'} d={s.partages.piecesFournies ? `${s.partages.piecesFournies} pièce(s) reçue(s) à valider` : 'dossiers partagés en cours'} alerte={s.partages.piecesFournies > 0} />
                 <Tuile href="/calculateur-dum" t="Argent laissé sur la table" v="DUM" d="analyser un export de déclarations" />
                 <Tuile href="/espaces/qualifier" t="Parcours" v="5 étapes" d="Qualifier, Optimiser, Chiffrer, Exécuter, Sécuriser" />
+                <Tuile href="/forum" t="Forum des clients" v="Forum" d="échanger avec les autres importateurs" />
               </div>
+
+              <MesRecherches />
 
               {codes && (
                 <div className="x-ff">
