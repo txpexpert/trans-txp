@@ -28,7 +28,7 @@ const DONNEES_PERSO = /(?:\+212|00212)[\s.-]?[5-7](?:[\s.-]?\d{2}){4}\b|\b0[5-7]
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Cache-Control', 'no-store')
   const c = await compteAbonne(req)
-  if (!c) return res.status(401).json({ error: 'Connectez-vous pour utiliser l’assistant de recherche.', acces: '/auth/login?redirect=/modules/conseil' })
+  if (!c) return res.status(401).json({ error: 'Connectez-vous pour utiliser l’assistant de recherche.', acces: '/auth/login?redirect=/expertise' })
   const db = supabaseAdmin()
 
   if (req.method === 'GET') {

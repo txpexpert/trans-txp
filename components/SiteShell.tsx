@@ -108,6 +108,7 @@ export default function SiteShell({ title, description, children, plain = false,
             {user?.admin && <a href="/api/admin/acces-direct" className="x-tile t-red" title="Tableau de bord administrateur">Admin</a>}
           </nav>
           <div className="x-act">
+            {!ar && <Link href="/expertise#conseil" className="x-tile t-amber x-cta-conseil" title="Assistant de recherche et conseil personnalisé">Poser une question</Link>}
             <a href={autreLangue} className="x-tile t-slate x-lang" lang={ar ? 'fr' : 'ar'} dir={ar ? 'ltr' : 'rtl'} title={ar ? 'Version française (principale)' : 'النسخة العربية'}>{ar ? 'Français' : 'العربية'}</a>
             {user ? (
               <div className="x-session" title={`Session en cours : ${user.detail}`}>
@@ -129,6 +130,7 @@ export default function SiteShell({ title, description, children, plain = false,
               ? <a key={n.href} href={n.href} className={n.tone} lang={ar ? 'fr' : 'ar'}>{n.label}</a>
               : <Link key={n.href} href={n.href} className={n.tone} onClick={() => setMenu(false)}>{n.label}</Link>)}
             {!ar && <Link href="/diagnostic" className="t-red" onClick={() => setMenu(false)}>Diagnostic de conformité</Link>}
+            {!ar && <Link href="/expertise#conseil" className="t-amber" onClick={() => setMenu(false)}>Poser une question</Link>}
             {user?.admin && <a href="/api/admin/acces-direct" className="t-red" onClick={() => setMenu(false)}>Admin</a>}
             {user ? (
               <>
