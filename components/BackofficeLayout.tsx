@@ -25,6 +25,8 @@ const NAV = [
   { section: 'COMMUNICATION', items: [
     { href:'/backoffice/alertes',    label:'Alertes & Notifications', icon:'△' },
     { href:'/backoffice/support',    label:'Support & Tickets',       icon:'◎' },
+    { href:'/backoffice/recherches', label:'Recherche et dissertation', icon:'✍', highlight: true },
+    { href:'/backoffice/forum',      label:'Modération du forum',     icon:'☰' },
   ]},
   { section: 'SYSTÈME', items: [
     { href:'/backoffice/admins',     label:'Administrateurs',         icon:'⊕' },

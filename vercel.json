@@ -1,5 +1,6 @@
 {
   "crons": [
-    { "path": "/api/cron/expire-subscriptions", "schedule": "15 5 * * *" }
+    { "path": "/api/cron/expire-subscriptions", "schedule": "15 5 * * *" },
+    { "path": "/api/cron/avis-recherches", "schedule": "*/10 * * * *" }
   ]
 }

@@ -30,7 +30,7 @@ import { COOKIE_LANGUE, equivalent, estArabe } from './lib/langues'
 import { canAccessModule } from './lib/moduleAccess'
 
 // Pages du compte ouvertes à l'offre Découverte (compte gratuit, essai terminé, abonnement échu)
-const DECOUVERTE = ['/fiches', '/veille', '/mon-espace', '/dossiers', '/portail']
+const DECOUVERTE = ['/fiches', '/veille', '/mon-espace', '/dossiers', '/portail', '/forum']
 
 const USER_COOKIE = 'dia_session' // dupliqué volontairement : évite d'importer moduleAccess pour une seule string
 
