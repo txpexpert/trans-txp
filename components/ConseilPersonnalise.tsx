@@ -5,14 +5,16 @@ import AssistantRecherche from './AssistantRecherche'
 
 // Variables et classes de l'ancien gabarit des modules, limitées à ce bloc (page Expertise)
 const CP_CSS = `
-.cp{--gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;--border:#E4E2DA;--border-mid:#D0CEC4;
---inks:#3A3530;--inkm:#8A8078;--bl:#FBF5E6;--ba:#F5E4B0;--bm:#5A5A54;--bd:#B8922A;--rule:#E8DFC8;--white:#fff;font-family:'DM Sans',system-ui,sans-serif;font-size:14px;line-height:1.6;color:var(--ink)}
-.cp .form-label{display:block;font-size:11px;letter-spacing:.07em;color:var(--inks);margin-bottom:.4rem}
-.cp .form-input,.cp .form-textarea{width:100%;padding:.6rem .75rem;border:1px solid var(--rule);background:#fff;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none}
-.cp .form-input:focus,.cp .form-textarea:focus{border-color:var(--gold)}
-.cp .form-textarea{resize:vertical;min-height:100px}
-.cp .btn{padding:.6rem 1.4rem;font-size:12px;letter-spacing:.06em;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+.cp{--gold:#A8822F;--gold-h:#C9A84C;--gold-pale:#F4EBD3;--ink:#14120F;--mid:#3B3631;--muted:#7A7168;--border:#E6DCC7;--border-mid:#D6C9AC;
+--inks:#3B3631;--inkm:#7A7168;--bl:#F4EBD3;--ba:#E6DCC7;--bm:#3B3631;--bd:#14120F;--rule:#E6DCC7;--white:#fff;
+font-family:'DM Sans',system-ui,sans-serif;font-size:15px;line-height:1.6;color:var(--ink)}
+.cp .form-label{display:block;font-size:12.5px;font-weight:600;letter-spacing:0;color:var(--inks);margin-bottom:.4rem}
+.cp .form-input,.cp .form-textarea{width:100%;padding:.7rem .85rem;border:1px solid var(--border-mid);border-radius:10px;background:#fff;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--ink);outline:none}
+.cp .form-input:focus,.cp .form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(168,130,47,.15)}
+.cp .form-textarea{resize:vertical;min-height:110px}
+.cp .btn{padding:.7rem 1.5rem;font-size:14.5px;font-weight:600;border:none;border-radius:999px;cursor:pointer;font-family:'DM Sans',sans-serif}
 .cp .btn-primary{background:var(--ink);color:#fff}.cp .btn-primary:hover{background:var(--gold)}
+.cp > div > div[style*="background: #fff"],.cp > div > div[style*="background: rgb(255"]{border-radius:16px}
 @media(max-width:640px){.cp div[style*="1fr 1fr"]{grid-template-columns:1fr!important}}
 `
 
@@ -254,25 +256,6 @@ export default function ConseilPersonnalise() {
   return (
     <div className="cp">
       <style dangerouslySetInnerHTML={{ __html: CP_CSS }} />
-
-      {/* BANDEAU PLAN */}
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'var(--bd)', color: '#fff', padding: '.75rem 1.25rem',
-        marginBottom: '1.5rem', flexWrap: 'wrap', gap: '.5rem',
-      }}>
-        <div style={{ fontSize: 12 }}>
-          <span style={{ color: 'var(--gold)', fontWeight: 600 }}>Plan Professionnel requis</span>
-          {' '}— Consultations illimitées · Experts certifiés · Réponse garantie sous 4h
-        </div>
-        <a href="/tarifs" style={{
-          padding: '5px 14px', background: 'var(--gold)', color: '#fff', textDecoration: 'none',
-          border: 'none', fontSize: 11, fontWeight: 600, letterSpacing: '.06em',
-          fontFamily: "'DM Sans', sans-serif",
-        }}>
-          VOIR LES PLANS →
-        </a>
-      </div>
 
       {/* NAVIGATION ONGLETS */}
       <div style={{ display: 'flex', gap: '.5rem', flexWrap: 'wrap', marginBottom: '1.75rem', borderBottom: '.5px solid var(--border)' }}>
