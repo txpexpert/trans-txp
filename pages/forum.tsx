@@ -3,15 +3,13 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import SiteShell from '../components/SiteShell'
-import { CATEGORIES } from '../lib/forumCategories'
 
 type Piece = { path: string; nom: string; type: string; taille: number; image: boolean; url?: string }
 type Auteur = { nom: string; societe: string | null; initiales: string; equipe: boolean }
-type Post = { id: string; categorie: string; titre: string; contenu: string; pieces: Piece[]; epingle: boolean; nb_commentaires: number; nb_jaime: number; cree: string; modifie: string | null; dernier: string; auteur: Auteur; moi: boolean; aime: boolean }
+type Post = { id: string; titre: string; contenu: string; pieces: Piece[]; epingle: boolean; nb_commentaires: number; nb_jaime: number; cree: string; modifie: string | null; dernier: string; auteur: Auteur; moi: boolean; aime: boolean }
 type Commentaire = { id: string; contenu: string; pieces: Piece[]; cree: string; auteur: Auteur; moi: boolean }
 
 const ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,application/pdf,.doc,.docx,.xls,.xlsx,.pptx,.txt,.csv'
-const catLabel = (id: string) => CATEGORIES.find(c => c.id === id)?.label || 'Discussions générales'
 const taille = (n: number) => (n > 1048576 ? `${(n / 1048576).toFixed(1)} Mo` : `${Math.max(1, Math.round(n / 1024))} Ko`)
 function ilya(s: string) {
   const m = Math.round((Date.now() - Date.parse(s)) / 60000)
@@ -178,7 +176,7 @@ function Carte({ p, onRetire }: { p: Post; onRetire: () => void }) {
           <b>{post.auteur.nom}</b>
           <small>{post.auteur.societe ? `${post.auteur.societe} · ` : ''}{ilya(post.cree)}{post.modifie ? ' · modifié' : ''}</small>
         </div>
-        <span className="fx-cat">{post.epingle ? '📌 ' : ''}{catLabel(post.categorie)}</span>
+        {post.epingle && <span className="fx-cat">📌 Épinglé</span>}
       </header>
       {edition ? (
         <div className="fx-edit">
@@ -212,42 +210,38 @@ export default function Forum() {
   const [etat, setEtat] = useState<'charge' | 'ok' | 'connexion' | 'erreur'>('charge')
   const [posts, setPosts] = useState<Post[]>([])
   const [suite, setSuite] = useState(false)
-  const [admin, setAdmin] = useState(false)
-  const [cat, setCat] = useState('')
   const [q, setQ] = useState('')
   const [recherche, setRecherche] = useState('')
   // composer
   const [ouvert, setOuvert] = useState(false)
   const [titre, setTitre] = useState('')
   const [contenu, setContenu] = useState('')
-  const [categorie, setCategorie] = useState('general')
   const [fichiers, setFichiers] = useState<File[]>([])
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState('')
 
   async function charger(plus = false) {
     const p = new URLSearchParams()
-    if (cat) p.set('categorie', cat)
     if (recherche) p.set('q', recherche)
     if (plus && posts.length) p.set('avant', posts[posts.length - 1].dernier)
     const r = await fetch(`/api/forum/posts?${p}`, { credentials: 'same-origin' })
     if (r.status === 401) return setEtat('connexion')
     if (!r.ok) return setEtat('erreur')
     const j = await r.json()
-    setPosts(plus ? [...posts, ...j.posts] : j.posts); setSuite(j.suite); setAdmin(!!j.moi?.admin); setEtat('ok')
+    setPosts(plus ? [...posts, ...j.posts] : j.posts); setSuite(j.suite); setEtat('ok')
   }
-  useEffect(() => { charger() }, [cat, recherche])
+  useEffect(() => { charger() }, [recherche])
 
   async function publier() {
     if (busy) return
     setBusy(true); setErr('')
     const fd = new FormData()
-    fd.append('titre', titre); fd.append('contenu', contenu); fd.append('categorie', categorie)
+    fd.append('titre', titre); fd.append('contenu', contenu)
     fichiers.forEach(f => fd.append('fichiers', f))
     const r = await fetch('/api/forum/posts', { method: 'POST', credentials: 'same-origin', body: fd })
     const j = await r.json().catch(() => ({})); setBusy(false)
     if (!r.ok) return setErr(j.error || 'Publication impossible')
-    setTitre(''); setContenu(''); setFichiers([]); setOuvert(false); setCat(''); setRecherche(''); setQ('')
+    setTitre(''); setContenu(''); setFichiers([]); setOuvert(false); setRecherche(''); setQ('')
     charger()
   }
 
@@ -264,11 +258,6 @@ export default function Forum() {
       <section className="x-sec-tight" style={{ paddingTop: 0 }}>
         <div className="x-wrap fx-grid">
           <aside className="fx-side">
-            <div className="fx-box">
-              <b className="fx-st">Rubriques</b>
-              <button type="button" className={!cat ? 'on' : ''} onClick={() => setCat('')}>Toutes les publications</button>
-              {CATEGORIES.map(c => <button type="button" key={c.id} className={cat === c.id ? 'on' : ''} onClick={() => setCat(c.id)}>{c.label}</button>)}
-            </div>
             <div className="fx-box fx-charte">
               <b className="fx-st">Charte du forum</b>
               <ul>
@@ -296,9 +285,6 @@ export default function Forum() {
                       <div className="fx-row">
                         <span className="fx-row-l">
                           <ChoixFichiers fichiers={fichiers} setFichiers={setFichiers} max={6} />
-                          <select value={categorie} onChange={e => setCategorie(e.target.value)} aria-label="Rubrique">
-                            {CATEGORIES.filter(c => c.id !== 'annonces' || admin).map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                          </select>
                         </span>
                         <span>
                           <button type="button" className="x-btn x-btn-line x-btn-sm" onClick={() => { setOuvert(false); setErr('') }}>Annuler</button>{' '}
@@ -317,7 +303,7 @@ export default function Forum() {
                 </form>
 
                 {etat === 'charge' && <p className="fx-muted">Chargement…</p>}
-                {etat === 'ok' && !posts.length && <p className="fx-muted">{recherche || cat ? 'Aucune publication ne correspond.' : 'Aucune publication pour l’instant : lancez la première discussion.'}</p>}
+                {etat === 'ok' && !posts.length && <p className="fx-muted">{recherche ? 'Aucune publication ne correspond.' : 'Aucune publication pour l’instant : lancez la première discussion.'}</p>}
                 {posts.map(p => <Carte key={p.id} p={p} onRetire={() => setPosts(posts.filter(x => x.id !== p.id))} />)}
                 {suite && <button type="button" className="x-btn x-btn-line" style={{ justifySelf: 'center' }} onClick={() => charger(true)}>Publications plus anciennes</button>}
               </>
@@ -392,5 +378,5 @@ const CSS = `
 .fx-edit{display:grid;gap:8px}.fx-edit input,.fx-edit textarea{border:1px solid var(--x-line2);border-radius:10px;padding:9px 12px;font:inherit}
 .fx-muted{color:var(--x-ink3);font-size:13.5px}.fx-muted.sm{font-size:12px}
 .fx-err{color:var(--x-red);font-size:13.5px;margin:0}
-@media (max-width:860px){.fx-grid{grid-template-columns:1fr}.fx-side{position:static}.fx-charte{order:2}.fx-box:not(.fx-charte){display:flex;flex-wrap:wrap;gap:4px}.fx-box:not(.fx-charte) .fx-st{width:100%}}
+@media (max-width:860px){.fx-grid{grid-template-columns:1fr}.fx-side{position:static}.fx-charte{order:2}}
 `

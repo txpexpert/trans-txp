@@ -55,7 +55,7 @@ export default function ForumModeration() {
       <table className="data-table"><thead><tr><th>Publication</th><th>Auteur</th><th>Activité</th><th>Actions</th></tr></thead><tbody>
         {d.posts.map(p => (
           <tr key={p.id} style={{ opacity: p.statut === 'masque' ? .55 : 1 }}>
-            <td style={{ fontSize: 12.5 }}>{p.epingle && '📌 '}<b>{p.titre}</b><br /><small style={{ color: '#888' }}>{p.categorie} · {dt(p.created_at)}{p.statut === 'masque' ? ' · MASQUÉE' : ''}</small></td>
+            <td style={{ fontSize: 12.5 }}>{p.epingle && '📌 '}<b>{p.titre}</b><br /><small style={{ color: '#888' }}>{dt(p.created_at)}{p.statut === 'masque' ? ' · MASQUÉE' : ''}</small></td>
             <td style={{ fontSize: 12 }}>{qui(p.users)}</td>
             <td style={{ fontSize: 12 }}>{p.nb_commentaires} comm. · {p.nb_jaime} j’aime</td>
             <td>
