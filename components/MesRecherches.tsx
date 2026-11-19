@@ -54,7 +54,7 @@ export default function MesRecherches() {
       {!liste.length ? (
         <p className="x-ff-note" style={{ marginTop: 0 }}>
           Les études « Recherche et dissertation » que vous demandez dans l’assistant de recherche s’affichent ici, une fois préparées par nos consultants.{' '}
-          <a href="/modules/conseil?onglet=recherche">Poser une question</a>
+          <a href="/expertise#conseil">Poser une question</a>
         </p>
       ) : (
         <div style={{ display: 'grid', gap: 8, marginTop: 10 }}>

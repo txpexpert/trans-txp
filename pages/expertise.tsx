@@ -1,6 +1,7 @@
 // pages/expertise.tsx — le volet humain : Douane Engineering, prestations à l'acte, kits.
 import Link from 'next/link'
 import SiteShell from '../components/SiteShell'
+import ConseilPersonnalise from '../components/ConseilPersonnalise'
 import { PRESTATIONS } from '../lib/suite'
 import { KITS_PRATIQUES, kitHref, kitCompletHref, nbKitsEnLettres } from '../lib/kitsPratiques'
 
@@ -41,12 +42,21 @@ export default function Expertise() {
               <p>Assistance et accompagnement expert : diagnostic de vos flux, structuration de vos opérations, optimisation tarifaire et sécurisation des dossiers sensibles.</p>
               <span className="x-tier">Découvrir l’offre →</span>
             </a>
-            <a className="x-tool" href="/modules/conseil" style={{ borderTop: '3px solid #1A3A9A' }}>
+            <a className="x-tool" href="#conseil" style={{ borderTop: '3px solid #1A3A9A' }}>
               <b>Conseil personnalisé</b>
               <p>Un expert douanier répond à votre question ou étudie votre cas : opérations complexes, litiges, classement, origine ou valeur.</p>
-              <span className="x-tier">Soumettre une demande →</span>
+              <span className="x-tier">Poser ma question →</span>
             </a>
           </div>
+        </div>
+      </section>
+
+      <section className="x-sec-tight" id="conseil" style={{ scrollMarginTop: 90 }}>
+        <div className="x-wrap">
+          <div className="x-eyebrow">Conseil personnalisé · Consultation express</div>
+          <h2 className="x-h2">Votre question, <em>une réponse sourcée</em>.</h2>
+          <p className="x-sub" style={{ marginBottom: 18 }}>Réponse immédiate à partir des textes officiels, ou étude complète rédigée et validée par nos consultants. Vous pouvez aussi soumettre votre dossier directement à un expert.</p>
+          <ConseilPersonnalise />
         </div>
       </section>
 

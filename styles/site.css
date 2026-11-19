@@ -827,3 +827,7 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 .x-wa-ar{right:auto;left:18px;padding:10px 12px 10px 16px}
 @media (max-width:760px){.x-wa{padding:12px;bottom:44px}.x-wa-txt{display:none}}
 @media print{.x-wa{display:none}}
+/* Bouton « Poser une question » de l'en-tête : accès direct au conseil personnalisé (page Expertise) */
+.xs .x-tile.x-cta-conseil{background:var(--x-ink);color:var(--x-gold2);border-color:var(--x-ink);font-weight:600;white-space:nowrap}
+.xs .x-tile.x-cta-conseil:hover{background:var(--x-gold);color:#fff;border-color:var(--x-gold)}
+@media (max-width:760px){.x-act .x-cta-conseil{display:none}}
