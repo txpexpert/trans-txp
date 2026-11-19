@@ -26,7 +26,6 @@ const NAV = [
   { href: '/espaces/bibliotheque', label: 'Bibliothèque', tone: 't-teal' },
   { href: '/expertise', label: 'Expertise', tone: 't-violet' },
   { href: '/forum', label: 'Forum', tone: 't-blue' },
-  { href: '/forum', label: 'Forum', tone: 't-blue' },
   { href: '/tarifs', label: 'Tarifs', tone: 't-amber' },
 ]
 
