@@ -474,7 +474,7 @@ function renderResults(c,prev){
   if(p.red==='oui'&&c.answers.r2&&c.answers.r2!=='oui')al+='<div class="alert">Un compte sous régime économique peut être échu : droits exigibles, amende d’une fois et demie les droits et suspension des facilités de cautionnement (CDII, art. 294 bis ; note n° 12014/313).</div>';
   if(c.answers.d2&&c.answers.d2!=='oui')al+='<div class="alert">Sans revue post-mainlevée, vous perdez la possibilité de révéler une erreur dans les 30 jours avec dispense de pénalités (CDII, art. 78-3°).</div>';
   if(!al)al='<div class="alert ok">Aucun écart critique : maintenez le niveau par l’audit annuel et la veille.</div>';
-  al+='<div class="alert ok"><b>Un échange de 20 minutes avec un expert douanier</b>, offert : nous relisons ce résultat avec vous et vous indiquons les deux ou trois actions qui réduisent le plus votre exposition. <a href="/echange-expert?depuis=diagnostic" target="_top" onclick="window.ixpCompter&&window.ixpCompter(\'echange_demande\')">Demander mon échange</a></div>';
+  al+='<div class="alert ok"><b>Un échange de 20 minutes avec un expert en processus d’importation</b>, offert : nous relisons ce résultat avec vous et vous indiquons les deux ou trois actions qui réduisent le plus votre exposition. <a href="/echange-expert?depuis=diagnostic" target="_top" onclick="window.ixpCompter&&window.ixpCompter(\'echange_demande\')">Demander mon échange</a></div>';
   $('r-alerts').innerHTML=al;
   // barres
   var h='';$('delta-note').textContent=prev?'Évolution par rapport au diagnostic du '+new Date(prev.date).toLocaleDateString('fr-FR')+'.':'Premier diagnostic : l’évolution apparaîtra au suivant.';
