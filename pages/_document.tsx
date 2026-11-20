@@ -5,6 +5,9 @@ export default function Document() {
   return (
     <Html lang="fr">
       <Head>
+        {/* Page affichée dans le cadre central d'un espace (/espaces/…) : la classe ixp-cadre masque
+            l'en-tête et le pied de page, que la page parente porte déjà. Posée avant le premier rendu. */}
+        <script dangerouslySetInnerHTML={{ __html: "try{if(window.self!==window.top)document.documentElement.classList.add('ixp-cadre')}catch(e){document.documentElement.classList.add('ixp-cadre')}" }} />
         {/* ── PWA — Import-eXPert mobile ── */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#153E82" />

@@ -831,3 +831,45 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 .xs .x-tile.x-cta-conseil{background:var(--x-ink);color:var(--x-gold2);border-color:var(--x-ink);font-weight:600;white-space:nowrap}
 .xs .x-tile.x-cta-conseil:hover{background:var(--x-gold);color:#fff;border-color:var(--x-gold)}
 @media (max-width:760px){.x-act .x-cta-conseil{display:none}}
+
+
+/* ── Espaces (nov. 2026) : outils dans une colonne à gauche, outil choisi affiché au centre ── */
+html.ixp-cadre .x-hdr,html.ixp-cadre .x-ftr,html.ixp-cadre .x-langbar,html.ixp-cadre .x-wa{display:none!important}
+html.ixp-cadre body{background:#fff}
+.x-esp{display:grid;grid-template-columns:320px minmax(0,1fr);gap:28px;align-items:start;margin-top:22px}
+.x-esp-side{position:sticky;top:88px;display:grid;gap:8px;max-height:calc(100vh - 104px);overflow-y:auto;padding:2px}
+.x-esp-side-hd{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--x-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--x-ink3);margin:0 4px 2px}
+.x-esp-tile{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;background:#fff;border:1px solid var(--x-line);border-left:4px solid var(--cl);border-radius:12px;padding:12px 14px;transition:background .15s,border-color .15s,transform .15s}
+.x-esp-tile:hover{border-color:var(--c);border-left-color:var(--c);transform:translateX(2px)}
+.x-esp-tile:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.x-esp-n{font-family:var(--x-mono);font-size:11px;color:var(--c);padding-top:2px;grid-row:span 2}
+.x-esp-tx b{display:block;font-weight:500;font-size:14.5px;color:var(--x-ink);line-height:1.3}
+.x-esp-tx small{display:block;font-size:12.5px;color:var(--x-ink3);line-height:1.4;margin-top:2px}
+.x-esp-tile .x-tier{grid-column:2;justify-self:start;font-family:var(--x-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--x-ink3);border:1px solid var(--x-line);border-radius:999px;padding:2px 7px;margin-top:4px}
+/* Tuile de l'outil affiché : couleur pleine de l'étape */
+.x-esp-tile[aria-current="true"]{background:var(--c);border-color:var(--c);border-left-color:var(--c);transform:none;box-shadow:0 6px 18px -10px var(--c)}
+.x-esp-tile[aria-current="true"] .x-esp-n,.x-esp-tile[aria-current="true"] .x-esp-tx b{color:#fff}
+.x-esp-tile[aria-current="true"] .x-esp-tx small{color:rgba(255,255,255,.82)}
+.x-esp-tile[aria-current="true"] .x-tier{color:#fff;border-color:rgba(255,255,255,.5)}
+.x-esp-centre{min-width:0;display:grid;gap:16px}
+.x-esp-intro{background:#fff;border:1px solid var(--x-line);border-radius:18px;padding:24px 26px}
+.x-esp-intro .x-h1{margin:8px 0 12px}
+.x-esp-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.x-esp-meta div{background:var(--cb);border:1px solid var(--cl);border-radius:14px;padding:12px 16px;font-size:14.5px}
+.x-esp-meta b{display:block;font-family:var(--x-mono);font-weight:400;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--x-ink3);margin-bottom:2px}
+.x-esp-centre .x-ctx{margin:0}
+.x-esp-outil{background:#fff;border:1px solid var(--cl);border-radius:18px;overflow:hidden}
+.x-esp-outil-hd{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 20px;background:var(--cb);border-bottom:1px solid var(--cl)}
+.x-esp-outil-hd h2{font-family:var(--x-serif);font-weight:400;font-size:24px;margin:0;color:var(--x-ink)}
+.x-esp-outil-hd p{margin:2px 0 0;font-size:13.5px;color:var(--x-ink2)}
+.x-esp-outil-hd a{font-size:13px;color:var(--c);font-weight:600;white-space:nowrap}
+.x-esp-frame{display:block;width:100%;min-height:640px;border:0;background:#fff}
+.x-esp-charge{padding:12px 20px;font-size:13px;color:var(--x-ink3)}
+@media (max-width:960px){
+  .x-esp{grid-template-columns:1fr}
+  .x-esp-side{position:static;max-height:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+  .x-esp-side-hd{display:none}
+  .x-esp-tile{scroll-snap-align:start}
+  .x-esp-tile:hover{transform:none}
+  .x-esp-meta{grid-template-columns:1fr}
+}
