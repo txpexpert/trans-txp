@@ -115,7 +115,7 @@ export default function MonEspace() {
                 <Tuile href={s.abonne ? '/dossiers' : '/tarifs'} t="Dossiers défendables" v={s.abonne ? String(s.dossiers) : 'Pro'} d={s.abonne ? 'émis et vérifiables' : 'inclus à partir de l’offre Pro'} />
                 <Tuile href="/veille" t="Veille sur mes produits" v={String(s.veille.total)} d={s.veille.aExaminer ? `${s.veille.aExaminer} à examiner` : 'textes sur 12 mois'} alerte={s.veille.aExaminer > 0} />
                 <Tuile href={s.abonne ? '/portail' : '/tarifs'} t="Portail clients" v={s.abonne ? String(s.partages.ouverts) : 'Pro'} d={s.partages.piecesFournies ? `${s.partages.piecesFournies} pièce(s) reçue(s) à valider` : 'dossiers partagés en cours'} alerte={s.partages.piecesFournies > 0} />
-                <Tuile href="/calculateur-dum" t="Argent laissé sur la table" v="DUM" d="analyser un export de déclarations" />
+                <Tuile href="/calculateur-charges-import" t="Calculateur des charges à l’import" v="DUM" d="analyser un export de déclarations" />
                 <Tuile href="/espaces/qualifier" t="Parcours" v="5 étapes" d="Qualifier, Optimiser, Chiffrer, Exécuter, Sécuriser" />
                 <Tuile href="/forum" t="Forum des clients" v="Forum" d="échanger avec les autres importateurs" />
               </div>

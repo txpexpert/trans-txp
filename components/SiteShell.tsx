@@ -9,6 +9,19 @@ import { COOKIE_LANGUE, equivalent, lienLangue } from '../lib/langues'
 import WhatsAppBouton from './WhatsAppBouton'
 
 const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === '1'
+
+// Organismes intervenant dans une opération d'importation (bas de page, nov. 2026)
+const ORGANISMES: [string, string][] = [
+  ['https://www.mcinet.gov.ma', 'Commerce extérieur (MIC)'],
+  ['https://www.oc.gov.ma', 'Office des changes'],
+  ['https://www.douane.gov.ma', 'Douane (ADII)'],
+  ['https://www.portnet.ma', 'PortNet'],
+  ['https://www.onssa.gov.ma', 'ONSSA'],
+  ['https://www.anrt.ma', 'ANRT'],
+  ['https://www.imanor.gov.ma', 'IMANOR (normes)'],
+  ['https://www.ammps.gov.ma', 'AMMPS (produits de santé)'],
+  ['https://www.tax.gov.ma', 'Impôts (DGI)'],
+]
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL || 'https://import-expert.ma').replace(/\/$/, '')
 
 // Interface en arabe (parcours clés) : navigation et pied de page dédiés, sens de lecture de droite à gauche
@@ -175,7 +188,7 @@ export default function SiteShell({ title, description, children, plain = false,
           <div className="x-ftr-grid">
             <div>
               <div className="x-logo"><IxpLogo size={34} /><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></div>
-              <p>La plateforme qui qualifie, chiffre et sécurise vos opérations d’import avant d’initier vos opérations. Conçue et animée par des experts douaniers.</p>
+              <p>La plateforme qui qualifie, chiffre et sécurise vos opérations d’import avant d’initier vos opérations. Conçue et animée par des experts de l’importation.</p>
             </div>
             <div>
               <h5>La chaîne</h5>
@@ -188,7 +201,7 @@ export default function SiteShell({ title, description, children, plain = false,
                 <li><Link href="/espaces/piloter">Pilotage</Link></li>
                 <li><Link href="/#assistant">IXP-Assistant</Link></li>
                 <li><Link href="/diagnostic">Diagnostic de conformité</Link></li>
-                <li><Link href="/calculateur-dum">Argent laissé sur la table</Link></li>
+                <li><Link href="/calculateur-charges-import">Calculateur des charges à l’import</Link></li>
                 <li><Link href="/produits">Droits par produit (SH)</Link></li>
                 <li><Link href="/barometre">Baromètre 2026</Link></li>
                 <li><Link href="/profils/pme">PME importatrices</Link></li>
@@ -211,14 +224,18 @@ export default function SiteShell({ title, description, children, plain = false,
               <ul>
                 <li><Link href="/cgu">Conditions d’utilisation</Link></li>
                 <li><Link href="/confidentialite">Confidentialité</Link></li>
-                <li><a href="https://www.douane.gov.ma" target="_blank" rel="noreferrer">douane.gov.ma ↗</a></li>
-                <li><a href="https://www.portnet.ma" target="_blank" rel="noreferrer">portnet.ma ↗</a></li>
+              </ul>
+            </div>
+            <div>
+              <h5>Organismes de l’import</h5>
+              <ul>
+                {ORGANISMES.map(([href, label]) => <li key={href}><a href={href} target="_blank" rel="noreferrer">{label} ↗</a></li>)}
               </ul>
             </div>
           </div>
           <div className="x-ftr-bot">
             <span>© 2026 IXP-Import-eXPert · import-expert.ma</span>
-            <span>Sources : circulaires ADII, Code des douanes, CGI 2026, IGOC 2026</span>
+            <span>Sources : textes officiels du commerce extérieur, du change, de la fiscalité et de la douane</span>
           </div>
         </div>
       </footer>

@@ -15,7 +15,7 @@ export const PROFILS_PAGES: Profil[] = [
     lead: 'Droits, TVA, fret, magasinage, change : le coût rendu réel se découvre souvent après la commande. Import-eXPert le chiffre avant, avec les documents à réunir, sans dépendre de votre transitaire pour savoir ce que vous payez.',
     douleurs: [
       { t: 'Une marge fausse sur toute la gamme', d: 'Le prix de vente est fixé sur le prix d’achat plus un forfait. Les droits réels, la TIC, les surestaries et le change n’y sont pas.' },
-      { t: 'Un code SH hérité', d: '« On a toujours déclaré sous ce code. » La DUM est passée, cela ne prouve pas que le code est juste : la responsabilité du déclarant court jusqu’à la prescription.' },
+      { t: 'Un code SH erroné', d: '« On a toujours déclaré sous ce code. » Un classement repris sans vérification peut aboutir à une opération contentieuse initiée par erreur, lors d’un contrôle.' },
       { t: 'Des jours perdus au port', d: 'Un document manquant, une licence oubliée, un contrôle technique : chaque jour d’attente a un prix.' },
     ],
     gains: ['Le coût rendu au dirham près, avant de commander', 'La liste des documents et autorisations, par code SH', 'Une fiche produit défendable, datée et sourcée'],
@@ -54,7 +54,7 @@ export const PROFILS_PAGES: Profil[] = [
   {
     id: 'daf', titre: 'Directions financières', eyebrow: 'Directions financières et contrôle de gestion',
     h1: ['Les coûts d’import', 'que la comptabilité ne voit pas.'],
-    lead: 'Redressements possibles sur quatre ans, préférences tarifaires non utilisées, coût rendu sous-estimé : l’exposition douanière n’apparaît dans aucun tableau de bord. Import-eXPert la chiffre, et mesure aussi l’argent récupérable.',
+    lead: 'Redressements possibles sur quatre ans, préférences tarifaires non utilisées, coût rendu sous-estimé : le coût réel de l’importation (change, transport, droits, retards) n’apparaît dans aucun tableau de bord. Import-eXPert le chiffre, et mesure aussi l’argent récupérable.',
     douleurs: [
       { t: 'Une provision impossible à estimer', d: 'En 2025, l’administration a redressé 23,5 milliards de dirhams au titre de la sous-facturation, en hausse de 33 %.' },
       { t: 'De l’argent laissé sur la table', d: 'Des droits payés sur des produits originaires de pays liés au Maroc par un accord.' },
@@ -70,12 +70,12 @@ export const PROFILS_PAGES: Profil[] = [
     h1: ['Offrez le diagnostic', 'à vos clients, sous votre nom.'],
     lead: 'Vos clients importateurs vous demandent conseil sur des sujets douaniers qui ne sont pas votre cœur de métier. Avec le programme partenaires, vous leur offrez le diagnostic de conformité sous votre nom.',
     douleurs: [
-      { t: 'Des questions hors de votre spécialité', d: 'Classement, origine, valeur : vos clients attendent une réponse, vous n’êtes pas douanier.' },
+      { t: 'Des questions hors de votre spécialité', d: 'Classement, origine, valeur : vos clients attendent une réponse, et l’importation n’est pas votre cœur de métier.' },
       { t: 'Un risque que vos clients ne voient pas', d: 'L’erreur se découvre deux à quatre ans plus tard, lors d’un contrôle a posteriori.' },
     ],
     gains: ['Un lien « diagnostic offert par … » à votre nom', 'Les comptes créés depuis votre lien vous sont rattachés pendant 90 jours', 'Des conditions de partenariat définies avec vous, sur demande'],
     activation: { t: 'Recevoir votre lien partenaire', d: 'Écrivez-nous : nous créons votre lien et vous transmettons les conditions du programme.', href: '/contact?sujet=partenaire', cta: 'Devenir partenaire' },
     offre: { nom: 'Programme partenaires', pourquoi: 'Lien à votre nom, suivi des comptes rattachés ; conditions sur demande.', href: '/contact?sujet=partenaire' },
-    preuves: [{ href: '/diagnostic', t: 'Voir le diagnostic' }, { href: '/calculateur-dum', t: 'Calculateur DUM' }],
+    preuves: [{ href: '/diagnostic', t: 'Voir le diagnostic' }, { href: '/calculateur-charges-import', t: 'Calculateur des charges à l’import' }],
   },
 ]
