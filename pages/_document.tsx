@@ -6,8 +6,9 @@ export default function Document() {
     <Html lang="fr">
       <Head>
         {/* Page affichée dans le cadre central d'un espace (/espaces/…) : la classe ixp-cadre masque
-            l'en-tête et le pied de page, que la page parente porte déjà. Posée avant le premier rendu. */}
-        <script dangerouslySetInnerHTML={{ __html: "try{if(window.self!==window.top)document.documentElement.classList.add('ixp-cadre')}catch(e){document.documentElement.classList.add('ixp-cadre')}" }} />
+            l'en-tête et le pied de page, que la page parente porte déjà. Posée avant le premier rendu.
+            Les liens de compte et de navigation (connexion, abonnements, espaces…) ouvrent la page entière. */}
+        <script dangerouslySetInnerHTML={{ __html: "try{if(window.self!==window.top){document.documentElement.classList.add('ixp-cadre');document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a||a.target)return;var h=a.getAttribute('href')||'';if(/^\\/(auth|tarifs|abonnement|mon-abonnement|mon-espace|espaces|forum|expertise|contact)(\\/|\\?|#|$)/.test(h)){e.preventDefault();window.top.location.href=a.href}},true)}}catch(e){}" }} />
         {/* ── PWA — Import-eXPert mobile ── */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#153E82" />
