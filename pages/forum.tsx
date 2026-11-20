@@ -1,24 +1,19 @@
-// pages/forum.tsx — Forum des clients : publications avec texte, images et fichiers,
-// commentaires, « J'aime », signalement. Accès : comptes connectés (middleware + API).
+// pages/forum.tsx — Forum des clients, présenté comme une discussion de messagerie :
+// on écrit directement dans « Votre message », les réponses s'affichent à la suite.
+// Une conversation par jour : le fil repart à zéro chaque nuit à 2 h (heure du Maroc).
+// Texte, images et fichiers, « J'aime », signalement. Accès : comptes connectés (middleware + API).
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import SiteShell from '../components/SiteShell'
 
 type Piece = { path: string; nom: string; type: string; taille: number; image: boolean; url?: string }
 type Auteur = { nom: string; societe: string | null; initiales: string; equipe: boolean }
-type Post = { id: string; titre: string; contenu: string; pieces: Piece[]; epingle: boolean; nb_commentaires: number; nb_jaime: number; cree: string; modifie: string | null; dernier: string; auteur: Auteur; moi: boolean; aime: boolean }
-type Commentaire = { id: string; contenu: string; pieces: Piece[]; cree: string; auteur: Auteur; moi: boolean }
+type Reponse = { id: string; post_id: string; contenu: string; pieces: Piece[]; cree: string; auteur: Auteur; moi: boolean }
+type Post = { id: string; contenu: string; pieces: Piece[]; epingle: boolean; nb_jaime: number; cree: string; modifie: string | null; auteur: Auteur; moi: boolean; aime: boolean; reponses: Reponse[] }
 
 const ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,application/pdf,.doc,.docx,.xls,.xlsx,.pptx,.txt,.csv'
 const taille = (n: number) => (n > 1048576 ? `${(n / 1048576).toFixed(1)} Mo` : `${Math.max(1, Math.round(n / 1024))} Ko`)
-function ilya(s: string) {
-  const m = Math.round((Date.now() - Date.parse(s)) / 60000)
-  if (m < 1) return 'à l’instant'
-  if (m < 60) return `il y a ${m} min`
-  if (m < 1440) return `il y a ${Math.round(m / 60)} h`
-  if (m < 10080) return `il y a ${Math.round(m / 1440)} j`
-  return new Date(s).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
-}
+const heure = (s: string) => new Date(s).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
 // Liens cliquables dans le texte (http/https uniquement)
 function Texte({ t }: { t: string }) {
   return <div className="fx-texte">{t.split(/(https?:\/\/[^\s<]+)/g).map((p, i) => (/^https?:\/\//.test(p) ? <a key={i} href={p} target="_blank" rel="noopener noreferrer nofollow">{p}</a> : p))}</div>
@@ -57,7 +52,7 @@ function Pieces({ pieces }: { pieces: Piece[] }) {
   )
 }
 
-function ChoixFichiers({ fichiers, setFichiers, max }: { fichiers: File[]; setFichiers: (f: File[]) => void; max: number }) {
+function ChoixFichiers({ fichiers, setFichiers, max, seulementBouton, seulementListe }: { fichiers: File[]; setFichiers: (f: File[]) => void; max: number; seulementBouton?: boolean; seulementListe?: boolean }) {
   const ref = useRef<HTMLInputElement>(null)
   const [apercus, setApercus] = useState<string[]>([])
   useEffect(() => {
@@ -71,10 +66,10 @@ function ChoixFichiers({ fichiers, setFichiers, max }: { fichiers: File[]; setFi
         const n = Array.from(e.target.files || []).filter(f => f.size <= 10 * 1048576)
         setFichiers([...fichiers, ...n].slice(0, max)); e.target.value = ''
       }} />
-      <button type="button" className="fx-joindre" onClick={() => ref.current?.click()} disabled={fichiers.length >= max}>
-        <span aria-hidden="true">📎</span> Image ou fichier
-      </button>
-      {fichiers.length > 0 && (
+      {!seulementListe && <button type="button" className="fx-joindre" onClick={() => ref.current?.click()} disabled={fichiers.length >= max} aria-label="Joindre une image ou un fichier" title="Joindre une image ou un fichier">
+        <span aria-hidden="true">📎</span>
+      </button>}
+      {!seulementBouton && fichiers.length > 0 && (
         <div className="fx-sel">
           {fichiers.map((f, i) => (
             <span key={i} className="fx-chip">
@@ -89,161 +84,157 @@ function ChoixFichiers({ fichiers, setFichiers, max }: { fichiers: File[]; setFi
   )
 }
 
-function Commentaires({ post, onCompte }: { post: Post; onCompte: (n: number) => void }) {
-  const [liste, setListe] = useState<Commentaire[] | null>(null)
+
+// Zone de saisie façon messagerie : Entrée envoie, Maj+Entrée passe à la ligne.
+function Saisie({ placeholder, max, maxFichiers, onEnvoyer, autoFocus, onAnnuler }: {
+  placeholder: string; max: number; maxFichiers: number; autoFocus?: boolean; onAnnuler?: () => void
+  onEnvoyer: (texte: string, fichiers: File[]) => Promise<string | null>
+}) {
   const [texte, setTexte] = useState('')
   const [fichiers, setFichiers] = useState<File[]>([])
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState('')
-  const charger = () => fetch(`/api/forum/posts/${post.id}`, { credentials: 'same-origin' }).then(r => r.json()).then(j => { setListe(j.commentaires || []); onCompte((j.commentaires || []).length) })
-  useEffect(() => { charger() }, [])
+  const vide = !texte.trim() && !fichiers.length
   async function envoyer() {
-    if (!texte.trim() || busy) return
+    if (vide || busy) return
     setBusy(true); setErr('')
-    const fd = new FormData(); fd.append('post_id', post.id); fd.append('contenu', texte); fichiers.forEach(f => fd.append('fichiers', f))
-    const r = await fetch('/api/forum/commentaires', { method: 'POST', credentials: 'same-origin', body: fd })
-    const j = await r.json().catch(() => ({})); setBusy(false)
-    if (!r.ok) return setErr(j.error || 'Envoi impossible')
-    setTexte(''); setFichiers([]); charger()
-  }
-  async function supprimer(id: string) {
-    if (!confirm('Supprimer ce commentaire ?')) return
-    await fetch(`/api/forum/commentaires?id=${id}`, { method: 'DELETE', credentials: 'same-origin' }); charger()
+    const e = await onEnvoyer(texte, fichiers)
+    setBusy(false)
+    if (e) return setErr(e)
+    setTexte(''); setFichiers([])
   }
   return (
-    <div className="fx-coms">
-      {!liste && <p className="fx-muted">Chargement…</p>}
-      {liste?.map(c => (
-        <div key={c.id} className="fx-com">
-          <Avatar a={c.auteur} />
-          <div className="fx-com-b">
-            <div className="fx-com-h"><b>{c.auteur.nom}</b>{c.auteur.societe && <span> · {c.auteur.societe}</span>}<small> · {ilya(c.cree)}</small>
-              {c.moi && <button type="button" className="fx-lien" onClick={() => supprimer(c.id)}>Supprimer</button>}
-              {!c.moi && <BoutonSignaler commentaireId={c.id} />}</div>
-            <Texte t={c.contenu} />
-            <Pieces pieces={c.pieces} />
-          </div>
-        </div>
-      ))}
-      <div className="fx-com-form">
-        <textarea value={texte} onChange={e => setTexte(e.target.value)} placeholder="Écrire un commentaire…" maxLength={4000} rows={2} />
-        <div className="fx-row">
-          <ChoixFichiers fichiers={fichiers} setFichiers={setFichiers} max={3} />
-          <button type="button" className="x-btn x-btn-dark x-btn-sm" onClick={envoyer} disabled={!texte.trim() || busy}>{busy ? 'Envoi…' : 'Commenter'}</button>
-        </div>
-        {err && <p className="fx-err">{err}</p>}
+    <div className="fx-saisie">
+      {fichiers.length > 0 && <ChoixFichiers fichiers={fichiers} setFichiers={setFichiers} max={maxFichiers} seulementListe />}
+      <div className="fx-saisie-l">
+        <ChoixFichiers fichiers={fichiers} setFichiers={setFichiers} max={maxFichiers} seulementBouton />
+        <textarea value={texte} onChange={e => setTexte(e.target.value)} placeholder={placeholder} maxLength={max} rows={1} autoFocus={autoFocus}
+          onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); envoyer() } if (e.key === 'Escape' && onAnnuler) onAnnuler() }}
+          onInput={e => { const t = e.currentTarget; t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 180) + 'px' }} />
+        <button type="button" className="fx-envoyer" onClick={envoyer} disabled={vide || busy} aria-label="Envoyer">{busy ? '…' : '➤'}</button>
+      </div>
+      {err && <p className="fx-err">{err}</p>}
+    </div>
+  )
+}
+
+function Bulle({ a, moi, cree, modifie, children }: { a: Auteur; moi: boolean; cree: string; modifie?: string | null; children: React.ReactNode }) {
+  return (
+    <div className={`fx-ligne ${moi ? 'moi' : ''}`}>
+      {!moi && <Avatar a={a} />}
+      <div className={`fx-bulle ${moi ? 'moi' : ''} ${a.equipe ? 'eq' : ''}`}>
+        {!moi && <div className="fx-nom">{a.nom}{a.societe && <span> · {a.societe}</span>}</div>}
+        {children}
+        <div className="fx-h">{heure(cree)}{modifie ? ' · modifié' : ''}</div>
       </div>
     </div>
   )
 }
 
-function BoutonSignaler({ postId, commentaireId }: { postId?: string; commentaireId?: string }) {
-  const [fait, setFait] = useState(false)
-  async function signaler() {
-    const motif = prompt('Pourquoi signalez-vous ce contenu ? (propos déplacés, publicité, données personnelles, hors sujet…)')
-    if (motif === null) return
-    const r = await fetch('/api/forum/interactions', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'signaler', post_id: postId, commentaire_id: commentaireId, motif }) })
-    if (r.ok) setFait(true)
-  }
-  return fait ? <span className="fx-muted sm">Signalé, merci</span> : <button type="button" className="fx-lien" onClick={signaler}>Signaler</button>
-}
-
-function Carte({ p, onRetire }: { p: Post; onRetire: () => void }) {
+function Message({ p, onMaj, onRetire }: { p: Post; onMaj: () => void; onRetire: () => void }) {
   const [post, setPost] = useState(p)
-  const [ouvert, setOuvert] = useState(false)
-  const [long, setLong] = useState(p.contenu.length > 600)
+  useEffect(() => { setPost(p) }, [p])
+  const [repondre, setRepondre] = useState(false)
   const [edition, setEdition] = useState(false)
-  const [titre, setTitre] = useState(p.titre)
   const [contenu, setContenu] = useState(p.contenu)
   async function aimer() {
     const r = await fetch('/api/forum/interactions', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'jaime', post_id: post.id }) })
     if (r.ok) { const j = await r.json(); setPost({ ...post, aime: j.aime, nb_jaime: j.nb_jaime }) }
   }
   async function enregistrer() {
-    const r = await fetch(`/api/forum/posts/${post.id}`, { method: 'PATCH', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ titre, contenu }) })
-    if (r.ok) { setPost({ ...post, titre, contenu, modifie: new Date().toISOString() }); setEdition(false) }
+    const r = await fetch(`/api/forum/posts/${post.id}`, { method: 'PATCH', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contenu }) })
+    if (r.ok) { setPost({ ...post, contenu, modifie: new Date().toISOString() }); setEdition(false) }
   }
   async function supprimer() {
-    if (!confirm('Supprimer définitivement cette publication, ses commentaires et ses fichiers ?')) return
+    if (!confirm('Supprimer définitivement ce message, ses réponses et ses fichiers ?')) return
     const r = await fetch(`/api/forum/posts/${post.id}`, { method: 'DELETE', credentials: 'same-origin' })
     if (r.ok) onRetire()
   }
+  async function supprimerReponse(id: string) {
+    if (!confirm('Supprimer cette réponse ?')) return
+    await fetch(`/api/forum/commentaires?id=${id}`, { method: 'DELETE', credentials: 'same-origin' }); onMaj()
+  }
+  async function envoyerReponse(texte: string, fichiers: File[]) {
+    if (!texte.trim()) return 'Écrivez votre réponse.'
+    const fd = new FormData(); fd.append('post_id', post.id); fd.append('contenu', texte); fichiers.forEach(f => fd.append('fichiers', f))
+    const r = await fetch('/api/forum/commentaires', { method: 'POST', credentials: 'same-origin', body: fd })
+    const j = await r.json().catch(() => ({}))
+    if (!r.ok) return j.error || 'Envoi impossible'
+    setRepondre(false); onMaj(); return null
+  }
   return (
-    <article className={`fx-card ${post.epingle ? 'pin' : ''}`}>
-      <header className="fx-head">
-        <Avatar a={post.auteur} />
-        <div className="fx-who">
-          <b>{post.auteur.nom}</b>
-          <small>{post.auteur.societe ? `${post.auteur.societe} · ` : ''}{ilya(post.cree)}{post.modifie ? ' · modifié' : ''}</small>
+    <div className={`fx-fil ${post.epingle ? 'pin' : ''}`}>
+      {post.epingle && <div className="fx-pin">📌 Annonce épinglée</div>}
+      <Bulle a={post.auteur} moi={post.moi} cree={post.cree} modifie={post.modifie}>
+        {edition ? (
+          <div className="fx-edit">
+            <textarea value={contenu} onChange={e => setContenu(e.target.value)} maxLength={8000} rows={4} autoFocus />
+            <div className="fx-row"><span /><span><button type="button" className="x-btn x-btn-line x-btn-sm" onClick={() => { setEdition(false); setContenu(post.contenu) }}>Annuler</button> <button type="button" className="x-btn x-btn-dark x-btn-sm" onClick={enregistrer}>Enregistrer</button></span></div>
+          </div>
+        ) : post.contenu ? <Texte t={post.contenu} /> : null}
+        <Pieces pieces={post.pieces} />
+        <div className="fx-act">
+          <button type="button" className={`fx-ic ${post.aime ? 'on' : ''}`} onClick={aimer} aria-pressed={post.aime} title={post.aime ? 'Je n’aime plus' : 'J’aime'} aria-label="J’aime">{post.aime ? '❤️' : '🤍'} <span>J’aime{post.nb_jaime ? ` · ${post.nb_jaime}` : ''}</span></button>
+          <button type="button" onClick={() => setRepondre(o => !o)} aria-expanded={repondre}>↩ Répondre</button>
+          {post.moi ? <>
+            <button type="button" onClick={() => setEdition(true)}>Modifier</button>
+            <button type="button" onClick={supprimer}>Supprimer</button>
+          </> : <BoutonSignaler postId={post.id} />}
         </div>
-        {post.epingle && <span className="fx-cat">📌 Épinglé</span>}
-      </header>
-      {edition ? (
-        <div className="fx-edit">
-          <input value={titre} onChange={e => setTitre(e.target.value)} maxLength={160} />
-          <textarea value={contenu} onChange={e => setContenu(e.target.value)} maxLength={8000} rows={6} />
-          <div className="fx-row"><span /><span><button type="button" className="x-btn x-btn-line x-btn-sm" onClick={() => setEdition(false)}>Annuler</button> <button type="button" className="x-btn x-btn-dark x-btn-sm" onClick={enregistrer}>Enregistrer</button></span></div>
+      </Bulle>
+      {(post.reponses.length > 0 || repondre) && (
+        <div className="fx-reps">
+          {post.reponses.map(r => (
+            <Bulle key={r.id} a={r.auteur} moi={r.moi} cree={r.cree}>
+              <Texte t={r.contenu} />
+              <Pieces pieces={r.pieces} />
+              <div className="fx-act">
+                {r.moi ? <button type="button" onClick={() => supprimerReponse(r.id)}>Supprimer</button> : <BoutonSignaler commentaireId={r.id} />}
+              </div>
+            </Bulle>
+          ))}
+          {repondre && <Saisie placeholder={`Répondre à ${post.moi ? 'votre message' : post.auteur.nom}…`} max={4000} maxFichiers={3} autoFocus onAnnuler={() => setRepondre(false)} onEnvoyer={envoyerReponse} />}
         </div>
-      ) : (
-        <>
-          <h3 className="fx-titre">{post.titre}</h3>
-          {post.contenu && <div className={long ? 'fx-court' : ''}><Texte t={post.contenu} /></div>}
-          {long && <button type="button" className="fx-lien" onClick={() => setLong(false)}>Lire la suite</button>}
-        </>
       )}
-      <Pieces pieces={post.pieces} />
-      <footer className="fx-actions">
-        <button type="button" className={post.aime ? 'on' : ''} onClick={aimer} aria-pressed={post.aime}>{post.aime ? '♥' : '♡'} J’aime{post.nb_jaime ? ` · ${post.nb_jaime}` : ''}</button>
-        <button type="button" onClick={() => setOuvert(o => !o)} aria-expanded={ouvert}>💬 Commenter{post.nb_commentaires ? ` · ${post.nb_commentaires}` : ''}</button>
-        <span className="fx-sp" />
-        {post.moi ? <>
-          <button type="button" className="fx-lien" onClick={() => setEdition(true)}>Modifier</button>
-          <button type="button" className="fx-lien" onClick={supprimer}>Supprimer</button>
-        </> : <BoutonSignaler postId={post.id} />}
-      </footer>
-      {ouvert && <Commentaires post={post} onCompte={n => setPost(x => ({ ...x, nb_commentaires: n }))} />}
-    </article>
+    </div>
   )
 }
 
 export default function Forum() {
   const [etat, setEtat] = useState<'charge' | 'ok' | 'connexion' | 'erreur'>('charge')
   const [posts, setPosts] = useState<Post[]>([])
-  const [suite, setSuite] = useState(false)
-  const [q, setQ] = useState('')
-  const [recherche, setRecherche] = useState('')
-  // composer
-  const [ouvert, setOuvert] = useState(false)
-  const [titre, setTitre] = useState('')
-  const [contenu, setContenu] = useState('')
-  const [fichiers, setFichiers] = useState<File[]>([])
-  const [busy, setBusy] = useState(false)
-  const [err, setErr] = useState('')
+  const [debut, setDebut] = useState<string | null>(null)
+  const finRef = useRef<HTMLDivElement>(null)
+  const premier = useRef(true)
 
-  async function charger(plus = false) {
-    const p = new URLSearchParams()
-    if (recherche) p.set('q', recherche)
-    if (plus && posts.length) p.set('avant', posts[posts.length - 1].dernier)
-    const r = await fetch(`/api/forum/posts?${p}`, { credentials: 'same-origin' })
+  async function charger(defiler = false) {
+    const r = await fetch('/api/forum/posts', { credentials: 'same-origin', cache: 'no-store' })
     if (r.status === 401) return setEtat('connexion')
-    if (!r.ok) return setEtat('erreur')
+    if (!r.ok) return setEtat(e => (e === 'ok' ? e : 'erreur'))
     const j = await r.json()
-    setPosts(plus ? [...posts, ...j.posts] : j.posts); setSuite(j.suite); setEtat('ok')
+    setPosts(j.posts); setDebut(j.debut); setEtat('ok')
+    if (defiler || premier.current) { premier.current = false; setTimeout(() => finRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }), 80) }
   }
-  useEffect(() => { charger() }, [recherche])
+  // Nouveaux messages : actualisation toutes les 20 secondes tant que la page est visible
+  useEffect(() => {
+    charger()
+    const t = setInterval(() => { if (document.visibilityState === 'visible') charger() }, 20000)
+    const maj = () => charger()
+    window.addEventListener('forum:maj', maj)
+    return () => { clearInterval(t); window.removeEventListener('forum:maj', maj) }
+  }, [])
 
-  async function publier() {
-    if (busy) return
-    setBusy(true); setErr('')
+  async function publier(contenu: string, fichiers: File[]) {
     const fd = new FormData()
-    fd.append('titre', titre); fd.append('contenu', contenu)
+    fd.append('contenu', contenu)
     fichiers.forEach(f => fd.append('fichiers', f))
     const r = await fetch('/api/forum/posts', { method: 'POST', credentials: 'same-origin', body: fd })
-    const j = await r.json().catch(() => ({})); setBusy(false)
-    if (!r.ok) return setErr(j.error || 'Publication impossible')
-    setTitre(''); setContenu(''); setFichiers([]); setOuvert(false); setRecherche(''); setQ('')
-    charger()
+    const j = await r.json().catch(() => ({}))
+    if (!r.ok) return j.error || 'Envoi impossible'
+    charger(true); return null
   }
+
+  const jour = debut ? new Date(Date.parse(debut) + 3 * 3600e3).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) : ''
 
   return (
     <SiteShell title="Forum des clients | IXP-Import-eXPert" description="Le forum des importateurs, transitaires et industriels clients d’Import-eXPert.">
@@ -252,7 +243,7 @@ export default function Forum() {
         <div className="x-wrap">
           <div className="x-eyebrow">Communauté</div>
           <h1 className="x-h1 x-h1-sm">Le forum <em>des importateurs</em></h1>
-          <p className="x-lead" style={{ maxWidth: 720 }}>Partagez une question, un retour d’expérience, une photo de marquage ou un document utile avec les autres clients d’Import-eXPert. L’équipe y publie aussi ses annonces.</p>
+          <p className="x-lead" style={{ maxWidth: 720 }}>Posez une question, partagez un retour d’expérience, une photo de marquage ou un document utile avec les autres clients d’Import-eXPert. Une nouvelle conversation commence chaque jour.</p>
         </div>
       </section>
       <section className="x-sec-tight" style={{ paddingTop: 0 }}>
@@ -265,7 +256,9 @@ export default function Forum() {
                 <li>Ne publiez aucune donnée personnelle de tiers ni document confidentiel (DUM, factures nominatives) sans les anonymiser.</li>
                 <li>Pas de publicité ni de démarchage.</li>
                 <li>Les échanges entre membres ne valent pas avis d’expert : pour un cas précis, utilisez le <Link href="/modules/conseil">conseil personnalisé</Link>.</li>
-                <li>Tout contenu peut être signalé et retiré par la modération.</li>
+                <li>Tout contenu peut être signalé et retiré par l’équipe Import-eXPert, notamment après signalement ; un message signalé par 3 membres est retiré automatiquement.</li>
+                <li>Les numéros de téléphone, adresses e-mail, numéros de DUM ou de facture et le démarchage sont refusés à l’envoi.</li>
+                <li>Le fil repart à zéro chaque nuit à 2 h (heure du Maroc).</li>
               </ul>
             </div>
           </aside>
@@ -273,40 +266,20 @@ export default function Forum() {
           <div className="fx-main">
             {etat === 'connexion' && <div className="x-pc-cta"><p>Le forum est réservé aux membres. Connectez-vous ou créez votre compte gratuit.</p><Link href="/auth/login?redirect=/forum" className="x-btn x-btn-gold">Connexion</Link></div>}
             {etat === 'erreur' && <p className="fx-err">Forum momentanément indisponible. Réessayez dans un instant.</p>}
-            {etat !== 'connexion' && (
-              <>
-                <div className="fx-card fx-composer">
-                  {!ouvert ? (
-                    <button type="button" className="fx-start" onClick={() => setOuvert(true)}>Partager une question, une expérience, une image ou un document…</button>
-                  ) : (
-                    <>
-                      <input className="fx-in" value={titre} onChange={e => setTitre(e.target.value)} placeholder="Titre de votre publication" maxLength={160} autoFocus />
-                      <textarea className="fx-in" value={contenu} onChange={e => setContenu(e.target.value)} placeholder="Votre message…" maxLength={8000} rows={5} />
-                      <div className="fx-row">
-                        <span className="fx-row-l">
-                          <ChoixFichiers fichiers={fichiers} setFichiers={setFichiers} max={6} />
-                        </span>
-                        <span>
-                          <button type="button" className="x-btn x-btn-line x-btn-sm" onClick={() => { setOuvert(false); setErr('') }}>Annuler</button>{' '}
-                          <button type="button" className="x-btn x-btn-dark x-btn-sm" onClick={publier} disabled={busy || titre.trim().length < 3 || (!contenu.trim() && !fichiers.length)}>{busy ? 'Publication…' : 'Publier'}</button>
-                        </span>
-                      </div>
-                      <small className="fx-muted">Images (JPG, PNG, WebP, GIF), PDF, Word, Excel, PowerPoint, texte : 6 fichiers de 10 Mo au maximum.</small>
-                      {err && <p className="fx-err">{err}</p>}
-                    </>
-                  )}
+            {etat !== 'connexion' && etat !== 'erreur' && (
+              <div className="fx-chat">
+                <div className="fx-jour"><span>Conversation du jour{jour ? ` · ${jour}` : ''}</span></div>
+                <div className="fx-flux">
+                  {etat === 'charge' && <p className="fx-muted" style={{ textAlign: 'center' }}>Chargement…</p>}
+                  {etat === 'ok' && !posts.length && <p className="fx-muted" style={{ textAlign: 'center' }}>Aucun message aujourd’hui : écrivez le premier.</p>}
+                  {posts.map(p => <Message key={p.id} p={p} onMaj={() => charger()} onRetire={() => setPosts(x => x.filter(y => y.id !== p.id))} />)}
+                  <div ref={finRef} />
                 </div>
-
-                <form className="fx-search" onSubmit={e => { e.preventDefault(); setRecherche(q.trim()) }}>
-                  <input value={q} onChange={e => setQ(e.target.value)} placeholder="Rechercher dans le forum" aria-label="Rechercher dans le forum" />
-                  {recherche && <button type="button" className="fx-lien" onClick={() => { setQ(''); setRecherche('') }}>Effacer</button>}
-                </form>
-
-                {etat === 'charge' && <p className="fx-muted">Chargement…</p>}
-                {etat === 'ok' && !posts.length && <p className="fx-muted">{recherche ? 'Aucune publication ne correspond.' : 'Aucune publication pour l’instant : lancez la première discussion.'}</p>}
-                {posts.map(p => <Carte key={p.id} p={p} onRetire={() => setPosts(posts.filter(x => x.id !== p.id))} />)}
-                {suite && <button type="button" className="x-btn x-btn-line" style={{ justifySelf: 'center' }} onClick={() => charger(true)}>Publications plus anciennes</button>}
-              </>
+                <div className="fx-pied">
+                  <Saisie placeholder="Votre message…" max={8000} maxFichiers={6} onEnvoyer={publier} />
+                  <small className="fx-muted sm">Entrée pour envoyer, Maj + Entrée pour aller à la ligne · images, PDF, Word, Excel, PowerPoint, texte (10 Mo par fichier).</small>
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -314,6 +287,18 @@ export default function Forum() {
     </SiteShell>
   )
 }
+
+function BoutonSignaler({ postId, commentaireId }: { postId?: string; commentaireId?: string }) {
+  const [fait, setFait] = useState(false)
+  async function signaler() {
+    const motif = prompt('Pourquoi signalez-vous ce contenu ? (propos déplacés, publicité, données personnelles, hors sujet…)')
+    if (motif === null) return
+    const r = await fetch('/api/forum/interactions', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'signaler', post_id: postId, commentaire_id: commentaireId, motif }) })
+    if (r.ok) { setFait(true); const j = await r.json().catch(() => ({})); if (j.masque) window.dispatchEvent(new Event('forum:maj')) }
+  }
+  return fait ? <span className="fx-muted sm">🚩 Signalé, merci</span> : <button type="button" className="fx-ic" onClick={signaler} title="Signaler ce contenu" aria-label="Signaler ce contenu">🚩 <span>Signaler</span></button>
+}
+
 
 const CSS = `
 .fx-grid{display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:start}
@@ -378,5 +363,33 @@ const CSS = `
 .fx-edit{display:grid;gap:8px}.fx-edit input,.fx-edit textarea{border:1px solid var(--x-line2);border-radius:10px;padding:9px 12px;font:inherit}
 .fx-muted{color:var(--x-ink3);font-size:13.5px}.fx-muted.sm{font-size:12px}
 .fx-err{color:var(--x-red);font-size:13.5px;margin:0}
+.fx-chat{background:#fff;border:1px solid var(--x-line);border-radius:18px;display:flex;flex-direction:column;min-height:60vh}
+.fx-jour{text-align:center;padding:12px 12px 4px}.fx-jour span{display:inline-block;background:var(--x-paper);border:1px solid var(--x-line);border-radius:999px;padding:4px 12px;font-size:12.5px;color:var(--x-ink2);text-transform:none}
+.fx-flux{flex:1;display:flex;flex-direction:column;gap:14px;padding:12px 16px;background:#F6F3EC;margin:8px 0 0}
+.fx-fil{display:flex;flex-direction:column;gap:6px}
+.fx-fil.pin{border-left:3px solid var(--x-gold2);padding-left:8px}.fx-pin{font-size:12px;color:var(--x-ink2)}
+.fx-ligne{display:flex;gap:8px;align-items:flex-end;max-width:82%}.fx-ligne.moi{align-self:flex-end;flex-direction:row-reverse}
+.fx-ligne .fx-av{width:32px;height:32px;font-size:12px}
+.fx-bulle{background:#fff;border:1px solid var(--x-line);border-radius:14px 14px 14px 4px;padding:8px 12px 6px;min-width:120px;box-shadow:0 1px 1px rgba(0,0,0,.04)}
+.fx-bulle.moi{background:#E7F6E1;border-color:#CDE8C2;border-radius:14px 14px 4px 14px}
+.fx-bulle.eq{border-color:var(--x-gold2)}
+.fx-nom{font-size:12.5px;font-weight:600;color:var(--x-navy);margin-bottom:2px}.fx-nom span{font-weight:400;color:var(--x-ink3)}
+.fx-bulle .fx-texte{font-size:14.5px;color:var(--x-ink)}
+.fx-h{font-size:11px;color:var(--x-ink3);text-align:right;margin-top:2px}
+.fx-act{display:flex;gap:2px;flex-wrap:wrap;margin-top:4px}
+.fx-act button,.fx-act .fx-lien{border:none;background:none;font:inherit;font-size:12px;color:var(--x-ink3);cursor:pointer;padding:2px 6px;border-radius:6px;text-decoration:none}
+.fx-act button:hover{background:rgba(0,0,0,.05)}
+.fx-act .fx-ic{display:inline-flex;align-items:center;gap:4px;font-size:12px}.fx-act .fx-ic.on span{color:var(--x-red);font-weight:600}.fx-act button.on{color:var(--x-red);font-weight:600}
+.fx-reps{display:flex;flex-direction:column;gap:6px;margin-left:40px;padding-left:10px;border-left:2px solid var(--x-line)}
+.fx-reps .fx-ligne{max-width:90%}
+.fx-pied{border-top:1px solid var(--x-line);padding:10px 12px;display:grid;gap:6px;position:sticky;bottom:0;background:#fff;border-radius:0 0 18px 18px}
+.fx-saisie{display:grid;gap:6px}
+.fx-saisie-l{display:flex;gap:8px;align-items:flex-end}
+.fx-saisie textarea{flex:1;border:1px solid var(--x-line2);border-radius:20px;padding:10px 14px;font:inherit;font-size:15px;resize:none;line-height:1.4;max-height:180px;background:#fff}
+.fx-saisie .fx-joindre{border-radius:50%;width:40px;height:40px;padding:0;font-size:17px;flex-shrink:0}
+.fx-envoyer{width:42px;height:42px;border-radius:50%;border:none;background:var(--x-ink);color:#fff;font-size:17px;cursor:pointer;flex-shrink:0}
+.fx-envoyer:disabled{opacity:.35;cursor:default}
+.fx-reps .fx-saisie textarea{font-size:14px;padding:8px 12px}.fx-reps .fx-envoyer{width:36px;height:36px;font-size:15px}.fx-reps .fx-joindre{width:36px;height:36px}
+@media (max-width:860px){.fx-ligne{max-width:94%}.fx-reps{margin-left:16px}}
 @media (max-width:860px){.fx-grid{grid-template-columns:1fr}.fx-side{position:static}.fx-charte{order:2}}
 `
