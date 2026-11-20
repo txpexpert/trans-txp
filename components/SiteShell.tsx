@@ -22,6 +22,17 @@ const ORGANISMES: [string, string][] = [
   ['https://www.ammps.gov.ma', 'AMMPS (produits de santé)'],
   ['https://www.tax.gov.ma', 'Impôts (DGI)'],
 ]
+const ORGANISMES_AR: [string, string][] = [
+  ['https://www.mcinet.gov.ma', 'التجارة الخارجية (وزارة الصناعة والتجارة)'],
+  ['https://www.oc.gov.ma', 'مكتب الصرف'],
+  ['https://www.douane.gov.ma', 'إدارة الجمارك والضرائب غير المباشرة'],
+  ['https://www.portnet.ma', 'بورتنت (PortNet)'],
+  ['https://www.onssa.gov.ma', 'المكتب الوطني للسلامة الصحية للمنتجات الغذائية'],
+  ['https://www.anrt.ma', 'الوكالة الوطنية لتقنين المواصلات'],
+  ['https://www.imanor.gov.ma', 'المعهد المغربي للتقييس (IMANOR)'],
+  ['https://www.ammps.gov.ma', 'الوكالة المغربية للأدوية والمنتجات الصحية'],
+  ['https://www.tax.gov.ma', 'المديرية العامة للضرائب'],
+]
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL || 'https://import-expert.ma').replace(/\/$/, '')
 
 // Interface en arabe (parcours clés) : navigation et pied de page dédiés, sens de lecture de droite à gauche
@@ -165,7 +176,7 @@ export default function SiteShell({ title, description, children, plain = false,
           <div className="x-ftr-grid">
             <div>
               <div className="x-logo" dir="ltr"><IxpLogo size={34} /><span>Import<b>-</b>eXPert<sup>MAROC</sup></span></div>
-              <p>منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل الاستخلاص الجمركي، يصممها ويؤطرها خبراء جمركيون.</p>
+              <p>منصة تؤهّل عمليات الاستيراد وتحسب كلفتها وتؤمّنها قبل الشروع فيها، يصممها ويؤطرها خبراء في الاستيراد.</p>
             </div>
             <div><h5>المنصة</h5><ul>
               <li><Link href="/ar/diagnostic">تشخيص الامتثال</Link></li>
@@ -175,11 +186,12 @@ export default function SiteShell({ title, description, children, plain = false,
             </ul></div>
             <div><h5>روابط</h5><ul>
               <li><a href={autreLangue}>Version française</a></li>
-              <li><a href="https://www.douane.gov.ma" target="_blank" rel="noreferrer">douane.gov.ma ↗</a></li>
-              <li><a href="https://www.portnet.ma" target="_blank" rel="noreferrer">portnet.ma ↗</a></li>
+            </ul></div>
+            <div><h5>هيئات الاستيراد</h5><ul>
+              {ORGANISMES_AR.map(([href, label]) => <li key={href}><a href={href} target="_blank" rel="noreferrer">{label} ↗</a></li>)}
             </ul></div>
           </div>
-          <div className="x-ftr-bot"><span>© 2026 IXP-Import-eXPert · import-expert.ma</span></div>
+          <div className="x-ftr-bot"><span>© 2026 IXP-Import-eXPert · import-expert.ma</span><span>المصادر: النصوص الرسمية للتجارة الخارجية والصرف والجبايات والجمارك</span></div>
         </div>
       </footer>
       ) : (

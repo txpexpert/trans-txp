@@ -8,12 +8,12 @@ export default function EchangeExpert() {
     fetch('/api/evenement', { method: 'POST', credentials: 'same-origin', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ e: 'echange_vue' }) }).catch(() => {})
   }, [])
   return (
-    <SiteShell title="Échange de 20 minutes avec un expert | IXP-Import-eXPert" description="Après votre diagnostic, un expert douanier relit votre résultat avec vous et vous indique les actions prioritaires.">
+    <SiteShell title="Échange de 20 minutes avec un expert | IXP-Import-eXPert" description="Après votre diagnostic, un expert en processus d’importation relit votre résultat avec vous et vous indique les actions prioritaires.">
       <section className="x-hero">
         <div className="x-wrap" style={{ maxWidth: 820 }}>
           <div className="x-eyebrow">Après votre diagnostic · offert</div>
           <h1 className="x-h1 x-h1-sm">20 minutes avec un expert, <em>pour savoir par où commencer</em>.</h1>
-          <p className="x-lead">Le diagnostic chiffre votre exposition. L’échange la transforme en décisions : un expert douanier relit votre résultat avec vous et vous indique les deux ou trois actions qui la réduisent le plus.</p>
+          <p className="x-lead">Le diagnostic chiffre votre exposition. L’échange la transforme en décisions : un expert en processus d’importation relit votre résultat avec vous et vous indique les deux ou trois actions qui la réduisent le plus.</p>
           <ul className="x-list" style={{ marginTop: 18 }}>
             <li>Par téléphone ou en visio, sous trois jours ouvrés</li>
             <li>Les écarts critiques de votre diagnostic, et le texte qui les fonde</li>

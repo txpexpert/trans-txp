@@ -489,7 +489,7 @@ function renderResults(c,prev){
   if(p.red==='oui'&&c.answers.r2&&c.answers.r2!=='oui')al+='<div class="alert">قد يكون أجل حساب تحت نظام اقتصادي قد حلّ: رسوم مستحقة، وغرامة تعادل مرة ونصف الرسوم، وتعليق تسهيلات الكفالة (مدونة الجمارك، الفصل 294 مكرر ؛ المذكرة رقم 12014/313).</div>';
   if(c.answers.d2&&c.answers.d2!=='oui')al+='<div class="alert">دون مراجعة بعد رفع اليد، تفقدون إمكانية تعديل خطأ داخل 30 يومًا دون أداء غرامة (مدونة الجمارك، الفصل 78-3°).</div>';
   if(!al)al='<div class="alert ok">لا يوجد أي فارق حرج: حافظوا على المستوى بالافتحاص السنوي والرصد.</div>';
-  al+='<div class="alert ok"><b>لقاء مجاني لمدة 20 دقيقة مع خبير جمركي</b>: نراجع معكم هذه النتيجة ونحدد الإجراءين أو الثلاثة الأكثر تقليصًا لتعرّضكم. <a href="/ar/echange-expert?depuis=diagnostic" target="_top" onclick="window.ixpCompter&&window.ixpCompter(\'echange_demande\')">اطلبوا اللقاء</a></div>';
+  al+='<div class="alert ok"><b>لقاء مجاني لمدة 20 دقيقة مع خبير في مسار الاستيراد</b>: نراجع معكم هذه النتيجة ونحدد الإجراءين أو الثلاثة الأكثر تقليصًا لتعرّضكم. <a href="/ar/echange-expert?depuis=diagnostic" target="_top" onclick="window.ixpCompter&&window.ixpCompter(\'echange_demande\')">اطلبوا اللقاء</a></div>';
   $('r-alerts').innerHTML=al;
   // barres
   var h='';$('delta-note').textContent=prev?'التطور مقارنة بتشخيص '+new Date(prev.date).toLocaleDateString('fr-FR')+'.':'تشخيص أول: سيظهر التطور في التشخيص المقبل.';
