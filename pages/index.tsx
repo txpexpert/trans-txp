@@ -23,13 +23,15 @@ export const getServerSideProps: GetServerSideProps<{ variante: Variante }> = as
   return { props: { variante } }
 }
 
+// Rubrique « Le risque que vous ne voyez pas » : l'importation comme un tout (produit, achat, coût,
+// logistique, change et paiement, veille) ; la douane n'est qu'une de ses fonctions (règle du site, nov. 2026).
 const DOULEURS = [
-  { q: '« Votre DUM est passée. Cela ne prouve pas que votre code est juste. »', d: "Un classement repris par habitude passe le dédouanement, puis se discute lors d'un contrôle a posteriori, sur plusieurs années d'opérations.", e: 'Qualifier · fiche produit justifiée' },
-  { q: '« La douane ne contrôle pas votre facture. Elle contrôle votre valeur. »', d: "Redevances, commissions, emballage, transport jusqu'à la frontière : ce qui manque sur la facture manque aussi dans la valeur déclarée.", e: 'Chiffrer · valeur en douane' },
-  { q: '« La préférence est accordée au dédouanement. Elle se vérifie après. »', d: "Une preuve d'origine incomplète ou mal libellée fait tomber le droit préférentiel. Les droits du tarif commun redeviennent exigibles.", e: 'Optimiser · origine et accords' },
-  { q: '« Votre importation coûte plus cher que votre facture. »', d: "TIC, change, magasinage, surestaries : un coût rendu sous-estimé fausse la marge de toute une gamme.", e: 'Chiffrer · coût de revient' },
-  { q: '« Vous découvrez la hausse de droits sur la DUM suivante. »', d: "Loi de finances, mesure de sauvegarde, antidumping, nouvel accord : sans veille, la direction apprend le changement quand la marchandise est déjà en route.", e: 'Pilotage · intelligence et stratégie' },
-  { q: '« Si votre responsable import part demain, que reste-t-il ? »', d: "Sans dossier tracé, le savoir repose sur une personne. Au contrôle, il faut pourtant justifier chaque choix.", e: 'Sécuriser · dossier daté et sourcé' },
+  { q: '« Votre produit est conforme chez votre fournisseur. Pas forcément au Maroc. »', d: "Normes, contrôle technique, licence, étiquetage en arabe : une exigence oubliée au moment de l'achat bloque la marchandise à l'arrivée, et la vente avec elle.", e: 'Qualifier · fiche produit' },
+  { q: '« Le fournisseur le moins cher n’est pas toujours l’achat le moins cher. »', d: "Pays d'origine, accord de libre-échange, délais, conditions de paiement : à prix égal, le choix du fournisseur change le coût final et le risque.", e: 'Optimiser · achat, origine et accords' },
+  { q: '« Votre importation coûte plus cher que votre facture. »', d: "Fret, assurance, change, droits et taxes, magasinage, financement : un coût rendu sous-estimé fausse la marge de toute une gamme.", e: 'Chiffrer · coût de revient' },
+  { q: '« L’Incoterm signé décide de qui paie quand le transport se passe mal. »', d: "Avarie, retard au port, surestaries, assurance insuffisante : un Incoterm mal choisi vous fait porter des frais et des risques que vous ne maîtrisez pas.", e: 'Exécuter · logistique et transport' },
+  { q: '« Payer un fournisseur étranger, c’est aussi une opération de change. »', d: "Domiciliation bancaire, documents exigés, délais de règlement, variation du cours : un paiement mal préparé retarde la commande et entame la marge.", e: 'Sécuriser · change et règlement' },
+  { q: '« Vous découvrez le changement quand la marchandise est déjà en route. »', d: "Loi de finances, cours du dirham, mesures commerciales, prix du fret : sans veille, la direction décide avec un temps de retard.", e: 'Pilotage · intelligence et stratégie' },
 ]
 
 const PILIERS = [
@@ -135,8 +137,8 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
         <div className="x-wrap">
           <div className="x-eyebrow">Le risque que vous ne voyez pas</div>
           <h2 className="x-h2">Une erreur d’importation ne se voit pas <em>le jour où la marchandise arrive</em>.</h2>
-          <p className="x-sub">Elle se révèle plus tard : lors d’un contrôle, d’un litige fournisseur ou d’une revue de marge, quand la marchandise est vendue depuis longtemps. Les erreurs d’assiette peuvent être réparées jusqu’à l’expiration de la quatrième année (Code des douanes, art. 99 bis).</p>
-          <p className="x-sub"><b>23,5 milliards de dirhams</b> : c’est le montant des redressements opérés en 2025 au titre de la sous-facturation, en hausse de 33 % sur un an (ADII, rapport d’activité 2025). Les contrôles s’appuient désormais sur l’analyse de risque et le contrôle a posteriori.</p>
+          <p className="x-sub">Elle se révèle plus tard : dans la marge, lors d’un litige fournisseur, d’un retard de livraison, d’un paiement bloqué ou d’un contrôle, quand la marchandise est vendue depuis longtemps. Une importation réussie se joue sur toute la chaîne : le produit, l’achat, le coût rendu, la logistique, le change et le paiement, la conformité.</p>
+          <p className="x-sub">Un exemple parmi d’autres : <b>23,5 milliards de dirhams</b> de redressements ont été opérés en 2025 au titre de la sous-facturation, en hausse de 33 % sur un an (ADII, rapport d’activité 2025).</p>
           <div className="x-pains">
             {DOULEURS.map(d => (
               <div className="x-pain" key={d.q}><q>{d.q}</q><p>{d.d}</p><span className="x-mono">{d.e}</span></div>
