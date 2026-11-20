@@ -9,7 +9,10 @@ import { controleForum } from '../../../../lib/forumFiltre'
 import { membreForum, auteur, signer, supprimerFichiers, nettoyer } from '../../../../lib/forum'
 
 const uuid = (v: any) => /^[0-9a-f-]{36}$/i.test(String(v || ''))
-const USERS = 'users(prenom, nom, societe, raison_sociale, role)'
+// Relations explicites : forum_jaime / forum_signalements créent d'autres liens vers users (ambiguïté PGRST201)
+const CHAMPS = 'prenom, nom, societe, raison_sociale, role'
+const USERS = `users!forum_posts_user_id_fkey(${CHAMPS})`
+const USERS_C = `users!forum_commentaires_user_id_fkey(${CHAMPS})`
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Cache-Control', 'no-store')
@@ -22,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!p || (p.statut !== 'publie' && !m.admin)) return res.status(404).json({ error: 'Publication introuvable ou retirée' })
 
   if (req.method === 'GET') {
-    const { data: cs } = await db.from('forum_commentaires').select(`id, user_id, contenu, pieces, created_at, ${USERS}`)
+    const { data: cs } = await db.from('forum_commentaires').select(`id, user_id, contenu, pieces, created_at, ${USERS_C}`)
       .eq('post_id', id).eq('statut', 'publie').order('created_at').limit(300)
     const commentaires = await signer((cs ?? []).map((c: any) => ({ id: c.id, contenu: c.contenu, pieces: c.pieces || [], cree: c.created_at, auteur: auteur(c.users), moi: c.user_id === m.id })))
     return res.status(200).json({ commentaires })
