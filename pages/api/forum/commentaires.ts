@@ -4,6 +4,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { debutJourneeForum } from '../../../lib/forumJour'
+import { controleForum } from '../../../lib/forumFiltre'
 import { membreForum, lireFormulaire, deposer, supprimerFichiers, nettoyer, MAX_FICHIERS_COMMENTAIRE } from '../../../lib/forum'
 
 export const config = { api: { bodyParser: false }, maxDuration: 60 }
@@ -36,7 +37,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const postId = f.champ('post_id')
   const contenu = nettoyer(f.champ('contenu'), 4000)
   if (!uuid(postId)) return res.status(400).json({ error: 'Publication inconnue' })
-  if (!contenu) return res.status(400).json({ error: 'Votre commentaire est vide.' })
+  if (!contenu) return res.status(400).json({ error: 'Votre réponse est vide.' })
+  const refus = m.admin ? null : controleForum(contenu)
+  if (refus) return res.status(400).json({ error: refus })
   const { data: p } = await db.from('forum_posts').select('id, statut, epingle, created_at').eq('id', postId).maybeSingle()
   if (!p || p.statut !== 'publie') return res.status(404).json({ error: 'Message introuvable ou retiré' })
   // Le fil repart à zéro chaque nuit à 2 h : on ne répond plus aux messages des jours précédents

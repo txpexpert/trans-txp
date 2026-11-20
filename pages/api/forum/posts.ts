@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { membreForum, auteur, lireFormulaire, deposer, signer, nettoyer, MAX_FICHIERS_POST } from '../../../lib/forum'
 import { debutJourneeForum, titreAuto } from '../../../lib/forumJour'
+import { controleForum } from '../../../lib/forumFiltre'
 
 export const config = { api: { bodyParser: false }, maxDuration: 60 }
 const MAX_JOUR = 400
@@ -54,6 +55,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   catch { return res.status(400).json({ error: `Fichiers refusés : ${MAX_FICHIERS_POST} fichiers de 10 Mo au maximum.` }) }
   const contenu = nettoyer(f.champ('contenu'), 8000)
   if (!contenu && !f.fichiers.length) return res.status(400).json({ error: 'Votre message est vide.' })
+  const refus = m.admin ? null : controleForum(contenu)
+  if (refus) return res.status(400).json({ error: refus })
   // Plus de champ titre : la colonne (obligatoire en base) reçoit le début du message
   const titre = titreAuto(contenu, f.fichiers.length > 0)
 

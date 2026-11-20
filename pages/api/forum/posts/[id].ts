@@ -5,6 +5,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabaseAdmin } from '../../../../lib/supabaseAdmin'
 import { titreAuto } from '../../../../lib/forumJour'
+import { controleForum } from '../../../../lib/forumFiltre'
 import { membreForum, auteur, signer, supprimerFichiers, nettoyer } from '../../../../lib/forum'
 
 const uuid = (v: any) => /^[0-9a-f-]{36}$/i.test(String(v || ''))
@@ -32,6 +33,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!auteurOk) return res.status(403).json({ error: 'Seul l’auteur peut modifier sa publication.' })
     const contenu = nettoyer(req.body?.contenu, 8000)
     if (!contenu && !(p.pieces || []).length) return res.status(400).json({ error: 'Message vide.' })
+    const refus = m.admin ? null : controleForum(contenu)
+    if (refus) return res.status(400).json({ error: refus })
     const titre = titreAuto(contenu, (p.pieces || []).length > 0)
     await db.from('forum_posts').update({ titre, contenu, updated_at: new Date().toISOString() }).eq('id', id)
     return res.status(200).json({ ok: true })

@@ -174,7 +174,7 @@ function Message({ p, onMaj, onRetire }: { p: Post; onMaj: () => void; onRetire:
         ) : post.contenu ? <Texte t={post.contenu} /> : null}
         <Pieces pieces={post.pieces} />
         <div className="fx-act">
-          <button type="button" className={post.aime ? 'on' : ''} onClick={aimer} aria-pressed={post.aime}>{post.aime ? '♥' : '♡'}{post.nb_jaime ? ` ${post.nb_jaime}` : ''}</button>
+          <button type="button" className={`fx-ic ${post.aime ? 'on' : ''}`} onClick={aimer} aria-pressed={post.aime} title={post.aime ? 'Je n’aime plus' : 'J’aime'} aria-label="J’aime">{post.aime ? '❤️' : '🤍'} <span>J’aime{post.nb_jaime ? ` · ${post.nb_jaime}` : ''}</span></button>
           <button type="button" onClick={() => setRepondre(o => !o)} aria-expanded={repondre}>↩ Répondre</button>
           {post.moi ? <>
             <button type="button" onClick={() => setEdition(true)}>Modifier</button>
@@ -219,7 +219,9 @@ export default function Forum() {
   useEffect(() => {
     charger()
     const t = setInterval(() => { if (document.visibilityState === 'visible') charger() }, 20000)
-    return () => clearInterval(t)
+    const maj = () => charger()
+    window.addEventListener('forum:maj', maj)
+    return () => { clearInterval(t); window.removeEventListener('forum:maj', maj) }
   }, [])
 
   async function publier(contenu: string, fichiers: File[]) {
@@ -254,7 +256,8 @@ export default function Forum() {
                 <li>Ne publiez aucune donnée personnelle de tiers ni document confidentiel (DUM, factures nominatives) sans les anonymiser.</li>
                 <li>Pas de publicité ni de démarchage.</li>
                 <li>Les échanges entre membres ne valent pas avis d’expert : pour un cas précis, utilisez le <Link href="/modules/conseil">conseil personnalisé</Link>.</li>
-                <li>Tout contenu peut être signalé et retiré par la modération.</li>
+                <li>Tout contenu peut être signalé et retiré par l’équipe Import-eXPert, notamment après signalement ; un message signalé par 3 membres est retiré automatiquement.</li>
+                <li>Les numéros de téléphone, adresses e-mail, numéros de DUM ou de facture et le démarchage sont refusés à l’envoi.</li>
                 <li>Le fil repart à zéro chaque nuit à 2 h (heure du Maroc).</li>
               </ul>
             </div>
@@ -291,9 +294,9 @@ function BoutonSignaler({ postId, commentaireId }: { postId?: string; commentair
     const motif = prompt('Pourquoi signalez-vous ce contenu ? (propos déplacés, publicité, données personnelles, hors sujet…)')
     if (motif === null) return
     const r = await fetch('/api/forum/interactions', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'signaler', post_id: postId, commentaire_id: commentaireId, motif }) })
-    if (r.ok) setFait(true)
+    if (r.ok) { setFait(true); const j = await r.json().catch(() => ({})); if (j.masque) window.dispatchEvent(new Event('forum:maj')) }
   }
-  return fait ? <span className="fx-muted sm">Signalé, merci</span> : <button type="button" className="fx-lien" onClick={signaler}>Signaler</button>
+  return fait ? <span className="fx-muted sm">🚩 Signalé, merci</span> : <button type="button" className="fx-ic" onClick={signaler} title="Signaler ce contenu" aria-label="Signaler ce contenu">🚩 <span>Signaler</span></button>
 }
 
 
@@ -375,7 +378,8 @@ const CSS = `
 .fx-h{font-size:11px;color:var(--x-ink3);text-align:right;margin-top:2px}
 .fx-act{display:flex;gap:2px;flex-wrap:wrap;margin-top:4px}
 .fx-act button,.fx-act .fx-lien{border:none;background:none;font:inherit;font-size:12px;color:var(--x-ink3);cursor:pointer;padding:2px 6px;border-radius:6px;text-decoration:none}
-.fx-act button:hover{background:rgba(0,0,0,.05)}.fx-act button.on{color:var(--x-red);font-weight:600}
+.fx-act button:hover{background:rgba(0,0,0,.05)}
+.fx-act .fx-ic{display:inline-flex;align-items:center;gap:4px;font-size:12px}.fx-act .fx-ic.on span{color:var(--x-red);font-weight:600}.fx-act button.on{color:var(--x-red);font-weight:600}
 .fx-reps{display:flex;flex-direction:column;gap:6px;margin-left:40px;padding-left:10px;border-left:2px solid var(--x-line)}
 .fx-reps .fx-ligne{max-width:90%}
 .fx-pied{border-top:1px solid var(--x-line);padding:10px 12px;display:grid;gap:6px;position:sticky;bottom:0;background:#fff;border-radius:0 0 18px 18px}
