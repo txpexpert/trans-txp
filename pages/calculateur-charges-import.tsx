@@ -1,4 +1,4 @@
-// pages/calculateur-dum.tsx — « L'argent laissé sur la table » : à partir d'un export
+// pages/calculateur-charges-import.tsx (ancienne adresse /calculateur-dum redirigée) — « L'argent laissé sur la table » : à partir d'un export
 // de DUM (CSV), estime les droits récupérables (accords préférentiels non utilisés,
 // taux supérieurs au tarif) et repère les taux anormalement bas (risque de redressement).
 // Page publique : les données restent dans le navigateur, seuls les codes SH sont envoyés.
@@ -77,11 +77,11 @@ export default function CalculateurDum() {
   const sansPays = (res || []).filter(x => !x.iso).length
 
   return (
-    <SiteShell title="Argent laissé sur la table : analyse de vos DUM | IXP-Import-eXPert" description="Chargez l’export de vos déclarations : estimez les droits récupérables grâce aux accords préférentiels et repérez les taux à risque.">
+    <SiteShell title="Calculateur des charges à l’import : analyse de vos déclarations | IXP-Import-eXPert" description="Chargez l’export de vos déclarations : estimez les droits récupérables grâce aux accords préférentiels et repérez les taux à risque.">
       <section className="x-hero" style={{ paddingBottom: 18 }}>
         <div className="x-wrap">
           <div className="x-eyebrow">Calculateur · Gratuit</div>
-          <h1 className="x-h1 x-h1-sm">L’argent laissé <em>sur la table</em></h1>
+          <h1 className="x-h1 x-h1-sm">Calculer vos ratios <em>coûts et profits</em></h1>
           <p className="x-lead">Chargez l’export de vos déclarations (DUM) : en une minute, vous savez combien de droits d’importation vous avez payés alors qu’un accord préférentiel pouvait les supprimer, et quelles lignes présentent un taux à risque.</p>
           <p className="x-disclaimer">Vos fichiers restent dans votre navigateur : seuls les codes SH sont envoyés, pour lire leur taux dans le tarif 2026.</p>
         </div>
@@ -154,7 +154,7 @@ export default function CalculateurDum() {
                 <p><b>Passer de l’estimation à la récupération.</b> L’essai Pro vérifie l’origine produit par produit et émet un dossier défendable ; un expert vous dit ce qui est récupérable et dans quels délais.</p>
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                   <Link href="/auth/register?plan=pro" className="x-btn x-btn-gold">Essai 14 jours</Link>
-                  <Link href="/contact?sujet=calculateur-dum" className="x-btn x-btn-line" style={{ color: '#fff', borderColor: 'rgba(255,255,255,.4)' }}>Parler à un expert</Link>
+                  <Link href="/contact?sujet=calculateur-charges-import" className="x-btn x-btn-line" style={{ color: '#fff', borderColor: 'rgba(255,255,255,.4)' }}>Parler à un expert</Link>
                 </div>
               </div>
               <p className="x-note">Estimation d’aide à la décision. La préférence suppose une origine prouvée (certificat ou déclaration d’origine) et le respect des règles de l’accord ; les droits déjà acquittés ne sont récupérables que dans les conditions et délais prévus par la réglementation. Les autres taxes (TVA, TPI) ne sont pas comptées. Les données finales sont celles édictées par les autorités compétentes.</p>

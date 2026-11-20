@@ -34,6 +34,7 @@ export const FREE_PATHS = [
   '/diagnostic',
   '/cas-types',
   '/demo/fiche-produit',
+  '/calculateur-charges-import',
   '/calculateur-dum',
   '/lf-2027',
   '/echange-expert',

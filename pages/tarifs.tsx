@@ -65,7 +65,7 @@ export default function Tarifs() {
             <div><span>EUR.1 sans mention de cumul</span><b>525 000 DH</b><small>par année d’opérations concernée (cas illustratif)</small></div>
             <div><span>Pièce importée avant l’autorisation</span><b>92 000 DH</b><small>décaissés au lieu d’une garantie (cas illustratif)</small></div>
           </div>
-          <p className="x-note">En 2025, l’administration a redressé 23,5 milliards de dirhams au titre de la sous-facturation, en hausse de 33 % (ADII, rapport d’activité 2025). Cas illustratifs : entreprises fictives, mécanismes et textes réels, détaillés sur la page <Link href="/cas-types">Cas types</Link>.</p>
+          <p className="x-note">Chaque fonction de l’importation a ses risques : achat, change, transport, conformité des produits, douane. Un exemple parmi d’autres : en 2025, 23,5 milliards de dirhams ont été redressés au titre de la sous-facturation, en hausse de 33 % (ADII, rapport d’activité 2025). Cas illustratifs : entreprises fictives, mécanismes et textes réels, détaillés sur la page <Link href="/cas-types">Cas types</Link>.</p>
           <div className="x-tf-val">
             <div><span className="x-eyebrow">Premium : la valeur incluse</span>
               <p><b>24 renseignements experts par an</b>, soit <b>36 000 DH HT</b> au tarif à l’acte (1 500 DH HT l’un), inclus dans un abonnement de <b>{fmtDH(PRICING.premium.annual!)} DH HT</b>. Pour un transitaire, deux dossiers délicats par mois suffisent à le rentabiliser.</p></div>

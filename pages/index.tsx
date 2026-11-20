@@ -23,19 +23,21 @@ export const getServerSideProps: GetServerSideProps<{ variante: Variante }> = as
   return { props: { variante } }
 }
 
+// Rubrique « Le risque que vous ne voyez pas » : l'importation comme un tout (produit, achat, coût,
+// logistique, change et paiement, veille) ; la douane n'est qu'une de ses fonctions (règle du site, nov. 2026).
 const DOULEURS = [
-  { q: '« Votre DUM est passée. Cela ne prouve pas que votre code est juste. »', d: "Un classement repris par habitude passe le dédouanement, puis se discute lors d'un contrôle a posteriori, sur plusieurs années d'opérations.", e: 'Qualifier · fiche produit justifiée' },
-  { q: '« La douane ne contrôle pas votre facture. Elle contrôle votre valeur. »', d: "Redevances, commissions, emballage, transport jusqu'à la frontière : ce qui manque sur la facture manque aussi dans la valeur déclarée.", e: 'Chiffrer · valeur en douane' },
-  { q: '« La préférence est accordée au dédouanement. Elle se vérifie après. »', d: "Une preuve d'origine incomplète ou mal libellée fait tomber le droit préférentiel. Les droits du tarif commun redeviennent exigibles.", e: 'Optimiser · origine et accords' },
-  { q: '« Votre importation coûte plus cher que votre facture. »', d: "TIC, change, magasinage, surestaries : un coût rendu sous-estimé fausse la marge de toute une gamme.", e: 'Chiffrer · coût de revient' },
-  { q: '« Vous découvrez la hausse de droits sur la DUM suivante. »', d: "Loi de finances, mesure de sauvegarde, antidumping, nouvel accord : sans veille, la direction apprend le changement quand la marchandise est déjà en route.", e: 'Pilotage · intelligence et stratégie' },
-  { q: '« Si votre responsable import part demain, que reste-t-il ? »', d: "Sans dossier tracé, le savoir repose sur une personne. Au contrôle, il faut pourtant justifier chaque choix.", e: 'Sécuriser · dossier daté et sourcé' },
+  { q: '« Votre produit est conforme chez votre fournisseur. Pas forcément au Maroc. »', d: "Vérifiez vos normes, contrôles techniques, licences et étiquetages.", e: 'Qualifier · fiche produit' },
+  { q: '« Le fournisseur le moins cher n’est pas toujours l’achat le moins cher. »', d: "Pays d'origine, accord de libre-échange, délais, conditions de paiement : à prix égal, le choix du fournisseur change le coût final et le risque.", e: 'Optimiser · achat, origine et accords' },
+  { q: '« Votre importation coûte plus cher que votre facture. »', d: "Fret, assurance, change, droits et taxes, magasinage, financement : un coût rendu sous-estimé fausse la marge de toute une gamme.", e: 'Chiffrer · coût de revient' },
+  { q: '« L’Incoterm signé décide de qui paie quand le transport se passe mal. »', d: "Avarie, retard au port, surestaries, assurance insuffisante : un Incoterm mal choisi vous fait porter des frais et des risques que vous ne maîtrisez pas.", e: 'Exécuter · logistique et transport' },
+  { q: '« Payer un fournisseur étranger, c’est aussi une opération de change. »', d: "Domiciliation bancaire, documents exigés, délais de règlement, variation du cours : un paiement mal préparé retarde la commande et entame la marge.", e: 'Sécuriser · change et règlement' },
+  { q: '« Vous découvrez le changement quand la marchandise est déjà en route. »', d: "Loi de finances, cours du dirham, mesures commerciales, prix du fret : sans veille, la direction décide avec un temps de retard.", e: 'Pilotage · intelligence et stratégie' },
 ]
 
 const PILIERS = [
   { v: 'Savoir', p: "Le texte exact, à jour, pour chaque question : tarif, circulaires, code des douanes, CGI, change. IXP-Assistant cite sa source.", m: 'Bibliothèque · IXP-Assistant · glossaire FR/AR' },
-  { v: 'Chiffrer', p: "Le coût rendu réel de chaque importation, et l'argent récupérable grâce aux accords et aux régimes économiques.", m: 'Coût de revient · valeur en douane · comparateur de régimes' },
-  { v: 'Prouver', p: "Un dossier défendable, daté et sourcé, par produit et par opération. Un expert tranche quand l'enjeu le justifie.", m: 'Fiche produit · vérification DUM · avis d’expert' },
+  { v: 'Chiffrer', p: "Le coût rendu réel de chaque importation, et l'argent récupérable grâce aux accords et aux régimes économiques.", m: 'Coût de revient · coût de change · valeur des marchandises · comparateur de régimes' },
+  { v: 'Prouver', p: "Un dossier défendable, daté et sourcé, par produit et par opération. Un expert tranche quand l'enjeu le justifie.", m: 'Fiche produit · dossier d’importation · avis d’expert' },
 ]
 
 type ScanQ = { q: string; o: [string, number][] }
@@ -67,8 +69,8 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
   }
 
   return (
-    <SiteShell title="IXP-Import-eXPert : conformité et optimisation douanière au Maroc"
-      description="Qualifiez, chiffrez et sécurisez chaque importation avant d’initier vos opérations : classement SH, origine, coût rendu, documents et conformité, avec des experts douaniers.">
+    <SiteShell title="IXP-Import-eXPert : conformité et optimisation des opérations d’importation"
+      description="Qualifiez, chiffrez et sécurisez chaque importation avant d’initier vos opérations : produit, achat, classement SH, origine, coût rendu, logistique, change et conformité.">
 
       <IxpIntro />
       <IxpTicker />
@@ -83,7 +85,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
               <IxpLogo size={84} className="x-hero-logo" />
               <h1 className="x-h1 x-h1-sm">{accroche.avant} <em>{accroche.apres}</em>.</h1>
             </div>
-            <p className="x-lead">Code SH, origine, valeur, coût rendu, documents : Import-eXPert qualifie, chiffre et sécurise chaque importation avant le dédouanement, et vous remet un dossier défendable, chaque point appuyé sur le texte officiel.<br />Nos experts douaniers tranchent les cas difficiles.</p>
+            <p className="x-lead">Produit, fournisseur, coût rendu, transport, paiement, conformité : Import-eXPert qualifie, chiffre et sécurise chaque importation avant de passer commande, et vous remet un dossier défendable, chaque point appuyé sur le texte officiel.<br />Nos experts en processus d’importation tranchent les cas difficiles.</p>
             <div className="x-hero-cta">
               <Link href="/diagnostic" className="x-btn x-btn-dark">Mesurer mon exposition</Link>
             </div>
@@ -115,7 +117,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
                 ['Qualifier', 'Code SH 8482.10 justifié', 'Fait', true],
                 ['Optimiser', 'Origine UE, preuve à joindre', 'Fait', true],
                 ['Chiffrer', 'Coût rendu calculé', 'Fait', true],
-                ['Exécuter', 'Documents générés, DUM à vérifier', 'En cours', false],
+                ['Exécuter', 'Documents d’import et de transport à vérifier', 'En cours', false],
                 ['Sécuriser', 'Contrôle de conformité', 'À venir', false],
               ].map(([v, d, s, ok], i) => (
                 <li className="x-step" key={v as string}>
@@ -135,8 +137,8 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
         <div className="x-wrap">
           <div className="x-eyebrow">Le risque que vous ne voyez pas</div>
           <h2 className="x-h2">Une erreur d’importation ne se voit pas <em>le jour où la marchandise arrive</em>.</h2>
-          <p className="x-sub">Elle se révèle plus tard : lors d’un contrôle, d’un litige fournisseur ou d’une revue de marge, quand la marchandise est vendue depuis longtemps. Les erreurs d’assiette peuvent être réparées jusqu’à l’expiration de la quatrième année (Code des douanes, art. 99 bis).</p>
-          <p className="x-sub"><b>23,5 milliards de dirhams</b> : c’est le montant des redressements opérés en 2025 au titre de la sous-facturation, en hausse de 33 % sur un an (ADII, rapport d’activité 2025). Les contrôles s’appuient désormais sur l’analyse de risque et le contrôle a posteriori.</p>
+          <p className="x-sub">Elle se révèle plus tard : dans la marge, lors d’un litige fournisseur, d’un retard de livraison, d’un paiement bloqué ou d’un contrôle, quand la marchandise est vendue depuis longtemps. Une importation réussie se joue sur toute la chaîne : le produit, l’achat, le coût rendu, la logistique, le change et le paiement, la conformité.</p>
+          <p className="x-sub">Un exemple parmi d’autres : <b>23,5 milliards de dirhams</b> de redressements ont été opérés en 2025 au titre de la sous-facturation, en hausse de 33 % sur un an (ADII, rapport d’activité 2025).</p>
           <div className="x-pains">
             {DOULEURS.map(d => (
               <div className="x-pain" key={d.q}><q>{d.q}</q><p>{d.d}</p><span className="x-mono">{d.e}</span></div>
@@ -167,7 +169,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
           <div className="x-center" style={{ marginBottom: 40 }}>
             <div className="x-eyebrow">Notre différence</div>
             <h2 className="x-h2">IXP-Assistant répond à vos questions fréquentes. <em>Nos experts tranchent</em> les cas difficiles.</h2>
-            <p className="x-sub">Aucune IA ne signe un avis opposable. Import-eXPert combine une plateforme qui industrialise vos opérations et une équipe d’experts douaniers qui intervient, à l’acte, quand l’enjeu le justifie.</p>
+            <p className="x-sub">Aucune IA ne signe un avis opposable. Import-eXPert combine une plateforme qui industrialise vos opérations et une équipe d’experts en processus d’importation (douane, change, logistique, fiscalité) qui intervient, à l’acte, quand l’enjeu le justifie.</p>
           </div>
           <div className="x-two">
             <div className="x-panel">
@@ -263,7 +265,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
         <div className="x-wrap x-scan">
           <div>
             <div className="x-eyebrow">Aperçu en 1 minute · diagnostic complet en 15 minutes</div>
-            <h2 className="x-h2">Mesurez votre <em>exposition douanière</em>.</h2>
+            <h2 className="x-h2">Mesurez votre <em>exposition aux risques à l’import</em>.</h2>
             <p className="x-sub" style={{ marginBottom: 28 }}>Trois questions pour une première indication. Le diagnostic complet couvre ensuite huit domaines, chiffre votre exposition et produit un plan d’action que vous suivez dans le temps.</p>
             {SCAN.map((s, i) => (
               <div className="x-q" key={s.q}>
@@ -291,7 +293,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
         <div className="x-wrap x-two">
           <div className="x-panel">
             <div className="x-eyebrow">Baromètre 2026 · enquête ouverte</div>
-            <h3 className="x-h3">La friction douanière au Maroc, mesurée par ceux qui la vivent</h3>
+            <h3 className="x-h3">Mesurer les difficultés et frictions d’importation</h3>
             <p className="x-sub">Délais, erreurs de conformité, accords sous-exploités : une enquête menée auprès d’importateurs, de transitaires et de directions financières. Les réponses sont anonymes et les résultats publiés en ligne.</p>
             <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Link href="/enquete" className="x-btn x-btn-dark">Participer à l’enquête</Link><Link href="/barometre" className="x-btn x-btn-line">Voir les résultats</Link></div>
           </div>
