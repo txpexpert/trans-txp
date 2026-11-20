@@ -61,7 +61,7 @@ export const PROFILS_PAGES: Profil[] = [
       { t: 'Une marge faussée', d: 'Le coût rendu réel n’est pas celui retenu pour fixer les prix.' },
     ],
     gains: ['Une exposition chiffrée en dirhams pour le comité de direction', 'Le gain préférentiel mesuré, pas supposé', 'Un rapport mensuel qui arrive sans se connecter'],
-    activation: { t: 'Votre première victoire : l’argent laissé sur la table', d: 'Chargez l’export de vos déclarations : en une minute, les droits récupérables et les taux à risque. Vos montants restent dans votre navigateur.', href: '/calculateur-charges-import', cta: 'Analyser mes DUM' },
+    activation: { t: 'Votre première victoire : Bien calculer vos ratios coûts et profits', d: 'Chargez l’export de vos déclarations : en une minute, les droits récupérables et les taux à risque. Vos montants restent dans votre navigateur.', href: '/calculateur-charges-import', cta: 'Analyser mes DUM' },
     offre: { nom: 'Entreprise', pourquoi: 'Pilotage de l’exposition du groupe, rapport au comité de direction et revue annuelle par un expert.', href: '/contact?sujet=entreprise' },
     preuves: [{ href: '/barometre', t: 'Baromètre 2026' }, { href: '/diagnostic', t: 'Diagnostic de conformité' }],
   },
