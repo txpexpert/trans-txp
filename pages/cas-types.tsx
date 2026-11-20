@@ -10,7 +10,7 @@ export default function CasTypes() {
       <section className="x-hero" style={{ paddingBottom: 24 }}>
         <div className="x-wrap">
           <div className="x-eyebrow">Cas types</div>
-          <h1 className="x-h1" style={{ maxWidth: 900 }}>L’erreur ne se voit pas au dédouanement. <em>Elle se paie au contrôle.</em></h1>
+          <h1 className="x-h1" style={{ maxWidth: 900 }}>L’erreur qui ne se voit pas à l’arrivée de la marchandise <em>est source de litige lors d’un contrôle éventuel.</em></h1>
           <p className="x-lead">Trois situations fréquentes, expliquées pas à pas : ce qui s’est passé, le point qui coince, ce que cela coûte, et ce qu’Import-eXPert aurait signalé avant l’opération. Chaque mécanisme est rattaché au texte officiel qui le fonde.</p>
           <p className="x-disclaimer">Cas illustratifs construits à partir des textes : les entreprises, situations et montants sont fictifs. Les taux sont donnés à titre d’exemple ; le taux applicable dépend du code SH et de l’origine.</p>
         </div>

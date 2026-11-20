@@ -11,13 +11,13 @@ const ETAPES = [
 
 export default function APropos() {
   return (
-    <SiteShell title="À propos | IXP-Import-eXPert" description="IXP-Import-eXPert : plateforme marocaine de conformité et d’optimisation douanière, conçue et animée par des experts douaniers.">
+    <SiteShell title="À propos | IXP-Import-eXPert" description="IXP-Import-eXPert : plateforme marocaine de l’importation (conformité, coûts, logistique et change), conçue et animée par des experts de l’importation.">
       <section className="x-hero">
         <div className="x-wrap x-hero-grid">
           <div>
             <div className="x-eyebrow">À propos</div>
-            <h1 className="x-h1">La douane marocaine, <em>rendue lisible</em>.</h1>
-            <p className="x-lead">IXP-Import-eXPert est une plateforme de conformité et d’optimisation douanière dédiée aux importateurs, exportateurs, transitaires et cabinets de conseil au Maroc. Elle qualifie, chiffre et sécurise chaque opération avant qu’elle ne soit engagée.</p>
+            <h1 className="x-h1">La chronologie des opérations d’importation, <em>rendue lisible</em>.</h1>
+            <p className="x-lead">IXP-Import-eXPert est une plateforme de l’importation (conformité, coûts, logistique et change) dédiée aux importateurs, exportateurs, transitaires et cabinets de conseil au Maroc. Elle qualifie, chiffre et sécurise chaque opération avant qu’elle ne soit engagée.</p>
             <div className="x-hero-cta">
               <Link href="/plateforme" className="x-btn x-btn-dark">Découvrir la plateforme</Link>
               <Link href="/contact" className="x-btn x-btn-line">Nous contacter</Link>
@@ -50,7 +50,7 @@ export default function APropos() {
             <ul className="x-list">
               <li>Chaque réponse cite le texte qui la fonde.</li>
               <li>Des contenus datés et mis à jour au fil des circulaires et des lois de finances.</li>
-              <li>Des experts douaniers pour les dossiers qui sortent de l’ordinaire.</li>
+              <li>Des experts en processus d’importation pour les dossiers qui sortent de l’ordinaire.</li>
             </ul>
           </div>
           <div>

@@ -27,7 +27,7 @@ export const ESPACES: Espace[] = [
     slug: 'qualifier', num: '01', verb: 'Qualifier', title: 'Fiche produit', chain: true,
     question: "Qu'est-ce que je fais entrer, et qu'est-ce que cela implique ?",
     promise: "Un code SH justifié, et tout ce qu'il déclenche : documents, licences, marquage, marchandises dangereuses.",
-    livrable: 'Fiche produit douane, sourcée et datée',
+    livrable: 'Fiche produit import (classement, normes, licences, étiquetage), sourcée et datée',
     transmet: 'Code SH et contraintes réglementaires',
     tools: [
       { label: 'Classement tarifaire SH', path: '/modules/classement', desc: 'Codes SH à jour (LF 2026), recherche guidée et arbre RGI', tier: 'operateur' },
@@ -43,7 +43,7 @@ export const ESPACES: Espace[] = [
     slug: 'optimiser', num: '02', verb: 'Optimiser', title: 'Origine et régime', chain: true,
     question: 'Sous quelle origine et quel régime payer le moins, en toute légalité ?',
     promise: "Le bon accord de libre-échange, le bon régime économique, et la trajectoire de facilitation qui va avec.",
-    livrable: 'Stratégie de dédouanement argumentée',
+    livrable: 'Stratégie d’achat et d’importation argumentée (fournisseur, origine, régime)',
     transmet: 'Origine, régime et taux préférentiel',
     tools: [
       { label: 'Origine ALECA / UE', path: '/modules/origine-aleca', desc: 'Règles d’origine, preuves, cumul (PEM 2025)', tier: 'operateur' },
@@ -60,7 +60,7 @@ export const ESPACES: Espace[] = [
   {
     slug: 'chiffrer', num: '03', verb: 'Chiffrer', title: 'Coût rendu', chain: true,
     question: 'Combien me coûte réellement cette marchandise, rendue chez moi ?',
-    promise: "Droits, TVA, TIC, valeur en douane, Incoterm et change : un prix de revient import défendable devant votre direction financière.",
+    promise: "Fret, assurance, financement, droits et taxes, Incoterm et change : un prix de revient import défendable devant votre direction financière.",
     livrable: 'Prix de revient import (coût rendu)',
     transmet: 'Valeur, droits, taxes et Incoterm',
     tools: [
@@ -74,9 +74,9 @@ export const ESPACES: Espace[] = [
   },
   {
     slug: 'executer', num: '04', verb: 'Exécuter', title: "Dossier d'opération", chain: true,
-    question: 'Mon dossier est-il complet, et ma DUM est-elle juste ?',
-    promise: "Les documents de transit générés, la DUM vérifiée avant dépôt, l'opération suivie jusqu'à la sortie du port.",
-    livrable: 'Dossier documentaire et DUM vérifiée',
+    question: 'Ma marchandise arrive-t-elle à temps, au bon coût, avec les bons documents ?',
+    promise: "Les documents d'import et de transport préparés et vérifiés ; transport, documents et dédouanement suivis jusqu'à la livraison.",
+    livrable: 'Transport, documents et dédouanement suivis jusqu’à la livraison',
     transmet: "Historique complet de l'opération",
     tools: [
       { label: 'Régimes & Procédures à l’import', path: '/modules/procedures-process', desc: 'Codes de référence, parcours de dédouanement, procédures par flux', tier: 'operateur' },
@@ -108,12 +108,12 @@ export const ESPACES: Espace[] = [
   {
     slug: 'bibliotheque', num: '—', verb: 'Bibliothèque', title: 'Le socle réglementaire', chain: false,
     question: 'Où est le texte exact, et quelle est sa portée ?',
-    promise: "Tout le corpus douanier, fiscal et de change marocain, consultable en un seul endroit et cité par IXP-Assistant.",
+    promise: "Tous les textes de l'importation : commerce extérieur, change, fiscalité, douane, normes, consultables en un seul endroit et cités par IXP-Assistant.",
     livrable: 'Référence opposable : texte, article, circulaire',
     transmet: 'Sources citées dans chaque espace',
     tools: [
-      { label: 'FAQ douanière', path: '/modules/faq', desc: '173 questions, réponses sourcées', tier: 'decouverte' },
-      { label: 'Glossaire FR/AR', path: '/modules/glossaire-douanier', desc: '1 081 termes douaniers', tier: 'decouverte' },
+      { label: 'Questions / réponses utiles', path: '/modules/faq', desc: '173 questions, réponses sourcées', tier: 'decouverte' },
+      { label: 'Glossaire FR/AR', path: '/modules/glossaire-douanier', desc: 'Recueil global de terminologies d’import (1 081 termes)', tier: 'decouverte' },
     ],
   },
   {
@@ -140,10 +140,10 @@ export const TIER_LABEL: Record<Tool['tier'], string> = {
 
 export const PROOFS = [
   { n: 'SH', l: 'codes à jour' },
-  { n: '366+', l: 'circulaires ADII indexées' },
+  { n: 'Corpus', l: 'textes réglementaires et procéduraux d’import' },
   { n: '9', l: 'régimes comparés' },
   { n: '1 081', l: 'termes FR / AR' },
-  { n: '18 ans', l: "d'expertise douanière" },
+  { n: '18 ans', l: "d'expertise en import et commerce international" },
 ]
 
 export const PROFILS = [
@@ -159,7 +159,7 @@ export const PROFILS = [
   },
   {
     id: 'industriel', titre: 'Importateurs industriels',
-    accroche: 'Sécurisez vos flux avant que l’ADII ne les examine.',
+    accroche: 'Sécurisez vos importations avant qu’un problème ne les bloque.',
     points: [
       'Un référentiel produit audité, opposable en cas de contrôle a posteriori',
       'Régimes économiques et origine préférentielle exploités au maximum',

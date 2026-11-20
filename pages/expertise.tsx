@@ -7,12 +7,12 @@ import { KITS_PRATIQUES, kitHref, kitCompletHref, nbKitsEnLettres } from '../lib
 
 export default function Expertise() {
   return (
-    <SiteShell title="Expertise et services | IXP-Import-eXPert" description="Import Engineering : renseignements, avis motivés et accompagnement de dossiers par des experts douaniers.">
+    <SiteShell title="Expertise et services | IXP-Import-eXPert" description="Import Engineering : renseignements, avis motivés et accompagnement de dossiers par des experts en processus d’importation.">
       <section className="x-hero">
         <div className="x-wrap x-hero-grid">
           <div>
             <div className="x-eyebrow">Import Engineering</div>
-            <h1 className="x-h1">Derrière la plateforme, <em>des experts douaniers</em>.</h1>
+            <h1 className="x-h1">Derrière la plateforme, <em>des experts en processus d’importation</em>.</h1>
             <p className="x-lead">Import-eXPert est né du terrain : dix-huit ans de pratique douanière, une méthode d’amélioration continue issue du Lean Six Sigma, et des ouvrages de référence sur l’ingénierie douanière et les guerres tarifaires. Le logiciel industrialise ce savoir ; l’équipe reste disponible quand un dossier sort de l’ordinaire.</p>
           </div>
           <div className="x-panel">
@@ -48,7 +48,7 @@ export default function Expertise() {
             </a>
             <a className="x-tool" href="#conseil" style={{ borderTop: '3px solid #1A3A9A' }}>
               <b>Conseil personnalisé</b>
-              <p>Un expert douanier répond à votre question ou étudie votre cas : opérations complexes, litiges, classement, origine ou valeur.</p>
+              <p>Un expert répond à votre question ou étudie votre cas : achat, change, logistique, douane, litiges.</p>
               <span className="x-tier">Poser ma question →</span>
             </a>
           </div>

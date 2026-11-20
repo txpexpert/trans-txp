@@ -45,6 +45,8 @@ const nextConfig = {
       // Refonte 2026 : la grille tarifaire vit désormais sur /tarifs.
       // Temporaire (302) tant que la refonte n'est pas validée.
       { source: '/abonnements', destination: '/tarifs', permanent: false },
+      // Calculateur renommé « Calculateur des charges à l’import » (nov. 2026).
+      { source: '/calculateur-dum', destination: '/calculateur-charges-import', permanent: true },
       // Audit Express retiré (doublon du Diagnostic de conformité, nov. 2026).
       { source: '/modules/audit-express', destination: '/diagnostic', permanent: false },
       // Contentieux et litiges remplacé par la page Risques et litiges (nov. 2026).

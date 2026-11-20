@@ -36,8 +36,8 @@ const DOULEURS = [
 
 const PILIERS = [
   { v: 'Savoir', p: "Le texte exact, à jour, pour chaque question : tarif, circulaires, code des douanes, CGI, change. IXP-Assistant cite sa source.", m: 'Bibliothèque · IXP-Assistant · glossaire FR/AR' },
-  { v: 'Chiffrer', p: "Le coût rendu réel de chaque importation, et l'argent récupérable grâce aux accords et aux régimes économiques.", m: 'Coût de revient · valeur en douane · comparateur de régimes' },
-  { v: 'Prouver', p: "Un dossier défendable, daté et sourcé, par produit et par opération. Un expert tranche quand l'enjeu le justifie.", m: 'Fiche produit · vérification DUM · avis d’expert' },
+  { v: 'Chiffrer', p: "Le coût rendu réel de chaque importation, et l'argent récupérable grâce aux accords et aux régimes économiques.", m: 'Coût de revient · coût de change · valeur des marchandises · comparateur de régimes' },
+  { v: 'Prouver', p: "Un dossier défendable, daté et sourcé, par produit et par opération. Un expert tranche quand l'enjeu le justifie.", m: 'Fiche produit · dossier d’importation · avis d’expert' },
 ]
 
 type ScanQ = { q: string; o: [string, number][] }
@@ -69,8 +69,8 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
   }
 
   return (
-    <SiteShell title="IXP-Import-eXPert : conformité et optimisation douanière au Maroc"
-      description="Qualifiez, chiffrez et sécurisez chaque importation avant d’initier vos opérations : classement SH, origine, coût rendu, documents et conformité, avec des experts douaniers.">
+    <SiteShell title="IXP-Import-eXPert : conformité et optimisation des opérations d’importation"
+      description="Qualifiez, chiffrez et sécurisez chaque importation avant d’initier vos opérations : produit, achat, classement SH, origine, coût rendu, logistique, change et conformité.">
 
       <IxpIntro />
       <IxpTicker />
@@ -85,7 +85,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
               <IxpLogo size={84} className="x-hero-logo" />
               <h1 className="x-h1 x-h1-sm">{accroche.avant} <em>{accroche.apres}</em>.</h1>
             </div>
-            <p className="x-lead">Code SH, origine, valeur, coût rendu, documents : Import-eXPert qualifie, chiffre et sécurise chaque importation avant le dédouanement, et vous remet un dossier défendable, chaque point appuyé sur le texte officiel.<br />Nos experts douaniers tranchent les cas difficiles.</p>
+            <p className="x-lead">Produit, fournisseur, coût rendu, transport, paiement, conformité : Import-eXPert qualifie, chiffre et sécurise chaque importation avant de passer commande, et vous remet un dossier défendable, chaque point appuyé sur le texte officiel.<br />Nos experts en processus d’importation tranchent les cas difficiles.</p>
             <div className="x-hero-cta">
               <Link href="/diagnostic" className="x-btn x-btn-dark">Mesurer mon exposition</Link>
             </div>
@@ -117,7 +117,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
                 ['Qualifier', 'Code SH 8482.10 justifié', 'Fait', true],
                 ['Optimiser', 'Origine UE, preuve à joindre', 'Fait', true],
                 ['Chiffrer', 'Coût rendu calculé', 'Fait', true],
-                ['Exécuter', 'Documents générés, DUM à vérifier', 'En cours', false],
+                ['Exécuter', 'Documents d’import et de transport à vérifier', 'En cours', false],
                 ['Sécuriser', 'Contrôle de conformité', 'À venir', false],
               ].map(([v, d, s, ok], i) => (
                 <li className="x-step" key={v as string}>
@@ -169,7 +169,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
           <div className="x-center" style={{ marginBottom: 40 }}>
             <div className="x-eyebrow">Notre différence</div>
             <h2 className="x-h2">IXP-Assistant répond à vos questions fréquentes. <em>Nos experts tranchent</em> les cas difficiles.</h2>
-            <p className="x-sub">Aucune IA ne signe un avis opposable. Import-eXPert combine une plateforme qui industrialise vos opérations et une équipe d’experts douaniers qui intervient, à l’acte, quand l’enjeu le justifie.</p>
+            <p className="x-sub">Aucune IA ne signe un avis opposable. Import-eXPert combine une plateforme qui industrialise vos opérations et une équipe d’experts en processus d’importation (douane, change, logistique, fiscalité) qui intervient, à l’acte, quand l’enjeu le justifie.</p>
           </div>
           <div className="x-two">
             <div className="x-panel">
@@ -265,7 +265,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
         <div className="x-wrap x-scan">
           <div>
             <div className="x-eyebrow">Aperçu en 1 minute · diagnostic complet en 15 minutes</div>
-            <h2 className="x-h2">Mesurez votre <em>exposition douanière</em>.</h2>
+            <h2 className="x-h2">Mesurez votre <em>exposition aux risques à l’import</em>.</h2>
             <p className="x-sub" style={{ marginBottom: 28 }}>Trois questions pour une première indication. Le diagnostic complet couvre ensuite huit domaines, chiffre votre exposition et produit un plan d’action que vous suivez dans le temps.</p>
             {SCAN.map((s, i) => (
               <div className="x-q" key={s.q}>
@@ -293,7 +293,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
         <div className="x-wrap x-two">
           <div className="x-panel">
             <div className="x-eyebrow">Baromètre 2026 · enquête ouverte</div>
-            <h3 className="x-h3">La friction douanière au Maroc, mesurée par ceux qui la vivent</h3>
+            <h3 className="x-h3">Mesurer les difficultés et frictions d’importation</h3>
             <p className="x-sub">Délais, erreurs de conformité, accords sous-exploités : une enquête menée auprès d’importateurs, de transitaires et de directions financières. Les réponses sont anonymes et les résultats publiés en ligne.</p>
             <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Link href="/enquete" className="x-btn x-btn-dark">Participer à l’enquête</Link><Link href="/barometre" className="x-btn x-btn-line">Voir les résultats</Link></div>
           </div>
