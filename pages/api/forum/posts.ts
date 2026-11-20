@@ -9,7 +9,10 @@ import { controleForum } from '../../../lib/forumFiltre'
 
 export const config = { api: { bodyParser: false }, maxDuration: 60 }
 const MAX_JOUR = 400
-const USERS = 'users(prenom, nom, societe, raison_sociale, role)'
+// Relations explicites : forum_jaime / forum_signalements créent d'autres liens vers users (ambiguïté PGRST201)
+const CHAMPS = 'prenom, nom, societe, raison_sociale, role'
+const USERS = `users!forum_posts_user_id_fkey(${CHAMPS})`
+const USERS_C = `users!forum_commentaires_user_id_fkey(${CHAMPS})`
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Cache-Control', 'no-store')
@@ -30,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const ids = lignes.map(p => p.id)
     const [{ data: mesJaime }, { data: cs }] = ids.length ? await Promise.all([
       db.from('forum_jaime').select('post_id').eq('user_id', m.id).in('post_id', ids),
-      db.from('forum_commentaires').select(`id, post_id, user_id, contenu, pieces, created_at, ${USERS}`)
+      db.from('forum_commentaires').select(`id, post_id, user_id, contenu, pieces, created_at, ${USERS_C}`)
         .in('post_id', ids).eq('statut', 'publie').order('created_at').limit(2000),
     ]) : [{ data: [] as any[] }, { data: [] as any[] }]
     const aime = new Set((mesJaime ?? []).map((j: any) => j.post_id))

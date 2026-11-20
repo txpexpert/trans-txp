@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       db.from('forum_signalements').select(`id, motif, created_at, post_id, commentaire_id, ${USERS},
         forum_posts(id, titre, contenu, statut), forum_commentaires(id, contenu, statut, post_id)`)
         .is('traite_at', null).order('created_at', { ascending: false }).limit(100),
-      db.from('forum_posts').select(`id, titre, statut, epingle, nb_commentaires, nb_jaime, created_at, ${USERS}`)
+      db.from('forum_posts').select(`id, titre, statut, epingle, nb_commentaires, nb_jaime, created_at, users!forum_posts_user_id_fkey(email, prenom, nom, societe)`)
         .order('created_at', { ascending: false }).limit(50),
     ])
     return res.status(200).json({ signalements: sig.data ?? [], posts: posts.data ?? [] })
