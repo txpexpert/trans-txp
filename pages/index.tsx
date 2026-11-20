@@ -27,8 +27,8 @@ const DOULEURS = [
   { q: '« Votre DUM est passée. Cela ne prouve pas que votre code est juste. »', d: "Un classement repris par habitude passe le dédouanement, puis se discute lors d'un contrôle a posteriori, sur plusieurs années d'opérations.", e: 'Qualifier · fiche produit justifiée' },
   { q: '« La douane ne contrôle pas votre facture. Elle contrôle votre valeur. »', d: "Redevances, commissions, emballage, transport jusqu'à la frontière : ce qui manque sur la facture manque aussi dans la valeur déclarée.", e: 'Chiffrer · valeur en douane' },
   { q: '« La préférence est accordée au dédouanement. Elle se vérifie après. »', d: "Une preuve d'origine incomplète ou mal libellée fait tomber le droit préférentiel. Les droits du tarif commun redeviennent exigibles.", e: 'Optimiser · origine et accords' },
-  { q: '« Votre régime économique est une dette en sursis. »', d: "Admission temporaire, perfectionnement actif, échange standard : un délai d'apurement manqué transforme la suspension en droits à payer.", e: 'Optimiser · régimes économiques' },
   { q: '« Votre importation coûte plus cher que votre facture. »', d: "TIC, change, magasinage, surestaries : un coût rendu sous-estimé fausse la marge de toute une gamme.", e: 'Chiffrer · coût de revient' },
+  { q: '« Vous découvrez la hausse de droits sur la DUM suivante. »', d: "Loi de finances, mesure de sauvegarde, antidumping, nouvel accord : sans veille, la direction apprend le changement quand la marchandise est déjà en route.", e: 'Pilotage · intelligence et stratégie' },
   { q: '« Si votre responsable import part demain, que reste-t-il ? »', d: "Sans dossier tracé, le savoir repose sur une personne. Au contrôle, il faut pourtant justifier chaque choix.", e: 'Sécuriser · dossier daté et sourcé' },
 ]
 
