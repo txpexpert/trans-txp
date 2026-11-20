@@ -98,7 +98,7 @@ export default function PagePosition({ p }: { p: Position }) {
             <p><b>Votre produit relève de la position {p.sh4} ?</b> Établissez sa fiche produit (code exact, décision applicable, origine, documents) et suivez chaque nouveau texte qui la touche.</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <Link href="/fiches/nouvelle" className="x-btn x-btn-gold">Créer la fiche produit</Link>
-              <Link href="/calculateur-charges-import" className="x-btn x-btn-line" style={{ color: '#fff', borderColor: 'rgba(255,255,255,.4)' }}>Argent laissé sur la table</Link>
+              <Link href="/calculateur-charges-import" className="x-btn x-btn-line" style={{ color: '#fff', borderColor: 'rgba(255,255,255,.4)' }}>Calculer vos ratios coûts et profits</Link>
             </div>
           </div>
           <p className="x-note">Informations établies à partir du tarif des droits d’importation 2026 et des textes publiés par l’administration, mises à jour chaque jour. Document d’aide à la décision : les données finales sont celles édictées par les autorités compétentes.</p>

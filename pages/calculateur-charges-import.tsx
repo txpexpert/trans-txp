@@ -81,7 +81,7 @@ export default function CalculateurDum() {
       <section className="x-hero" style={{ paddingBottom: 18 }}>
         <div className="x-wrap">
           <div className="x-eyebrow">Calculateur · Gratuit</div>
-          <h1 className="x-h1 x-h1-sm">L’argent laissé <em>sur la table</em></h1>
+          <h1 className="x-h1 x-h1-sm">Calculer vos ratios <em>coûts et profits</em></h1>
           <p className="x-lead">Chargez l’export de vos déclarations (DUM) : en une minute, vous savez combien de droits d’importation vous avez payés alors qu’un accord préférentiel pouvait les supprimer, et quelles lignes présentent un taux à risque.</p>
           <p className="x-disclaimer">Vos fichiers restent dans votre navigateur : seuls les codes SH sont envoyés, pour lire leur taux dans le tarif 2026.</p>
         </div>
