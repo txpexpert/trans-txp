@@ -487,6 +487,15 @@ export default function FaqPage() {
       title="Espace Expert Opérateurs"
       sub="Vos opérations, nos réponses sur mesure. · 269 questions & réponses · Droit douanier 2025">
 
+      {/* Couleurs de texte foncées : dans la refonte, --bd vaut un beige clair (couleur de bordure)
+          et --inks / --inkm sont trop pâles, ce qui rendait la page à peine lisible. */}
+      <div style={{
+        '--bd': '#111111',
+        '--inks': '#1A1A1A',
+        '--inkm': '#3A3A3A',
+        color: '#111111',
+      } as React.CSSProperties}>
+
       {/* ── STATS ── */}
       <div className="info-grid" style={{ marginBottom: '1.5rem' }}>
         <div className="istat"><div className="istat-n">269</div><div className="istat-l">Questions indexées</div></div>
@@ -738,6 +747,8 @@ export default function FaqPage() {
       }}>
         <span>Espace Expert Opérateurs · Document sous droit d'auteur · Usage réservé aux abonnés Import-eXPert</span>
         <span>Code des douanes 2022 · Loi de Finances 2025</span>
+      </div>
+
       </div>
 
     </ModuleLayout>
