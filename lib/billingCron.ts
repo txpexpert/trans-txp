@@ -12,6 +12,7 @@
 // tâche le même jour ne renvoie rien.
 // Les comptes generaladmin ne sont jamais concernés.
 // ─────────────────────────────────────────────────────────────────────────────
+import { emettrePremierAbonnement } from './offres'
 import { supabaseAdmin } from './supabaseAdmin'
 import {
   issueProforma, loadSettings, emailReminder, emailTrialEnded, emailProforma,
@@ -56,8 +57,9 @@ export async function runBillingCron(base: string) {
     if (!id) continue
     try {
       if (u.plan_souhaite === 'pro' || u.plan_souhaite === 'premium') {
-        const r = await issueProforma({ userId: u.id, plan: u.plan_souhaite, actor: 'systeme', origin: 'fin_essai', reuse: true, base })
-        await done(id, r.emailed, r.emailError, r.doc.id)
+        // Premier abonnement : code de réduction et packs experts déduits (lib/offres.ts)
+        const r = await emettrePremierAbonnement({ userId: u.id, plan: u.plan_souhaite, actor: 'systeme', origin: 'fin_essai', base })
+        await done(id, r.emailed, (r as any).emailError, r.doc?.id)
       } else {
         const r = await emailTrialEnded(u, s, base)
         await done(id, r.ok, r.ok ? undefined : String((r as any).error))

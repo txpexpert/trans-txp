@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import VoirMotDePasse from '../../components/VoirMotDePasse'
 
 const PROFILS = [
   { value: 'transitaire',         label: 'Transitaire / Agent en douane' },
@@ -185,6 +186,7 @@ export default function Register() {
                   <input className="inp" type="password" placeholder="••••••••" value={form.confirm} onChange={set('confirm')} autoComplete="new-password" />
                 </div>
               </div>
+              <VoirMotDePasse style={{ marginTop: '-.4rem' }} />
 
               {/* Indicateur force mot de passe */}
               {form.password.length > 0 && (

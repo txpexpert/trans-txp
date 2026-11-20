@@ -7,6 +7,7 @@
 
 import { useState } from 'react'
 import type { GetServerSideProps } from 'next'
+import VoirMotDePasse from '../../components/VoirMotDePasse'
 
 interface Props {
   redirect: string
@@ -95,6 +96,7 @@ export default function AppLogin({ redirect }: Props) {
               required
               style={{ width: '100%', padding: '10px 12px', border: '1px solid #ddd', borderRadius: 6, fontSize: 14, boxSizing: 'border-box' }}
             />
+            <VoirMotDePasse style={{ margin: '8px 0 0' }} />
           </div>
 
           <button
@@ -108,6 +110,9 @@ export default function AppLogin({ redirect }: Props) {
           >
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
+          <div style={{ marginTop: 12, textAlign: 'center', fontSize: 13 }}>
+            <a href="/auth/mot-de-passe-oublie" style={{ color: '#153E82' }}>Mot de passe oublié ?</a>
+          </div>
         </form>
       </div>
     </div>

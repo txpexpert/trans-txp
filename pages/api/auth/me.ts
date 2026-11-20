@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // lit que le cookie, voit alors aussi le nouveau plan.
   const { data: dbUser, error: dbError } = await supabase
     .from('users')
-    .select('role, current_session_id, numero_abonne, plan, statut, trial_ends_at, plan_ends_at')
+    .select('role, current_session_id, numero_abonne, plan, statut, trial_ends_at, plan_ends_at, prenom, nom, societe')
     .eq('email', payload.email.toLowerCase())
     .single()
 
@@ -49,7 +49,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (dbUser?.current_session_id && dbUser.current_session_id !== payload.sessionId) {
-    return res.status(401).json({ error: 'Session invalidée — une connexion plus récente a eu lieu sur ce compte.' })
+    // Le cookie périmé est effacé : sinon le middleware, qui ne lit que le cookie,
+    // laisserait l'accès aux pages réservées alors que l'en-tête affiche « Connexion ».
+    res.setHeader('Set-Cookie', clearUserCookie())
+    return res.status(401).json({ code: 'SESSION_REPLACED', error: 'Session invalidée — une connexion plus récente a eu lieu sur ce compte.' })
   }
 
   const role: string =
@@ -84,6 +87,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     role,
     numero:    dbUser?.numero_abonne ?? null,
     email:     payload.email,
+    prenom:    dbUser?.prenom ?? null,
+    nom:       dbUser?.nom ?? null,
+    societe:   dbUser?.societe ?? null,
     plan,
     statut,
     trialEnds: trialEnds ?? null,

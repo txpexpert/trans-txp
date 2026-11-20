@@ -6,9 +6,10 @@
 //
 // ── VARIABLES D'ENVIRONNEMENT REQUISES ──────────────────────────────────────
 //   RESEND_API_KEY   — clé API Resend
-//   RESEND_FROM      — adresse d'expédition, ex: "Import-eXPert <no-reply@import-ia.com>"
+//   RESEND_REPLY_TO  — adresse de réponse par défaut (facultatif)
+//   RESEND_FROM      — adresse d'expédition, ex: "Import-eXPert <no-reply@import-expert.ma>"
 //                      Doit être un domaine vérifié dans Resend (pas gmail.com etc.)
-//   NEXT_PUBLIC_SITE_URL — URL de base du site, ex: "https://import-ia.com"
+//   NEXT_PUBLIC_SITE_URL — URL de base du site, ex: "https://import-expert.ma" (démo : https://demo.import-ia.ma)
 //                      (utilisée pour construire le lien de vérification)
 //   RESEND_FROM_BILLING — expéditeur des documents de facturation (facultatif),
 //                      ex: "RIGORIS LEX — Abonnements <abonnement@rigorislex.ma>"
@@ -17,40 +18,60 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const RESEND_API = 'https://api.resend.com/emails'
+// Expéditeur par défaut : domaine import-expert.ma, vérifié dans Resend le 12/11/2026
+const FROM_DEFAUT = 'Import-eXPert <no-reply@import-expert.ma>'
+const DELAI_MS = 10_000
 
+/**
+ * Envoi via l'API Resend. Ne lève jamais d'exception : renvoie { ok, id? , error? }.
+ * (2026-11-14) délai maximal de 10 s, erreurs réseau capturées, une nouvelle
+ * tentative sur erreur temporaire (429 / 5xx), identifiant Resend journalisé.
+ */
 export async function sendEmail({ to, subject, html, from, replyTo, headers }: {
   to: string | string[]; subject: string; html: string; from?: string; replyTo?: string; headers?: Record<string, string>
-}) {
+}): Promise<{ ok: boolean; id?: string; error?: string }> {
   if (!process.env.RESEND_API_KEY) {
-    console.error('[email] RESEND_API_KEY manquante — email non envoyé (to:', to, ')')
+    console.error('[email] RESEND_API_KEY manquante — email non envoyé')
     return { ok: false, error: 'Service email non configuré' }
   }
 
-  const res = await fetch(RESEND_API, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: from || process.env.RESEND_FROM || 'Import-eXPert <no-reply@import-ia.com>',
-      to,
-      subject,
-      html,
-      ...(replyTo ? { reply_to: replyTo } : {}),
-      ...(headers ? { headers } : {}),
-    }),
+  const body = JSON.stringify({
+    from: from || process.env.RESEND_FROM || FROM_DEFAUT,
+    to,
+    subject,
+    html,
+    // Adresse de réponse : celle de l'appel, sinon RESEND_REPLY_TO (réponses des clients vers l'équipe)
+    ...((replyTo || process.env.RESEND_REPLY_TO) ? { reply_to: replyTo || process.env.RESEND_REPLY_TO } : {}),
+    ...(headers ? { headers } : {}),
   })
 
-  if (!res.ok) {
-    const err = await res.text()
-    console.error('[email] Échec envoi Resend:', err)
-    return { ok: false, error: err }
+  for (let essai = 1; essai <= 2; essai++) {
+    try {
+      const res = await fetch(RESEND_API, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body,
+        signal: AbortSignal.timeout(DELAI_MS),
+      })
+      if (res.ok) {
+        const data = await res.json().catch(() => ({} as any))
+        return { ok: true, id: data?.id }
+      }
+      const err = await res.text().catch(() => String(res.status))
+      const temporaire = res.status === 429 || res.status >= 500
+      console.error(`[email] Échec envoi Resend (HTTP ${res.status}, essai ${essai}) : ${err.slice(0, 300)}`)
+      if (!temporaire || essai === 2) return { ok: false, error: err }
+    } catch (e: any) {
+      console.error(`[email] Erreur réseau Resend (essai ${essai}) : ${e?.name || ''} ${e?.message || e}`)
+      if (essai === 2) return { ok: false, error: 'Service email injoignable' }
+    }
+    await new Promise(r => setTimeout(r, 800))
   }
-  return { ok: true }
+  return { ok: false, error: 'Envoi impossible' }
 }
 
-export async function sendVerificationEmail(to: string, prenom: string, token: string) {
+export async function sendVerificationEmail(to: string, prenom: string, token: string, langue: 'fr' | 'ar' = 'fr') {
+  if (langue === 'ar') return sendVerificationEmailAr(to, prenom, token)
   const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/verify-email?token=${token}`
 
   const html = `
@@ -83,6 +104,43 @@ export async function sendVerificationEmail(to: string, prenom: string, token: s
   `
 
   return sendEmail({ to, subject: 'Confirmez votre email — Import-eXPert', html })
+}
+
+// Version arabe : inscription faite depuis l'interface arabe (/ar/inscription) ou langue arabe choisie
+async function sendVerificationEmailAr(to: string, prenom: string, token: string) {
+  const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/verify-email?token=${token}&langue=ar`
+  const esc = (v: string) => v.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!))
+  const html = `
+    <div dir="rtl" lang="ar" style="font-family: 'Noto Sans Arabic', Tahoma, Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #0A0A0A; text-align: right;">
+      <div style="background: #0A0A0A; padding: 20px; text-align: center;">
+        <span dir="ltr" style="color: #E8C97A; font-family: Georgia, serif; font-size: 20px; letter-spacing: -0.5px;">IMPORT-EXPERT</span>
+      </div>
+      <div style="padding: 32px 24px;">
+        <h1 style="font-size: 21px; font-weight: 600; margin: 0 0 16px;">مرحبًا${prenom ? ' ' + esc(prenom) : ''}،</h1>
+        <p style="font-size: 15px; line-height: 1.9; color: #3A3530;">
+          شكرًا على تسجيلكم في Import-eXPert. لتفعيل حسابكم، أكّدوا عنوان بريدكم الإلكتروني بالضغط على الزر أسفله.
+        </p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${verifyUrl}" style="display: inline-block; background: #0A0A0A; color: #E8C97A; padding: 14px 28px; text-decoration: none; font-size: 15px;">
+            تأكيد بريدي الإلكتروني
+          </a>
+        </div>
+        <p style="font-size: 13px; color: #8A8078; line-height: 1.8;">
+          هذا الرابط صالح لمدة 48 ساعة. إذا لم تقوموا بهذا التسجيل، يمكنكم تجاهل هذه الرسالة.
+        </p>
+        <p style="font-size: 12px; color: #8A8078; line-height: 1.8;">
+          أو انسخوا هذا الرابط في متصفحكم:<br><span dir="ltr" style="word-break: break-all;">${verifyUrl}</span>
+        </p>
+        <p style="font-size: 12px; color: #8A8078; line-height: 1.8;">
+          تبقى واجهة الحساب حاليًا باللغة الفرنسية، ويجيبكم خبراؤنا بالعربية أو بالفرنسية حسب اختياركم.
+        </p>
+      </div>
+      <div style="border-top: 1px solid #E8DFC8; padding: 16px 24px; font-size: 11px; color: #8A8078;">
+        <span dir="ltr">© 2026 Import-eXPert</span>
+      </div>
+    </div>
+  `
+  return sendEmail({ to, subject: 'أكّدوا بريدكم الإلكتروني — Import-eXPert', html })
 }
 
 // ── Administrateurs (2026-11-01) ─────────────────────────────────────────────
@@ -125,4 +183,51 @@ export async function sendAdminResetEmail(to: string, url: string) {
       'Une réinitialisation de votre mot de passe administrateur a été demandée. Cliquez ci-dessous pour en choisir un nouveau.',
       url, 'CHOISIR UN MOT DE PASSE'),
   })
+}
+
+// Réinitialisation du mot de passe d'un compte client (2026-11-14)
+export async function sendPasswordResetEmail(to: string, url: string, langue: 'fr' | 'ar' = 'fr') {
+  if (langue === 'ar') return sendPasswordResetEmailAr(to, url)
+  const html = `
+    <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #0A0A0A;">
+      <div style="background: #0C2D5C; padding: 20px; text-align: center;">
+        <span style="color: #E8C97A; font-family: Georgia, serif; font-size: 20px;">IMPORT-EXPERT</span>
+      </div>
+      <div style="padding: 32px 24px;">
+        <h1 style="font-size: 20px; font-weight: 500; margin: 0 0 16px;">Nouveau mot de passe</h1>
+        <p style="font-size: 14px; line-height: 1.6; color: #3A3530;">Une réinitialisation du mot de passe de votre compte Import-eXPert a été demandée. Cliquez ci-dessous pour en choisir un nouveau.</p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${url}" style="display: inline-block; background: #0C2D5C; color: #E8C97A; padding: 14px 28px; text-decoration: none; font-size: 13px; letter-spacing: 0.08em;">CHOISIR UN MOT DE PASSE</a>
+        </div>
+        <p style="font-size: 12px; color: #6E6A62; line-height: 1.6;">
+          Ce lien est personnel, valable une heure et utilisable une seule fois. Si vous n'êtes pas à l'origine de cette demande, ignorez cet email : votre mot de passe actuel reste valable.
+        </p>
+        <p style="font-size: 12px; color: #6E6A62; word-break: break-all;">Ou copiez ce lien dans votre navigateur : ${url}</p>
+      </div>
+    </div>`
+  return sendEmail({ to, subject: 'Réinitialisation de votre mot de passe — Import-eXPert', html })
+}
+
+// Version arabe : demande faite depuis l'interface arabe (2026-11-14)
+async function sendPasswordResetEmailAr(to: string, url: string) {
+  const html = `
+    <div dir="rtl" lang="ar" style="font-family: 'Noto Sans Arabic', Tahoma, Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #0A0A0A; text-align: right;">
+      <div style="background: #0C2D5C; padding: 20px; text-align: center;">
+        <span dir="ltr" style="color: #E8C97A; font-family: Georgia, serif; font-size: 20px;">IMPORT-EXPERT</span>
+      </div>
+      <div style="padding: 32px 24px;">
+        <h1 style="font-size: 21px; font-weight: 600; margin: 0 0 16px;">كلمة مرور جديدة</h1>
+        <p style="font-size: 15px; line-height: 1.9; color: #3A3530;">تم طلب إعادة تعيين كلمة المرور الخاصة بحسابكم في Import-eXPert. اضغطوا على الزر أسفله لاختيار كلمة مرور جديدة.</p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="${url}" style="display: inline-block; background: #0C2D5C; color: #E8C97A; padding: 14px 28px; text-decoration: none; font-size: 15px;">اختيار كلمة مرور جديدة</a>
+        </div>
+        <p style="font-size: 13px; color: #6E6A62; line-height: 1.8;">
+          هذا الرابط شخصي، صالح لمدة ساعة واحدة ويُستعمل مرة واحدة فقط. إذا لم تقوموا بهذا الطلب، يمكنكم تجاهل هذه الرسالة: تبقى كلمة المرور الحالية صالحة.
+        </p>
+        <p style="font-size: 12px; color: #6E6A62; line-height: 1.8;">
+          أو انسخوا هذا الرابط في متصفحكم:<br><span dir="ltr" style="word-break: break-all;">${url}</span>
+        </p>
+      </div>
+    </div>`
+  return sendEmail({ to, subject: 'إعادة تعيين كلمة المرور — Import-eXPert', html })
 }

@@ -127,10 +127,10 @@ export function canAccessModule(
   moduleCode:  string,
   trialEnds?:  number
 ): boolean {
-  if (statut === 'suspended' || statut === 'expired') return false
-  if (statut === 'trial' && trialEnds && Date.now() > trialEnds) return false
-
-  const perms = MODULE_ACCESS[plan] ?? []
+  if (statut === 'suspended') return false
+  // Essai terminé ou abonnement échu : le compte garde les droits de l'offre Découverte
+  const echu = statut === 'expired' || (statut === 'trial' && !!trialEnds && Date.now() > trialEnds)
+  const perms = (echu ? MODULE_ACCESS.free : MODULE_ACCESS[plan]) ?? []
   if (perms.includes('*')) return true
   return perms.some(p => moduleCode === p || moduleCode.startsWith(p + '/'))
 }

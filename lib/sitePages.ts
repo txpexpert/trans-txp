@@ -27,7 +27,7 @@ export type SitePage = {
 }
 
 export const SITE_PAGES: SitePage[] = [
-  { slug: 'classement', path: '/modules/classement', title: 'Classement tarifaire SH', description: 'Recherche de code SH / position tarifaire parmi 17 224 codes, nomenclature, taux de droit d\'un produit' },
+  { slug: 'classement', path: '/modules/classement', title: 'Classement tarifaire SH', description: 'Recherche de code SH / position tarifaire parmi les codes SH à jour, nomenclature, taux de droit d\'un produit' },
   { slug: 'decisions-classement', path: '/modules/decisions-classement', title: 'Décisions de classement : recherche', description: 'Décisions officielles de classement tarifaire par produit, circulaire ou code SH' },
   { slug: 'documents-sh', path: '/modules/documents-sh', title: 'Documents requis par code SH', description: 'Documents, autorisations et formalités exigés selon le code SH du produit' },
   { slug: 'simulateur', path: '/modules/simulateur', title: 'Coût de revient à l’import', description: 'Droits de douane, TVA import, TPI, TIC, taxe sur les bois et coût de revient d\'une importation' },

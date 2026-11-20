@@ -89,7 +89,7 @@ footer.b{margin-top:40px;padding:28px 0 48px;border-top:1px solid var(--line);fo
 <body>
 <header class="top" data-ixp-own-header><div class="wrap">
   <a class="logo" href="/">Import<b>-</b>eXPert<sup>MAROC</sup></a>
-  <nav class="toplinks"><a href="/diagnostic">Diagnostic</a><a href="/expertise">Expertise</a><a href="#results">Résultats</a></nav>
+  <nav class="toplinks"><a href="/diagnostic">Diagnostic</a><a href="/expertise">Expertise</a><a href="#results">Résultats</a><a href="/api/langue?l=ar&amp;r=%2Ftools%2Fenquete-barometre-ar.html" lang="ar" dir="rtl">العربية</a></nav>
 </div></header>
 
 <main class="wrap">
@@ -195,7 +195,7 @@ $('submit').addEventListener('click',function(){
      var l=load();l.push(rep);save(l);
      try{localStorage.setItem(MINE,rep.id);}catch(e){}
      GLOBAL=x.j;
-     $('sent').innerHTML='<div class="msg">Merci, vos réponses sont enregistrées dans le Baromètre 2026. Les résultats de l’ensemble des répondants s’afficheront ci-dessous dès 10 réponses.</div>';
+     $('sent').innerHTML='<div class="msg">Merci, vos réponses sont enregistrées dans le Baromètre 2026. <a href="/barometre">Voir les résultats publiés</a></div>';
      results();document.getElementById('results').scrollIntoView({behavior:'smooth'});
    })
    .catch(function(){btn.disabled=false;$('sent').innerHTML='<div class="msg warn">Erreur réseau, réessayez.</div>';});

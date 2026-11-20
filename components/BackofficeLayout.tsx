@@ -25,13 +25,19 @@ const NAV = [
   { section: 'COMMUNICATION', items: [
     { href:'/backoffice/alertes',    label:'Alertes & Notifications', icon:'△' },
     { href:'/backoffice/support',    label:'Support & Tickets',       icon:'◎' },
+    { href:'/backoffice/recherches', label:'Recherche et dissertation', icon:'✍', highlight: true },
+    { href:'/backoffice/forum',      label:'Modération du forum',     icon:'☰' },
   ]},
   { section: 'SYSTÈME', items: [
     { href:'/backoffice/admins',     label:'Administrateurs',         icon:'⊕' },
     { href:'/backoffice/parametres', label:'Paramètres',              icon:'⚙' },
   ]},
   { section: 'ACQUISITION', items: [
-    { href:'/backoffice/scanner-leads', label:'Leads Scanner', icon:'⚡', highlight: true },
+    { href:'/backoffice/indicateurs', label:'Indicateurs du parcours', icon:'▲', highlight: true },
+    { href:'/backoffice/partenaires', label:'Partenaires', icon:'⇄' },
+    { href:'/backoffice/packs', label:'Commandes de packs', icon:'▣' },
+    { href:'/backoffice/texte-semaine', label:'Texte de la semaine', icon:'✎' },
+    { href:'/backoffice/scanner-leads', label:'Leads Scanner', icon:'⚡' },
   ]},
 ]
 
@@ -56,7 +62,7 @@ export default function BackofficeLayout({ children, title = '' }: { children: R
         {/* Logo */}
         <div style={{ padding:'1.25rem 1rem 1rem', borderBottom:'1px solid rgba(255,255,255,.08)' }}>
           <div style={{ fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:700, color:'white', letterSpacing:'-.01em' }}>
-            Douane<span style={{ color:'#C9A84C' }}>.</span>ia
+            IXP
           </div>
           <div style={{ fontSize:9, color:'rgba(255,255,255,.3)', letterSpacing:'.18em', marginTop:2 }}>BACK-OFFICE</div>
           <div style={{ marginTop:'1rem', padding:'.5rem .75rem', background:'rgba(255,255,255,.07)', borderRadius:4, display:'flex', alignItems:'center', gap:8 }}>
@@ -122,6 +128,10 @@ export default function BackofficeLayout({ children, title = '' }: { children: R
             {title || NAV.flatMap(s => s.items).find((i: any) => i.href === router.pathname)?.label || 'Backoffice'}
           </div>
           <div style={{ display:'flex', alignItems:'center', gap:'1rem' }}>
+            {/* Retour au site public (2026-11-14) — la session client reste ouverte */}
+            <Link href="/" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'6px 14px', border:'1px solid rgba(201,168,76,.55)', borderRadius:999, color:'#E8C97A', fontSize:12, fontWeight:500, textDecoration:'none', whiteSpace:'nowrap' }}>
+              ← Retour au site
+            </Link>
             <div style={{ background:'rgba(201,168,76,.15)', color:'#E8C97A', fontSize:10, padding:'2px 8px', letterSpacing:'.08em', borderRadius:2 }}>
               Import-eXPert · 2026
             </div>

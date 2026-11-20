@@ -9,6 +9,7 @@
  */
 
 import type { Plan, Statut } from './moduleAccess'
+import { cleSessionClient } from './cleSecrete'
 
 export interface SessionPayload {
   userId:     string
@@ -42,9 +43,9 @@ export async function verifyUserTokenEdge(token: string | undefined): Promise<Se
   if (parts.length !== 2) return null
   const [encoded, sig] = parts
 
-  const secret = process.env.USER_SECRET || process.env.ADMIN_SECRET || 'dev-secret'
-
   try {
+    // Clé absente sur Vercel → exception → jeton refusé (voir lib/cleSecrete.ts)
+    const secret = cleSessionClient()
     const key = await crypto.subtle.importKey(
       'raw',
       new TextEncoder().encode(secret),

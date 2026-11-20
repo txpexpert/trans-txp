@@ -15,8 +15,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { COOKIE_NAME, verifyToken, siteUrl } from '../../../lib/adminAuth'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 import { runBillingCron } from '../../../lib/billingCron'
+import { runTrialEndReports } from '../../../lib/scoreReport'
+import { runVeilleHebdo } from '../../../lib/veille'
+import { runRapportsMensuels, runAlertesDecouverte, runRapportsTrimestriels } from '../../../lib/rapportMensuel'
 
-export const config = { maxDuration: 60 }
+export const config = { maxDuration: 300 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const secret = process.env.CRON_SECRET
@@ -38,5 +41,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('[cron/billing]', e)
     billing = { error: e?.message || 'Erreur facturation' }
   }
-  return res.status(200).json({ ok: true, expired: data, billing })
+  // Rapport de score d'exposition à la fin de l'essai (refonte SaaS, étape 1)
+  let scores: Awaited<ReturnType<typeof runTrialEndReports>> | { error: string }
+  try {
+    scores = await runTrialEndReports(siteUrl(req))
+    if (scores.erreurs.length) console.error('[cron/scores]', scores.erreurs)
+  } catch (e: any) {
+    console.error('[cron/scores]', e)
+    scores = { error: e?.message || 'Erreur rapport de score' }
+  }
+  // Veille hebdomadaire sur les produits (le lundi) et rapport mensuel au dirigeant (du 1er au 5)
+  let veille: any, rapports: any
+  try { veille = await runVeilleHebdo(siteUrl(req)); if (veille.erreurs.length) console.error('[cron/veille]', veille.erreurs) }
+  catch (e: any) { console.error('[cron/veille]', e); veille = { error: e?.message || 'Erreur veille' } }
+  try { rapports = await runRapportsMensuels(siteUrl(req)); if (rapports.erreurs.length) console.error('[cron/rapports]', rapports.erreurs) }
+  catch (e: any) { console.error('[cron/rapports]', e); rapports = { error: e?.message || 'Erreur rapports' } }
+  let decouverte: any
+  try { decouverte = await runAlertesDecouverte(siteUrl(req)); if (decouverte.erreurs.length) console.error('[cron/decouverte]', decouverte.erreurs) }
+  catch (e: any) { console.error('[cron/decouverte]', e); decouverte = { error: e?.message || 'Erreur alertes Découverte' } }
+  let trimestriels: any
+  try { trimestriels = await runRapportsTrimestriels(siteUrl(req)); if (trimestriels.erreurs.length) console.error('[cron/trimestriels]', trimestriels.erreurs) }
+  catch (e: any) { console.error('[cron/trimestriels]', e); trimestriels = { error: e?.message || 'Erreur rapports trimestriels' } }
+  return res.status(200).json({ ok: true, expired: data, billing, scores, veille, rapports, decouverte, trimestriels })
 }

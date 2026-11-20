@@ -39,7 +39,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .update({ verify_token: verifyToken, verify_token_expires: verifyTokenExpires })
     .eq('id', user.id)
 
-  await sendVerificationEmail(user.email, user.prenom || '', verifyToken)
+  const langue = req.body?.langue === 'ar' || req.cookies?.ixp_lang === 'ar' ? 'ar' : 'fr'
+  await sendVerificationEmail(user.email, user.prenom || '', verifyToken, langue)
 
   return res.status(200).json(genericResponse)
 }

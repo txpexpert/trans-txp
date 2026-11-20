@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useAuth } from '../context/AuthContext'
 import IxpLogo from './IxpLogo'
+import VoirMotDePasse from './VoirMotDePasse'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -35,7 +36,7 @@ const MODULES_TOOLS = [
   { num: 'RGM', label: 'Régimes & Procédures à l’import', href: '/modules/procedures-process',   badge: 'NEW' },
   { num: 'ICI', label: 'Index Commerce Intl.',         href: '/modules/index-commerce',       badge: 'NEW' },
   { num: 'CFH', label: 'Facilitation Douanière', href: '/modules/facilitation', badge: 'NEW' },
-  { num: 'ENG', label: 'Douane Engineering',             href: '/modules/douane-engineering' },
+  { num: 'ENG', label: 'Import Engineering',             href: '/modules/douane-engineering' },
   { num: 'IFV', label: 'Intelligence Fiscale',        href: '/modules/intelligence-fiscale' },
   { num: 'IST', label: 'Intelligence Stratégique',     href: '/modules/intelligence-strategique' },
   { num: 'OEA', label: 'Opérateur Économique Agréé',   href: '/modules/oea' },
@@ -209,6 +210,7 @@ export default function Layout({ children, variant = 'inner' }: LayoutProps) {
                 onChange={e => setPassword(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && doLogin()}
               />
+              <VoirMotDePasse style={{ margin: '8px 0 0' }} />
             </div>
             <div style={{ display:'flex', justifyContent:'flex-end', fontSize:'12px', marginTop:'.5rem' }}>
               <span style={{ color:'var(--inkm)' }}>

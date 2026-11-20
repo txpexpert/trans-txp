@@ -13,6 +13,7 @@ import type { FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { AdminAuthCard, Field, Notice, SubmitButton, safeRedirect } from '../../components/AdminAuthCard'
+import VoirMotDePasse from '../../components/VoirMotDePasse'
 
 type Step = 'login' | 'setup' | 'forgot'
 
@@ -91,6 +92,7 @@ export default function BackofficeLogin() {
         <form onSubmit={onLogin} style={form}>
           <Field label="EMAIL"><input id="bo-email" type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} placeholder="vous@exemple.com" /></Field>
           <Field label="MOT DE PASSE"><input id="bo-pwd" type="password" autoComplete="current-password" value={pwd} onChange={e => setPwd(e.target.value)} placeholder="••••••••••" /></Field>
+          <VoirMotDePasse />
           {info && <Notice tone="info">{info}</Notice>}
           {error && <Notice tone="error">{error}{wrongSpace && <> <Link href="/gestion-abonnements/connexion">Ouvrir la Gestion des abonnements →</Link></>}</Notice>}
           <SubmitButton busy={busy} disabled={!email || !pwd}>ACCÉDER AU BACKOFFICE</SubmitButton>
@@ -107,6 +109,7 @@ export default function BackofficeLogin() {
           <Field label="ANCIEN MOT DE PASSE PARTAGÉ"><input id="su-shared" type="password" autoComplete="off" value={shared} onChange={e => setShared(e.target.value)} /></Field>
           <Field label="NOUVEAU MOT DE PASSE PERSONNEL"><input id="su-pwd" type="password" autoComplete="new-password" value={pwd} onChange={e => setPwd(e.target.value)} /></Field>
           <Field label="CONFIRMER LE NOUVEAU MOT DE PASSE"><input id="su-pwd2" type="password" autoComplete="new-password" value={pwd2} onChange={e => setPwd2(e.target.value)} /></Field>
+          <VoirMotDePasse />
           {error && <Notice tone="error">{error}</Notice>}
           <SubmitButton busy={busy} disabled={!email || !shared || pwd.length < 10 || !pwd2}>CRÉER MON MOT DE PASSE</SubmitButton>
         </form>

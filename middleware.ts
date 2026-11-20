@@ -26,7 +26,11 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { verifyUserTokenEdge } from './lib/edgeAuth'
 import { FREE_PATHS, pathToModuleCode } from './lib/routeAccess'
+import { COOKIE_LANGUE, equivalent, estArabe } from './lib/langues'
 import { canAccessModule } from './lib/moduleAccess'
+
+// Pages du compte ouvertes à l'offre Découverte (compte gratuit, essai terminé, abonnement échu)
+const DECOUVERTE = ['/fiches', '/veille', '/mon-espace', '/dossiers', '/portail', '/forum']
 
 const USER_COOKIE = 'dia_session' // dupliqué volontairement : évite d'importer moduleAccess pour une seule string
 
@@ -42,6 +46,17 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
 
+  // Deux interfaces : une page qui existe dans la langue choisie par le visiteur s'ouvre dans cette langue
+  const langue = req.cookies.get(COOKIE_LANGUE)?.value
+  if ((langue === 'ar' || langue === 'fr') && req.method === 'GET') {
+    const cible = langue === 'ar' ? (!estArabe(pathname) ? equivalent(pathname, 'ar') : null) : (estArabe(pathname) ? equivalent(pathname, 'fr') : null)
+    if (cible && cible !== pathname) {
+      const url = req.nextUrl.clone()
+      url.pathname = cible
+      return NextResponse.redirect(url)
+    }
+  }
+
   if (FREE_PATHS.includes(pathname)) return NextResponse.next()
 
   const token = req.cookies.get(USER_COOKIE)?.value
@@ -53,7 +68,7 @@ export async function middleware(req: NextRequest) {
 
   const allowed = moduleCode
     ? canAccessModule(payload.plan, payload.statut, moduleCode, payload.trialEnds)
-    : payload.statut !== 'suspended' && payload.statut !== 'expired' // page hors matrice : compte actif suffit
+    : payload.statut !== 'suspended' && (payload.statut !== 'expired' || DECOUVERTE.some(p => pathname === p || pathname.startsWith(p + '/'))) // page hors matrice : compte actif, ou page de l'offre Découverte
 
   if (!allowed) return redirectToAbonnementRequis(req, pathname)
 
@@ -62,6 +77,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|backoffice$|backoffice/|gestion-abonnements$|gestion-abonnements/|mon-abonnement$|facturation/|_next/static|_next/image|favicon.ico|manifest.json|icons/|brand/|sw.js|workbox-|app/|google[a-z0-9]+\\.html|robots.txt|sitemap.xml).*)',
+    '/((?!api/|backoffice$|backoffice/|gestion-abonnements$|gestion-abonnements/|mon-abonnement$|facturation/|_next/static|_next/image|favicon.ico|manifest.json|icons/|brand/|sw.js|workbox-|app/|verifier$|verifier/|partage/|produits$|produits/|barometre$|p/|google[a-z0-9]+\\.html|robots.txt|sitemap.xml).*)',
   ],
 }

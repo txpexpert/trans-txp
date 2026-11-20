@@ -30,7 +30,7 @@ export const ESPACES: Espace[] = [
     livrable: 'Fiche produit douane, sourcée et datée',
     transmet: 'Code SH et contraintes réglementaires',
     tools: [
-      { label: 'Classement tarifaire SH', path: '/modules/classement', desc: '13 354 positions tarifées (LF 2026), recherche guidée et arbre RGI', tier: 'operateur' },
+      { label: 'Classement tarifaire SH', path: '/modules/classement', desc: 'Codes SH à jour (LF 2026), recherche guidée et arbre RGI', tier: 'operateur' },
       { label: 'Décisions de classement : recherche', path: '/modules/decisions-classement', desc: 'Précédents officiels par produit et par code', tier: 'operateur' },
       { label: 'Documents requis par code SH', path: '/modules/documents-sh', desc: 'Formalités et pièces exigées à l’importation', tier: 'operateur' },
       { label: 'Autorisations et licences', path: '/modules/autorisations-licences', desc: 'Contrôles techniques, licences et visas préalables', tier: 'operateur' },
@@ -139,7 +139,7 @@ export const TIER_LABEL: Record<Tool['tier'], string> = {
 }
 
 export const PROOFS = [
-  { n: '17 224', l: 'codes SH' },
+  { n: 'SH', l: 'codes à jour' },
   { n: '366+', l: 'circulaires ADII indexées' },
   { n: '9', l: 'régimes comparés' },
   { n: '1 081', l: 'termes FR / AR' },
@@ -183,33 +183,44 @@ export const PROFILS = [
 // Montants HT issus de lib/pricing.ts (source unique, grille du 2026-11-07).
 export const PLANS = [
   {
-    id: 'free', nom: 'Découverte', prix: '0', unite: 'pour toujours',
+    id: 'free', nom: 'Découverte', resultat: 'Mesurer mon exposition', prix: '0', unite: 'pour toujours',
     pour: 'Pour évaluer la plateforme',
-    inclus: ['Bibliothèque : FAQ, glossaire, recherche CGI', 'Coût de revient à l’import', 'Diagnostic de conformité', 'IXP-Assistant : questions limitées'],
+    inclus: ['Diagnostic de conformité et exposition en dirhams', '3 fiches produits et alerte mensuelle sur vos produits', 'Coût de revient à l’import', 'Bibliothèque : FAQ, glossaire, recherche CGI', 'IXP-Assistant : questions limitées'],
     cta: 'Créer un compte', href: '/auth/register?plan=free',
   },
   {
-    id: 'pro', nom: 'Pro', prix: fmtDH(PRICING.pro.annual!), unite: priceLine('pro').replace(/^DH /, ''),
+    id: 'pro', nom: 'Pro', resultat: 'Importer juste', prix: fmtDH(PRICING.pro.annual!), unite: priceLine('pro').replace(/^DH /, ''),
     pour: 'PME importatrices',
-    inclus: ['Qualifier, Chiffrer et Exécuter', 'Classement SH inclus', 'Bibliothèque complète', 'IXP-Assistant illimité', 'Support par email'],
+    inclus: ['Qualifier, Chiffrer et Exécuter', '50 références suivies, dossiers défendables', 'Veille hebdomadaire et rapport mensuel au dirigeant', 'Bibliothèque complète', 'IXP-Assistant illimité'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=pro',
   },
   {
-    id: 'premium', nom: 'Premium', prix: fmtDH(PRICING.premium.annual!), unite: priceLine('premium').replace(/^DH /, ''), vedette: true,
+    id: 'premium', nom: 'Premium', resultat: 'Sécuriser et prouver', prix: fmtDH(PRICING.premium.annual!), unite: priceLine('premium').replace(/^DH /, ''), vedette: true,
     pour: 'Transitaires, commissionnaires, cabinets',
-    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', 'Gestion multi-clients', '2 renseignements experts inclus / mois'],
+    inclus: ['Les 5 espaces de la chaîne', 'Vérification des documents d’import et générateur de documents', 'Audit douanier, risques, trajectoire OEA', '120 références suivies, gestion multi-clients et portail clients à votre nom', 'Rapport trimestriel au comité de direction', '24 renseignements experts par an inclus, soit 36 000 DH HT au tarif à l’acte'],
     cta: 'Essai 14 jours', href: '/auth/register?plan=premium',
   },
   {
-    id: 'enterprise', nom: 'Entreprise', prix: 'Sur contrat', unite: PRICING.enterprise.note,
+    id: 'enterprise', nom: 'Entreprise', resultat: 'Piloter l’exposition', prix: 'Sur contrat', unite: PRICING.enterprise.note,
     pour: 'Groupes industriels, directions financières',
     inclus: ['Tout Premium, pour toute l’équipe', 'Espace Piloter et contentieux avancé', 'API ERP / TMS', 'Expert dédié et onboarding', 'Engagement de service (SLA)'],
     cta: 'Parler à un expert', href: '/contact?sujet=entreprise',
   },
 ]
 
+// Interventions expertes. Les forfaits sont annoncés avant toute intervention ;
+// les packs sont déduits du premier abonnement annuel souscrit dans les 30 jours.
+// Prix HT proposés (11/11/2026), à valider par les associés : modifier ici uniquement.
+export const PRIX_RENSEIGNEMENT = 1500
 export const PRESTATIONS = [
-  { nom: 'Renseignement express', delai: 'Sous 48 h ouvrées', desc: 'Une question précise, une réponse écrite et sourcée par un expert : classement, origine, régime, document.' },
-  { nom: 'Avis motivé', delai: 'Sous 5 jours ouvrés', desc: 'Une analyse argumentée et opposable sur un point sensible, prête à être jointe à un dossier ou présentée à l’administration.' },
-  { nom: 'Accompagnement de dossier', delai: 'Sur devis', desc: 'Contentieux, demande de régime économique, préparation OEA, audit sur site : une mission Douane Engineering cadrée.' },
+  { nom: 'Renseignement express', prix: '1 500 DH HT', delai: 'Sous 48 h ouvrées', desc: 'Une question précise, une réponse écrite et sourcée par un expert : classement, origine, régime, document.' },
+  { nom: 'Avis motivé', prix: '4 000 DH HT', delai: 'Sous 5 jours ouvrés', desc: 'Une analyse argumentée sur un point sensible, prête à être jointe à un dossier ou présentée à l’administration.' },
+  { nom: 'Accompagnement de dossier', prix: 'Sur devis', delai: 'Sur devis', desc: 'Contentieux, demande de régime économique, audit sur site : une mission Import Engineering cadrée.' },
+]
+
+export const PACKS = [
+  { nom: 'Audit flash du classement', prix: 5000, delai: '20 références', pour: 'PME importatrices', desc: 'Vingt références produits revues par un expert, avec une note écrite des écarts de classement et des documents exigés.' },
+  { nom: 'Bilan origine', prix: 7500, delai: '12 mois d’importations', pour: 'Directions financières', desc: 'Ce que vos accords de libre-échange vous font gagner, ce qu’ils pourraient vous faire gagner, et les preuves à sécuriser.' },
+  { nom: 'Préparation au contrôle a posteriori', prix: 12000, delai: 'Avant ou pendant un contrôle', pour: 'Importateurs contrôlés', desc: 'Revue du dossier, points de fragilité et liste des pièces à réunir pour répondre à l’administration.' },
+  { nom: 'Pré-OEA', prix: 15000, delai: 'Écart et feuille de route', pour: 'Industriels et transitaires', desc: 'Écart entre votre situation et les critères de l’Opérateur Économique Agréé, avec un plan pour y arriver.' },
 ]

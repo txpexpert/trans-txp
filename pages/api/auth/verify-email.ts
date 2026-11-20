@@ -61,6 +61,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     trialEnds: user.trial_ends_at ? new Date(user.trial_ends_at).getTime() : undefined,
   })
 
+  // Lien reçu dans l'e-mail arabe : le compte s'ouvre sur l'interface arabe
+  if (req.query.langue === 'ar') {
+    const secure = process.env.NODE_ENV === 'production' ? '; Secure' : ''
+    res.setHeader('Set-Cookie', [userCookieOptions(authToken), `ixp_lang=ar; Path=/; Max-Age=31536000; SameSite=Lax${secure}`])
+    return res.redirect(302, '/ar?verified=1')
+  }
   res.setHeader('Set-Cookie', userCookieOptions(authToken))
   return res.redirect(302, '/?verified=1')
 }

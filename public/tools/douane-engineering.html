@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Douane Engineering — Assistance & Accompagnement Expert | IXP-Import-eXPert</title>
+<title>Import Engineering — Assistance & Accompagnement Expert | IXP-Import-eXPert</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#C9A84C;--gold2:#a8873a;--gold4:rgba(201,168,76,0.10);--gold5:rgba(201,168,76,0.05);--ink:#1a1a1a;--ink2:#3d3d3d;--ink3:#7a7a7a;--ink4:#b0b0b0;--bg:#fff;--bg2:#f8f7f4;--bg3:#f2f1ed;--border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.18);--green:#1a7a4a;--green-bg:#e8f5ee;--red:#c0392b;--red-bg:#fdf0ee;--blue:#1a5fa8;--blue-bg:#e8f0fb;--amber:#8a6000;--amber-bg:#fff8e8;--r:10px;--rs:6px}
@@ -93,6 +93,40 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg2);color:var(--ink);fon
 .partner-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
 .partner-spec{font-size:11px;color:var(--ink3)}
 .disclaimer{background:var(--bg3);border-radius:var(--r);padding:1.25rem 1.5rem;font-size:11px;color:var(--ink3);line-height:1.7;margin-top:2rem;border:1px solid var(--border)}
+
+/* ── Formulaire de requête (charte du site : papier, encre, or, bleu marine ; DM Serif Display + DM Sans) ── */
+.rq-fond{position:fixed;inset:0;z-index:300;background:rgba(20,18,15,.55);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding:6vh 16px;overflow-y:auto}
+.rq-fond.on{display:flex}
+.rq{width:100%;max-width:580px;background:#FAF7F0;border:1px solid #E6DCC7;border-radius:20px;box-shadow:0 24px 60px rgba(20,18,15,.25);overflow:hidden;font-family:'DM Sans',system-ui,sans-serif;color:#14120F}
+.rq-tete{padding:22px 26px 16px;border-bottom:1px solid #E6DCC7;background:#fff;position:relative}
+.rq-badge{display:inline-block;font-size:12.5px;font-weight:600;padding:4px 12px;border-radius:999px;background:#F4EBD3;color:#A8822F;margin-bottom:10px}
+.rq.litige .rq-badge{background:#E9EFF9;color:#153E82}
+.rq h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:27px;line-height:1.15;margin:0 0 6px}
+.rq h2 em{font-style:normal;color:#A8822F}.rq.litige h2 em{color:#153E82}
+.rq-tete p{font-size:14.5px;color:#7A7168;margin:0}
+.rq-x{position:absolute;top:14px;right:16px;width:40px;height:40px;border-radius:50%;border:1px solid #E6DCC7;background:#fff;font-size:16px;cursor:pointer;color:#3B3631}
+.rq form{padding:20px 26px 24px;display:grid;gap:14px}
+.rq label{display:grid;gap:6px;font-size:14px;font-weight:600;color:#3B3631}
+.rq label small{font-weight:400;color:#7A7168}
+.rq input,.rq textarea{width:100%;font:inherit;font-size:16px;font-weight:400;color:#14120F;background:#fff;border:1px solid #D6C9AC;border-radius:12px;padding:11px 13px;outline:none}
+.rq textarea{min-height:150px;resize:vertical;line-height:1.55}
+.rq input:focus,.rq textarea:focus{border-color:#A8822F;box-shadow:0 0 0 3px rgba(168,130,47,.15)}
+.rq.litige input:focus,.rq.litige textarea:focus{border-color:#153E82;box-shadow:0 0 0 3px rgba(21,62,130,.15)}
+.rq-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rq-note{font-size:13px;color:#7A7168;line-height:1.5}
+.rq-pied{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.rq-btn{border:0;border-radius:999px;padding:12px 22px;min-height:46px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:#14120F;color:#fff}
+.rq-btn:hover{background:#A8822F}.rq.litige .rq-btn:hover{background:#153E82}
+.rq-btn:disabled{opacity:.5;cursor:default}
+.rq-lien{border:0;background:none;font:inherit;font-size:14px;color:#7A7168;text-decoration:underline;cursor:pointer}
+.rq-err{color:#A82D3C;font-size:14px;margin:0}
+.rq-ok{padding:28px 26px 30px;text-align:center}
+.rq-ok .rq-rond{width:56px;height:56px;border-radius:50%;background:#F4EBD3;color:#A8822F;font-size:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.rq.litige .rq-ok .rq-rond{background:#E9EFF9;color:#153E82}
+.rq-ok h3{font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.rq-ok p{font-size:15px;color:#3B3631;margin:0 0 18px}
+button.cta-btn{border:none}
+@media(max-width:560px){.rq-2{grid-template-columns:1fr}.rq h2{font-size:23px}.rq-tete,.rq form{padding-left:18px;padding-right:18px}}
 </style>
 <link rel="stylesheet" href="/brand/ixp-chrome.css"><script src="/brand/ixp-chrome.js" defer></script>
 </head>
@@ -107,7 +141,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg2);color:var(--ink);fon
 <div class="hero">
   <div class="hero-bg-text">ENGINEERING</div>
   <div class="hero-kicker">Service Premium · Expertise sur mesure</div>
-  <div class="hero-title">Douane <em>Engineering</em></div>
+  <div class="hero-title">Import <em>Engineering</em></div>
   <div class="hero-sub">Assistance personnalisée par des experts douaniers, fiscalistes et juristes spécialisés. Réponses sur mesure à vos questions complexes, accompagnement dans vos litiges et procédures judiciaires.</div>
   <div class="hero-caps">
     <div class="hero-cap"><div class="hero-cap-val">24–48h</div><div class="hero-cap-lbl">Délai de réponse</div></div>
@@ -156,9 +190,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg2);color:var(--ink);fon
             <span class="profile-tag">Consultant</span>
           </div>
         </div>
-        <a href="/static/contact.html" class="cta-btn gold">
+        <button type="button" class="cta-btn gold" data-requete="assistance">
           Soumettre une requête d'assistance →
-        </a>
+        </button>
         <div class="cta-note">Réponse sous 24–48h · Prise en charge selon disponibilité partenaires</div>
       </div>
     </div>
@@ -190,9 +224,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg2);color:var(--ink);fon
             <span class="profile-tag">Directeur compliance</span>
           </div>
         </div>
-        <a href="/static/contact.html" class="cta-btn blue">
+        <button type="button" class="cta-btn blue" data-requete="litige">
           Soumettre un dossier de litige →
-        </a>
+        </button>
         <div class="cta-note">Examen préliminaire sous 48h · Prise en charge selon disponibilité avocats partenaires</div>
       </div>
     </div>
@@ -314,6 +348,96 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg2);color:var(--ink);fon
 
 <script>
 document.getElementById('places-count').textContent = Math.floor(Math.random() * 5) + 5;
+</script>
+
+<div class="rq-fond" id="rq-fond" aria-hidden="true">
+  <div class="rq" id="rq" role="dialog" aria-modal="true" aria-labelledby="rq-titre">
+    <div class="rq-tete">
+      <span class="rq-badge" id="rq-badge">Volet I — Conseil &amp; Expertise</span>
+      <h2 id="rq-titre">Votre requête <em>d’assistance</em></h2>
+      <p id="rq-sous">Décrivez votre question ou votre opération : un expert vous répond sous 24 à 48 h ouvrées.</p>
+      <button type="button" class="rq-x" id="rq-x" aria-label="Fermer">✕</button>
+    </div>
+    <form id="rq-form" novalidate>
+      <label>Adresse e-mail<input type="email" id="rq-email" required autocomplete="email" placeholder="vous@societe.ma"></label>
+      <div class="rq-2">
+        <label>Nom <small>facultatif</small><input id="rq-nom" autocomplete="name" placeholder="Prénom et nom"></label>
+        <label>Société <small>facultatif</small><input id="rq-societe" autocomplete="organization" placeholder="Raison sociale"></label>
+      </div>
+      <label><span id="rq-lbl">Votre requête</span><textarea id="rq-msg" required maxlength="6000" placeholder="Marchandise, origine, régime, étape de l’opération, difficulté rencontrée…"></textarea></label>
+      <p class="rq-note">N’indiquez pas de données personnelles de tiers. Les pièces utiles (DUM, factures, décisions) vous seront demandées lors de la qualification du dossier.</p>
+      <p class="rq-err" id="rq-err" hidden></p>
+      <div class="rq-pied"><button type="button" class="rq-lien" id="rq-annuler">Annuler</button><button type="submit" class="rq-btn" id="rq-envoyer">Envoyer ma requête</button></div>
+    </form>
+    <div class="rq-ok" id="rq-ok" hidden>
+      <div class="rq-rond">✓</div>
+      <h3>Requête bien reçue</h3>
+      <p id="rq-ok-txt">Un accusé de réception vous est envoyé sous 2 h ; votre dossier est qualifié puis confié à l’expert le plus compétent.</p>
+      <button type="button" class="rq-btn" id="rq-fermer">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+{
+const T = {
+  assistance: { cls: '', badge: 'Volet I — Conseil & Expertise', titre: 'Votre requête <em>d’assistance</em>',
+    sous: 'Décrivez votre question ou votre opération : un expert vous répond sous 24 à 48 h ouvrées.', lbl: 'Votre requête',
+    ph: 'Marchandise, origine, régime, étape de l’opération, difficulté rencontrée…', btn: 'Envoyer ma requête', service: 'import-engineering-assistance' },
+  litige: { cls: 'litige', badge: 'Volet II — Assistance judiciaire', titre: 'Votre dossier <em>de litige</em>',
+    sous: 'Exposez le litige : un examen préliminaire vous est adressé sous 48 h.', lbl: 'Exposé du litige',
+    ph: 'Nature de la décision contestée (redressement, classement, origine…), date de notification, montant en jeu, démarches déjà engagées…', btn: 'Envoyer mon dossier', service: 'import-engineering-litige' },
+}
+const $ = id => document.getElementById(id)
+let type = 'assistance', dernier = null
+function ouvrir(t, bouton) {
+  type = t; dernier = bouton; const c = T[t]
+  $('rq').className = 'rq ' + c.cls
+  $('rq-badge').textContent = c.badge; $('rq-titre').innerHTML = c.titre; $('rq-sous').textContent = c.sous
+  $('rq-lbl').textContent = c.lbl; $('rq-msg').placeholder = c.ph; $('rq-envoyer').textContent = c.btn
+  $('rq-form').hidden = false; $('rq-ok').hidden = true; $('rq-err').hidden = true
+  $('rq-fond').classList.add('on'); $('rq-fond').setAttribute('aria-hidden', 'false')
+  document.body.style.overflow = 'hidden'
+  setTimeout(() => ($('rq-email').value ? $('rq-msg') : $('rq-email')).focus(), 50)
+}
+function fermer() {
+  $('rq-fond').classList.remove('on'); $('rq-fond').setAttribute('aria-hidden', 'true')
+  document.body.style.overflow = ''; if (dernier) dernier.focus()
+}
+document.querySelectorAll('[data-requete]').forEach(b => b.addEventListener('click', () => ouvrir(b.dataset.requete, b)))
+$('rq-x').addEventListener('click', fermer); $('rq-annuler').addEventListener('click', fermer); $('rq-fermer').addEventListener('click', fermer)
+$('rq-fond').addEventListener('click', e => { if (e.target === $('rq-fond')) fermer() })
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('rq-fond').classList.contains('on')) fermer() })
+
+// Compte connecté : adresse, nom et société préremplis
+fetch('/api/auth/me', { credentials: 'same-origin' }).then(r => (r.ok ? r.json() : null)).then(u => {
+  if (!u) return
+  if (u.email) $('rq-email').value = u.email
+  const n = [u.prenom, u.nom].filter(Boolean).join(' '); if (n) $('rq-nom').value = n
+  if (u.societe) $('rq-societe').value = u.societe
+}).catch(() => {})
+
+$('rq-form').addEventListener('submit', async e => {
+  e.preventDefault()
+  const email = $('rq-email').value.trim(), msg = $('rq-msg').value.trim()
+  const err = t => { $('rq-err').textContent = t; $('rq-err').hidden = false }
+  if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)) { err('Indiquez une adresse e-mail valide.'); return $('rq-email').focus() }
+  if (msg.length < 20) { err('Décrivez votre ' + (type === 'litige' ? 'litige' : 'requête') + ' en quelques phrases.'); return $('rq-msg').focus() }
+  $('rq-envoyer').disabled = true; $('rq-err').hidden = true
+  try {
+    const r = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+      nom: $('rq-nom').value.trim() || email, email, societe: $('rq-societe').value.trim(),
+      service: T[type].service, urgence: 'normal', msg, source: 'import-engineering' }) })
+    const j = await r.json().catch(() => ({}))
+    if (!r.ok) throw new Error(j.error || 'Envoi impossible')
+    $('rq-ok-txt').textContent = type === 'litige'
+      ? 'Votre dossier est enregistré. Un accusé de réception vous est envoyé sous 2 h, puis un examen préliminaire sous 48 h, à l’adresse ' + email + '.'
+      : 'Votre requête est enregistrée. Un accusé de réception vous est envoyé sous 2 h, puis la réponse d’un expert sous 24 à 48 h ouvrées, à l’adresse ' + email + '.'
+    $('rq-form').hidden = true; $('rq-ok').hidden = false; $('rq-msg').value = ''
+  } catch (x) { err((x && x.message) || 'Envoi impossible, réessayez dans un instant.') }
+  $('rq-envoyer').disabled = false
+})
+}
 </script>
 </body>
 </html>

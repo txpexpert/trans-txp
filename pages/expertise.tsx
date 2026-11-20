@@ -1,23 +1,19 @@
-// pages/expertise.tsx — le volet humain : Douane Engineering, prestations à l'acte, kits.
-import Link from 'next/link'
+// pages/expertise.tsx — le volet humain : conseil personnalisé, Import Engineering, prestations à l'acte, kits.
 import SiteShell from '../components/SiteShell'
+import ConseilPersonnalise from '../components/ConseilPersonnalise'
 import { PRESTATIONS } from '../lib/suite'
 import { KITS_PRATIQUES, kitHref, kitCompletHref, nbKitsEnLettres } from '../lib/kitsPratiques'
 
 
 export default function Expertise() {
   return (
-    <SiteShell title="Expertise et services | IXP-Import-eXPert" description="Douane Engineering : renseignements, avis motivés et accompagnement de dossiers par des experts douaniers.">
+    <SiteShell title="Expertise et services | IXP-Import-eXPert" description="Import Engineering : renseignements, avis motivés et accompagnement de dossiers par des experts douaniers.">
       <section className="x-hero">
         <div className="x-wrap x-hero-grid">
           <div>
-            <div className="x-eyebrow">Douane Engineering</div>
+            <div className="x-eyebrow">Import Engineering</div>
             <h1 className="x-h1">Derrière la plateforme, <em>des experts douaniers</em>.</h1>
             <p className="x-lead">Import-eXPert est né du terrain : dix-huit ans de pratique douanière, une méthode d’amélioration continue issue du Lean Six Sigma, et des ouvrages de référence sur l’ingénierie douanière et les guerres tarifaires. Le logiciel industrialise ce savoir ; l’équipe reste disponible quand un dossier sort de l’ordinaire.</p>
-            <div className="x-hero-cta">
-              <Link href="/contact?sujet=renseignement" className="x-btn x-btn-dark">Poser une question à un expert</Link>
-              <Link href="/contact?sujet=mission" className="x-btn x-btn-line">Décrire une mission</Link>
-            </div>
           </div>
           <div className="x-panel">
             <div className="x-eyebrow">Publications</div>
@@ -31,20 +27,29 @@ export default function Expertise() {
         </div>
       </section>
 
+      <section className="x-sec-tight" id="conseil" style={{ scrollMarginTop: 90 }}>
+        <div className="x-wrap">
+          <div className="x-eyebrow">Conseil personnalisé · Consultation express</div>
+          <h2 className="x-h2">Une question réglementaire, <em>une réponse sourcée</em>.</h2>
+          <p className="x-sub" style={{ marginBottom: 18 }}>Réponse immédiate à partir des textes officiels, ou étude complète rédigée et validée par nos consultants.</p>
+          <ConseilPersonnalise />
+        </div>
+      </section>
+
       <section className="x-sec-tight" id="acces-expert">
         <div className="x-wrap">
           <div className="x-eyebrow">Deux portes d’entrée</div>
           <h2 className="x-h2">Un expert pour <em>votre dossier</em>.</h2>
           <div className="x-tools" style={{ gridTemplateColumns: 'repeat(2,1fr)' }}>
             <a className="x-tool" href="/tools/douane-engineering.html" style={{ borderTop: '3px solid var(--x-gold, #B8922A)' }}>
-              <b>Douane Engineering</b>
+              <b>Import Engineering</b>
               <p>Assistance et accompagnement expert : diagnostic de vos flux, structuration de vos opérations, optimisation tarifaire et sécurisation des dossiers sensibles.</p>
               <span className="x-tier">Découvrir l’offre →</span>
             </a>
-            <a className="x-tool" href="/modules/conseil" style={{ borderTop: '3px solid #1A3A9A' }}>
+            <a className="x-tool" href="#conseil" style={{ borderTop: '3px solid #1A3A9A' }}>
               <b>Conseil personnalisé</b>
               <p>Un expert douanier répond à votre question ou étudie votre cas : opérations complexes, litiges, classement, origine ou valeur.</p>
-              <span className="x-tier">Soumettre une demande →</span>
+              <span className="x-tier">Poser ma question →</span>
             </a>
           </div>
         </div>
@@ -53,8 +58,8 @@ export default function Expertise() {
       <section className="x-sec x-sec-dark">
         <div className="x-wrap">
           <div className="x-eyebrow">À l’acte, en complément de l’abonnement</div>
-          <h2 className="x-h2">Trois niveaux d’intervention, <em>un prix connu d’avance</em>.</h2>
-          <p className="x-sub">L’abonnement couvre l’usage de la plateforme par utilisateur. Les demandes de renseignement et de conseil sont facturées à l’opération ; le plan Expert en inclut deux par mois.</p>
+          <h2 className="x-h2">Des interventions cadrées, <em>un prix connu d’avance</em>.</h2>
+          <p className="x-sub">L’abonnement couvre l’usage de la plateforme par utilisateur. Les demandes de renseignement et de conseil sont facturées à l’opération ; le plan Premium en inclut deux par mois.</p>
           <div className="x-presta">
             {PRESTATIONS.map(p => (
               <div key={p.nom}><span className="x-mono">{p.delai}</span><h4>{p.nom}</h4><p>{p.desc}</p></div>
