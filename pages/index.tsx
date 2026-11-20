@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<{ variante: Variante }> = as
 // Rubrique « Le risque que vous ne voyez pas » : l'importation comme un tout (produit, achat, coût,
 // logistique, change et paiement, veille) ; la douane n'est qu'une de ses fonctions (règle du site, nov. 2026).
 const DOULEURS = [
-  { q: '« Votre produit est conforme chez votre fournisseur. Pas forcément au Maroc. »', d: "Normes, contrôle technique, licence, étiquetage en arabe : une exigence oubliée au moment de l'achat bloque la marchandise à l'arrivée, et la vente avec elle.", e: 'Qualifier · fiche produit' },
+  { q: '« Votre produit est conforme chez votre fournisseur. Pas forcément au Maroc. »', d: "Vérifiez vos normes, contrôles techniques, licences et étiquetages.", e: 'Qualifier · fiche produit' },
   { q: '« Le fournisseur le moins cher n’est pas toujours l’achat le moins cher. »', d: "Pays d'origine, accord de libre-échange, délais, conditions de paiement : à prix égal, le choix du fournisseur change le coût final et le risque.", e: 'Optimiser · achat, origine et accords' },
   { q: '« Votre importation coûte plus cher que votre facture. »', d: "Fret, assurance, change, droits et taxes, magasinage, financement : un coût rendu sous-estimé fausse la marge de toute une gamme.", e: 'Chiffrer · coût de revient' },
   { q: '« L’Incoterm signé décide de qui paie quand le transport se passe mal. »', d: "Avarie, retard au port, surestaries, assurance insuffisante : un Incoterm mal choisi vous fait porter des frais et des risques que vous ne maîtrisez pas.", e: 'Exécuter · logistique et transport' },
