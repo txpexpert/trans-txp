@@ -57,7 +57,7 @@ export const PROFILS_PAGES: Profil[] = [
     lead: 'Redressements possibles sur quatre ans, préférences tarifaires non utilisées, coût rendu sous-estimé : le coût réel de l’importation (change, transport, droits, retards) n’apparaît dans aucun tableau de bord. Import-eXPert le chiffre, et mesure aussi l’argent récupérable.',
     douleurs: [
       { t: 'Une provision impossible à estimer', d: 'En 2025, l’administration a redressé 23,5 milliards de dirhams au titre de la sous-facturation, en hausse de 33 %.' },
-      { t: 'De l’argent laissé sur la table', d: 'Des droits payés sur des produits originaires de pays liés au Maroc par un accord.' },
+      { t: 'Des droits payés alors qu’ils pouvaient être évités', d: 'Des pertes financières qui surviennent à chaque importation.' },
       { t: 'Une marge faussée', d: 'Le coût rendu réel n’est pas celui retenu pour fixer les prix.' },
     ],
     gains: ['Une exposition chiffrée en dirhams pour le comité de direction', 'Le gain préférentiel mesuré, pas supposé', 'Un rapport mensuel qui arrive sans se connecter'],
