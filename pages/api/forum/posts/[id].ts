@@ -1,9 +1,10 @@
 // pages/api/forum/posts/[id].ts — une publication du forum
 //   GET     publication + commentaires
-//   PATCH   { titre, contenu }  modification par son auteur
+//   PATCH   { contenu }  modification par son auteur
 //   DELETE  suppression par son auteur (ou par un administrateur), pièces jointes comprises
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabaseAdmin } from '../../../../lib/supabaseAdmin'
+import { titreAuto } from '../../../../lib/forumJour'
 import { membreForum, auteur, signer, supprimerFichiers, nettoyer } from '../../../../lib/forum'
 
 const uuid = (v: any) => /^[0-9a-f-]{36}$/i.test(String(v || ''))
@@ -29,8 +30,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const auteurOk = p.user_id === m.id
   if (req.method === 'PATCH') {
     if (!auteurOk) return res.status(403).json({ error: 'Seul l’auteur peut modifier sa publication.' })
-    const titre = nettoyer(req.body?.titre, 160), contenu = nettoyer(req.body?.contenu, 8000)
-    if (titre.length < 3) return res.status(400).json({ error: 'Titre trop court.' })
+    const contenu = nettoyer(req.body?.contenu, 8000)
+    if (!contenu && !(p.pieces || []).length) return res.status(400).json({ error: 'Message vide.' })
+    const titre = titreAuto(contenu, (p.pieces || []).length > 0)
     await db.from('forum_posts').update({ titre, contenu, updated_at: new Date().toISOString() }).eq('id', id)
     return res.status(200).json({ ok: true })
   }

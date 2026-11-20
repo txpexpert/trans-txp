@@ -22,10 +22,10 @@ const NAV_AR = [
 const NAV = [
   { href: '/', label: 'Accueil', tone: 't-blue' },
   { href: '/plateforme', label: 'Solutions', tone: 't-green' },
-  { href: '/espaces/piloter', label: 'Piloter', tone: 't-slate' },
-  { href: '/espaces/bibliotheque', label: 'Bibliothèque', tone: 't-teal' },
+  { href: '/espaces/piloter', label: 'Pilotage', tone: 't-slate' },
   { href: '/expertise', label: 'Expertise', tone: 't-violet' },
   { href: '/forum', label: 'Forum', tone: 't-blue' },
+  { href: '/espaces/bibliotheque', label: 'Bibliothèque', tone: 't-teal' },
   { href: '/tarifs', label: 'Tarifs', tone: 't-amber' },
 ]
 
@@ -185,7 +185,7 @@ export default function SiteShell({ title, description, children, plain = false,
               <h5>Plateforme</h5>
               <ul>
                 <li><Link href="/espaces/bibliotheque">Bibliothèque</Link></li>
-                <li><Link href="/espaces/piloter">Piloter</Link></li>
+                <li><Link href="/espaces/piloter">Pilotage</Link></li>
                 <li><Link href="/#assistant">IXP-Assistant</Link></li>
                 <li><Link href="/diagnostic">Diagnostic de conformité</Link></li>
                 <li><Link href="/calculateur-dum">Argent laissé sur la table</Link></li>

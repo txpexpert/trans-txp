@@ -2,6 +2,11 @@
 const withPWA = require('next-pwa')({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
+  // Les pages /tools/*.html sont réservées aux abonnés (middleware). Préchargées par le
+  // service worker à son installation, souvent avant la connexion, elles étaient mises en
+  // cache sous la forme de la page « réservée aux abonnés » et resservies ensuite même aux
+  // comptes connectés. Elles sont donc exclues du préchargement (nov. 2026).
+  publicExcludes: ['!noprecache/**/*', '!tools/**/*'],
   runtimeCaching: [
     {
       urlPattern: ({ request }) => request.mode === 'navigate',

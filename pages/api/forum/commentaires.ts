@@ -3,6 +3,7 @@
 //   DELETE ?id=…  suppression par son auteur (ou par un administrateur)
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
+import { debutJourneeForum } from '../../../lib/forumJour'
 import { membreForum, lireFormulaire, deposer, supprimerFichiers, nettoyer, MAX_FICHIERS_COMMENTAIRE } from '../../../lib/forum'
 
 export const config = { api: { bodyParser: false }, maxDuration: 60 }
@@ -36,8 +37,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const contenu = nettoyer(f.champ('contenu'), 4000)
   if (!uuid(postId)) return res.status(400).json({ error: 'Publication inconnue' })
   if (!contenu) return res.status(400).json({ error: 'Votre commentaire est vide.' })
-  const { data: p } = await db.from('forum_posts').select('id, statut').eq('id', postId).maybeSingle()
-  if (!p || p.statut !== 'publie') return res.status(404).json({ error: 'Publication introuvable ou retirée' })
+  const { data: p } = await db.from('forum_posts').select('id, statut, epingle, created_at').eq('id', postId).maybeSingle()
+  if (!p || p.statut !== 'publie') return res.status(404).json({ error: 'Message introuvable ou retiré' })
+  // Le fil repart à zéro chaque nuit à 2 h : on ne répond plus aux messages des jours précédents
+  if (!p.epingle && Date.parse(p.created_at) < debutJourneeForum().getTime()) return res.status(410).json({ error: 'Cette conversation est close : le forum repart à zéro chaque nuit à 2 h.' })
 
   const dep = await deposer(m.id, f.fichiers)
   if (dep.erreur) return res.status(400).json({ error: dep.erreur })
