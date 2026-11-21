@@ -30,7 +30,7 @@ export default function AccueilAr() {
       <section className="x-hero">
         <div className="x-wrap">
           <div className="x-eyebrow">الامتثال في الاستيراد · المغرب</div>
-          <h1 className="x-h1 x-h1-sm">ما ستراقبه الجمارك غدًا، <em>تحقّقوا منه اليوم</em>.</h1>
+          <h1 className="x-h1 x-h1-sm">ما ستراقبه الإدارات غدًا، <em>تحقّقوا منه اليوم</em>.</h1>
           <p className="x-lead">المنتوج، المورّد، الكلفة الإجمالية، النقل، الأداء، الامتثال: تؤهّل Import-eXPert كل عملية استيراد وتحسب كلفتها وتؤمّنها قبل إصدار الطلبية، وتسلّمكم ملفًا قابلًا للدفاع عنه، كل نقطة فيه مستندة إلى النص الرسمي. ويحسم خبراؤنا في مسار الاستيراد الحالات الصعبة.</p>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}>
             <Link href="/ar/diagnostic" className="x-btn x-btn-dark">قيسوا درجة تعرّضكم</Link>
