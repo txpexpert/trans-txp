@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 
 const pc = (a: number, b: number) => (b ? Math.round((a / b) * 100) + ' %' : '—')
 
-const ACCROCHES: Record<string, string> = { A: 'Ce que la douane contrôlera demain, vérifiez-le aujourd’hui', B: 'Importez sans mauvaise surprise', C: 'Votre importation coûte plus cher que votre facture' }
+const ACCROCHES: Record<string, string> = { A: 'Ce que les administrations contrôleront demain, vérifiez-le aujourd’hui', B: 'Importez sans mauvaise surprise', C: 'Votre importation coûte plus cher que votre facture' }
 const somme = (o?: Record<string, number>) => Object.values(o || {}).reduce((s, x) => s + x, 0)
 
 export default function Indicateurs({ i, jours, erreur, c }: { i: I; jours: number; erreur: string | null; c: Record<string, Record<string, number>> }) {

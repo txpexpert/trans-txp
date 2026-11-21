@@ -22,7 +22,7 @@ export default function PagePartenaire({ nom, type }: { nom: string; type: strin
       <section className="x-hero">
         <div className="x-wrap">
           <div className="x-eyebrow">Offert par {nom}</div>
-          <h1 className="x-h1 x-h1-sm">Ce que la douane contrôlera demain, <em>mesurez-le aujourd’hui</em>.</h1>
+          <h1 className="x-h1 x-h1-sm">Ce que les administrations contrôleront demain, <em>mesurez-le aujourd’hui</em>.</h1>
           <p className="x-lead">{nom}, {qui}, vous offre le diagnostic de conformité Import-eXPert : en une quinzaine de minutes, il chiffre en dirhams les droits exposés sur la période de reprise de quatre ans et vous remet un plan d’action.</p>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}>
             <Link href="/diagnostic" className="x-btn x-btn-dark">Mesurer mon exposition</Link>
