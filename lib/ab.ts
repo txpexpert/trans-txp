@@ -2,7 +2,7 @@
 // Attribution par un cookie technique (ixp_ab = A, B ou C), sans identifiant ni donnée personnelle ;
 // mesure par compteurs agrégés (table compteurs_evenements) : vues de l'accueil et diagnostics commencés.
 export const VARIANTES = {
-  A: { avant: 'Ce que la douane contrôlera demain,', apres: 'vérifiez-le aujourd’hui' },
+  A: { avant: 'Ce que les administrations contrôleront demain,', apres: 'vérifiez-le aujourd’hui' },
   B: { avant: 'Importez', apres: 'sans mauvaise surprise' },
   C: { avant: 'Votre importation coûte plus cher', apres: 'que votre facture' },
 } as const
