@@ -7,7 +7,7 @@
 // (247 décisions, JSON statique) vit désormais dans decisions-classement.tsx
 // ════════════════════════════════════════════════════════════
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import ModuleLayout from '../../components/ModuleLayout'
 
 // ── Types ───────────────────────────────────────────────────
@@ -127,6 +127,28 @@ const CHAPITRES = [
 
 const PAGE_SIZE = 30
 
+// ── Informations connexes (textes liés au code sélectionné) ─
+interface Connexes {
+  code: string
+  libelle: string
+  taux: string | null
+  rubriques: { titre: string; points: string[] }[]
+  synthese: string
+  sources: { titre: string; extrait: string; base: 'ixp' | 'leref' }[]
+  decisions: { code_sh: string; designation: string; circulaire: string | null; date: string | null }[]
+  error?: string
+}
+
+// Renvoie les « [n] » d'un point vers la liste des textes
+function avecRenvois(t: string) {
+  return t.split(/(\[\d+\])/g).map((m, i) => {
+    const n = /^\[(\d+)\]$/.exec(m)
+    return n
+      ? <a key={i} href={`#cx-src-${n[1]}`} style={{ fontSize: '10px', verticalAlign: 'super', color: 'var(--bd)', textDecoration: 'none', marginLeft: 1 }}>[{n[1]}]</a>
+      : <span key={i}>{m}</span>
+  })
+}
+
 export default function Classement() {
 
   const [q, setQ] = useState('')
@@ -138,6 +160,11 @@ export default function Classement() {
   const [searched, setSearched] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [stats, setStats] = useState({ total: 0, withTaux: 0 })
+  const [choisi, setChoisi] = useState<string | null>(null)
+  const [cx, setCx] = useState<Connexes | null>(null)
+  const [cxLoading, setCxLoading] = useState(false)
+  const [cxError, setCxError] = useState<string | null>(null)
+  const cxCache = useRef(new Map<string, Connexes>())
 
   useEffect(() => {
     fetch('/api/tarifs/stats')
@@ -168,6 +195,33 @@ export default function Classement() {
     const t = setTimeout(() => search(0), 400)
     return () => clearTimeout(t)
   }, [q, chapitre, search])
+
+  // Code retenu par défaut : la première position finale des résultats (sinon la première ligne)
+  useEffect(() => {
+    if (!results.length) { setChoisi(null); return }
+    if (choisi && results.some(r => r.code_sh === choisi)) return
+    setChoisi((results.find(r => r.est_feuille) || results[0]).code_sh)
+  }, [results]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!choisi) { setCx(null); return }
+    const enCache = cxCache.current.get(choisi)
+    if (enCache) { setCx(enCache); setCxError(null); return }
+    let annule = false
+    setCxLoading(true); setCxError(null); setCx(null)
+    const t = setTimeout(() => {
+      fetch('/api/tarifs/connexes?code=' + encodeURIComponent(choisi))
+        .then(r => r.json())
+        .then((d: Connexes) => {
+          if (annule) return
+          if (d.error) setCxError(d.error)
+          else { cxCache.current.set(choisi, d); setCx(d) }
+        })
+        .catch(() => { if (!annule) setCxError('Erreur de connexion') })
+        .finally(() => { if (!annule) setCxLoading(false) })
+    }, 300)
+    return () => { annule = true; clearTimeout(t) }
+  }, [choisi])
 
   const totalPages = Math.ceil(total / PAGE_SIZE)
 
@@ -276,7 +330,14 @@ export default function Classement() {
                 <tbody>
                   {results.map(r => (
                     <tr key={r.code_sh}
-                      style={r.est_hierarchique && !r.est_feuille ? { background: 'var(--bl)', opacity: .85 } : {}}>
+                      onClick={() => setChoisi(r.code_sh)}
+                      title="Afficher les informations connexes de ce code"
+                      aria-selected={r.code_sh === choisi}
+                      style={{
+                        cursor: 'pointer',
+                        ...(r.est_hierarchique && !r.est_feuille ? { background: 'var(--bl)', opacity: .85 } : {}),
+                        ...(r.code_sh === choisi ? { outline: '2px solid var(--bd)', outlineOffset: '-2px' } : {}),
+                      }}>
                       <td style={{ fontFamily: 'monospace', fontWeight: r.est_feuille ? 600 : 400, fontSize: '12px' }}>
                         {fmtCode(r.code_sh)}
                       </td>
@@ -309,6 +370,88 @@ export default function Classement() {
                     disabled={page >= totalPages - 1 || loading}
                     onClick={() => search(page + 1)}>Suivant</button>
                 </div>
+              )}
+
+              {choisi && (
+                <section aria-labelledby="cx-titre" style={{
+                  marginTop: '1.75rem', border: '.5px solid var(--rule)', borderRadius: '6px',
+                  borderTop: '3px solid var(--bd)', padding: '1.1rem 1.25rem',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem', flexWrap: 'wrap' }}>
+                    <h2 id="cx-titre" style={{ margin: 0, fontSize: '17px' }}>Informations connexes</h2>
+                    <span style={{ fontFamily: 'monospace', fontSize: '12px', color: 'var(--inkm)' }}>{fmtCode(choisi)}</span>
+                  </div>
+                  <p style={{ margin: '.35rem 0 1rem', fontSize: '12px', color: 'var(--inkm)' }}>
+                    Ce que disent les textes de la base sur ce produit et sur ce code : fiscalité, formalités, normes, origine, change et décisions de classement. Cliquez sur une autre ligne du tableau pour changer de code.
+                  </p>
+
+                  {cxLoading && <div style={{ fontSize: '13px', color: 'var(--inkm)', padding: '1rem 0' }}>Recherche des textes liés à ce code…</div>}
+                  {cxError && <div style={{ fontSize: '13px', color: '#B41E1E' }}>{cxError}</div>}
+
+                  {cx && !cxLoading && (
+                    <>
+                      {cx.libelle && (
+                        <div style={{ fontSize: '12.5px', marginBottom: '1rem', lineHeight: 1.5 }}>
+                          <b>Position :</b> {cx.libelle}{cx.taux ? <> · <b>Droit d’importation :</b> {cx.taux} %</> : null}
+                        </div>
+                      )}
+
+                      {cx.rubriques.map(r => (
+                        <div key={r.titre} style={{ marginBottom: '1rem' }}>
+                          <h3 style={{ margin: '0 0 .4rem', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--bd)' }}>{r.titre}</h3>
+                          <ul style={{ margin: 0, paddingLeft: '1.1rem', fontSize: '13px', lineHeight: 1.55 }}>
+                            {r.points.map((p, i) => <li key={i} style={{ marginBottom: '.25rem' }}>{avecRenvois(p)}</li>)}
+                          </ul>
+                        </div>
+                      ))}
+                      {!cx.rubriques.length && cx.synthese && (
+                        <p style={{ fontSize: '13px', lineHeight: 1.55, whiteSpace: 'pre-line' }}>{avecRenvois(cx.synthese)}</p>
+                      )}
+                      {!cx.rubriques.length && !cx.synthese && !cx.decisions.length && (
+                        <div style={{ fontSize: '13px', color: 'var(--inkm)' }}>
+                          Aucun texte de la base ne traite spécifiquement de ce code pour le moment. Posez votre question à IXP-Assistant ou demandez l’avis d’un expert.
+                        </div>
+                      )}
+
+                      {cx.decisions.length > 0 && (
+                        <div style={{ marginBottom: '1rem' }}>
+                          <h3 style={{ margin: '0 0 .4rem', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--bd)' }}>Décisions de classement sur la même position</h3>
+                          <table className="data-table">
+                            <thead><tr><th style={{ width: '118px' }}>Code SH</th><th>Produit</th><th style={{ width: '110px' }}>Circulaire</th></tr></thead>
+                            <tbody>
+                              {cx.decisions.map((d, i) => (
+                                <tr key={d.code_sh + i}>
+                                  <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>{/^\d{10}$/.test(d.code_sh) ? fmtCode(d.code_sh) : d.code_sh}</td>
+                                  <td style={{ fontSize: '12px' }}>{d.designation}</td>
+                                  <td style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--inkm)' }}>{d.circulaire || '-'}{d.date ? ` · ${d.date}` : ''}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                          <a href="/modules/decisions-classement" style={{ fontSize: '12px', textDecoration: 'underline' }}>Toutes les décisions de classement</a>
+                        </div>
+                      )}
+
+                      {cx.sources.length > 0 && (
+                        <details open={cx.rubriques.length > 0} style={{ fontSize: '12px' }}>
+                          <summary style={{ cursor: 'pointer', fontWeight: 600, marginBottom: '.4rem' }}>Textes consultés ({cx.sources.length})</summary>
+                          <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 1.5 }}>
+                            {cx.sources.map((s, i) => (
+                              <li key={i} id={`cx-src-${i + 1}`} style={{ marginBottom: '.35rem' }}>
+                                <b>{s.titre}</b>{s.base === 'leref' ? <span style={{ color: 'var(--inkm)' }}> · guide LeRef</span> : null}
+                                <div style={{ color: 'var(--inkm)' }}>{s.extrait}</div>
+                              </li>
+                            ))}
+                          </ol>
+                        </details>
+                      )}
+
+                      <p style={{ margin: '1rem 0 0', fontSize: '11px', color: 'var(--inkm)' }}>
+                        Synthèse établie à partir des textes cités ; elle ne remplace ni la lecture des textes officiels ni l’avis d’un expert sur un cas particulier.
+                      </p>
+                    </>
+                  )}
+                </section>
               )}
             </>
           )}
