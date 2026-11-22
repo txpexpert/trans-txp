@@ -873,3 +873,36 @@ html.ixp-cadre body{background:#fff}
   .x-esp-tile:hover{transform:none}
   .x-esp-meta{grid-template-columns:1fr}
 }
+
+/* ── Chaîne de l'accueil, version compacte (nov. 2026) ── */
+.x-pc-compact .x-link-card.x-row3{grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) minmax(0,1fr);gap:18px 22px;padding:18px 22px}
+.x-pc-compact .x-verb{font-size:22px;margin:4px 0 0}
+.x-pc-compact .x-card-t{font-size:12.5px}
+.x-pc-compact .x-pc-open{margin-top:6px;font-size:12.5px}
+.x-pc-compact .x-card-out{font-size:12px;line-height:1.4}
+.x-pc-compact .x-pc-full{margin-top:0;padding-top:12px}
+.x-pc-compact .x-pc-tools{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px 28px;margin-top:0}
+.x-pc-compact .x-pc-chip{min-height:38px;padding:6px 9px;gap:6px;font-size:12px;border-radius:10px;align-items:center}
+.x-pc-compact .x-pc-chip.on{transform:scale(1.03)}
+.x-pc-compact .x-pc-chip.a-down::before{height:9px}
+.x-pc-compact .x-pc-chip.a-down::after{top:calc(100% + 8px)}
+.x-pc-compact .x-pc-link{height:28px}
+.x-pc-compact .x-pc-cta{margin-top:16px;padding:14px 20px}
+@media (max-width:1020px){
+  .x-pc-compact .x-link-card.x-row3{grid-template-columns:1fr;gap:10px}
+  .x-pc-compact .x-pc-tools{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .x-pc-compact .x-pc-tools{grid-template-columns:1fr;gap:14px}
+  .x-pc-compact .x-pc-chip.a-right::before,.x-pc-compact .x-pc-chip.a-left::before,.x-pc-compact .x-pc-chip.a-down::before{height:9px}
+  .x-pc-compact .x-pc-chip.a-right::after,.x-pc-compact .x-pc-chip.a-left::after,.x-pc-compact .x-pc-chip.a-down::after{top:calc(100% + 8px)}
+}
+
+/* Liens étape précédente / suivante répétés en haut des pages d'étape */
+.x-flow.x-flow-top{margin-top:0;padding-top:0;padding-bottom:14px;border-top:none;border-bottom:1px solid var(--x-line)}
+.x-flow.x-flow-top a{padding:9px 14px;min-width:180px}
+.x-flow.x-flow-top b{font-size:17px}
+@media (max-width:760px){.x-flow.x-flow-top{flex-direction:row}.x-flow.x-flow-top a{min-width:0;flex:1}}
+/* Tuiles étape précédente / suivante en gris clair (haut et bas) */
+.x-flow a{background:#ECEAE6;border-color:#D6D2CB}
+.x-flow a:hover{background:#E2DFD9;border-color:var(--x-ink)}

@@ -17,6 +17,17 @@ export default function ChainRows() {
   CHAIN.forEach(e => { starts.push(total); total += e.tools.length })
 
   const [active, setActive] = useState(-1)
+  // Colonnes de la grille des modules : 5 sur grand écran, 3 sur tablette
+  // (une seule colonne en dessous de 760 px, gérée par la feuille de style).
+  const [cols, setCols] = useState(5)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mq = window.matchMedia('(max-width: 1020px)')
+    const upd = () => setCols(mq.matches ? 3 : 5)
+    upd()
+    mq.addEventListener?.('change', upd)
+    return () => mq.removeEventListener?.('change', upd)
+  }, [])
   const paused = useRef(false)
   // Accès : modules cliquables seulement pour un abonnement en cours (essai compris) ou un administrateur.
   const [abonne, setAbonne] = useState(false)
@@ -45,7 +56,7 @@ export default function ChainRows() {
   const state = (g: number) => (g === active ? 'on' : g < active ? 'done' : '')
 
   return (
-    <div className="x-pc" onMouseEnter={() => { paused.current = true }} onMouseLeave={() => { paused.current = false }}>
+    <div className="x-pc x-pc-compact" onMouseEnter={() => { paused.current = true }} onMouseLeave={() => { paused.current = false }}>
       {CHAIN.map((e, si) => {
         const first = starts[si]
         const last = first + e.tools.length - 1
@@ -61,22 +72,22 @@ export default function ChainRows() {
                 <span className="x-pc-open">Ouvrir l’espace →</span>
               </Link>
               <div>
-                <p style={{ margin: '0 0 8px', fontWeight: 500 }}>{e.question}</p>
-                <p style={{ margin: 0, color: 'var(--x-ink2)', fontSize: 15 }}>{e.promise}</p>
+                <p style={{ margin: '0 0 4px', fontWeight: 500 }}>{e.question}</p>
+                <p style={{ margin: 0, color: 'var(--x-ink2)', fontSize: 14 }}>{e.promise}</p>
               </div>
               <div className="x-card-out" style={{ borderTop: 'none', paddingTop: 0 }}>
                 <b>Livrable</b>{e.livrable}
-                <b style={{ marginTop: 12 }}>Transmet</b>{e.transmet}
+                <b style={{ marginTop: 8 }}>Transmet</b>{e.transmet}
               </div>
               <div className="x-pc-tools x-pc-full" aria-label={`Parcours des modules de l’étape ${e.verb}`}>
                 {e.tools.map((t, ti) => {
                   const g = first + ti
-                  // Grille de 3 par ligne, en serpentin : ligne paire de gauche à droite,
+                  // Grille de `cols` par ligne, en serpentin : ligne paire de gauche à droite,
                   // ligne impaire de droite à gauche, pour que chaque tuile touche la suivante.
-                  const row = Math.floor(ti / 3), pos = ti % 3
-                  const col = row % 2 === 0 ? pos : 2 - pos
+                  const row = Math.floor(ti / cols), pos = ti % cols
+                  const col = row % 2 === 0 ? pos : cols - 1 - pos
                   const lastTool = ti === e.tools.length - 1
-                  const dir = lastTool ? '' : pos === 2 ? 'a-down' : row % 2 === 0 ? 'a-right' : 'a-left'
+                  const dir = lastTool ? '' : pos === cols - 1 ? 'a-down' : row % 2 === 0 ? 'a-right' : 'a-left'
                   const cls = `x-pc-chip ${state(g)} ${dir} ${g < active ? 'lit' : ''}`
                   const place = { ['--gr' as any]: row + 1, ['--gc' as any]: col + 1 }
                   return abonne ? (

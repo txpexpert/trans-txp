@@ -4,7 +4,6 @@ import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import SiteShell from '../components/SiteShell'
-import ChainRows from '../components/ChainRows'
 import IxpAssistant from '../components/IxpAssistant'
 import IxpIntro from '../components/IxpIntro'
 import IxpTicker from '../components/IxpTicker'
@@ -148,21 +147,6 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
       </section>
 
 
-      {/* ── LA CHAÎNE ── */}
-      <section className="x-sec x-sec-dark" id="chaine">
-        <div className="x-wrap">
-          <div className="x-eyebrow">La plateforme</div>
-          <h2 className="x-h2">Une opération, <em>cinq étapes</em>, un seul dossier.</h2>
-          <p className="x-sub">Chaque espace répond à une question que vous vous posez à chaque importation, produit un livrable, et transmet ses données à l’étape suivante.</p>
-          <div style={{ marginTop: 32 }}><ChainRows /></div>
-          <div className="x-base">
-            <Link href="/espaces/bibliotheque" className="x-link-card x-c-bibliotheque"><div className="x-verb">Bibliothèque</div><p>Le socle : tarif, circulaires, CGI, IGOC, décisions, glossaire.</p></Link>
-            <Link href="#assistant" className="x-link-card x-c-assistant"><div className="x-verb">IXP-Assistant</div><p>Dans chaque espace, il répond en citant le texte exact.</p></Link>
-            <Link href="/espaces/piloter" className="x-link-card x-c-piloter"><div className="x-verb">Piloter</div><p>Intelligence et stratégie pour la direction générale.</p></Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── HYBRIDE : LOGICIEL + EXPERT ── */}
       <section className="x-sec">
         <div className="x-wrap">
@@ -192,6 +176,52 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
               </ul>
               <Link href="/expertise" className="x-btn x-btn-gold">Voir les services experts</Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── DIAGNOSTIC ── */}
+      <section className="x-sec x-sec-dark" id="diagnostic">
+        <div className="x-wrap x-scan">
+          <div>
+            <div className="x-eyebrow">Aperçu en 1 minute · diagnostic complet en 15 minutes</div>
+            <h2 className="x-h2">Mesurez votre <em>exposition aux risques à l’import</em>.</h2>
+            <p className="x-sub" style={{ marginBottom: 28 }}>Trois questions pour une première indication. Le diagnostic complet couvre ensuite huit domaines, chiffre votre exposition et produit un plan d’action que vous suivez dans le temps.</p>
+            {SCAN.map((s, i) => (
+              <div className="x-q" key={s.q}>
+                <p>{i + 1}. {s.q}</p>
+                <div className="x-opts">
+                  {s.o.map(([lbl], j) => (
+                    <button key={lbl} type="button" data-q={i} data-a={j} data-v={SCAN[i].o[j][1]} className={`x-opt ${rep[i] === j ? 'on' : ''}`}
+                      onClick={() => setRep(r => r.map((v, k) => (k === i ? j : v)))}>{lbl}</button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="x-gauge" aria-live="polite">
+            <span>INDICE D’EXPOSITION</span>
+            <b><span id="x-score">{score ?? '—'}</span><small className="x-gauge-max">/100</small></b>
+            <p id="x-niveau">{complet ? `${niveau}. Indication sommaire, à confirmer par le diagnostic complet.` : 'Répondez aux trois questions pour obtenir votre indice.'}</p>
+            <Link href="/diagnostic" className="x-btn x-btn-gold">Lancer le diagnostic complet →</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── RESSOURCES ── */}
+      <section className="x-sec-tight">
+        <div className="x-wrap x-two">
+          <div className="x-panel">
+            <div className="x-eyebrow">Baromètre 2026 · enquête ouverte</div>
+            <h3 className="x-h3">Mesurer les difficultés et frictions d’importation</h3>
+            <p className="x-sub">Délais, erreurs de conformité, accords sous-exploités : une enquête menée auprès d’importateurs, de transitaires et de directions financières. Les réponses sont anonymes et les résultats publiés en ligne.</p>
+            <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Link href="/enquete" className="x-btn x-btn-dark">Participer à l’enquête</Link><Link href="/barometre" className="x-btn x-btn-line">Voir les résultats</Link></div>
+          </div>
+          <div className="x-panel">
+            <div className="x-eyebrow">Kits opérationnels</div>
+            <h3 className="x-h3">Vos dossiers sensibles, déjà structurés</h3>
+            <p className="x-sub">Origine préférentielle, régimes suspensifs, classement et contrôle a posteriori : des kits interactifs avec assistants, calculateurs, modèles générés et tableaux de suivi, chaque règle rattachée à son texte.</p>
+            <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Link href="/expertise#kits" className="x-btn x-btn-dark">Ouvrir les kits</Link></div>
           </div>
         </div>
       </section>
@@ -257,52 +287,6 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* ── DIAGNOSTIC ── */}
-      <section className="x-sec x-sec-dark" id="diagnostic">
-        <div className="x-wrap x-scan">
-          <div>
-            <div className="x-eyebrow">Aperçu en 1 minute · diagnostic complet en 15 minutes</div>
-            <h2 className="x-h2">Mesurez votre <em>exposition aux risques à l’import</em>.</h2>
-            <p className="x-sub" style={{ marginBottom: 28 }}>Trois questions pour une première indication. Le diagnostic complet couvre ensuite huit domaines, chiffre votre exposition et produit un plan d’action que vous suivez dans le temps.</p>
-            {SCAN.map((s, i) => (
-              <div className="x-q" key={s.q}>
-                <p>{i + 1}. {s.q}</p>
-                <div className="x-opts">
-                  {s.o.map(([lbl], j) => (
-                    <button key={lbl} type="button" data-q={i} data-a={j} data-v={SCAN[i].o[j][1]} className={`x-opt ${rep[i] === j ? 'on' : ''}`}
-                      onClick={() => setRep(r => r.map((v, k) => (k === i ? j : v)))}>{lbl}</button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="x-gauge" aria-live="polite">
-            <span>INDICE D’EXPOSITION</span>
-            <b><span id="x-score">{score ?? '—'}</span><small className="x-gauge-max">/100</small></b>
-            <p id="x-niveau">{complet ? `${niveau}. Indication sommaire, à confirmer par le diagnostic complet.` : 'Répondez aux trois questions pour obtenir votre indice.'}</p>
-            <Link href="/diagnostic" className="x-btn x-btn-gold">Lancer le diagnostic complet →</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── RESSOURCES ── */}
-      <section className="x-sec-tight">
-        <div className="x-wrap x-two">
-          <div className="x-panel">
-            <div className="x-eyebrow">Baromètre 2026 · enquête ouverte</div>
-            <h3 className="x-h3">Mesurer les difficultés et frictions d’importation</h3>
-            <p className="x-sub">Délais, erreurs de conformité, accords sous-exploités : une enquête menée auprès d’importateurs, de transitaires et de directions financières. Les réponses sont anonymes et les résultats publiés en ligne.</p>
-            <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}><Link href="/enquete" className="x-btn x-btn-dark">Participer à l’enquête</Link><Link href="/barometre" className="x-btn x-btn-line">Voir les résultats</Link></div>
-          </div>
-          <div className="x-panel">
-            <div className="x-eyebrow">Kits opérationnels</div>
-            <h3 className="x-h3">Vos dossiers sensibles, déjà structurés</h3>
-            <p className="x-sub">Origine préférentielle, régimes suspensifs, classement et contrôle a posteriori : des kits interactifs avec assistants, calculateurs, modèles générés et tableaux de suivi, chaque règle rattachée à son texte.</p>
-            <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}><a href="/kits/pratiques/IXP_Kit02_Regimes_economiques.html" target="_blank" rel="noopener" className="x-btn x-btn-dark">Kit 02 · Régimes économiques</a><Link href="/expertise#kits" className="x-btn x-btn-line">Ouvrir les kits</Link></div>
-          </div>
         </div>
       </section>
 

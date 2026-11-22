@@ -98,6 +98,13 @@ export default function EspacePage({ slug }: { slug: string }) {
             </aside>
 
             <div className="x-esp-centre">
+              {e.chain && (
+                <nav className="x-flow x-flow-top" aria-label="Étapes de la chaîne (haut de page)">
+                  {prev ? <Link href={`/espaces/${prev.slug}`}><span>← Étape {prev.num}</span><b>{prev.verb}</b></Link> : <span />}
+                  {next && <Link href={`/espaces/${next.slug}`} className="next"><span>Étape {next.num} →</span><b>{next.verb}</b></Link>}
+                </nav>
+              )}
+
               <div className="x-esp-intro">
                 <div className="x-eyebrow">{e.chain ? `Étape ${e.num} · ${e.title}` : e.title}</div>
                 <h1 className="x-h1" style={{ fontSize: 'clamp(34px,4vw,52px)' }}>{e.verb}</h1>

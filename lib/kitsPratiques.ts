@@ -1,5 +1,5 @@
 // lib/kitsPratiques.ts — source unique des kits pratiques, utilisée par
-// la page Présentation (/plateforme#kits) et la page Expertise (/expertise#kits).
+// la page Expertise (/expertise#kits-pratiques et /expertise#kits).
 // Fichiers HTML autonomes dans public/kits/pratiques/ : consultables en ligne et téléchargeables.
 // `complet` : kit interactif complet (outils, calculateurs, modèles) dans public/kits/, quand il existe.
 export type KitPratique = {

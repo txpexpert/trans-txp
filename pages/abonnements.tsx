@@ -76,7 +76,7 @@ const PLANS: PlanDef[] = [
       { ok: true, text: 'Intelligence fiscale & stratégique' },
       { ok: true, text: 'Classificateur HS + DUM + Screening' },
       { ok: true, text: 'Marchandises dangereuses (AUT, MRQ, SDG, TDG)' },
-      { ok: true, text: 'Import Engineering & MondoScope' },
+      { ok: true, text: 'Import Engineering' },
       { ok: true, text: 'Support prioritaire 24/7' },
       { ok: true, text: 'Conseil personnalisé (4h/mois)' },
     ],
