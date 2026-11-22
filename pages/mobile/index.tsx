@@ -3,7 +3,7 @@ import Link from "next/link";
 const modules = [
   { label: "Classement tarifaire", href: "/modules/classement" },
   { label: "Décisions de classement", href: "/modules/decisions-classement" },
-  { label: "Glossaire douanier", href: "/tools/glossaire-douanier.html" },
+  { label: "Lexique des termes Import", href: "/tools/glossaire-douanier.html" },
   { label: "FAQ", href: "/modules/faq" },
   { label: "Substances dangereuses", href: "/tools/Substances-dangereuses.html" },
   { label: "Marquage & warnings", href: "/tools/marquage-warnings.html" },

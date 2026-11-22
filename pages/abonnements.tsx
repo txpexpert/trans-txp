@@ -28,7 +28,7 @@ const PLANS: PlanDef[] = [
     items: [
       { ok: true,  text: 'FAQ Douanière' },
       { ok: true,  text: 'Simulateur droits & taxes (basique)' },
-      { ok: true,  text: 'Glossaire douanier FR/AR' },
+      { ok: true,  text: 'Lexique des termes Import' },
       { ok: false, text: 'Modules opérationnels' },
       { ok: false, text: 'Tableau de bord & alertes' },
       { ok: false, text: 'Support prioritaire' },
@@ -44,7 +44,7 @@ const PLANS: PlanDef[] = [
     featured: false,
     modules:  '18 modules',
     items: [
-      { ok: true, text: 'FAQ, Simulateur, Glossaire' },
+      { ok: true, text: 'FAQ, Simulateur, Lexique des termes Import' },
       { ok: true, text: 'Comparateur régimes & Risques' },
       { ok: true, text: 'Tracking & Intelligence import' },
       { ok: true, text: 'Incoterms, Logistique, Export' },
