@@ -8,6 +8,15 @@ import { KITS_PRATIQUES, kitHref, kitCompletHref, nbKitsEnLettres } from '../lib
 export default function Expertise() {
   return (
     <SiteShell title="Expertise et services | IXP-Import-eXPert" description="Import Engineering : renseignements, avis motivés et accompagnement de dossiers par des experts en processus d’importation.">
+      <section className="x-sec-tight" id="conseil" style={{ scrollMarginTop: 90 }}>
+        <div className="x-wrap">
+          <div className="x-eyebrow">Conseil personnalisé · Consultation express</div>
+          <h2 className="x-h2">Une question réglementaire, <em>une réponse sourcée</em>.</h2>
+          <p className="x-sub" style={{ marginBottom: 18 }}>Réponse immédiate à partir des textes officiels, ou étude complète rédigée et validée par nos consultants.</p>
+          <ConseilPersonnalise />
+        </div>
+      </section>
+
       <section className="x-hero">
         <div className="x-wrap x-hero-grid">
           <div>
@@ -35,15 +44,6 @@ export default function Expertise() {
               ))}
             </ol>
           </aside>
-        </div>
-      </section>
-
-      <section className="x-sec-tight" id="conseil" style={{ scrollMarginTop: 90 }}>
-        <div className="x-wrap">
-          <div className="x-eyebrow">Conseil personnalisé · Consultation express</div>
-          <h2 className="x-h2">Une question réglementaire, <em>une réponse sourcée</em>.</h2>
-          <p className="x-sub" style={{ marginBottom: 18 }}>Réponse immédiate à partir des textes officiels, ou étude complète rédigée et validée par nos consultants.</p>
-          <ConseilPersonnalise />
         </div>
       </section>
 
