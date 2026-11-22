@@ -84,11 +84,11 @@ export const versSources = (ps: Passage[]): Source[] => ps.map(p => ({
   extrait: p.texte.replace(/\s+/g, ' ').slice(0, 160) + (p.texte.length > 160 ? '…' : ''),
 }))
 
-const contexteDe = (ps: Passage[], max = 4000) =>
+export const contexteDe = (ps: Passage[], max = 4000) =>
   ps.map((p, i) => `<passage n="${i + 1}" titre="${p.titre.replace(/"/g, "'")}">\n${p.texte.slice(0, max)}\n</passage>`).join('\n')
 
 // ── Modèle ──────────────────────────────────────────────────────────────────
-async function claude(system: string, content: string, max_tokens: number, modele = env('RECHERCHE_MODEL', 'claude-sonnet-4-6')): Promise<string> {
+export async function claude(system: string, content: string, max_tokens: number, modele = env('RECHERCHE_MODEL', 'claude-sonnet-4-6')): Promise<string> {
   const key = env('ANTHROPIC_API_KEY')
   if (!key) throw new Error('ANTHROPIC_API_KEY manquante')
   const r = await fetch('https://api.anthropic.com/v1/messages', {
