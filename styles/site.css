@@ -903,3 +903,6 @@ html.ixp-cadre body{background:#fff}
 .x-flow.x-flow-top a{padding:9px 14px;min-width:180px}
 .x-flow.x-flow-top b{font-size:17px}
 @media (max-width:760px){.x-flow.x-flow-top{flex-direction:row}.x-flow.x-flow-top a{min-width:0;flex:1}}
+/* Tuiles étape précédente / suivante en gris clair (haut et bas) */
+.x-flow a{background:#ECEAE6;border-color:#D6D2CB}
+.x-flow a:hover{background:#E2DFD9;border-color:var(--x-ink)}
