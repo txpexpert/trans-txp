@@ -154,7 +154,7 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
           <div className="x-eyebrow">La plateforme</div>
           <h2 className="x-h2">Une opération, <em>cinq étapes</em>, un seul dossier.</h2>
           <p className="x-sub">Chaque espace répond à une question que vous vous posez à chaque importation, produit un livrable, et transmet ses données à l’étape suivante.</p>
-          <div style={{ marginTop: 32 }}><ChainRows /></div>
+          <div style={{ marginTop: 22 }}><ChainRows /></div>
           <div className="x-base">
             <Link href="/espaces/bibliotheque" className="x-link-card x-c-bibliotheque"><div className="x-verb">Bibliothèque</div><p>Le socle : tarif, circulaires, CGI, IGOC, décisions, glossaire.</p></Link>
             <Link href="#assistant" className="x-link-card x-c-assistant"><div className="x-verb">IXP-Assistant</div><p>Dans chaque espace, il répond en citant le texte exact.</p></Link>
