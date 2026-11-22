@@ -57,7 +57,7 @@ export const SITE_PAGES: SitePage[] = [
   { slug: 'veille-reglementaire', path: '/modules/veille-reglementaire', title: 'Veille réglementaire & LF 2026', description: 'Nouveautés réglementaires, loi de finances 2026, alertes ADII' },
   { slug: 'alertes-fiscales', path: '/modules/alertes-fiscales', title: 'Alertes fiscales', description: 'Alertes et changements fiscaux' },
   { slug: 'cgi-search', path: '/modules/cgi-search', title: 'Recherche fiscale CGI', description: 'Questions de fiscalité, Code général des impôts, TVA, IS, IR' },
-  { slug: 'glossaire-douanier', path: '/modules/glossaire-douanier', title: 'Glossaire douanier FR/AR', description: 'Définition d\'un terme douanier, traduction français/arabe' },
+  { slug: 'glossaire-douanier', path: '/modules/glossaire-douanier', title: 'Lexique des termes Import', description: 'Définition d\'un terme douanier, traduction français/arabe' },
   { slug: 'faq', path: '/modules/faq', title: 'FAQ douanière', description: 'Questions fréquentes des opérateurs sur le droit douanier' },
   { slug: 'transit-doc-generator', path: '/modules/transit-doc-generator', title: 'Dossier documentaire par procédure', description: 'Pièces à réunir par procédure douanière, des formalités préalables à l’apurement, avec leurs sources' },
   { slug: 'generateur-docs', path: '/modules/generateur-docs', title: 'Générateur de documents', description: 'Facture, pro forma, packing list, CMR, EUR.1, DV1, admission temporaire' },

@@ -31,7 +31,7 @@ const MODULES_TOOLS = [
   { num: 'DOC', label: 'Documents par Code SH',        href: '/modules/documents-sh',         badge: 'NEW' },
   { num: 'DUM', label: 'Vérificateur DUM',             href: '/modules/verificateur-dum',     badge: 'NEW' },
   { num: 'GEN', label: 'Générateur Documents',         href: '/modules/generateur-docs',      badge: 'NEW' },
-  { num: 'GLO', label: 'Glossaire Douanier FR/AR',     href: '/modules/glossaire-douanier',   badge: 'NEW' },
+  { num: 'GLO', label: 'Lexique des termes Import',     href: '/modules/glossaire-douanier',   badge: 'NEW' },
   { num: 'PRT', label: 'Carte des Bureaux Douaniers',         href: '/modules/carte-bureauxdouaniers',       badge: 'NEW' },
   { num: 'RGM', label: 'Régimes & Procédures à l’import', href: '/modules/procedures-process',   badge: 'NEW' },
   { num: 'ICI', label: 'Index Commerce Intl.',         href: '/modules/index-commerce',       badge: 'NEW' },

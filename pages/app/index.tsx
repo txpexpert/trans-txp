@@ -17,7 +17,7 @@ const modules = [
   { label: 'Classement tarifaire',       href: '/app/classement' },
   { label: 'Décisions de classement',    href: '/app/decisions-classement' },
   { label: 'FAQ — Espace Expert',        href: '/app/faq' },
-  { label: 'Glossaire douanier',         href: '/api/app-content/glossaire' },
+  { label: 'Lexique des termes Import',         href: '/api/app-content/glossaire' },
   { label: 'Substances dangereuses',     href: '/api/app-content/substances-dangereuses' },
   { label: 'Marquage & warnings',        href: '/api/app-content/marquage-warnings' },
   { label: 'Calculateur conteneurs',     href: '/api/app-content/calc-conteneurs' },
