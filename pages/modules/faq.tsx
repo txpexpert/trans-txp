@@ -485,7 +485,7 @@ export default function FaqPage() {
     <ModuleLayout
       kicker="Base de connaissances douanières"
       title="Espace Expert Opérateurs"
-      sub="Vos opérations, nos réponses sur mesure. · 269 questions & réponses · Droit douanier 2025">
+      sub="Vos opérations, nos réponses sur mesure. · 269 questions & réponses">
 
       {/* Couleurs de texte foncées : dans la refonte, --bd vaut un beige clair (couleur de bordure)
           et --inks / --inkm sont trop pâles, ce qui rendait la page à peine lisible. */}
@@ -500,7 +500,6 @@ export default function FaqPage() {
       <div className="info-grid" style={{ marginBottom: '1.5rem' }}>
         <div className="istat"><div className="istat-n">269</div><div className="istat-l">Questions indexées</div></div>
         <div className="istat"><div className="istat-n">11</div><div className="istat-l">Catégories couvertes</div></div>
-        <div className="istat"><div className="istat-n">2025</div><div className="istat-l">Droit douanier marocain</div></div>
       </div>
 
       {/* ── NOTICE ── */}
