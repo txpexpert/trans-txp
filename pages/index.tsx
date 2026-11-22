@@ -4,7 +4,6 @@ import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import SiteShell from '../components/SiteShell'
-import ChainRows from '../components/ChainRows'
 import IxpAssistant from '../components/IxpAssistant'
 import IxpIntro from '../components/IxpIntro'
 import IxpTicker from '../components/IxpTicker'
@@ -147,16 +146,6 @@ export default function Accueil({ variante = 'A' }: { variante?: Variante }) {
         </div>
       </section>
 
-
-      {/* ── LA CHAÎNE ── */}
-      <section className="x-sec x-sec-dark" id="chaine">
-        <div className="x-wrap">
-          <div className="x-eyebrow">La plateforme</div>
-          <h2 className="x-h2">Une opération, <em>cinq étapes</em>, un seul dossier.</h2>
-          <p className="x-sub">Chaque espace répond à une question que vous vous posez à chaque importation, produit un livrable, et transmet ses données à l’étape suivante.</p>
-          <div style={{ marginTop: 22 }}><ChainRows /></div>
-        </div>
-      </section>
 
       {/* ── HYBRIDE : LOGICIEL + EXPERT ── */}
       <section className="x-sec">

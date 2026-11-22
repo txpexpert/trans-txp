@@ -15,15 +15,26 @@ export default function Expertise() {
             <h1 className="x-h1">Derrière la plateforme, <em>des experts en processus d’importation</em>.</h1>
             <p className="x-lead">Import-eXPert est né du terrain : dix-huit ans de pratique douanière, une méthode d’amélioration continue issue du Lean Six Sigma, et des ouvrages de référence sur l’ingénierie douanière et les guerres tarifaires. Le logiciel industrialise ce savoir ; l’équipe reste disponible quand un dossier sort de l’ordinaire.</p>
           </div>
-          <div className="x-panel">
-            <div className="x-eyebrow">Publications</div>
-            <ul className="x-list">
-              <li><em>Douane Engineering</em> (2026)</li>
-              <li><em>Guerres douanières</em> · <em>Customs Wars</em> (2026), sur la guerre tarifaire américaine</li>
-              <li>Glossaire douanier trilingue FR · EN · AR (à paraître)</li>
-            </ul>
-            <p className="x-note" style={{ marginTop: 0 }}>Chaque réponse experte s’appuie sur les mêmes sources que la plateforme : Code des douanes, circulaires ADII, CGI, IGOC, accords de libre-échange.</p>
-          </div>
+          <aside className="x-kits" id="kits-pratiques" aria-labelledby="kits-titre">
+            <div className="x-eyebrow">Kits pratiques · 2026</div>
+            <h2 className="x-kits-title" id="kits-titre">Télécharger nos kits pratiques</h2>
+            <p className="x-kits-sub">{nbKitsEnLettres()} kits d’expertise, à consulter en ligne ou à télécharger.</p>
+            <ol className="x-kits-list">
+              {KITS_PRATIQUES.map(k => (
+                <li key={k.num} className="x-kit">
+                  <span className="x-kit-n">{k.num}</span>
+                  <div className="x-kit-txt">
+                    <a href={kitHref(k)} target="_blank" rel="noopener" className="x-kit-t">{k.titre}</a>
+                    <span className="x-kit-r">{k.resume}</span>
+                  </div>
+                  <div className="x-kit-btns">
+                    <a href={kitHref(k)} target="_blank" rel="noopener" className="x-btn x-btn-line x-btn-sm">Consulter</a>
+                    <a href={kitHref(k)} download={k.fichier} className="x-btn x-btn-dark x-btn-sm">Télécharger</a>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </aside>
         </div>
       </section>
 
