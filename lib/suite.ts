@@ -114,6 +114,7 @@ export const ESPACES: Espace[] = [
     tools: [
       { label: 'Questions / réponses utiles', path: '/modules/faq', desc: '173 questions, réponses sourcées', tier: 'decouverte' },
       { label: 'Glossaire FR/AR', path: '/modules/glossaire-douanier', desc: 'Recueil global de terminologies d’import (1 081 termes)', tier: 'decouverte' },
+      { label: 'Global MondoScope', path: '/modules/mondoscope', desc: 'Veille stratégique mondiale', tier: 'decouverte' },
     ],
   },
   {
@@ -123,7 +124,6 @@ export const ESPACES: Espace[] = [
     livrable: 'Notes de décision et tableaux de bord',
     transmet: 'Orientations de sourcing et d’investissement',
     tools: [
-      { label: 'Global MondoScope', path: '/modules/mondoscope', desc: 'Veille stratégique mondiale', tier: 'entreprise' },
       { label: 'Intelligence import', path: '/modules/intelligence-import', desc: 'Flux 2026, gisement préférentiel, signaux tarifaires', tier: 'entreprise' },
       { label: 'Intelligence stratégique', path: '/modules/intelligence-strategique', desc: 'Décisions de classement, défense commerciale, accords', tier: 'entreprise' },
       { label: 'Analyses stratégiques', path: '/modules/analyses', desc: 'Assistant sourcé et notes d’analyse mensuelles', tier: 'expert' },

@@ -33,6 +33,7 @@ const MODULE_ACCESS: Record<Plan, string[]> = {
     'simulateur',
 
     'glossaire-douanier',
+    'mondoscope', // Global MondoScope : module gratuit de la Bibliothèque
   ],
 
   pro: [
