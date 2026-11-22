@@ -90,6 +90,7 @@ export const FREE_PATHS = [
   '/tools/douane-engineering.html',
   '/modules/index-commerce',
   '/tools/mondoscope-veillestrategique.html',
+  '/modules/mondoscope', // Global MondoScope : module gratuit de la Bibliothèque, ouvert sans compte
   '/tools/Substances-dangereuses.html',
   '/tools/marquage-warnings.html',
   '/tools/transit-doc-generator.html',

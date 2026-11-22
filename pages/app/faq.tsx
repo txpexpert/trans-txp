@@ -489,7 +489,7 @@ export default function FaqPage() {
     <AppModuleLayout
       kicker="Base de connaissances douanières"
       title="Espace Expert Opérateurs"
-      sub="Vos opérations, nos réponses sur mesure. · 269 questions & réponses · Droit douanier 2025">
+      sub="Vos opérations, nos réponses sur mesure. · 269 questions & réponses">
 
       {/* ── STATS ── */}
       <div className="info-grid" style={{ marginBottom: '1.5rem' }}>
