@@ -114,7 +114,7 @@ export const ESPACES: Espace[] = [
     tools: [
       { label: 'Questions / réponses utiles', path: '/modules/faq', desc: '173 questions, réponses sourcées', tier: 'decouverte' },
       { label: 'Glossaire FR/AR', path: '/modules/glossaire-douanier', desc: 'Recueil global de terminologies d’import (1 081 termes)', tier: 'decouverte' },
-      { label: 'Global MondoScope', path: '/modules/mondoscope', desc: 'Veille stratégique mondiale', tier: 'decouverte' },
+      { label: 'Global MondoScope', path: '/tools/mondoscope-veillestrategique.html', desc: 'Veille stratégique mondiale', tier: 'decouverte' },
     ],
   },
   {
