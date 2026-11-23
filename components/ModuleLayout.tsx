@@ -70,7 +70,7 @@ body {
 
 /* ── Contenu ── */
 .mod-wrap {
-  max-width: 1180px; margin: 0 auto; padding: 2.5rem 24px 4rem;
+  max-width: var(--x-max, 1180px); margin: 0 auto; padding: 2.5rem var(--x-gut, 24px) 4rem;
 }
 .mod-hero {
   padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);

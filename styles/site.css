@@ -17,7 +17,13 @@
 .xs *{box-sizing:border-box}
 .xs [hidden]{display:none !important}
 .xs a{color:inherit;text-decoration:none}
-.x-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.x-wrap{max-width:var(--x-max,1180px);margin:0 auto;padding:0 var(--x-gut,24px)}
+/* Écrans larges (PC 16/9) : la zone utile s'élargit au lieu de rester bloquée à 1180 px */
+:root{--x-max:1180px;--x-gut:24px}
+@media (min-width:1400px){:root{--x-max:1340px;--x-gut:32px}}
+@media (min-width:1600px){:root{--x-max:1520px;--x-gut:40px}}
+@media (min-width:1900px){:root{--x-max:1760px;--x-gut:48px}}
+@media (min-width:2400px){:root{--x-max:2100px}}
 
 /* ── Header ── */
 .x-hdr{position:sticky;top:0;z-index:50;background:rgba(250,247,240,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--x-line)}
