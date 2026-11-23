@@ -48,7 +48,7 @@ body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font
   color:var(--gold);padding:2px 8px;
   background:var(--gold-dim);border:1px solid var(--gold-bd);margin-left:auto;
 }
-.mod-wrap{max-width:max(1400px, var(--x-max, 1400px));margin:0 auto;padding:2rem 2rem 4rem}
+.mod-wrap{max-width:var(--x-max, 1400px);margin:0 auto;padding:2rem 2rem 4rem}
 
 /* ── Hero ── */
 .mod-hero{padding-bottom:1.5rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
