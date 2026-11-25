@@ -16,6 +16,22 @@ const FAQ = [
   ['Comment se règle l’abonnement ?', 'Par virement bancaire, en dirhams, en une fois pour l’année, avec la référence indiquée sur votre facture pro-forma. Votre plan est activé pour 12 mois à la validation du paiement, et la facture vous est envoyée par email.'],
 ]
 
+// Scénarios plausibles : entreprises fictives, chiffres repris de lib/casTypes.ts.
+const RISQUES = [
+  {
+    titre: 'Redevance de marque oubliée', montant: '164 000 DH', precision: 'rappel sur quatre ans',
+    scenario: 'Un distributeur de cosmétiques de Casablanca importe chaque année 2 millions de dirhams de produits sous licence. Le contrat signé avec le titulaire de la marque prévoit une redevance de 5 % sur les achats, réglée chaque trimestre par virement, à part des factures du fournisseur. Les achats suivent le contrat, la comptabilité paie la redevance, le transitaire déclare le prix facturé : personne ne fait le lien. Quatre ans plus tard, un contrôle a posteriori rapproche les virements vers l’étranger des importations. La redevance devait s’ajouter à la valeur en douane : droits et TVA sont réclamés sur quatre années, soit 164 000 DH, avant intérêts et amendes.',
+  },
+  {
+    titre: 'EUR.1 sans mention de cumul', montant: '525 000 DH', precision: 'par année d’opérations concernée',
+    scenario: 'Une enseigne d’articles de maison achète en Espagne 3 millions de dirhams de linge par an, tissé à partir de fils turcs. Le fournisseur applique le cumul d’origine et joint un certificat EUR.1 à chaque envoi : les marchandises entrent au droit préférentiel de 0 %. Mais le certificat ne porte pas la mention « CUMULATION APPLIED WITH », exigée par les nouvelles règles d’origine, et personne ne le relit au-delà du cachet. Lors d’un contrôle a posteriori, l’administration interroge les autorités espagnoles et refuse la préférence. Le droit commun de 17,5 % redevient exigible : 525 000 DH pour une seule année d’opérations, hors TVA, intérêts et amendes.',
+  },
+  {
+    titre: 'Pièce importée avant l’autorisation', montant: '92 000 DH', precision: 'décaissés au lieu d’une garantie',
+    scenario: 'Un vendredi soir, la presse d’un équipementier automobile de Tanger s’arrête : un module hydraulique a lâché, et chaque jour d’arrêt retarde les livraisons. Le fournisseur allemand accepte un échange standard et expédie dès le lundi, par avion, un module de remplacement de 400 000 DH. L’équipe maintenance compte renvoyer la pièce défectueuse et régulariser ensuite. Or l’importation anticipée exige une autorisation accordée avant l’arrivée, jamais après. La pièce relève donc du régime commun : 10 000 DH de droits et 82 000 DH de TVA, soit 92 000 DH décaissés sur-le-champ, là où une simple garantie aurait suffi.',
+  },
+]
+
 export default function Tarifs() {
   const [pack, setPack] = useState<string | null>(null)
   const [prec, setPrec] = useState('')
@@ -60,10 +76,12 @@ export default function Tarifs() {
           <h2 className="x-h2">{fmtDH(Math.round(PRICING.pro.annual! / 365))} DH HT par jour, <em>face à un seul redressement</em>.</h2>
           <p className="x-sub">L’abonnement ne se compare pas à des heures de travail, mais à ce qu’une seule erreur coûte quand elle est découverte, jusqu’à quatre ans plus tard.</p>
           <div className="x-tf-risque">
-            <div className="moi"><span>Offre Pro, un an</span><b>{fmtDH(PRICING.pro.annual!)} DH HT</b><small>50 références suivies, dossiers défendables, veille</small></div>
-            <div><span>Redevance de marque oubliée</span><b>164 000 DH</b><small>rappel sur quatre ans (cas illustratif)</small></div>
-            <div><span>EUR.1 sans mention de cumul</span><b>525 000 DH</b><small>par année d’opérations concernée (cas illustratif)</small></div>
-            <div><span>Pièce importée avant l’autorisation</span><b>92 000 DH</b><small>décaissés au lieu d’une garantie (cas illustratif)</small></div>
+            {RISQUES.map(r => (
+              <div key={r.titre}>
+                <span>{r.titre}</span><b>{r.montant}</b><small>{r.precision} (cas illustratif)</small>
+                <p>{r.scenario}</p>
+              </div>
+            ))}
           </div>
           <p className="x-note">Chaque fonction de l’importation a ses risques : achat, change, transport, conformité des produits, douane. Un exemple parmi d’autres : en 2025, 23,5 milliards de dirhams ont été redressés au titre de la sous-facturation, en hausse de 33 % (ADII, rapport d’activité 2025). Cas illustratifs : entreprises fictives, mécanismes et textes réels, détaillés sur la page <Link href="/cas-types">Cas types</Link>.</p>
           <div className="x-tf-val">

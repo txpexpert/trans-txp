@@ -781,7 +781,9 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 /* ── Tarifs : prix, risque, valeur incluse ── */
 .x-tf-prix{font-weight:600;color:var(--x-gold);margin:2px 0 6px}
 .x-tf-prix small{font-weight:500;color:#1E7346}
-.x-tf-risque{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.x-tf-risque{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.x-tf-risque div{align-content:start}
+.x-tf-risque p{margin:8px 0 0;padding-top:10px;border-top:1px solid #F0B9C1;font-size:14px;line-height:1.55;color:var(--x-ink2)}
 .x-tf-risque div{display:grid;gap:4px;background:#FCEEF0;border:1px solid #F0B9C1;border-radius:14px;padding:16px 18px}
 .x-tf-risque div.moi{background:#EBF6EF;border-color:#C3E3CF}
 .x-tf-risque span{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--x-ink3)}
@@ -789,7 +791,7 @@ span.x-pc-chip:hover{border-color:var(--cl);color:inherit}
 .x-tf-risque small{font-size:13px;color:var(--x-ink2)}
 .x-tf-val{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;margin-top:22px;padding:20px 24px;border-radius:16px;background:#fff;border:1px solid var(--x-line)}
 .x-tf-val p{margin:6px 0 0;max-width:760px}
-@media (max-width:860px){.x-tf-risque{grid-template-columns:1fr 1fr}}
+@media (max-width:860px){.x-tf-risque{grid-template-columns:1fr}}
 .x-me-codes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
 .x-me-codes>div{display:grid;gap:6px;justify-items:start;padding:16px 18px;border-radius:14px;background:var(--x-paper);border:1px dashed var(--x-gold)}
 .x-me-codes span{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--x-ink3)}
