@@ -1,12 +1,17 @@
 // components/ChainCompact.tsx — la chaîne en tuiles compactes (5 étapes + socle).
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import { CHAIN } from '../lib/suite'
 
-export default function ChainCompact({ eyebrow, id, big = false }: { eyebrow: string; id?: string; big?: boolean }) {
+export default function ChainCompact({ eyebrow, id, big = false, aside }: { eyebrow: string; id?: string; big?: boolean; aside?: ReactNode }) {
   return (
     <section className="x-sec x-sec-dark" id={id}>
       <div className="x-wrap">
-        {big ? <h2 className="x-initier">{eyebrow}</h2> : <div className="x-eyebrow">{eyebrow}</div>}
+        {big
+          ? (aside
+              ? <div className="x-initier-row"><h2 className="x-initier">{eyebrow}</h2>{aside}</div>
+              : <h2 className="x-initier">{eyebrow}</h2>)
+          : <div className="x-eyebrow">{eyebrow}</div>}
         {big
           ? <h3 className="x-h2" style={{ fontSize: 'clamp(24px,3vw,34px)' }}>Une opération, <em>cinq étapes</em>, un seul dossier.</h3>
           : <h2 className="x-h2">Une opération, <em>cinq étapes</em>, un seul dossier.</h2>}

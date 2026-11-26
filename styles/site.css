@@ -908,3 +908,14 @@ html.ixp-cadre body{background:#fff}
 /* Tuiles étape précédente / suivante en gris clair (haut et bas) */
 .x-flow a{background:#ECEAE6;border-color:#D6D2CB}
 .x-flow a:hover{background:#E2DFD9;border-color:var(--x-ink)}
+
+/* ── Encart application Android (à côté de « Initier vos opérations ») ── */
+.x-initier-row{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:0 0 18px}
+.x-initier-row .x-initier{margin:0}
+.x-app{display:flex;align-items:center;gap:16px;padding:12px 18px 12px 12px;border:1px solid #3A342C;border-radius:18px;background:#1D1A16;color:#EDE7DA}
+.x-app-qr{display:block;background:#fff;padding:5px;border-radius:10px}
+.x-app-t{font-family:var(--x-serif);font-size:20px;line-height:1.2;color:#fff}
+.x-app-txt p{margin:2px 0 8px;font-size:13px;color:#A79D8D}
+.x-app-btn{display:inline-block;padding:7px 14px;border-radius:999px;background:var(--x-gold2);color:var(--x-ink);font-size:14px;font-weight:600;text-decoration:none}
+.x-app-btn:hover{filter:brightness(1.08)}
+@media (max-width:640px){.x-app-qr{display:none}.x-app{padding:12px 16px}}
