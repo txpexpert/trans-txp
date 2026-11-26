@@ -63,10 +63,10 @@ export const ACCORDS: Accord[] = [
     slug: 'chine', partenaire: 'Chine', code: 'CN',
     nature: 'Régime préférentiel unilatéral (tarif zéro chinois)',
     signature: 'Annonce du 14 février 2026', vigueur: '1er mai 2026 – 30 avril 2028',
-    circulaires: ['Annonce de la Commission tarifaire du Conseil des affaires d’État (28/04/2026)'],
-    preuve: 'Certificat d’origine marocain ; règles d’origine chinoises à vérifier',
-    actu: 'Concerne les exportations marocaines vers la Chine ; à l’import au Maroc, les produits chinois restent au droit commun.',
-    maj: MAJ_ACCORDS, unilateral: true,
+    circulaires: ['Avis N°1 DRCI 2026 (20/11/2026)', '6786/223 (certificat d’origine, 20/11/2026)', 'Annonces chinoises n° 5 et 54 (28/04/2026)'],
+    preuve: 'Certificat d’origine délivré par l’ADII, en anglais, valable 1 an (dispense jusqu’à 1 000 USD)',
+    actu: 'Règles d’origine publiées : produit entièrement obtenu ou valeur régionale ≥ 40 % FAB, transport direct. Non réciproque : à l’import au Maroc, droit commun.',
+    maj: '26 novembre 2026', unilateral: true,
   },
 ]
 
