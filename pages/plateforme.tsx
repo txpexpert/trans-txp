@@ -2,12 +2,13 @@
 import Link from 'next/link'
 import SiteShell from '../components/SiteShell'
 import ChainCompact from '../components/ChainCompact'
+import AppAndroid from '../components/AppAndroid'
 import { PROFILS, espaceBySlug } from '../lib/suite'
 
 export default function Plateforme() {
   return (
     <SiteShell title="Présentation de notre plateforme en 5 espaces | IXP-Import-eXPert" description="Cinq espaces de travail reliés par un même dossier : qualifier, optimiser, chiffrer, exécuter, sécuriser.">
-      <ChainCompact eyebrow="Initier vos opérations" id="initier" big />
+      <ChainCompact eyebrow="Initier vos opérations" id="initier" big aside={<AppAndroid />} />
 
       <section className="x-hero">
         <div className="x-wrap">
