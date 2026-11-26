@@ -4,7 +4,7 @@ export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.impor
 export default function AppAndroid() {
   return (
     <div className="x-app">
-      <img className="x-app-qr" src="/brand/qr-import-expert-android.svg" width={88} height={88}
+      <img className="x-app-qr" src="/brand/qr-import-expert-android.svg" width={114} height={114}
         alt="QR code pour télécharger l'application Import-eXPert sur Google Play" />
       <div className="x-app-txt">
         <div className="x-app-t">L’application Android</div>
