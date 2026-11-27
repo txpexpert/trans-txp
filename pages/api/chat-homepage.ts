@@ -45,6 +45,7 @@ type ChatResponse = {
   answer?: string
   action?: ChatAction
   sources?: { titre: string; numero: string | null; type_document: string | null }[]
+  liens?: Record<string, string>   // numéro cité → page « Textes officiels » de la Bibliothèque
   conversationId?: string
   memorySaved?: boolean
   error?: string
