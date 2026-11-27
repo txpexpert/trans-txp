@@ -32,6 +32,17 @@ const MOIS = {
 const STATUTS: Record<string, [string, string]> = {
   en_vigueur: ['En vigueur', 'ساري المفعول'], abroge: ['Abrogé', 'منسوخ'], modifie: ['Modifié', 'معدَّل'], historique: ['Référence historique', 'مرجع تاريخي'],
 }
+// Nature du texte (colonne type_document), terminologie du Code des douanes en arabe
+const TYPES: Record<string, [string, string]> = {
+  circulaire: ['Circulaire', 'دورية'], note: ['Note', 'مذكرة'], note_interne: ['Note interne', 'مذكرة داخلية'],
+  arrete_ministeriel: ['Arrêté ministériel', 'قرار وزاري'], dahir_portant_loi: ['Dahir portant loi', 'ظهير شريف بمثابة قانون'],
+  dahir: ['Dahir', 'ظهير شريف'], decret: ['Décret', 'مرسوم'], loi: ['Loi', 'قانون'], compilation: ['Compilation', 'تجميع'],
+}
+function typeLisible(t: string | null, lang: Lang): string {
+  const v = TYPES[String(t || 'circulaire').toLowerCase()]
+  return v ? v[lang === 'ar' ? 1 : 0] : String(t).replace(/_/g, ' ')
+}
+const court = (s: string, n = 90) => (s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s)
 function statutLisible(s: string, lang: Lang): string {
   const v = STATUTS[String(s || '').toLowerCase()]
   return v ? v[lang === 'ar' ? 1 : 0] : String(s || '').replace(/_/g, ' ')
@@ -88,11 +99,12 @@ export default function TextesOfficiels({ lang, q, resultats, entete, texte, com
   const courant = entete ? normNumero(entete.numero) : ''
   const ici = entete ? lienTexte(entete.numero, ar) : base
   const liste = resultats.length ? resultats : (entete ? [{ numero: entete.numero, titre: entete.titre, type_document: entete.type_document, date_document: entete.date_document, nb_chunks: 0 }] : [])
-  const titrePage = entete ? `${t.circulaire} n° ${entete.numero}${entete.titre ? ' — ' + entete.titre : ''}` : t.titre
+  const nature = entete ? typeLisible(entete.type_document, lang) : ''
+  const titrePage = entete ? `${nature} n° ${entete.numero}${entete.titre ? ' — ' + court(entete.titre, 80) : ''}` : t.titre
 
   return (
     <SiteShell lang={lang} title={`${titrePage} | IXP-Import-eXPert`}
-      description={entete ? `${entete.titre || ''} (${t.circulaire} n° ${entete.numero}${entete.date_document ? ' ' + t.du + ' ' + dateLisible(entete.date_document, lang) : ''}).` : t.intro}>
+      description={entete ? `${court(entete.titre || '', 200)} (${nature} n° ${entete.numero}${entete.date_document ? ' ' + t.du + ' ' + dateLisible(entete.date_document, lang) : ''}).` : t.intro}>
       <section className="x-sec-tight x-c-bibliotheque" style={{ paddingTop: 18 }}>
         <div className="x-wrap">
           <div className="x-crumb"><Link href={ar ? '/ar' : '/plateforme'}>{t.plateforme}</Link> / <Link href={accueilBiblio}>{t.biblio}</Link> / <Link href={base}>{t.titre}</Link></div>
@@ -112,7 +124,7 @@ export default function TextesOfficiels({ lang, q, resultats, entete, texte, com
               {liste.map(r => (
                 <Link key={r.numero} href={lienTexte(r.numero, ar) + qs} className="x-esp-tile" aria-current={normNumero(r.numero) === courant ? 'true' : undefined}>
                   <span className="x-esp-n" dir="ltr">{r.numero}</span>
-                  <span className="x-esp-tx"><b>{r.titre || `${t.circulaire} n° ${r.numero}`}</b>{r.date_document && <small>{dateLisible(r.date_document, lang)}</small>}</span>
+                  <span className="x-esp-tx"><b>{r.titre ? court(r.titre, 140) : `${typeLisible(r.type_document, lang)} n° ${r.numero}`}</b>{r.date_document && <small>{dateLisible(r.date_document, lang)}</small>}</span>
                 </Link>
               ))}
             </aside>
@@ -140,8 +152,8 @@ export default function TextesOfficiels({ lang, q, resultats, entete, texte, com
                 <article className="x-esp-outil x-txt">
                   <div className="x-txt-avert" role="note">{t.avert}</div>
                   <header className="x-txt-hd">
-                    <div className="x-eyebrow">{entete.type_document && entete.type_document.toLowerCase() !== 'circulaire' ? entete.type_document : t.circulaire} <span dir="ltr">n° {entete.numero}</span>{entete.date_document ? ` · ${t.du} ${dateLisible(entete.date_document, lang)}` : ''}</div>
-                    <h1>{entete.titre || `${t.circulaire} n° ${entete.numero}`}</h1>
+                    <div className="x-eyebrow">{nature} <span dir="ltr">n° {entete.numero}</span>{entete.date_document ? ` · ${t.du} ${dateLisible(entete.date_document, lang)}` : ''}</div>
+                    <h1>{entete.titre || `${nature} n° ${entete.numero}`}</h1>
                     {(entete.emetteur || entete.statut) && (
                       <p className="x-txt-meta">
                         {entete.emetteur && <span><b>{t.emetteur}</b> {entete.emetteur}</span>}
