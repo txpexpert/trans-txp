@@ -33,6 +33,8 @@ import {
   type ChatAction,
 } from '../../lib/sitePages'
 import { extractMemoryFromMessage, generateMemoryKey } from '../../lib/memoryTriggers'
+import { liensTextes } from '../../lib/textesOfficiels'
+import { numerosCites } from '../../lib/textesLiens'
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -43,6 +45,7 @@ type ChatResponse = {
   answer?: string
   action?: ChatAction
   sources?: { titre: string; numero: string | null; type_document: string | null }[]
+  liens?: Record<string, string>   // numéro cité → page « Textes officiels » de la Bibliothèque
   conversationId?: string
   memorySaved?: boolean
   error?: string
@@ -264,7 +267,10 @@ export default async function handler(
       }
     }
 
-    return res.status(200).json({ answer, action, sources, conversationId: activeConversationId, memorySaved })
+    // Liens vers le texte des circulaires citées (Bibliothèque « Textes officiels »), quand il y est disponible
+    const liens = await liensTextes([...numerosCites(answer), ...sources.map(s => s.numero || '').filter(Boolean)])
+
+    return res.status(200).json({ answer, action, sources, liens, conversationId: activeConversationId, memorySaved })
   } catch (err) {
     console.error('Erreur chat-homepage:', err)
     return res.status(500).json({ error: 'Erreur serveur lors du traitement de la question' })

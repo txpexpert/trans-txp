@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next'
 import { POSITIONS_TOP } from '../lib/produitsTop'
 
 const PAGES = ['/', '/plateforme', '/tarifs', '/expertise', '/diagnostic', '/barometre', '/calculateur-charges-import', '/produits', '/cas-types',
-  '/espaces/qualifier', '/espaces/optimiser', '/espaces/chiffrer', '/espaces/executer', '/espaces/securiser', '/espaces/bibliotheque', '/espaces/piloter',
+  '/espaces/qualifier', '/espaces/optimiser', '/espaces/chiffrer', '/espaces/executer', '/espaces/securiser', '/espaces/bibliotheque', '/espaces/bibliotheque/textes', '/espaces/piloter',
   '/demo/fiche-produit', '/a-propos', '/contact',
   '/profils/pme', '/profils/transitaire', '/profils/industriel', '/profils/daf', '/profils/prescripteurs', '/ar', '/ar/tarifs', '/tools/diagnostic-conformite-ar.html', '/ar/contact', '/ar/echange-expert']
 

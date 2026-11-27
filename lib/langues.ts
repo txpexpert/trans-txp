@@ -17,13 +17,23 @@ export const EQUIVALENTS: [string, string][] = [
   ['/echange-expert', '/ar/echange-expert'],
 ]
 
+// Rubriques disponibles dans les deux langues, page par page : [préfixe français, préfixe arabe]
+export const PREFIXES_EQUIVALENTS: [string, string][] = [
+  ['/espaces/bibliotheque/textes', '/ar/bibliotheque/textes'],
+]
+
 const sansSlashFinal = (p: string) => (p.length > 1 ? p.replace(/\/+$/, '') : p)
 
 /** Équivalent d'une page dans l'autre langue, ou null s'il n'existe pas. */
 export function equivalent(chemin: string, vers: Langue): string | null {
   const p = sansSlashFinal(chemin.split(/[?#]/)[0] || '/')
   const ligne = EQUIVALENTS.find(([fr, ar]) => (vers === 'ar' ? fr === p : ar === p))
-  return ligne ? (vers === 'ar' ? ligne[1] : ligne[0]) : null
+  if (ligne) return vers === 'ar' ? ligne[1] : ligne[0]
+  for (const [fr, ar] of PREFIXES_EQUIVALENTS) {
+    const de = vers === 'ar' ? fr : ar, vers_ = vers === 'ar' ? ar : fr
+    if (p === de || p.startsWith(de + '/')) return vers_ + p.slice(de.length)
+  }
+  return null
 }
 
 export function estArabe(chemin: string): boolean {

@@ -1,7 +1,7 @@
 // middleware.ts
 // ─────────────────────────────────────────────────────────────────────────────
 // Contrôle d'accès par plan/abonnement pour les pages du site.
-// - FREE_PATHS (lib/routeAccess.ts) : toujours ouvertes, aucun compte requis.
+// - FREE_PATHS et FREE_PREFIXES (lib/routeAccess.ts) : toujours ouvertes, aucun compte requis.
 // - /modules/* et /tools/*.html : accès vérifié via la matrice MODULE_ACCESS
 //   (lib/moduleAccess.ts) selon le plan et le statut de l'utilisateur connecté.
 // - /backoffice/* : exclu — déjà protégé indépendamment par requireAdminSSR
@@ -25,7 +25,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { verifyUserTokenEdge } from './lib/edgeAuth'
-import { FREE_PATHS, pathToModuleCode } from './lib/routeAccess'
+import { isFreePath, pathToModuleCode } from './lib/routeAccess'
 import { COOKIE_LANGUE, equivalent, estArabe } from './lib/langues'
 import { canAccessModule } from './lib/moduleAccess'
 
@@ -57,7 +57,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  if (FREE_PATHS.includes(pathname)) return NextResponse.next()
+  if (isFreePath(pathname)) return NextResponse.next()
 
   const token = req.cookies.get(USER_COOKIE)?.value
   const payload = await verifyUserTokenEdge(token)

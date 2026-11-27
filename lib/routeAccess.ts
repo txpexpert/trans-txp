@@ -106,6 +106,20 @@ export const FREE_PATHS = [
 ]
 
 /**
+ * Préfixes toujours ouverts, sans compte : la page vérifie elle-même ce qu'elle montre.
+ * Bibliothèque « Textes officiels » : recherche et liste ouvertes à tous, texte complet
+ * réservé aux abonnés — contrôlé côté serveur dans lib/textesPage.ts (getServerSideProps).
+ */
+export const FREE_PREFIXES = [
+  '/espaces/bibliotheque/textes',
+  '/ar/bibliotheque/textes',
+]
+
+export function isFreePath(pathname: string): boolean {
+  return FREE_PATHS.includes(pathname) || FREE_PREFIXES.some(p => pathname === p || pathname.startsWith(p + '/'))
+}
+
+/**
  * Convertit un chemin d'URL en code module pour canAccessModule().
  * /modules/{code}      → code
  * /tools/{fichier}.ext → fichier (sans extension, en minuscules)

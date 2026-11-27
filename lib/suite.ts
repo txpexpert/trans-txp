@@ -112,6 +112,7 @@ export const ESPACES: Espace[] = [
     livrable: 'Référence opposable : texte, article, circulaire',
     transmet: 'Sources citées dans chaque espace',
     tools: [
+      { label: 'Textes officiels', path: '/espaces/bibliotheque/textes', desc: 'Texte complet d’une circulaire par numéro ou par titre (texte réservé aux abonnés)', tier: 'decouverte' },
       { label: 'Questions / réponses utiles', path: '/modules/faq', desc: '173 questions, réponses sourcées', tier: 'decouverte' },
       { label: 'Lexique des termes Import', path: '/modules/glossaire-douanier', desc: 'Recueil global de terminologies d’import (1 081 termes)', tier: 'decouverte' },
       { label: 'Global MondoScope', path: '/tools/mondoscope-veillestrategique.html', desc: 'Veille stratégique mondiale', tier: 'decouverte' },

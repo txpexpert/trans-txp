@@ -10,6 +10,7 @@ import { requireAppAccess } from '../../lib/appAccess'
 interface Decision {
   designation: string
   circulaire: string
+  texte_url?: string | null
   code_sh: string
   resume?: string
 }
@@ -125,6 +126,11 @@ export default function DecisionsClassement() {
                   fontSize: '15px', color: 'var(--inkm)', lineHeight: 1.7,
                 }}>
                   {d.resume}
+                </div>
+              )}
+              {d.texte_url && (
+                <div style={{ padding: '0 16px 14px 16px', fontSize: '14px' }}>
+                  <a href={d.texte_url} style={{ color: 'var(--ink)', fontWeight: 600, textDecoration: 'underline' }}>Lire la circulaire →</a>
                 </div>
               )}
             </details>
