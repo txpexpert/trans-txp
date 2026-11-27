@@ -29,6 +29,13 @@ const MOIS = {
   fr: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
   ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'ماي', 'يونيو', 'يوليوز', 'غشت', 'شتنبر', 'أكتوبر', 'نونبر', 'دجنبر'],
 }
+const STATUTS: Record<string, [string, string]> = {
+  en_vigueur: ['En vigueur', 'ساري المفعول'], abroge: ['Abrogé', 'منسوخ'], modifie: ['Modifié', 'معدَّل'], historique: ['Référence historique', 'مرجع تاريخي'],
+}
+function statutLisible(s: string, lang: Lang): string {
+  const v = STATUTS[String(s || '').toLowerCase()]
+  return v ? v[lang === 'ar' ? 1 : 0] : String(s || '').replace(/_/g, ' ')
+}
 function dateLisible(d: string | null, lang: Lang): string {
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d || ''))
   if (!m) return d || ''
@@ -138,7 +145,7 @@ export default function TextesOfficiels({ lang, q, resultats, entete, texte, com
                     {(entete.emetteur || entete.statut) && (
                       <p className="x-txt-meta">
                         {entete.emetteur && <span><b>{t.emetteur}</b> {entete.emetteur}</span>}
-                        {entete.statut && <span><b>{t.statut}</b> {entete.statut}</span>}
+                        {entete.statut && <span><b>{t.statut}</b> {statutLisible(entete.statut, lang)}</span>}
                       </p>
                     )}
                   </header>
