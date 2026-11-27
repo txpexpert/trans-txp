@@ -222,13 +222,15 @@ export default async function handler(
       lengthCheck.wasCut
     )
 
-    const sources = foundChunks.map(
-      (c: { titre: string; numero: string | null; type_document: string | null }) => ({
+    // Une source par document : plusieurs extraits d'un même texte ne
+    // doivent pas répéter sa référence.
+    const sources = (foundChunks as { titre: string; numero: string | null; type_document: string | null }[])
+      .filter((c, i, all) => all.findIndex(o => (o.numero || o.titre) === (c.numero || c.titre)) === i)
+      .map(c => ({
         titre: c.titre,
         numero: c.numero,
         type_document: c.type_document,
-      })
-    )
+      }))
 
     if (activeConversationId) {
       await supabaseAdmin.from('messages').insert({
