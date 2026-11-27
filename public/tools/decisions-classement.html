@@ -212,10 +212,11 @@ function card(d){
     + '<div class="card-h"><div class="kicker">Décision de classement</div><h2>'+esc(d.designation)+'</h2></div>'
     + '<div class="rows"><div class="cell"><div class="k">Code SH</div><div class="v'+(ok?"":" na")+'">'+esc(fmtSH(sh))+'</div></div>'
     + '<div class="cell"><div class="k">Chapitre</div><div class="v">'+(ok?sh.slice(0,2):"—")+'</div></div>'
-    + '<div class="cell"><div class="k">Circulaire</div><div class="v">n° '+esc(String(d.circulaire||"").replace(/^Circulaire\s*/i,""))+'<span style="font-size:12px;font-weight:400;font-family:inherit;color:var(--mid)">'+esc(date)+'</span></div></div></div>'
+    + '<div class="cell"><div class="k">Circulaire</div><div class="v">n° '+(d.texte_url && /^\/espaces\/bibliotheque\/textes\//.test(d.texte_url) ? '<a href="'+esc(d.texte_url)+'" target="_top" style="color:inherit">'+esc(String(d.circulaire||"").replace(/^Circulaire\s*/i,""))+'</a>' : esc(String(d.circulaire||"").replace(/^Circulaire\s*/i,"")))+'<span style="font-size:12px;font-weight:400;font-family:inherit;color:var(--mid)">'+esc(date)+'</span></div></div></div>'
     + '<div class="body"><h3>Motivation du classement</h3><p>'+(txt?esc(txt):'<span style="color:var(--muted)">Motivation non renseignée.</span>')+'</p>'
     + (rgi ? '<div class="rgi"><span>'+esc(rgi.replace(/\s+$/,""))+'</span></div>' : '')
     + '</div><div class="acts">'
+    + (d.texte_url && /^\/espaces\/bibliotheque\/textes\//.test(d.texte_url) ? '<a class="btn" href="'+esc(d.texte_url)+'" target="_top">Lire la circulaire →</a>' : '')
     + (ok ? '<a class="btn primary" href="/modules/documents-sh?q='+sh+'">Documents requis pour ce code →</a>' : '')
     + '<button class="btn" id="again">Nouvelle recherche</button></div></article>';
   $("#again").onclick = function(){ q.value=""; hideDD(); $("#clr").style.display="none"; res.innerHTML = EMPTY; q.focus(); };

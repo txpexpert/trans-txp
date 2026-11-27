@@ -4,6 +4,7 @@
 //   - question : POST /api/chat-homepage { message } -> { answer, sources, action }
 //   - voix : dictée Web Speech API (fr-FR) ; lecture POST /api/voice/synthesize { text } -> audio
 import { useEffect, useRef, useState } from 'react'
+import TexteLiens from './TexteLiens'
 import Link from 'next/link'
 
 type Source = { titre: string; numero?: string }
@@ -17,6 +18,7 @@ export default function IxpAssistant() {
   const [answer, setAnswer] = useState('')
   const [sources, setSources] = useState<Source[]>([])
   const [action, setAction] = useState<Action>(null)
+  const [liens, setLiens] = useState<Record<string, string>>({})
   const [locked, setLocked] = useState(false)
   const [listening, setListening] = useState(false)
   const [micOk, setMicOk] = useState(true)
@@ -67,6 +69,7 @@ export default function IxpAssistant() {
       const data = await res.json()
       setAnswer(data.answer || 'Réponse indisponible pour le moment.')
       setSources(Array.isArray(data.sources) ? data.sources : [])
+      setLiens(data.liens && typeof data.liens === 'object' ? data.liens : {})
       const a = data.action
       setAction(a && typeof a.url === 'string' && a.url.charAt(0) === '/' ? a : null)
     } catch {
@@ -127,8 +130,10 @@ export default function IxpAssistant() {
         {answer && (
           <div className="x-assist-answer">
             <div className="x-mono" style={{ marginBottom: 8 }}>IXP-ASSISTANT</div>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{answer}</p>
-            {sources.length > 0 && <p className="x-assist-src">Sources : {sources.map(s => s.titre + (s.numero ? ` (n° ${s.numero})` : '')).join(' · ')}</p>}
+            <p style={{ whiteSpace: 'pre-wrap' }}><TexteLiens texte={answer} liens={liens} /></p>
+            {sources.length > 0 && <p className="x-assist-src">Sources : {sources.map((s, i) => (
+              <span key={i}>{i > 0 && ' · '}{s.titre}{s.numero && <> (n° {liens[s.numero] ? <a href={liens[s.numero]} style={{ textDecoration: 'underline' }}>{s.numero}</a> : s.numero})</>}</span>
+            ))}</p>}
             {action && <p><Link href={action.url} className="x-assist-link">{action.type === 'contact' ? '✉ ' : '→ '}{action.label}</Link></p>}
             <div className="x-assist-acts">
               {audioState === 'playing'

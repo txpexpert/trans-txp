@@ -5,6 +5,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import { checkAnyModuleAccess } from '../../../lib/apiAuth'
 import { checkRate } from '../../../lib/decisionsGuard'
+import { liensTextes } from '../../../lib/textesOfficiels'
+import { numeroCirculaire } from '../../../lib/textesLiens'
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -34,7 +36,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .maybeSingle()
     if (error) throw error
     if (!data) return res.status(404).json({ error: 'Décision introuvable' })
-    return res.status(200).json({ data })
+    // Lien vers le texte de la circulaire (Bibliothèque « Textes officiels »), s'il y est disponible
+    const n = numeroCirculaire(data.circulaire)
+    const texte_url = n ? (await liensTextes([n]))[n] || null : null
+    return res.status(200).json({ data: { ...data, texte_url } })
   } catch (err) {
     console.error('[API decisions/detail]', err)
     return res.status(500).json({ error: 'Erreur base de données' })

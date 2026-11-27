@@ -9,6 +9,8 @@ import { compteAbonne } from '../../lib/compteAbonne'
 import { supabaseAdmin } from '../../lib/supabaseAdmin'
 import { siteUrl } from '../../lib/adminAuth'
 import { reponseRapide, genererBrouillon, enArrierePlan, vueClient, visible } from '../../lib/rechercheExperte'
+import { liensTextes } from '../../lib/textesOfficiels'
+import { numerosCites } from '../../lib/textesLiens'
 
 export const config = { maxDuration: 300 }
 
@@ -76,7 +78,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         message: 'Votre requête sera traitée par nos consultants. La réponse vous sera affichée dans le tableau de bord de votre session, rubrique « Mon espace » ; un message vous en avisera.' })
     }
     const r = await reponseRapide(question)
-    return res.status(200).json({ mode, ...r })
+    // Liens vers le texte des circulaires citées (Bibliothèque « Textes officiels »)
+    const liens = await liensTextes(numerosCites(String((r as any)?.reponse || '')))
+    return res.status(200).json({ mode, ...r, liens })
   } catch (e: any) {
     console.error('[recherche]', e?.message || e)
     return res.status(502).json({ error: 'Service momentanément indisponible, réessayez dans un instant.' })

@@ -12,6 +12,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import { checkAnyModuleAccess } from '../../../lib/apiAuth'
 import { checkRate, normalizeQuery } from '../../../lib/decisionsGuard'
+import { liensTextes } from '../../../lib/textesOfficiels'
+import { numeroCirculaire } from '../../../lib/textesLiens'
 
 function getSupabase() {
   return createClient(
@@ -49,7 +51,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { data, error, count } = await query.order('created_at', { ascending: false }).limit(20)
     if (error) throw error
 
-    return res.status(200).json({ data: data ?? [], count: count ?? (data?.length ?? 0) })
+    // Liens vers les textes des circulaires disponibles dans la Bibliothèque (une seule requête)
+    const liens = await liensTextes((data ?? []).map((d: any) => numeroCirculaire(d.circulaire)))
+    const lignes = (data ?? []).map((d: any) => ({ ...d, texte_url: liens[numeroCirculaire(d.circulaire)] || null }))
+    return res.status(200).json({ data: lignes, count: count ?? lignes.length })
   } catch (err) {
     console.error('[API decisions/search]', err)
     return res.status(500).json({ error: 'Erreur base de données' })

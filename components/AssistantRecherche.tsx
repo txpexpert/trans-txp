@@ -2,6 +2,7 @@
 // (même principe que LeRef) : réponse rapide sourcée, ou recherche et dissertation
 // préparée par les consultants et affichée dans « Mon espace ».
 import { useState, type CSSProperties } from 'react'
+import TexteLiens from './TexteLiens'
 
 type Source = { titre: string; lien?: string; extrait: string }
 type Mode = 'rapide' | 'dissertation'
@@ -30,14 +31,14 @@ function Choix({ actif, onClick, titre, texte, note }: { actif: boolean; onClick
   )
 }
 
-/** Texte brut avec renvois [n] mis en valeur. */
-export function TexteSource({ texte }: { texte: string }) {
+/** Texte brut avec renvois [n] mis en valeur ; numéros de circulaires liés au texte officiel quand `liens` est fourni. */
+export function TexteSource({ texte, liens }: { texte: string; liens?: Record<string, string> | null }) {
   return (
     <div style={{ fontSize: 13.5, lineHeight: 1.75, color: 'var(--inks)' }}>
       {texte.split(/\n+/).filter(l => l.trim()).map((l, i) => {
         const h = l.match(/^(#{1,3})\s+(.*)$/)
         const parts = (h ? h[2] : l).split(/(\[\d+\])/g).map((p, j) =>
-          /^\[\d+\]$/.test(p) ? <sup key={j} style={{ color: 'var(--gold)', fontWeight: 600, fontSize: 10.5 }}>{p}</sup> : p)
+          /^\[\d+\]$/.test(p) ? <sup key={j} style={{ color: 'var(--gold)', fontWeight: 600, fontSize: 10.5 }}>{p}</sup> : <TexteLiens key={j} texte={p} liens={liens} />)
         if (h) return <div key={i} style={{ fontFamily: "'DM Serif Display', serif", color: 'var(--ink)', fontSize: h[1].length === 1 ? 19 : h[1].length === 2 ? 16 : 14.5, margin: '1rem 0 .35rem' }}>{parts}</div>
         return <p key={i} style={{ margin: '0 0 .6rem' }}>{parts}</p>
       })}
@@ -67,7 +68,7 @@ export default function AssistantRecherche() {
   const [question, setQuestion] = useState('')
   const [encours, setEncours] = useState(false)
   const [erreur, setErreur] = useState<{ texte: string; acces?: string } | null>(null)
-  const [reponse, setReponse] = useState<{ reponse: string; sources: Source[] } | null>(null)
+  const [reponse, setReponse] = useState<{ reponse: string; sources: Source[]; liens?: Record<string, string> } | null>(null)
   const [message, setMessage] = useState('')
 
   async function soumettre() {
@@ -78,7 +79,7 @@ export default function AssistantRecherche() {
       const j = await r.json().catch(() => ({}))
       if (!r.ok) setErreur({ texte: j.error || 'Service momentanément indisponible.', acces: j.acces })
       else if (j.mode === 'dissertation') { setMessage(j.message); setQuestion('') }
-      else setReponse({ reponse: j.reponse, sources: j.sources || [] })
+      else setReponse({ reponse: j.reponse, sources: j.sources || [], liens: j.liens || {} })
     } catch { setErreur({ texte: 'Connexion impossible, réessayez.' }) }
     setEncours(false)
   }
@@ -118,7 +119,7 @@ export default function AssistantRecherche() {
       {reponse && (
         <div style={S.carte}>
           <span style={S.label}>Réponse rapide</span>
-          <TexteSource texte={reponse.reponse} />
+          <TexteSource texte={reponse.reponse} liens={reponse.liens} />
           <ListeSources sources={reponse.sources} />
           <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: '1rem' }}>
             Besoin d’une analyse complète ? Choisissez « Recherche et dissertation » ou <a href="#" onClick={e => { e.preventDefault(); setMode('dissertation'); window.scrollTo({ top: 0, behavior: 'smooth' }) }} style={{ color: 'var(--bd)' }}>soumettez la même question à nos experts</a>.

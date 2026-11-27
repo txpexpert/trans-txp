@@ -55,7 +55,9 @@ const NAV = [
 
 export default function SiteShell({ title, description, children, plain = false, lang = 'fr' }: { title: string; description?: string; children: ReactNode; plain?: boolean; lang?: 'fr' | 'ar' }) {
   const ar = lang === 'ar'
-  const { pathname } = useRouter()
+  const router = useRouter()
+  // Page dynamique ([param]) : chemin réel de la page, pour le sélecteur de langue
+  const pathname = router.pathname.includes('[') ? (router.asPath.split(/[?#]/)[0] || '/') : router.pathname
   // Sélecteur de langue : enregistre le choix et ouvre la même page dans l'autre langue
   const autreLangue = ar ? lienLangue('fr', pathname) : lienLangue('ar', pathname)
   // Le bouton de langue n'est plus dans le menu : il reste affiché en permanence dans l'en-tête (bureau et mobile).
